@@ -6,8 +6,6 @@ import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
 import { URL } from '../../../../../../util/Common';
 import { Can } from '../../../../../../ability';
-import NexusBreadcrumb from '../../../NexusBreadcrumb';
-import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
@@ -75,7 +73,6 @@ class RightsCreateFromAttachment extends React.Component {
                 return;
             }
         }
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
 
         if (!this.props.availsMapping) {
             profileService.initAvailsMapping();
