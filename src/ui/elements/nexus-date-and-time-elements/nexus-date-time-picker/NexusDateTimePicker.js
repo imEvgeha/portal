@@ -10,7 +10,7 @@ import './NexusDateTimePicker.scss';
 import {
     RELATIVE_TIME_LABEL,
     SIMULCAST_TIME_LABEL,
-    BUSINESS_TIME_FORMAT,
+    SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
     RELATIVE_TIME_FORMAT,
 } from '../constants';
@@ -42,7 +42,7 @@ const NexusDateTimePicker = ({
     const timeFormat = isTimestamp
         ? TIMESTAMP_TIME_FORMAT
         : isSimulcast
-            ? BUSINESS_TIME_FORMAT
+            ? SIMULCAST_TIME_FORMAT
             : RELATIVE_TIME_FORMAT;
 
     // Create date format based on locale
