@@ -42,7 +42,7 @@ const NexusDateTimeWindowPicker = ({
     // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
     useEffect(() => {
         const {defaultValue} = startDateTimePickerProps || {};
-        typeof defaultValue === 'string' && setIsSimulcast(isUtc(value));
+        typeof defaultValue === 'string' && setIsSimulcast(isUtc(defaultValue));
     }, []);
 
     // When date changes, validate and trigger change
