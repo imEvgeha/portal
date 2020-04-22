@@ -534,9 +534,6 @@ module.exports = {
         // disallow assignment operators in conditional expressions
         'no-cond-assign': ['off', 'except-parens'],
 
-        // disallow the use of console
-        'no-console': ['error', {allow: ['warn', 'error']}],
-
         // disallow constant expressions in conditions
         'no-constant-condition': 'off',
 
