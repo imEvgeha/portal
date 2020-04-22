@@ -90,7 +90,8 @@ module.exports = envFile => ({
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css',
-            chunkFilename: 'css/[id].[contenthash].chunk.css'
+            chunkFilename: 'css/[id].[contenthash].chunk.css',
+            ignoreOrder: true,
         }),
     ],
     output: {
