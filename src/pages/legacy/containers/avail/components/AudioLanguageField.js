@@ -4,6 +4,7 @@ import {NexusTag} from '../../../../../ui/elements/';
 import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './AudioLanguageField.scss';
+import {get} from 'lodash';
 
 const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
 
