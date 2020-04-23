@@ -14,8 +14,6 @@ import {
     searchFormSetAdvancedSearchCriteria,
 } from '../../../stores/actions/avail/dashboard';
 import DOP from '../../../../../util/DOP';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import { RIGHTS_FIX } from '../../../constants/breadcrumb';
 
 
 const mapStateToProps = state => {
@@ -58,7 +56,6 @@ class FixRights extends React.Component {
                 return;
             }
         }
-        NexusBreadcrumb.set(RIGHTS_FIX);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 

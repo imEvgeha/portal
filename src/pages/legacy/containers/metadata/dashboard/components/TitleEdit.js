@@ -3,18 +3,12 @@ import t from 'prop-types';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
-import {
-    BREADCRUMB_METADATA_DASHBOARD_PATH,
-    BREADCRUMB_METADATA_SEARCH_RESULTS_PATH,
-    BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH
-} from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
 import EditPage from './EditPage';
 import TerritoryMetadata from './territorymetadata/TerritoryMetadata';
 import {titleService} from '../../service/TitleService';
-import NexusBreadcrumb from '../../../NexusBreadcrumb';
 import EditorialMetadata from './editorialmetadata/EditorialMetadata';
 import {
     EDITORIAL_METADATA_PREFIX,
@@ -85,17 +79,10 @@ class TitleEdit extends Component {
 
     componentDidMount() {
         configService.initConfigMapping();
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
-        NexusBreadcrumb.set([{ name: 'Dashboard', path: '/metadata', onClick: () => this.handleBackToDashboard() }, BREADCRUMB_METADATA_SEARCH_RESULTS_PATH, BREADCRUMB_METADATA_TITLE_DETAIL_NO_PATH]);
-
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
         this.loadTerritoryMetadata(titleId);
         this.loadEditorialMetadata(titleId);
-    }
-
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
     }
 
     loadTitle(titleId) {
@@ -148,10 +135,6 @@ class TitleEdit extends Component {
         }).catch(() => {
             console.error('Unable to load Editorial Metadata');
         });
-    }
-
-    handleBackToDashboard() {
-        NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
     }
 
     handleKeyDown = (e) => {

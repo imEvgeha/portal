@@ -11,8 +11,6 @@ import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
 import { titleMapping } from '../../service/Profile';
-import NexusBreadcrumb from '../../../NexusBreadcrumb';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import {DATETIME_FIELDS} from '../../../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
@@ -238,10 +236,7 @@ class AdvancedSearchPanel extends React.Component {
                     <CloseableBtn
                         title="Title History"
                         value={' = ' + this.props.searchCriteria.titleHistoryIds.subTitle}
-                        onClose={() => {
-                            this.props.searchFormUpdateAdvancedSearchCriteria({titleHistoryIds: null});
-                            NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
-                        }}
+                        onClose={() => this.props.searchFormUpdateAdvancedSearchCriteria({titleHistoryIds: null})}
                         id={'dashboard-title-advanced-search-' + 'TitleId' + '-criteria'}
                     />
                 </div>

@@ -32,6 +32,10 @@ class EditableBaseComponent extends Component {
             if (this.props.displayName === 'Territory' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
                 return;
             }
+            // dirty fix for audio Language field
+            if (this.props.displayName === 'Audio Language Types' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].language) {
+                return;
+            }
             this.setState({
                 showStateValue: false,
                 value: cloneDeep(this.props.value) ? this.props.value : null,
@@ -104,6 +108,8 @@ class EditableBaseComponent extends Component {
                 switch (name) {
                     case 'Territory':
                         return element.country;
+                    case 'Audio Language Types':
+                        return element.language;
                     case 'CastCrew':
                         return `${element.displayName || ''}(${element.personType}`;
                      default:
@@ -121,7 +127,7 @@ class EditableBaseComponent extends Component {
                 return updatedArr;
             };
 
-            const valueToUse = displayName === 'Territory' ? originalFieldList : value;
+            const valueToUse = ['Territory', 'Audio Language Types'].includes(displayName) ? originalFieldList : value;
 
             return (
                 <span
@@ -132,7 +138,7 @@ class EditableBaseComponent extends Component {
                     {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
                         <NexusTag
                             key={i}
-                            text={e.country || e.value}
+                            text={e.country || e.language || e.value}
                             value={e}
                         />
                     )) : setSimpleArrayWithError(value) : '' : value}

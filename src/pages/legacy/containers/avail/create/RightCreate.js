@@ -10,8 +10,6 @@ import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -20,9 +18,11 @@ import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
 
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
+import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
 import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import TerritoryField from '../components/TerritoryField';
+import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
@@ -49,15 +49,13 @@ class RightCreate extends React.Component {
         this.mappingErrorMessage = {};
         this.right = {};
         this.state = {
-            isRightTerritoryFormOpen: false
+            isRightTerritoryFormOpen: false,
+            isRightAudioLanguageFormOpen: false
         };
 
     }
 
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-
-        NexusBreadcrumb.push(RIGHT_CREATE);
         this.right = {};
 
         if(this.props.availsMapping){
@@ -67,9 +65,6 @@ class RightCreate extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
-    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping) {
@@ -305,6 +300,12 @@ class RightCreate extends React.Component {
     toggleRightTerritoryForm = () => {
         this.setState({
             isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+        });
+    }
+
+    toggleRightAudioLanguageForm = () => {
+        this.setState({
+            isRightAudioLanguageFormOpen: !this.state.isRightAudioLanguageFormOpen
         });
     }
 
@@ -698,6 +699,52 @@ class RightCreate extends React.Component {
             ));
         };
 
+        const renderAudioLanguageField = (name, displayName, required, value) => {
+            let options = [], audioTypeOptions = [];
+            let val;
+            if(this.props.selectValues && this.props.selectValues[name]){
+                options  = this.props.selectValues[name];
+            }
+            if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
+                audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+
+            if(options.length > 0 && value){
+                val = value;
+                if(!required) {
+                    options.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
+            return renderFieldTemplate(name, displayName, required, null, (
+                <AudioLanguageField
+                    audioLanguages={this.right.languageAudioTypes}
+                    name={name}
+                    onRemoveClick={(audioL) => this.handleDeleteObjectFromArray(audioL.language, 'languageAudioTypes', 'language')}
+                    onAddClick={this.toggleRightAudioLanguageForm}
+                    renderChildren={() => (
+                        <>
+                            <div style={{position: 'absolute', right: '10px'}}>
+                                <AddButton onClick={this.toggleRightAudioLanguageForm}>+</AddButton>
+                            </div>
+                            <RightAudioLanguageForm
+                                onSubmit={(e) => this.handleArrayPush(e, 'languageAudioTypes')}
+                                isOpen={this.state.isRightAudioLanguageFormOpen}
+                                onClose={this.toggleRightAudioLanguageForm}
+                                data={val}
+                                languageOptions={options}
+                                audioTypesOptions={audioTypeOptions}
+                            />
+                        </>
+                    )}
+                    mappingErrorMessage={this.mappingErrorMessage}
+                />
+            ));
+        };
+
         const renderDatepickerField = (name, displayName, required, value, useTime) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
@@ -761,6 +808,8 @@ class RightCreate extends React.Component {
                              break;
                         case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
+                        case 'audioLanguageType': renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName); // eslint-disable-line
                     }
