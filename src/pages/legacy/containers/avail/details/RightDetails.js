@@ -18,9 +18,8 @@ import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../../../ability';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../../../util/Common';
+import {equalOrIncluded, getDeepValue, isObject, safeTrim, URL} from '../../../../../util/Common';
 import BlockUi from 'react-block-ui';
-import RightsURL from '../util/RightsURL';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
@@ -30,6 +29,8 @@ import TerritoryField from '../components/TerritoryField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
+import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
+import {AVAILS_PATH} from '../../../../avails/availsRoutes';
 
 const mapStateToProps = state => {
     return {
@@ -73,6 +74,17 @@ class RightDetails extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
+    }
+
+    navigateToPreviousPreview = () => {
+        const prevPage = window.location.href;
+        history.back();
+
+        setTimeout(function(){
+            if (window.location.href == prevPage) {
+                window.location.href = URL.keepEmbedded(AVAILS_PATH);
+            }
+        }, 500);
     }
 
     getRightData() {
@@ -1268,6 +1280,10 @@ class RightDetails extends React.Component {
 }
                     <div className="nx-stylish row my-3 mx-5">
                         <div className="nx-stylish list-group col-12">
+                            <BackNavigationByUrl
+                                title="Title Matching Review"
+                                onNavigationClick={this.navigateToPreviousPreview}
+                            />
                             {renderFields}
                         </div>
                     </div>
@@ -1285,6 +1301,7 @@ RightDetails.propTypes = {
     match: PropTypes.any,
     location: PropTypes.any,
     blocking: PropTypes.bool,
+    history: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
@@ -1293,6 +1310,7 @@ RightDetails.defaultProps = {
     match: {},
     location: {},
     blocking: null,
+    history: null,
 };
 
 RightDetails.contextTypes = {
