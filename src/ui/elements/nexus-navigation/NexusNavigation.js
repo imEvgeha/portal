@@ -141,7 +141,6 @@ const mapDispatchToProps = dispatch => ({
 
 export const gotoAvailsDashboard = () => {
     store.dispatch(searchFormShowSearchResults(false));
-    store.dispatch(searchFormShowSearchResults(false));
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NexusNavigation));
