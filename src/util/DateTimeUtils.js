@@ -1,6 +1,9 @@
 import moment from 'moment';
 import {store} from '../index';
-import {TIME_FORMAT, TIMESTAMP_FORMAT} from '../ui/elements/nexus-date-and-time-elements/constants';
+import {
+    RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT,
+    TIMESTAMP_TIME_FORMAT
+} from '../ui/elements/nexus-date-and-time-elements/constants';
 
 const DATETIME_FIELDS = {
     TIMESTAMP: 'timestamp',
@@ -10,16 +13,20 @@ const DATETIME_FIELDS = {
     REGIONAL_MIDNIGHT: 'regionalMidnight'
 };
 
-
 // Create date format based on locale
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
+
 // Attach (UTC) to date, if it is simulcast
 const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
-    const isUTC = date && date.endsWith('Z');
+    const isUTC = isUtc(date);
     return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC && isTimeVisible ? ' (UTC)' : ''}`
+        ? `${moment(date).utc(!isUTC).format(dateFormat)}${(isUTC && isTimeVisible) ? ' (UTC)' : ''}`
         : 'Invalid Date';
 };
+
+// Check if a provided date ends with 'Z' which would mean it is UTC date
+// https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)
+const isUtc = (date = '') => typeof date === 'string' && date.endsWith('Z');
 
 const ISODateToView = (date, type) => {
     if(date) {
@@ -27,9 +34,11 @@ const ISODateToView = (date, type) => {
         const dateFormat = getDateFormatBasedOnLocale(locale);
         switch (type) {
             case DATETIME_FIELDS.TIMESTAMP:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_FORMAT)}`;
+                return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_TIME_FORMAT)}`;
             case DATETIME_FIELDS.BUSINESS_DATETIME:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(TIME_FORMAT)}`;
+                const timeFormat = isUtc(date) ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
+
+                return `${moment(date).format(dateFormat)} ${moment(date).format(timeFormat)}`;
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return `${moment(date).format(dateFormat)}`;
         }
@@ -57,5 +66,6 @@ export {
     getDateFormatBasedOnLocale,
     parseSimulcast,
     ISODateToView,
-    dateToISO
+    dateToISO,
+    isUtc,
 };

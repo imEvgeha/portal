@@ -5,8 +5,8 @@ const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = [
     'originalRightIds',
     'keywords'
 ];
-const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = ['languageAudioTypes'];
-const ARRAY_OF_OBJECTS = ['territory'];
+const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = [];
+const ARRAY_OF_OBJECTS = ['territory', 'languageAudioTypes'];
 const NULL_TO_ARRAY = ['territory', 'castCrew', 'languageAudioTypes'];
 const NULL_TO_OBJECT = ['rating', 'episodic', 'pricing'];
 export {

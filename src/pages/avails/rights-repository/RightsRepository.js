@@ -178,7 +178,11 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights, selectedGridApi]);
 
-    const columnDefsClone = cloneDeep(columnDefs);
+    const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
+        columnDef.menuTabs = ['generalMenuTab'];
+
+        return columnDef;
+    });
 
     const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
         const {id} = data || {};

@@ -36,12 +36,12 @@ export const SelectRightsTab = styled(BasicTab)`
 
 export const ManualRightEntryTab = styled(BasicTab)`
     font-size: 16px;
-    width: 150px;
-    padding: 0 10px 5px 10px;
+    min-width: 120px;
+    padding: 0 5px 5px 5px;
     margin-top: 5px;
     &:last-child {
         border-right: none;
-        width: 150px;
+        width: 120px;
     }
     ${props => !props.isNotClickable && css`
      &:hover {

@@ -4,7 +4,7 @@ export default {
     ATTACHMENTS: [
         {
             label: 'Studio',
-            content: 'provider',
+            content: 'licensor',
             type: 'Email',
             icon: 'far fa-envelope'
         },

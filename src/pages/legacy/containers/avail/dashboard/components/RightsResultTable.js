@@ -213,7 +213,7 @@ class RightsResultTable extends React.Component {
                 case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                     return ({data = {}}) => {
                     const {[column.javaVariableName]: date = ''} = data || {};
-                    return ISODateToView(date[javaVariableName], dataType);
+                    return ISODateToView(date, dataType);
                 };
                 case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
                     if(data && data[javaVariableName]){

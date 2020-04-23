@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import t from 'prop-types';
 import {AvForm} from 'availity-reactstrap-validation';
-import {Button, Col, Row} from 'reactstrap';
+import {Col, Row} from 'reactstrap';
+import Button from '@atlaskit/button';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -56,6 +57,7 @@ class TitleEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: false,
             isEditMode: false,
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
@@ -387,12 +389,11 @@ class TitleEdit extends Component {
     }
 
     titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
-        titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
+        return titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
             this.setState({
                 titleForm: response.data,
                 editedForm: response.data,
                 ratingForCreate: {},
-                isEditMode: switchEditMode && !this.state.isEditMode,
                 territoryMetadataActiveTab: CURRENT_TAB,
                 editorialMetadataActiveTab: CURRENT_TAB,
                 titleRankingActiveTab: CURRENT_TAB,
@@ -413,10 +414,9 @@ class TitleEdit extends Component {
             this.removeBooleanQuotes(newAdditionalFields, 'seasonFinale');
 
             this.addRatingForCreateIfExist(newAdditionalFields);
-            this.titleUpdate(newAdditionalFields);
+            return this.titleUpdate(newAdditionalFields);
         } else {
             this.setState({
-                isEditMode: !this.state.isEditMode,
                 territoryMetadataActiveTab: CURRENT_TAB,
                 editorialMetadataActiveTab: CURRENT_TAB,
                 titleRankingActiveTab: CURRENT_TAB,
@@ -511,6 +511,7 @@ class TitleEdit extends Component {
     };
 
     handleTerritoryMetadataOnSave = () => {
+        const promises = [];
         this.state.updatedTerritories.forEach(t => {
             const dataFormatted = {
                 ...t,
@@ -520,16 +521,17 @@ class TitleEdit extends Component {
                 originalAirDate: t.originalAirDate || null,
                 estReleaseDate: t.estReleaseDate || null,
             };
-            titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
-                const list = [].concat(this.state.territory);
-                const foundIndex = list.findIndex(x => x.id === response.data.id);
-                list[foundIndex] = response.data;
-                this.setState({
-                    territory: list
-                });
-            }).catch(() => {
-                console.error('Unable to edit Title Data');
-            });
+            promises.push(titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
+                    const list = [].concat(this.state.territory);
+                    const foundIndex = list.findIndex(x => x.id === response.data.id);
+                    list[foundIndex] = response.data;
+                    this.setState({
+                        territory: list
+                    });
+                }).catch(() => {
+                    console.error('Unable to edit Title Data');
+                })
+            );
         });
         this.setState({
             updatedTerritories: []
@@ -555,18 +557,20 @@ class TitleEdit extends Component {
                 parentId: this.props.match.params.id
             };
 
-            titleService.addTerritoryMetadata(newTerritory).then((response) => {
-                this.cleanTerritoryMetadata();
-                this.setState({
-                    territory: [response.data, ...this.state.territory],
-                    territoryMetadataActiveTab: CURRENT_TAB,
-                });
-            }).catch(() => {
-                console.error('Unable to add Territory Metadata');
-            });
+            promises.push(titleService.addTerritoryMetadata(newTerritory).then((response) => {
+                    this.cleanTerritoryMetadata();
+                    this.setState({
+                        territory: [response.data, ...this.state.territory],
+                        territoryMetadataActiveTab: CURRENT_TAB,
+                    });
+                }).catch(() => {
+                    console.error('Unable to add Territory Metadata');
+                })
+            );
         } else {
             this.cleanTerritoryMetadata();
         }
+        return promises;
     };
 
     /**
@@ -738,17 +742,19 @@ class TitleEdit extends Component {
     };
 
     handleEditorialMetadataOnSave = () => {
+        const promises = [];
         this.state.updatedEditorialMetadata.forEach(e => {
-            titleService.updateEditorialMetadata(e).then((response) => {
-                const list = [].concat(this.state.editorialMetadata);
-                const foundIndex = list.findIndex(x => x.id === response.data.id);
-                list[foundIndex] = response.data;
-                this.setState({
-                    editorialMetadata: list
-                });
-            }).catch(() => {
-                console.error('Unable to edit Editorial Metadata');
-            });
+                promises.push(titleService.updateEditorialMetadata(e).then((response) => {
+                    const list = [].concat(this.state.editorialMetadata);
+                    const foundIndex = list.findIndex(x => x.id === response.data.id);
+                    list[foundIndex] = response.data;
+                    this.setState({
+                        editorialMetadata: list
+                    });
+                }).catch(() => {
+                    console.error('Unable to edit Editorial Metadata');
+                })
+            );
         });
         this.setState({
             updatedEditorialMetadata: []
@@ -757,18 +763,20 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
-            titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
-                this.cleanEditorialMetadata();
-                this.setState({
-                    editorialMetadata: [response.data, ...this.state.editorialMetadata],
-                    editorialMetadataActiveTab: CURRENT_TAB
-                });
-            }).catch(() => {
-                console.error('Unable to add Editorial Metadata');
-            });
+                promises.push(titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
+                    this.cleanEditorialMetadata();
+                    this.setState({
+                        editorialMetadata: [response.data, ...this.state.editorialMetadata],
+                        editorialMetadataActiveTab: CURRENT_TAB
+                    });
+                }).catch(() => {
+                    console.error('Unable to add Editorial Metadata');
+                })
+            );
         } else {
             this.cleanEditorialMetadata();
         }
+        return promises;
     };
 
     handleEditorialCastCrew = (castCrew, originalData) => {
@@ -865,14 +873,28 @@ class TitleEdit extends Component {
      * Common
      */
     handleOnSave = () => {
-        this.handleTitleOnSave();
-        this.handleTerritoryMetadataOnSave();
-        this.handleEditorialMetadataOnSave();
         this.setState({
-            areEditorialMetadataFieldsRequired: false,
-            areTerritoryMetadataFieldsRequired: false,
-            areRatingFieldsRequired: false
+            isLoading: true
         });
+
+        let promises = [];
+        promises.push(this.handleTitleOnSave());
+        promises.push( this.handleTerritoryMetadataOnSave());
+        promises.push(this.handleEditorialMetadataOnSave());
+        promises = promises.filter(item => item).flat();
+
+        Promise.all(promises)
+            .then(responses => {
+                this.setState({
+                    isLoading: false,
+                    isEditMode: !this.state.isEditMode,
+                    areEditorialMetadataFieldsRequired: false,
+                    areTerritoryMetadataFieldsRequired: false,
+                    areRatingFieldsRequired: false
+                });
+            });
+
+
     };
 
     onKeyPress(event) {
@@ -952,8 +974,8 @@ class TitleEdit extends Component {
                             {
                                 this.state.isEditMode ? (
                                     <>
-                                        <Button className="float-right" id="btnSave" color="primary" style={{ marginRight: '10px' }}>Save</Button>
-                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} outline color="danger" style={{ marginRight: '10px' }}>Cancel</Button>
+                                        <Button className="float-right" id="btnSave" isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary">Save</Button>
+                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger">Cancel</Button>
                                     </>
                                   )
                                     : (

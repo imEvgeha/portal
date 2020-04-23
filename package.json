@@ -127,7 +127,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
     "eslint": "^5.7.0",
-    "eslint-config-nexus-react-app": "1.0.6",
+    "eslint-config-nexus-react-app": "1.0.7",
     "eslint-loader": "^2.1.1",
     "eslint-nibble": "^5.1.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
