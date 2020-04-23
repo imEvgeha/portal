@@ -11,8 +11,6 @@ import {blockUI} from '../../../stores/actions/index';
 import {rightsService} from '../service/RightsService';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../../../ability';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {getDeepValue} from '../../../../../util/Common';
 import BlockUi from 'react-block-ui';
 import RightTerritoryFormSchema from '../../../components/form/RightTerritoryFormSchema';
@@ -51,14 +49,8 @@ class RightDetails extends React.Component {
     }
 
     componentDidMount() {
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-        NexusBreadcrumb.push({ name: '', path: '/avails/' });
         profileService.initAvailsMapping();
         this.getRightData();
-    }
-
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
     }
 
     getRightData = () => {
@@ -150,8 +142,6 @@ class RightDetails extends React.Component {
                             right: res.data,
                             flatRight: this.flattenRight(res.data),
                         });
-                        NexusBreadcrumb.pop();
-                        NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
                     }
                 })
                 .catch(() => {
@@ -218,8 +208,6 @@ class RightDetails extends React.Component {
                     flatRight: this.flattenRight(res.data),
                     errorMessage: ''
                 });
-                NexusBreadcrumb.pop();
-                NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
             })
             .catch(() => {
