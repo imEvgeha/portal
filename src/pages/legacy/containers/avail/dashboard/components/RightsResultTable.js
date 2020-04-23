@@ -216,7 +216,7 @@ class RightsResultTable extends React.Component {
                     return ISODateToView(date, dataType);
                 };
                 case 'string' :
-                    if(javaVariableName === 'castCrew') {
+                    if (javaVariableName === 'castCrew') {
                         return ({data = {}}) => {
                             if (data && Array.isArray(data[javaVariableName])) {
                                 return data[javaVariableName]
@@ -244,7 +244,7 @@ class RightsResultTable extends React.Component {
                 default: return null;
             }
         };
-        if(this.props.availsMapping){
+        if (this.props.availsMapping) {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
                 field:column.javaVariableName,
                 headerName:column.displayName,

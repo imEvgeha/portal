@@ -27,7 +27,7 @@ export default class RightsResultsTable extends React.Component {
                         return ISODateToView(date, dataType);
                     };
                 case 'string' :
-                    if(javaVariableName === 'castCrew') {
+                    if (javaVariableName === 'castCrew') {
                         return ({data = {}}) => {
                             if (data && Array.isArray(data[javaVariableName])) {
                                 return data[javaVariableName]
@@ -41,7 +41,7 @@ export default class RightsResultsTable extends React.Component {
                 case 'territoryType' :
                 case 'audioLanguageType':
                     return ({data = {}}) => {
-                    if(data && Array.isArray(data[javaVariableName])) {
+                    if (data && Array.isArray(data[javaVariableName])) {
                         return data[javaVariableName]
                             .map(e => String(e.country || `${e.language}/${e.audioType}`))
                             .join(', ');
