@@ -17,7 +17,6 @@ import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {isObjectEmpty} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 
@@ -49,7 +48,6 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
-        NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 
@@ -109,19 +107,12 @@ class DashboardContainer extends React.Component {
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
-        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         rightSearchHelper.freeTextSearch(searchCriteria);
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
-        if (this.props.searchCriteria.availHistoryIds) {
-            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-        }else{
-            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
-        }
-
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
 

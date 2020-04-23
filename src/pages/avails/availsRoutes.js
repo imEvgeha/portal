@@ -15,6 +15,7 @@ import TitleMatchReview from './title-matching/TitleMatchReview/TitleMatchReview
 import AvailsView from './AvailsView';
 
 const BASE_PATH = '/avails';
+export const AVAILS_PATH = '/avails/v2';
 
 // TODO: create nested structure of routes
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
         component: canRender(RightDashboardContainer, 'read', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/v2`,
+        path: `${AVAILS_PATH}`,
         component: AvailsView,
     },
     {

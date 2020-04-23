@@ -16,8 +16,6 @@ exports[`NexusLayout should match snapshot 1`] = `
   </IfEmbedded>
   <div
     className="nexus-c-app-layout__main"
-  >
-    <withRouter(Connect(NexusBreadcrumb)) />
-  </div>
+  />
 </div>
 `;
