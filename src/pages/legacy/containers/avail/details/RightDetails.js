@@ -17,12 +17,9 @@ import EditableBaseComponent from '../../../components/form/editable/EditableBas
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {profileService} from '../service/ProfileService';
 import {cannot} from '../../../../../ability';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD} from '../../../constants/breadcrumb';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import {equalOrIncluded, getDeepValue, isObject, momentToISO, safeTrim} from '../../../../../util/Common';
+import {equalOrIncluded, getDeepValue, isObject, safeTrim, URL} from '../../../../../util/Common';
 import BlockUi from 'react-block-ui';
-import RightsURL from '../util/RightsURL';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
@@ -34,6 +31,8 @@ import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
+import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
+import {AVAILS_PATH} from '../../../../avails/availsRoutes';
 
 const mapStateToProps = state => {
     return {
@@ -50,7 +49,6 @@ class RightDetails extends React.Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.cancel = this.cancel.bind(this);
         this.getRightData = this.getRightData.bind(this);
 
         this.emptyValueText = 'Enter';
@@ -68,8 +66,6 @@ class RightDetails extends React.Component {
     }
 
     componentDidMount() {
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-        NexusBreadcrumb.push({ name: '', path: '/avails/' });
         profileService.initAvailsMapping();
         this.getRightData();
         if (this.refresh === null) {
@@ -82,7 +78,17 @@ class RightDetails extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
-        NexusBreadcrumb.pop();
+    }
+
+    navigateToPreviousPreview = () => {
+        const prevPage = window.location.href;
+        history.back();
+
+        setTimeout(function(){
+            if (window.location.href == prevPage) {
+                window.location.href = URL.keepEmbedded(AVAILS_PATH);
+            }
+        }, 500);
     }
 
     getRightData() {
@@ -216,8 +222,6 @@ class RightDetails extends React.Component {
                             affiliates,
                             affiliatesExclude,
                         });
-                        NexusBreadcrumb.pop();
-                        NexusBreadcrumb.push({ name: res.data.title, path: '/avails/' + res.data.id });
                     }
                 })
                 .catch(() => {
@@ -311,8 +315,6 @@ class RightDetails extends React.Component {
                     flatRight: this.flattenRight(editedRight),
                     errorMessage: ''
                 });
-                NexusBreadcrumb.pop();
-                NexusBreadcrumb.push({ name: editedRight.title, path: '/avails/' + editedRight.id });
                 store.dispatch(blockUI(false));
 
                 // Clear the state for editedRight, since the change was already applied
@@ -362,10 +364,6 @@ class RightDetails extends React.Component {
             const mappingPair = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === pairFieldName);
             return oneOfValidation(name, displayName, date, pairFieldName, mappingPair.displayName, right);
         }
-    }
-
-    cancel() {
-        this.context.router.history.push(RightsURL.getSearchURLFromRightUrl(window.location.pathname, window.location.search));
     }
 
     onFieldClicked(e) {
@@ -433,7 +431,7 @@ class RightDetails extends React.Component {
                     key={name}
                     className={(readOnly ? ' disabled' : '') + (highlighted ? ' font-weight-bold' : '')}
                     style={{
-                        backgroundColor: hasValidationError ? '#f2dede' : '#fff',
+                        backgroundColor: hasValidationError ? '#f2dede' : '',
                         color: hasValidationError ? '#a94442' : null,
                         border: 'none',
                         position: 'relative', display: 'block', padding: '0.75rem 1.25rem', marginBottom: '-1px',
@@ -1346,18 +1344,15 @@ class RightDetails extends React.Component {
                         </div>
                       )
 }
-                    <div className="nx-stylish row mt-3 mx-5">
-                        <div className="nx-stylish list-group col-12" style={{ overflowY: 'scroll', height: 'calc(100vh - 220px)' }}>
+                    <div className="nx-stylish row my-3 mx-5">
+                        <div className="nx-stylish list-group col-12">
+                            <BackNavigationByUrl
+                                title="Title Matching Review"
+                                onNavigationClick={this.navigateToPreviousPreview}
+                            />
                             {renderFields}
                         </div>
                     </div>
-                    {this.props.availsMapping && (
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <div className="mt-4 mx-5 px-5">
-                                <Button className="mr-5" id="right-edit-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
-                            </div>
-                        </div>
-                      )}
                 </BlockUi>
                 {/* Provide clashingRights for modal open*/}
                 <RightsClashingModal />
@@ -1372,6 +1367,7 @@ RightDetails.propTypes = {
     match: PropTypes.any,
     location: PropTypes.any,
     blocking: PropTypes.bool,
+    history: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
@@ -1380,6 +1376,7 @@ RightDetails.defaultProps = {
     match: {},
     location: {},
     blocking: null,
+    history: null,
 };
 
 RightDetails.contextTypes = {

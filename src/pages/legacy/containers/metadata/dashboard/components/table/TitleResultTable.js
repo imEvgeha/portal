@@ -250,7 +250,7 @@ class TitleResultTable extends React.Component {
                         this.addItemToTable(data, params);
                     }
                 } else {
-                    this.table.api.showNoRowsOverlay();
+                    this.table && this.table.api && this.table.api.showNoRowsOverlay();
                 }
             }).catch((error) => {
                 console.error('Unexpected error');
