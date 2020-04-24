@@ -55,8 +55,8 @@ const withFilterableColumns = ({
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
-                        const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
+                        const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+                        if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => el.trim()));
                             return;
@@ -77,17 +77,17 @@ const withFilterableColumns = ({
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
+                const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const {field} = columnDef;
-                const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
+                const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
                     const {TEXT, NUMBER, SET, CUSTOM_DATE} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, SELECT, MULTISELECT, TERRITORY, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
 
-                    switch (dataType) {
+                    switch (searchDataType) {
                         case BOOLEAN:
                             columnDef.filter = TEXT;
                             columnDef.filterParams = {
@@ -100,7 +100,6 @@ const withFilterableColumns = ({
                         case YEAR:
                             columnDef.filter = NUMBER;
                             break;
-                        case SELECT:
                         case MULTISELECT:
                             columnDef.filter = SET;
                             columnDef.filterParams = {
@@ -117,6 +116,17 @@ const withFilterableColumns = ({
                             columnDef.keyCreator = params => {
                                 const countries = params.value.map(({country}) => country);
                                 return countries;
+                            };
+                            break;
+                        case AUDIO_LANGUAGE:
+                            columnDef.filter = SET;
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                values: getFilterOptions(field),
+                            };
+                            columnDef.keyCreator = params => {
+                                const languages = params.value.map(({language}) => language);
+                                return languages;
                             };
                             break;
                         case REGIONAL_MIDNIGHT:
