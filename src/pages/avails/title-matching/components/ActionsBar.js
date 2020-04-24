@@ -37,7 +37,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
 
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const inViewTitleClick = () => window.open(url,'_blank');
+        const onViewTitleClick = () => window.open(url,'_blank');
 
         if (URL.isEmbedded()) {
             DOP.setErrorsCount(0);
