@@ -4,6 +4,11 @@ import {canRender} from '../../ability';
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
 import RightsCreateFromAttachment from  '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
+// use webpack prefetch for legacy routes
+const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
+const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
+const RightCreate = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate'));
+// const RightsCreateFromAttachment = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreateFromAttachment" */ '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment'));
 const RightDetailsV2Import = import(/* webpackChunkName: "RightDetailsV2" */ '../legacy/containers/avail/details/RightDetailsV2');
 const RightDetailsV2 = React.lazy(() => RightCreateV2Import);
 const RightCreateV2Import = import(/* webpackChunkName: "RightCreateV2" */ '../legacy/containers/avail/create/RightCreateV2');
@@ -22,11 +27,6 @@ const TitleMatchViewImport = import(/* webpackChunkName: "TitleMatchView" */ './
 const TitleMatchView = React.lazy(() => TitleMatchViewImport);
 const TitleMatchReviewImport = import(/* webpackChunkName: "TitleMatchReview" */ './title-matching/TitleMatchReview/TitleMatchReview');
 const TitleMatchReview = React.lazy(() => TitleMatchReviewImport);
-// use webpack prefetch for legacy routes
-const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
-const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
-const RightCreate = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate'));
-// const RightsCreateFromAttachment = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreateFromAttachment" */ '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment'));
 
 const BASE_PATH = '/avails';
 export const AVAILS_PATH = '/avails/v2';
