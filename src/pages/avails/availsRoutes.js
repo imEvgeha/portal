@@ -1,17 +1,15 @@
 import React from 'react';
 import {canRender} from '../../ability';
-import {lazyWithPreload} from '../../util/Common';
-// use webpack prefetch for legacy routes
-const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
-const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
-const RightCreate = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate'));
-const RightsCreateFromAttachment = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreateFromAttachment" */ '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment'));
-const SelectRightsPlanning = React.lazy(() => import (/* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'));
-const AvailIngestHistoryContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AvailIngestHistoryContainer" */ '../legacy/containers/avail/ingest-history/AvailIngestHistoryContainer'));
-const RightCreateV2Import = import(/* webpackChunkName: "RightCreateV2" */ '../legacy/containers/avail/create/RightCreateV2');
-const RightCreateV2 = React.lazy(() => RightCreateV2Import);
+// TODO: change it to dynamic imports when we remove legacy override style for ag grid
+// from RightsResultTable.scss to global.scss file
+// currently, scss for particular component (RightsResultTable) is using for global ag grid style override
+import RightsCreateFromAttachment from  '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
 const RightDetailsV2Import = import(/* webpackChunkName: "RightDetailsV2" */ '../legacy/containers/avail/details/RightDetailsV2');
 const RightDetailsV2 = React.lazy(() => RightCreateV2Import);
+const RightCreateV2Import = import(/* webpackChunkName: "RightCreateV2" */ '../legacy/containers/avail/create/RightCreateV2');
+const RightCreateV2 = React.lazy(() => RightCreateV2Import);
+const SelectRightsPlanning = React.lazy(() => import (/* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'));
+const AvailIngestHistoryContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AvailIngestHistoryContainer" */ '../legacy/containers/avail/ingest-history/AvailIngestHistoryContainer'));
 const RightMatchingViewImport = import(/* webpackChunkName: "RightMatchingView" */ './right-matching/RightMatchingView');
 const RightMatchingView = React.lazy(() => RightToMatchViewImport);
 const AvailsViewImport = import(/* webpackChunkName: "AvailsView" */ './AvailsView');
@@ -24,6 +22,11 @@ const TitleMatchViewImport = import(/* webpackChunkName: "TitleMatchView" */ './
 const TitleMatchView = React.lazy(() => TitleMatchViewImport);
 const TitleMatchReviewImport = import(/* webpackChunkName: "TitleMatchReview" */ './title-matching/TitleMatchReview/TitleMatchReview');
 const TitleMatchReview = React.lazy(() => TitleMatchReviewImport);
+// use webpack prefetch for legacy routes
+const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
+const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
+const RightCreate = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate'));
+// const RightsCreateFromAttachment = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreateFromAttachment" */ '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment'));
 
 const BASE_PATH = '/avails';
 export const AVAILS_PATH = '/avails/v2';

@@ -41,7 +41,6 @@ const LoadingCellRenderer = (params) => {
 
         return (
             link ? (
-                // eslint-disable-next-line
                 <a href={`${link}${data.id}`} target="_blank">
                     {displayValue}
                 </a>
