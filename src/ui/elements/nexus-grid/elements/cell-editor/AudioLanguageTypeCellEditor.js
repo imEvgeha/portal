@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './TerritoryCellEditor.scss';
+import './MultiInstanceCellEditor.scss';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import AudioLanguageTypeFormSchema from '../../../../../pages/legacy/components/form/AudioLanguageTypeFormSchema';
@@ -37,7 +37,7 @@ class AudioLanguageTypeCellEditor extends Component {
         const {value} = this.state;
 
         return (
-            <div className="nexus-c-territory-cell-editor">
+            <div className="nexus-c-multi-instance-cell-editor">
                 <NexusMultiInstanceField
                     existingItems={value}
                     onSubmit={this.handleChange}
