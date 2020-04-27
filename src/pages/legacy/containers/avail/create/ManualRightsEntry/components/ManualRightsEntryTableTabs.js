@@ -54,7 +54,7 @@ const ManualRightEntryTableTabs = ({
 
     const getCustomTotalCount = () => {
         if(!isNaN(totalRightsCount) && !isNaN(fatalCount)) {
-            return `${totalRightsCount}/${totalRightsCount + fatalCount}`;
+            return `${totalRightsCount + fatalCount}`;
         }
     };
 
