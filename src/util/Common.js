@@ -262,6 +262,12 @@ const cleanObject = function(object, allowEmptyStrings = false) {
     return object;
 };
 
+const lazyWithPreload = factory => {
+  const Component = React.lazy(factory);
+  Component.preload = factory;
+  return Component;
+};
+
 export {
     downloadFile, 
     momentToISO, 
@@ -283,4 +289,5 @@ export {
     formatNumberTwoDigits,
     normalizeDataForStore,
     cleanObject,
+    lazyWithPreload,
 };
