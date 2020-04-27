@@ -1347,7 +1347,7 @@ class RightDetails extends React.Component {
                     <div className="nx-stylish row my-3 mx-5">
                         <div className="nx-stylish list-group col-12">
                             <BackNavigationByUrl
-                                title="Title Matching Review"
+                                title="Right Details"
                                 onNavigationClick={this.navigateToPreviousPreview}
                             />
                             {renderFields}
