@@ -416,7 +416,6 @@
 },{
   "javaVariableName": "languageAudioTypes.language",
   "displayName": "Audio Language",
-  "dataType": "multiselect",
   "searchDataType": "multiselect",
   "configEndpoint": "/languages",
   "queryParamName": "audioTypeLanguage",
@@ -427,7 +426,6 @@
 }, {
   "javaVariableName": "languageAudioTypes.audioType",
   "displayName": "Audio Type",
-  "dataType": "string",
   "searchDataType": "multiselect",
   "configEndpoint": "/audio-types",
   "queryParamName": "audioType",

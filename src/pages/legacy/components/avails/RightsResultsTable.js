@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {getDeepValue} from '../../../../util/Common';
+import {getDeepValue, isObject} from '../../../../util/Common';
 import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../../../assets/img/loading.gif';
-import {isObject} from '../../../../util/Common';
 
 export default class RightsResultsTable extends React.Component {
 
@@ -27,21 +26,26 @@ export default class RightsResultsTable extends React.Component {
                         const {[javaVariableName]: date = ''} = data || {};
                         return ISODateToView(date, dataType);
                     };
-                case 'string' : if(javaVariableName === 'castCrew') return function(params){
-                    if(params.data && params.data[javaVariableName]){
-                        let data = params.data[javaVariableName];
-                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return data;
+                case 'string' :
+                    if (javaVariableName === 'castCrew') {
+                        return ({data = {}}) => {
+                            if (data && Array.isArray(data[javaVariableName])) {
+                                return data[javaVariableName]
+                                    .map(({personType, displayName}) => personType + ': ' + displayName)
+                                    .join('; ');
+                            }
+                        }
+                    } else {
+                        return null;
                     }
-                    return;
-                }; else return null;
-                case 'territoryType' : return function(params){
-                    if(params.data && params.data[javaVariableName]) {
-                        const cellValue = params.data[javaVariableName]
-                        .map(e => String(e.country)).join(', ');
-                        return cellValue;
+                case 'territoryType' :
+                case 'audioLanguageType':
+                    return ({data = {}}) => {
+                    if (data && Array.isArray(data[javaVariableName])) {
+                        return data[javaVariableName]
+                            .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                            .join(', ');
                     }
-                    return;
                 };
                 default: return null;
             }

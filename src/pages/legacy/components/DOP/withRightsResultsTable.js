@@ -34,10 +34,11 @@ const withRightsResultsTable = BaseComponent => {
                         }
                     };
                     case 'territoryType':
+                    case 'audioLanguageType':
                         return (params) => {
                             const {data} = params;
-                            if(data && data[column.javaVariableName]) {
-                                return data[column.javaVariableName].map(e => String(e.country)).join(', ');
+                            if(data && Array.isArray(data[column.javaVariableName])) {
+                                return data[column.javaVariableName].map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
                             }
                         };
                     case 'string': 
