@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 class CustomModal extends React.Component {
 
@@ -77,8 +77,8 @@ class CustomModal extends React.Component {
     }
 }
 CustomModal.propTypes = {
-    reject: t.func,
-    resolve: t.func,
+    reject: PropTypes.func,
+    resolve: PropTypes.func,
 };
 export const saveReportModal = {
     open: (onApprove, onCancel, options) => {

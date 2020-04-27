@@ -1,6 +1,6 @@
 import React from 'react';
 import {updatePromotedRights, updatePromotedRightsFullData,} from '../../../../stores/actions/DOP';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {rightsService} from '../../../../containers/avail/service/RightsService';
 
@@ -128,13 +128,13 @@ const mapDispatchToProps = {
 };
 
 TableHeader.propTypes = {
-    table: t.object,
-    promotedRights: t.array,
-    promotedRightsFullData: t.array,
-    updatePromotedRights: t.func,
-    updatePromotedRightsFullData: t.func,
-    selectedTerritories: t.array,
-    useSelectedTerritories: t.bool,
+    table: PropTypes.object,
+    promotedRights: PropTypes.array,
+    promotedRightsFullData: PropTypes.array,
+    updatePromotedRights: PropTypes.func,
+    updatePromotedRightsFullData: PropTypes.func,
+    selectedTerritories: PropTypes.array,
+    useSelectedTerritories: PropTypes.bool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableHeader);

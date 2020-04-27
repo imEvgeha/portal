@@ -3,7 +3,7 @@ import {store} from '../../../../../index';
 import {URL} from '../../../../../util/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
 
 const PASS_THROUGH = ['availHistoryIds'];
@@ -269,7 +269,7 @@ class RightsURL extends React.Component {
     }
 }
 RightsURL.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 export const search = RightsURL.search;
 

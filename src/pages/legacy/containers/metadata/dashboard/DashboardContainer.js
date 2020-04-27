@@ -15,7 +15,7 @@ import {
     searchFormSetAdvancedSearchCriteria
 } from '../../../stores/actions/metadata/index';
 import DashboardTab from './DashboardTab';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {titleSearchHelper} from '../dashboard/TitleSearchHelper';
 import moment from 'moment';
 import {configService} from '../service/ConfigService';
@@ -159,17 +159,17 @@ class DashboardContainer extends React.Component {
 }
 
 DashboardContainer.propTypes = {
-    searchCriteria: t.any,
-    searchFormUseAdvancedSearch: t.func,
-    resultPageSelect: t.func,
-    searchFormShowAdvancedSearch: t.func,
-    searchFormShowSearchResults: t.func,
-    searchFormSetAdvancedSearchCriteria: t.func,
-    selected: t.array,
-    showAdvancedSearch: t.bool,
-    showSearchResults: t.bool,
-    useAdvancedSearch: t.bool,
-    location: t.object,
+    searchCriteria: PropTypes.any,
+    searchFormUseAdvancedSearch: PropTypes.func,
+    resultPageSelect: PropTypes.func,
+    searchFormShowAdvancedSearch: PropTypes.func,
+    searchFormShowSearchResults: PropTypes.func,
+    searchFormSetAdvancedSearchCriteria: PropTypes.func,
+    selected: PropTypes.array,
+    showAdvancedSearch: PropTypes.bool,
+    showSearchResults: PropTypes.bool,
+    useAdvancedSearch: PropTypes.bool,
+    location: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

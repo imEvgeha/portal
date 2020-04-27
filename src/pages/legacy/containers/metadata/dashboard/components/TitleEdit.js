@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
@@ -1056,7 +1056,7 @@ class TitleEdit extends Component {
 }
 
 TitleEdit.propTypes = {
-    match: t.object.isRequired
+    match: PropTypes.object.isRequired
 };
 
 export default TitleEdit;

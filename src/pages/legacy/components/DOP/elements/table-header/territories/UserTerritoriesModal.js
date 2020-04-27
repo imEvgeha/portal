@@ -1,6 +1,6 @@
 import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {
     updateSelectedTerritories
 } from '../../../../../stores/actions/DOP';
@@ -172,9 +172,9 @@ const mapDispatchToProps = {
 };
 
 UserTerritoriesModal.propTypes = {
-    isOpen: t.bool,
-    toggle: t.func,
-    selectedTerritories: t.array,
-    updateSelectedTerritories: t.func
+    isOpen: PropTypes.bool,
+    toggle: PropTypes.func,
+    selectedTerritories: PropTypes.array,
+    updateSelectedTerritories: PropTypes.func
 };
 export default connect(mapStateToProps, mapDispatchToProps)(UserTerritoriesModal);

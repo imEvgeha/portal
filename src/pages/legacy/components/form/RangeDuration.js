@@ -1,4 +1,4 @@
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {INVALID_DURATION} from '../../constants/messages';
 import moment from 'moment';
@@ -141,14 +141,14 @@ RangeDuration.defaultProps = {
 };
 
 RangeDuration.propTypes = {
-    id: t.string,
-    value: t.object,
-    displayName: t.string,
-    disabled: t.bool,
-    onFromDurationChange: t.func,
-    onToDurationChange: t.func,
-    onInvalid: t.func,
-    handleKeyPress: t.func,
-    hideLabel: t.bool,
-    validateRange: t.bool
+    id: PropTypes.string,
+    value: PropTypes.object,
+    displayName: PropTypes.string,
+    disabled: PropTypes.bool,
+    onFromDurationChange: PropTypes.func,
+    onToDurationChange: PropTypes.func,
+    onInvalid: PropTypes.func,
+    handleKeyPress: PropTypes.func,
+    hideLabel: PropTypes.bool,
+    validateRange: PropTypes.bool
 };

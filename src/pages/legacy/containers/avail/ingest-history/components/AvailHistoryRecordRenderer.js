@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import LoadingElipsis from '../../../../../../assets/img/ajax-loader.gif';
@@ -310,7 +310,7 @@ class AvailHistoryRecordRenderer extends React.Component {
 }
 
 AvailHistoryRecordRenderer.propTypes = {
-    data: t.object,
+    data: PropTypes.object,
 };
 
 export default AvailHistoryRecordRenderer;

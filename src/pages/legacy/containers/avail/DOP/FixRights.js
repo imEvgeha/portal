@@ -4,7 +4,7 @@ import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import ResultsTable from '../../../components/common/ResultsTable';
 import withRights from '../../../components/avails/ServerRightsResultsTable';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {profileService} from '../service/ProfileService';
 import {configurationService} from '../service/ConfigurationService';
@@ -27,14 +27,14 @@ const mapDispatchToProps = {
 };
 
 FixRights.propTypes = {
-    availsMapping: t.object,
-    searchFormSetAdvancedSearchCriteria: t.func,
-    location: t.object,
-    match: t.object
+    availsMapping: PropTypes.object,
+    searchFormSetAdvancedSearchCriteria: PropTypes.func,
+    location: PropTypes.object,
+    match: PropTypes.object
 };
 
 FixRights.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 class FixRights extends React.Component {

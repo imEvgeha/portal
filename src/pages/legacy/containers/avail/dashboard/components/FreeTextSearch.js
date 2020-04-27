@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/avail/dashboard';
 import {connect} from 'react-redux';
 
@@ -83,10 +83,10 @@ class FreeTextSearch extends React.Component {
 }
 
 FreeTextSearch.propTypes = {
-    searchFormUpdateTextSearch: t.func,
-    onSearch: t.func,
-    containerId: t.string,
-    disabled: t.bool,
-    freeTextSearch: t.object
+    searchFormUpdateTextSearch: PropTypes.func,
+    onSearch: PropTypes.func,
+    containerId: PropTypes.string,
+    disabled: PropTypes.bool,
+    freeTextSearch: PropTypes.object
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FreeTextSearch);

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => {
@@ -38,9 +38,9 @@ class SelectedInternal extends Component {
 }
 
 SelectedInternal.propTypes = {
-    showSelectedAvails: t.bool,
-    availTabPageSelected: t.array,
-    toggleShowSelected: t.func
+    showSelectedAvails: PropTypes.bool,
+    availTabPageSelected: PropTypes.array,
+    toggleShowSelected: PropTypes.func
 };
 
 export const Selected = connect(mapStateToProps, null)(SelectedInternal);

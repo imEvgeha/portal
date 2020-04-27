@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
@@ -18,8 +18,8 @@ const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
 };
 
 SelectPlanTerritoryRenderer.propTypes = {
-    node: t.object,
-    promotedRights: t.array,
+    node: PropTypes.object,
+    promotedRights: PropTypes.array,
 };
 
 SelectPlanTerritoryRenderer.defaultProps = {

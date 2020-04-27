@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
 
 export default class CloseableBtn extends Component {
@@ -46,13 +46,13 @@ export default class CloseableBtn extends Component {
 }
 
 CloseableBtn.propTypes = {
-    title: t.string,
-    id: t.string,
-    value: t.string,
-    disabled: t.bool,
-    highlighted: t.bool,
-    style: t.object,
+    title: PropTypes.string,
+    id: PropTypes.string,
+    value: PropTypes.string,
+    disabled: PropTypes.bool,
+    highlighted: PropTypes.bool,
+    style: PropTypes.object,
 
-    onClick: t.func,
-    onClose: t.func,
+    onClick: PropTypes.func,
+    onClose: PropTypes.func,
 };
