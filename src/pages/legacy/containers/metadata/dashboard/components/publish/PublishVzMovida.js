@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import moment from 'moment';
+import {capitalize} from 'lodash';
 import {default as AtlaskitButton} from '@atlaskit/button';
 import TitleSystems from '../../../../../constants/metadata/systems';
-import moment from 'moment';
+import {DATETIME_FIELDS, ISODateToView} from '../../../../../../../util/DateTimeUtils';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -40,16 +42,16 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
                     movidaLastUpdateCandidate = movidaPublishedAt;
                 }
 
-                if (isVzDisabledCandidate && !!vz) {
+                if (isVzDisabledCandidate && !!vz && !!vzId) {
                     isVzDisabledCandidate = getIsDisabled(vzPublishedAt, modifiedAt, vzId);
                 }
-                if (isMovidaDisabledCandidate && !!movida) {
+                if (isMovidaDisabledCandidate && !!movida && !!movidaId) {
                     isMovidaDisabledCandidate = getIsDisabled(movidaPublishedAt, modifiedAt, movidaId);
                 }
             });
 
-            setVzLastUpdated(!vzLastUpdateCandidate ? 'No record exist' : vzLastUpdateCandidate);
-            setMovidaLastUpdated(!movidaLastUpdateCandidate ? 'No record exist' : movidaLastUpdateCandidate);
+            setVzLastUpdated(!vzLastUpdateCandidate ? 'No record exists' : vzLastUpdateCandidate);
+            setMovidaLastUpdated(!movidaLastUpdateCandidate ? 'No record exists' : movidaLastUpdateCandidate);
 
             setVzDisabled(isVzDisabledCandidate);
             setMovidaDisabled(isMovidaDisabledCandidate);
@@ -75,20 +77,27 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
     const renderSyncField = (name, lastUpdated, isDisabled) => {
         const buttonName = moment(lastUpdated).isValid() ? 'Sync' : 'Publish';
         const indicator = isDisabled ? 'success' : 'error';
+
+        // If lastUpdated is a valid date, then format it to a localized and user-friendly format
+        // otherwise it's a message, so display the message. (e.g. 'No record exists')
+        const dateToShow = moment(lastUpdated).isValid()
+            ? ISODateToView(lastUpdated, DATETIME_FIELDS.TIMESTAMP)
+            : lastUpdated;
+
         return (
             <div className='nexus-c-title-edit__sync-container-field'>
                 <span
                     className={'nexus-c-title-edit__sync-indicator nexus-c-title-edit__sync-indicator--' + indicator}
                 />
                 <div className='nexus-c-title-edit__sync-container-field-description'>
-                    <b>{name.substring(0, 1).toUpperCase() + name.substring(1, name.length)}</b> Last
-                    updated: {lastUpdated}
+                    <b>{capitalize(name)}</b> Last updated: {dateToShow}
                 </div>
                 <AtlaskitButton
                     appearance='primary'
                     isDisabled={isDisabled}
                     onClick={() => onSyncPublishClick(name)}
-                >{buttonName}
+                >
+                    {buttonName}
                 </AtlaskitButton>
             </div>
         );

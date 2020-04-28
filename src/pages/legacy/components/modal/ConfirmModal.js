@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 class Confirm extends React.Component{
 
@@ -81,14 +81,14 @@ export const confirmModal = {
 };
 
 Confirm.propTypes = {
-    description: t.oneOfType([t.string, t.array]),
-    className: t.string,
-    message: t.string,
-    confirmLabel: t.string,
-    abortLabel: t.string,
-    reject: t.func,
-    resolve: t.func,
-    scrollable: t.bool
+    description: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    className: PropTypes.string,
+    message: PropTypes.string,
+    confirmLabel: PropTypes.string,
+    abortLabel: PropTypes.string,
+    reject: PropTypes.func,
+    resolve: PropTypes.func,
+    scrollable: PropTypes.bool
 };
 
 Confirm.defaultProps = {

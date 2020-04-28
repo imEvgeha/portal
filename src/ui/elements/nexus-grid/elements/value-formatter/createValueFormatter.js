@@ -19,11 +19,15 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                     }
                 };
             }
+            break;
         case 'territoryType':
+        case 'audioLanguageType':
             return (params) => {
                 const {data = {}} = params || {};
                 if (data && Array.isArray(data[javaVariableName])) {
-                    return data[javaVariableName].filter(Boolean).map(e => String(e.country)).join(', ');
+                    return data[javaVariableName]
+                        .filter(Boolean)
+                        .map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
                 }
             };
         case 'string':

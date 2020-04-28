@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {resultPageSelect, resultPageSort, resultPageUpdateColumnsOrder} from '../../stores/actions/avail/dashboard';
 import {store} from '../../../../index';
 
@@ -39,5 +39,5 @@ export default function withRedux(WrappedComponent){
     });
 }
 withRedux.propTypes = {
-    availTabPageLoading: t.bool,
+    availTabPageLoading: PropTypes.bool,
 };

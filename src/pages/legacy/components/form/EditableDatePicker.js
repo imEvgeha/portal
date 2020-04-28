@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import moment from 'moment';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import NexusDatePicker from './NexusDatePicker';
 import {INVALID_DATE} from '../../constants/messages';
 
@@ -167,13 +167,13 @@ class EditableDatePicker extends Component {
 }
 
 EditableDatePicker.propTypes = {
-    validate: t.func,
-    value: t.string,
-    displayName: t.string,
-    disabled: t.bool,
-    onChange: t.func,
-    priorityDisplay: t.any,
-    showTime: t.bool
+    validate: PropTypes.func,
+    value: PropTypes.string,
+    displayName: PropTypes.string,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    priorityDisplay: PropTypes.any,
+    showTime: PropTypes.bool
 };
 
 export default EditableDatePicker;

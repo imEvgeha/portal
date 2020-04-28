@@ -10,20 +10,22 @@ import {isObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {DATETIME_FIELDS} from '../../../../util/DateTimeUtils';
+import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
     'mapping',
     'selectValues',
 ];
 const DEFAULT_EDITABLE_DATA_TYPES = [
-    'string',
-    'number',
+    'audioLanguageType',
     'boolean',
-    'select',
-    'multiselect',
     DATETIME_FIELDS.TIMESTAMP,
     DATETIME_FIELDS.BUSINESS_DATETIME,
     DATETIME_FIELDS.REGIONAL_MIDNIGHT,
+    'multiselect',
+    'number',
+    'string',
+    'select',
     'territoryType'
 ];
 const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
@@ -96,6 +98,15 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = TerritoryCellEditor;
                             columnDef.cellEditorParams = {
                                 options: (isObject(selectValues) && selectValues[field]) || []
+                            };
+                            break;
+                        case 'audioLanguageType':
+                            columnDef.cellEditorFramework = AudioLanguageTypeCellEditor;
+                            columnDef.cellEditorParams = {
+                                options: {
+                                    languages: (isObject(selectValues) && selectValues[field]) || [],
+                                    audioTypes: (isObject(selectValues) && selectValues['languageAudioTypes.audioType']) || [],
+                                },
                             };
                             break;
                     }

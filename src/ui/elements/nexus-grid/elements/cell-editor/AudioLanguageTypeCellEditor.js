@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import './MultiInstanceCellEditor.scss';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
-import RightTerritoryFormSchema from '../../../../../pages/legacy/components/form/RightTerritoryFormSchema';
+import AudioLanguageTypeFormSchema from '../../../../../pages/legacy/components/form/AudioLanguageTypeFormSchema';
 
-class TerritoryCellEditor extends Component {
+class AudioLanguageTypeCellEditor extends Component {
 
     constructor(props) {
         super(props);
@@ -19,19 +19,19 @@ class TerritoryCellEditor extends Component {
     getValue = () => this.state.value;
 
     handleChange = (value) => {
-        this.setState({value});
+        const addedLanguages = value
+            .map((language) => language.languageAudioTypes || language)
+            .filter(Boolean);
+
+        this.setState({value: addedLanguages});
     };
 
     getOptions = () => {
-        let {options} = this.props;
-        options = options.filter((rec) => (rec.countryCode)).map(rec => {
-            return {
-                    label: rec.countryName,
-                    value: rec.countryCode
-            };
-        });
-        return options;
-};
+        const {options = {}} = this.props;
+        const {languages, audioTypes} = options || {};
+
+        return {languages, audioTypes};
+    };
 
     render() {
         const {value} = this.state;
@@ -41,8 +41,8 @@ class TerritoryCellEditor extends Component {
                 <NexusMultiInstanceField
                     existingItems={value}
                     onSubmit={this.handleChange}
-                    schema={RightTerritoryFormSchema(this.getOptions())}
-                    keyForTagLabel="country"
+                    schema={AudioLanguageTypeFormSchema(this.getOptions())}
+                    keyForTagLabel="language"
                     isUsingModal={false}
                     specialCreate={true}
                 />
@@ -51,17 +51,23 @@ class TerritoryCellEditor extends Component {
     }
 }
 
-TerritoryCellEditor.propTypes = {
-    options: PropTypes.array,
+AudioLanguageTypeCellEditor.propTypes = {
+    options: PropTypes.shape({
+        languages: PropTypes.array,
+        audioTypes: PropTypes.array,
+    }),
     value: PropTypes.array,
 };
 
-TerritoryCellEditor.defaultProps = {
-    options: [],
+AudioLanguageTypeCellEditor.defaultProps = {
+    options: {
+        languages: [],
+        audioTypes: [],
+    },
     value: null
 };
 
-TerritoryCellEditor.contextType = NexusModalContext;
+AudioLanguageTypeCellEditor.contextType = NexusModalContext;
 
-export default TerritoryCellEditor;
+export default AudioLanguageTypeCellEditor;
 

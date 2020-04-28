@@ -2,7 +2,7 @@ import React from 'react';
 import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {Can} from '../../../../../../src/ability';
 import './DashboardContainer.scss';
 
@@ -36,7 +36,7 @@ class DashboardTab extends React.Component {
 }
 
 DashboardTab.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(DashboardTab);

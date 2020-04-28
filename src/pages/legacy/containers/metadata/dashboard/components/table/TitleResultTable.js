@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {AgGridReact} from 'ag-grid-react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {get, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 // image import
@@ -526,16 +526,16 @@ class TitleResultTable extends React.Component {
 }
 
 TitleResultTable.propTypes = {
-    titleTabPage: t.object,
-    titleTabPageSort: t.array,
-    titleTabPageSelection: t.object,
-    titleTabPageLoading: t.bool,
-    resultPageUpdate: t.func,
-    resultPageSort: t.func,
-    resultPageSelect: t.func,
-    columnsOrder: t.array,
-    columnsSize: t.object,
-    resultPageUpdateColumnsOrder: t.func
+    titleTabPage: PropTypes.object,
+    titleTabPageSort: PropTypes.array,
+    titleTabPageSelection: PropTypes.object,
+    titleTabPageLoading: PropTypes.bool,
+    resultPageUpdate: PropTypes.func,
+    resultPageSort: PropTypes.func,
+    resultPageSelect: PropTypes.func,
+    columnsOrder: PropTypes.array,
+    columnsSize: PropTypes.object,
+    resultPageUpdateColumnsOrder: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleResultTable);

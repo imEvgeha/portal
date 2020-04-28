@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button} from 'reactstrap';
 import Select from 'react-select';
@@ -418,23 +418,23 @@ class SelectableInput extends Component {
 }
 
 SelectableInput.propTypes = {
-    selectValues: t.object,
-    currentCriteria: t.object,
+    selectValues: PropTypes.object,
+    currentCriteria: PropTypes.object,
 
-    id: t.string,
-    saveText: t.string,
-    placeholder: t.string,
+    id: PropTypes.string,
+    saveText: PropTypes.string,
+    placeholder: PropTypes.string,
 
-    displayName: t.string,
-    dataType: t.string,
-    value: t.object,
-    selected: t.object,
+    displayName: PropTypes.string,
+    dataType: PropTypes.string,
+    value: PropTypes.object,
+    selected: PropTypes.object,
 
-    options: t.array,
+    options: PropTypes.array,
 
-    onSelect: t.func,
-    onChange: t.func,
-    onSave: t.func,
+    onSelect: PropTypes.func,
+    onChange: PropTypes.func,
+    onSave: PropTypes.func,
 
 };
 export default connect(mapStateToProps, null)(SelectableInput);

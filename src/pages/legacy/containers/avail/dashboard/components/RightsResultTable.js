@@ -215,24 +215,36 @@ class RightsResultTable extends React.Component {
                     const {[column.javaVariableName]: date = ''} = data || {};
                     return ISODateToView(date, dataType);
                 };
-                case 'string' : if(javaVariableName === 'castCrew') return function({data = {}}){
-                    if(data && data[javaVariableName]){
-                        let dataString = '';
-                        dataString = data[javaVariableName].map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return dataString;
-                    } else return undefined;
-                }; else return null;
-                case 'territoryType' : return function({data = {}}){
-                    if(data && data[javaVariableName]) {
-                        const cellValue = data[javaVariableName].map(e => String(e.country)).join(', ');
-                        return cellValue ? cellValue : undefined;
+                case 'string' :
+                    if (javaVariableName === 'castCrew') {
+                        return ({data = {}}) => {
+                            if (data && Array.isArray(data[javaVariableName])) {
+                                return data[javaVariableName]
+                                    .map(({personType, displayName}) => personType + ': ' + displayName)
+                                    .join('; ');
+                            } else {
+                                return undefined;
+                            }
+                        }
+                    } else {
+                        return null;
                     }
-                    else return undefined;
+                case 'territoryType' :
+                case 'audioLanguageType':
+                    return ({data = {}}) => {
+                        if (data && Array.isArray(data[javaVariableName])) {
+                            const cellValue = data[javaVariableName]
+                                .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                .join(', ');
+                            return cellValue || undefined;
+                        } else {
+                            return undefined;
+                        }
                 };
                 default: return null;
             }
         };
-        if(this.props.availsMapping){
+        if (this.props.availsMapping) {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
                 field:column.javaVariableName,
                 headerName:column.displayName,

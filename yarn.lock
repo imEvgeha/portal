@@ -3535,20 +3535,20 @@ after@0.8.2:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
   integrity sha1-/ts5T58OAqqXaOcCvaI7UF+ufh8=
 
-ag-grid-community@^21.2.2:
-  version "21.2.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-21.2.2.tgz#a5696a303fa04d03d26e4c9e09e114d308ff4ad4"
-  integrity sha512-x8kQmynYM/7zoigs7wIe7DkK1TIlUP5N1TYrGPsK8vO2gN+rqOok9csGPy4YamggWTcSxpy7wji/Kcz/gUp8/w==
+ag-grid-community@^23.0.2:
+  version "23.0.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-community/-/ag-grid-community-23.0.2.tgz#81fc92ce9e47c75e854337a1e2d8ef950c3a1d51"
+  integrity sha512-UaD4lEVKKVCA2rrgMJJV328sCp5rdR9hgOh6oMUpZRXCke/3m/r2odjGjzvfT7yeLClj6ZdZuCkM4NmEuCZ8KA==
 
-ag-grid-enterprise@^21.2.2:
-  version "21.2.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-enterprise/-/ag-grid-enterprise-21.2.2.tgz#9e32b6cee5a13e644c9b174f245c96ff63b7b37b"
-  integrity sha512-tmJh9bjSuAFg4CtQ+o+ygl/uXqPZg13p+heR73DxT20WhkA+/WYljQRBzyNyjs4C1GbdkPqWj9pSIu2klOU6Bw==
+ag-grid-enterprise@^23.0.2:
+  version "23.0.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-enterprise/-/ag-grid-enterprise-23.0.2.tgz#5b3b1367854504eb1be60fe2e4151a5b698b9c02"
+  integrity sha512-e8vincVRbzc1kSj97iT30VXOodwLRZbhpZSb92Qeqo3CGhtOXLf+8az3alIbksObwmoMSz/Xk1hazXVATfzwTg==
 
-ag-grid-react@^21.2.2:
-  version "21.2.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-21.2.2.tgz#55f19eb3bb14a3beddd642adb0bb03da1249ae59"
-  integrity sha512-QlTtLMsBgLMPzqP95KoOUxXfCwVoYpLOF0uiZeVouHXUR/WxZXlsgtcyOPueKwDGWKBQ+qxB0+3JV5q+mSrPXw==
+ag-grid-react@^23.0.3:
+  version "23.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/ag-grid-react/-/ag-grid-react-23.0.3.tgz#2f632b877bd934b9d59c1590273a4487c71cd49f"
+  integrity sha512-zKhbD9vabBH1wRf/i7dwz1hCT2v0fE26Ss4dEXL3sZ492Abx18NjSXu/piOzLVWxLzmGErB1FmIPF2YYhY1SvA==
   dependencies:
     prop-types "^15.6.2"
 

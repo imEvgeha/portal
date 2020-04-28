@@ -5,7 +5,7 @@ import {
     searchFormSetHistorySearchCriteria
 } from '../../../../stores/actions/avail/history';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
@@ -182,10 +182,10 @@ class AdvancedHistorySearchPanel extends React.Component {
 }
 
 AdvancedHistorySearchPanel.propTypes = {
-    searchCriteria: t.object,
-    onSearch: t.func,
-    searchFormUpdateAdvancedHistorySearchCriteria: t.func,
-    searchFormSetHistorySearchCriteria : t.func
+    searchCriteria: PropTypes.object,
+    onSearch: PropTypes.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: PropTypes.func,
+    searchFormSetHistorySearchCriteria : PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedHistorySearchPanel);

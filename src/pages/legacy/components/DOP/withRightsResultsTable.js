@@ -34,10 +34,11 @@ const withRightsResultsTable = BaseComponent => {
                         }
                     };
                     case 'territoryType':
+                    case 'audioLanguageType':
                         return (params) => {
                             const {data} = params;
-                            if(data && data[column.javaVariableName]) {
-                                return data[column.javaVariableName].map(e => String(e.country)).join(', ');
+                            if(data && Array.isArray(data[column.javaVariableName])) {
+                                return data[column.javaVariableName].map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
                             }
                         };
                     case 'string': 
@@ -66,7 +67,9 @@ const withRightsResultsTable = BaseComponent => {
                         headerName: displayName,
                         cellRendererFramework: loadingRenderer,
                         valueFormatter: formatter(column),
-                        width: columnsSize && columnsSize.hasOwnProperty(javaVariableName) ? columnsSize[javaVariableName] : 250
+                        width: (columnsSize && columnsSize.hasOwnProperty(javaVariableName))
+                            ? columnsSize[javaVariableName]
+                            : 300
                     };
                 });
             }
