@@ -60,7 +60,7 @@ const withFilterableColumns = ({
                         const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                         if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
-                            applySetFilter(filterInstance, filterValues.map(el => el.trim()));
+                            applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
                             return;
                         }
                         filterInstance.setModel({

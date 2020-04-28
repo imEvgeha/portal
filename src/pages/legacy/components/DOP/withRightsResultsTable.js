@@ -67,7 +67,9 @@ const withRightsResultsTable = BaseComponent => {
                         headerName: displayName,
                         cellRendererFramework: loadingRenderer,
                         valueFormatter: formatter(column),
-                        width: columnsSize && columnsSize.hasOwnProperty(javaVariableName) ? columnsSize[javaVariableName] : 250
+                        width: (columnsSize && columnsSize.hasOwnProperty(javaVariableName))
+                            ? columnsSize[javaVariableName]
+                            : 300
                     };
                 });
             }

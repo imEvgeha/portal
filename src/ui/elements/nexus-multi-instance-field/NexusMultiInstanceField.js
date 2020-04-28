@@ -150,50 +150,53 @@ const NexusMultiInstanceField = ({
     };
 
     const MultiInstanceField = (isReadOnly) => {
-  return (
-      <> {isReadOnly
-                ? (
-                    <div className="nexus-c-multi-instance-field__tag-group">
-                        {items.map((item) => (
-                            <NexusTag
-                                key={uid(item)}
-                                text={item[keyForTagLabel]}
-                                value={item}
-                                tagState={item.state}
-                            />
-                            ))}
-                    </div>
-                )
-                : (
-                    <div className="nexus-c-multi-instance-field">
-                        <div className="nexus-c-multi-instance-field__content">
-                            <div className="nexus-c-multi-instance-field__clickable-text" onClick={() => {onAddItem();}}>
-                                {!items.length && PLACEHOLDER}
-                            </div>
-                            <div className="nexus-c-multi-instance-field__tag-group">
-                                {items.map((item, index) => (
-                                    <NexusTag
-                                        key={uid(item)}
-                                        text={item[keyForTagLabel]}
-                                        value={item}
-                                        tagState={item.state}
-                                        removeButtonText="Remove"
-                                        onClick={() => onEditItem(item, index)}
-                                        onRemove={() => onRemoveItem(index)}
-                                    />
+        return (
+            <> {isReadOnly
+                    ? (
+                        <div className="nexus-c-multi-instance-field__tag-group">
+                            {items.map((item) => (
+                                <NexusTag
+                                    key={uid(item)}
+                                    text={item[keyForTagLabel]}
+                                    value={item}
+                                    tagState={item.state}
+                                />
                                 ))}
+                        </div>
+                    )
+                    : (
+                        <div className="nexus-c-multi-instance-field">
+                            <div className="nexus-c-multi-instance-field__content">
+                                <div
+                                    className="nexus-c-multi-instance-field__clickable-text"
+                                    onClick={onAddItem}
+                                >
+                                    {!items.length && PLACEHOLDER}
+                                </div>
+                                <div className="nexus-c-multi-instance-field__tag-group">
+                                    {items.map((item, index) => (
+                                        <NexusTag
+                                            key={uid(item)}
+                                            text={item[keyForTagLabel]}
+                                            value={item}
+                                            tagState={item.state}
+                                            removeButtonText="Remove"
+                                            onClick={() => onEditItem(item, index)}
+                                            onRemove={() => onRemoveItem(index)}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="nexus-c-multi-instance-field__controls">
+                                <Button onClick={onAddItem} className="button-fix">
+                                    <AddIcon />
+                                </Button>
                             </div>
                         </div>
-                        <div className="nexus-c-multi-instance-field__controls">
-                            <Button onClick={() => {onAddItem();}} className="button-fix">
-                                <AddIcon />
-                            </Button>
-                        </div>
-                    </div>
-                )}
-      </>
-);
-};
+                    )}
+            </>
+        );
+    };
 
     return (
         <>
@@ -221,7 +224,7 @@ const NexusMultiInstanceField = ({
                         readViewFitContainerWidth
                         defaultValue={[]}
                     />
-)
+                )
                 : MultiInstanceField(isReadOnly)}
             {inlineEdit}
         </>

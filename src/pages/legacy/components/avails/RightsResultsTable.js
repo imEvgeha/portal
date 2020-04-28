@@ -50,12 +50,17 @@ export default class RightsResultsTable extends React.Component {
                 default: return null;
             }
         };
+
+        const {columnsSize} = this.props;
+
         mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
             field:column.javaVariableName,
             headerName:column.displayName,
             cellRendererFramework: this.loadingRenderer,
             valueFormatter: formatter(column),
-            width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250,
+            width: (columnsSize && columnsSize.hasOwnProperty(column.javaVariableName))
+                ? columnsSize[column.javaVariableName]
+                : 300,
             sortable: !!column.queryParamName,
         });
 
