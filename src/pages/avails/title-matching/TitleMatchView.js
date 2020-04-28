@@ -111,7 +111,7 @@ const TitleMatchView = ({
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
                             mergeTitles={mergeTitles}
-                            // TODO: Capitalized first letter of contentType value to be checed inside drop down ag grid
+                            // TODO: Capitalized first letter of contentType value to be checked inside drop down ag grid
                             queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
                         />
                     </>
