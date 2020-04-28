@@ -42,10 +42,10 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
                     movidaLastUpdateCandidate = movidaPublishedAt;
                 }
 
-                if (isVzDisabledCandidate && !!vz) {
+                if (isVzDisabledCandidate && !!vz && !!vzId) {
                     isVzDisabledCandidate = getIsDisabled(vzPublishedAt, modifiedAt, vzId);
                 }
-                if (isMovidaDisabledCandidate && !!movida) {
+                if (isMovidaDisabledCandidate && !!movida && !!movidaId) {
                     isMovidaDisabledCandidate = getIsDisabled(movidaPublishedAt, modifiedAt, movidaId);
                 }
             });
