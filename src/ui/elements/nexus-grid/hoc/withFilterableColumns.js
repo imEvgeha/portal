@@ -18,6 +18,7 @@ import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
+import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
 
 const withFilterableColumns = ({
@@ -121,7 +122,7 @@ const withFilterableColumns = ({
                             };
                             break;
                         case AUDIO_LANGUAGE:
-                            // columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                            columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                             // TODO; generate schema and values for select based on initial schema and found subfields
                             const languages = getFilterOptions(`${field}.language`);
                             const audioTypes = getFilterOptions(`${field}.audioType`);
@@ -226,6 +227,7 @@ const withFilterableColumns = ({
                     frameworkComponents={{
                         customDateFloatingFilter: CustomDateFloatingFilter,
                         customDateFilter: CustomDateFilter,
+                        customComplexFloatingFilter: CustomComplexFloatingFilter,
                         customComplexFilter: CustomComplexFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}

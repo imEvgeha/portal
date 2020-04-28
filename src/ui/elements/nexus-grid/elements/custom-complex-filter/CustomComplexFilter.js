@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {renderer} from 'react-forms-processor-atlaskit';
 import {Form} from 'react-forms-processor';
-import {isObjectEmpty} from '../../../../../util/Common';
+import {isEmpty} from 'lodash';
+import './CustomComplexFilter.scss';
 
 export class CustomComplexFilter extends React.Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export class CustomComplexFilter extends React.Component {
     };
 
     isFilterActive = () => {
-        return this.state.value && !isObjectEmpty(this.state.value);
+        return this.state.value && !isEmpty(this.state.value);
     };
 
     doesFilterPass = () => {
