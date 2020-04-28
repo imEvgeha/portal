@@ -406,7 +406,7 @@
   "javaVariableName": "languageAudioTypes",
   "displayName": "Audio Language Types",
   "dataType": "audioLanguageType",
-  "searchDataType": "multiselect",
+  "searchDataType": "audioLanguageType",
   "configEndpoint": "/languages",
   "queryParamName": "audioTypeLanguage",
   "readOnly": false,

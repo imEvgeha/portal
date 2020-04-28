@@ -17,6 +17,8 @@ import {
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
+import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -84,7 +86,7 @@ const withFilterableColumns = ({
                     && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
-                    const {TEXT, NUMBER, SET, CUSTOM_DATE} = AG_GRID_COLUMN_FILTER;
+                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX} = AG_GRID_COLUMN_FILTER;
                     const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
 
                     switch (searchDataType) {
@@ -119,14 +121,23 @@ const withFilterableColumns = ({
                             };
                             break;
                         case AUDIO_LANGUAGE:
-                            columnDef.filter = SET;
-                            columnDef.filterParams = {
-                                ...DEFAULT_FILTER_PARAMS,
-                                values: getFilterOptions(field),
+                            // columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                            // TODO; generate schema and values for select based on initial schema and found subfields
+                            const languages = getFilterOptions(`${field}.language`);
+                            const audioTypes = getFilterOptions(`${field}.audioType`);
+                            const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
+                            columnDef.filter = CUSTOM_COMPLEX;
+                            const audioTypeLanguage = filters['audioTypeLanguage'];
+                            const audioType = filters['audioType'];
+                            const audioLanguageInitialFilters = {
+                                ...(audioTypeLanguage && {audioTypeLanguage}),
+                                ...(audioType && {audioType})
                             };
-                            columnDef.keyCreator = params => {
-                                const languages = params.value.map(({language}) => language);
-                                return languages;
+                            columnDef.filterParams = {
+                                // TODO; check is this neccessary
+                                ...DEFAULT_FILTER_PARAMS,
+                                initialFilters: audioLanguageInitialFilters,
+                                schema
                             };
                             break;
                         case REGIONAL_MIDNIGHT:
@@ -214,7 +225,8 @@ const withFilterableColumns = ({
                     onGridEvent={onGridEvent}
                     frameworkComponents={{
                         customDateFloatingFilter: CustomDateFloatingFilter,
-                        customDateFilter: CustomDateFilter
+                        customDateFilter: CustomDateFilter,
+                        customComplexFilter: CustomComplexFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
                     prepareFilterParams={prepareFilterParams}

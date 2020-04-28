@@ -62,6 +62,7 @@ const AG_GRID_COLUMN_FILTER = {
     NUMBER: 'agNumberColumnFilter',
     SET: 'agSetColumnFilter',
     CUSTOM_DATE: 'customDateFilter',
+    CUSTOM_COMPLEX: 'customComplexFilter',
 };
 
 const DATEPICKER_LABELS = ['From', 'To'];
