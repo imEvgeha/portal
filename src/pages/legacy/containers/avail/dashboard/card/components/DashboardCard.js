@@ -1,4 +1,4 @@
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import './DashboardCard.scss';
 
@@ -20,9 +20,9 @@ export default class DashboardDropableCard extends React.Component {
     }
 }
 DashboardDropableCard.propTypes = {
-    name: t.string,
-    title: t.string,
-    action: t.func,
-    iconClass: t.string,
-    actionName: t.string,
+    name: PropTypes.string,
+    title: PropTypes.string,
+    action: PropTypes.func,
+    iconClass: PropTypes.string,
+    actionName: PropTypes.string,
 };

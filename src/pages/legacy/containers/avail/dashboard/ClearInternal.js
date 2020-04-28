@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => {
@@ -27,9 +27,9 @@ class ClearInternal extends Component {
 }
 
 ClearInternal.propTypes = {
-    showSelectedAvails: t.bool,
-    availTabPageSelected: t.array,
-    clearAllSelected: t.func
+    showSelectedAvails: PropTypes.bool,
+    availTabPageSelected: PropTypes.array,
+    clearAllSelected: PropTypes.func
 };
 
 export const Clear = connect(mapStateToProps, null)(ClearInternal);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {store} from '../../../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -850,14 +850,14 @@ class RightCreate extends React.Component {
 }
 
 RightCreate.propTypes = {
-    selectValues: t.object,
-    availsMapping: t.any,
-    blocking: t.bool,
-    match: t.object
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    blocking: PropTypes.bool,
+    match: PropTypes.object
 };
 
 RightCreate.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(RightCreate);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import {isObject} from '../../../../../util/Common';
 import {NexusTag} from '../../../../../ui/elements/';
@@ -211,17 +211,17 @@ class EditableBaseComponent extends Component {
 }
 
 EditableBaseComponent.propTypes = {
-    helperComponent: t.object,
-    validate: t.func,
-    value: t.oneOfType([t.string, t.array, t.number]),
-    displayName: t.string,
-    disabled: t.bool,
-    onChange: t.func,
-    priorityDisplay: t.any,
-    showError: t.bool,
-    isArrayOfObject: t.bool,
-    onCancel: t.func,
-    originalFieldList: t.array
+    helperComponent: PropTypes.object,
+    validate: PropTypes.func,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.number]),
+    displayName: PropTypes.string,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+    priorityDisplay: PropTypes.any,
+    showError: PropTypes.bool,
+    isArrayOfObject: PropTypes.bool,
+    onCancel: PropTypes.func,
+    originalFieldList: PropTypes.array
 };
 
 EditableBaseComponent.defaultProps = {

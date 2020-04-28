@@ -7,7 +7,7 @@ import {
 } from '../../../../stores/actions/avail/dashboard';
 import {connect} from 'react-redux';
 
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {saveReportModal} from './SaveReportModal';
 import {rightSearchHelper} from '../RightSearchHelper';
 import {configurationService} from '../../service/ConfigurationService';
@@ -509,21 +509,21 @@ class AdvancedSearchPanel extends React.Component {
 }
 
 AdvancedSearchPanel.propTypes = {
-    searchCriteria: t.object,
-    availTabPage: t.object,
-    availTabPageSort: t.array,
-    onSearch: t.func,
-    searchFormUpdateAdvancedSearchCriteria: t.func,
-    onToggleAdvancedSearch: t.func,
-    hide: t.bool,
-    reportName: t.string,
-    availsMapping: t.object,
-    columns: t.array,
-    historyCache: t.object,
-    setHistoryCache: t.func,
-    location: t.object,
-    bulkExportAvailable: t.bool,
-    resultPageSetBulkExport: t.func
+    searchCriteria: PropTypes.object,
+    availTabPage: PropTypes.object,
+    availTabPageSort: PropTypes.array,
+    onSearch: PropTypes.func,
+    searchFormUpdateAdvancedSearchCriteria: PropTypes.func,
+    onToggleAdvancedSearch: PropTypes.func,
+    hide: PropTypes.bool,
+    reportName: PropTypes.string,
+    availsMapping: PropTypes.object,
+    columns: PropTypes.array,
+    historyCache: PropTypes.object,
+    setHistoryCache: PropTypes.func,
+    location: PropTypes.object,
+    bulkExportAvailable: PropTypes.bool,
+    resultPageSetBulkExport: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

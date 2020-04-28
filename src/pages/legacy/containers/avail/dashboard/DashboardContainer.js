@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import './DashboardContainer.scss';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -160,21 +160,21 @@ class DashboardContainer extends React.Component {
 }
 
 DashboardContainer.propTypes = {
-    availsMapping: t.any,
-    searchCriteria: t.any,
-    searchFormUpdateTextSearch: t.func,
-    searchFormShowAdvancedSearch: t.func,
-    searchFormShowSearchResults: t.func,
-    searchFormSetAdvancedSearchCriteria: t.func,
-    showAdvancedSearch: t.bool,
-    showSearchResults: t.bool,
-    location: t.object,
-    match: t.object,
-    resultPageShowSelected: t.func
+    availsMapping: PropTypes.any,
+    searchCriteria: PropTypes.any,
+    searchFormUpdateTextSearch: PropTypes.func,
+    searchFormShowAdvancedSearch: PropTypes.func,
+    searchFormShowSearchResults: PropTypes.func,
+    searchFormSetAdvancedSearchCriteria: PropTypes.func,
+    showAdvancedSearch: PropTypes.bool,
+    showSearchResults: PropTypes.bool,
+    location: PropTypes.object,
+    match: PropTypes.object,
+    resultPageShowSelected: PropTypes.func
 };
 
 DashboardContainer.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

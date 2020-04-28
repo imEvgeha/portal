@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 class AlertModal extends React.Component{
 
@@ -69,11 +69,11 @@ export const alertModal = {
 };
 
 AlertModal.propTypes = {
-    description: t.string,
-    className: t.string,
-    message: t.string,
-    buttonLabel: t.string,
-    accept: t.func
+    description: PropTypes.string,
+    className: PropTypes.string,
+    message: PropTypes.string,
+    buttonLabel: PropTypes.string,
+    accept: PropTypes.func
 };
 
 AlertModal.defaultProps = {

@@ -3,7 +3,7 @@ import {
     searchFormUpdateAdvancedSearchCriteria
 } from '../../../../stores/actions/metadata/index';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {titleSearchHelper} from '../TitleSearchHelper';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
@@ -274,11 +274,11 @@ class AdvancedSearchPanel extends React.Component {
 }
 
 AdvancedSearchPanel.propTypes = {
-    searchCriteria: t.object,
-    titleTabPage: t.object,
-    onSearch: t.func,
-    searchFormUpdateAdvancedSearchCriteria: t.func,
-    onToggleAdvancedSearch: t.func,
-    hide: t.bool,
+    searchCriteria: PropTypes.object,
+    titleTabPage: PropTypes.object,
+    onSearch: PropTypes.func,
+    searchFormUpdateAdvancedSearchCriteria: PropTypes.func,
+    onToggleAdvancedSearch: PropTypes.func,
+    hide: PropTypes.bool,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

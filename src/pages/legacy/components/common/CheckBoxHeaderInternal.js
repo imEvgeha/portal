@@ -1,7 +1,7 @@
 import React from 'react';
 import {Component} from 'react';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
     return {
@@ -52,8 +52,8 @@ class CheckBoxHeaderInternal extends Component {
 }
 
 CheckBoxHeaderInternal.propTypes = {
-    availTabPageSelection: t.object,
-    api: t.object,
+    availTabPageSelection: PropTypes.object,
+    api: PropTypes.object,
 };
 export const CheckBoxHeader = connect(mapStateToProps, null)(CheckBoxHeaderInternal);
 

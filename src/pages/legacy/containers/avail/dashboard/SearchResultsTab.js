@@ -1,8 +1,9 @@
 import './DashboardContainer.scss';
 
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import {configurationService} from '../service/ConfigurationService';
 import {IfEmbedded} from '../../../../../util/Common';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
@@ -171,14 +172,13 @@ class SearchResultsTab extends React.Component {
 }
 
 SearchResultsTab.propTypes = {
-    reportName: t.string,
-    availsMapping: t.object,
-    resultPageUpdateColumnsOrder: t.func,
-    resultPageShowSelected: t.func,
-    showSelectedAvails: t.bool,
-    avails: t.array,
-    selectedAvails: t.array
+    reportName: PropTypes.string,
+    availsMapping: PropTypes.object,
+    resultPageUpdateColumnsOrder: PropTypes.func,
+    resultPageShowSelected: PropTypes.func,
+    showSelectedAvails: PropTypes.bool,
+    avails: PropTypes.array,
+    selectedAvails: PropTypes.array
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
-import {compose} from 'redux';
 

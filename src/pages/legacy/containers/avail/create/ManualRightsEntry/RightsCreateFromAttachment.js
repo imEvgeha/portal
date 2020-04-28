@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
@@ -283,15 +283,15 @@ class RightsCreateFromAttachment extends React.Component {
     }
 }
 RightsCreateFromAttachment.propTypes = {
-    match: t.object,
-    location: t.object,
-    availsMapping: t.any,
-    selectedTab: t.string,
-    updateManualRightsEntryColumns: t.func,
-    columns: t.array,
+    match: PropTypes.object,
+    location: PropTypes.object,
+    availsMapping: PropTypes.any,
+    selectedTab: PropTypes.string,
+    updateManualRightsEntryColumns: PropTypes.func,
+    columns: PropTypes.array,
 };
 
 RightsCreateFromAttachment.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment);
