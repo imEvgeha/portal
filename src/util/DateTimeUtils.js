@@ -34,13 +34,17 @@ const ISODateToView = (date, type) => {
         const dateFormat = getDateFormatBasedOnLocale(locale);
         switch (type) {
             case DATETIME_FIELDS.TIMESTAMP:
-                return `${moment(date).format(dateFormat)} ${moment(date).format(TIMESTAMP_TIME_FORMAT)}`;
+                const timestampFormat = `${dateFormat} ${TIMESTAMP_TIME_FORMAT}`;
+                return `${moment(date).utc(false).format(timestampFormat)}`;
             case DATETIME_FIELDS.BUSINESS_DATETIME:
-                const timeFormat = isUtc(date) ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
+                const isUtcDate = isUtc(date);
 
-                return `${moment(date).format(dateFormat)} ${moment(date).format(timeFormat)}`;
+                const timeFormat = isUtcDate ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
+                const dateTimeFormat = `${dateFormat} ${timeFormat}`;
+
+                return `${moment(date).utc(!isUtcDate).format(dateTimeFormat)}`;
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                return `${moment(date).format(dateFormat)}`;
+                return `${moment(date).utc(false).format(dateFormat)}`;
         }
     }
     return  '';
