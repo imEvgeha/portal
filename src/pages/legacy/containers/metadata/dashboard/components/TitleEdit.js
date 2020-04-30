@@ -249,24 +249,35 @@ class TitleEdit extends Component {
         });
     };
 
-    handleRatingEditChange = (e, data) => {
-        let newRatings = [e];
-        if (this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
-            const index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
-            if (index >= 0) {
-                newRatings = this.state.editedForm.ratings.slice();
-                newRatings[index] = e;
-            } else {
-                newRatings = this.state.editedForm.ratings.concat(newRatings);
+    handleRatingEditChange = (newValue, prevValue) => {
+        let newRatings = [newValue];
+        const {editedForm = {}} = this.state;
+        const {ratings = []} = editedForm || {};
+
+        if (ratings && ratings.length > 0) {
+            // Get index of the rating to be changed if it already exists
+            const index = ratings.findIndex(({ratingSystem, rating}) => (
+                ratingSystem === prevValue.ratingSystem && rating === prevValue.rating
+            ));
+            const clonedRatings = ratings.slice();
+
+            if (newValue === null) { // If null is received that means rating should be deleted
+                clonedRatings.splice(index, 1);
+                newRatings = clonedRatings;
+            } else if (index >= 0) { // Apply the newValue of the existing rating
+                newRatings = clonedRatings;
+                newRatings[index] = newValue;
+            } else { // Add new rating
+                newRatings = ratings.concat(newRatings);
             }
         }
 
-        this.setState({
+        this.setState(prevState => ({
             editedForm: {
-                ...this.state.editedForm,
+                ...prevState.editedForm,
                 ratings: newRatings
             }
-        });
+        }));
     };
 
     toggleTitleRating = (tab) => {
