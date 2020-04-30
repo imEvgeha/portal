@@ -149,15 +149,16 @@ class TitleEdit extends Component {
      * Title document
      */
     handleSwitchMode = () => {
-        this.setState({
-            isEditMode: !this.state.isEditMode,
+        this.setState(prevState => ({
+            isEditMode: !prevState.isEditMode,
+            editedForm: prevState.titleForm,
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
             titleRankingActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
             editorialMetadataForCreate: emptyEditorial,
             updatedEditorialMetadata: []
-        });
+        }));
     };
 
     handleOnChangeEdit = (e) => {
