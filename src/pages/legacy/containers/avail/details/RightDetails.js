@@ -247,18 +247,9 @@ class RightDetails extends React.Component {
     }
 
     handleEditableSubmit(name, value, cancel) {
-        const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
         if (value === ''){
             value = null;
-        } else {
-            switch (schema.dataType) {
-                case DATETIME_FIELDS.TIMESTAMP:
-                case DATETIME_FIELDS.BUSINESS_DATETIME:
-                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                    value = dateToISO(value, schema.dataType);
-            }
         }
-
         if (Array.isArray(value)) {
             value = value.map(el => {
                 if (el.hasOwnProperty('name')) {
