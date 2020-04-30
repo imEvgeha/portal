@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import {get, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 // image import
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TitleResultTable.scss';
 import LoadingGif from '../../../../../../../assets/img/loading.gif';
 import {
@@ -96,15 +98,15 @@ class TitleResultTable extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
-        const elem = document.querySelector('.vu-advanced-search-panel');
-        elem.addEventListener('transitionend', this.updateWindowDimensions);
+        //const elem = document.querySelector('.vu-advanced-search-panel');
+        //elem.addEventListener('transitionend', this.updateWindowDimensions);
         this.refreshColumns();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
-        const elem = document.querySelector('.vu-advanced-search-panel');
-        elem.removeEventListener('transitionend', this.updateWindowDimensions);
+        //const elem = document.querySelector('.vu-advanced-search-panel');
+        //elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
     updateWindowDimensions() {
