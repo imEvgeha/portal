@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import {get, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 // image import
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './TitleResultTable.scss';
 import LoadingGif from '../../../../../../../assets/img/loading.gif';
 import {
