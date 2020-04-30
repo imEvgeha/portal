@@ -30,9 +30,9 @@ const updateAbility = (roles = []) => {
     }
     if (roles && roles.includes('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
-        cannot('create', 'Avail', edit_only_admin);
+        // cannot('create', 'Avail', edit_only_admin);
     }else{
-        cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
+        // cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
     }
 
     // ******** Asset Management *************
