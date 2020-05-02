@@ -45,7 +45,8 @@ const EditorialMetadata = ({
     handleCategoryChange,
     handleCategoryEditChange,
     coreTitleData,
-    editorialTitleData
+    editorialTitleData,
+    cleanField
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -172,6 +173,7 @@ const EditorialMetadata = ({
                                             handleCategoryChange={handleCategoryChange}
                                             handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
                                             titleContentType={titleContentType}
+                                            cleanField={cleanField}
                                         />
                                     </Col>
                                 </Row>
@@ -216,6 +218,7 @@ EditorialMetadata.propTypes = {
     handleTitleChange: PropTypes.func.isRequired,
     handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
+    cleanField: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     areFieldsRequired: PropTypes.bool,
     toggle: PropTypes.func,

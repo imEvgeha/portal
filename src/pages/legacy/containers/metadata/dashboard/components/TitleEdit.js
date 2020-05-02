@@ -721,6 +721,15 @@ class TitleEdit extends Component {
         });
     };
 
+    cleanField = (field) => {
+        let updatedEditorialMetadata =  this.state.editorialMetadataForCreate;
+        updatedEditorialMetadata[field] =null;
+
+        this.setState({
+            editorialMetadataForCreate: updatedEditorialMetadata
+        });
+    };
+
     toggleEditorialMetadata = (tab) => {
         this.setState({
             editorialMetadataActiveTab: tab,
@@ -1031,6 +1040,7 @@ class TitleEdit extends Component {
                         handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
+                        cleanField={this.cleanField}
                     />
 
                     <TerritoryMetadata
