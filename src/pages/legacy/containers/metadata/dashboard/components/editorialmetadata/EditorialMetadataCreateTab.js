@@ -153,6 +153,24 @@ class EditorialMetadataCreateTab extends Component {
         }));
     };
 
+    handleLocaleChange = (e) => {
+       if(e.target.value !== US && this.state.autoDecorate) {
+           this.setState({
+               autoDecorate: false
+           });
+       }
+       this.props.handleChange(e);
+    };
+
+    handleLanguageChange = (e) => {
+        if(e.target.value !== EN && this.state.autoDecorate) {
+            this.setState({
+                autoDecorate: false
+            });
+        }
+        this.props.handleChange(e);
+    };
+
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
         const { MAX_SEASON_LENGTH, MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
@@ -169,7 +187,7 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('locale')}
                             id="editorialLocal"
                             required={this.props.areFieldsRequired}
-                            onChange={this.props.handleChange}
+                            onChange={this.handleLocaleChange}
                             errorMessage="Field cannot be empty!"
                         >
                             <option value=''>Select Locale</option>
@@ -189,7 +207,7 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('language')}
                             id="editorialLanguage"
                             required={this.props.areFieldsRequired}
-                            onChange={this.props.handleChange}
+                            onChange={this.handleLanguageChange}
                             errorMessage="Field cannot be empty!"
                         >
                             <option value=''>Select Language</option>
