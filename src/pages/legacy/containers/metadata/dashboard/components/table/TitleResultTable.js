@@ -96,15 +96,11 @@ class TitleResultTable extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
 
         //ugly hack to change height once advanced filter finishes its transition (appearing or dissapearing)
-        //const elem = document.querySelector('.vu-advanced-search-panel');
-        //elem.addEventListener('transitionend', this.updateWindowDimensions);
         this.refreshColumns();
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
-        //const elem = document.querySelector('.vu-advanced-search-panel');
-        //elem.removeEventListener('transitionend', this.updateWindowDimensions);
     }
 
     updateWindowDimensions() {
