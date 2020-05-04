@@ -7,7 +7,7 @@ const ContractProfile = React.lazy(() => import(/* webpackPrefetch: true, webpac
 const Contract = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'));
 const Media = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Media" */ './pages/legacy/containers/media/search/Media.js'));
 const Settings = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings'));
-import WithTracker from './util/hoc/WithTracker';
+import WithTracker from './util/hoc/withTracker';
 
 // TODO: on relevant page refactoring remove in to corresponding page folder
 const restRoutes = [

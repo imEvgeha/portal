@@ -15,18 +15,14 @@ const withTracker = (WrappedComponent, options = {}) => {
                 ...options,
             });
 
-            // eslint-disable-next-line
-            // console.log('track pageview ' + page);
-
             GoogleAnalytics.pageview(page);
         }
     };
 
-    // eslint-disable-next-line
-    const HOC = class extends Component {
+    class ComposedComponent extends Component {
         componentDidMount() {
-            // eslint-disable-next-line
             const page = this.props.location.pathname + this.props.location.search;
+
             trackPage(page);
         }
 
@@ -46,7 +42,7 @@ const withTracker = (WrappedComponent, options = {}) => {
         }
     };
 
-    return HOC;
+    return ComposedComponent;
 };
 
 export default withTracker;
