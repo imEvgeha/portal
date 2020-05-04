@@ -895,7 +895,7 @@ class TitleEdit extends Component {
 
         Promise.all(promises)
             .then(responses => {
-                //if at least one promise didn't complete successfully
+                //if all promises completed successfully (all true, no false in array)
                 if(responses.find(val => val === false) === undefined) {
                     this.setState({
                         isLoading: false,
