@@ -238,14 +238,14 @@ class TitleResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow / this.state.pageSize), this.state.pageSize, this.props.titleTabPageSort)
             .then(response => {
-                const {data} = response;
-                if (data.total > 0) {
-                    this.addLoadedItems(data);
-                    const ids = this.getParentTitleIds(data.data);
+                const {data, total} = response || {};
+                if (total > 0) {
+                    this.addLoadedItems(response);
+                    const ids = this.getParentTitleIds(data);
                     if(ids.length > 0) {
-                        this.addUpdatedItemToTable(data, ids, params);
+                        this.addUpdatedItemToTable(response, ids, params);
                     } else {
-                        this.addItemToTable(data, params);
+                        this.addItemToTable(response, params);
                     }
                 } else {
                     this.table && this.table.api && this.table.api.showNoRowsOverlay();
@@ -260,7 +260,7 @@ class TitleResultTable extends React.Component {
     addUpdatedItemToTable = (request, ids, params) => {
         const titleRequest = Object.assign({}, request);
         titleService.bulkGetTitles(ids).then(res => {
-            const parents = res.data;
+            const parents = res;
             titleRequest.data = titleRequest.data.map(title => {
                 if(title.contentType.toUpperCase() === SEASON.apiName) {
                     title.title = this.getFormatTitle(parents, title, SEASON.apiName);

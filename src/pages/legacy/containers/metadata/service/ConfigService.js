@@ -1,6 +1,5 @@
 import config from 'react-global-configuration';
 import {store} from '../../../../../index';
-import Http from '../../../../../util/Http';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER, ANIMATED_CHARACTER, AWARD, RECORDING_ARTIST, VOICE_TALENT} from '../../../constants/metadata/configAPI';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
@@ -16,8 +15,6 @@ export const configFields = {
     CATEGORY: 'categories'
 };
 
-const http = Http.create({defaultErrorHandling: false});
-
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
     let displayNamePath = '?';
     if(inputValue) {
@@ -32,7 +29,8 @@ export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = fal
     }
     // TODO: Lazy scrolling should be implemented as a feature to make use of 'page=X' parameter, so that PORT-728 is avoided
     const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
-    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + path);
+    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + path;
+    return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 const getAllConfigValuesByField = (field, sortBy) => {
@@ -43,8 +41,8 @@ const getAllConfigValuesByField = (field, sortBy) => {
 
     getConfigApiValues(field, startPage, size, sortBy)
         .then((res) => {
-            total = res.data.total;
-            result = res.data.data;
+            total = res.total;
+            result = res.data;
             store.dispatch(loadConfigData(field, result));
         })
         .then(() => {
@@ -52,7 +50,7 @@ const getAllConfigValuesByField = (field, sortBy) => {
             for (startPage; total > size * (startPage); startPage++) {
                 getConfigApiValues(field, startPage, size, sortBy)
                     .then((res) => {
-                        result = [...result, ...res.data.data];
+                        result = [...result, ...res.data];
                         store.dispatch(loadConfigData(field, result));
                     })
                     .catch((err) => {

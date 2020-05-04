@@ -25,7 +25,7 @@ function* fetchIngests({payload}) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
-        const {data, total} = response.data || {};
+        const {data, total} = response || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: {data: normalizeDataForStore(data), total},
@@ -44,7 +44,7 @@ function* fetchNextPage() {
         const url = `${window.location.pathname}?${URL.updateQueryParam({page})}`;
         yield put(push(URL.keepEmbedded(url)));
         const response = yield call(historyService.advancedSearch, filters, page, PAGE_SIZE, sortParams);
-        const {data} = response.data || {};
+        const {data} = response || {};
         yield put({
             type: actionTypes.FETCH_NEXT_PAGE_SUCCESS,
             payload: normalizeDataForStore(data),
@@ -114,8 +114,7 @@ function* selectIngest({payload}) {
 
             try {
                 if (!selectedIngest) {
-                    const response = yield call(historyService.getHistory, ingestId);
-                    selectedIngest = response.data;
+                    const selectedIngest = yield call(historyService.getHistory, ingestId);
                 }
                 yield put({
                     type: actionTypes.UPDATE_SELECTED_INGEST,
@@ -165,25 +164,22 @@ function* uploadIngest({payload}) {
             payload: {},
         });
 
-        const response = yield uploadService.uploadAvail(file, null, null, {...rest});
-
-        if (response.status === 200) {
-            yield delay(6500);
-            yield put({
-                type: actionTypes.FETCH_INGESTS,
-                payload: getFiltersToSend(),
-            });
-            closeModal();
-            yield put({
-                type: ADD_TOAST,
-                payload: {
-                    title: SUCCESS_TITLE,
-                    icon: SUCCESS_ICON,
-                    isAutoDismiss: true,
-                    description: `${UPLOAD_SUCCESS_MESSAGE} ${response.data.fileName}`,
-                }
-            });
-        }
+        const response = yield uploadService.uploadAvail({file, params: rest});
+        yield delay(6500);
+        yield put({
+            type: actionTypes.FETCH_INGESTS,
+            payload: getFiltersToSend(),
+        });
+        closeModal();
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
+            }
+        });
         yield put({
             type: actionTypes.UPLOAD_INGEST_SUCCESS,
             payload: {},
@@ -201,13 +197,13 @@ function* downloadIngestEmail({payload}) {
     if (!payload.id) return;
     try {
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
-        if (response && response.data && response.data.downloadUrl) {
+        if (response && response.downloadUrl) {
             let filename = 'Unknown';
             if (payload.link) {
                 filename = payload.link.split(/(\\|\/)/g).pop();
             }
             const link = document.createElement('a');
-            link.href = response.data.downloadUrl;
+            link.href = response.downloadUrl;
             link.setAttribute('download', filename);
             link.click();
         }
@@ -227,9 +223,9 @@ function* downloadIngestFile({payload}) {
             filename = payload.link.split(/(\\|\/)/g).pop();
         }
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
-        if (response && response.data && response.data.downloadUrl) {
+        if (response && response.downloadUrl) {
             const link = document.createElement('a');
-            link.href = response.data.downloadUrl;
+            link.href = response.downloadUrl;
             link.setAttribute('download', filename);
             link.click();
         }

@@ -8,6 +8,7 @@ const appPaths = require('./paths');
 module.exports = (envKeys) => ({
     entry: [
         require.resolve('@babel/polyfill'),
+        require.resolve('isomorphic-fetch'),
         appPaths.appIndexJs,
     ],
     module: {

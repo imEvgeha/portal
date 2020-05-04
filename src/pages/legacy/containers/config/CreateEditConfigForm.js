@@ -167,8 +167,8 @@ export default class CreateEditConfigForm extends React.Component {
             if((field.type === 'select' || field.type === 'multiselect') && field.source){
                 if(cache[field.source.url] === undefined){
                     const promise = getConfigApiValues(field.source.url, 0, 1000).then(response => {
-                        cache[field.source.url] = response.data.data;
-                        return this.processOptions(response.data.data, field);
+                        cache[field.source.url] = response.data;
+                        return this.processOptions(response.data, field);
                     });
                     cache[field.source.url] = promise;
                     return promise;
