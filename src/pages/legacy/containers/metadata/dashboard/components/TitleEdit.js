@@ -400,9 +400,11 @@ class TitleEdit extends Component {
             });
 
             this.loadParentTitle(response.data);
+            return true;
 
         }).catch(() => {
             console.error('Unable to load Title Data');
+            return false;
         });
     };
 
@@ -528,8 +530,10 @@ class TitleEdit extends Component {
                     this.setState({
                         territory: list
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to edit Title Data');
+                    return false;
                 })
             );
         });
@@ -563,8 +567,10 @@ class TitleEdit extends Component {
                         territory: [response.data, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to add Territory Metadata');
+                    return false;
                 })
             );
         } else {
@@ -751,8 +757,10 @@ class TitleEdit extends Component {
                     this.setState({
                         editorialMetadata: list
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to edit Editorial Metadata');
+                    return false;
                 })
             );
         });
@@ -769,8 +777,10 @@ class TitleEdit extends Component {
                         editorialMetadata: [response.data, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
+                    return false;
                 })
             );
         } else {
@@ -885,16 +895,22 @@ class TitleEdit extends Component {
 
         Promise.all(promises)
             .then(responses => {
-                this.setState({
-                    isLoading: false,
-                    isEditMode: !this.state.isEditMode,
-                    areEditorialMetadataFieldsRequired: false,
-                    areTerritoryMetadataFieldsRequired: false,
-                    areRatingFieldsRequired: false
-                });
+                //if at least one promise didn't complete successfully
+                if(responses.find(val => val === false) === undefined) {
+                    this.setState({
+                        isLoading: false,
+                        isEditMode: !this.state.isEditMode,
+                        areEditorialMetadataFieldsRequired: false,
+                        areTerritoryMetadataFieldsRequired: false,
+                        areRatingFieldsRequired: false
+                    });
+                }else{
+                    this.setState({
+                        isLoading: false
+                    });
+                    console.error('Unable to Save');
+                }
             });
-
-
     };
 
     onKeyPress(event) {
