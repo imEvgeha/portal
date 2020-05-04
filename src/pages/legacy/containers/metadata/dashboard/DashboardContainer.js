@@ -70,14 +70,14 @@ class DashboardContainer extends React.Component {
     }
 
     handleBackToDashboard() {
-        //this.props.searchFormShowAdvancedSearch(false);
+        
         this.props.searchFormShowSearchResults(false);
     }
 
 
 
     handleTitleFreeTextSearch(searchCriteria) {
-        // this.props.searchFormUseAdvancedSearch(false);
+        
         this.props.searchFormShowSearchResults(true);
         titleSearchHelper.freeTextSearch(searchCriteria);
         this.cleanSelection();
