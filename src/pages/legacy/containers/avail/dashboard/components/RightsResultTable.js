@@ -12,8 +12,6 @@ import RightsURL from '../../util/RightsURL';
 import {CheckBoxHeader} from './CheckBoxHeaderInternal';
 
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import './RightsResultTable.scss';
 
 import {connect} from 'react-redux';

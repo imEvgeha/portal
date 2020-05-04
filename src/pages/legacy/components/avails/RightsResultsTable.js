@@ -178,20 +178,19 @@ export default class RightsResultsTable extends React.Component {
             };
 
             const regForSubField = /.([A-Za-z]+)$/;
-            const parsedFields = ['languageAudioTypes.languge', 'languageAudioTypes.audioType'];
 
             let errors = filterFieldErrors(params.data.validationErrors, colDef.field)
                 .filter(error => {
                     const {field} = error || {};
                     const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
-                    return errorSubField && parsedFields.every(field => !field.includes(errorSubField));
+                    return errorSubField;
                 });
 
             let parsedFieldsErrors = filterFieldErrors(params.data.validationErrors, colDef.field)
                 .filter(error => {
                     const {field} = error || {};
                     const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
-                    return errorSubField && parsedFields.some(field => field.includes(errorSubField));
+                    return errorSubField;
                 })
                 .map(error => {
                     const errorSubField = error.field.match(regForSubField)[1];
