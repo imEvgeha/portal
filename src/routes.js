@@ -3,6 +3,7 @@ import {canRender} from './ability';
 import availsRoutes from './pages/avails/availsRoutes';
 import metadataRoutes from './pages/metadata/metadataRoutes';
 import staticPagesRoutes from './pages/static/staticPagesRoutes';
+import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
 const ContractProfile = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/legacy/containers/contracts/profile/ContractProfile'));
 const Contract = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'));
 const Media = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Media" */ './pages/legacy/containers/media/search/Media.js'));
@@ -32,6 +33,7 @@ const restRoutes = [
 const routes = [
     ...availsRoutes,
     ...metadataRoutes,
+    ...servicingOrdersRoutes,
     ...restRoutes,
     ...staticPagesRoutes,
 ];
