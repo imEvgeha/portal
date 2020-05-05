@@ -1,0 +1,20 @@
+.servicing-orders{
+  display: flex;
+  height: 100%;
+  &__left{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 325px;
+    border-right: 1px solid #DCDCDC;
+    padding: 24px 0 0;
+    margin-right: 10px;
+    color: #42526E;
+    &--title {
+      display: flex;
+      font-size: 29px;
+      align-items: center;
+      padding-left: 22px;
+    }
+  }
+}

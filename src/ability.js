@@ -2,12 +2,13 @@ import { AbilityBuilder, Ability } from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
 import React from 'react';
-import {AVAILS, MEDIA, METADATA} from './ui/elements/nexus-navigation/constants';
+import {AVAILS, MEDIA, METADATA, SERVICING_ORDERS} from './ui/elements/nexus-navigation/constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',
     [METADATA]: 'Metadata',
     [MEDIA]: 'AssetManagement',
+    [SERVICING_ORDERS]: 'ServicingOrders',
 };
 
 const ability = new Ability([]);
@@ -65,6 +66,10 @@ const updateAbility = (roles = []) => {
     // } else if (roles.includes('metadata_admin')) {
     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
+
+
+    // ******** Servicing Orders *************
+    can(['create', 'read', 'update', 'delete'], 'ServicingOrders');
 
     ability.update(rules);
 };
