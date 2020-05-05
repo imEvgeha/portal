@@ -16,7 +16,7 @@ const RightCreateV2 = React.lazy(() => RightCreateV2Import);
 const SelectRightsPlanning = React.lazy(() => import (/* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'));
 const AvailIngestHistoryContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "AvailIngestHistoryContainer" */ '../legacy/containers/avail/ingest-history/AvailIngestHistoryContainer'));
 const RightMatchingViewImport = import(/* webpackChunkName: "RightMatchingView" */ './right-matching/RightMatchingView');
-const RightMatchingView = React.lazy(() => RightToMatchViewImport);
+const RightMatchingView = React.lazy(() => RightMatchingViewImport);
 const AvailsViewImport = import(/* webpackChunkName: "AvailsView" */ './AvailsView');
 const AvailsView = React.lazy(() => AvailsViewImport);
 const RightToMatchViewImport = import(/* webpackChunkName: "RightToMatchView" */ './right-matching/right-to-match/RightToMatchView');

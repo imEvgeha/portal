@@ -702,8 +702,8 @@ class RightCreate extends React.Component {
         const renderAudioLanguageField = (name, displayName, required, value) => {
             let options = [], audioTypeOptions = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if(this.props.selectValues && this.props.selectValues['languageAudioTypes.language']){
+                options  = this.props.selectValues['languageAudioTypes.language'];
             }
             if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
