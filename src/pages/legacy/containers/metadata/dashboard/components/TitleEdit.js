@@ -23,6 +23,7 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
+import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -976,7 +977,7 @@ class TitleEdit extends Component {
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
-
+                <DecoratedRecordsModal isLoading={this.state.isLoading} />
                 <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
