@@ -22,9 +22,16 @@ const CreateTitleForm = ({close, focusedRight}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
     const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
+    // TODO: metadata api expects 'AD'
+    const parseContentType = contentType => {
+        if (contentType) {
+            const upperCaseType = contentType.toUpperCase();
+            return upperCaseType === 'ADVERTISEMENT' ? 'AD' : upperCaseType;
+        }
+    };
     const initialState = {
         title: focusedTitle,
-        contentType: focusedContentType && focusedContentType.toUpperCase(),
+        contentType: parseContentType(focusedContentType),
         seriesTitleName: '',
         seasonNumber: '',
         episodeNumber: '',

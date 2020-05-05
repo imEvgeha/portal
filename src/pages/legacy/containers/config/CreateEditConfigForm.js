@@ -106,7 +106,7 @@ export default class CreateEditConfigForm extends React.Component {
             );
         case 'timestamp':
             return (
-                <AkField label={label} name={id} key={id}>
+                <AkField label={label + ' (UTC)'} name={id} key={id}>
                     {
                         () => (
                             <Form>

@@ -6,6 +6,9 @@ import Keycloak from 'keycloak-js';
 import {createBrowserHistory} from 'history';
 import {AppContainer} from 'react-hot-loader'; 
 import {ConnectedRouter} from 'connected-react-router';
+import {LicenseManager} from 'ag-grid-enterprise';
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import {defaultConfiguration, setEnvConfiguration} from './config';
 import './styles/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
@@ -34,6 +37,9 @@ import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
 import routes from './routes';
 import Router from './Router';
 import AppProviders from './AppProviders';
+
+const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
+LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 // setEnvConfiguration('qa')
 setEnvConfiguration()

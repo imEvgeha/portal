@@ -149,15 +149,16 @@ class TitleEdit extends Component {
      * Title document
      */
     handleSwitchMode = () => {
-        this.setState({
-            isEditMode: !this.state.isEditMode,
+        this.setState(prevState => ({
+            isEditMode: !prevState.isEditMode,
+            editedForm: prevState.titleForm,
             territoryMetadataActiveTab: CURRENT_TAB,
             editorialMetadataActiveTab: CURRENT_TAB,
             titleRankingActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
             editorialMetadataForCreate: emptyEditorial,
             updatedEditorialMetadata: []
-        });
+        }));
     };
 
     handleOnChangeEdit = (e) => {
@@ -249,24 +250,35 @@ class TitleEdit extends Component {
         });
     };
 
-    handleRatingEditChange = (e, data) => {
-        let newRatings = [e];
-        if (this.state.editedForm.ratings && this.state.editedForm.ratings.length > 0) {
-            const index = this.state.editedForm.ratings.findIndex(e => e.ratingSystem === data.ratingSystem && e.rating === data.rating);
-            if (index >= 0) {
-                newRatings = this.state.editedForm.ratings.slice();
-                newRatings[index] = e;
-            } else {
-                newRatings = this.state.editedForm.ratings.concat(newRatings);
+    handleRatingEditChange = (newValue, prevValue) => {
+        let newRatings = [newValue];
+        const {editedForm = {}} = this.state;
+        const {ratings = []} = editedForm || {};
+
+        if (ratings && ratings.length > 0) {
+            // Get index of the rating to be changed if it already exists
+            const index = ratings.findIndex(({ratingSystem, rating}) => (
+                ratingSystem === prevValue.ratingSystem && rating === prevValue.rating
+            ));
+            const clonedRatings = ratings.slice();
+
+            if (newValue === null) { // If null is received that means rating should be deleted
+                clonedRatings.splice(index, 1);
+                newRatings = clonedRatings;
+            } else if (index >= 0) { // Apply the newValue of the existing rating
+                newRatings = clonedRatings;
+                newRatings[index] = newValue;
+            } else { // Add new rating
+                newRatings = ratings.concat(newRatings);
             }
         }
 
-        this.setState({
+        this.setState(prevState => ({
             editedForm: {
-                ...this.state.editedForm,
+                ...prevState.editedForm,
                 ratings: newRatings
             }
-        });
+        }));
     };
 
     toggleTitleRating = (tab) => {
@@ -400,9 +412,11 @@ class TitleEdit extends Component {
             });
 
             this.loadParentTitle(response.data);
+            return true;
 
         }).catch(() => {
             console.error('Unable to load Title Data');
+            return false;
         });
     };
 
@@ -528,8 +542,10 @@ class TitleEdit extends Component {
                     this.setState({
                         territory: list
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to edit Title Data');
+                    return false;
                 })
             );
         });
@@ -563,8 +579,10 @@ class TitleEdit extends Component {
                         territory: [response.data, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to add Territory Metadata');
+                    return false;
                 })
             );
         } else {
@@ -751,8 +769,10 @@ class TitleEdit extends Component {
                     this.setState({
                         editorialMetadata: list
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to edit Editorial Metadata');
+                    return false;
                 })
             );
         });
@@ -769,8 +789,10 @@ class TitleEdit extends Component {
                         editorialMetadata: [response.data, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
+                    return true;
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
+                    return false;
                 })
             );
         } else {
@@ -885,16 +907,22 @@ class TitleEdit extends Component {
 
         Promise.all(promises)
             .then(responses => {
-                this.setState({
-                    isLoading: false,
-                    isEditMode: !this.state.isEditMode,
-                    areEditorialMetadataFieldsRequired: false,
-                    areTerritoryMetadataFieldsRequired: false,
-                    areRatingFieldsRequired: false
-                });
+                //if all promises completed successfully (all true, no false in array)
+                if(responses.find(val => val === false) === undefined) {
+                    this.setState({
+                        isLoading: false,
+                        isEditMode: !this.state.isEditMode,
+                        areEditorialMetadataFieldsRequired: false,
+                        areTerritoryMetadataFieldsRequired: false,
+                        areRatingFieldsRequired: false
+                    });
+                }else{
+                    this.setState({
+                        isLoading: false
+                    });
+                    console.error('Unable to Save');
+                }
             });
-
-
     };
 
     onKeyPress(event) {
