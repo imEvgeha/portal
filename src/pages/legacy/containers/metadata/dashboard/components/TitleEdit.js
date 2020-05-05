@@ -644,10 +644,11 @@ class TitleEdit extends Component {
 
     handleEditorialMetadataChange = (e) => {
         const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
-                [targetName]: e.target.value
+                [targetName]: value
             }
         });
     };
@@ -974,10 +975,11 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreate['decorateEditorialMetadata'];
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
-                <DecoratedRecordsModal isLoading={this.state.isLoading} />
+                {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
                 <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Col, Label, Row } from 'reactstrap'; // ?
 import { AvField } from 'availity-reactstrap-validation'; // ?
 import Select from 'react-select';
-import {Checkbox} from '@atlaskit/checkbox';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import { EDITORIAL_METADATA_PREFIX } from '../../../../../constants/metadata/metadataComponent';
@@ -145,12 +144,13 @@ class EditorialMetadataCreateTab extends Component {
         this.props.handleEditorialCastCrewCreate(castAndCrewList, this.props.editorialMetadataForCreate);
     }
 
-    onAutoDecorateClick = () => {
-        this.props.cleanField('format');
-        this.props.cleanField('service');
+    onAutoDecorateClick = (e) => {
         this.setState(prevState => ({
             autoDecorate: !prevState.autoDecorate
         }));
+        this.props.cleanField('format');
+        this.props.cleanField('service');
+        this.props.handleChange(e);
     };
 
     handleLocaleChange = (e) => {
@@ -313,14 +313,15 @@ class EditorialMetadataCreateTab extends Component {
                               )}
                 </Row>
                       )}
-                {this.props.editorialMetadataForCreate.locale && this.props.editorialMetadataForCreate.locale === US &&
+                {!this.props.titleHasMaster && this.props.editorialMetadataForCreate.locale && this.props.editorialMetadataForCreate.locale === US &&
                     this.props.editorialMetadataForCreate.language && this.props.editorialMetadataForCreate.language === EN &&
                     <Row style={{padding: '15px'}}>
                         <Col md={2}>
-                            <Checkbox
-                                isChecked={this.state.autoDecorate}
-                                label='Auto-Decorate'
-                                onChange={this.onAutoDecorateClick}
+                            <AvField value={this.state.autoDecorate}
+                                 type="checkbox"
+                                 name="decorateEditorialMetadata"
+                                 onChange={this.onAutoDecorateClick}
+                                 label='Auto-Decorate'
                             />
                         </Col>
                     </Row>

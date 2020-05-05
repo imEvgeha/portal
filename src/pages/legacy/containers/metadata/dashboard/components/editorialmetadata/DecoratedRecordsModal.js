@@ -34,12 +34,4 @@ const DecoratedRecordsModal = ({isLoading}) => {
     return (<></>);
 };
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
-const mapStateToProps = () => {
-
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(DecoratedRecordsModal);
+export default connect()(DecoratedRecordsModal);

@@ -51,6 +51,8 @@ const EditorialMetadata = ({
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+    const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
+
     const getLanguageByCode = (code) => {
         if (configLanguage) {
             const found = configLanguage.value.find(e => e.languageCode === code);
@@ -174,6 +176,7 @@ const EditorialMetadata = ({
                                             handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
                                             titleContentType={titleContentType}
                                             cleanField={cleanField}
+                                            titleHasMaster={titleHasMaster}
                                         />
                                     </Col>
                                 </Row>
