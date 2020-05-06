@@ -1572,7 +1572,7 @@
   "dataType": "timestamp",
   "searchDataType": "timestamp",
   "queryParamName": "originallyReceivedAt",
-  "readOnly": true,
+  "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
   "required": false
@@ -1602,7 +1602,7 @@
   "dataType": "timestamp",
   "searchDataType": "timestamp",
   "queryParamName": "lastUpdateReceivedAt",
-  "readOnly": true,
+  "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
   "required": false

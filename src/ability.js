@@ -22,7 +22,7 @@ const updateAbility = (roles = []) => {
     const { can, rules, cannot } = AbilityBuilder.extract();
 
     // ******** Avail *************
-    const edit_only_admin = ['createdAt', 'updatedAt', 'originallyReceivedAt', 'lastUpdateReceivedAt'];
+    const edit_only_admin = ['lastUpdateReceivedAt', 'originallyReceivedAt'];
     if (roles && roles.includes('avails_viewer')) {
         can('read', 'Avail');
     }
@@ -31,9 +31,9 @@ const updateAbility = (roles = []) => {
     }
     if (roles && roles.includes('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
-        // cannot('create', 'Avail', edit_only_admin);
+        cannot('create', 'Avail', edit_only_admin);
     }else{
-        // cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
+        cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
     }
 
     // ******** Asset Management *************
