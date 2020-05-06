@@ -74,6 +74,7 @@ class TitleEdit extends Component {
             editorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
+            editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {}
         };
     }
@@ -644,12 +645,17 @@ class TitleEdit extends Component {
 
     handleEditorialMetadataChange = (e) => {
         const targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         this.setState({
             editorialMetadataForCreate: {
                 ...this.state.editorialMetadataForCreate,
-                [targetName]: value
+                [targetName]: e.target.value
             }
+        });
+    };
+
+    handleEditorialMetadataAutoDecorateChange = (e) => {
+        this.setState({
+            editorialMetadataForCreateAutoDecorate: e.target.checked
         });
     };
 
@@ -752,6 +758,18 @@ class TitleEdit extends Component {
         });
     };
 
+    getNewCreatedEditorialMetadata = (newEditorialMetadata) => {
+        return [
+            {
+                "itemIndex": "1",
+                "body": {
+                    "editorialMetadata": newEditorialMetadata,
+                    "decorateEditorialMetadata": this.state.editorialMetadataForCreateAutoDecorate
+                }
+            }
+        ]
+    };
+
     handleEditorialMetadataOnSave = () => {
         const promises = [];
         this.state.updatedEditorialMetadata.forEach(e => {
@@ -774,15 +792,15 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
-                promises.push(titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
-                    this.cleanEditorialMetadata();
-                    this.setState({
-                        editorialMetadata: [response.data, ...this.state.editorialMetadata],
-                        editorialMetadataActiveTab: CURRENT_TAB
-                    });
-                }).catch(() => {
-                    console.error('Unable to add Editorial Metadata');
-                })
+            promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
+                this.cleanEditorialMetadata();
+                this.setState({
+                    editorialMetadata: [response.data, ...this.state.editorialMetadata],
+                    editorialMetadataActiveTab: CURRENT_TAB
+                });
+            }).catch(() => {
+                console.error('Unable to add Editorial Metadata');
+            })
             );
         } else {
             this.cleanEditorialMetadata();
@@ -975,7 +993,7 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
-        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreate['decorateEditorialMetadata'];
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
@@ -1027,6 +1045,7 @@ class TitleEdit extends Component {
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
+                        handleAutoDecorateChange={this.handleEditorialMetadataAutoDecorateChange}
                         handleGenreChange={this.handleEditorialMetadataGenreChange}
                         handleTitleChange={this.handleTitleEditorialMetadataChange}
                         handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}

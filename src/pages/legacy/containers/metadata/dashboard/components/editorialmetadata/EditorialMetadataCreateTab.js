@@ -150,7 +150,7 @@ class EditorialMetadataCreateTab extends Component {
         }));
         this.props.cleanField('format');
         this.props.cleanField('service');
-        this.props.handleChange(e);
+        this.props.handleAutoDecorateChange(e);
     };
 
     handleLocaleChange = (e) => {
@@ -398,7 +398,7 @@ class EditorialMetadataCreateTab extends Component {
                                 type="text"
                                 id="editorialAutoDecorateTitle"
                                 name={this.getNameWithPrefix('shortTitleTemplate')}
-                                onChange={this.props.handleTitleChange}
+                                onChange={this.props.handleChange}
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}

@@ -22,6 +22,7 @@ const EditorialMetadata = ({
     isEditMode,
     editorialMetadata,
     handleChange,
+    handleAutoDecorateChange,
     handleTitleChange,
     handleEpisodicChange,
     handleSynopsisChange,
@@ -167,6 +168,7 @@ const EditorialMetadata = ({
                                             validSubmit={validSubmit}
                                             areFieldsRequired={areFieldsRequired}
                                             handleChange={handleChange}
+                                            handleAutoDecorateChange={handleAutoDecorateChange}
                                             handleTitleChange={handleTitleChange}
                                             handleEpisodicChange={handleEpisodicChange}
                                             editorialMetadataForCreate={editorialMetadataForCreate}
@@ -218,6 +220,7 @@ EditorialMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
     editorialMetadata: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
+    handleAutoDecorateChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
     handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
