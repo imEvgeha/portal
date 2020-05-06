@@ -1029,8 +1029,8 @@ class RightDetails extends React.Component {
 
             let options = [], audioTypeOptions = [];
             let selectedVal = ref.current ? ref.current.state.value : value;
-            if (this.props.selectValues && this.props.selectValues[name]) {
-                options = this.props.selectValues[name];
+            if (this.props.selectValues && this.props.selectValues['languageAudioTypes.language']) {
+                options = this.props.selectValues['languageAudioTypes.language'];
             }
             if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
