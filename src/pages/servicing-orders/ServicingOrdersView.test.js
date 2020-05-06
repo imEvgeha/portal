@@ -1,10 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import ServicingOrders from './ServicingOrders';
+import ServicingOrdersView from './ServicingOrdersView';
 
-describe('ServicingOrders', () => {
+describe('ServicingOrdersView', () => {
     describe('HTML content', () => {
-        const wrapper = shallow(<ServicingOrders />);
+        const wrapper = shallow(<ServicingOrdersView />);
         it('should render header title', () => {
             expect(wrapper.find('.servicing-orders .servicing-orders--title').text()).toEqual('Servicing Orders');
         });
