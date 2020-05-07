@@ -17,6 +17,9 @@ import {
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
+import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
+import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -55,8 +58,8 @@ const withFilterableColumns = ({
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
-                        const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if (dataType === 'select' || dataType === 'multiselect' || dataType === 'territoryType') {
+                        const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+                        if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
                             const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
                             applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
                             return;
@@ -77,17 +80,17 @@ const withFilterableColumns = ({
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {dataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
+                const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const {field} = columnDef;
-                const isFilterable = FILTERABLE_DATA_TYPES.includes(dataType)
+                const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
-                    const {TEXT, NUMBER, SET, CUSTOM_DATE} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, SELECT, MULTISELECT, TERRITORY, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
+                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX} = AG_GRID_COLUMN_FILTER;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
 
-                    switch (dataType) {
+                    switch (searchDataType) {
                         case BOOLEAN:
                             columnDef.filter = TEXT;
                             columnDef.filterParams = {
@@ -100,7 +103,6 @@ const withFilterableColumns = ({
                         case YEAR:
                             columnDef.filter = NUMBER;
                             break;
-                        case SELECT:
                         case MULTISELECT:
                             columnDef.filter = SET;
                             columnDef.filterParams = {
@@ -117,6 +119,26 @@ const withFilterableColumns = ({
                             columnDef.keyCreator = params => {
                                 const countries = params.value.map(({country}) => country);
                                 return countries;
+                            };
+                            break;
+                        case AUDIO_LANGUAGE:
+                            columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                            // TODO; generate schema and values for select based on initial schema and found subfields
+                            const languages = getFilterOptions(`${field}.language`);
+                            const audioTypes = getFilterOptions(`${field}.audioType`);
+                            const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
+                            columnDef.filter = CUSTOM_COMPLEX;
+                            const audioTypeLanguage = filters['audioTypeLanguage'];
+                            const audioType = filters['audioType'];
+                            const audioLanguageInitialFilters = {
+                                ...(audioTypeLanguage && {audioTypeLanguage}),
+                                ...(audioType && {audioType})
+                            };
+                            columnDef.filterParams = {
+                                // TODO; check is this neccessary
+                                ...DEFAULT_FILTER_PARAMS,
+                                initialFilters: audioLanguageInitialFilters,
+                                schema
                             };
                             break;
                         case REGIONAL_MIDNIGHT:
@@ -204,7 +226,9 @@ const withFilterableColumns = ({
                     onGridEvent={onGridEvent}
                     frameworkComponents={{
                         customDateFloatingFilter: CustomDateFloatingFilter,
-                        customDateFilter: CustomDateFilter
+                        customDateFilter: CustomDateFilter,
+                        customComplexFloatingFilter: CustomComplexFloatingFilter,
+                        customComplexFilter: CustomComplexFilter
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
                     prepareFilterParams={prepareFilterParams}

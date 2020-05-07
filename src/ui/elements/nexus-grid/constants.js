@@ -21,20 +21,7 @@ const DEFAULT_HOC_PROPS = [
     'selectValues'
 ];
 import {DATETIME_FIELDS} from '../../../util/DateTimeUtils';
-const FILTERABLE_DATA_TYPES = [
-    'string',
-    'integer',
-    'double',
-    'boolean',
-    'select',
-    'multiselect',
-    'territoryType',
-    'year',
-    'duration',
-    DATETIME_FIELDS.TIMESTAMP,
-    DATETIME_FIELDS.BUSINESS_DATETIME,
-    DATETIME_FIELDS.REGIONAL_MIDNIGHT
-];
+
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {
     filterOptions: ['equals'],
@@ -48,19 +35,34 @@ const FILTER_TYPE = {
     INTEGER: 'integer',
     DOUBLE: 'double',
     YEAR: 'year',
-    SELECT: 'select',
     MULTISELECT: 'multiselect',
     TERRITORY: 'territoryType',
+    AUDIO_LANGUAGE: 'audioLanguageType',
     TIMESTAMP: DATETIME_FIELDS.TIMESTAMP,
     BUSINESS_DATETIME: DATETIME_FIELDS.BUSINESS_DATETIME,
     REGIONAL_MIDNIGHT: DATETIME_FIELDS.REGIONAL_MIDNIGHT
 };
+const FILTERABLE_DATA_TYPES = [
+    'string',
+    'integer',
+    'double',
+    'boolean',
+    'multiselect',
+    'territoryType',
+    'audioLanguageType',
+    'year',
+    'duration',
+    DATETIME_FIELDS.TIMESTAMP,
+    DATETIME_FIELDS.BUSINESS_DATETIME,
+    DATETIME_FIELDS.REGIONAL_MIDNIGHT
+];
 
 const AG_GRID_COLUMN_FILTER = {
     TEXT: 'agTextColumnFilter',
     NUMBER: 'agNumberColumnFilter',
     SET: 'agSetColumnFilter',
     CUSTOM_DATE: 'customDateFilter',
+    CUSTOM_COMPLEX: 'customComplexFilter',
 };
 
 const DATEPICKER_LABELS = ['From', 'To'];

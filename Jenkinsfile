@@ -33,7 +33,7 @@ pipeline {
                }  
              }
              dir('kubernetes/nexus-avails/portal') {
-               sh "./deploy.sh dev nexus-avails ${imageTag}"
+               sh "./deploy.sh ${params.TARGET_ENVIRONMENT} nexus-avails ${imageTag}"
              }
            }
          }  // kubernetes
