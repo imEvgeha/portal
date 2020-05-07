@@ -1,0 +1,58 @@
+[
+  {
+    "colId": "eventId",
+    "field": "eventId",
+    "headerName": "Event ID",
+    "dataType": "string",
+    "width": 200,
+    "filter": "agTextColumnFilter"
+  },
+  {
+    "colId": "correlationId",
+    "field": "correlationId",
+    "headerName": "Correlation ID",
+    "dataType": "string",
+    "width": 100,
+    "filter": "agTextColumnFilter"
+  },
+  {
+    "colId": "eventType",
+    "field": "eventType",
+    "headerName": "Event Type",
+    "dataType": "string",
+    "width": 100,
+    "filter": "agSetColumnFilter"
+  },
+  {
+    "colId": "eventSource",
+    "field": "eventSource",
+    "headerName": "Event Source",
+    "dataType": "string",
+    "width": 100,
+    "filter": "agSetColumnFilter"
+  },
+  {
+    "colId": "tenantId",
+    "field": "tenantId",
+    "headerName": "Tenant ID",
+    "dataType": "string",
+    "width": 100,
+    "filter": "agTextColumnFilter"
+  },
+  {
+    "colId": "objectId",
+    "field": "objectId",
+    "headerName": "Object ID",
+    "dataType": "string",
+    "width": 100,
+    "filter": "agTextColumnFilter"
+  },
+  {
+    "colId": "createdTimeStamp",
+    "field": "createdTimeStamp",
+    "headerName": "Created Time Stamp",
+    "dataType": "datetime",
+    "width": 150,
+    "filter": "customDateFilter"
+  }
+]
