@@ -702,8 +702,8 @@ class RightCreate extends React.Component {
         const renderAudioLanguageField = (name, displayName, required, value) => {
             let options = [], audioTypeOptions = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if(this.props.selectValues && this.props.selectValues['languageAudioTypes.language']){
+                options  = this.props.selectValues['languageAudioTypes.language'];
             }
             if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
@@ -745,7 +745,7 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required, value, useTime) => {
+        const renderDatepickerField = (name, displayName, required, value, useTime, isTimestamp) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
@@ -754,7 +754,7 @@ class RightCreate extends React.Component {
                 id: `right-create-${name}-text`,
                 value,
                 error,
-                isTimestamp: true,
+                isTimestamp,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
@@ -798,11 +798,11 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
                             break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
                              break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
+                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;

@@ -80,6 +80,7 @@
     "react-fontawesome": "^1.6.1",
     "react-forms-processor": "0.0.43",
     "react-forms-processor-atlaskit": "0.0.43",
+    "react-ga": "^2.7.0",
     "react-global-configuration": "^1.3.0",
     "react-hot-loader": "^4.12.20",
     "react-intl": "^3.3.2",

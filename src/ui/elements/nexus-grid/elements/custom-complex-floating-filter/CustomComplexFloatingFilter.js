@@ -18,10 +18,28 @@ class CustomComplexFloatingFilter extends React.Component {
 
     render() {
         const {value} = this.state;
+        let arrayContent = [];
+        let keyContent;
+        Object.keys(value).forEach((key) => {
+            keyContent = '';
+            if(value[key]) {
+                if(Array.isArray(value[key])){
+                    if(value[key].length > 0) {
+                        keyContent = value[key].join(', ');
+                    }
+                }else{
+                    keyContent = value[key];
+                }
 
+                if(keyContent) {
+                    arrayContent.push(key + ': ' + keyContent);
+                }
+            }
+        });
+        const content = arrayContent.join(' ');
         return (
             <div className='nexus-c-complex-floating-filter'>
-                { value && !isEmpty(value) && <span>{JSON.stringify(value)}</span>}
+                <span title={content}>{content}</span>
             </div>
         );
     }

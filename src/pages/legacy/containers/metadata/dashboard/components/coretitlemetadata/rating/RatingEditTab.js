@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
-import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import { configFields } from '../../../../service/ConfigService';
-import { connect } from 'react-redux';
 import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
 const mapStateToProps = state => {
@@ -105,9 +106,20 @@ class RatingEditTab extends Component {
             ratingSystem,
             rating,
             advisoriesFreeText,
-        } = this.state.updatedRating;  
+        } = this.state.updatedRating;
+
+        const {
+            handleEditChange,
+            data: currentRatingData,
+        } = this.props;
+
         return (
             <div id="ratingCreate">
+                <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
+                    <Button onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
+                        Delete Rating
+                    </Button>
+                </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={3}>
                         <b> Rating System<span style={{ color: 'red' }}>*</span></b>

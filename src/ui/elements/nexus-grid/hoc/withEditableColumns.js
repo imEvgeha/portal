@@ -104,7 +104,7 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = AudioLanguageTypeCellEditor;
                             columnDef.cellEditorParams = {
                                 options: {
-                                    languages: (isObject(selectValues) && selectValues[field]) || [],
+                                    languages: (isObject(selectValues) && selectValues['languageAudioTypes.language']) || [],
                                     audioTypes: (isObject(selectValues) && selectValues['languageAudioTypes.audioType']) || [],
                                 },
                             };
