@@ -7,7 +7,7 @@ const BASE_PATH = '/servicing-orders';
 const routes = [
     {
         path: BASE_PATH,
-        component: canRender(ServicingOrdersView, 'read', 'ServicingOrdersView'),
+        component: canRender(ServicingOrdersView, 'read', 'ServicingOrders'),
     },
     {
         path: `${BASE_PATH}/:id`,

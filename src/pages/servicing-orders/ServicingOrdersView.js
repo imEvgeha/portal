@@ -1,4 +1,5 @@
 import React from 'react';
+import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
 import './ServicingOrdersView.scss';
 
 const ServicingOrdersView = () => {
@@ -7,6 +8,7 @@ const ServicingOrdersView = () => {
             <div className='nexus-c-servicing-orders__title'>
                 Servicing Orders
             </div>
+            <ServicingOrdersTable />
         </div>
     );
 };
