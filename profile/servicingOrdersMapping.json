@@ -4,14 +4,14 @@
     "field": "srId",
     "headerName": "SR ID",
     "dataType": "string",
-    "width": 200
+    "width": 150
   },
   {
     "colId": "soNumber",
     "field": "soNumber",
     "dataType": "string",
     "headerName": "SO Number",
-    "width": 200
+    "width": 150
   },
   {
     "colId": "soDescription",
@@ -25,14 +25,14 @@
     "field": "businessPartnerId",
     "dataType": "string",
     "headerName": "Business Partner ID",
-    "width": 200
+    "width": 150
   },
   {
     "colId": "clientProfile",
     "field": "clientProfile",
     "dataType": "string",
     "headerName": "Client Profile",
-    "width": 200
+    "width": 150
   },
   {
     "colId": "srDueDate",
@@ -53,13 +53,13 @@
     "field": "status",
     "dataType": "emphasizedString",
     "headerName": "Status",
-    "width": 200
+    "width": 150
   },
   {
     "colId": "readiness",
     "field": "readiness",
     "dataType": "emphasizedString",
     "headerName": "Readiness",
-    "width": 200
+    "width": 150
   }
 ]
