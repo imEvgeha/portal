@@ -8,19 +8,14 @@ const EmphasizedStringCellRenderer = (props) => {
             case 'not configured':
             case 'canceled':
                 return 'red';
-                // return {backgroundColor: '#de350b', textColor: '#fff'};
             case 'completed':
                 return 'green';
-                // return {backgroundColor: '#36b37e', textColor: '#fff'};
             case 'on hold':
                 return 'yellow';
-                // return {backgroundColor: '#ffa700', textColor: '#fff'};
             case 'not started':
                 return 'grey';
-                // return {backgroundColor: '#737e91', textColor: '#fff'};
             case 'in progress':
                 return 'teal';
-                // return {backgroundColor: '#00b8d9', textColor: '#fff'};
             default:
                 return 'default';
         }
