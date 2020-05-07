@@ -6,7 +6,7 @@ import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import EmphasizedStringCellRenderer
-    from '../../../ui/elements/nexus-grid/elements/cell-renderer/EmphasizedStringCellRenderer';
+    from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-string-cell-renderer/EmphasizedStringCellRenderer';
 import columnDefs from '../../../../profile/servicingOrdersMapping.json';
 import {ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';

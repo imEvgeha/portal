@@ -3,8 +3,8 @@ import {camelCase, startCase} from 'lodash';
 import './EmphasizedStringCellRenderer.scss';
 
 const EmphasizedStringCellRenderer = (props) => {
-    const getStatusOrReadinessColor= (value) => {
-        switch (value) {
+    const getStatusOrReadinessColor= (value = '') => {
+        switch (value.toLowerCase()) {
             case 'not configured':
             case 'canceled':
                 return 'red';
