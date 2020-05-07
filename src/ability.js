@@ -22,7 +22,7 @@ const updateAbility = (roles = []) => {
     const { can, rules, cannot } = AbilityBuilder.extract();
 
     // ******** Avail *************
-    const edit_only_admin = ['createdAt', 'updatedAt', 'originallyReceivedAt', 'lastUpdateReceivedAt'];
+    const edit_only_admin = ['lastUpdateReceivedAt', 'originallyReceivedAt'];
     if (roles && roles.includes('avails_viewer')) {
         can('read', 'Avail');
     }

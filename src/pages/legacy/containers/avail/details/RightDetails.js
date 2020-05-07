@@ -247,18 +247,9 @@ class RightDetails extends React.Component {
     }
 
     handleEditableSubmit(name, value, cancel) {
-        const schema = this.props.availsMapping.mappings.find(({ javaVariableName }) => javaVariableName === name);
         if (value === ''){
             value = null;
-        } else {
-            switch (schema.dataType) {
-                case DATETIME_FIELDS.TIMESTAMP:
-                case DATETIME_FIELDS.BUSINESS_DATETIME:
-                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                    value = dateToISO(value, schema.dataType);
-            }
         }
-
         if (Array.isArray(value)) {
             value = value.map(el => {
                 if (el.hasOwnProperty('name')) {
@@ -1144,7 +1135,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted) => {
+        const renderDatepickerField = (showTime, name, displayName, value, priorityError, isReadOnly, required, highlighted, isTimestamp) => {
             let ref;
 
             const {flatRight = {}, editedRight = {}} = this.state;
@@ -1192,8 +1183,9 @@ class RightDetails extends React.Component {
                 ),
                 error,
                 required,
+                isReadOnly,
+                isTimestamp,
                 isWithInlineEdit: true,
-                isTimestamp: true,
                 allowClear: !required
             };
 
@@ -1295,10 +1287,11 @@ class RightDetails extends React.Component {
                             break;
                         case 'time': renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                              break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT: renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT: renderFields.push(renderDatepickerField(false, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
                              break;
-                        case DATETIME_FIELDS.TIMESTAMP:
-                        case DATETIME_FIELDS.BUSINESS_DATETIME: renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted));
+                        case DATETIME_FIELDS.TIMESTAMP: renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, true));
+                            break;
+                        case DATETIME_FIELDS.BUSINESS_DATETIME: renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
