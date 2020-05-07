@@ -38,10 +38,12 @@ const routes = [
     ...staticPagesRoutes,
 ];
 
-const routesWithTracking = routes.map(route => {
-    route.component = WithTracker(route.component);
+export function routesWithTracking() {
+    return routes.map(route => {
+        route.component = WithTracker(route.component);
 
-    return route;
-});
+        return route;
+    });
+}
 
-export default routesWithTracking;
+export default routes;
