@@ -1,11 +1,25 @@
 .servicing-orders{
-  display: flex;
   height: 100%;
   padding: 24px 0 0;
   &--title {
-    display: flex;
     font-size: 29px;
     padding-left: 22px;
     color: #42526E;
+  }
+  &--external-filters {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    .nexus-c--customer-filter {
+      width: 200px;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+
+    button {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
   }
 }
