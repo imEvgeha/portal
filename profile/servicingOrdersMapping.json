@@ -1,0 +1,65 @@
+[
+  {
+    "colId": "srId",
+    "field": "srId",
+    "headerName": "SR ID",
+    "dataType": "string",
+    "width": 200
+  },
+  {
+    "colId": "soNumber",
+    "field": "soNumber",
+    "dataType": "string",
+    "headerName": "SO Number",
+    "width": 200
+  },
+  {
+    "colId": "soDescription",
+    "field": "soDescription",
+    "dataType": "string",
+    "headerName": "SO Description",
+    "width": 200
+  },
+  {
+    "colId": "businessPartnerId",
+    "field": "businessPartnerId",
+    "dataType": "string",
+    "headerName": "Business Partner ID",
+    "width": 200
+  },
+  {
+    "colId": "clientProfile",
+    "field": "clientProfile",
+    "dataType": "string",
+    "headerName": "Client Profile",
+    "width": 200
+  },
+  {
+    "colId": "srDueDate",
+    "field": "srDueDate",
+    "dataType": "date",
+    "headerName": "SR Due Date",
+    "width": 200
+  },
+  {
+    "colId": "submittedDate",
+    "field": "submittedDate",
+    "dataType": "date",
+    "headerName": "Submitted Date",
+    "width": 200
+  },
+  {
+    "colId": "status",
+    "field": "status",
+    "dataType": "emphasizedString",
+    "headerName": "Status",
+    "width": 200
+  },
+  {
+    "colId": "readiness",
+    "field": "readiness",
+    "dataType": "emphasizedString",
+    "headerName": "Readiness",
+    "width": 200
+  }
+]
