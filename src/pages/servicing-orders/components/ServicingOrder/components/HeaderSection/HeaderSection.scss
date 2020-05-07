@@ -1,0 +1,13 @@
+.panel-header{
+  padding-left: 10px;
+  &__title {
+    svg {
+      cursor: pointer;
+    }
+    span{
+      font-size: 29px;
+      color: #42526E;
+      margin-left: 5px;
+    }
+  }
+}
