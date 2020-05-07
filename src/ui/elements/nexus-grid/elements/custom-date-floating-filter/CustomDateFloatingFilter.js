@@ -13,12 +13,15 @@ class CustomDateFloatingFilter extends React.Component {
         };
     }
 
-    onParentModelChanged = ({filter = {}}) => {
-        const { column: { colDef: {field}}} = this.props;
-        this.setState({
-            from: filter[`${field}From`],
-            to: filter[`${field}To`]
-        });
+    onParentModelChanged = (params= {}) => {
+        if(params) {
+            const {filter} = params;
+            const {column: {colDef: {field}}} = this.props;
+            this.setState({
+                from: filter[`${field}From`],
+                to: filter[`${field}To`]
+            });
+        }
     };
 
     render() {
