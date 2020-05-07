@@ -43,6 +43,7 @@ const ISODateToView = (date, type) => {
                 const dateTimeFormat = `${dateFormat} ${timeFormat}`;
 
                 return `${moment(date).utc(!isUtcDate).format(dateTimeFormat)}`;
+            case 'date':
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return `${moment(date).utc(false).format(dateFormat)}`;
         }
