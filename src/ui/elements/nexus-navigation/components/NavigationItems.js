@@ -10,9 +10,7 @@ import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT} from '../co
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => [
     {
-        component: () => {
-  return <NexusNavIcon />;
-},
+        component: () => <NexusNavIcon />,
         id: 'logo',
     },
     {
@@ -43,13 +41,15 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
         isSelected: (selectedItem === `${AVAILS}/v2`),
         onClick: () => handleClick(`${AVAILS}/v2`),
     },
-    {
-        icon: DetailViewIcon,
-        id: SERVICING_ORDERS,
-        tooltip: 'Servicing Orders',
-        isSelected: (selectedItem === SERVICING_ORDERS),
-        onClick: () => handleClick(SERVICING_ORDERS),
-    },
+    URL.isLocalOrDevOrQA() && (
+        {
+            icon: DetailViewIcon,
+            id: SERVICING_ORDERS,
+            tooltip: 'Servicing Orders',
+            isSelected: (selectedItem === SERVICING_ORDERS),
+            onClick: () => handleClick(SERVICING_ORDERS),
+        }
+    ),
     URL.isLocalOrDevOrQA() && (
         {
             icon: RecentIcon,
