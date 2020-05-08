@@ -12,7 +12,7 @@ const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, on
         return audioLanguages.map((lang, i) => (
             <NexusTag
                 key={uid(lang)}
-                text={lang.language}
+                text={`${lang.language} / ${lang.audioType}`}
                 value={lang}
                 removeButtonText='Remove'
                 onRemove={() => onRemoveClick(lang)}
