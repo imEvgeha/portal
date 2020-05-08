@@ -23,6 +23,7 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
+import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -73,6 +74,7 @@ class TitleEdit extends Component {
             editorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
+            editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {}
         };
     }
@@ -669,6 +671,12 @@ class TitleEdit extends Component {
         });
     };
 
+    handleEditorialMetadataAutoDecorateChange = (e) => {
+        this.setState({
+            editorialMetadataForCreateAutoDecorate: e.target.checked
+        });
+    };
+
     handleEditorialMetadataGenreChange = (e) => {
         const newEditorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
@@ -739,6 +747,15 @@ class TitleEdit extends Component {
         });
     };
 
+    cleanField = (field) => {
+        let updatedEditorialMetadata =  this.state.editorialMetadataForCreate;
+        updatedEditorialMetadata[field] =null;
+
+        this.setState({
+            editorialMetadataForCreate: updatedEditorialMetadata
+        });
+    };
+
     toggleEditorialMetadata = (tab) => {
         this.setState({
             editorialMetadataActiveTab: tab,
@@ -757,6 +774,18 @@ class TitleEdit extends Component {
         this.setState({
             editorialMetadataActiveTab: CURRENT_TAB
         });
+    };
+
+    getNewCreatedEditorialMetadata = (newEditorialMetadata) => {
+        return [
+            {
+                "itemIndex": "1",
+                "body": {
+                    "editorialMetadata": newEditorialMetadata,
+                    "decorateEditorialMetadata": this.state.editorialMetadataForCreateAutoDecorate
+                }
+            }
+        ]
     };
 
     handleEditorialMetadataOnSave = () => {
@@ -783,7 +812,7 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
-                promises.push(titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
+                promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
                         editorialMetadata: [response.data, ...this.state.editorialMetadata],
@@ -992,10 +1021,11 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
-
+                {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
                 <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
@@ -1043,6 +1073,7 @@ class TitleEdit extends Component {
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
+                        handleAutoDecorateChange={this.handleEditorialMetadataAutoDecorateChange}
                         handleGenreChange={this.handleEditorialMetadataGenreChange}
                         handleTitleChange={this.handleTitleEditorialMetadataChange}
                         handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
@@ -1059,6 +1090,7 @@ class TitleEdit extends Component {
                         handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
+                        cleanField={this.cleanField}
                     />
 
                     <TerritoryMetadata

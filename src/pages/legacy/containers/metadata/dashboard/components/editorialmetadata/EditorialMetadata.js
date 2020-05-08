@@ -22,6 +22,7 @@ const EditorialMetadata = ({
     isEditMode,
     editorialMetadata,
     handleChange,
+    handleAutoDecorateChange,
     handleTitleChange,
     handleEpisodicChange,
     handleSynopsisChange,
@@ -45,10 +46,13 @@ const EditorialMetadata = ({
     handleCategoryChange,
     handleCategoryEditChange,
     coreTitleData,
-    editorialTitleData
+    editorialTitleData,
+    cleanField
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+    const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
 
     const getLanguageByCode = (code) => {
         if (configLanguage) {
@@ -164,6 +168,7 @@ const EditorialMetadata = ({
                                             validSubmit={validSubmit}
                                             areFieldsRequired={areFieldsRequired}
                                             handleChange={handleChange}
+                                            handleAutoDecorateChange={handleAutoDecorateChange}
                                             handleTitleChange={handleTitleChange}
                                             handleEpisodicChange={handleEpisodicChange}
                                             editorialMetadataForCreate={editorialMetadataForCreate}
@@ -172,6 +177,8 @@ const EditorialMetadata = ({
                                             handleCategoryChange={handleCategoryChange}
                                             handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
                                             titleContentType={titleContentType}
+                                            cleanField={cleanField}
+                                            titleHasMaster={titleHasMaster}
                                         />
                                     </Col>
                                 </Row>
@@ -213,9 +220,11 @@ EditorialMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
     editorialMetadata: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
+    handleAutoDecorateChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
     handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
+    cleanField: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     areFieldsRequired: PropTypes.bool,
     toggle: PropTypes.func,
