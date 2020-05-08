@@ -8,7 +8,7 @@ import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import EmphasizedStringCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-string-cell-renderer/EmphasizedStringCellRenderer';
 import columnDefs from '../../../../profile/servicingOrdersMapping.json';
-import {ISODateToView} from '../../../util/DateTimeUtils';
+import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
 
 const ServicingOrderGrid = compose(
@@ -25,7 +25,7 @@ const ServicingOrdersTable = () => {
                     const {[field]: value = ''} = data || {};
                     return startCase(camelCase(value)); // Capitalizes every word and removes non-alphanumeric characters
                 };
-            case 'date':
+            case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return (params) => {
                     const {data = {}} = params || {};
                     const {[field]: date = ''} = data || {};

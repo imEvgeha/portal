@@ -37,14 +37,14 @@
   {
     "colId": "srDueDate",
     "field": "srDueDate",
-    "dataType": "date",
+    "dataType": "regionalMidnight",
     "headerName": "SR Due Date",
     "width": 200
   },
   {
     "colId": "submittedDate",
     "field": "submittedDate",
-    "dataType": "date",
+    "dataType": "regionalMidnight",
     "headerName": "Submitted Date",
     "width": 200
   },
