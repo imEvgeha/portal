@@ -6,7 +6,7 @@
     "headerName": "Event ID",
     "dataType": "string",
     "width": 200,
-    "filter": "agTextColumnFilter"
+    "searchDataType": "string"
   },
   {
     "colId": "correlationId",
@@ -15,7 +15,7 @@
     "headerName": "Correlation ID",
     "dataType": "string",
     "width": 100,
-    "filter": "agTextColumnFilter"
+    "searchDataType": "string"
   },
   {
     "colId": "eventType",
@@ -24,7 +24,7 @@
     "headerName": "Event Type",
     "dataType": "string",
     "width": 100,
-    "filter": "agSetColumnFilter"
+    "searchDataType": "multiselect"
   },
   {
     "colId": "eventSource",
@@ -33,7 +33,7 @@
     "headerName": "Event Source",
     "dataType": "string",
     "width": 100,
-    "filter": "agSetColumnFilter"
+    "searchDataType": "multiselect"
   },
   {
     "colId": "tenantId",
@@ -42,7 +42,7 @@
     "headerName": "Tenant ID",
     "dataType": "string",
     "width": 100,
-    "filter": "agTextColumnFilter"
+    "searchDataType": "string"
   },
   {
     "colId": "objectId",
@@ -51,7 +51,7 @@
     "headerName": "Object ID",
     "dataType": "string",
     "width": 100,
-    "filter": "agTextColumnFilter"
+    "searchDataType": "string"
   },
   {
     "colId": "createdTimeStamp",
@@ -60,6 +60,6 @@
     "headerName": "Created Time Stamp",
     "dataType": "datetime",
     "width": 150,
-    "filter": "customDateFilter"
+    "searchDataType": "datetime"
   }
 ]

@@ -7,7 +7,7 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import EmphasizedCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
-import columnDefs from '../../../../profile/servicingOrdersMapping.json';
+import columnDefs from '../columnMappings.json';
 import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
 
