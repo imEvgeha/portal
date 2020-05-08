@@ -13,7 +13,7 @@ const HeaderSection = () => {
                 <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
                     <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                 </Link>
-                <span>Servicing Order</span>
+                <span className='panel-header__title--text'>Servicing Order</span>
             </div>
         </div>
     );
