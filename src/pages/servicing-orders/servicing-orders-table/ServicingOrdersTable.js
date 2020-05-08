@@ -5,8 +5,8 @@ import {servicingOrdersService} from './servicingOrdersService';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
-import EmphasizedStringCellRenderer
-    from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-string-cell-renderer/EmphasizedStringCellRenderer';
+import EmphasizedCellRenderer
+    from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import columnDefs from '../../../../profile/servicingOrdersMapping.json';
 import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
@@ -17,13 +17,14 @@ const ServicingOrderGrid = compose(
 )(NexusGrid);
 
 const ServicingOrdersTable = () => {
-    const valueFormatter= ({dataType = '', field = ''}) => {
+    const valueFormatter= ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
-            case 'emphasizedString':
+            case 'string':
                 return (params) => {
                     const {data = {}} = params || {};
                     const {[field]: value = ''} = data || {};
-                    return startCase(camelCase(value)); // Capitalizes every word and removes non-alphanumeric characters
+                    // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
+                    return isEmphasized ? startCase(camelCase(value)) : value;
                 };
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return (params) => {
@@ -39,7 +40,7 @@ const ServicingOrdersTable = () => {
             {
                 ...columnDef,
                 valueFormatter: valueFormatter(columnDef),
-                cellRenderer: (columnDef.dataType === 'emphasizedString')
+                cellRenderer: (columnDef.isEmphasized)
                     ? 'emphasizedStringCellRenderer'
                     : 'loadingCellRenderer',
             }
@@ -51,7 +52,7 @@ const ServicingOrdersTable = () => {
             <ServicingOrderGrid
                 columnDefs={updateColumnDefs(columnDefs)}
                 frameworkComponents={{
-                    emphasizedStringCellRenderer: EmphasizedStringCellRenderer,
+                    emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
             />
         </div>

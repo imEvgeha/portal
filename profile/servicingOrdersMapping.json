@@ -65,19 +65,21 @@
   {
     "colId": "status",
     "field": "status",
-    "dataType": "emphasizedString",
+    "dataType": "string",
     "headerName": "Status",
     "width": 150,
     "javaVariableName": "status",
-    "displayName": "Status"
+    "displayName": "Status",
+    "isEmphasized": true
   },
   {
     "colId": "readiness",
     "field": "readiness",
-    "dataType": "emphasizedString",
+    "dataType": "string",
     "headerName": "Readiness",
     "width": 150,
     "javaVariableName": "readiness",
-    "displayName": "Readiness"
+    "displayName": "Readiness",
+    "isEmphasized": true
   }
 ]
