@@ -3,9 +3,10 @@ import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left
 import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
+import RecentIcon from '@atlaskit/icon/glyph/recent';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
 import {URL} from '../../../../util/Common';
-import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS} from '../constants';
+import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => [
     {
@@ -49,5 +50,14 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
             onClick: () => handleClick(SERVICING_ORDERS),
         }
     ),
+    URL.isLocalOrDevOrQA() && (
+        {
+            icon: RecentIcon,
+            id: EVENT_MANAGEMENT,
+            tooltip: 'Event Management',
+            isSelected: (selectedItem === EVENT_MANAGEMENT),
+            onClick: () => handleClick(EVENT_MANAGEMENT),
+        }
+    )
 ];
 
