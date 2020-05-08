@@ -20,6 +20,10 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
         Object {
           "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "link": "/servicing-orders/",
+            "newTab": false,
+          },
           "colId": "soNumber",
           "dataType": "string",
           "displayName": "SO Number",
