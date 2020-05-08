@@ -1,6 +1,7 @@
 [
   {
     "colId": "eventId",
+    "javaVariableName": "eventId",
     "field": "eventId",
     "headerName": "Event ID",
     "dataType": "string",
@@ -9,6 +10,7 @@
   },
   {
     "colId": "correlationId",
+    "javaVariableName": "correlationId",
     "field": "correlationId",
     "headerName": "Correlation ID",
     "dataType": "string",
@@ -17,6 +19,7 @@
   },
   {
     "colId": "eventType",
+    "javaVariableName": "eventType",
     "field": "eventType",
     "headerName": "Event Type",
     "dataType": "string",
@@ -25,6 +28,7 @@
   },
   {
     "colId": "eventSource",
+    "javaVariableName": "eventSource",
     "field": "eventSource",
     "headerName": "Event Source",
     "dataType": "string",
@@ -33,6 +37,7 @@
   },
   {
     "colId": "tenantId",
+    "javaVariableName": "tenantId",
     "field": "tenantId",
     "headerName": "Tenant ID",
     "dataType": "string",
@@ -41,6 +46,7 @@
   },
   {
     "colId": "objectId",
+    "javaVariableName": "objectId",
     "field": "objectId",
     "headerName": "Object ID",
     "dataType": "string",
@@ -49,6 +55,7 @@
   },
   {
     "colId": "createdTimeStamp",
+    "javaVariableName": "createdTimeStamp",
     "field": "createdTimeStamp",
     "headerName": "Created Time Stamp",
     "dataType": "datetime",
