@@ -17,10 +17,12 @@ export const titleSearchHelper = {
         for (const key of Object.keys(searchCriteria) ) {
             const criteria = searchCriteria[key];
             if (criteria) {
-                if (!(criteria instanceof Object)) {
+                if (!(criteria instanceof Object) && typeof criteria === 'string') {
                     response[key] = criteria.trim();
-                } else if (criteria.value) {
+                } else if (criteria.value && typeof criteria.value === 'string') {
                     response[key] = criteria.value.trim();
+                } else if (typeof criteria === 'boolean') {
+                    response[key] = criteria;
                 } else {
                     if (criteria.from) {
                         response[key + 'From'] = momentToISO(criteria.from);
