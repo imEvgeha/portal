@@ -1,8 +1,7 @@
 import React from 'react';
-import {camelCase, startCase} from 'lodash';
-import './EmphasizedStringCellRenderer.scss';
+import './EmphasizedCellRenderer.scss';
 
-const EmphasizedStringCellRenderer = (props) => {
+const EmphasizedCellRenderer = (props) => {
     const getStatusOrReadinessColor= (value = '') => {
         switch (value.toLowerCase()) {
             case 'not configured':
@@ -25,13 +24,13 @@ const EmphasizedStringCellRenderer = (props) => {
     return (
         <span
             className={`
-                nexus-c-emphasized-string-cell-renderer 
-                nexus-c-emphasized-string-cell-renderer--is-${getStatusOrReadinessColor(props.value)}
+                nexus-c-emphasized-cell-renderer 
+                nexus-c-emphasized-cell-renderer--is-${getStatusOrReadinessColor(props.value)}
             `}
         >
-            {startCase(camelCase(props.value || ''))}
+            {props.value || ''}
         </span>
     );
 };
 
-export default EmphasizedStringCellRenderer;
+export default EmphasizedCellRenderer;
