@@ -4,13 +4,12 @@ import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
+import {URL} from '../../../../util/Common';
 import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => [
     {
-        component: () => {
-  return <NexusNavIcon />;
-},
+        component: () => <NexusNavIcon />,
         id: 'logo',
     },
     {
@@ -41,12 +40,14 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
         isSelected: (selectedItem === `${AVAILS}/v2`),
         onClick: () => handleClick(`${AVAILS}/v2`),
     },
-    {
-        icon: DetailViewIcon,
-        id: SERVICING_ORDERS,
-        tooltip: 'Servicing Orders',
-        isSelected: (selectedItem === SERVICING_ORDERS),
-        onClick: () => handleClick(SERVICING_ORDERS),
-    },
+    URL.isLocalOrDevOrQA() && (
+        {
+            icon: DetailViewIcon,
+            id: SERVICING_ORDERS,
+            tooltip: 'Servicing Orders',
+            isSelected: (selectedItem === SERVICING_ORDERS),
+            onClick: () => handleClick(SERVICING_ORDERS),
+        }
+    ),
 ];
 
