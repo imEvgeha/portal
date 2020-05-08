@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrdersTable should match snapshot 1`] = `
+<div
+  className="nexus-c-servicing-orders-table"
+>
+  <ComposedComponent
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "srId",
+          "dataType": "string",
+          "field": "srId",
+          "headerName": "SR ID",
+          "valueFormatter": undefined,
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "soNumber",
+          "dataType": "string",
+          "field": "soNumber",
+          "headerName": "SO Number",
+          "valueFormatter": undefined,
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "soDescription",
+          "dataType": "string",
+          "field": "soDescription",
+          "headerName": "SO Description",
+          "valueFormatter": undefined,
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "businessPartnerId",
+          "dataType": "string",
+          "field": "businessPartnerId",
+          "headerName": "Business Partner ID",
+          "valueFormatter": undefined,
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "clientProfile",
+          "dataType": "string",
+          "field": "clientProfile",
+          "headerName": "Client Profile",
+          "valueFormatter": undefined,
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "srDueDate",
+          "dataType": "date",
+          "field": "srDueDate",
+          "headerName": "SR Due Date",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "submittedDate",
+          "dataType": "date",
+          "field": "submittedDate",
+          "headerName": "Submitted Date",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "emphasizedStringCellRenderer",
+          "colId": "status",
+          "dataType": "emphasizedString",
+          "field": "status",
+          "headerName": "Status",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "emphasizedStringCellRenderer",
+          "colId": "readiness",
+          "dataType": "emphasizedString",
+          "field": "readiness",
+          "headerName": "Readiness",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+      ]
+    }
+    frameworkComponents={
+      Object {
+        "emphasizedStringCellRenderer": [Function],
+      }
+    }
+  />
+</div>
+`;

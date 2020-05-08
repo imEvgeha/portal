@@ -1,0 +1,15 @@
+@import '../../styles/config';
+
+.nexus-c-servicing-orders{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 0 0;
+}
+
+.nexus-c-servicing-orders__title {
+  display: flex;
+  font-size: 29px;
+  padding-left: 22px;
+  color: map-get($colors, nexus-title-color);
+}
