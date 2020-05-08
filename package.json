@@ -52,6 +52,7 @@
     "@casl/react": "^0.8.1",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "abortcontroller-polyfill": "^1.4.0",
     "ag-grid-community": "^23.0.2",
     "ag-grid-enterprise": "^23.0.2",
     "ag-grid-react": "^23.0.3",
@@ -103,7 +104,8 @@
     "reselect": "^4.0.0",
     "styled-components": "^3.2.6",
     "url-search-params-polyfill": "^7.0.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
@@ -137,7 +139,6 @@
     "html-webpack-plugin": "^3.2.0",
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^4.3.1",
-    "isomorphic-fetch": "^2.2.1",
     "jest": "^25.1.0",
     "jest-environment-jsdom": "^25.1.0",
     "jest-transform-stub": "^2.0.0",

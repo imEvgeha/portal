@@ -8,7 +8,8 @@ const appPaths = require('./paths');
 module.exports = (envKeys) => ({
     entry: [
         require.resolve('@babel/polyfill'),
-        'isomorphic-fetch',
+        'abortcontroller-polyfill',
+        'whatwg-fetch',
         appPaths.appIndexJs,
     ],
     module: {

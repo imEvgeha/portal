@@ -46,6 +46,14 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
 
 };
 
+/**
+ * nexusFetch
+ *
+ * @param url
+ * @param options={...fetchOptions, params, ...rest}
+ * @param abortAfter=DEFAULT_TIMEOUT 
+ * @returns Promise (result fetch api)
+ */
 export const nexusFetch = (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
     const {params, ...rest} = options;
     if (params && typeof params === 'string') {
