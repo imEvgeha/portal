@@ -15,7 +15,11 @@
     "headerName": "SO Number",
     "width": 150,
     "javaVariableName": "soNumber",
-    "displayName": "SO Number"
+    "displayName": "SO Number",
+    "cellRendererParams": {
+      "link": "/servicing-orders/",
+      "newTab": false
+    }
   },
   {
     "colId": "soDescription",
