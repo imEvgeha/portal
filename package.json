@@ -22,6 +22,7 @@
     "@atlaskit/blanket": "^10.0.14",
     "@atlaskit/button": "^13.1.1",
     "@atlaskit/checkbox": "^9.0.9",
+    "@atlaskit/code": "^11.1.5",
     "@atlaskit/datetime-picker": "^9.0.1",
     "@atlaskit/dropdown-menu": "^8.1.1",
     "@atlaskit/field-base": "^13.0.6",
