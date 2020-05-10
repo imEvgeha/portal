@@ -1,6 +1,8 @@
 import React from 'react';
 import {canRender} from '../../ability';
-import ServicingOrdersView from './ServicingOrdersView';
+
+const ServicingOrdersViewImport = import(/* webpackChunkName: "ServicingOrdersView" */ './ServicingOrdersView');
+const ServicingOrdersView = React.lazy(() => ServicingOrdersViewImport);
 
 const BASE_PATH = '/servicing-orders';
 
