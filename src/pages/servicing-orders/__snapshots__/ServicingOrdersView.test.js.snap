@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
+<div
+  className="nexus-c-servicing-orders"
+>
+  <div
+    className="nexus-c-servicing-orders__title"
+  >
+    Servicing Orders
+  </div>
+  <ServicingOrdersTable />
+</div>
+`;

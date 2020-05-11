@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrdersTable should match snapshot 1`] = `
+<div
+  className="nexus-c-servicing-orders-table"
+>
+  <ComposedComponent
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "srId",
+          "dataType": "string",
+          "displayName": "SR ID",
+          "field": "srId",
+          "headerName": "SR ID",
+          "javaVariableName": "srId",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "soNumber",
+          "dataType": "string",
+          "displayName": "SO Number",
+          "field": "soNumber",
+          "headerName": "SO Number",
+          "javaVariableName": "soNumber",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "soDescription",
+          "dataType": "string",
+          "displayName": "SO Description",
+          "field": "soDescription",
+          "headerName": "SO Description",
+          "javaVariableName": "soDescription",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "businessPartnerId",
+          "dataType": "string",
+          "displayName": "Business Partner ID",
+          "field": "businessPartnerId",
+          "headerName": "Business Partner ID",
+          "javaVariableName": "businessPartnerId",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "clientProfile",
+          "dataType": "string",
+          "displayName": "Client Profile",
+          "field": "clientProfile",
+          "headerName": "Client Profile",
+          "javaVariableName": "clientProfile",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "srDueDate",
+          "dataType": "regionalMidnight",
+          "displayName": "SR Due Date",
+          "field": "srDueDate",
+          "headerName": "SR Due Date",
+          "javaVariableName": "srDueDate",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "submittedDate",
+          "dataType": "regionalMidnight",
+          "displayName": "Submitted Date",
+          "field": "submittedDate",
+          "headerName": "Submitted Date",
+          "javaVariableName": "submittedDate",
+          "valueFormatter": [Function],
+          "width": 200,
+        },
+        Object {
+          "cellRenderer": "emphasizedStringCellRenderer",
+          "colId": "status",
+          "dataType": "string",
+          "displayName": "Status",
+          "field": "status",
+          "headerName": "Status",
+          "isEmphasized": true,
+          "javaVariableName": "status",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "emphasizedStringCellRenderer",
+          "colId": "readiness",
+          "dataType": "string",
+          "displayName": "Readiness",
+          "field": "readiness",
+          "headerName": "Readiness",
+          "isEmphasized": true,
+          "javaVariableName": "readiness",
+          "valueFormatter": [Function],
+          "width": 150,
+        },
+      ]
+    }
+    frameworkComponents={
+      Object {
+        "emphasizedStringCellRenderer": [Function],
+      }
+    }
+  />
+</div>
+`;

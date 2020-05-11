@@ -1,20 +1,23 @@
 import React, {useState} from 'react';
+import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
+import './ServicingOrdersView.scss';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
-import './servicingOrders.scss';
 
-const ServicingOrders = () => {
+const ServicingOrdersView = () => {
+
     const [hideReady, setHideReady] = useState(false);
     const [hideCompleted, setHideCompleted] = useState(false);
     const NO_CUSTOMER_FILTER = { label: 'Select...', value: '' };
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
+
     return (
-        <div className='servicing-orders'>
-            <div className='servicing-orders--title'>
+        <div className='nexus-c-servicing-orders'>
+            <div className='nexus-c-servicing-orders__title'>
                 Servicing Orders
             </div>
-            <div className='servicing-orders--external-filters'>
-                <div className='nexus-c--customer-filter'>
+            <div className='nexus-c-servicing-orders__external-filters'>
+                <div className='nexus-c-servicing-orders__customer-filter'>
                     Customer
                     <Select
                         options={[
@@ -42,8 +45,9 @@ const ServicingOrders = () => {
                     Hide Completed
                 </Button>
             </div>
+            <ServicingOrdersTable />
         </div>
     );
 };
 
-export default ServicingOrders;
+export default ServicingOrdersView;

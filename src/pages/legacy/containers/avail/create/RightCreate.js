@@ -224,17 +224,21 @@ class RightCreate extends React.Component {
     validateField(name, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
         const isOriginRightIdRequired = name === 'originalRightId' && this.right.temporaryPriceReduction === true && this.right.status && this.right.status.value === 'Ready';
-        if(map && (map.required || isOriginRightIdRequired)) {
-            if(Array.isArray(value)){
-                return value.length === 0 ? 'Field can not be empty' : '';
+        if(map) {
+            const canCreate =  !map.readOnly && can('create', 'Avail', map.javaVariableName);
+
+            if (canCreate && (map.required || isOriginRightIdRequired)) {
+                if (Array.isArray(value)) {
+                    return value.length === 0 ? 'Field can not be empty' : '';
+                }
+                return this.validateNotEmpty(value);
             }
-            return this.validateNotEmpty(value);
         }
         return '';
     }
 
     areMandatoryFieldsEmpty() {
-        if(this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
+        if(this.props.availsMapping.mappings.filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
         return false;
     }
 
@@ -745,7 +749,7 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required, value, useTime) => {
+        const renderDatepickerField = (name, displayName, required, value, useTime, isTimestamp) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
@@ -754,7 +758,7 @@ class RightCreate extends React.Component {
                 id: `right-create-${name}-text`,
                 value,
                 error,
-                isTimestamp: true,
+                isTimestamp,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
@@ -798,11 +802,11 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
                             break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
                              break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
+                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;

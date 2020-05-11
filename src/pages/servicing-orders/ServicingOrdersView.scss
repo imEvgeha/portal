@@ -1,17 +1,21 @@
-.servicing-orders{
+@import '../../styles/config';
+
+.nexus-c-servicing-orders{
   height: 100%;
   padding: 24px 0 0;
-  &--title {
+
+  &__title {
     font-size: 29px;
     padding-left: 22px;
-    color: #42526E;
+    color: map-get($colors, nexus-title-color);
   }
-  &--external-filters {
+
+  &__external-filters {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
 
-    .nexus-c--customer-filter {
+    &__customer-filter {
       width: 200px;
       margin-left: 5px;
       margin-right: 5px;

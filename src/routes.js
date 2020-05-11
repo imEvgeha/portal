@@ -4,6 +4,7 @@ import availsRoutes from './pages/avails/availsRoutes';
 import metadataRoutes from './pages/metadata/metadataRoutes';
 import staticPagesRoutes from './pages/static/staticPagesRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
+import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
 const ContractProfile = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/legacy/containers/contracts/profile/ContractProfile'));
 const Contract = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'));
 const Media = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Media" */ './pages/legacy/containers/media/search/Media.js'));
@@ -34,6 +35,7 @@ const routes = [
     ...availsRoutes,
     ...metadataRoutes,
     ...servicingOrdersRoutes,
+    ...eventManagementRoutes,
     ...restRoutes,
     ...staticPagesRoutes,
 ];
