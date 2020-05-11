@@ -79,7 +79,7 @@
   {
     "colId": "status",
     "field": "status",
-    "dataType": "string",
+    "dataType": "select",
     "headerName": "Status",
     "width": 150,
     "javaVariableName": "status",
@@ -92,7 +92,7 @@
   {
     "colId": "readiness",
     "field": "readiness",
-    "dataType": "string",
+    "dataType": "select",
     "headerName": "Readiness",
     "width": 150,
     "javaVariableName": "readiness",
@@ -100,6 +100,6 @@
     "isEmphasized": true,
     "enableSearch": true,
     "searchDataType": "multiselect",
-    "options": ["Completed", "Not Completed"]
+    "options": ["Completed", "Not Configured"]
   }
 ]

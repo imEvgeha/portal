@@ -107,7 +107,7 @@ const withFilterableColumns = ({
                             columnDef.filter = SET;
                             columnDef.filterParams = {
                                 ...DEFAULT_FILTER_PARAMS,
-                                values: getFilterOptions(field),
+                                values: Array.isArray(columnDef.options) && !isEmpty(columnDef.options) ? columnDef.options : getFilterOptions(field),
                             };
                             break;
                         case TERRITORY:

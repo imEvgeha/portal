@@ -53,6 +53,7 @@ const ServicingOrdersTable = () => {
         <div className="nexus-c-servicing-orders-table">
             <ServicingOrderGrid
                 columnDefs={updateColumnDefs(columnDefs)}
+                mapping={columnDefs}
                 frameworkComponents={{
                     emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
