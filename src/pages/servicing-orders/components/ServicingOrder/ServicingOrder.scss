@@ -1,0 +1,15 @@
+.servicing-order{
+  display: flex;
+  height: 100%;
+  &__left {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 345px;
+    border-right: 1px solid #DCDCDC;
+    padding: 24px 0 0;
+  }
+  &__right {
+    padding: 24px 20px 0;
+  }
+}

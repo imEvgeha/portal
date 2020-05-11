@@ -1,0 +1,65 @@
+[
+  {
+    "colId": "eventId",
+    "javaVariableName": "eventId",
+    "field": "eventId",
+    "headerName": "Event ID",
+    "dataType": "string",
+    "width": 200,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "correlationId",
+    "javaVariableName": "correlationId",
+    "field": "correlationId",
+    "headerName": "Correlation ID",
+    "dataType": "string",
+    "width": 100,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "eventType",
+    "javaVariableName": "eventType",
+    "field": "eventType",
+    "headerName": "Event Type",
+    "dataType": "string",
+    "width": 100,
+    "searchDataType": "multiselect"
+  },
+  {
+    "colId": "eventSource",
+    "javaVariableName": "eventSource",
+    "field": "eventSource",
+    "headerName": "Event Source",
+    "dataType": "string",
+    "width": 100,
+    "searchDataType": "multiselect"
+  },
+  {
+    "colId": "tenantId",
+    "javaVariableName": "tenantId",
+    "field": "tenantId",
+    "headerName": "Tenant ID",
+    "dataType": "string",
+    "width": 100,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "objectId",
+    "javaVariableName": "objectId",
+    "field": "objectId",
+    "headerName": "Object ID",
+    "dataType": "string",
+    "width": 100,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "createdTimeStamp",
+    "javaVariableName": "createdTimeStamp",
+    "field": "createdTimeStamp",
+    "headerName": "Created Time Stamp",
+    "dataType": "datetime",
+    "width": 150,
+    "searchDataType": "datetime"
+  }
+]

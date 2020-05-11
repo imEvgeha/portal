@@ -19,7 +19,11 @@
     "javaVariableName": "soNumber",
     "displayName": "SO Number",
     "enableSearch": true,
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "cellRendererParams": {
+      "link": "/servicing-orders/",
+      "newTab": false
+    }
   },
   {
     "colId": "soDescription",

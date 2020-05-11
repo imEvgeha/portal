@@ -1,5 +1,6 @@
 import React from 'react';
 import {canRender} from '../../ability';
+import ServicingOrder from './components/ServicingOrder/ServicingOrder';
 
 const ServicingOrdersViewImport = import(/* webpackChunkName: "ServicingOrdersView" */ './ServicingOrdersView');
 const ServicingOrdersView = React.lazy(() => ServicingOrdersViewImport);
@@ -13,6 +14,7 @@ const routes = [
     },
     {
         path: `${BASE_PATH}/:id`,
+        component: canRender(ServicingOrder, 'read', 'ServicingOrders'),
     }
 ];
 
