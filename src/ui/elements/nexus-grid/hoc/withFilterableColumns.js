@@ -20,6 +20,8 @@ import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/Cu
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
+import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 
 const withFilterableColumns = ({
     hocProps = [],
@@ -87,10 +89,22 @@ const withFilterableColumns = ({
                     && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
-                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT} = FILTER_TYPE;
+                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
 
                     switch (searchDataType) {
+                        case READONLY:
+                            columnDef.floatingFilterComponent =  CUSTOM_FLOAT_READONLY;
+                            columnDef.filter = CUSTOM_READONLY;
+                            columnDef.floatingFilterComponentParams = {
+                                suppressFilterButton: true,
+                                readOnlyValue: filters.contentType,
+                            };
+                            columnDef.filterParams = {
+                                ...DEFAULT_FILTER_PARAMS,
+                                readOnlyValue: filters.contentType,
+                            };
+                            break;
                         case BOOLEAN:
                             columnDef.filter = TEXT;
                             columnDef.filterParams = {
@@ -228,7 +242,9 @@ const withFilterableColumns = ({
                         customDateFloatingFilter: CustomDateFloatingFilter,
                         customDateFilter: CustomDateFilter,
                         customComplexFloatingFilter: CustomComplexFloatingFilter,
-                        customComplexFilter: CustomComplexFilter
+                        customComplexFilter: CustomComplexFilter,
+                        customReadOnlyFilter: CustomReadOnlyFilter,
+                        customReadOnlyFloatingFilter:CustomReadOnlyFloatingFilter,
                     }}
                     isDatasourceEnabled={isDatasourceEnabled}
                     prepareFilterParams={prepareFilterParams}
