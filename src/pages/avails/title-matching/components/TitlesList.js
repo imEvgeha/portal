@@ -90,6 +90,9 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefs]);
     const repository = getRepositoryCell();
 
+    const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+    updatedColumnDefs[contentTypeIndex]['sortable'] = false;
+    
     return (
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
