@@ -18,7 +18,7 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = () => {
+const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
     const valueFormatter= ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
             case 'string':
@@ -57,6 +57,7 @@ const ServicingOrdersTable = () => {
                 frameworkComponents={{
                     emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
+                fixedFilter={fixedFilter}
             />
         </div>
     );

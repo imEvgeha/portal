@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
 import './ServicingOrdersView.scss';
 import Select from '@atlaskit/select';
@@ -10,6 +10,21 @@ const ServicingOrdersView = () => {
     const [hideCompleted, setHideCompleted] = useState(false);
     const NO_CUSTOMER_FILTER = { label: 'Select...', value: '' };
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
+    const [fixedFilter, setFixedFilter] = useState({});
+    const [externalFilter, setExternalFilter] = useState({});
+
+    useEffect(() => {
+        setFixedFilter({
+            status: hideCompleted ? ['On Hold', 'Not Started', 'In Progress', 'Canceled'] : undefined,
+            readiness: hideReady ? ['Not Configured'] : undefined,
+        });
+    }, [hideReady, hideCompleted]);
+
+    useEffect(() => {
+        setExternalFilter({
+            customer: customerFilter && customerFilter.value ? customerFilter.value : undefined,
+        });
+    }, [customerFilter]);
 
     return (
         <div className='nexus-c-servicing-orders'>
@@ -22,8 +37,8 @@ const ServicingOrdersView = () => {
                     <Select
                         options={[
                             NO_CUSTOMER_FILTER,
-                            { label: 'MGM', value: 'mgm' },
-                            { label: 'MGM2', value: 'mgm2' },
+                            { label: 'MGM', value: 'MGM' },
+                            { label: 'WB', value: 'WB' },
                         ]}
                         placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
@@ -45,7 +60,10 @@ const ServicingOrdersView = () => {
                     Hide Completed
                 </Button>
             </div>
-            <ServicingOrdersTable />
+            <ServicingOrdersTable
+                fixedFilter={fixedFilter}
+                externalFilter={externalFilter}
+            />
         </div>
     );
 };

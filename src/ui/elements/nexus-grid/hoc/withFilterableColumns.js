@@ -29,7 +29,7 @@ const withFilterableColumns = ({
     prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = (props) => {
-        const {columnDefs, mapping, selectValues, params, fetchAvailMapping} = props;
+        const {columnDefs, mapping, selectValues, params, fetchAvailMapping, fixedFilter} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
@@ -49,33 +49,67 @@ const withFilterableColumns = ({
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
-        }, [columnDefs, selectValues]);
+        }, [columnDefs, selectValues, fixedFilter]);
 
         // apply initial filter
         useEffect(() => {
-            if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
-                Object.keys(filters).forEach(key => {
+            if (gridApi && Array.isArray(mapping) && mapping.length) {
+                //union of keys for column filter and fixed filter
+                const keys = [...new Set([...Object.keys(filters), ...Object.keys(fixedFilter)])];
+                keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
+                    const currentValue = get(filters, key, undefined);
+                    let locked = false;
+                    let filterValue;
+                    if(fixedFilter.hasOwnProperty(key)){
+                        switch (fixedFilter[key]) {
+                            //clear filter but don't lock it
+                            case undefined:
+                                filterValue = null;
+                                break;
+                            //clear filter and lock it
+                            case null:
+                                filterValue = null;
+                                locked = true;
+                            default:
+                                filterValue = fixedFilter[key];
+                                locked = true;
+
+                        }
+                    }else{
+                        filterValue = currentValue;
+                    }
+
                     if (filterInstance) {
                         const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                            const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
-                            applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
-                            return;
+                        if(filterValue) {
+                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
+                                const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
+                                applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
+                            }else {
+                                filterInstance.setModel({
+                                    type: 'equals',
+                                    filter: filterValue,
+                                });
+                            }
+                        }else{
+                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
+                                filterInstance.selectEverything();
+                                filterInstance.applyModel();
+                            }else {
+                                filterInstance.setModel(null);
+                            }
                         }
-                        filterInstance.setModel({
-                            type: 'equals',
-                            filter: filters[key],
-                        });
                     }
                 });
+
                 gridApi.onFilterChanged();
                 setIsDatasourceEnabled(true);
-            } else if (isEmpty(filters)) {
+            } else {
                 setIsDatasourceEnabled(true);
             }
-        }, [gridApi, mapping]);
+        }, [gridApi, mapping, fixedFilter]);
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);

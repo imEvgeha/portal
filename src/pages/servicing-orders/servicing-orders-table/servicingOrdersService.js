@@ -4,7 +4,8 @@ import data from './servicingOrdersMockData.json';
 // const http = Http.create({defaultErrorHandling: false});
 
 // TODO: Use an actual API when ready
-export const getServicingOrders = (params, page, pageSize, sortedParams) => {
+export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
+    console.warn('servicingOrdersService.getServicingOrders ', searchCriteria, page, size, sortedParams);
     return new Promise((resolve, reject) => resolve(data));
 };
 
