@@ -5,7 +5,6 @@
     "field": "eventId",
     "headerName": "Event ID",
     "dataType": "string",
-    "width": 200,
     "searchDataType": "string"
   },
   {
@@ -14,7 +13,6 @@
     "field": "correlationId",
     "headerName": "Correlation ID",
     "dataType": "string",
-    "width": 100,
     "searchDataType": "string"
   },
   {
@@ -23,7 +21,6 @@
     "field": "eventType",
     "headerName": "Event Type",
     "dataType": "string",
-    "width": 100,
     "searchDataType": "multiselect"
   },
   {
@@ -32,25 +29,24 @@
     "field": "eventSource",
     "headerName": "Event Source",
     "dataType": "string",
-    "width": 100,
     "searchDataType": "multiselect"
   },
   {
     "colId": "tenantId",
     "javaVariableName": "tenantId",
+    "width": 100,
     "field": "tenantId",
     "headerName": "Tenant ID",
     "dataType": "string",
-    "width": 100,
     "searchDataType": "string"
   },
   {
     "colId": "objectId",
     "javaVariableName": "objectId",
+    "width": 100,
     "field": "objectId",
     "headerName": "Object ID",
     "dataType": "string",
-    "width": 100,
     "searchDataType": "string"
   },
   {
@@ -59,7 +55,14 @@
     "field": "createdTimeStamp",
     "headerName": "Created Time Stamp",
     "dataType": "datetime",
-    "width": 150,
+    "searchDataType": "datetime"
+  },
+  {
+    "colId": "postedTimeStamp",
+    "javaVariableName": "postedTimeStamp",
+    "field": "postedTimeStamp",
+    "headerName": "Posted Time Stamp",
+    "dataType": "datetime",
     "searchDataType": "datetime"
   }
 ]

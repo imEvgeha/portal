@@ -5,12 +5,12 @@ import {servicingOrdersService} from './servicingOrdersService';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import EmphasizedCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import columnDefs from '../columnMappings.json';
 import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 
 const ServicingOrderGrid = compose(
     withSideBar(),

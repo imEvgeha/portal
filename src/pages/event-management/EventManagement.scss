@@ -1,25 +1,21 @@
-.event-management {
+.nexus-c-event-management {
+  flex-direction: column;
   height: 100%;
   padding: 24px 0 0;
-  &__title {
+}
+
+.nexus-c-event-management__title {
     font-size: 29px;
     padding-left: 22px;
     color: #42526E;
   }
-  &--external-filters {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
 
-    .nexus-c--customer-filter {
-      width: 200px;
-      margin-left: 5px;
-      margin-right: 5px;
-    }
+.nexus-c-event-management__table {
+    width: 100%;
+    height: 100%;
+    padding: 24px 24px 45px 24px;
 
-    button {
-      margin-left: 5px;
-      margin-right: 5px;
+    & .nexus-c-nexus-grid {
+        height: 100%;
     }
-  }
 }
