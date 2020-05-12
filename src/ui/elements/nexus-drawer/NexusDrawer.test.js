@@ -8,7 +8,6 @@ describe('NexusDrawer', () => {
     it('should match snapshot', () => {
         wrapper = shallow(
             <NexusDrawer
-                position="right"
                 width="narrow"
                 isOpen={true}
                 onClose={() => null}
@@ -50,8 +49,8 @@ describe('NexusDrawer', () => {
             />
         );
 
-        expect(wrapper.find('.nexus-c-drawer__close-btn')).toHaveLength(1);
-        wrapper.find('.nexus-c-drawer__close-btn').simulate('click');
+        expect(wrapper.find('.nexus-c-drawer__header--close-btn')).toHaveLength(1);
+        wrapper.find('.nexus-c-drawer__header--close-btn').props().onClick();
         expect(onClose).toHaveBeenCalled();
     });
 });
