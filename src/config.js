@@ -52,6 +52,9 @@ export const defaultConfiguration = {
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0
+    },
+    googleAnalytics: {
+        'propertyId': 'UA-165264495-2'
     }
 };
 

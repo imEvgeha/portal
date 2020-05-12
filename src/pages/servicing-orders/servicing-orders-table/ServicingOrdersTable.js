@@ -10,9 +10,11 @@ import EmphasizedCellRenderer
 import columnDefs from '../columnMappings.json';
 import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 
 const ServicingOrderGrid = compose(
     withSideBar(),
+    withFilterableColumns(),
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
@@ -51,6 +53,7 @@ const ServicingOrdersTable = () => {
         <div className="nexus-c-servicing-orders-table">
             <ServicingOrderGrid
                 columnDefs={updateColumnDefs(columnDefs)}
+                mapping={columnDefs}
                 frameworkComponents={{
                     emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}

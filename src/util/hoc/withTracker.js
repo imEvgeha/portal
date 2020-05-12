@@ -1,22 +1,23 @@
 import React, { Component, } from 'react';
 import GoogleAnalytics from 'react-ga';
+import config from 'react-global-configuration';
 
-const googleAnalyticsId = process.env.GA_ACCOUNT_ID;
+export function initializeTracker() {
+    const googleAnalyticsId = config.get('googleAnalytics.propertyId');
 
-if(googleAnalyticsId){
-    GoogleAnalytics.initialize(googleAnalyticsId);
+    if (googleAnalyticsId) {
+        GoogleAnalytics.initialize(googleAnalyticsId);
+    }
 }
 
 const withTracker = (WrappedComponent, options = {}) => {
     const trackPage = page => {
-        if(googleAnalyticsId) {
-            GoogleAnalytics.set({
-                page,
-                ...options,
-            });
+        GoogleAnalytics.set({
+            page,
+            ...options,
+        });
 
-            GoogleAnalytics.pageview(page);
-        }
+        GoogleAnalytics.pageview(page);
     };
 
     class ComposedComponent extends Component {
