@@ -98,11 +98,11 @@ const withFilterableColumns = ({
                             columnDef.filter = CUSTOM_READONLY;
                             columnDef.floatingFilterComponentParams = {
                                 suppressFilterButton: true,
-                                readOnlyValue: filters.contentType,
+                                readOnlyValue: filters['contentType'],
                             };
                             columnDef.filterParams = {
                                 ...DEFAULT_FILTER_PARAMS,
-                                readOnlyValue: filters.contentType,
+                                readOnlyValue: filters['contentType'],
                             };
                             break;
                         case BOOLEAN:
