@@ -6,7 +6,7 @@ describe('EventManagement', () => {
     describe('HTML content', () => {
         const wrapper = shallow(<EventManagement />);
         it('should render header title', () => {
-            expect(wrapper.find('.event-management .event-management__title').text()).toEqual('Event Management');
+            expect(wrapper.find('.nexus-c-event-management .nexus-c-event-management__title').text()).toEqual('Event Management');
         });
         it('should render EventDrawer', () => {
             expect(wrapper.find('EventDrawer').length).toEqual(1);

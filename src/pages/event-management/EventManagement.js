@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import EventDrawer from './components/EventDrawer/EventDrawer';
+import {TITLE} from './eventManagementConstants';
+import EventManagementTable from './components/event-management-table/EventManagementTable';
 import './EventManagement.scss';
 
 const EventManagement = () => {
@@ -12,9 +14,12 @@ const EventManagement = () => {
     };
 
     return (
-        <div className='event-management'>
-            <div className='event-management__title'>
-                Event Management
+        <div className='nexus-c-event-management'>
+            <div className='nexus-c-event-management__title'>
+                {TITLE}
+            </div>
+            <div className="nexus-c-event-management__table">
+                <EventManagementTable/>
             </div>
             <EventDrawer
                 eventId={selectedEvent}
