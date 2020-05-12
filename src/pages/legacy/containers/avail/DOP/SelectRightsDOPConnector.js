@@ -7,6 +7,7 @@ import DOP from '../../../../../util/DOP';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import {isEqual} from 'lodash';
 
 const DOP_POP_UP_TITLE = 'Select rights planning';
 const DOP_POP_UP_MESSAGE = 'No rights selected';
@@ -23,6 +24,14 @@ class SelectRightsDOPConnector extends Component {
 
     componentDidMount() {
         DOP.setDOPMessageCallback(this.showConfirmDialog);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {promotedRights = []} = this.props;
+
+        if (!isEqual(prevProps.promotedRights, promotedRights)) {
+            DOP.setData(promotedRights);
+        }
     }
 
     openDOPPopUp = () => {
