@@ -2,27 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 
-const EventDrawer = ({eventId, onDrawerClose}) => {
+const EventDrawer = ({event, onDrawerClose}) => {
     return (
         <div className='nexus-c-event-drawer'>
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={!!eventId}
+                isOpen={!!(event && event.eventId)}
                 title='Event Details'
             >
-                <div>content</div>
+                <div>{event && event.eventId}</div>
             </NexusDrawer>
         </div>
     );
 };
 
 EventDrawer.propTypes = {
-    eventId: PropTypes.string,
+    event: PropTypes.object,
     onDrawerClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
-    eventId: '',
+    event: null,
     onDrawerClose: () => null,
 };
 

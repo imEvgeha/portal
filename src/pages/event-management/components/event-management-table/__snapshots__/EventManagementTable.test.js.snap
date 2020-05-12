@@ -72,5 +72,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
       },
     ]
   }
+  onSelectionChanged={[Function]}
+  rowSelection="single"
 />
 `;
