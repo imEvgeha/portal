@@ -126,7 +126,10 @@ class SearchResultsTab extends React.Component {
                                     </span>
                                 </a>
                               )}
-                            <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }} />
+                            <Clear clearAllSelected={() => {
+                                this.clearAllSelected && this.clearAllSelected();
+                                this.clearAllSelectedMainTable && this.clearAllSelectedMainTable(); 
+                                }} />
                         </div>
                         <div style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
@@ -154,6 +157,7 @@ class SearchResultsTab extends React.Component {
                             availsMapping={this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             onDataLoaded={this.storeData}
+                            setClearAllSelected={clearAllSelected => this.clearAllSelectedMainTable = clearAllSelected}
                         />
                     </div>
                     <div>
