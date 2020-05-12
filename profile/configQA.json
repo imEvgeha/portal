@@ -19,5 +19,8 @@
     "clientId": "portalapp-public",
     "realm": "Vubiquity",
     "url": "https://auth.qa.vubiquity.com/auth"
+  },
+  "googleAnalytics": {
+    "propertyId": "UA-165264495-2"
   }
 }

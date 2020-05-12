@@ -33,10 +33,11 @@ import {
     loadDopState,
     loadManualRightEntryState
 } from './pages/legacy/stores/index'; // TODO: remove 
-import {loadProfileInfo} from './pages/legacy/stores/actions'; // TODO: remove
-import routes from './routes';
+import { loadProfileInfo } from './pages/legacy/stores/actions'; // TODO: remove
+import { routesWithTracking } from './routes';
 import Router from './Router';
 import AppProviders from './AppProviders';
+import { initializeTracker } from './util/hoc/withTracker';
 
 const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
@@ -68,7 +69,7 @@ const App = () => (
                     <>
                         <Toast />
                         <NexusLayout>
-                            <Router routes={routes} />
+                            <Router routes={routesWithTracking()} />
                         </NexusLayout>
                     </>
                 </ConnectedRouter>
@@ -77,8 +78,9 @@ const App = () => (
     </AppContainer>
 );
 
-function renderApp () {
+function renderApp() {
     createKeycloakInstance();
+    initializeTracker();
     store.runSaga(rootSaga);
     render(
         <App />,
