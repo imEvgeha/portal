@@ -91,7 +91,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const repository = getRepositoryCell();
 
     const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-    updatedColumnDefs[contentTypeIndex]['sortable'] = false;
+    if(contentTypeIndex !== -1) 
+        updatedColumnDefs[contentTypeIndex]['sortable'] = false;
     
     return (
         <>
