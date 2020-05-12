@@ -1,4 +1,5 @@
 import React from 'react';
+import './CustomReadOnlyFilter.scss';
 
 export default class CustomReadOnlyFilter extends React.Component {
     constructor(props) {
@@ -29,9 +30,9 @@ export default class CustomReadOnlyFilter extends React.Component {
     };
     render () {
         return (
-            <div >
-            Read Only Filter:
-            <input readOnly value={this.state.value}/>
+            <div className='nexus-c-custom-read-only-filter'>
+              
+            <span>Read Only value: {' ' + this.state.value}</span>
           </div>
         );
     }

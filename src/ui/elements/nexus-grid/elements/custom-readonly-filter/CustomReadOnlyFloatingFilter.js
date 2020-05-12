@@ -1,4 +1,5 @@
 import React from 'react';
+import './CustomReadOnlyFilter.scss';
 
 class CustomReadOnlyFloatingFilter extends React.Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class CustomReadOnlyFloatingFilter extends React.Component {
     render() {
 
         return (
-            <div>
+            <div className='nexus-c-custom-read-only-floating-filter'>
                 {this.props.readOnlyValue}
             </div>
         );
