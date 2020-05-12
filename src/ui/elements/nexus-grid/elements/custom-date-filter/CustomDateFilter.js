@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import './CustomDateFilter.scss';
-import {NexusDateTimeWindowPicker}
-    from '../../../../../ui/elements';
+import NexusDateTimeWindowPicker
+    from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import {DATEPICKER_LABELS} from '../../constants';
 import './CustomDateFilter.scss';
 
