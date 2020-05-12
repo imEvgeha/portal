@@ -22,7 +22,7 @@ const ServicingOrdersView = () => {
 
     useEffect(() => {
         setExternalFilter({
-            customer: customerFilter && customerFilter.value ? customerFilter.value : undefined,
+            ...customerFilter && customerFilter.value && {customer : customerFilter.value}
         });
     }, [customerFilter]);
 

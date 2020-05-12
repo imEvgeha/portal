@@ -58,6 +58,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
                     emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
                 fixedFilter={fixedFilter}
+                externalFilter={externalFilter}
             />
         </div>
     );
