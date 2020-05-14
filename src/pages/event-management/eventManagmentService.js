@@ -7,7 +7,7 @@ const http = Http.create();
 export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) => {
     let paramString = '';
 
-    // Build sortParams string if sortparams are provided
+    // Build sortParams string if sortParams are provided
     if (!isEmpty(sortedParams)) {
         paramString = sortedParams.reduce((sortedParams, {colId, sort}) => (
             `${sortedParams}${colId}=${sort}`
@@ -21,40 +21,27 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
     if (!isEmpty(params)) {
         paramString = Object.keys(params).reduce((paramString, paramKey) => {
 
-            // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
-            // and packs them into a param string
+            // If we have a complex filter, break it down
             if (isObject(params[paramKey])) {
-                const {
-                    createdTimeStampFrom,
-                    createdTimeStampTo,
-                    postedTimeStampFrom,
-                    postedTimeStampTo
-                } = params[paramKey];
+                const complexFilter = params[paramKey];
 
-                const createdTimeStampStart = createdTimeStampFrom
-                    ? `${BASE_PARAM_NAME}createdTimeStampStart=${createdTimeStampFrom}`
-                    : '';
-                const createdTimeStampEnd = createdTimeStampTo
-                    ? `${BASE_PARAM_NAME}createdTimeStampEnd=${createdTimeStampTo}`
-                    : '';
+                // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
+                // and packs them into a param string
+                paramString = Object.keys(complexFilter).reduce((paramString, key) => {
+                    if (complexFilter[key]) {
+                        let filterParamKey = key;
 
-                const postedTimeStampStart = postedTimeStampFrom
-                    ? `${BASE_PARAM_NAME}postedTimeStampStart=${postedTimeStampFrom}`
-                    : '';
-                const postedTimeStampEnd = postedTimeStampTo
-                    ? `${BASE_PARAM_NAME}postedTimeStampEnd=${postedTimeStampTo}`
-                    : '';
+                        if (key.endsWith('From')) {
+                            filterParamKey = `${key.slice(0, -4)}Start`;
+                        } else if (key.endsWith('To')) {
+                            filterParamKey = `${key.slice(0, -2)}End`;
+                        }
 
-                const createdTimeStampParam = (createdTimeStampStart && createdTimeStampEnd)
-                    ? `${createdTimeStampStart}&${createdTimeStampEnd}`
-                    : `${createdTimeStampStart || createdTimeStampEnd || ''}`;
+                        return `${paramString}&${BASE_PARAM_NAME}${filterParamKey}=${complexFilter[key]}`;
+                    }
+                }, paramString);
 
-                const postedTimeStampParam = (postedTimeStampStart && postedTimeStampEnd)
-                    ? `${postedTimeStampStart}&${postedTimeStampEnd}`
-                    : `${postedTimeStampStart || postedTimeStampEnd || ''}`;
-
-                const paramValue = createdTimeStampParam || postedTimeStampParam;
-                return `${paramString}&${paramValue}`;
+                return paramString;
             }
 
             return `${paramString}&${BASE_PARAM_NAME}${paramKey}=${params[paramKey]}`;
