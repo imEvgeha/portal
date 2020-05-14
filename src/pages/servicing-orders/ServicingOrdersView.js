@@ -1,5 +1,5 @@
 import React from 'react';
-import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
+import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import './ServicingOrdersView.scss';
 
 const ServicingOrdersView = () => {

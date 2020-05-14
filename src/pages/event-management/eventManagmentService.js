@@ -20,7 +20,6 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
     // Build param string if params are provided
     if (!isEmpty(params)) {
         paramString = Object.keys(params).reduce((paramString, paramKey) => {
-
             // If we have a complex filter, break it down
             if (isObject(params[paramKey])) {
                 const complexFilter = params[paramKey];
