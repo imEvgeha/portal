@@ -2,7 +2,7 @@
     "data": [
         {
             "eventId": "1abc-5sjkk8-233k-23ki9087",
-            "corelationId": "eventType_122",
+            "correlationId": "eventType_122",
             "eventSource": "config-api",
             "eventType": "event-type.created",
             "objectId": "",
@@ -13,7 +13,7 @@
         },
         {
             "eventId": "13456-5sjkk8-233k-23ki9087",
-            "corelationId": "eventType_1245",
+            "correlationId": "eventType_1245",
             "eventSource": "config-api",
             "eventType": "event-type.created",
             "objectId": "",
@@ -24,8 +24,7 @@
         },
         {
             "eventId": "1bavda-5sjkk8-233k-23ki9087",
-            "corelationId": "eventType_1ujk",
-            "corelationId": "",
+            "correlationId": "eventType_1ujk",
             "eventSource": "config-api",
             "eventType": "event-type.created",
             "objectId": "",
@@ -36,8 +35,7 @@
         },
         {
             "eventId": "1abc-89kkkk8-233k-23ki9087",
-            "corelationId": "",
-            "corelationId": "eventType_145",
+            "correlationId": "eventType_145",
             "eventSource": "config-api",
             "eventType": "event-type.created",
             "objectId": "",
@@ -48,8 +46,7 @@
         },
         {
             "eventId": "1abc-5daadda-233k-23ki9087",
-            "corelationId": "",
-            "corelationId": "eventType_abc",
+            "correlationId": "eventType_abc",
             "eventSource": "config-api",
             "eventType": "event-type.created",
             "objectId": "",
