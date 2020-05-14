@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
-import './ServicingOrdersView.scss';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
+import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
+import './ServicingOrdersView.scss';
+import {SERVICING_ORDERS_TTL, CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN} from './constants';
 
 const ServicingOrdersView = () => {
 
-    const [hideReady, setHideReady] = useState(false);
-    const [hideCompleted, setHideCompleted] = useState(false);
+    const [isHideReady, setIsHideReady] = useState(false);
+    const [isHideCompleted, setIsHideCompleted] = useState(false);
     const NO_CUSTOMER_FILTER = { label: 'Select...', value: '' };
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
     const [fixedFilter, setFixedFilter] = useState({});
@@ -15,10 +16,10 @@ const ServicingOrdersView = () => {
 
     useEffect(() => {
         setFixedFilter({
-            status: hideCompleted ? ['On Hold', 'Not Started', 'In Progress', 'Canceled'] : undefined,
-            readiness: hideReady ? ['Not Configured'] : undefined,
+            status: isHideCompleted ? ['On Hold', 'Not Started', 'In Progress', 'Canceled'] : undefined,
+            readiness: isHideReady ? ['Not Configured'] : undefined,
         });
-    }, [hideReady, hideCompleted]);
+    }, [isHideReady, isHideCompleted]);
 
     useEffect(() => {
         setExternalFilter({
@@ -29,11 +30,11 @@ const ServicingOrdersView = () => {
     return (
         <div className='nexus-c-servicing-orders'>
             <div className='nexus-c-servicing-orders__title'>
-                Servicing Orders
+                {SERVICING_ORDERS_TTL}
             </div>
             <div className='nexus-c-servicing-orders__external-filters'>
                 <div className='nexus-c-servicing-orders__customer-filter'>
-                    Customer
+                    {CUSTOMER_LBL}
                     <Select
                         options={[
                             NO_CUSTOMER_FILTER,
@@ -48,16 +49,16 @@ const ServicingOrdersView = () => {
                     />
                 </div>
                 <Button
-                    isSelected={hideReady}
-                    onClick={() => setHideReady(!hideReady)}
+                    isSelected={isHideReady}
+                    onClick={() => setIsHideReady(!isHideReady)}
                 >
-                    Hide Ready
+                    {HIDE_READY_BTN}
                 </Button>
                 <Button
-                    isSelected={hideCompleted}
-                    onClick={() => setHideCompleted(!hideCompleted)}
+                    isSelected={isHideCompleted}
+                    onClick={() => setIsHideCompleted(!isHideCompleted)}
                 >
-                    Hide Completed
+                    {HIDE_COMPLETED_BTN}
                 </Button>
             </div>
             <ServicingOrdersTable
