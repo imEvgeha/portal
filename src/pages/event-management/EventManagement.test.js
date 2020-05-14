@@ -1,6 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import EventManagement from './EventManagement';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 
 describe('EventManagement', () => {
     describe('HTML content', () => {
@@ -11,10 +12,30 @@ describe('EventManagement', () => {
         it('should render EventDrawer', () => {
             expect(wrapper.find('EventDrawer').length).toEqual(1);
         });
-        it('should send correct props to EventDrawer', () => {
-            expect(wrapper.find('EventDrawer').props().eventId).toEqual('');
+
+        const deselectAllMock = jest.fn();
+        const event = {eventId:'123'};
+        const gridApiMock = {
+            deselectAll: deselectAllMock,
+            getSelectedRows: () => ([event]),
+        };
+        const eventManagementTableWrapper = wrapper.find('EventManagementTable');
+        const {READY, SELECTION_CHANGED} = GRID_EVENTS;
+        it('should render EventManagementTable', () => {
+            expect(eventManagementTableWrapper.length).toEqual(1);
+        });
+        it('should set api on grid event and passes correct prop to EventDrawer', () => {
+            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
+            eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
+            wrapper.update();
+            expect(wrapper.find('EventDrawer').props().event).toEqual(event);
+        });
+        it('should correct prop to close drawer in EventDrawer', () => {
+            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
+            eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
+            wrapper.update();
             wrapper.find('EventDrawer').props().onDrawerClose();
-            expect(wrapper.state('selectedEvent')).toEqual('');
+            expect(deselectAllMock.mock.calls.length).toEqual(1);
         });
     });
 });

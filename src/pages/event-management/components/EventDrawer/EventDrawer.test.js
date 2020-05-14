@@ -8,7 +8,7 @@ describe('EventDrawer', () => {
         const wrapper = shallow(
             <EventDrawer
                 onDrawerClose={onCloseMock}
-                eventId='123'
+                event={{eventId: '123'}}
             />);
         it('should render NexusDrawer', () => {
             expect(wrapper.find('NexusDrawer').length).toEqual(1);
@@ -17,7 +17,7 @@ describe('EventDrawer', () => {
             expect(wrapper.find('NexusDrawer').props().isOpen).toEqual(true);
         });
         it('should pass correct isOpen prop to NexusDrawer when event is not selected', () => {
-            wrapper.setProps({eventId: ''});
+            wrapper.setProps({event: null});
             expect(wrapper.find('NexusDrawer').props().isOpen).toEqual(false);
         });
         it('should pass correct closeDrawer function prop NexusDrawer', () => {

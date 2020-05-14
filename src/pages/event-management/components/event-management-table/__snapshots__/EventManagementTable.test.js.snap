@@ -72,7 +72,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
       },
     ]
   }
-  onSelectionChanged={[Function]}
+  onGridEvent={[MockFunction]}
   rowSelection="single"
 />
 `;
