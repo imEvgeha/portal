@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventManagementTable should match snapshot 1`] = `
+<ComposedComponent
+  columnDefs={
+    Array [
+      Object {
+        "colId": "eventId",
+        "dataType": "string",
+        "field": "eventId",
+        "headerName": "Event ID",
+        "javaVariableName": "eventId",
+        "searchDataType": "string",
+      },
+      Object {
+        "colId": "correlationId",
+        "dataType": "string",
+        "field": "correlationId",
+        "headerName": "Correlation ID",
+        "javaVariableName": "correlationId",
+        "searchDataType": "string",
+      },
+      Object {
+        "colId": "eventType",
+        "dataType": "string",
+        "field": "eventType",
+        "headerName": "Event Type",
+        "javaVariableName": "eventType",
+        "searchDataType": "multiselect",
+      },
+      Object {
+        "colId": "eventSource",
+        "dataType": "string",
+        "field": "eventSource",
+        "headerName": "Event Source",
+        "javaVariableName": "eventSource",
+        "searchDataType": "multiselect",
+      },
+      Object {
+        "colId": "tenantId",
+        "dataType": "string",
+        "field": "tenantId",
+        "headerName": "Tenant ID",
+        "javaVariableName": "tenantId",
+        "searchDataType": "string",
+        "width": 100,
+      },
+      Object {
+        "colId": "objectId",
+        "dataType": "string",
+        "field": "objectId",
+        "headerName": "Object ID",
+        "javaVariableName": "objectId",
+        "searchDataType": "string",
+        "width": 100,
+      },
+      Object {
+        "colId": "createdTimeStamp",
+        "dataType": "datetime",
+        "field": "createdTimeStamp",
+        "headerName": "Created Time Stamp",
+        "javaVariableName": "createdTimeStamp",
+        "searchDataType": "datetime",
+      },
+      Object {
+        "colId": "postedTimeStamp",
+        "dataType": "datetime",
+        "field": "postedTimeStamp",
+        "headerName": "Posted Time Stamp",
+        "javaVariableName": "postedTimeStamp",
+        "searchDataType": "datetime",
+      },
+    ]
+  }
+/>
+`;
