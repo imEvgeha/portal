@@ -1,15 +1,14 @@
 import React from 'react';
-import {camelCase, startCase} from 'lodash';
 import {compose} from 'redux';
 import {servicingOrdersService} from './servicingOrdersService';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import EmphasizedCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import columnDefs from '../columnMappings.json';
-import {DATETIME_FIELDS, ISODateToView} from '../../../util/DateTimeUtils';
 import './ServicingOrdersTable.scss';
 
 const ServicingOrderGrid = compose(
@@ -19,34 +18,18 @@ const ServicingOrderGrid = compose(
 )(NexusGrid);
 
 const ServicingOrdersTable = () => {
-    const valueFormatter= ({dataType = '', field = '', isEmphasized = false}) => {
-        switch (dataType) {
-            case 'string':
-                return (params) => {
-                    const {data = {}} = params || {};
-                    const {[field]: value = ''} = data || {};
-                    // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
-                    return isEmphasized ? startCase(camelCase(value)) : value;
-                };
-            case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                return (params) => {
-                    const {data = {}} = params || {};
-                    const {[field]: date = ''} = data || {};
-                    return ISODateToView(date, dataType);
-                };
-        }
-    };
-
     const updateColumnDefs = (columnDefs) => {
-        return columnDefs.map(columnDef => (
-            {
-                ...columnDef,
-                valueFormatter: valueFormatter(columnDef),
-                cellRenderer: (columnDef.isEmphasized)
-                    ? 'emphasizedStringCellRenderer'
-                    : 'loadingCellRenderer',
-            }
-        ));
+        return columnDefs.map(columnDef => {
+            return (
+                {
+                    ...columnDef,
+                    valueFormatter: createValueFormatter(columnDef),
+                    cellRenderer: (columnDef.isEmphasized)
+                        ? 'emphasizedCellRenderer'
+                        : 'loadingCellRenderer',
+                }
+            );
+        });
     };
 
     return (
@@ -55,7 +38,7 @@ const ServicingOrdersTable = () => {
                 columnDefs={updateColumnDefs(columnDefs)}
                 mapping={columnDefs}
                 frameworkComponents={{
-                    emphasizedStringCellRenderer: EmphasizedCellRenderer,
+                    emphasizedCellRenderer: EmphasizedCellRenderer,
                 }}
             />
         </div>

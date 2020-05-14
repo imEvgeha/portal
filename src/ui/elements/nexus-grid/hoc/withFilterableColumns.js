@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {get, omit, isEmpty, pickBy, cloneDeep} from 'lodash';
+import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {isObject} from '../../../../util/Common';
 import {
-    GRID_EVENTS,
-    DEFAULT_HOC_PROPS,
-    FILTERABLE_DATA_TYPES,
-    FILTER_TYPE,
-    DEFAULT_FILTER_PARAMS,
-    NOT_FILTERABLE_COLUMNS,
-    EXCLUDED_INITIAL_FILTER_VALUES,
     AG_GRID_COLUMN_FILTER,
+    DEFAULT_FILTER_PARAMS,
+    DEFAULT_HOC_PROPS,
+    EXCLUDED_INITIAL_FILTER_VALUES,
+    FILTER_TYPE,
+    FILTERABLE_DATA_TYPES,
+    GRID_EVENTS,
+    NOT_FILTERABLE_COLUMNS,
 } from '../constants';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
@@ -44,7 +44,7 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (isEmpty(selectValues)) {
                 fetchAvailMapping();
-            };
+            }
         }, [selectValues]);
 
         useEffect(() => {
@@ -81,7 +81,8 @@ const withFilterableColumns = ({
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
-            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
+
+            return copiedColumnDefs.map(columnDef => {
                 const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const {field} = columnDef;
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
@@ -89,12 +90,33 @@ const withFilterableColumns = ({
                     && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
-                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
+                    const {
+                        TEXT,
+                        NUMBER,
+                        SET,
+                        CUSTOM_DATE,
+                        CUSTOM_COMPLEX,
+                        CUSTOM_READONLY,
+                        CUSTOM_FLOAT_READONLY
+                    } = AG_GRID_COLUMN_FILTER;
+
+                    const {
+                        BOOLEAN,
+                        INTEGER,
+                        DOUBLE,
+                        YEAR,
+                        MULTISELECT,
+                        TERRITORY,
+                        AUDIO_LANGUAGE,
+                        TIMESTAMP,
+                        BUSINESS_DATETIME,
+                        REGIONAL_MIDNIGHT,
+                        READONLY
+                    } = FILTER_TYPE;
 
                     switch (searchDataType) {
                         case READONLY:
-                            columnDef.floatingFilterComponent =  CUSTOM_FLOAT_READONLY;
+                            columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
                             columnDef.filter = CUSTOM_READONLY;
                             columnDef.floatingFilterComponentParams = {
                                 suppressFilterButton: true,
@@ -121,7 +143,9 @@ const withFilterableColumns = ({
                             columnDef.filter = SET;
                             columnDef.filterParams = {
                                 ...DEFAULT_FILTER_PARAMS,
-                                values: Array.isArray(columnDef.options) && !isEmpty(columnDef.options) ? columnDef.options : getFilterOptions(field),
+                                values: (Array.isArray(columnDef.options) && !isEmpty(columnDef.options))
+                                    ? columnDef.options
+                                    : getFilterOptions(field),
                             };
                             break;
                         case TERRITORY:
@@ -130,10 +154,7 @@ const withFilterableColumns = ({
                                 ...DEFAULT_FILTER_PARAMS,
                                 values: getFilterOptions(field),
                             };
-                            columnDef.keyCreator = params => {
-                                const countries = params.value.map(({country}) => country);
-                                return countries;
-                            };
+                            columnDef.keyCreator = params => params.value.map(({country}) => country);
                             break;
                         case AUDIO_LANGUAGE:
                             columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
@@ -167,7 +188,7 @@ const withFilterableColumns = ({
                             columnDef.floatingFilterComponent = 'customDateFloatingFilter';
                             columnDef.filter = CUSTOM_DATE;
                             columnDef.filterParams = {
-                                // TODO; check is this neccessary
+                                // TODO; check is this necessary
                                 ...DEFAULT_FILTER_PARAMS,
                                 filterOptions: ['inRange'],
                                 //
@@ -181,8 +202,6 @@ const withFilterableColumns = ({
                 }
                 return columnDef;
             });
-
-            return filterableColumnDefs;
         }
 
         const onGridEvent = (data) => {
@@ -218,14 +237,13 @@ const withFilterableColumns = ({
         const getFilterOptions = (field) => {
             //TODO: refresh and show values when loaded
             const options = get(selectValues, field, []);
-            const parsedSelectValues = options.map(option => {
+            return options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields
                     return option.value || option.countryCode;
                 }
                 return option;
             });
-            return parsedSelectValues;
         };
 
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);

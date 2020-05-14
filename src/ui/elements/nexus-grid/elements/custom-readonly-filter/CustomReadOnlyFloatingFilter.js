@@ -7,7 +7,6 @@ class CustomReadOnlyFloatingFilter extends React.Component {
         this.state = {
             value: this.props.readOnlyValue
         };
-
     }
 
     onParentModelChanged = ({filter = {}}) => {
@@ -15,10 +14,9 @@ class CustomReadOnlyFloatingFilter extends React.Component {
     };
 
     render() {
-
         return (
             <div className='nexus-c-custom-read-only-floating-filter'>
-                {this.props.readOnlyValue}
+                {this.state.value}
             </div>
         );
     }

@@ -9,7 +9,6 @@ export default class CustomReadOnlyFilter extends React.Component {
         };
     }
 
-
     setModel = (model) => {
         this.setState({value : model ? model.value : this.props.readOnlyValue});
     };
@@ -31,9 +30,8 @@ export default class CustomReadOnlyFilter extends React.Component {
     render () {
         return (
             <div className='nexus-c-custom-read-only-filter'>
-              
-            <span>Read Only value: {' ' + this.state.value}</span>
-          </div>
+                <span>Read Only value: {' ' + this.state.value}</span>
+            </div>
         );
     }
 }
