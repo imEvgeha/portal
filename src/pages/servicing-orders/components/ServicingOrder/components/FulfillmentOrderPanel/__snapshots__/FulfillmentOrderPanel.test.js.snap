@@ -2,27 +2,27 @@
 
 exports[`FulfillmentOrderPanel should match snapshot 1`] = `
 <div
-  className="nexus-c-fulfillmentOrderPanel "
+  className="nexus-c-fulfillment-order-panel  "
   onClick={[Function]}
 >
   <div
-    className="nexus-c-fulfillmentOrderPanel__title"
+    className="nexus-c-fulfillment-order-panel__title"
   >
     <[object Object]
-      className="nexus-c-fulfillmentOrderPanel__file-icon"
+      className="nexus-c-fulfillment-order-panel__file-icon"
     />
     <span
-      className="nexus-c-fulfillmentOrderPanel__filename"
+      className="nexus-c-fulfillment-order-panel__filename"
       title="VU000134567-001"
     >
       VU000134567-001
     </span>
   </div>
   <div
-    className="nexus-c-fulfillmentOrderPanel__status"
+    className="nexus-c-fulfillment-order-panel__status"
   >
     <span
-      className="nexus-c-fulfillmentOrderPanel__date"
+      className="nexus-c-fulfillment-order-panel__date"
     >
       10/05/2021
     </span>
