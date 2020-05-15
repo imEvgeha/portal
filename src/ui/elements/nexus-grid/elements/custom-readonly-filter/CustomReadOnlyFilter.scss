@@ -4,4 +4,9 @@
 
   .nexus-c-custom-read-only-floating-filter {
       padding: 2px 5px 2px 2px;
+      span{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
   }

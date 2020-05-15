@@ -15,6 +15,7 @@ const MAX_BLOCKS_IN_CACHE = 100;
 const ROW_MODEL_TYPE = 'infinite';
 const DEFAULT_HOC_PROPS = [
     'initialFilter',
+    'fixedFilter',
     'filterableColumns',
     'notFilterableColumns',
     'mapping',
