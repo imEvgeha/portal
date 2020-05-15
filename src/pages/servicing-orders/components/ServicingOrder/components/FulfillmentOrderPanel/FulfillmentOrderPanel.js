@@ -8,15 +8,15 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfil
 
     return (
         <div
-            className={`nexus-c-fulfillmentOrderPanel ${selected ? 'nexus-c-fulfillmentOrderPanel--is-selected' : ''}`}
+            className={`nexus-c-fulfillment-order-panel  ${selected ? 'nexus-c-fulfillmentOrderPanel--is-selected' : ''}`}
             onClick={() => setSelectedFulfillmentOrder(id)}
         >
-            <div className='nexus-c-fulfillmentOrderPanel__title'>
-                <File className='nexus-c-fulfillmentOrderPanel__file-icon' />
-                <span title={id} className='nexus-c-fulfillmentOrderPanel__filename'>{id}</span>
+            <div className='nexus-c-fulfillment-order-panel__title'>
+                <File className='nexus-c-fulfillment-order-panel__file-icon' />
+                <span title={id} className='nexus-c-fulfillment-order-panel__filename'>{id}</span>
             </div>
-            <div className='nexus-c-fulfillmentOrderPanel__status'>
-                <span className='nexus-c-fulfillmentOrderPanel__date'>{dueDate}</span>
+            <div className='nexus-c-fulfillment-order-panel__status'>
+                <span className='nexus-c-fulfillment-order-panel__date'>{dueDate}</span>
                 <StatusTag status={status} />
             </div>
         </div>

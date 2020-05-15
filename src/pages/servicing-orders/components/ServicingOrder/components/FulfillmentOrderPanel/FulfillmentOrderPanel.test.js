@@ -23,8 +23,8 @@ describe('FulfillmentOrderPanel', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should have a setSelectedFulfillmentOrder and call setSelectedFulfillmentOrder when is clicked', () => {
-        const fulfillmentOrderPanel = wrapper.find('.nexus-c-fulfillmentOrderPanel');
+    it('should have a fulfillment-order-panel div and call setSelectedFulfillmentOrder when is clicked', () => {
+        const fulfillmentOrderPanel = wrapper.find('.nexus-c-fulfillment-order-panel');
         expect(fulfillmentOrderPanel).toHaveLength(1);
         fulfillmentOrderPanel.simulate('click');
         expect(setSelectedFulfillmentOrder).toHaveBeenCalled();
