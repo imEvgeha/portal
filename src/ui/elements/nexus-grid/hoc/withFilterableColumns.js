@@ -31,7 +31,7 @@ const withFilterableColumns = ({
     prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = (props) => {
-        const {columnDefs, mapping, selectValues, params, fetchAvailMapping} = props;
+        const {columnDefs, mapping, selectValues, params, fetchAvailMapping, fixedFilter} = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
@@ -51,157 +51,175 @@ const withFilterableColumns = ({
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
                setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
-        }, [columnDefs, selectValues]);
+        }, [columnDefs, selectValues, fixedFilter]);
 
         // apply initial filter
         useEffect(() => {
-            if (gridApi && !isEmpty(filters) && Array.isArray(mapping) && mapping.length) {
-                Object.keys(filters).forEach(key => {
+            if (gridApi && Array.isArray(mapping) && mapping.length) {
+                //union of keys for column filter and fixed filter
+                const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
+                keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
+                    const currentValue = get(filters, key, undefined);
+                    let filterValue;
+                    if(fixedFilter.hasOwnProperty(key)){
+                        filterValue = fixedFilter[key];
+                    }else{
+                        filterValue = currentValue;
+                    }
+
                     if (filterInstance) {
                         const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                            const filterValues = Array.isArray(filters[key]) ? filters[key] : filters[key].split(',');
-                            applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
-                            return;
+                        if(filterValue) {
+                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
+                                const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
+                                applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
+                            }else {
+                                filterInstance.setModel({
+                                    type: 'equals',
+                                    filter: filterValue,
+                                });
+                            }
+                        }else{
+                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
+                                filterInstance.selectEverything();
+                                filterInstance.applyModel();
+                            }else {
+                                filterInstance.setModel(null);
+                            }
                         }
-                        filterInstance.setModel({
-                            type: 'equals',
-                            filter: filters[key],
-                        });
                     }
                 });
+
                 gridApi.onFilterChanged();
                 setIsDatasourceEnabled(true);
-            } else if (isEmpty(filters)) {
+            } else {
                 setIsDatasourceEnabled(true);
             }
-        }, [gridApi, mapping]);
+        }, [gridApi, mapping, fixedFilter]);
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
-
-            return copiedColumnDefs.map(columnDef => {
-                const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
+            const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
+                const {searchDataType, queryParamName = columnDef.field} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === columnDef.field))) || {};
                 const {field} = columnDef;
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
+                let locked=false;
+                if(fixedFilter && fixedFilter[queryParamName]){
+                    locked = true;
+                }
 
                 if (isFilterable) {
-                    const {
-                        TEXT,
-                        NUMBER,
-                        SET,
-                        CUSTOM_DATE,
-                        CUSTOM_COMPLEX,
-                        CUSTOM_READONLY,
-                        CUSTOM_FLOAT_READONLY
-                    } = AG_GRID_COLUMN_FILTER;
-
-                    const {
-                        BOOLEAN,
-                        INTEGER,
-                        DOUBLE,
-                        YEAR,
-                        MULTISELECT,
-                        TERRITORY,
-                        AUDIO_LANGUAGE,
-                        TIMESTAMP,
-                        BUSINESS_DATETIME,
-                        REGIONAL_MIDNIGHT,
-                        READONLY
-                    } = FILTER_TYPE;
-
-                    switch (searchDataType) {
-                        case READONLY:
-                            columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
-                            columnDef.filter = CUSTOM_READONLY;
-                            columnDef.floatingFilterComponentParams = {
-                                suppressFilterButton: true,
-                                readOnlyValue: filters[field],
-                            };
-                            columnDef.filterParams = {
-                                ...DEFAULT_FILTER_PARAMS,
-                                readOnlyValue: filters[field],
-                            };
-                            break;
-                        case BOOLEAN:
-                            columnDef.filter = TEXT;
-                            columnDef.filterParams = {
-                                ...DEFAULT_FILTER_PARAMS,
-                                values: [false, true]
-                            };
-                            break;
-                        case INTEGER:
-                        case DOUBLE:
-                        case YEAR:
-                            columnDef.filter = NUMBER;
-                            break;
-                        case MULTISELECT:
-                            columnDef.filter = SET;
-                            columnDef.filterParams = {
-                                ...DEFAULT_FILTER_PARAMS,
-                                values: (Array.isArray(columnDef.options) && !isEmpty(columnDef.options))
-                                    ? columnDef.options
-                                    : getFilterOptions(field),
-                            };
-                            break;
-                        case TERRITORY:
-                            columnDef.filter = SET;
-                            columnDef.filterParams = {
-                                ...DEFAULT_FILTER_PARAMS,
-                                values: getFilterOptions(field),
-                            };
-                            columnDef.keyCreator = params => params.value.map(({country}) => country);
-                            break;
-                        case AUDIO_LANGUAGE:
-                            columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
-                            // TODO; generate schema and values for select based on initial schema and found subfields
-                            const languages = getFilterOptions(`${field}.language`);
-                            const audioTypes = getFilterOptions(`${field}.audioType`);
-                            const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
-                            columnDef.filter = CUSTOM_COMPLEX;
-                            const audioTypeLanguage = filters['audioTypeLanguage'];
-                            const audioType = filters['audioType'];
-                            const audioLanguageInitialFilters = {
-                                ...(audioTypeLanguage && {audioTypeLanguage}),
-                                ...(audioType && {audioType})
-                            };
-                            columnDef.filterParams = {
-                                // TODO; check is this neccessary
-                                ...DEFAULT_FILTER_PARAMS,
-                                initialFilters: audioLanguageInitialFilters,
-                                schema
-                            };
-                            break;
-                        case REGIONAL_MIDNIGHT:
-                        case TIMESTAMP:
-                        case BUSINESS_DATETIME:
-                            const from = filters[`${field}From`];
-                            const to = filters[`${field}To`];
-                            const initialFilters = {
-                                ...(from && {from}),
-                                ...(to && {to})
-                            };
-                            columnDef.floatingFilterComponent = 'customDateFloatingFilter';
-                            columnDef.filter = CUSTOM_DATE;
-                            columnDef.filterParams = {
-                                // TODO; check is this necessary
-                                ...DEFAULT_FILTER_PARAMS,
-                                filterOptions: ['inRange'],
-                                //
-                                initialFilters,
-                            };
-                            break;
-                        default:
-                            columnDef.filter = TEXT;
-                            columnDef.filterParams = DEFAULT_FILTER_PARAMS;
+                    const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
+                    if(!locked) {
+                        switch (searchDataType) {
+                            case READONLY:
+                                columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
+                                columnDef.filter = CUSTOM_READONLY;
+                                columnDef.floatingFilterComponentParams = {
+                                    suppressFilterButton: true,
+                                    readOnlyValue: filters[field],
+                                };
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    readOnlyValue: filters[field],
+                                };
+                                break;
+                            case BOOLEAN:
+                                columnDef.filter = TEXT;
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    values: [false, true]
+                                };
+                                break;
+                            case INTEGER:
+                            case DOUBLE:
+                            case YEAR:
+                                columnDef.filter = NUMBER;
+                                break;
+                            case MULTISELECT:
+                                columnDef.filter = SET;
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    values: Array.isArray(columnDef.options) && !isEmpty(columnDef.options) ? columnDef.options : getFilterOptions(field),
+                                };
+                                break;
+                            case TERRITORY:
+                                columnDef.filter = SET;
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    values: getFilterOptions(field),
+                                };
+                                columnDef.keyCreator = params => {
+                                    const countries = params.value.map(({country}) => country);
+                                    return countries;
+                                };
+                                break;
+                            case AUDIO_LANGUAGE:
+                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                                // TODO; generate schema and values for select based on initial schema and found subfields
+                                const languages = getFilterOptions(`${field}.language`);
+                                const audioTypes = getFilterOptions(`${field}.audioType`);
+                                const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
+                                columnDef.filter = CUSTOM_COMPLEX;
+                                const audioTypeLanguage = filters['audioTypeLanguage'];
+                                const audioType = filters['audioType'];
+                                const audioLanguageInitialFilters = {
+                                    ...(audioTypeLanguage && {audioTypeLanguage}),
+                                    ...(audioType && {audioType})
+                                };
+                                columnDef.filterParams = {
+                                    // TODO; check is this neccessary
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    initialFilters: audioLanguageInitialFilters,
+                                    schema
+                                };
+                                break;
+                            case REGIONAL_MIDNIGHT:
+                            case TIMESTAMP:
+                            case BUSINESS_DATETIME:
+                                const from = filters[`${field}From`];
+                                const to = filters[`${field}To`];
+                                const initialFilters = {
+                                    ...(from && {from}),
+                                    ...(to && {to})
+                                };
+                                columnDef.floatingFilterComponent = 'customDateFloatingFilter';
+                                columnDef.filter = CUSTOM_DATE;
+                                columnDef.filterParams = {
+                                    // TODO; check is this neccessary
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    filterOptions: ['inRange'],
+                                    //
+                                    initialFilters,
+                                };
+                                break;
+                            default:
+                                columnDef.filter = TEXT;
+                                columnDef.filterParams = DEFAULT_FILTER_PARAMS;
+                        }
+                    }else{
+                        const currentVal = Array.isArray(fixedFilter[queryParamName]) ? fixedFilter[queryParamName].join(', ') : fixedFilter[queryParamName];
+                        columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
+                        columnDef.filter = CUSTOM_READONLY;
+                        columnDef.floatingFilterComponentParams = {
+                            suppressFilterButton: true,
+                            readOnlyValue: currentVal,
+                        };
+                        columnDef.filterParams = {
+                            ...DEFAULT_FILTER_PARAMS,
+                            readOnlyValue: currentVal,
+                        };
                     }
                 }
                 return columnDef;
             });
+
+            return filterableColumnDefs;
         }
 
         const onGridEvent = (data) => {
@@ -237,13 +255,14 @@ const withFilterableColumns = ({
         const getFilterOptions = (field) => {
             //TODO: refresh and show values when loaded
             const options = get(selectValues, field, []);
-            return options.map(option => {
+            const parsedSelectValues = options.map(option => {
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields
                     return option.value || option.countryCode;
                 }
                 return option;
             });
+            return parsedSelectValues;
         };
 
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);

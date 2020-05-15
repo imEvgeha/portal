@@ -21,10 +21,9 @@ export function* fetchTitle(action) {
             payload: {}
         });
         const response = yield call(requestMethod, payload.id);
-        const {data} = response;
         yield put({
             type: actionTypes.FETCH_TITLE_SUCCESS,
-            payload: data,
+            payload: response,
         });
     } catch (error) {
         yield put({
@@ -97,10 +96,9 @@ export function* fetchReconciliationTitles(action) {
             return {id: el};
         });
         const response = yield call(requestMethod, body);
-        const {data} = response;
         yield put({
             type: actionTypes.FETCH_RECONCILIATION_TITLES_SUCCESS,
-            payload: data,
+            payload: response,
         });
     } catch (error) {
         yield put({
@@ -192,13 +190,13 @@ export function* reconcileTitles({payload}) {
         const duplicateIds = Object.keys(duplicateList || {});
         let query = `idsToMerge=${masterIds.join(',')}&idsToHide=${duplicateIds.join(',')}`;
         const response = yield call(titleService.mergeTitles, query);
-        const newTitleId = get(response, 'data.id', '');
+        const newTitleId = get(response, 'id', '');
         yield put({
             type: actionTypes.TITLES_RECONCILE_SUCCESS,
             payload: {
                 ...masters,
                 ...duplicateList,
-                [newTitleId]: response.data
+                [newTitleId]: response
             },
         });
         const mLength = masterIds.length;

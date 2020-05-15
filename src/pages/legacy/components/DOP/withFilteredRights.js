@@ -74,16 +74,16 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
         parseServerResponse = (response, callback) => {
             const {table} = this.state;
             const {onDataLoaded} = this.props;
-            if (response && response.data && response.data.total > 0){
-                const {data} = response;
+            if (response && response.total > 0){
+                const {data, page, total, size} = response;
                 // if on or after the last page, work out the last row.
                 let lastRow = -1;
-                if ((data.page + 1) * data.size >= data.total) {
-                    lastRow = data.total;
+                if ((page + 1) * size >= total) {
+                    lastRow = total;
                 }
 
                 if (table) {
-                    callback(data.data, lastRow);
+                    callback(data, lastRow);
                     table.api.hideOverlay();
 
                     if (typeof onDataLoaded === 'function'){

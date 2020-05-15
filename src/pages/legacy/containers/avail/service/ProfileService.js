@@ -1,4 +1,4 @@
-import Http from '../../../../../util/Http';
+import {nexusFetch} from '../../../../../util/http-client';
 import config from 'react-global-configuration';
 import {store} from '../../../../../index';
 import { loadAvailsMapping, loadSelectLists } from '../../../stores/actions/index';
@@ -13,14 +13,13 @@ const REGION = '/regions';
 const GENRES = '/genres';
 const SORT_TYPE = 'label';
 
-const http = Http.create({ defaultErrorHandling: false });
-
 const getAvailsMapping = () => {
-    return http.get('/availMapping.json');
+    return nexusFetch('/availMapping.json', {isWithErrorHandling: false});
 };
 
 const getSelectValues = (field) => {
-    return http.get(config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000');
+    const url = config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000';
+    return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const profileService = {
@@ -29,14 +28,14 @@ export const profileService = {
     initAvailsMapping: (forceReload) => {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping().then((response) => {
-                response.data.mappings.map((rec) => {
+                response.mappings.map((rec) => {
                     if (rec.searchDataType === 'multiselect') {
                         if (rec.options) {
                             store.dispatch(loadSelectLists(rec.javaVariableName, rec.options.map((option) => { return { id: option, type: rec.javaVariableName, value: option }; })));
                         } else {
                             if (rec.configEndpoint) {
                                 getSelectValues(rec.configEndpoint).then((response) => {
-                                    let options = response.data.data;
+                                    let options = response.data;
                                     switch (rec.configEndpoint) {
                                         case GENRES:
                                             options = options.map(code => ({value: code.name, label: code.name}));
@@ -77,7 +76,7 @@ export const profileService = {
                         }
                     }
                 });
-                store.dispatch(loadAvailsMapping({ mappings: response.data.mappings.filter((mapping) => (mapping.displayName)) }));
+                store.dispatch(loadAvailsMapping({ mappings: response.mappings.filter((mapping) => (mapping.displayName)) }));
             }).catch((error) => {
                 errorModal.open('Error', () => { }, { description: 'System is not configured correctly!', closable: false });
                 console.error('Unable to load AvailsMapping');
