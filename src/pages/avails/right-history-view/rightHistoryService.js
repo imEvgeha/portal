@@ -1,14 +1,16 @@
 import config from 'react-global-configuration';
-import Http from '../../../util/Http';
-
-const http = Http.create();
+import {nexusFetch} from '../../../util/http-client/index';
 
 export const getRightsHistory = (searchIds) => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`;
     const body = {
         excludes: ['header'],
         searchIdType:'CORRELATION_ID',
         searchIds,
     };
-    
-    return http.post(`${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`, body );
+
+    return nexusFetch(url, {
+        method: 'post',
+        body: JSON.stringify(body),
+    });
 };

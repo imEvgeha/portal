@@ -68,7 +68,7 @@ const withInfiniteScrolling = ({
             }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
-                    const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
+                    const {page = 0, size = 0, total = 0, data} = response || {};
 
                     if (typeof props.setTotalCount === 'function') { 
                         props.setTotalCount(total);

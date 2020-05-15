@@ -85,15 +85,15 @@ const DashboardLatestAvailsCard = ({push}) => {
                 PAGE_SIZE,
                 [{id: 'received', desc:true}]
             ).then(response => {
-                const {data: {data = []} = {}} = response;
-                if(table){
-                    if(data.length > 0){
-                        if(!isEqual(tableData, data)){
+                const {data = []} = response || {};
+                if (table){
+                    if (data.length > 0){
+                        if (!isEqual(tableData, data)){
                             table.api.setRowData(data);
                             tableData = data;
                             table.api.hideOverlay();
                         }
-                    }else{
+                    } else {
                         table.api.showNoRowsOverlay();
                     }
                 }

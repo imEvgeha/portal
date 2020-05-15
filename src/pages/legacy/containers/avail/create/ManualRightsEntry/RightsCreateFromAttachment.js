@@ -106,9 +106,9 @@ class RightsCreateFromAttachment extends React.Component {
         if (this.state.availHistoryId) {
             historyService.getHistory(this.state.availHistoryId, true)
                 .then(res => {
-                    if (res && res.data && this._isMounted) {
+                    if (res && this._isMounted) {
                         this.setState({
-                            historyData: res.data,
+                            historyData: res,
                         });
                     }
                 })
@@ -131,9 +131,9 @@ class RightsCreateFromAttachment extends React.Component {
 
         historyService.getAvailHistoryAttachment(attachment.id)
             .then(response => {
-                if (response && response.data && response.data.downloadUrl) {
+                if (response && response.downloadUrl) {
                     const link = document.createElement('a');
-                    link.href = response.data.downloadUrl;
+                    link.href = response.downloadUrl;
                     link.setAttribute('download', filename);
                     link.click();
                 }

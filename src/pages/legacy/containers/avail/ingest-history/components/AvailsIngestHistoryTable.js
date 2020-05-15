@@ -83,29 +83,29 @@ class AvailsIngestHistoryTable extends React.Component {
         }
 
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.availTabPageSort)
-                   .then(response => {
-                        if(response && response.data.total > 0){
-                            this.addLoadedItems(response.data);
-                            // if on or after the last page, work out the last row.
-                            let lastRow = -1;
-                            if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                                lastRow = response.data.total;
-                            }
-                            params.successCallback(response.data.data, lastRow);
-                            if(this.table){
-                                this.table.api.hideOverlay();
-                            }
-                        }else{
-                            if(this.table){
-                                this.table.api.showNoRowsOverlay();
-                                this.resetLoadedItems();
-                            }
-                        }
-                   }).catch((error) => {
-                       console.error('Unexpected error');
-                       console.error(error);
-                       params.failCallback();
-                   });
+            .then(response => {
+                if (response && response.total > 0){
+                    this.addLoadedItems(response);
+                    // if on or after the last page, work out the last row.
+                    let lastRow = -1;
+                    if ((response.page + 1) * response.size >= response.total) {
+                        lastRow = response.total;
+                    }
+                    params.successCallback(response.data, lastRow);
+                    if (this.table){
+                        this.table.api.hideOverlay();
+                    }
+                } else {
+                    if (this.table){
+                        this.table.api.showNoRowsOverlay();
+                        this.resetLoadedItems();
+                    }
+                }
+            }).catch((error) => {
+                console.error('Unexpected error');
+                console.error(error);
+                params.failCallback();
+            });
     }
 
     addLoadedItems(data) {
