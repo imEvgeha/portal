@@ -43,9 +43,7 @@ const ServicingOrdersView = () => {
                         ]}
                         placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
-                        onChange={(val) => {
-                            setCustomerFilter(val);
-                        }}
+                        onChange={setCustomerFilter}
                     />
                 </div>
                 <Button
