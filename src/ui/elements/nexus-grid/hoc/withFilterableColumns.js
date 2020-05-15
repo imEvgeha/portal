@@ -63,7 +63,7 @@ const withFilterableColumns = ({
                     const filterInstance = gridApi.getFilterInstance(field);
                     const currentValue = get(filters, key, undefined);
                     let filterValue;
-                    if(fixedFilter.hasOwnProperty(key)){
+                    if(fixedFilter && fixedFilter.hasOwnProperty(key)){
                         filterValue = fixedFilter[key];
                     }else{
                         filterValue = currentValue;
