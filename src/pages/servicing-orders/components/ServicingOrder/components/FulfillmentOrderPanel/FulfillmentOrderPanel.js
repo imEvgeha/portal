@@ -12,7 +12,7 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfil
             onClick={() => setSelectedFulfillmentOrder(id)}
         >
             <div className='nexus-c-fulfillmentOrderPanel__title'>
-                <File  className='nexus-c-fulfillmentOrderPanel__file-icon'/>
+                <File className='nexus-c-fulfillmentOrderPanel__file-icon' />
                 <span title={id} className='nexus-c-fulfillmentOrderPanel__filename'>{id}</span>
             </div>
             <div className='nexus-c-fulfillmentOrderPanel__status'>

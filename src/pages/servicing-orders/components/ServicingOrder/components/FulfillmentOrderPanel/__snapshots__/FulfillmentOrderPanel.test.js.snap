@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FulfillmentOrderPanel should match snapshot 1`] = `
+<div
+  className="nexus-c-fulfillmentOrderPanel "
+  onClick={[Function]}
+>
+  <div
+    className="nexus-c-fulfillmentOrderPanel__title"
+  >
+    <[object Object]
+      className="nexus-c-fulfillmentOrderPanel__file-icon"
+    />
+    <span
+      className="nexus-c-fulfillmentOrderPanel__filename"
+      title="VU000134567-001"
+    >
+      VU000134567-001
+    </span>
+  </div>
+  <div
+    className="nexus-c-fulfillmentOrderPanel__status"
+  >
+    <span
+      className="nexus-c-fulfillmentOrderPanel__date"
+    >
+      10/05/2021
+    </span>
+    <StatusTag
+      status="COMPLETED"
+    />
+  </div>
+</div>
+`;
