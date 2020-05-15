@@ -107,7 +107,7 @@ export const titleService = {
         const params = legacySystemNames ? {legacySystemNames} : {};
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`;
 
-        return http.put(url, {
+        return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(title),
             params: encodedSerialize(params),
