@@ -52,12 +52,12 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
         if(isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
             exportService.exportAvails(getSelectedRightIds(), allDisplayedColumns)
-                .then(response => downloadFile(response.data));
+                .then(response => downloadFile(response));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
             const {external, column} = rightsFilter;
             exportService.bulkExportAvails({...external, ...column}, allDisplayedColumns)
-                .then(response => downloadFile(response.data));
+                .then(response => downloadFile(response));
         }
     };
 
@@ -65,12 +65,12 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
         if(isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
             exportService.exportAvails(getSelectedRightIds(), visibleColumns)
-                .then(response => downloadFile(response.data));
+                .then(response => downloadFile(response));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
             const {external, column} = rightsFilter;
             exportService.bulkExportAvails({...external, ...column}, visibleColumns)
-                .then(response => downloadFile(response.data));
+                .then(response => downloadFile(response));
         }
     };
 

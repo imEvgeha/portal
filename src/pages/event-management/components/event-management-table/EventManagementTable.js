@@ -3,7 +3,7 @@ import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import {getEventSearch} from '../../eventManagmentService'; 
+import {getEventSearch} from '../../eventManagementService';
 import columnDefs from '../../columnMappings.json';
 
 const EventManagementGrid = compose(

@@ -14,7 +14,7 @@ function* fetchRightsHistory(requestMethod, {payload}) {
         yield put({
             type: actionTypes.FETCH_RIGHT_HISTORY_SUCCESS,
             payload: {
-                rightsEventHistory: response.data,
+                rightsEventHistory: response,
                 rightIds: payload
             }
         });

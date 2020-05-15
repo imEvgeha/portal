@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {camelCase, startCase} from 'lodash';
 import {compose} from 'redux';
 import {servicingOrdersService} from './servicingOrdersService';
@@ -18,7 +18,7 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = () => {
+const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
     const valueFormatter= ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
             case 'string':
@@ -49,14 +49,22 @@ const ServicingOrdersTable = () => {
         ));
     };
 
+    const [columns, setColumns] = useState(updateColumnDefs(columnDefs));
+
+    useEffect(() => {
+        setColumns(updateColumnDefs(columnDefs));
+    }, [columnDefs]);
+
     return (
         <div className="nexus-c-servicing-orders-table">
             <ServicingOrderGrid
-                columnDefs={updateColumnDefs(columnDefs)}
+                columnDefs={columns}
                 mapping={columnDefs}
                 frameworkComponents={{
                     emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
+                fixedFilter={fixedFilter}
+                externalFilter={externalFilter}
             />
         </div>
     );

@@ -1,23 +1,32 @@
 import config from 'react-global-configuration';
-import Http from '../../../../../util/Http';
-
-const http = Http.create({defaultErrorHandling: false});
-const httpWithDefaultErrorHandling = Http.create();
+import {nexusFetch} from '../../../../../util/http-client/index';
 
 export const loadConfigAPIEndPoints = () => {
-    return http.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints');
+    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/endpoints';
+    return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const configService = {
-    create: (endpoint, rec) => {
-        return httpWithDefaultErrorHandling.post(config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint, rec);
+    create: (endpoint, data) => {
+        const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint;
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(data), 
+        });
     },
 
-    update: (endpoint, id, rec) => {
-        return httpWithDefaultErrorHandling.put(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`, rec);
+    update: (endpoint, id, data) => {
+        const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(data),
+        });
     },
 
     delete: (endpoint, id) => {
-        return httpWithDefaultErrorHandling.delete(config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`);
+        const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
+        return nexusFetch(url, {
+            method: 'delete',
+        });
     }
 };

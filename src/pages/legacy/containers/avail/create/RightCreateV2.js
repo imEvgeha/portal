@@ -169,11 +169,11 @@ class RightCreate extends React.Component {
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
-            if(response && response.data && response.data.id){
+            if(response && response.id){
                 if(this.props.match.params.availHistoryId){
                     this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
                 }else{
-                    this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
+                    this.context.router.history.push(RightsURL.getRightUrl(response.id));
                 }
 
             }
