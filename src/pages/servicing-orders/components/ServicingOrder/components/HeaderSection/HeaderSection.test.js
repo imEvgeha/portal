@@ -24,9 +24,8 @@ describe('HeaderSection', () => {
             expect(wrapper.find('Link').length).toEqual(1);
             expect(wrapper.find('Link').props().to).toEqual('/servicing-orders');
         });
-        it('should render 2 FulfillmentOrderPanel component with link to servicing-orders page', () => {
+        it('should render 2 FulfillmentOrderPanel components', () => {
             expect(wrapper.find('FulfillmentOrderPanel').length).toEqual(2);
-            // expect(wrapper.find('Link').props().to).toEqual('/servicing-orders');
         });
     });
 });
