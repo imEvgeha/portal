@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './FulfillmentOrderPanel.scss';
 import File from '../../../../../../assets/file.svg';
 import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
 
 const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfillmentOrder}) => {
+
     return (
         <div
             className={`nexus-c-fulfillmentOrderPanel ${selected ? 'nexus-c-fulfillmentOrderPanel--is-selected' : ''}`}
@@ -23,18 +24,18 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfil
 };
 
 FulfillmentOrderPanel.propTypes = {
-    srId: PropTypes.string,
-    servicingOrderClick: PropTypes.func,
+    id: PropTypes.string,
+    setSelectedFulfillmentOrder: PropTypes.func,
     status: PropTypes.string,
-    srDueDate: PropTypes.string,
+    dueDate: PropTypes.string,
     selected: PropTypes.bool
 };
 
 FulfillmentOrderPanel.defaultProps = {
-    srId: '',
-    servicingOrderClick: () => null,
+    id: '',
+    setSelectedFulfillmentOrder: () => null,
     status: '',
-    srDueDate: '',
+    dueDate: '',
     selected: false,
 };
 

@@ -6,21 +6,9 @@ import {SERVICING_ORDERS} from '../../../../../../ui/elements/nexus-navigation/c
 import './HeaderSection.scss';
 import FulfillmentOrderPanel from '../FulfillmentOrderPanel/FulfillmentOrderPanel';
 
-const HeaderSection = () => {
+const HeaderSection = ({fulfillmentOrders}) => {
     const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
     const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
-const fulfillmentOrders =  [
-    {
-        fulfillmentOrderId: 'VU000134567-001',
-        dueDate: '10/05/2021',
-        status: 'COMPLETED'
-    },
-    {
-        fulfillmentOrderId: 'VU000134597-002',
-        dueDate: '09/05/2021',
-        status: 'PENDING'
-    }
-];
 
     return (
         <div className='panel-header'>
@@ -34,7 +22,7 @@ const fulfillmentOrders =  [
                 className='panel-header__list'
             >
                 {
-                    fulfillmentOrders.map(({fulfillmentOrderId, status, dueDate},index) => (
+                    fulfillmentOrders && fulfillmentOrders.map(({fulfillmentOrderId, status, dueDate},index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={fulfillmentOrderId}
