@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EventDrawerHeader from './components/EventDrawerHeader';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 
 const EventDrawer = ({event, onDrawerClose}) => {
@@ -10,7 +11,12 @@ const EventDrawer = ({event, onDrawerClose}) => {
                 isOpen={!!(event && event.eventId)}
                 title='Event Details'
             >
-                <div>{event && event.eventId}</div>
+                {event &&
+                (
+                    <EventDrawerHeader
+                        event={event}
+                    />
+                )}
             </NexusDrawer>
         </div>
     );
