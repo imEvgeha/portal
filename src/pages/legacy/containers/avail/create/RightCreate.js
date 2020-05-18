@@ -157,12 +157,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    handleDatepickerChange(name, displayName, date) {
-        const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
-        let val = date;
-        if(date && mapping.dataType === DATETIME_FIELDS.REGIONAL_MIDNIGHT) {
-            val = momentToISO(moment(date).utcOffset(0, true));
-        }
+    handleDatepickerChange(name, displayName, val) {
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
@@ -759,6 +754,7 @@ class RightCreate extends React.Component {
                 value,
                 error,
                 isTimestamp,
+                isReturningTime:useTime,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
