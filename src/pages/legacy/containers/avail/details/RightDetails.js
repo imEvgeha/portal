@@ -300,7 +300,7 @@ class RightDetails extends React.Component {
         const updatedRight = { [name]: value };
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
-            .then(({data: editedRight = {}})=> {
+            .then((editedRight = {})=> {
                 this.setState({
                     right: editedRight,
                     flatRight: this.flattenRight(editedRight),
