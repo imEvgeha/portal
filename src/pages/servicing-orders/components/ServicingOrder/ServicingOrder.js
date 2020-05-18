@@ -6,6 +6,9 @@ import {servicingOrdersService} from '../../servicing-orders-table/servicingOrde
 
 const ServicingOrder = ({match}) => {
     const [fulfillmentOrders, setFulfillmentOrders] = useState([]);
+    const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
+    const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
+
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
@@ -16,10 +19,14 @@ const ServicingOrder = ({match}) => {
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
-                <HeaderSection fulfillmentOrders={fulfillmentOrders} />
+                <HeaderSection
+                    fulfillmentOrders={fulfillmentOrders}
+                    setSelectedFulfillmentOrder={setSelectedOrder}
+                    selectedFulfillmentOrder={selectedFulfillmentOrder}
+                />
             </div>
             <div className='servicing-order__right'>
-                <FulfillmentOrder />
+                <FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder} />
             </div>
         </div>
     );

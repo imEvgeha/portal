@@ -7,6 +7,9 @@ const FulfillmentOrder = () => {
             <div className='fulfillment-order__title'>
                 Fulfillment Order
             </div>
+            <div className='fulfillment-order__title'>
+                Order Id:
+            </div>
         </div>
     );
 };
