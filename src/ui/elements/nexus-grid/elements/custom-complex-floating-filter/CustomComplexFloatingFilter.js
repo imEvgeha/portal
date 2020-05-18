@@ -1,5 +1,4 @@
 import React from 'react';
-import {isEmpty} from 'lodash';
 import './CustomComplexFloatingFilter.scss';
 
 class CustomComplexFloatingFilter extends React.Component {
@@ -17,10 +16,11 @@ class CustomComplexFloatingFilter extends React.Component {
     };
 
     render() {
-        const {value} = this.state;
+        const {value = {}} = this.state;
         let arrayContent = [];
         let keyContent;
-        Object.keys(value).forEach((key) => {
+
+        Object.keys(value || {}).forEach((key) => {
             keyContent = '';
             if(value[key]) {
                 if(Array.isArray(value[key])){
@@ -36,7 +36,9 @@ class CustomComplexFloatingFilter extends React.Component {
                 }
             }
         });
+
         const content = arrayContent.join(' ');
+
         return (
             <div className='nexus-c-complex-floating-filter'>
                 <span title={content}>{content}</span>
