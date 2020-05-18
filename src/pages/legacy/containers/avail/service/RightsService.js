@@ -208,7 +208,7 @@ export const rightsService = {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
         const data = prepareRight(rightDiff, true);
         return nexusFetch(url, {
-            method: 'patch',
+            method: 'PATCH',
             body: JSON.stringify(data),
         });
     },
