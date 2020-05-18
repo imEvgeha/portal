@@ -45,9 +45,9 @@ export const titleServiceManager = {
                 if(page === 0){
                     store.dispatch(resultPageUpdate({
                         pages: 1,
-                        titles: response.data.data,
-                        pageSize: response.data.data.length,
-                        total: response.data.total
+                        titles: response.data,
+                        pageSize: response.data.length,
+                        total: response.total
                     }));
                 }
                 return response;

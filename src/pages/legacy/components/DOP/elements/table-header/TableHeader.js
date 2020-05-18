@@ -71,7 +71,7 @@ class TableHeader extends React.Component {
         this.props.table.api.getSelectedNodes().forEach(node => {
             if (node.data.status === 'ReadyNew') {
                 rightsService.update({status: 'Ready'}, node.data.id).then(res => {
-                    node.setData(res.data);
+                    node.setData(res);
                     this.props.table.api.redrawRows({rowNodes: [node]});
                 });
             }
@@ -82,7 +82,7 @@ class TableHeader extends React.Component {
         this.props.table.api.getSelectedNodes().forEach(node => {
             if (node.data.status === 'Ready') {
                 rightsService.update({status: 'ReadyNew'}, node.data.id).then(res => {
-                    node.setData(res.data);
+                    node.setData(res);
                     this.props.table.api.redrawRows({rowNodes: [node]});
                 });
             }

@@ -30,8 +30,7 @@ function* fetchFocusedRight(requestMethod, {payload}) {
             payload: {}
         });
 
-        const response = yield call(requestMethod, payload);
-        const focusedRight = response.data;
+        const focusedRight = yield call(requestMethod, payload);
 
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
@@ -98,10 +97,10 @@ function* mergeAndStoreTitles({payload}){
 
         const response = yield call(titleService.mergeTitles, query) || {data: {}};
         if(!URL.isEmbedded()) {
-            const updatedRight = {coreTitleId: response.data.id};
+            const updatedRight = {coreTitleId: response.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
-        const url = `/metadata/detail/${response.data.id}`;
+        const url = `/metadata/detail/${response.id}`;
         yield put({
             type: ADD_TOAST,
             payload: {
@@ -114,13 +113,13 @@ function* mergeAndStoreTitles({payload}){
         });
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,
-            payload: response.data,
+            payload: response,
         });
         yield put({
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
-        yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.data.id}`)));
+        yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.id}`)));
     } catch (e) {
         yield put({
             type: ADD_TOAST,

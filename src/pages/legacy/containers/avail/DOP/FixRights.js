@@ -80,8 +80,8 @@ class FixRights extends React.Component {
     }
 
     parseLoadedData(response){
-        if(response && response.data && response.data.data){
-            DOP.setErrorsCount(response.data.total);
+        if(response && response.data){
+            DOP.setErrorsCount(response.total);
         }
     }
 

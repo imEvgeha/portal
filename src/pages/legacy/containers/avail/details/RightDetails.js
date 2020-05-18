@@ -95,7 +95,7 @@ class RightDetails extends React.Component {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
-                    if (res && res.data) {
+                    if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
                         const {
@@ -105,7 +105,7 @@ class RightDetails extends React.Component {
                             affiliateExclude = [], 
                             castCrew = [],
                             languageAudioTypes =  [],
-                        } = res.data || {};
+                        } = res || {};
                         // temporary solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
@@ -215,8 +215,8 @@ class RightDetails extends React.Component {
                         })];
 
                         this.setState({
-                            right: res.data,
-                            flatRight: this.flattenRight(res.data),
+                            right: res,
+                            flatRight: this.flattenRight(res),
                             territory: territories,
                             audioLanguage: audioLanguages,
                             affiliates,
@@ -300,7 +300,7 @@ class RightDetails extends React.Component {
         const updatedRight = { [name]: value };
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
-            .then(({data: editedRight = {}})=> {
+            .then((editedRight = {})=> {
                 this.setState({
                     right: editedRight,
                     flatRight: this.flattenRight(editedRight),

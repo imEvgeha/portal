@@ -145,9 +145,9 @@ export class EndpointContainer extends Component {
             getConfigApiValues(selectedApi && selectedApi.urls && selectedApi.urls['search'], page - 1, this.state.pageSize, null, searchField, searchValue)
                 .then((res) => {
                     this.setState({
-                        pages: Array.from({ length: Math.ceil(res.data.total / this.state.pageSize < 1 ? 1 : res.data.total / this.state.pageSize) }, (v, k) => k + 1),
-                        data: res.data.data,
-                        total: res.data.total,
+                        pages: Array.from({ length: Math.ceil(res.total / this.state.pageSize < 1 ? 1 : res.total / this.state.pageSize) }, (v, k) => k + 1),
+                        data: res.data,
+                        total: res.total,
                         isLoading: false,
                     });
                 });
@@ -172,7 +172,7 @@ export class EndpointContainer extends Component {
                 .then(response => {
                     const data = this.state.data.slice(0);
                     const index = data.findIndex(item => item.id === newVal.id);
-                    data[index] = response.data;
+                    data[index] = response;
                     this.setState({ data, currentRecord: null });
                 }
                 );
@@ -180,7 +180,7 @@ export class EndpointContainer extends Component {
             configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal)
                 .then(response => {
                     const data = this.state.data.slice(0);
-                    data.unshift(response.data);
+                    data.unshift(response);
                     if(cache[selectedApi.urls['CRUD']]) {     
                         cache[selectedApi.urls['CRUD']] = data;
                     }
