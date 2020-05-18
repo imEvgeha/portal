@@ -719,10 +719,8 @@ class RightCreate extends React.Component {
 
             if(options.length > 0 && value){
                 val = value;
-                if(!required) {
-                    options.unshift({value: '', label: value ? 'Select...' : ''});
-                }
             }
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <AudioLanguageField
                     audioLanguages={this.right.languageAudioTypes}
