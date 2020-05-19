@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventDrawerHeader should match snapshot 1`] = `
+<div
+  className="nexus-c-event-drawer-header"
+>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-drawer-header__replay-button"
+    disabled={false}
+    isLoading={false}
+    onClick={[Function]}
+  >
+    Replay
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+</div>
+`;
