@@ -10,7 +10,7 @@ import './NexusDatePicker.scss';
 import {
     RELATIVE_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
-    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
 import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/DateTimeUtils';
@@ -44,6 +44,8 @@ const NexusDatePicker = ({
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
+    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
+
     const onDateChange = date => {
         if(date){
             setDate(date);
@@ -62,8 +64,6 @@ const NexusDatePicker = ({
             onChange('');
         }
     };
-
-    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
     const DatePickerComponent = (isReadOnly) => {
   return (

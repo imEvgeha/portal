@@ -28,12 +28,10 @@ export const rightSearchHelper = {
                     response[key] = safeTrim(Array.from(new Set(criteria.options.map(({aliasValue, value}) => aliasValue || value))).join(','));
                 } else{
                     if (criteria.from) {
-                        response[key + 'From'] = moment(criteria.from).toISOString();
+                        response[key + 'From'] = criteria.from;
                     }
                     if (criteria.to) {
-                        const val = moment(criteria.to);
-                        if(criteria.to.indexOf('Z')>-1) val.utc();
-                        response[key + 'To'] = val.endOf('day').toISOString();
+                        response[key + 'To'] = criteria.to;
                     }
                 }
             }
