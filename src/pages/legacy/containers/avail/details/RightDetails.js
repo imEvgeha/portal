@@ -1160,7 +1160,8 @@ class RightDetails extends React.Component {
                 );
             };
 
-            const error = priorityError || validate(value);
+            const valError = validate(value);
+            const error = priorityError || valError;
 
             const props = {
                 id: displayName,
@@ -1173,7 +1174,7 @@ class RightDetails extends React.Component {
                     }));
                 },
                 onConfirm: (date) => (
-                    !error && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
+                    !valError && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
                 value:  (
