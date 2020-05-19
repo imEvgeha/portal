@@ -9,6 +9,56 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
   >
     Servicing Orders
   </div>
-  <ServicingOrdersTable />
+  <div
+    className="nexus-c-servicing-orders__external-filters"
+  >
+    <div
+      className="nexus-c-servicing-orders__customer-filter"
+    >
+      Customer
+      <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+        onChange={[Function]}
+        options={
+          Array [
+            Object {
+              "label": "Select...",
+              "value": "",
+            },
+            Object {
+              "label": "MGM",
+              "value": "MGM",
+            },
+            Object {
+              "label": "WB",
+              "value": "WB",
+            },
+          ]
+        }
+        placeholder="Select..."
+        value={
+          Object {
+            "label": "Select...",
+            "value": "",
+          }
+        }
+      />
+    </div>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      isSelected={false}
+      onClick={[Function]}
+    >
+      Hide Ready
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      isSelected={false}
+      onClick={[Function]}
+    >
+      Hide Completed
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+  <ServicingOrdersTable
+    externalFilter={Object {}}
+    fixedFilter={Object {}}
+  />
 </div>
 `;

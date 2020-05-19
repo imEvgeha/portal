@@ -52,11 +52,11 @@ const NexusPersonsList = ({
         if (searchText.length < 2) return [];
         if (type === CAST) {
             return searchPerson(searchText, PERSONS_PER_REQUEST, type)
-                .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
+                .then(res => getFilteredCastList(res, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
                 );
         } else {
             return searchPerson(searchText, PERSONS_PER_REQUEST, type)
-                .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
+                .then(res => getFilteredCrewList(res, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
                 );
         }
     };

@@ -8,9 +8,18 @@ import '../Title.scss';
 import { titleService } from '../../service/TitleService';
 import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
+import withToasts from '../../../../../../ui/toast/hoc/withToasts';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
+import {getDomainName} from '../../../../../../util/Common';
+
+const onViewTitleClick = response => {
+    const {id} = response || {};
+    const url = `${getDomainName()}/metadata/detail/${id}`;
+    window.open(url, '_blank');
+};
 
 class TitleCreate extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -111,10 +120,17 @@ class TitleCreate extends React.Component {
         this.setState({ errorMessage: '' });
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
-        titleService.createTitle(title, isSyncVZ, isSyncMovida).then(() => {
+        titleService.createTitle(title, isSyncVZ, isSyncMovida).then((response) => {
             this.form && this.form.reset();
             this.cleanFields();
             this.toggle();
+            this.props.addToast({
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                actions: [{ content: 'View title', onClick: () => onViewTitleClick(response) }]
+            });
         }).catch(e => {
             this.setState({ errorMessage: get(e, 'response.data.description', 'Title creation failed!') });
         });
@@ -483,5 +499,4 @@ TitleCreate.propTypes = {
     className: PropTypes.string
 };
 
-
-export default TitleCreate;
+export default withToasts(TitleCreate);

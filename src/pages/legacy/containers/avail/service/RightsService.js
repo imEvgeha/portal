@@ -1,12 +1,10 @@
-import Http from '../../../../../util/Http';
 import config from 'react-global-configuration';
 import moment from 'moment';
+import {nexusFetch} from '../../../../../util/http-client/index';
 import {store} from '../../../../../index';
 import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../../../util/Common';
 import {STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS, MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,
     ARRAY_OF_OBJECTS} from './Constants';
-
-const http = Http.create();
 
 const isNotEmpty = function(obj){
     if(Array.isArray(obj)){
@@ -69,8 +67,8 @@ const populate = function(key, value, location){
             }
             populate(restKey, value, location[firstKey]);
         }
-    }else{        
-        if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key) && value){
+    } else {
+        if (STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key) && value){
             value = value.split(',');
         }
         location[key] = parse(value, key);
@@ -169,39 +167,50 @@ const parseAdvancedFilterV2 = function (searchCriteria) {
 
 export const rightsService = {
 
-    freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = {};
+    freeTextSearch: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = {};
         if (searchCriteria.text) {
-            params.text = searchCriteria.text;
+            queryParams.text = searchCriteria.text;
         }
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams);
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
     },
 
-    advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = parseAdvancedFilter(searchCriteria);
-        return (
-            http.get(
-                `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
-                {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}}
-            )
-        );
+    advancedSearch: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = parseAdvancedFilter(searchCriteria);
+        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`;
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
     },
 
-    advancedSearchV2: (params, page, pageSize, sortedParams) => {
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+    advancedSearchV2: (queryParams, page, size, sortedParams) => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +'/rights' + prepareSortMatrixParam(sortedParams);
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
     },
 
     create: (right) => {
-        return http.post(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights', prepareRight(right));
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +'/rights';
+        const data = prepareRight(right);
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(data),
+        });
     },
 
     get: (id) => {
-        const httpNoError = Http.create({defaultErrorHandling: false});
-        return httpNoError.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id);
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id;
+        return nexusFetch(url, {isWithErrorHandling: false});
     },
 
     update: (rightDiff, id) => {
-        return http.patch(config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true' , prepareRight(rightDiff, true));
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
+        const data = prepareRight(rightDiff, true);
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
     },
 };
 

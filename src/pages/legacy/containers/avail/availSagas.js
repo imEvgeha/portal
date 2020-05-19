@@ -18,13 +18,12 @@ export function* fetchAvailMapping(requestMethod) {
             payload: {},
         });
         const response = yield call(requestMethod);
-        const {data} = response;
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_SUCCESS,
             // TODO - check why we have mappings prop inside availsMappings store
-            payload: data,
+            payload: response,
         });
-        yield fork(fetchAndStoreSelectItems, data && data.mappings);
+        yield fork(fetchAndStoreSelectItems, response && response.mappings);
     } catch(error) {
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_ERROR,
@@ -135,7 +134,7 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
         return {
             [key]: {
                 key,
-                value: response.data.data,
+                value: response.data,
                 configEndpoint: requestParams,
             }
         };
@@ -154,8 +153,7 @@ export function* fetchAvailConfiguration(requestMethod) {
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_REQUEST,
             payload: {},
         });
-        const response = yield call(requestMethod);
-        const {data} = response;
+        const data = yield call(requestMethod);
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_SUCCESS,
             payload: data,

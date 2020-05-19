@@ -24,9 +24,9 @@ export const historyServiceManager = {
                 store.dispatch(resultHistoryPageLoading(false));
                 store.dispatch(resultPageHistoryUpdate({
                     pages: 1,
-                    records: response.data.data,
-                    pageSize: response.data.data.length,
-                    total: response.data.total
+                    records: response.data,
+                    pageSize: response.data.length,
+                    total: response.total
                 }));
                 return response;
             }

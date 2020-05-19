@@ -7,7 +7,7 @@ import {rightsService} from '../../legacy/containers/avail/service/RightsService
 import {URL} from '../../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '../../../ui/elements/nexus-toast-notification/constants';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
@@ -63,7 +63,7 @@ function* fetchAndStoreRightMatchingSearchCriteria() {
         if (!provider) {
             throw {error};
         }
-        const {data} = yield call(getRightMatchingFieldSearchCriteria, payload);
+        const data = yield call(getRightMatchingFieldSearchCriteria, payload);
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_SUCCESS,
             payload: data,
@@ -83,8 +83,7 @@ function* fetchFocusedRight(action) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_REQUEST,
             payload: {},
         });
-        const response = yield call(requestMethod, action.payload);
-        const {data} = response;
+        const data = yield call(requestMethod, action.payload);
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: data,
@@ -126,7 +125,7 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
         const matchedRights = [];
         for(const id of payload) {
             const response = yield call(requestMethod, id);
-            matchedRights.push(response.data);
+            matchedRights.push(response);
         }
 
         yield put({
@@ -152,7 +151,7 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
         });
 
         const response = yield call(requestMethod, rightIds);
-        let combinedRight = response.data;
+        let combinedRight = response;
 
         // fix fields that are null but include subfields
         mapping.forEach(({javaVariableName}) => {
@@ -189,8 +188,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
             payload: {}
         });
-        const response = yield call(requestMethod, rightIds, combinedRight);
-        const focusedRight = response.data;
+        const focusedRight = yield call(requestMethod, rightIds, combinedRight);
 
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_SUCCESS,
@@ -228,7 +226,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
         let isBoundaryValue = false;
         while (!isIdFounded || isBoundaryValue) {
             const response = yield call(requestMethod, null, pageNumber, pageSize, searchParams);
-            const ids = response.data.data.map(el => el.id);
+            const ids = response.data.map(el => el.id);
             if (ids.length === 0) {
                 break;
             }
@@ -238,7 +236,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
             pages[pageNumber] = ids;
             rightMatchPageData = {
                 pages: {...rightMatchPageData.pages, ...pages},
-                total: response.data.total
+                total: response.total
             };
 
             if (isBoundaryValue || ids.length < pageSize) {
@@ -276,9 +274,20 @@ export function* createNewRight(requestMethod, {payload}) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
         });
+
         if (redirectPath) {
             yield put(push(URL.keepEmbedded(redirectPath)));
         }
+
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+            }
+        });
     } catch (error) {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_ERROR,

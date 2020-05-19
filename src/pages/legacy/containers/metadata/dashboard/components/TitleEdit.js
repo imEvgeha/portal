@@ -87,7 +87,7 @@ class TitleEdit extends Component {
 
     loadTitle(titleId) {
         titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
+            const titleForm = response;
             this.setState({ titleForm, editedForm: titleForm });
             this.loadParentTitle(titleForm);
         }).catch(() => {
@@ -101,7 +101,7 @@ class TitleEdit extends Component {
             if (parent) {
                 const parentId = parent.id;
                 titleService.getTitleById(parentId).then((response) => {
-                    const parentTitleForm = response.data;
+                    const parentTitleForm = response;
                     let newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
                     let newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
                     this.setState({
@@ -117,7 +117,7 @@ class TitleEdit extends Component {
 
     loadTerritoryMetadata(titleId) {
         titleService.getTerritoryMetadataById(titleId).then((response) => {
-            const territoryMetadata = response.data;
+            const territoryMetadata = response;
             this.setState({
                 territory: territoryMetadata
             });
@@ -128,7 +128,7 @@ class TitleEdit extends Component {
 
     loadEditorialMetadata(titleId) {
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
-            const editorialMetadata = response.data;
+            const editorialMetadata = response;
             this.setState({
                 editorialMetadata: editorialMetadata
             });
@@ -403,17 +403,16 @@ class TitleEdit extends Component {
     titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
         return titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
             this.setState({
-                titleForm: response.data,
-                editedForm: response.data,
+                titleForm: response,
+                editedForm: response,
                 ratingForCreate: {},
                 territoryMetadataActiveTab: CURRENT_TAB,
                 editorialMetadataActiveTab: CURRENT_TAB,
                 titleRankingActiveTab: CURRENT_TAB,
             });
 
-            this.loadParentTitle(response.data);
+            this.loadParentTitle(response);
             return true;
-
         }).catch(() => {
             console.error('Unable to load Title Data');
             return false;
@@ -537,8 +536,8 @@ class TitleEdit extends Component {
             };
             promises.push(titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
                     const list = [].concat(this.state.territory);
-                    const foundIndex = list.findIndex(x => x.id === response.data.id);
-                    list[foundIndex] = response.data;
+                    const foundIndex = list.findIndex(x => x.id === response.id);
+                    list[foundIndex] = response;
                     this.setState({
                         territory: list
                     });
@@ -576,7 +575,7 @@ class TitleEdit extends Component {
             promises.push(titleService.addTerritoryMetadata(newTerritory).then((response) => {
                     this.cleanTerritoryMetadata();
                     this.setState({
-                        territory: [response.data, ...this.state.territory],
+                        territory: [response, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
                     return true;
@@ -764,8 +763,8 @@ class TitleEdit extends Component {
         this.state.updatedEditorialMetadata.forEach(e => {
                 promises.push(titleService.updateEditorialMetadata(e).then((response) => {
                     const list = [].concat(this.state.editorialMetadata);
-                    const foundIndex = list.findIndex(x => x.id === response.data.id);
-                    list[foundIndex] = response.data;
+                    const foundIndex = list.findIndex(x => x.id === response.id);
+                    list[foundIndex] = response;
                     this.setState({
                         editorialMetadata: list
                     });
@@ -786,7 +785,7 @@ class TitleEdit extends Component {
                 promises.push(titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
-                        editorialMetadata: [response.data, ...this.state.editorialMetadata],
+                        editorialMetadata: [response, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
                     return true;

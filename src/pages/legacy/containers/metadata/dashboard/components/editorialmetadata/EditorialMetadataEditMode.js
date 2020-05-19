@@ -134,11 +134,11 @@ class EditorialMetadataEditMode extends Component {
     loadOptionsPerson = (searchPersonText, type) => {
         if (type === CAST) {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true)
-                .then(res => getFilteredCastList(res.data.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                .then(res => getFilteredCastList(res.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         } else {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
-                .then(res => getFilteredCrewList(res.data.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                .then(res => getFilteredCrewList(res.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         }
     };

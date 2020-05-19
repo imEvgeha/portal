@@ -1,12 +1,10 @@
-import Http from '../../../../../util/Http';
 import config from 'react-global-configuration';
+import {nexusFetch} from '../../../../../util/http-client/index';
 import {store} from '../../../../../index';
 import {loadReports, setReportName} from '../../../stores/actions/index';
 import {errorModal} from '../../../components/modal/ErrorModal';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {resultPageUpdateColumnsOrder, resultPageSort} from '../../../stores/actions/avail/dashboard';
-
-const http = Http.create();
 
 const loadReportToStore = (report) => {
     store.dispatch(setReportName(report.name));
@@ -52,12 +50,18 @@ const readReportFromStore = () => {
 };
 
 const getConfiguration = () => {
-    const httpWithoutErrorHandling = Http.create({defaultErrorHandling: false});
-    return httpWithoutErrorHandling.get(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration');
+    const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration';
+    return nexusFetch(url, {isWithErrorHandling: false});
 };
 
-const putConfiguration = (configuration) => {
-    return http.put(config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration', configuration);
+const putConfiguration = configuration => {
+    return nexusFetch(
+        config.get('gateway.configuration') + config.get('gateway.service.configuration') +'/configuration', 
+        {
+            method: 'put',
+            body: JSON.stringify(configuration),
+        }
+    );
 };
 
 const loadConfiguration = (configuration) => {
@@ -71,10 +75,11 @@ const loadConfiguration = (configuration) => {
 
 export const configurationService = {
     getConfiguration,
+
     initConfiguration: (forceReload) => {
         if (forceReload || !store.getState().root.reports) {
-            getConfiguration().then( (response) => {
-                loadConfiguration(response.data);
+            getConfiguration().then(response => {
+                loadConfiguration(response);
             }). catch((error) => {
                 errorModal.open('Error', () => {}, {description: 'System is not configured correctly!', closable: false});
                 console.error('Unable to load configuration');
@@ -82,7 +87,6 @@ export const configurationService = {
             });
         }
     },
-
 
     getReportsNames: () => {
         if (!store.getState().root.reports) {
@@ -120,8 +124,8 @@ export const configurationService = {
             newReport.name = reportName;
             reports.push(newReport);
         }
-        putConfiguration({'avails': {'reports': reports}}).then( (response) => {
-            loadConfiguration(response.data);
+        putConfiguration({'avails': {'reports': reports}}).then((response) => {
+            loadConfiguration(response);
             store.dispatch(setReportName(reportName));
         }). catch((error) => {
             console.error('Unable to Save Report');
@@ -131,8 +135,8 @@ export const configurationService = {
 
     deleteReport: (reportName) => {
         const reports = store.getState().root.reports.filter((report) => {return report.name !== reportName;});
-        putConfiguration({'avails': {'reports': reports}}).then( (response) => {
-            loadConfiguration(response.data);
+        putConfiguration({'avails': {'reports': reports}}).then((response) => {
+            loadConfiguration(response);
             configurationService.changeReport('');
         }). catch((error) => {
             console.error('Unable to Delete Report');
