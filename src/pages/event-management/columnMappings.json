@@ -5,7 +5,8 @@
     "field": "eventId",
     "headerName": "Event ID",
     "dataType": "string",
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "enableSearch": true
   },
   {
     "colId": "correlationId",
@@ -13,7 +14,8 @@
     "field": "correlationId",
     "headerName": "Correlation ID",
     "dataType": "string",
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "enableSearch": true
   },
   {
     "colId": "eventType",
@@ -21,7 +23,8 @@
     "field": "eventType",
     "headerName": "Event Type",
     "dataType": "string",
-    "searchDataType": "multiselect"
+    "searchDataType": "multiselect",
+    "enableSearch": true
   },
   {
     "colId": "eventSource",
@@ -29,7 +32,8 @@
     "field": "eventSource",
     "headerName": "Event Source",
     "dataType": "string",
-    "searchDataType": "multiselect"
+    "searchDataType": "multiselect",
+    "enableSearch": true
   },
   {
     "colId": "tenantId",
@@ -38,7 +42,8 @@
     "field": "tenantId",
     "headerName": "Tenant ID",
     "dataType": "string",
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "enableSearch": true
   },
   {
     "colId": "objectId",
@@ -47,22 +52,26 @@
     "field": "objectId",
     "headerName": "Object ID",
     "dataType": "string",
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "enableSearch": true
   },
   {
     "colId": "createdTimeStamp",
     "javaVariableName": "createdTimeStamp",
     "field": "createdTimeStamp",
     "headerName": "Created Time Stamp",
-    "dataType": "datetime",
-    "searchDataType": "datetime"
+    "dataType": "timestamp",
+    "searchDataType": "timestamp",
+    "enableSearch": true,
+    "width": 200
   },
   {
     "colId": "postedTimeStamp",
     "javaVariableName": "postedTimeStamp",
     "field": "postedTimeStamp",
     "headerName": "Posted Time Stamp",
-    "dataType": "datetime",
-    "searchDataType": "datetime"
+    "dataType": "timestamp",
+    "searchDataType": "timestamp",
+    "enableSearch": true
   }
 ]

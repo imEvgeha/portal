@@ -202,7 +202,7 @@ const RightsRepository = ({
         );
     };
 
-    const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
+    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/'

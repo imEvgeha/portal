@@ -12,7 +12,7 @@ import {
     SIMULCAST_TIME_LABEL,
     SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
-    RELATIVE_TIME_FORMAT,
+    RELATIVE_TIME_FORMAT, TIMESTAMP_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT,
 } from '../constants';
 import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/DateTimeUtils';
 
@@ -31,6 +31,7 @@ const NexusDateTimePicker = ({
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
     const [date, setDate] = useState(value);
+    const [firstRun, setFirstRun]= useState(true);
 
     // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
     useEffect(() => {typeof value === 'string' && setIsSimulcast(isUtc(value));}, [value]);
@@ -38,6 +39,15 @@ const NexusDateTimePicker = ({
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
+
+    useEffect(() => {
+        date && setDate(moment.utc(date).format(isTimestamp ? TIMESTAMP_DATE_FORMAT : (isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT)));
+    }, [isSimulcast]);
+
+    useEffect(() => {
+        !firstRun && !isWithInlineEdit && onChange(date);
+        setFirstRun(false);
+    }, [date]);
 
     const timeFormat = isTimestamp
         ? TIMESTAMP_TIME_FORMAT
@@ -72,7 +82,7 @@ const NexusDateTimePicker = ({
                                 onChange={(date) => {
                                     // Don't use onChange if the component is with InlineEdit
                                     // onConfirm will handle changes
-                                    isWithInlineEdit ? setDate(date) : onChange(date);
+                                    setDate(date);
                                 }}
                                 value={value || ''}
                                 isSimulcast={isSimulcast}

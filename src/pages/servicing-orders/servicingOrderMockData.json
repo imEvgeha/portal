@@ -1,0 +1,25 @@
+{
+  "servicingOrder": {
+    "data":
+    {
+      "soID": "123",
+      "customer": "MGM",
+      "orderId": "order123",
+      "fulfillmentOrders": [
+        {
+          "fulfillmentOrderId": "VU000134567-001",
+          "dueDate": "10/05/2021",
+          "status": "COMPLETED"
+        },
+        {
+          "fulfillmentOrderId": "VU000134597-002",
+          "dueDate": "09/05/2021",
+          "status": "PENDING"
+        }
+      ]
+    },
+    "total": 1,
+    "page": 0,
+    "size": 1
+  }
+}

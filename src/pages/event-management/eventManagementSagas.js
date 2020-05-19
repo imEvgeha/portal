@@ -3,7 +3,7 @@ import * as actionTypes from './eventManagementActionTypes';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 import {REPLAY_EVENT_SUCCESS_MESSAGE} from '../../ui/toast/constants';
-import {replayEvent as replayEventAPI} from './eventManagmentService';
+import {replayEvent as replayEventAPI} from './eventManagementService';
 
 export function* replayEvent(requestMethod, {payload}) {
     try {

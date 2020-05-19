@@ -1,18 +1,9 @@
 import {uniqBy} from 'lodash';
 import config from 'react-global-configuration';
-import Http from '../../../../../util/Http';
-import {getDomainName, prepareSortMatrixParamTitles} from '../../../../../util/Common';
+import {nexusFetch} from '../../../../../util/http-client/index';
+import {getDomainName, prepareSortMatrixParamTitles, encodedSerialize} from '../../../../../util/Common';
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
-
-const http = Http.create();
-
-// Building a URL where user can check the newly created title
-// (Opens in new tab)
-const onViewTitleClick = (response) => {
-    const url = `${getDomainName()}/metadata/detail/${response.data.id}`;
-    window.open(url, '_blank');
-};
 
 const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if(syncToVZ || syncToMovida) {
@@ -26,38 +17,33 @@ const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     }
     return null;
 };
-const httpNoErrorModal = Http.create({
-    defaultErrorHandling: false,
-    successToast: {
-        description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-        actions: [{ content: 'View title', onClick: onViewTitleClick }]
-    }
-});
-export const titleService = {
 
-    freeTextSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = {};
+export const titleService = {
+    freeTextSearch: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = {};
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
+                queryParams[key] = key === 'contentType' ? searchCriteria[key].toUpperCase() : searchCriteria[key];
             }
         }
-        return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles/search' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles/search' + prepareSortMatrixParamTitles(sortedParams);
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
     },
 
     freeTextSearchWithGenres: (searchCriteria, page, pageSize, sortedParams) => {
         const GENRE_KEY = 'editorialGenres';
 
         return titleService.freeTextSearch(searchCriteria, page, pageSize, sortedParams).then(response => {
-            const {data, page, size, total} = (response && response.data) || {};
+            const {data, page, size, total} = response || {};
             const promises = data.map((title) => {
                 const {id} = title;
                 if (title[GENRE_KEY]) {
                     return title;
                 }
                 return titleService.getEditorialMetadataByTitleId(id)
-                    .then(({data}) => {
-                        const itemWithGenres = data.filter(editorial => editorial.genres && editorial.genres.length).map(item => item.genres).flat();
+                    .then(response => {
+                        const itemWithGenres = response.filter(editorial => editorial.genres && editorial.genres.length).map(item => item.genres).flat();
 
                         if (itemWithGenres) {
                             const genres = uniqBy(itemWithGenres, 'id');
@@ -71,67 +57,94 @@ export const titleService = {
             return Promise.all(promises)
                 .then(titles => {
                     return {
-                        data: {
-                            data: titles,
-                            page,
-                            size,
-                            total,
-                        }
+                        data: titles,
+                        page,
+                        size,
+                        total,
                     };
                 });
         });
     },
 
-    advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const params = {};
+    advancedSearch: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = {};
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                params[key] = searchCriteria[key];
+                queryParams[key] = searchCriteria[key];
             }
         }
-        return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles' + prepareSortMatrixParamTitles(sortedParams), {params: {...params, page: page, size: pageSize}});
+
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles' + 
+            prepareSortMatrixParamTitles(sortedParams);
+        const params = encodedSerialize({...queryParams, page, size});
+
+        return nexusFetch(url, {params});
     },
 
     createTitle: (title, syncToVZ, syncToMovida) => {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles';
 
-        return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title, { params });
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(title),
+            params: encodedSerialize(params),
+            isWithErrorHandling: false,
+        });
     },
 
     createTitleWithoutErrorModal: (title) => {
-        return httpNoErrorModal.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles', title);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles';
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(title),
+            isWithErrorHandling: false,
+        });
     },
 
     updateTitle: (title, syncToVZ, syncToMovida) => {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`;
 
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') +`/titles/${title.id}`, title, {params});
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(title),
+            params: encodedSerialize(params),
+        });
     },
 
     getTitleById: (id) => {
-        return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/titles/${id}`;
+        return nexusFetch(url);
     },
 
     bulkGetTitles: (ids) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ';
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(ids),
+        });
     },
 
     bulkGetTitlesWithGenres: (ids) => {
         const LANGUAGES = ['English', 'en'];
         const LOCALE = ['US'];
         const GENRE_KEY = 'editorialGenres';
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ';
 
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles?operationType=READ', ids).then(response => {
-            const {data = []} = response || {};
-            const promises = data.map((title) => {
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(ids),
+        }).then(response => {
+            const promises = response.map((title) => {
                 const {id} = title;
                 if (title[GENRE_KEY]) {
                     return title;
                 }
                 return titleService.getEditorialMetadataByTitleId(id)
-                    .then(({data}) => {
+                    .then(data => {
                         const itemWithGenres = data.find(({locale, language}) => {
                             return LOCALE.includes(locale) && LANGUAGES.includes(language);
                         });
@@ -142,41 +155,58 @@ export const titleService = {
                     })
                     .catch(e => e);
             });
+
             return Promise.all(promises)
-                .then(titles => {
-                    return {
-                        data: titles,
-                        status: 200,
-                    };
-                });
+                .then(titles => titles);
         });
     },
 
     addTerritoryMetadata: (territoryMetadata) => {
-        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', territoryMetadata);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata';
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(territoryMetadata),
+        });
     },
 
     getTerritoryMetadataById: (id) => {
-        return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/territorymetadata?titleId=${id}`);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/territorymetadata?titleId=${id}`;
+        return nexusFetch(url);
     },
     
     updateTerritoryMetadata: (editedTerritoryMetadata) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata', editedTerritoryMetadata);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata';
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedTerritoryMetadata),
+        });
     },
 
     addEditorialMetadata: (editorialMetadata) => {
-        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editorialMetadata);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata';
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(editorialMetadata),
+        });
     },
 
     getEditorialMetadataByTitleId: (id) => {
-        return http.get(config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}`);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}`;
+        return nexusFetch(url);
     },
 
     updateEditorialMetadata: (editedEditorialMetadata) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata';
+        return nexusFetch(url, {
+            method:'put',
+            body: JSON.stringify(editedEditorialMetadata),
+        });
     },
 
     mergeTitles: (query) => {
-        return http.post(`${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`);
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`;
+        return nexusFetch(url, {
+            method: 'post',
+        });
     },
 };

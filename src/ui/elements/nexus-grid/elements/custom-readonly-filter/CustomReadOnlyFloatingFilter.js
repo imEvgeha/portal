@@ -1,5 +1,6 @@
 import React from 'react';
 import './CustomReadOnlyFilter.scss';
+import {isObject, isObjectEmpty} from '../../../../../util/Common';
 
 class CustomReadOnlyFloatingFilter extends React.Component {
     constructor(props) {
@@ -7,18 +8,18 @@ class CustomReadOnlyFloatingFilter extends React.Component {
         this.state = {
             value: this.props.readOnlyValue
         };
-
     }
 
-    onParentModelChanged = ({filter = {}}) => {
-        this.setState({value: filter});
-    };
+    onParentModelChanged = () => {
+    }
 
     render() {
+        const {value} = this.state;
+        const content = (isObject(value) && isObjectEmpty(value)) ? '' : value;
 
         return (
             <div className='nexus-c-custom-read-only-floating-filter'>
-                {this.state.value}
+                <span title={content}>{content}</span>
             </div>
         );
     }

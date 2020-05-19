@@ -69,11 +69,11 @@ class CoreMetadataEditMode extends Component {
         if (searchPersonText.length < 2) return [];
         if (type === CAST) {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST)
-                .then(res => getFilteredCastList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
+                .then(res => getFilteredCastList(res.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase()  , original: JSON.stringify(e)};})
             );
         } else {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
-                .then(res => getFilteredCrewList(res.data.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
+                .then(res => getFilteredCrewList(res.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
             );
         }
     };  

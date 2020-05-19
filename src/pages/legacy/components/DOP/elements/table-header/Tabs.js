@@ -14,11 +14,11 @@ const Tabs = ({selectedTerritoriesTab, updateFilterSelectedTerritories, promoted
 
     useEffect(() => {
         rightServiceManager.callPlanningSearch(tabFilter[ALL_RIGHTS], 0, 1)
-            .then(response => setAllRightCount(response.data.total));
+            .then(response => setAllRightCount(response.total));
         rightServiceManager.callPlanningSearch(tabFilter[INCOMING], 0, 1)
-            .then(response => setIncomingCount(response.data.total));
+            .then(response => setIncomingCount(response.total));
         rightServiceManager.callPlanningSearch(tabFilter[SELECTED], 0, 1)
-            .then(response => setSelectedCount(response.data.total));
+            .then(response => setSelectedCount(response.total));
     }, [tabFilter]);
 
     return (

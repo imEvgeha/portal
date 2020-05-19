@@ -56,14 +56,14 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
     const exportAvailsByIds = () => {
         exportService.exportAvails(getSelected().map(({id}) => id), filteredColumns)
             .then(function (response) {
-                downloadFile(response.data);
+                downloadFile(response);
             });
     };
 
     const exportAvailsCriteria = () => {
         exportService.bulkExportAvails(exportCriteria, filteredColumns)
             .then(function (response) {
-                downloadFile(response.data);
+                downloadFile(response);
             });
     };
 

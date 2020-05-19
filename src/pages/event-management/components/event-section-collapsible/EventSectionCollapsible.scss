@@ -1,0 +1,34 @@
+.nexus-c-event-section-collapsible {
+    margin-bottom: 10px;
+}
+
+.nexus-c-event-section-collapsible__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.nexus-c-event-section-collapsible__activator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.nexus-c-event-section-collapsible__content {
+    margin: 10px 0;
+    overflow: hidden;
+    max-height: 0;
+    // TODO: delete it is set inside webpack
+    -webkit-transition: max-height 1s ease-in-out;
+    -moz-transition: max-height 1s ease-in-out;
+    -ms-transition: max-height 1s ease-in-out;
+    -o-transition: max-height 1s ease-in-out;
+    transition: max-height 1s ease-in-out;
+
+    &--active {
+        max-height: 250px;
+    }
+}
