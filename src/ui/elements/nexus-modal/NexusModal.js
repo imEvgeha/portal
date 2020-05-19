@@ -1,11 +1,10 @@
 import React, {useState, createContext} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 
+import './NexusModal.scss';
+
 export const NexusModalContext = createContext({});
 
-export const NexusModalConsumer = NexusModalContext.Consumer;
-
-// eslint-disable-next-line react/prop-types
 export const NexusModalProvider = ({children}) => {
     const [content, setContent] = useState(null);
     const [title, setTitle] = useState('');
@@ -48,10 +47,9 @@ export const NexusModalProvider = ({children}) => {
                         actions={actions.length && actions}
                         heading={title}
                         onClose={close}
-                        width={style.width ? style.width : 'medium'}
+                        width={style.width || 'medium'}
                     >
-                        {/* TODO: Change after we decide between styled or sass */}
-                        <div style={{paddingBottom: '20px'}}>
+                        <div className="nexus-c-modal">
                             {content}
                         </div>
                     </Modal>
