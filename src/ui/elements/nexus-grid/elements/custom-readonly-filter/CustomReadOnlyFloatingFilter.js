@@ -16,6 +16,7 @@ class CustomReadOnlyFloatingFilter extends React.Component {
     render() {
         const {value} = this.state;
         const content = (isObject(value) && isObjectEmpty(value)) ? '' : value;
+
         return (
             <div className='nexus-c-custom-read-only-floating-filter'>
                 <span title={content}>{content}</span>

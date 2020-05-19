@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventSectionCollapsible should match snapshot 1`] = `
+<div
+  className="nexus-c-event-section-collapsible"
+>
+  <div
+    className="nexus-c-event-section-collapsible__header"
+  >
+    <div
+      className="nexus-c-event-section-collapsible__activator"
+      onClick={[Function]}
+    >
+      <HipchatChevronDownIcon />
+    </div>
+  </div>
+  <div
+    className="nexus-c-event-section-collapsible__content
+                "
+  />
+</div>
+`;

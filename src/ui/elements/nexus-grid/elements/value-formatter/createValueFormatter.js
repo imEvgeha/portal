@@ -1,6 +1,7 @@
 import {DATETIME_FIELDS, ISODateToView} from '../../../../../util/DateTimeUtils';
+import {camelCase, startCase} from 'lodash';
 
-const createValueFormatter = ({dataType, javaVariableName}) => {
+const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
     switch (dataType) {
         case DATETIME_FIELDS.TIMESTAMP:
         case DATETIME_FIELDS.BUSINESS_DATETIME:
@@ -18,8 +19,14 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                         return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
                     }
                 };
+            } else {
+                return (params) => {
+                    const {data = {}} = params || {};
+                    const {[javaVariableName]: value = ''} = data || {};
+                    // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
+                    return isEmphasized ? startCase(camelCase(value)) : value;
+                };
             }
-            break;
         case 'territoryType':
         case 'audioLanguageType':
             return (params) => {
@@ -83,7 +90,7 @@ const createValueFormatter = ({dataType, javaVariableName}) => {
                             .join(', ');
                     }
                 };
-            } 
+            }
             return;
         default:
             return null;

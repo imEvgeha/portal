@@ -28,6 +28,7 @@ export default class CustomReadOnlyFilter extends React.Component {
     doesFilterPass = () => {
         return true;
     };
+
     render () {
         return (
             <div className='nexus-c-custom-read-only-filter'>

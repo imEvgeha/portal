@@ -256,9 +256,8 @@ class SelectableInput extends Component {
                 to = ''
             } = value || {};
 
-            from = dataType === DATETIME_FIELDS.TIMESTAMP ? from.slice(0, -1) : from;
-            to = dataType === DATETIME_FIELDS.TIMESTAMP ? to.slice(0, -1) : to;
-
+            from = from.endsWith('Z') ? from.slice(0, -1) : from;
+            to = to.endsWith('Z') ? to.slice(0, -1) : to;
             return (
                 <NexusDateTimeWindowPicker
                     name={displayName}
@@ -270,7 +269,7 @@ class SelectableInput extends Component {
                         onChange({...value, from, to});
                     }}
                     isUsingTime={showTime}
-                    isTimestamp={true}
+                    isTimestamp={false}
                     startDateTimePickerProps={{
                         id: `${id}-datepicker-start`,
                         defaultValue: from,
