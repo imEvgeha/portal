@@ -2,8 +2,6 @@ export default {
     filterKeys: {
         BILL_TO: 'billTo',
         RATE_CARD: 'rateCard',
-        SERVICER: 'servicer',
-        RECIPIENT: 'recipient',
         STATUS: 'status',
         DUE_DATE: 'due_date',
         START_DATE: 'start_date'
@@ -15,5 +13,13 @@ export default {
     RATE_CARD_LIST: [
         { value: 'MGM Rate Card', label: 'MGM Rate Card' },
         { value: 'WB Rate Card', label: 'WB Rate Card' }
+    ],
+    STATUS_LIST: [
+        { value: 'Completed', label: 'Completed'},
+        { value: 'On Hold', label: 'On Hold'},
+        { value: 'In Progress', label: 'In Progress'},
+        { value: 'Canceled', label: 'Canceled'},
+        { value: 'Not Started', label: 'Not Started'},
+        { value: 'Pending', label: 'Pending'},
     ],
 };

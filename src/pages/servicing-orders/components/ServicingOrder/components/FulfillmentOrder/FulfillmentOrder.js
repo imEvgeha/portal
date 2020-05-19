@@ -14,6 +14,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
 
     const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']);
     const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']);
+    const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']);
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__title'>
@@ -51,21 +52,34 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                 </div>
             </div>
             <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__input'>
-                    Servicer
-                    {' '}
-                    <input
-                        value={servicer}
-                        disabled
-                    />
+                <div className='fulfillment-order__left'>
+                    <div className='fulfillment-order__input'>
+                        Servicer
+                        {' '}
+                        <input
+                            value={servicer}
+                            disabled
+                        />
+                    </div>
+                    <div className='fulfillment-order__input'>
+                        Recipient
+                        {' '}
+                        <input
+                            value={recipient}
+                            disabled
+                        />
+                    </div>
                 </div>
-                <div className='fulfillment-order__input'>
-                    Recipient
-                    {' '}
-                    <input
-                        value={recipient}
-                        disabled
-                    />
+                <div className='fulfillment-order__right'>
+                    <div className='fulfillment-order__select-wrapper'>
+                        Status
+                        <Select
+                            className='fulfillment-order__select'
+                            options={Constants.STATUS_LIST}
+                            value={{value: filters['status'], label: statusOption.label}}
+                            onChange={value => onFilterChange(filterKeys.STATUS, value)}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

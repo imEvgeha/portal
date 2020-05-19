@@ -11,10 +11,10 @@
   &__select {
     width: 160px;
   }
-  &__select-wrapper {
+  &__select-wrapper, &__input {
     margin-left: 15px;
   }
-  &__billing {
+  &__billing, &__left {
     display: inline-flex;
   }
   &__input {
