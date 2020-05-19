@@ -8,9 +8,10 @@ const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
     const [fulfillmentOrders, setFulfillmentOrders] = useState([]);
     useEffect(() => {
-            servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
+        servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
-            setServiceOrder({soID: servicingOrder.data.soID, customer: servicingOrder.data.customer, creationDate: servicingOrder.data.creationDate, createdBy: servicingOrder.data.createdBy });
+            const {soID, customer, creationDate, createdBy} = servicingOrder.data;
+            setServiceOrder({soID, customer, creationDate, createdBy});
             setFulfillmentOrders(servicingOrder.data['fulfillmentOrders']);
         });
     }, []);

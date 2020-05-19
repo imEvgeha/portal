@@ -12,11 +12,8 @@ import SOFilter from '../FilterSection/ServiceOrderFilter';
 const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
     const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
     const [showFilter, setShowFilter] = useState(false);
-
     const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
-
     const toggleFilters = () => setShowFilter(!showFilter);
-
 
     return (
         <div className='panel-header'>
@@ -37,8 +34,6 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
             </div>
             {
                 showFilter && <SOFilter orderDetails={orderDetails} />
-
-
             }
             <div
                 className='panel-header__list'
