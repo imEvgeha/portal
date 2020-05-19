@@ -7,10 +7,10 @@ import loadingGif from '../../../../../assets/img/loading.gif';
 const LoadingCellRenderer = (params) => {
     const {data, colDef, colDef: {field, colId},
         valueFormatted, link = null, newTab = true} = params;
-    const linkTo = link && `${link}${data.id || data[colId]}`;
     if (!data && colDef !== 'actions') {
         return (<img src={loadingGif} alt='loadingSpinner' />);
     }
+    const linkTo = link && `${link}${data.id || data[colId]}`;
     let value = getDeepValue(data, field);
     if (isObject(value)) {
         value = JSON.stringify(value);

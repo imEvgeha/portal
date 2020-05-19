@@ -17,7 +17,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "SR ID",
           "javaVariableName": "srId",
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
           "width": 150,
         },
         Object {
@@ -34,7 +34,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "SO Number",
           "javaVariableName": "soNumber",
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
           "width": 150,
         },
         Object {
@@ -47,7 +47,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "SO Description",
           "javaVariableName": "soDescription",
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
           "width": 200,
         },
         Object {
@@ -60,7 +60,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "Business Partner ID",
           "javaVariableName": "businessPartnerId",
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
           "width": 150,
         },
         Object {
@@ -73,7 +73,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "Client Profile",
           "javaVariableName": "clientProfile",
           "searchDataType": "string",
-          "valueFormatter": [Function],
+          "valueFormatter": undefined,
           "width": 150,
         },
         Object {
@@ -103,7 +103,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 200,
         },
         Object {
-          "cellRenderer": "emphasizedStringCellRenderer",
+          "cellRenderer": "emphasizedCellRenderer",
           "colId": "status",
           "dataType": "select",
           "displayName": "Status",
@@ -120,11 +120,11 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
             "Not Started",
           ],
           "searchDataType": "multiselect",
-          "valueFormatter": undefined,
+          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
-          "cellRenderer": "emphasizedStringCellRenderer",
+          "cellRenderer": "emphasizedCellRenderer",
           "colId": "readiness",
           "dataType": "select",
           "displayName": "Readiness",
@@ -138,14 +138,14 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
             "Not Configured",
           ],
           "searchDataType": "multiselect",
-          "valueFormatter": undefined,
+          "valueFormatter": [Function],
           "width": 150,
         },
       ]
     }
     frameworkComponents={
       Object {
-        "emphasizedStringCellRenderer": [Function],
+        "emphasizedCellRenderer": [Function],
       }
     }
     mapping={

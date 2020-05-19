@@ -157,12 +157,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    handleDatepickerChange(name, displayName, date) {
-        const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
-        let val = date;
-        if(date && mapping.dataType === DATETIME_FIELDS.REGIONAL_MIDNIGHT) {
-            val = momentToISO(moment(date).utcOffset(0, true));
-        }
+    handleDatepickerChange(name, displayName, val) {
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
@@ -262,11 +257,11 @@ class RightCreate extends React.Component {
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
-            if(response && response.data && response.data.id){
+            if(response && response.id){
                 if(this.props.match.params.availHistoryId){
                     this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
                 }else{
-                    this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
+                    this.context.router.history.push(RightsURL.getRightUrl(response.id));
                 }
 
             }
@@ -719,10 +714,8 @@ class RightCreate extends React.Component {
 
             if(options.length > 0 && value){
                 val = value;
-                if(!required) {
-                    options.unshift({value: '', label: value ? 'Select...' : ''});
-                }
             }
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <AudioLanguageField
                     audioLanguages={this.right.languageAudioTypes}
@@ -759,6 +752,7 @@ class RightCreate extends React.Component {
                 value,
                 error,
                 isTimestamp,
+                isReturningTime:useTime,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);

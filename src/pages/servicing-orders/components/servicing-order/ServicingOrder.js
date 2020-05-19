@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import HeaderSection from './components/HeaderSection/HeaderSection';
 import FulfillmentOrder from './components/FulfillmentOrder/FulfillmentOrder';
 import './ServicingOrder.scss';
-import {servicingOrdersService} from '../../servicing-orders-table/servicingOrdersService';
+import {servicingOrdersService} from '../../../servicing-orders/servicingOrdersService';
 
 const ServicingOrder = ({match}) => {
     const [fulfillmentOrders, setFulfillmentOrders] = useState([]);

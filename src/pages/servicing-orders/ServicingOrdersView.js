@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
-import ServicingOrdersTable from './servicing-orders-table/ServicingOrdersTable';
+import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import './ServicingOrdersView.scss';
 import {SERVICING_ORDERS_TTL, CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN} from './constants';
 
