@@ -1,0 +1,26 @@
+
+.so-panel-filter-detail {
+  display: flex;
+  padding-right: 20px;
+  flex-direction: column;
+  margin-top: 10px;
+  text-align: left;
+  margin-left: 70px;
+  justify-content: space-around;
+  margin-bottom: 16px;
+  button{
+    width: 60%;
+    background: #EBEDF0;
+    color: #42526E;
+    margin-bottom: 10px;
+  }
+  &__modal {
+    margin-left: 10%;
+    margin-top: 10%;
+    p {
+      margin: 2px;
+    }
+
+  }
+
+}

@@ -5,19 +5,41 @@ import {backArrowColor} from '../../../../../legacy/constants/avails/constants';
 import {SERVICING_ORDERS} from '../../../../../../ui/elements/nexus-navigation/constants';
 import './HeaderSection.scss';
 import FulfillmentOrderPanel from '../FulfillmentOrderPanel/FulfillmentOrderPanel';
+import FilterSolidIcon from '../../../../../../assets/filter-solid.svg';
+import FilterIcon from '../../../../../../assets/filter.svg';
+import SOFilter from '../FilterSection/ServiceOrderFilter';
 
-const HeaderSection = ({fulfillmentOrders}) => {
+const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
     const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
+    const [showFilter, setShowFilter] = useState(false);
+
     const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
+
+    const toggleFilters = () => setShowFilter(!showFilter);
+
 
     return (
         <div className='panel-header'>
             <div className='panel-header__title'>
-                <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
-                </Link>
-                <span className='panel-header__title--text'>Servicing Order</span>
+                <div>
+                    <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
+                        <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
+                    </Link>
+                    <span className='panel-header__title--text'>Servicing Order</span>
+                </div>
+                <div className='panel-header__filter'>
+                    <div onClick={toggleFilters}>
+                        {
+                            showFilter ? <FilterSolidIcon /> : <FilterIcon />
+                        }
+                    </div>
+                </div>
             </div>
+            {
+                showFilter && <SOFilter orderDetails={orderDetails} />
+
+
+            }
             <div
                 className='panel-header__list'
             >
