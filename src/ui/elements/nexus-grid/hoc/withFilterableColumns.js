@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {get, omit, isEmpty, pickBy, cloneDeep} from 'lodash';
+import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {isObject} from '../../../../util/Common';
 import {
-    GRID_EVENTS,
-    DEFAULT_HOC_PROPS,
-    FILTERABLE_DATA_TYPES,
-    FILTER_TYPE,
-    DEFAULT_FILTER_PARAMS,
-    NOT_FILTERABLE_COLUMNS,
-    EXCLUDED_INITIAL_FILTER_VALUES,
     AG_GRID_COLUMN_FILTER,
+    DEFAULT_FILTER_PARAMS,
+    DEFAULT_HOC_PROPS,
+    EXCLUDED_INITIAL_FILTER_VALUES,
+    FILTER_TYPE,
+    FILTERABLE_DATA_TYPES,
+    GRID_EVENTS,
+    NOT_FILTERABLE_COLUMNS,
 } from '../constants';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
@@ -44,7 +44,7 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (isEmpty(selectValues)) {
                 fetchAvailMapping();
-            };
+            }
         }, [selectValues]);
 
         useEffect(() => {
