@@ -3,20 +3,18 @@
   flex-direction: column;
   height: 100%;
   padding: 24px 0 0;
-}
-
-.nexus-c-event-management__title {
+  &__title {
     font-size: 29px;
     padding-left: 22px;
     color: #42526E;
-}
-
-.nexus-c-event-management__table {
+  }
+  &__table {
     width: 100%;
     height: 100%;
     padding: 24px 24px 45px 24px;
 
     & .nexus-c-nexus-grid {
-        height: 100%;
+      height: 100%;
     }
+  }
 }

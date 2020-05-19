@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {getEventSearch} from '../../eventManagementService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -16,7 +17,7 @@ const EventManagementGrid = compose(
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
-const EventManagementTable = () => {
+const EventManagementTable = ({onGridEvent}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -30,9 +31,19 @@ const EventManagementTable = () => {
     return (
         <EventManagementGrid
             columnDefs={updateColumnDefs(columnDefs)}
+            rowSelection="single"
+            onGridEvent={onGridEvent}
             mapping={columnDefs}
         />
     );
+};
+
+EventManagementTable.defaultProps = {
+    onGridEvent: PropTypes.func,
+};
+
+EventManagementTable.propTypes = {
+    onGridEvent: () => null,
 };
 
 export default EventManagementTable;
