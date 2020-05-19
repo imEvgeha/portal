@@ -8,6 +8,7 @@ const ServicingOrder = ({match}) => {
     const [fulfillmentOrders, setFulfillmentOrders] = useState([]);
     const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
     const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
+    const  selectedOrder = fulfillmentOrders && fulfillmentOrders.find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrder);
 
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
@@ -26,7 +27,7 @@ const ServicingOrder = ({match}) => {
                 />
             </div>
             <div className='servicing-order__right'>
-                <FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder} />
+                {selectedOrder && <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />}
             </div>
         </div>
     );

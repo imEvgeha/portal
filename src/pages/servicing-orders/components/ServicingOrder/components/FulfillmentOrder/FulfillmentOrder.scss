@@ -1,7 +1,40 @@
 .fulfillment-order {
-
   &__title {
     font-size: 29px;
     color: #42526E;
+  }
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 23px;
+  }
+  &__select {
+    width: 160px;
+  }
+  &__select-wrapper {
+    margin-left: 15px;
+  }
+  &__billing {
+    display: inline-flex;
+  }
+  &__input {
+    color: #A5ADBA;
+    display: flex;
+    flex-direction: column;
+    & > div {
+      width: 160px;
+      > div {
+        background: #EBEDF0;
+        border: 0;
+      }
+    }
+    & > input {
+      width: 160px;
+      height: 40px;
+      background: #EBEDF0;
+      border: 0;
+      color: #42526E;
+      padding: 0 10px;
+    }
   }
 }
