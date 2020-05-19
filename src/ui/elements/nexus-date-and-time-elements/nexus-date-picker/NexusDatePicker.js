@@ -53,8 +53,8 @@ const NexusDatePicker = ({
             // onConfirm will handle changes
             !isWithInlineEdit && onChange(
                 isTimestamp
-                    ? moment(date).toISOString()
-                    : `${moment(date).format(isSimulcast
+                    ? moment(date).utc(true).toISOString()
+                    : `${moment(date).utc(true).format(isSimulcast
                         ? SIMULCAST_DATE_FORMAT
                         : RELATIVE_FORMAT)
                     }`
