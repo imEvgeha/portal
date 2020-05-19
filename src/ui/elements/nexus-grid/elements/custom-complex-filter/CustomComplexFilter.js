@@ -14,6 +14,8 @@ export class CustomComplexFilter extends React.Component {
     }
 
     onChange = (val) => {
+        if (!val) return; // Filter doesn't persist when switching ingest without this check
+
         this.setState({value: val}, this.props.filterChangedCallback);
     };
 
@@ -42,7 +44,7 @@ export class CustomComplexFilter extends React.Component {
                     renderer={renderer}
                     defaultFields={this.props.schema}
                     value={this.state.value}
-                    onChange={value => this.onChange(value)}
+                    onChange={this.onChange}
                 />
             </div>
         );

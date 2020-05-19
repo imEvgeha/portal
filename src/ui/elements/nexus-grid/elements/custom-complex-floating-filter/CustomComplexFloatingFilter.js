@@ -1,4 +1,5 @@
 import React from 'react';
+import {isObject} from 'lodash';
 import './CustomComplexFloatingFilter.scss';
 
 class CustomComplexFloatingFilter extends React.Component {
@@ -19,8 +20,7 @@ class CustomComplexFloatingFilter extends React.Component {
         const {value = {}} = this.state;
         let arrayContent = [];
         let keyContent;
-
-        Object.keys(value || {}).forEach((key) => {
+        isObject(value) && Object.keys(value).forEach((key) => {
             keyContent = '';
             if(value[key]) {
                 if(Array.isArray(value[key])){
