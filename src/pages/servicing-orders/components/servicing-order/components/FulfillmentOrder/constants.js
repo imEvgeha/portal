@@ -3,8 +3,8 @@ export default {
         BILL_TO: 'billTo',
         RATE_CARD: 'rateCard',
         STATUS: 'status',
-        DUE_DATE: 'due_date',
-        START_DATE: 'start_date'
+        DUE_DATE: 'dueDate',
+        START_DATE: 'startDate'
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },

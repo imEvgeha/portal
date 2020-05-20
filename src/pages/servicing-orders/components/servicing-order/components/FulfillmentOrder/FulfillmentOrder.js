@@ -23,9 +23,9 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
         setFilters({...filters, [name]: value});
     };
 
-    const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']);
-    const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']);
-    const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']);
+    const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']) || {};
+    const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']) || {};
+    const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']) || {};
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__title'>
