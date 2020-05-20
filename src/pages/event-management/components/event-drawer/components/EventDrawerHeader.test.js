@@ -7,15 +7,18 @@ describe('EventDrawerHeader', () => {
     let mockStore;
     let store;
     let onReplayEventMock;
+    let onReplicateEventMock;
     let wrapper;
     beforeEach(() => {
         mockStore = configureStore();
         store = mockStore({});
         onReplayEventMock = jest.fn();
+        onReplicateEventMock = jest.fn();
         const props = {
             store:store,
             event:{eventId: '123'},
-            onReplay:onReplayEventMock
+            onReplay:onReplayEventMock,
+            onReplicate:onReplicateEventMock
         };
         wrapper = shallow(
             <EventDrawerH
@@ -31,11 +34,17 @@ describe('EventDrawerHeader', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should should call on replay when replay button clicked', () => {
+    it('should should call onReplay when replay button clicked', () => {
         const replayButton = wrapper.find('.nexus-c-event-drawer-header__replay-button');
         expect(replayButton).toHaveLength(1);
         replayButton.simulate('click');
-        // expect(onReplayEventMock).toHaveBeenCalled();
         expect(onReplayEventMock.mock.calls.length).toEqual(1);
+    });
+
+    it('should should call onReplicate when replicate button clicked', () => {
+        const replicateButton = wrapper.find('.nexus-c-event-drawer-header__replicate-button');
+        expect(replicateButton).toHaveLength(1);
+        replicateButton.simulate('click');
+        expect(onReplicateEventMock.mock.calls.length).toEqual(1);
     });
 });

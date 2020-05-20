@@ -1,9 +1,9 @@
-import {REPLAY_EVENT} from '../../pages/event-management/eventManagementActionTypes';
+import {REPLAY_EVENT, REPLICATE_EVENT} from '../../pages/event-management/eventManagementActionTypes';
 import {TITLES_RECONCILE} from '../../pages/metadata/metadataActionTypes';
 import {SAVE_COMBINED_RIGHT} from '../../pages/avails/right-matching/rightMatchingActionTypes';
 import {UPLOAD_INGEST} from '../../pages/avails/ingest-panel/ingestActionTypes';
 
-const WHITELIST = [TITLES_RECONCILE, SAVE_COMBINED_RIGHT, UPLOAD_INGEST, REPLAY_EVENT];
+const WHITELIST = [TITLES_RECONCILE, SAVE_COMBINED_RIGHT, UPLOAD_INGEST, REPLAY_EVENT, REPLICATE_EVENT];
 const ACTION_STATES = ['REQUEST', 'SUCCESS', 'FAILURE', 'ERROR'];
 
 const loadingReducer = (state = {}, action) => {

@@ -3,19 +3,25 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
-import {REPLAY_EVENT} from '../../../eventManagementActionTypes';
-import {replayEvent} from '../../../eventManagementActions';
+import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
+import {replayEvent, replicateEvent} from '../../../eventManagementActions';
 import './EventDrawerHeader.scss';
 
-export const EventDrawerH = ({event, isReplaying, onReplay}) => {
+export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const onInnerReplay = () => {
         const payload = {eventId: event.eventId};
         onReplay(payload);
     };
 
+    const onInnerReplicate = () => {
+        const payload = {eventId: event.eventId};
+        onReplicate(payload);
+    };
+
     return (
         <div className='nexus-c-event-drawer-header'>
             <Button className='nexus-c-event-drawer-header__replay-button' onClick={onInnerReplay} isLoading={isReplaying} disabled={!event || !event.eventId}>Replay</Button>
+            <Button className='nexus-c-event-drawer-header__replicate-button' onClick={onInnerReplicate} isLoading={isReplicating} disabled={!event || !event.eventId}>Replicate</Button>
         </div>
     );
 };
@@ -23,23 +29,30 @@ export const EventDrawerH = ({event, isReplaying, onReplay}) => {
 EventDrawerH.propTypes = {
     event: PropTypes.object,
     isReplaying: PropTypes.bool,
-    onReplay: PropTypes.func
+    onReplay: PropTypes.func,
+    isReplicating: PropTypes.bool,
+    onReplicate: PropTypes.func
 };
 
 EventDrawerH.defaultProps = {
     event: null,
     isReplaying: false,
-    onReplay: null
+    onReplay: null,
+    isReplicating: false,
+    onReplicate: null
 };
 
 const createMapStateToProps = () => {
-    const loadingSelector = createLoadingSelector([REPLAY_EVENT]);
+    const replayingLoadingSelector = createLoadingSelector([REPLAY_EVENT]);
+    const replicatingLoadingSelector = createLoadingSelector([REPLICATE_EVENT]);
     return (state) => ({
-        isReplaying: loadingSelector(state)
+        isReplaying: replayingLoadingSelector(state),
+        isReplicating: replicatingLoadingSelector(state)
     });
 };
 const mapDispatchToProps = (dispatch) => ({
     onReplay: payload => dispatch(replayEvent(payload)),
+    onReplicate: payload => dispatch(replicateEvent(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(EventDrawerH);

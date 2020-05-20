@@ -12,5 +12,13 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
   >
     Replay
   </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-drawer-header__replicate-button"
+    disabled={false}
+    isLoading={false}
+    onClick={[Function]}
+  >
+    Replicate
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
 </div>
 `;

@@ -10,4 +10,11 @@ describe('event management actions', () => {
         };
         expect(actions.replayEvent(payload)).toEqual(expectedAction);
     });
+    it('should create action to replicate event', () => {
+        const expectedAction = {
+            type: actionTypes.REPLICATE_EVENT,
+            payload,
+        };
+        expect(actions.replicateEvent(payload)).toEqual(expectedAction);
+    });
 });
