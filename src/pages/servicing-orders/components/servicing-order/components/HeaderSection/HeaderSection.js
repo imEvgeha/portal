@@ -7,7 +7,7 @@ import './HeaderSection.scss';
 import FulfillmentOrderPanel from '../FulfillmentOrderPanel/FulfillmentOrderPanel';
 import FilterSolidIcon from '../../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../../assets/filter.svg';
-import SOFilter from '../FilterSection/ServiceOrderFilter';
+import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
 
 const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
     const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
@@ -33,7 +33,7 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
                 </div>
             </div>
             {
-                showFilter && <SOFilter orderDetails={orderDetails} />
+                showFilter && <ServiceOrderFilter orderDetails={orderDetails} />
             }
             <div
                 className='panel-header__list'
