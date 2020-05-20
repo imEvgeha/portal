@@ -38,7 +38,6 @@ describe('EventDrawerHeader', () => {
         const replayButton = wrapper.find('.nexus-c-event-drawer-header__replay-button');
         expect(replayButton).toHaveLength(1);
         replayButton.simulate('click');
-        // expect(onReplayEventMock).toHaveBeenCalled();
         expect(onReplayEventMock.mock.calls.length).toEqual(1);
     });
 
@@ -46,7 +45,6 @@ describe('EventDrawerHeader', () => {
         const replicateButton = wrapper.find('.nexus-c-event-drawer-header__replicate-button');
         expect(replicateButton).toHaveLength(1);
         replicateButton.simulate('click');
-        // expect(onReplayEventMock).toHaveBeenCalled();
         expect(onReplicateEventMock.mock.calls.length).toEqual(1);
     });
 });
