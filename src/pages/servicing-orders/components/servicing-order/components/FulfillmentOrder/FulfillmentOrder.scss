@@ -1,6 +1,32 @@
 .fulfillment-order {
+  border-bottom: 1px solid #737E91;
+  padding-bottom: 25px;
   &__title {
     font-size: 29px;
     color: #42526E;
+  }
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 23px;
+  }
+  &__select-wrapper {
+    margin-left: 15px;
+    width: 160px;
+  }
+  &__section {
+    display: inline-flex;
+  }
+  &__input {
+    margin-right: 15px;
+    width: 160px;
+    & > input {
+      width: 160px;
+      height: 40px;
+      background: #EBEDF0;
+      border: 0;
+      color: #42526E;
+      padding: 0 10px;
+    }
   }
 }
