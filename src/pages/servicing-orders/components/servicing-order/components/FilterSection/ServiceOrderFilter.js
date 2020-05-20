@@ -30,8 +30,10 @@ const ServiceOrderFilter = ({orderDetails}) => {
             <Select
                 //TBD - content will come from api call
                 options={[
-                    { value: 'OPTION 1', label: 'OPTION 1 (TBD)' },
-                    { value: 'OPTION 2', label: 'OPTION 2 (TBD)' },
+                    { value: 'All', label: 'All' },
+                    { value: 'Completed', label: 'Completed' },
+                    { value: 'Failed', label: 'Failed' },
+                    { value: 'Pending', label: 'Pending' },
                 ]}
             />
         </div>
