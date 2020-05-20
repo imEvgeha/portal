@@ -66,7 +66,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                 <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__input'>
                         Servicer
-                        {' '}
                         <input
                             value={servicer}
                             disabled
@@ -74,7 +73,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                     <div className='fulfillment-order__input'>
                         Recipient
-                        {' '}
                         <input
                             value={recipient}
                             disabled
@@ -94,7 +92,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
                             label='Due Date'
-                            id='dueDate'
                             value={getValidDate(dueDate)}
                             onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
                             isReturningTime={false}
@@ -103,7 +100,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
                             label='Start Date'
-                            id='startDate'
                             value={getValidDate(startDate)}
                             onChange={value => onDateChange(filterKeys.START_DATE, value)}
                             isReturningTime={false}
