@@ -6,6 +6,7 @@ import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors'
 import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
 import {replayEvent, replicateEvent} from '../../../eventManagementActions';
 import './EventDrawerHeader.scss';
+import {download} from '../../../../../util/Common';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const onInnerReplay = () => {
@@ -18,10 +19,15 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
         onReplicate(payload);
     };
 
+    const onDownload = () => {
+        download(JSON.stringify(event), event.eventId, 'application/json');
+    };
+
     return (
         <div className='nexus-c-event-drawer-header'>
             <Button className='nexus-c-event-drawer-header__replay-button' onClick={onInnerReplay} isLoading={isReplaying} disabled={!event || !event.eventId}>Replay</Button>
             <Button className='nexus-c-event-drawer-header__replicate-button' onClick={onInnerReplicate} isLoading={isReplicating} disabled={!event || !event.eventId}>Replicate</Button>
+            <Button className='nexus-c-event-drawer-header__download-button' onClick={onDownload} disabled={!event || !event.eventId}>Download</Button>
         </div>
     );
 };

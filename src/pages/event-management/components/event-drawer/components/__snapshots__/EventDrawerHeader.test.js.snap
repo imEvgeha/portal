@@ -20,5 +20,12 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
   >
     Replicate
   </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-drawer-header__download-button"
+    disabled={false}
+    onClick={[Function]}
+  >
+    Download
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
 </div>
 `;
