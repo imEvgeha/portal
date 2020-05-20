@@ -58,3 +58,10 @@ export const replayEvent = ({eventId}) => {
         method: 'post'
     });
 };
+
+export const replicateEvent = ({eventId}) => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/admin/replicate/${eventId}`;
+    return nexusFetch(url, {
+        method: 'post'
+    });
+};
