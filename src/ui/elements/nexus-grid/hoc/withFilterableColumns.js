@@ -256,6 +256,9 @@ const withFilterableColumns = ({
             //TODO: refresh and show values when loaded
             const options = get(selectValues, field, []);
             const parsedSelectValues = options.map(option => {
+                if (isObject(option) && field === 'languageAudioTypes.language') {
+                    return option.label;
+                }
                 if (isObject(option)) {
                     //TODO: This is just a temporary solution for territory fields
                     return option.value || option.countryCode;
