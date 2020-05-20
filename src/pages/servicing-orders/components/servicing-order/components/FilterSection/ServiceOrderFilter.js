@@ -39,15 +39,7 @@ const ServiceOrderFilter = ({orderDetails}) => {
 };
 
 ServiceOrderFilter.propTypes = {
-    customer: PropTypes.string,
-    soID: PropTypes.string,
-    creationDate: PropTypes.string,
-    createdBy: PropTypes.string
+    orderDetails: PropTypes.object.isRequired
 };
-ServiceOrderFilter.defaultProps = {
-    customer: '',
-    soID: '',
-    creationDate: '',
-    createdBy: '',
-};
+
 export default ServiceOrderFilter;

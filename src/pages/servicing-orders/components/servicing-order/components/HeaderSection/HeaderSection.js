@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {backArrowColor} from '../../../../../legacy/constants/avails/constants';
 import {SERVICING_ORDERS} from '../../../../../../ui/elements/nexus-navigation/constants';
@@ -56,4 +57,8 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
     );
 };
 
+HeaderSection.propTypes = {
+    fulfillmentOrders: PropTypes.array,
+    orderDetails: PropTypes.object
+};
 export default HeaderSection;
