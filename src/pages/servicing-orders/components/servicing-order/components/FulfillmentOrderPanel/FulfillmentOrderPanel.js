@@ -17,7 +17,7 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfil
             </div>
             <div className='nexus-c-fulfillment-order-panel__status'>
                 <span className='nexus-c-fulfillment-order-panel__date'>Due Date: {dueDate}</span>
-                <StatusTag status={status} />
+                <StatusTag status={status.toUpperCase()} />
             </div>
         </div>
     );

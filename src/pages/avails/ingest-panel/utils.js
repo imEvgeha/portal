@@ -1,5 +1,7 @@
 import Constants from './constants';
 import {URL} from '../../../util/Common';
+import moment from 'moment';
+import {DATE_FORMAT} from '../../legacy/constants/metadata/constant-variables';
 
 const {STATUS_LIST, filterKeys: {LICENSOR, STATUS, RECEIVED_FROM, RECEIVED_TO}, URLFilterKeys} = Constants;
 
@@ -21,4 +23,11 @@ export const getFiltersToSend = (filters) => {
         [STATUS]: status.value,
         [LICENSOR]: licensor,
     };
+};
+
+export const getValidDate = (date) => {
+    if (date) {
+        return moment(date).format(DATE_FORMAT);
+    }
+    return date;
 };

@@ -1,15 +1,26 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Constants from './constants';
+import NexusDatePicker
+    from '../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import {getValidDate} from '../../../../../avails/ingest-panel/utils';
 
 const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
     const {filterKeys} = Constants;
     const {fulfillmentOrderId, notes, billTo, rateCard, servicer, recipient, startDate, dueDate, status} = selectedFulfillmentOrder;
     const [filters, setFilters] = useState({billTo, notes, rateCard, startDate, dueDate, status});
 
+    useEffect(() => {
+        setFilters({billTo, notes, rateCard, startDate, dueDate, status});
+    }, [selectedFulfillmentOrder]);
+
     const onFilterChange = (name, value) => {
         setFilters({...filters, [name]: value.value});
+    };
+
+    const onDateChange = (name, value) => {
+        setFilters({...filters, [name]: value});
     };
 
     const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']);
@@ -30,7 +41,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                         {notes}
                     </div>
                 </div>
-                <div className='fulfillment-order__billing'>
+                <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__select-wrapper'>
                         Bill To
                         <Select
@@ -52,7 +63,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                 </div>
             </div>
             <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__left'>
+                <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__input'>
                         Servicer
                         {' '}
@@ -70,14 +81,32 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                         />
                     </div>
                 </div>
-                <div className='fulfillment-order__right'>
+                <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__select-wrapper'>
-                        Status
+                        Set Order Status
                         <Select
                             className='fulfillment-order__select'
                             options={Constants.STATUS_LIST}
                             value={{value: filters['status'], label: statusOption.label}}
                             onChange={value => onFilterChange(filterKeys.STATUS, value)}
+                        />
+                    </div>
+                    <div className='fulfillment-order__select-wrapper'>
+                        <NexusDatePicker
+                            label='Due Date'
+                            id='dueDate'
+                            value={getValidDate(dueDate)}
+                            onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
+                            isReturningTime={false}
+                        />
+                    </div>
+                    <div className='fulfillment-order__select-wrapper'>
+                        <NexusDatePicker
+                            label='Start Date'
+                            id='startDate'
+                            value={getValidDate(startDate)}
+                            onChange={value => onDateChange(filterKeys.START_DATE, value)}
+                            isReturningTime={false}
                         />
                     </div>
                 </div>

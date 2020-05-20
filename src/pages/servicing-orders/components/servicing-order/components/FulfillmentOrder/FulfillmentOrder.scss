@@ -1,4 +1,6 @@
 .fulfillment-order {
+  border-bottom: 1px solid #737E91;
+  padding-bottom: 25px;
   &__title {
     font-size: 29px;
     color: #42526E;
@@ -8,26 +10,16 @@
     justify-content: space-between;
     margin-top: 23px;
   }
-  &__select {
+  &__select-wrapper {
+    margin-left: 15px;
     width: 160px;
   }
-  &__select-wrapper, &__input {
-    margin-left: 15px;
-  }
-  &__billing, &__left {
+  &__section {
     display: inline-flex;
   }
   &__input {
-    color: #A5ADBA;
-    display: flex;
-    flex-direction: column;
-    & > div {
-      width: 160px;
-      > div {
-        background: #EBEDF0;
-        border: 0;
-      }
-    }
+    margin-right: 15px;
+    width: 160px;
     & > input {
       width: 160px;
       height: 40px;
