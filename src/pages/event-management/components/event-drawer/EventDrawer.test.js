@@ -16,6 +16,9 @@ describe('EventDrawer', () => {
         it('should pass correct isOpen prop to NexusDrawer when event is selected', () => {
             expect(wrapper.find('NexusDrawer').props().isOpen).toEqual(true);
         });
+        it('should contain EventDrawerH', () => {
+            expect(wrapper.find('Connect(EventDrawerH)').length).toEqual(1);
+        });
         it('should pass correct isOpen prop to NexusDrawer when event is not selected', () => {
             wrapper.setProps({event: null});
             expect(wrapper.find('NexusDrawer').props().isOpen).toEqual(false);

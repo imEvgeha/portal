@@ -10,10 +10,8 @@ import FilterSolidIcon from '../../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../../assets/filter.svg';
 import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
 
-const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
-    const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
+const HeaderSection = ({fulfillmentOrders,  orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
-    const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
     const toggleFilters = () => setShowFilter(!showFilter);
 
     return (
@@ -47,7 +45,7 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
                             status={status}
                             dueDate={dueDate}
                             selected={selectedFulfillmentOrder === fulfillmentOrderId}
-                            setSelectedFulfillmentOrder={setSelectedOrder}
+                            setSelectedFulfillmentOrder={setSelectedFulfillmentOrder}
                         />
                         )
                     )
@@ -59,6 +57,15 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails}) => {
 
 HeaderSection.propTypes = {
     fulfillmentOrders: PropTypes.array,
-    orderDetails: PropTypes.object
+    orderDetails: PropTypes.object,
+    setSelectedFulfillmentOrder: PropTypes.func,
+    selectedFulfillmentOrder: PropTypes.object,
+};
+
+HeaderSection.propTypes = {
+    fulfillmentOrders: [],
+    orderDetails: {},
+    setSelectedFulfillmentOrder: ()=>null,
+    selectedFulfillmentOrder: {},
 };
 export default HeaderSection;

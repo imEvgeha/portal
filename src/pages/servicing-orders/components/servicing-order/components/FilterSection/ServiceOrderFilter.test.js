@@ -25,7 +25,6 @@ describe('SOFilter', () => {
         btn.simulate('click');
         expect(wrapper.find('.so-panel-filter-detail__span')).toHaveLength(1);
         expect(wrapper.find('.so-panel-filter-detail__drawer')).toHaveLength(1);
-        expect(wrapper.find('.so-panel-filter-detail__h2')).toHaveLength(1);
         expect(wrapper.find('.so-panel-filter-detail__p')).toHaveLength(5);
 
     });

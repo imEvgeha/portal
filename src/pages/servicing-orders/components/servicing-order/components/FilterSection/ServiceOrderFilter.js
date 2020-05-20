@@ -18,9 +18,9 @@ const ServiceOrderFilter = ({orderDetails}) => {
                 isOpen={isDrawerOpen}
                 onClose={() => setIsDrawerOpen(false)}
                 position="right"
+                title='Partner Request'
             >
                 <div className='so-panel-filter-detail__drawer'>
-                    <h2 className='so-panel-filter-detail__h2 nexus-c-table-toolbar__title--is-active'>Partner Request</h2>
                     <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Studio: {orderDetails.customer}</p>
                     <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>MSS Order Details: {orderDetails.soID}</p>
                     <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Created Date: {orderDetails.creationDate? moment(orderDetails.creationDate).format('MMM Do YYYY, h:mm:ss a') : null}</p>
