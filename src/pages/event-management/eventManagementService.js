@@ -1,6 +1,7 @@
 import {isEmpty, isObject} from 'lodash';
 import {nexusFetch} from '../../util/http-client';
 import config from 'react-global-configuration';
+import mockData from './eventManagementMockData.json';
 
 const BASE_PARAM_NAME = 'event.messageHeader.';
 
@@ -46,10 +47,10 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
             return `${paramString}&${BASE_PARAM_NAME}${paramKey}=${params[paramKey]}`;
         }, paramString);
     }
-    
-    const url = './src/pages/event-management/eventManagementMockData.json';
-    
-    return nexusFetch(`${url}${paramString}`, {method: 'get'});
+
+    return Promise.resolve(mockData);
+    // const url = '';
+    // return nexusFetch(`${url}${paramString}`);
 };
 
 export const replayEvent = ({eventId}) => {
