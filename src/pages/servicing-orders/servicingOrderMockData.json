@@ -9,12 +9,24 @@
         {
           "fulfillmentOrderId": "VU000134567-001",
           "dueDate": "10/05/2021",
-          "status": "COMPLETED"
+          "status": "Completed",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "billTo": "MGM",
+          "rateCard": "MGM Rate Card",
+          "servicer": "DETE",
+          "recipient": "QuanVision",
+          "startDate": "07/05/2021"
         },
         {
           "fulfillmentOrderId": "VU000134597-002",
           "dueDate": "09/05/2021",
-          "status": "PENDING"
+          "status": "Pending",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "billTo": "WB",
+          "rateCard": "WB Rate Card",
+          "servicer": "DETE2",
+          "recipient": "QuanVision2",
+          "startDate": "07/05/2021"
         }
       ]
     },

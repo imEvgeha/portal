@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import './EventDrawer.scss';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
+import EventDrawerHeader from './components/EventDrawerHeader';
 import {DRAWER_TITLE, EVENT_MESSAGE, DOWNLOAD} from '../../eventManagementConstants';
 import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
@@ -15,6 +16,12 @@ const EventDrawer = ({event, onDrawerClose}) => (
             isOpen={!!(event && event.eventId)}
             title={DRAWER_TITLE}
         >
+            {event &&
+            (
+                <EventDrawerHeader
+                    event={event}
+                />
+            )}
             <div className="nexus-c-event-drawer__content">
                 <div>{event && event.eventId}</div>
                 <EventSectionCollapsible
