@@ -1,19 +1,38 @@
 export default async (response) => {
     try {
-        const responseBody = await parseResponse(response);
+        const contentType = getResponseContentType(response);
         if (response.ok) {
+            if (response.status === 204) {
+                return '';
+            }
+            // BE issue: empty response headers workaround
+            if (!contentType) {
+                return response.body;
+            }
+            const responseBody = await parseResponse(response, contentType);
             return responseBody;
-        } 
-        throw {errorMessage: responseBody, status: response.status, statusText: response.statusText, name: response.name};
+        }
+
+        let errorBody = '';
+        // BE issue: empty response headers workaround
+        if (!contentType) {
+            errorBody = response.body;
+        }
+        errorBody = await parseResponse(response, contentType);
+        throw {errorMessage: errorBody, status: response.status, statusText: response.statusText, name: response.name};
     } catch (error) {
         throw error;
     }
 };
 
-const parseResponse = response => {
-    const {headers} = response || {};
-    const type = headers.get('content-type');
+const getResponseContentType = response => {
+    const {headers = {}} = response || {};
+    const type = headers && headers.get('content-type');
+    return type;
+};
 
+const parseResponse = (response, type) => {
+    // types
     if (type.includes('application/json')) {
         return response.json();
     } else if (type.includes('text/plain')) {
@@ -27,5 +46,5 @@ const parseResponse = response => {
         return response.arrayBuffer();
     }
 
-    throw new Error(`Nexus fetch does not support content-type ${type} yet`);
+    throw {errorMessage: `Nexus fetch does not support content-type ${type} yet`};
 };
