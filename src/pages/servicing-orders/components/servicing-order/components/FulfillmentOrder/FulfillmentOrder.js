@@ -65,18 +65,10 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__input'>
-                        Servicer
-                        <input
-                            value={servicer}
-                            disabled
-                        />
+                        Servicer <input value={servicer} disabled />
                     </div>
                     <div className='fulfillment-order__input'>
-                        Recipient
-                        <input
-                            value={recipient}
-                            disabled
-                        />
+                        Recipient <input value={recipient} disabled />
                     </div>
                 </div>
                 <div className='fulfillment-order__section'>
