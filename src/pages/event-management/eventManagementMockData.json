@@ -10,7 +10,10 @@
             "tenantId": "",
             "createdTimeStamp": "2020-04-20T00:00:00.000Z",
             "postedTimeStamp": "2020-04-20T00:00:00.000Z",
-            "replyTo": ""
+            "replyTo": "",
+            "autoClassName": "com.vubiquity.configuration.api.event.AutoEvent",
+            "eventClassName": "com.vubiquity.configuration.api.event.EntryTypeEventPayload",
+            "summary": "Avail Created"
         },
         {
             "eventId": "13456-5sjkk8-233k-23ki9087",
@@ -22,7 +25,10 @@
             "tenantId": "",
             "createdTimeStamp": "2020-04-20T00:00:00.000Z",
             "postedTimeStamp": "2020-04-20T00:00:00.000Z",
-            "replyTo": ""
+            "replyTo": "",
+            "autoClassName": "com.vubiquity.configuration.api.event.AutoEvent",
+            "eventClassName": "com.vubiquity.configuration.api.event.EntryTypeEventPayload",
+            "summary": "Avail Created"
         },
         {
             "eventId": "1bavda-5sjkk8-233k-23ki9087",
@@ -34,7 +40,10 @@
             "tenantId": "",
             "createdTimeStamp": "2020-04-20T00:00:00.000Z",
             "postedTimeStamp": "2020-04-20T00:00:00.000Z",
-            "replyTo": ""
+            "replyTo": "",
+            "autoClassName": "com.vubiquity.configuration.api.event.AutoEvent",
+            "eventClassName": "com.vubiquity.configuration.api.event.EntryTypeEventPayload",
+            "summary": "Avail Created"
         },
         {
             "eventId": "1abc-89kkkk8-233k-23ki9087",
@@ -46,7 +55,10 @@
             "tenantId": "",
             "createdTimeStamp": "2020-04-20T00:00:00.000Z",
             "postedTimeStamp": "2020-04-20T00:00:00.000Z",
-            "replyTo": ""
+            "replyTo": "",
+            "autoClassName": "com.vubiquity.configuration.api.event.AutoEvent",
+            "eventClassName": "com.vubiquity.configuration.api.event.EntryTypeEventPayload",
+            "summary": "Avail Created"
         },
         {
             "eventId": "1abc-5daadda-233k-23ki9087",
@@ -58,7 +70,10 @@
             "tenantId": "",
             "createdTimeStamp": "2020-04-20T00:00:00.000Z",
             "postedTimeStamp": "2020-04-20T00:00:00.000Z",
-            "replyTo": ""
+            "replyTo": "",
+            "autoClassName": "com.vubiquity.configuration.api.event.AutoEvent",
+            "eventClassName": "com.vubiquity.configuration.api.event.EntryTypeEventPayload",
+            "summary": "Avail Created"
         }
     ],
     "total": 5,

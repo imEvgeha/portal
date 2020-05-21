@@ -14,6 +14,9 @@ export const EVENT_HEADER_MAIN_FIELDS = [
 export const EVENT_HEADER_SECONDARY_FIELDS = [
     'postedTimeStamp',
     'replyTo',
+    'autoClassName',
+    'eventClassName',
+    'summary',
 ];
 
 export const EVENT_MESSAGE = 'Event Message';
