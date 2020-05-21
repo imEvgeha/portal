@@ -1,6 +1,5 @@
 import React, {useState, createContext} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
-
 import './NexusModal.scss';
 
 export const NexusModalContext = createContext({});

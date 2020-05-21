@@ -3,19 +3,18 @@ import PropTypes from 'prop-types';
 import {get, startCase} from 'lodash';
 import {uid} from 'react-uid';
 import {EVENT_HEADER_MAIN_FIELDS, EVENT_HEADER_SECONDARY_FIELDS} from '../../eventManagementConstants';
-
 import './EventHeader.scss';
 
-const EventHeader = ({
-    event,
-}) => {
+const EventHeader = ({event}) => {
     const [isSecondaryHidden, setIsSecondaryHidden] = useState(true);
 
     const generateEventFields = (event, fields) => (
         fields.map((fieldName, index) => {
             return (
                 <div className="nexus-c-event-header__field" key={uid(event[fieldName], index)}>
-                    <div className="nexus-c-event-header__field-label">{startCase(fieldName)}</div>
+                    <div className="nexus-c-event-header__field-label">
+                        {startCase(fieldName)}
+                    </div>
                     {get(event, fieldName)}
                 </div>
             );

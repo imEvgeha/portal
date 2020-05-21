@@ -18,8 +18,7 @@ const EventDrawer = ({event, onDrawerClose}) => (
             title={DRAWER_TITLE}
             width="wide"
         >
-            {event &&
-            (
+            {event && (
                 <EventDrawerHeader
                     event={event}
                 />
@@ -41,9 +40,7 @@ const EventDrawer = ({event, onDrawerClose}) => (
                     title={EVENT_HEADER}
                     isInitiallyOpen
                 >
-                    <EventHeader
-                        event={event}
-                    />
+                    <EventHeader event={event} />
                 </EventSectionCollapsible>
             </div>
         </NexusDrawer>
