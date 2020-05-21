@@ -4,8 +4,8 @@ import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
 import './EventSectionCollapsible.scss';
 
-const EventSectionCollapsible = ({title, children, header}) => {
-    const [isOpened, setIsOpened] = useState(false);
+const EventSectionCollapsible = ({title, isInitiallyOpen, header, children}) => {
+    const [isOpened, setIsOpened] = useState(isInitiallyOpen);
     const toggleSection = () => setIsOpened(!isOpened);
 
     return (
@@ -30,11 +30,13 @@ const EventSectionCollapsible = ({title, children, header}) => {
 EventSectionCollapsible.propTypes = {
     title: PropTypes.string,
     header: PropTypes.element,
+    isInitiallyOpen: PropTypes.bool,
 };
 
 EventSectionCollapsible.defaultProps = {
     title: null,
     header: null,
+    isInitiallyOpen: true,
 };
 
 export default EventSectionCollapsible;

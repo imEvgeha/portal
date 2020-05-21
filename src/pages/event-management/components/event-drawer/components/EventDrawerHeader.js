@@ -25,9 +25,29 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
 
     return (
         <div className='nexus-c-event-drawer-header'>
-            <Button className='nexus-c-event-drawer-header__replay-button' onClick={onInnerReplay} isLoading={isReplaying} disabled={!event || !event.eventId}>Replay</Button>
-            <Button className='nexus-c-event-drawer-header__replicate-button' onClick={onInnerReplicate} isLoading={isReplicating} disabled={!event || !event.eventId}>Replicate</Button>
-            <Button className='nexus-c-event-drawer-header__download-button' onClick={onDownload} disabled={!event || !event.eventId}>Download</Button>
+            <Button
+                className='nexus-c-event-drawer-header__replay-button'
+                onClick={onInnerReplay}
+                isLoading={isReplaying}
+                disabled={!event || !event.eventId}
+            >
+                Replay
+            </Button>
+            <Button
+                className='nexus-c-event-drawer-header__replicate-button'
+                onClick={onInnerReplicate}
+                isLoading={isReplicating}
+                disabled={!event || !event.eventId}
+            >
+                Replicate
+            </Button>
+            <Button
+                className='nexus-c-event-drawer-header__download-button'
+                onClick={onDownload}
+                disabled={!event || !event.eventId}
+            >
+                Download
+            </Button>
         </div>
     );
 };
