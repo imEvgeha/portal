@@ -36,7 +36,7 @@ EventSectionCollapsible.propTypes = {
 EventSectionCollapsible.defaultProps = {
     title: null,
     header: null,
-    isInitiallyOpen: false,
+    isInitiallyOpen: true,
 };
 
 export default EventSectionCollapsible;

@@ -38,7 +38,6 @@ const EventDrawer = ({event, onDrawerClose}) => (
                 </EventSectionCollapsible>
                 <EventSectionCollapsible
                     title={EVENT_HEADER}
-                    isInitiallyOpen
                 >
                     <EventHeader event={event} />
                 </EventSectionCollapsible>
