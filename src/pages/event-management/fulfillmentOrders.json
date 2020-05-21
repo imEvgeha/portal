@@ -1,0 +1,19 @@
+[
+  {
+    "id": "fo_LiMXi",
+    "type": "FulfillmentOrder",
+    "createdAt": "2020-05-19T18:13:16.583Z",
+    "updatedAt": "2020-05-19T18:13:16.583Z",
+    "createdBy": null,
+    "updatedBy": null,
+    "tenant": "MGM",
+    "fs": "DETE",
+    "readiness": "NEW",
+    "status": "NEW",
+    "acknowledgement": null,
+    "definition": "{\"description\":\"e2e-demo\",\"deteServices\":[{\"details\":[],\"deteSources\":{\"amsAssetId\":\"DA16129\",\"barcode\":\"DA16129\",\"externalSources\":{\"externalId\":\"DA16129\",\"externalSystem\":\"VSOM\",\"assetFormat\":\"VIDEO_CONFORMANCEGROUP\",\"assetType\":\"DETE_FILE\"}},\"deteTasks\":{\"actions\":[],\"amsReferences\":[],\"deteDeliveries\":{\"deliveryMethod\":\"Aspera Servicing\",\"externalDelivery\":{\"externalId\":\"12345-1\",\"externalSystem\":\"VSOM\",\"customerId\":\"AMAZON\",\"deliverToId\":\"AMAZON\"}},\"dueDate\":\"2020-04-07T00:00:00.000-03:00\",\"deteTaskType\":\"deteGenericTask\"},\"externalServices\":{\"externalId\":\"12345-1\",\"externalSystem\":\"VSOM\",\"formatType\":\"E-ERIC-HD\",\"parameters\":[{\"name\":\"Priority\",\"value\":\"10\"}],\"requiresPropagation\":\"false\",\"serviceType\":\"DETE Recipient\",\"subordinateFlag\":\"false\"},\"mediaFormat\":\"HD EDUB\",\"overrideDistributionList\":{},\"overrideDueDate\":\"04/07/2020\",\"quantity\":\"1\",\"sequence\":\"1\",\"status\":\"Ready\"}],\"distributionList\":{},\"dueDate\":\"2020-04-07T00:00:00.000-03:00\",\"externalOrders\":{\"externalId\":\"SR00001113-12345\",\"externalSystem\":\"VSOM\",\"requestorId\":\"DSOTO\",\"revisionNumber\":\"0\"},\"startDate\":\"2020-05-19T15:13:13.731-03:00\",\"status\":\"Conf\",\"submissionDate\":\"2020-05-19T15:13:13.731-03:00\",\"tenant\":\"MGM\",\"vendor\":\"DETE\"}",
+    "so_number": "SO_000001",
+    "external_id": "SR00001113-12345",
+    "fs_id": ""
+  }
+]
