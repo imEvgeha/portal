@@ -65,10 +65,18 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__input'>
-                        Servicer <input value={servicer} disabled />
+                        <span>Servicer</span>
+                        <input
+                            value={servicer}
+                            disabled
+                        />
                     </div>
                     <div className='fulfillment-order__input'>
-                        Recipient <input value={recipient} disabled />
+                        <span>Recipient</span>
+                        <input
+                            value={recipient}
+                            disabled
+                        />
                     </div>
                 </div>
                 <div className='fulfillment-order__section'>
@@ -83,6 +91,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
+                            id='dueDate'
                             label='Due Date'
                             value={getValidDate(dueDate)}
                             onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
@@ -91,6 +100,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
+                            id='startDate'
                             label='Start Date'
                             value={getValidDate(startDate)}
                             onChange={value => onDateChange(filterKeys.START_DATE, value)}
