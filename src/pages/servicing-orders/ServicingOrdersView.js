@@ -34,13 +34,16 @@ const ServicingOrdersView = () => {
             </div>
             <div className='nexus-c-servicing-orders__external-filters'>
                 <div className='nexus-c-servicing-orders__customer-filter'>
-                    {CUSTOMER_LBL}
+                    <div className='nexus-c-servicing-orders__customer-filter--label'>
+                        {CUSTOMER_LBL}
+                    </div>
                     <Select
                         options={[
                             NO_CUSTOMER_FILTER,
                             { label: 'MGM', value: 'MGM' },
                             { label: 'WB', value: 'WB' },
                         ]}
+                        className='nexus-c-servicing-orders__customer-filter--select'
                         placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
                         onChange={setCustomerFilter}

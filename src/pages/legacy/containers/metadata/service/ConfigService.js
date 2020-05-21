@@ -3,6 +3,7 @@ import {store} from '../../../../../index';
 import {loadConfigData} from '../../../stores/actions/metadata';
 import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER, ANIMATED_CHARACTER, AWARD, RECORDING_ARTIST, VOICE_TALENT} from '../../../constants/metadata/configAPI';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
+import {nexusFetch} from "../../../../../util/http-client";
 
 export const configFields = {
     LOCALE: 'countries',
