@@ -15,7 +15,9 @@ const EventHeader = ({event}) => {
                     <div className="nexus-c-event-header__field-label">
                         {startCase(fieldName)}
                     </div>
-                    {get(event, fieldName)}
+                    <div className="nexus-c-event-header__field-value">
+                        {get(event, fieldName)}
+                    </div>
                 </div>
             );
         })

@@ -2,7 +2,8 @@
 
 .nexus-c-event-header__field {
   display: flex;
-  height: 2em;
+  height: auto;
+  margin: 12px 0;
   color: map-get($colors, nexus-secondary-color)
 }
 
@@ -13,8 +14,13 @@
   color: map-get($colors, nexus-primary-color)
 }
 
+.nexus-c-event-header__field-value {
+  width: 60%;
+  overflow-wrap: break-word;
+}
+
 .nexus-c-event-header__secondary-fields {
-  height: 4em;
+  height: auto;
   transition: height .2s ease;
 
   &--is-hidden {
