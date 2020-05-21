@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventHeader HTML content should match snapshot 1`] = `
+<div
+  className="nexus-c-event-header"
+>
+  <div
+    className="nexus-c-event-header__field"
+    key="val-string"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Event Id
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-1"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Correlation Id
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-2"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Event Type
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-3"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Event Source
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-4"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Tenant Id
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-5"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Object Id
+    </div>
+    string
+  </div>
+  <div
+    className="nexus-c-event-header__field"
+    key="idx-6"
+  >
+    <div
+      className="nexus-c-event-header__field-label"
+    >
+      Created Time Stamp
+    </div>
+    string
+  </div>
+  <div
+    className="
+                    nexus-c-event-header__secondary-fields 
+                    nexus-c-event-header__secondary-fields--is-hidden
+                "
+  />
+  <div
+    className="nexus-c-event-header__secondary-fields-toggle"
+    onClick={[Function]}
+  >
+    More...
+  </div>
+</div>
+`;

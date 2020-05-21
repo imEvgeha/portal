@@ -1,0 +1,35 @@
+@import '../../../../styles/config';
+
+.nexus-c-event-header {}
+
+.nexus-c-event-header__field {
+  display: flex;
+  height: 2em;
+  color: map-get($colors, nexus-secondary-color)
+}
+
+.nexus-c-event-header__field-label {
+  width: 40%;
+  display: flex;
+  justify-content: flex-start;
+  color: map-get($colors, nexus-primary-color)
+}
+
+.nexus-c-event-header__secondary-fields {
+  height: 4em;
+  transition: height .2s ease;
+
+  &--is-hidden {
+    height: 0;
+    visibility: hidden;
+  }
+}
+
+.nexus-c-event-header__secondary-fields-toggle {
+  cursor: pointer;
+  color: map-get($colors, nexus-secondary-color);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
