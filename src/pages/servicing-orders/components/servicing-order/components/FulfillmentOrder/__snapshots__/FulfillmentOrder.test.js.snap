@@ -94,7 +94,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
       <div
         className="fulfillment-order__input"
       >
-        Servicer
+        <span>
+          Servicer
+        </span>
         <input
           disabled={true}
           value="DETE"
@@ -103,7 +105,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
       <div
         className="fulfillment-order__input"
       >
-        Recipient
+        <span>
+          Recipient
+        </span>
         <input
           disabled={true}
           value="QuanVision"
@@ -163,6 +167,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           allowClear={false}
           error=""
           hideLabel={false}
+          id="dueDate"
           isReadOnly={false}
           isReturningTime={false}
           isTimestamp={false}
@@ -180,6 +185,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           allowClear={false}
           error=""
           hideLabel={false}
+          id="startDate"
           isReadOnly={false}
           isReturningTime={false}
           isTimestamp={false}
