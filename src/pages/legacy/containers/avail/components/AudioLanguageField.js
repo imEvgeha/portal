@@ -7,12 +7,11 @@ import './AudioLanguageField.scss';
 import {get} from 'lodash';
 
 const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
-
     const getLanguages = () => {
         return audioLanguages.map((lang, i) => (
             <NexusTag
                 key={uid(lang)}
-                text={`${lang.language} / ${lang.audioType}`}
+                text={`${lang.label} / ${lang.audioType}`}
                 value={lang}
                 removeButtonText='Remove'
                 onRemove={() => onRemoveClick(lang)}
