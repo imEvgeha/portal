@@ -92,7 +92,7 @@ class RightCreate extends React.Component {
         this.checkRight(name, value, true);
     }
 
-    handleArrayPush = (e, name) => {         
+    handleArrayPush = (e, name) => {
         let newArray;
         if(this.right[name]) {
             newArray = Array.from(this.right[name]);
@@ -610,7 +610,7 @@ class RightCreate extends React.Component {
             options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
                 label: rec.label || rec.value,
                 aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
-            
+
             if(options.length > 0 && value){
                 val = value;
                 if(!required) {
@@ -672,7 +672,7 @@ class RightCreate extends React.Component {
             options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
                 label: rec.label || rec.value,
                 aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
-            
+
             if(options.length > 0 && value){
                 val = value;
                 if(!required) {
@@ -715,7 +715,15 @@ class RightCreate extends React.Component {
             if(options.length > 0 && value){
                 val = value;
             }
-
+            if (val) {
+                val.forEach(item => {
+                    options.map(option => {
+                        if (option.value === item.language) {
+                            item.label = option.label
+                        }
+                    });
+                });
+            }
             return renderFieldTemplate(name, displayName, required, null, (
                 <AudioLanguageField
                     audioLanguages={this.right.languageAudioTypes}
