@@ -24,7 +24,6 @@ const EventDrawer = ({event, onDrawerClose}) => (
                 />
             )}
             <div className="nexus-c-event-drawer__content">
-                <div>{event && event.eventId}</div>
                 <EventSectionCollapsible
                     title={EVENT_MESSAGE}
                     header={
