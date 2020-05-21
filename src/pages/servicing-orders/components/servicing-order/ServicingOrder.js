@@ -2,18 +2,22 @@ import React, {useEffect, useState} from 'react';
 import HeaderSection from './components/HeaderSection/HeaderSection';
 import FulfillmentOrder from './components/FulfillmentOrder/FulfillmentOrder';
 import './ServicingOrder.scss';
-import {servicingOrdersService} from '../../../servicing-orders/servicingOrdersService';
+import {servicingOrdersService} from '../../servicingOrdersService';
+import {get} from 'lodash';
 
 const ServicingOrder = ({match}) => {
-    const [fulfillmentOrders, setFulfillmentOrders] = useState([]);
-    const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
-    const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
-    const  selectedOrder = fulfillmentOrders && fulfillmentOrders.find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrder);
+    const [serviceOrder, setServiceOrder] = useState({});
+    const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
+    const [selectedOrder, setSelectedOrder] = useState({});
+
+    useEffect(() => {
+        setSelectedOrder(get(serviceOrder, 'fulfillmentOrders', []).find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrderID) || {});
+    }, [serviceOrder, selectedFulfillmentOrderID]);
 
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
-            setFulfillmentOrders(servicingOrder.data['fulfillmentOrders']);
+            setServiceOrder(servicingOrder.data || {});
         });
     }, []);
     
@@ -21,13 +25,13 @@ const ServicingOrder = ({match}) => {
         <div className='servicing-order'>
             <div className='servicing-order__left'>
                 <HeaderSection
-                    fulfillmentOrders={fulfillmentOrders}
-                    setSelectedFulfillmentOrder={setSelectedOrder}
-                    selectedFulfillmentOrder={selectedFulfillmentOrder}
+                    orderDetails={serviceOrder}
+                    setSelectedFulfillmentOrder={setSelectedFulfillmentOrderID}
+                    selectedFulfillmentOrder={selectedFulfillmentOrderID}
                 />
             </div>
             <div className='servicing-order__right'>
-                {selectedOrder && <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />}
+                <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />
             </div>
         </div>
     );

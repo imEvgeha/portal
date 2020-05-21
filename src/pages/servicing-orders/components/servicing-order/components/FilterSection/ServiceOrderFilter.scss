@@ -1,0 +1,30 @@
+.so-panel-filter-detail {
+  display: flex;
+  padding-right: 20px;
+  flex-direction: column;
+  margin-top: 10px;
+  text-align: left;
+  margin-left: 70px;
+  justify-content: space-around;
+  margin-bottom: 16px;
+  &__span {
+    margin: 0;
+  }
+  &__h2 {
+    margin-bottom: 20px;
+  }
+  &__p {
+    margin-bottom: 2px;
+  }
+  & button {
+    width: 60%;
+    margin-top: 5px;
+    background: #EBEDF0;
+    color: #42526E;
+    margin-bottom: 10px;
+  }
+  &__drawer {
+    margin-left: 20px;
+    margin-top: 2px;
+  }
+}

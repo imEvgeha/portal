@@ -5,6 +5,8 @@
       "soID": "123",
       "customer": "MGM",
       "orderId": "order123",
+      "creationDate": "10/09/2020",
+      "createdBy": "John Wick",
       "fulfillmentOrders": [
         {
           "fulfillmentOrderId": "VU000134567-001",
