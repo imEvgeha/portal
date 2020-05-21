@@ -29,7 +29,7 @@ const showErrorModal = (error) => {
 };
 
 const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = null, errorCodesToast = []}) => {
-    const {status, data = {}, config: {url = '', method = ''} = {}} = error || {};
+    const {status, data = {}, config: {url = '', method = ''} = {}, message} = error || {};
     const ERROR_MODAL = {
         codes: [503],
         title: 'Unexpected error occurred. Please try again later'
@@ -47,7 +47,7 @@ const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = nul
         toast = {
             ...defaultErrorToast,
             ...err,
-            description: err.description || data.message,
+            description: err.description || data.message || message,
         };
     } else {
         toast = errorToast ? {
@@ -55,7 +55,7 @@ const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = nul
             ...errorToast,
         } : {
             title: ERROR_MODAL.title,
-            description: data.message || JSON.stringify(data),
+            description: message || data.message || JSON.stringify(data),
             icon: ERROR_ICON,
             actions: ERROR_MODAL.codes.includes(status) ? [
                 {content:'OK', onClick: () => store.dispatch(removeToast())}
@@ -93,7 +93,7 @@ const handleError = (error, options = {isWithErrorHandling: true}) => {
         status,
         statusText,
         type: name,
-        content: errorMessage,
+        message: errorMessage,
     };
 };
 

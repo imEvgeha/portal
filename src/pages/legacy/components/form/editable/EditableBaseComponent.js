@@ -138,7 +138,7 @@ class EditableBaseComponent extends Component {
                     {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
                         <NexusTag
                             key={i}
-                            text={e.country || e.value || `${e.language} / ${e.audioType}`}
+                            text={e.country || e.value || `${e.label} / ${e.audioType}`}
                             value={e}
                         />
                     )) : setSimpleArrayWithError(value) : '' : value}

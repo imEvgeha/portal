@@ -8,8 +8,8 @@ describe('ServicingOrder', () => {
         it('should render header section', () => {
             expect(wrapper.find('HeaderSection').length).toEqual(1);
         });
-        it('should render FulfillmentOrder', () => {
-            expect(wrapper.find('FulfillmentOrder').length).toEqual(1);
+        it('should render right section', () => {
+            expect(wrapper.find('.servicing-order__right').length).toEqual(1);
         });
     });
 });

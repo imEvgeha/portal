@@ -6,9 +6,7 @@ import {SERVICING_ORDERS} from '../../../../../../ui/elements/nexus-navigation/c
 import './HeaderSection.scss';
 import FulfillmentOrderPanel from '../FulfillmentOrderPanel/FulfillmentOrderPanel';
 
-const HeaderSection = ({fulfillmentOrders}) => {
-    const [selectedFulfillmentOrder, setSelectedFulfillmentOrder] = useState('');
-    const setSelectedOrder = (id) => setSelectedFulfillmentOrder(id);
+const HeaderSection = ({fulfillmentOrders, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
 
     return (
         <div className='panel-header'>
@@ -29,7 +27,7 @@ const HeaderSection = ({fulfillmentOrders}) => {
                             status={status}
                             dueDate={dueDate}
                             selected={selectedFulfillmentOrder === fulfillmentOrderId}
-                            setSelectedFulfillmentOrder={setSelectedOrder}
+                            setSelectedFulfillmentOrder={setSelectedFulfillmentOrder}
                         />
                         )
                     )
