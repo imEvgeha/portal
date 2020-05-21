@@ -9,20 +9,21 @@ describe('HeaderSection', () => {
             customer: 'Paramount',
             creationDate: '10/09/2020',
             createdBy: 'John Wick',
+            fulfillmentOrders : [
+                {
+                    fulfillmentOrderId: 'VU000134567-001',
+                    dueDate: '10/05/2021',
+                    status: 'COMPLETED'
+                },
+                {
+                    fulfillmentOrderId: 'VU000134597-002',
+                    dueDate: '09/05/2021',
+                    status: 'PENDING'
+                }
+            ]
         };
-            const fulfillmentOrders = [
-            {
-                fulfillmentOrderId: 'VU000134567-001',
-                dueDate: '10/05/2021',
-                status: 'COMPLETED'
-            },
-            {
-                fulfillmentOrderId: 'VU000134597-002',
-                dueDate: '09/05/2021',
-                status: 'PENDING'
-            }
-        ];
-        const wrapper = shallow(<HeaderSection fulfillmentOrders={fulfillmentOrders} orderDetails={serviceOrder} />);
+
+        const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
         it('should render header title', () => {
             expect(wrapper.find('.panel-header .panel-header__title span').text()).toEqual('Servicing Order');
         });

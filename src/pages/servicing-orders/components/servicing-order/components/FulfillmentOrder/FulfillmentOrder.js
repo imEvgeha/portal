@@ -91,6 +91,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
+                            id='dueDate'
                             label='Due Date'
                             value={getValidDate(dueDate)}
                             onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
@@ -99,6 +100,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
                         <NexusDatePicker
+                            id='startDate'
                             label='Start Date'
                             value={getValidDate(startDate)}
                             onChange={value => onDateChange(filterKeys.START_DATE, value)}

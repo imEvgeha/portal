@@ -10,7 +10,7 @@ import FilterSolidIcon from '../../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../../assets/filter.svg';
 import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
 
-const HeaderSection = ({fulfillmentOrders,  orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
+const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
     const toggleFilters = () => setShowFilter(!showFilter);
 
@@ -32,13 +32,13 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails, setSelectedFulfillment
                 </div>
             </div>
             {
-                showFilter && <ServiceOrderFilter orderDetails={orderDetails} />
+                showFilter && <ServiceOrderFilter orderDetails={orderDetails || {}} />
             }
             <div
                 className='panel-header__list'
             >
                 {
-                    fulfillmentOrders && fulfillmentOrders.map(({fulfillmentOrderId, status, dueDate},index) => (
+                    orderDetails && orderDetails.fulfillmentOrders && Array.isArray(orderDetails.fulfillmentOrders) && orderDetails.fulfillmentOrders.map(({fulfillmentOrderId, status, dueDate},index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={fulfillmentOrderId}
@@ -56,16 +56,13 @@ const HeaderSection = ({fulfillmentOrders,  orderDetails, setSelectedFulfillment
 };
 
 HeaderSection.propTypes = {
-    fulfillmentOrders: PropTypes.array,
-    orderDetails: PropTypes.object,
+    orderDetails: PropTypes.object.isRequired,
     setSelectedFulfillmentOrder: PropTypes.func,
-    selectedFulfillmentOrder: PropTypes.object,
+    selectedFulfillmentOrder: PropTypes.string,
 };
 
-HeaderSection.propTypes = {
-    fulfillmentOrders: [],
-    orderDetails: {},
+HeaderSection.defaultProps = {
     setSelectedFulfillmentOrder: ()=>null,
-    selectedFulfillmentOrder: {},
+    selectedFulfillmentOrder: '',
 };
 export default HeaderSection;
