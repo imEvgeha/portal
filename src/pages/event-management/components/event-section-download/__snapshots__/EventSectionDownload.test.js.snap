@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventSectionDownload should match snapshot 1`] = `
+<WithAnalyticsContext(WithAnalyticsEvents(Button))
+  onClick={[Function]}
+>
+  Download
+</WithAnalyticsContext(WithAnalyticsEvents(Button))>
+`;
