@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './FulfillmentOrderPanel.scss';
-import File from '../../../../../../assets/file.svg';
-import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
+import File from '../../../../../assets/file.svg';
+import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 
 const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfillmentOrder}) => {
 

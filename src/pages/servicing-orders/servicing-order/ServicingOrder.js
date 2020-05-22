@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import HeaderSection from './components/HeaderSection/HeaderSection';
-import FulfillmentOrder from './components/FulfillmentOrder/FulfillmentOrder';
-import './ServicingOrder.scss';
-import {servicingOrdersService} from '../../servicingOrdersService';
 import {get} from 'lodash';
+import HeaderSection from './components/header-section/HeaderSection';
+import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
+import './ServicingOrder.scss';
+import {servicingOrdersService} from '../servicingOrdersService';
+import SourcesTable from './components/sources-table/SourcesTable';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -32,6 +33,9 @@ const ServicingOrder = ({match}) => {
             </div>
             <div className='servicing-order__right'>
                 <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />
+                <div className='servicing-order__tables'>
+                    <SourcesTable />
+                </div>
             </div>
         </div>
     );

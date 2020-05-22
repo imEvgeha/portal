@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {backArrowColor} from '../../../../../legacy/constants/avails/constants';
-import {SERVICING_ORDERS} from '../../../../../../ui/elements/nexus-navigation/constants';
+import {backArrowColor} from '../../../../legacy/constants/avails/constants';
+import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import './HeaderSection.scss';
-import FulfillmentOrderPanel from '../FulfillmentOrderPanel/FulfillmentOrderPanel';
-import FilterSolidIcon from '../../../../../../assets/filter-solid.svg';
-import FilterIcon from '../../../../../../assets/filter.svg';
-import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
+import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
+import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
+import FilterIcon from '../../../../../assets/filter.svg';
+import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
 
 const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);

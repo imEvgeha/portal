@@ -4,7 +4,7 @@ import Button from '@atlaskit/button/dist/cjs/components/Button';
 import moment from 'moment';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import './ServiceOrderFilter.scss';
-import NexusDrawer from '../../../../../../ui/elements/nexus-drawer/NexusDrawer';
+import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 
 const ServiceOrderFilter = ({orderDetails}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);

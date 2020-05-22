@@ -3,8 +3,8 @@ import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Constants from './constants';
 import NexusDatePicker
-    from '../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import {getValidDate} from '../../../../../../util/utils';
+    from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import {getValidDate} from '../../../../../util/utils';
 
 const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
     const {filterKeys} = Constants;

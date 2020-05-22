@@ -26,14 +26,6 @@ import Toast from './ui/toast/Toast';
 import {keycloak, createKeycloakInstance} from './auth/keycloak';
 import {configurePersistor} from './store-persist-config';
 import AuthProvider from './auth/AuthProvider';
-import {
-    loadDashboardState,
-    loadHistoryState,
-    loadCreateRightState,
-    loadDopState,
-    loadManualRightEntryState
-} from './pages/legacy/stores/index'; // TODO: remove 
-import { loadProfileInfo } from './pages/legacy/stores/actions'; // TODO: remove
 import { routesWithTracking } from './routes';
 import Router from './Router';
 import AppProviders from './AppProviders';
