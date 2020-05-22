@@ -45,6 +45,7 @@
     "@atlaskit/spinner": "^12.1.6",
     "@atlaskit/tag": "^9.0.10",
     "@atlaskit/tag-group": "^9.0.5",
+    "@atlaskit/textarea": "^2.2.9",
     "@atlaskit/textfield": "^2.0.4",
     "@atlaskit/theme": "^9.1.6",
     "@atlaskit/tooltip": "^15.0.14",
