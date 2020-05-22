@@ -20,4 +20,5 @@ export const EVENT_HEADER_SECONDARY_FIELDS = [
 ];
 
 export const EVENT_MESSAGE = 'Event Message';
+export const EVENT_ATTACHMENTS = 'Event Attachments';
 export const DOWNLOAD = 'Download';

@@ -6,9 +6,8 @@ import EventDrawerHeader from './components/EventDrawerHeader';
 import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
 import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
-import {DRAWER_TITLE, EVENT_MESSAGE, DOWNLOAD, EVENT_HEADER} from '../../eventManagementConstants';
+import {DRAWER_TITLE, EVENT_MESSAGE, DOWNLOAD, EVENT_HEADER, EVENT_ATTACHMENTS} from '../../eventManagementConstants';
 import './EventDrawer.scss';
-import mockData from '../../eventManagementMockData.json';
 
 const EventDrawer = ({event, onDrawerClose}) => (
     <div className='nexus-c-event-drawer'>
@@ -25,20 +24,46 @@ const EventDrawer = ({event, onDrawerClose}) => (
             )}
             <div className="nexus-c-event-drawer__content">
                 <EventSectionCollapsible
+                    title={EVENT_HEADER}
+                >
+                    <EventHeader event={event} />
+                </EventSectionCollapsible>
+                <EventSectionCollapsible
                     title={EVENT_MESSAGE}
                     header={
                         <Button>{DOWNLOAD}</Button>
                     }
                 >
                     <NexusJsonView
-                        src={mockData}
+                        src={event}
                         name="vuMessage"
                     />
                 </EventSectionCollapsible>
                 <EventSectionCollapsible
-                    title={EVENT_HEADER}
+                    title={`${EVENT_ATTACHMENTS}(${event && event.attachments ? Object.keys(event.attachments).length : 0})`}
+                    isDefaultOpened
                 >
-                    <EventHeader event={event} />
+                    {event && event.attachments && Object.keys(event.attachments).map((key) => {
+                          return (
+                              <EventSectionCollapsible
+                                  title={key}
+                                  header={(
+                                      <>
+                                          <span>MIME type: {event.attachments[key].mimeType}</span>
+                                          <span>base64 encoded: {event.attachments[key].base64Encoded.toString()}</span>
+                                          <Button>{DOWNLOAD}</Button>
+                                      </>
+                                  )}
+                                  isDefaultOpened
+                              >
+                                  <NexusJsonView
+                                      src={event.attachments[key]}
+                                      name={key}
+                                  />
+                              </EventSectionCollapsible>
+                          );
+                        })
+                    }
                 </EventSectionCollapsible>
             </div>
         </NexusDrawer>
