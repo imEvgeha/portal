@@ -1053,7 +1053,6 @@ class RightDetails extends React.Component {
                 } else {
                     selectedVal = selectedVal ? [...selectedVal, item] : [item];
                 }
-
                 ref.current.handleChange(option ? selectedVal: null);
                 // ??? - call set state that clean state inside timeout
                 setTimeout(() => {
@@ -1091,7 +1090,6 @@ class RightDetails extends React.Component {
                 .map(language => {
                     return Object.assign({}, language);
                 });
-
             const languagesWithLabel = options.reduce((acc, obj) => {
                 let result = {};
                 languages.forEach(lang => {
@@ -1124,7 +1122,7 @@ class RightDetails extends React.Component {
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)}
+                            //onTagClick={(i) => this.toggleRightAudioLanguageForm(i)} disabled since it causes issues with audio language list edit
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
@@ -1134,7 +1132,7 @@ class RightDetails extends React.Component {
                                         onSubmit={(e) => addAudioLanguage(e)}
                                         isOpen={this.state.isRightAudioLanguageFormOpen}
                                         onClose={this.toggleRightAudioLanguageForm}
-                                        existingAudioLanguageList={selectedVal}
+                                        existingAudioLanguageList={languagesWithLabel}
                                         audioLanguageIndex={this.state.audioLanguageIndex}
                                         isEdit={this.state.isEdit}
                                         languageOptions={options}
