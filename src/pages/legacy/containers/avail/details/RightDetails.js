@@ -1118,7 +1118,7 @@ class RightDetails extends React.Component {
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)} disabled since it causes issues with audio language list edit
+                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)}
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
