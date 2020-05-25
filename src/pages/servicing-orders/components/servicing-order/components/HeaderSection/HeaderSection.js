@@ -13,9 +13,7 @@ import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
 const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
     const [filter, setFilter] = useState({value: 'All', label: 'All'});
-
     const toggleFilters = () => setShowFilter(!showFilter);
-
     const getFilteredList = () => {
         let filteredList = [];
         if(orderDetails.fulfillmentOrders && Array.isArray(orderDetails.fulfillmentOrders)) {
