@@ -112,10 +112,14 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                 </div>
             </div>
-            <NexusTextArea
-                onTextChange={e => onFilterChange(NOTES, e.target)}
-                notesValue={filters.notes}
-            />
+            <div className='fulfillment-order__text-area'>
+                <h5>Notes:</h5>
+                <NexusTextArea
+                    onTextChange={e => onFilterChange(NOTES, e.target)}
+                    notesValue={filters.notes}
+                    isDisabled={!fulfillmentOrderId}
+                />
+            </div>
         </>
     );
 };
