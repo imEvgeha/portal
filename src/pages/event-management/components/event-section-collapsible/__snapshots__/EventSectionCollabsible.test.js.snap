@@ -11,7 +11,7 @@ exports[`EventSectionCollapsible should match snapshot 1`] = `
       className="nexus-c-event-section-collapsible__activator"
       onClick={[Function]}
     >
-      <HipchatChevronDownIcon />
+      <ChevronRightIcon />
     </div>
   </div>
   <div
