@@ -32,7 +32,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
                 Filter status
                 <Select
                     options={FILTER_LIST}
-                    onChange={value => setFilter(value)}
+                    onChange={setFilter}
                     value={filter}
                 />
             </div>
