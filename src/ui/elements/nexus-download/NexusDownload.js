@@ -4,14 +4,20 @@ import Button from '@atlaskit/button';
 import {saveAs} from 'file-saver';
 import {DOWNLOAD, JSON_MIME} from './constants';
 
-const NexusDownload = ({data, filename, mimeType, label}) => {
+const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
     const handleDownload = () => {
         const blob = new Blob([JSON.stringify(data)], {type: mimeType});
         saveAs(blob, filename);
     };
 
     return (
-        <Button className="nexus-c-download" onClick={handleDownload}>{label}</Button>
+        <Button
+            className="nexus-c-download"
+            onClick={handleDownload}
+            {...restProps}
+        >
+            {label}
+        </Button>
     );
 };
 
