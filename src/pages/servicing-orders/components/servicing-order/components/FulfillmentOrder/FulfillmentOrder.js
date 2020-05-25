@@ -37,12 +37,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     Order ID: {fulfillmentOrderId}
                 </div>
                 <div className='fulfillment-order__row'>
-                    <div className='fulfillment-order__notes'>
-                        Notes:
-                        <div>
-                            {notes}
-                        </div>
-                    </div>
                     <div className='fulfillment-order__section'>
                         <div className='fulfillment-order__select-wrapper'>
                             Bill To
@@ -112,7 +106,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__text-area'>
+            <div className='fulfillment-order__notes'>
                 <h5>Notes:</h5>
                 <NexusTextArea
                     onTextChange={e => onFilterChange(NOTES, e.target)}
