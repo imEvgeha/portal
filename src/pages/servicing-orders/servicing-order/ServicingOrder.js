@@ -21,7 +21,11 @@ const ServicingOrder = ({match}) => {
             setServiceOrder(servicingOrder.data || {});
         });
     }, []);
-    
+
+    const handleSelectedSourceChange = source => {
+        // CURRENT SELECTED SOURCE
+    };
+
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
@@ -32,10 +36,11 @@ const ServicingOrder = ({match}) => {
                 />
             </div>
             <div className='servicing-order__right'>
-                <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />
-                <div className='servicing-order__tables'>
-                    <SourcesTable />
-                </div>
+                <FulfillmentOrder selectedFulfillmentOrder={selectedOrder}>
+                    <SourcesTable 
+                        onSelectedSourceChange={handleSelectedSourceChange}
+                    />
+                </FulfillmentOrder>
             </div>
         </div>
     );

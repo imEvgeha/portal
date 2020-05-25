@@ -17,7 +17,48 @@
           "rateCard": "MGM Rate Card",
           "servicer": "DETE",
           "recipient": "QuanVision",
-          "startDate": "07/05/2021"
+          "startDate": "07/05/2021",
+          "fs": "DETE",
+          "definition": {
+            "deteSources": [
+                {
+                    "amsAssetId":"DA16129",
+                    "barcode":"DA16129",
+                    "externalSources":{
+                        "externalId":"DA16129",
+                        "externalSystem":"VSOM",
+                        "assetFormat":"VIDEO_CONFORMANCEGROUP",
+                        "assetType":"DETE_FILE"
+                    },
+                    "startDate":"2020-05-19T15:13:13.731-03:00",
+                    "deteServices":[]
+                },
+                {
+                    "amsAssetId":"DA16130",
+                    "barcode":"DA16130",
+                    "externalSources":{
+                        "externalId":"DA16130",
+                        "externalSystem":"VSOM",
+                        "assetFormat":"VIDEO_CONFORMANCEGROUP",
+                        "assetType":"DETE_FILE"
+                    },
+                    "startDate":"2020-05-19T15:13:13.731-03:00",
+                    "deteServices":[]
+                },
+                {
+                    "amsAssetId":"DA16132",
+                    "barcode":"DA16132",
+                    "externalSources":{
+                        "externalId":"DA16132",
+                        "externalSystem":"VSOM1",
+                        "assetFormat":"VIDEO_",
+                        "assetType":"DETE_FILE"
+                    },
+                    "startDate":"2020-05-19T15:13:13.731-03:00",
+                    "deteServices":[]
+                }
+            ]
+          }
         },
         {
           "fulfillmentOrderId": "VU000134597-002",
@@ -26,9 +67,24 @@
           "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "billTo": "WB",
           "rateCard": "WB Rate Card",
-          "servicer": "DETE2",
+          "servicer": "MGM",
           "recipient": "QuanVision2",
-          "startDate": "07/05/2021"
+          "startDate": "07/05/2021",
+          "fs": "MGM",
+          "definition": {
+            "mgmSources": [{
+                  "amsAssetId":"DA16129",
+                  "barcode":"DA16129",
+                  "externalSources":{
+                      "externalId":"DA16129",
+                      "externalSystem":"VSOM",
+                      "assetFormat":"VIDEO_CONFORMANCEGROUP",
+                      "assetType":"MGM_FILE"
+                  },
+                  "startDate":"2020-05-19T15:13:13.731-03:00",
+                  "mgmServices":[]
+            }]
+          }
         }
       ]
     },

@@ -6,7 +6,7 @@ import NexusDatePicker
     from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {getValidDate} from '../../../../../util/utils';
 
-const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
+const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const {filterKeys} = Constants;
     const {fulfillmentOrderId, notes, billTo, rateCard, servicer, recipient, startDate, dueDate, status} = selectedFulfillmentOrder;
     const [filters, setFilters] = useState({billTo, notes, rateCard, startDate, dueDate, status});
@@ -26,6 +26,13 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
     const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']) || {};
     const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']) || {};
     const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']) || {};
+
+    const renderChildren = () => React.Children.map(children, child => {
+        return React.cloneElement(child, {
+            data: selectedFulfillmentOrder,
+        });
+    });
+
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__title'>
@@ -62,7 +69,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__row'>
+            <div className='fulfillment-order__row fulfillment-order__row--with-border'>
                 <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
@@ -108,6 +115,9 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                         />
                     </div>
                 </div>
+            </div>
+            <div className='fulfillment-order__row'>
+                {renderChildren()}
             </div>
         </div>
     );

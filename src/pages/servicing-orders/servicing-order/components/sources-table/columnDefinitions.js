@@ -17,8 +17,8 @@ const columnDefinitions = [
         width: 100,
     },
     {
-        colId: 'mpAssetId',
-        field: 'mpAssetId',
+        colId: 'amsAssetId',
+        field: 'amsAssetId',
         headerName: 'MP Asset ID',
         width: 100,
     },
