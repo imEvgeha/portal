@@ -53,49 +53,75 @@ const withFilterableColumns = ({
             }
         }, [columnDefs, selectValues, fixedFilter]);
 
+        let waitForFilter = 0;
+        function initializeFilter(filterInstance, key, isCallback = false){
+            if(!filterInstance) return;
+            const field = key.replace(/Match/, '');
+            const currentValue = get(filters, key, undefined);
+            let filterValue;
+            let locked = false;
+            if(fixedFilter && fixedFilter[key]){
+                locked = true;
+                filterValue = fixedFilter[key];
+            }else{
+                filterValue = currentValue;
+            }
+            const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+            if(filterValue) {
+                if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType) && !locked) {
+                    const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
+                    applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
+                }else {
+                    filterInstance.setModel({
+                        type: 'equals',
+                        filter: filterValue,
+                    });
+                }
+            }else{
+                if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType) && !locked) {
+                    filterInstance.selectEverything();
+                    filterInstance.applyModel();
+                }else {
+                    filterInstance.setModel(null);
+                }
+            }
+            if(isCallback) {
+                waitForFilter--;
+                if(!waitForFilter) {
+                    gridApi.onFilterChanged();
+                    setIsDatasourceEnabled(true);
+                }
+            }
+        }
+
         // apply initial filter
         useEffect(() => {
             if (gridApi && Array.isArray(mapping) && mapping.length) {
                 //union of keys for column filter and fixed filter
                 const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
+
                 keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
-                    const currentValue = get(filters, key, undefined);
-                    let filterValue;
-                    if(fixedFilter && fixedFilter.hasOwnProperty(key)){
-                        filterValue = fixedFilter[key];
+                    const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+                    if (filterInstance || (!filterInstance && searchDataType !== 'readonly')) {
+                        //if filter is found or is not found but is not readonly
+                        initializeFilter(filterInstance, key);
                     }else{
-                        filterValue = currentValue;
-                    }
-
-                    if (filterInstance) {
-                        const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if(filterValue) {
-                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                                const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
-                                applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
-                            }else {
-                                filterInstance.setModel({
-                                    type: 'equals',
-                                    filter: filterValue,
-                                });
-                            }
-                        }else{
-                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                                filterInstance.selectEverything();
-                                filterInstance.applyModel();
-                            }else {
-                                filterInstance.setModel(null);
-                            }
-                        }
+                        //we need to use callback
+                        waitForFilter++;
+                        gridApi.getFilterInstance(field, (filterInstance) => initializeFilter(filterInstance, key, true));
                     }
                 });
 
-                gridApi.onFilterChanged();
-                setIsDatasourceEnabled(true);
+                if(!waitForFilter) {
+                    gridApi.onFilterChanged();
+                    setIsDatasourceEnabled(true);
+                }else{
+                    setIsDatasourceEnabled(false);
+                }
             } else {
-                setIsDatasourceEnabled(true);
+                setIsDatasourceEnabled(false);
             }
         }, [gridApi, mapping, fixedFilter]);
 
