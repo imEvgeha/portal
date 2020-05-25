@@ -6,7 +6,7 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
 >
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     className="nexus-c-event-drawer-header__replay-button"
-    disabled={false}
+    isDisabled={false}
     isLoading={false}
     onClick={[Function]}
   >
@@ -14,18 +14,23 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
   </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     className="nexus-c-event-drawer-header__replicate-button"
-    disabled={false}
+    isDisabled={false}
     isLoading={false}
     onClick={[Function]}
   >
     Replicate
   </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+  <NexusDownload
     className="nexus-c-event-drawer-header__download-button"
-    disabled={false}
-    onClick={[Function]}
-  >
-    Download
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    data={
+      Object {
+        "eventId": "123",
+      }
+    }
+    filename="123"
+    isDisabled={false}
+    label="Download"
+    mimeType="application/json"
+  />
 </div>
 `;

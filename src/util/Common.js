@@ -2,42 +2,6 @@ import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function download(data, filename, mime, bom){
-    const blobData = (typeof bom !== 'undefined') ? [bom, data] : [data];
-    const blob = new Blob(blobData, {type: mime || 'application/octet-stream'});
-    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-        // IE workaround for "HTML7007: One or more blob URLs were
-        // revoked by closing the blob for which they were created.
-        // These URLs will no longer resolve as the data backing
-        // the URL has been freed."
-        window.navigator.msSaveBlob(blob, filename);
-    }
-    else {
-        const blobURL = (window.URL && window.URL.createObjectURL) ? window.URL.createObjectURL(blob) : window.webkitURL.createObjectURL(blob);
-        let tempLink = document.createElement('a');
-        tempLink.style.display = 'none';
-        tempLink.href = blobURL;
-        tempLink.setAttribute('download', filename);
-
-        // Safari thinks _blank anchor are pop ups. We only want to set _blank
-        // target if the browser does not support the HTML5 download attribute.
-        // This allows you to download files in desktop safari if pop up blocking
-        // is enabled.
-        if (typeof tempLink.download === 'undefined') {
-            tempLink.setAttribute('target', '_blank');
-        }
-
-        document.body.appendChild(tempLink);
-        tempLink.click();
-
-        // Fixes "webkit blob resource error 1"
-        setTimeout(function() {
-            document.body.removeChild(tempLink);
-            window.URL.revokeObjectURL(blobURL);
-        }, 200);
-    }
-}
-
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -304,8 +268,7 @@ const lazyWithPreload = factory => {
 };
 
 export {
-    download,
-    downloadFile, 
+    downloadFile,
     momentToISO, 
     isObject, 
     mergeDeep, 
