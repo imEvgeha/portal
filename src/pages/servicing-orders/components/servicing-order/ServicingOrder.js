@@ -20,7 +20,7 @@ const ServicingOrder = ({match}) => {
             setServiceOrder(servicingOrder.data || {});
         });
     }, []);
-    
+
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
