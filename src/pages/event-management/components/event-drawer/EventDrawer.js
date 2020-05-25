@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
+import {get} from 'lodash';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import EventDrawerHeader from './components/EventDrawerHeader';
 import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
+import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
 import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
-import {DRAWER_TITLE, EVENT_MESSAGE, DOWNLOAD, EVENT_HEADER} from '../../eventManagementConstants';
-import './EventDrawer.scss';
+import {DRAWER_TITLE, EVENT_MESSAGE, EVENT_HEADER} from '../../eventManagementConstants';
 import mockData from '../../eventManagementMockData.json';
+import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => (
     <div className='nexus-c-event-drawer'>
@@ -26,9 +27,12 @@ const EventDrawer = ({event, onDrawerClose}) => (
             <div className="nexus-c-event-drawer__content">
                 <EventSectionCollapsible
                     title={EVENT_MESSAGE}
-                    header={
-                        <Button>{DOWNLOAD}</Button>
-                    }
+                    header={(
+                        <NexusDownload
+                            data={mockData}
+                            filename={get(event, 'eventId', '')}
+                        />
+                    )}
                 >
                     <NexusJsonView
                         src={mockData}
