@@ -1090,18 +1090,14 @@ class RightDetails extends React.Component {
                 .map(language => {
                     return Object.assign({}, language);
                 });
-            const languagesWithLabel = options.reduce((acc, obj) => {
-                let result = {};
-                languages.forEach(lang => {
-                    if(lang.language === obj.value) {
-                        result.language = lang.language;
-                        result.label = obj.label;
-                        result.audioType = lang.audioType;
-                        acc.push(result);
-                    }
-                });
-                return acc;
-            }, []);
+            let languagesWithLabel = [];
+            if(options.length){
+                languagesWithLabel = languages.map(({language, audioType}) => ({
+                    language: language,
+                    audioType: audioType,
+                    label: options.find(o => o.value === language).label
+                }));
+            }
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
@@ -1122,7 +1118,7 @@ class RightDetails extends React.Component {
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            //onTagClick={(i) => this.toggleRightAudioLanguageForm(i)} disabled since it causes issues with audio language list edit
+                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)} disabled since it causes issues with audio language list edit
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
