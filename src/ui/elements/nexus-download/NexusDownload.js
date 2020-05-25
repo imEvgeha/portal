@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {download} from '../../../util/Common';
+import {saveAs} from 'file-saver';
 import {DOWNLOAD, JSON_MIME} from './constants';
 
 const NexusDownload = ({data, filename, mimeType, label}) => {
     const handleDownload = () => {
-        download(JSON.stringify(data), filename, mimeType);
+        const blob = new Blob([JSON.stringify(data)], {type: mimeType});
+        saveAs(blob, filename);
     };
 
     return (
-        <Button onClick={handleDownload}>{label}</Button>
+        <Button className="nexus-c-download" onClick={handleDownload}>{label}</Button>
     );
 };
 
