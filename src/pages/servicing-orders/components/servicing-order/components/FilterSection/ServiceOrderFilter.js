@@ -5,8 +5,9 @@ import moment from 'moment';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import './ServiceOrderFilter.scss';
 import NexusDrawer from '../../../../../../ui/elements/nexus-drawer/NexusDrawer';
+import { FILTER_LIST } from './constants';
 
-const ServiceOrderFilter = ({orderDetails}) => {
+const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     return(
@@ -27,15 +28,14 @@ const ServiceOrderFilter = ({orderDetails}) => {
                     <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Created by: {orderDetails.createdBy}</p>
                 </div>
             </NexusDrawer>
-            <Select
-                //TBD - content will come from api call
-                options={[
-                    { value: 'All', label: 'All' },
-                    { value: 'Completed', label: 'Completed' },
-                    { value: 'Failed', label: 'Failed' },
-                    { value: 'Pending', label: 'Pending' },
-                ]}
-            />
+            <div className='so-panel-filter-detail__section'>
+                Filter status
+                <Select
+                    options={FILTER_LIST}
+                    onChange={value => setFilter(value)}
+                    value={filter}
+                />
+            </div>
         </div>
     );
 };

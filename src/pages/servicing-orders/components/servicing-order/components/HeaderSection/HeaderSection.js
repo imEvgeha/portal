@@ -12,7 +12,20 @@ import ServiceOrderFilter from '../FilterSection/ServiceOrderFilter';
 
 const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
+    const [filter, setFilter] = useState({value: 'All', label: 'All'});
+
     const toggleFilters = () => setShowFilter(!showFilter);
+
+    const getFilteredList = () => {
+        let filteredList = [];
+        if(orderDetails.fulfillmentOrders && Array.isArray(orderDetails.fulfillmentOrders)) {
+            if(filter.value === 'All')
+                filteredList =  orderDetails.fulfillmentOrders;
+            else
+                filteredList = orderDetails.fulfillmentOrders.filter(item=> item.status === filter.value);
+        }
+        return filteredList;
+    };
 
     return (
         <div className='panel-header'>
@@ -32,13 +45,11 @@ const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfi
                 </div>
             </div>
             {
-                showFilter && <ServiceOrderFilter orderDetails={orderDetails || {}} />
+                showFilter && <ServiceOrderFilter orderDetails={orderDetails || {}} filter={filter} setFilter={setFilter} />
             }
-            <div
-                className='panel-header__list'
-            >
+            <div className='panel-header__list'>
                 {
-                    orderDetails && orderDetails.fulfillmentOrders && Array.isArray(orderDetails.fulfillmentOrders) && orderDetails.fulfillmentOrders.map(({fulfillmentOrderId, status, dueDate},index) => (
+                    getFilteredList().map(({fulfillmentOrderId, status, dueDate},index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={fulfillmentOrderId}
