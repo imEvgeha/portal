@@ -22,4 +22,5 @@ export default {
         { value: 'Not Started', label: 'Not Started'},
         { value: 'Pending', label: 'Pending'},
     ],
+    NOTES: 'notes',
 };

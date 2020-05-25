@@ -45,6 +45,15 @@
     tslib "^1.9.3"
     use-memo-one "^1.1.1"
 
+"@atlaskit/analytics-next@^6.3.6":
+  version "6.3.6"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-6.3.6.tgz#447ddbd1eb80f7228871570d39aad0b0d91636c9"
+  integrity sha512-LeByMgFN19rU8Awl+OG+9iERwxv2bg/nPLYV6anvPkL4H9IGgDu9+hLgJZ2muCQXN5AfamNMcxtU4LPGcDKRdQ==
+  dependencies:
+    prop-types "^15.5.10"
+    tslib "^1.9.3"
+    use-memo-one "^1.1.1"
+
 "@atlaskit/analytics@^6.1.1":
   version "6.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics/-/analytics-6.1.1.tgz#0bdebeedda4d01155a8506849645b5facefaa1bd"
@@ -846,6 +855,15 @@
     debug "^2.2.0"
     tslib "^1.9.3"
 
+"@atlaskit/textarea@^2.2.9":
+  version "2.2.9"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/textarea/-/textarea-2.2.9.tgz#135edf87443e6e164f5b6db9327780eef558dd12"
+  integrity sha512-52kYVVT2RCdFAercyoHsIFZYAZBfg4dbg+ahTsYt22qqqt8MjAiB/Ku+HP3jf6JS1lWB7SRO6WSMQedLJO62hg==
+  dependencies:
+    "@atlaskit/analytics-next" "^6.3.6"
+    "@atlaskit/theme" "^9.5.3"
+    tslib "^1.9.3"
+
 "@atlaskit/textfield@^2.0.4":
   version "2.0.5"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/textfield/-/textfield-2.0.5.tgz#1ff8171efdb0e56143a2a52857510fbd895d0f99"
@@ -911,6 +929,15 @@
   version "9.5.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.5.2.tgz#a6ede937f5a6870c4acf6a6cbf094b429e0e759d"
   integrity sha512-I5pUi6Ie0eOAwnuFtgoXsB3NoRoCl5itQtiIaZ106eLB+eYd22H9Qr0KXWvl4RY2Dn82MO3KbnVGMTX7DUSGeg==
+  dependencies:
+    exenv "^1.2.2"
+    prop-types "^15.5.10"
+    tslib "^1.9.3"
+
+"@atlaskit/theme@^9.5.3":
+  version "9.5.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-9.5.3.tgz#7239b024093959dcc8e0e18283d91b08f1338d7e"
+  integrity sha512-GA8zpyDZHO81vPcSJbObQuRt3ajQxOHY+Qz6Zi1yIepr4Y6xz/fXIiFzamP/VJB/TvHQEhyNE0yeQIYVHGuhyg==
   dependencies:
     exenv "^1.2.2"
     prop-types "^15.5.10"
