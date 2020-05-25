@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import EventDrawerHeader from './components/EventDrawerHeader';
 import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
-import EventSectionDownload from '../event-section-download/EventSectionDownload';
+import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
 import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
-import {DRAWER_TITLE, EVENT_MESSAGE, EVENT_HEADER, FALLBACK_FILENAME} from '../../eventManagementConstants';
+import {DRAWER_TITLE, EVENT_MESSAGE, EVENT_HEADER} from '../../eventManagementConstants';
 import mockData from '../../eventManagementMockData.json';
 import './EventDrawer.scss';
 
@@ -27,9 +28,9 @@ const EventDrawer = ({event, onDrawerClose}) => (
                 <EventSectionCollapsible
                     title={EVENT_MESSAGE}
                     header={(
-                        <EventSectionDownload
+                        <NexusDownload
                             data={mockData}
-                            filename={event && event.eventId || FALLBACK_FILENAME}
+                            filename={get(event, 'eventId', '')}
                         />
                     )}
                 >

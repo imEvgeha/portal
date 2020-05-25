@@ -20,7 +20,3 @@ export const EVENT_HEADER_SECONDARY_FIELDS = [
 ];
 
 export const EVENT_MESSAGE = 'Event Message';
-export const DOWNLOAD = 'Download';
-export const FALLBACK_FILENAME = 'event_data';
-
-export const JSON_MIME = 'application/json';

@@ -1,15 +1,15 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import EventSectionDownload from './EventSectionDownload';
+import NexusDownload from './NexusDownload';
 
-describe('EventSectionDownload', () => {
+describe('NexusDownload', () => {
     let wrapper;
     beforeEach(() => {
         const props = {
             data: { test: 'awesome string'},
             filename: 'event_filename',
         };
-        wrapper = shallow(<EventSectionDownload {...props} />);
+        wrapper = shallow(<NexusDownload {...props} />);
     });
 
     it('should render the component', () => {
