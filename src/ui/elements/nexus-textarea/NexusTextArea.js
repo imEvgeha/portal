@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextArea from '@atlaskit/textarea';
 
-const NexusTextArea = ({onTextChange, notesValue, isDisabled, ...restProps}) => (
+const NexusTextArea = ({onTextChange, notesValue, ...restProps}) => (
     <TextArea
         appearance="standard"
         onChange={onTextChange}
