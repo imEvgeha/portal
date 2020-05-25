@@ -117,7 +117,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                 <NexusTextArea
                     onTextChange={e => onFilterChange(NOTES, e.target)}
                     notesValue={filters.notes}
-                    isDisabled={!fulfillmentOrderId}
+                    disabled={!fulfillmentOrderId}
                 />
             </div>
         </>

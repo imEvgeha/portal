@@ -8,7 +8,6 @@ const NexusTextArea = ({onTextChange, notesValue, isDisabled, ...restProps}) => 
         onChange={onTextChange}
         minimumRows={5}
         value={notesValue}
-        disabled={isDisabled}
         {...restProps}
     />
 );
@@ -17,13 +16,11 @@ const NexusTextArea = ({onTextChange, notesValue, isDisabled, ...restProps}) => 
 NexusTextArea.propTypes = {
     onTextChange: PropTypes.func,
     notesValue: PropTypes.string,
-    isDisabled: PropTypes.bool,
 };
 
 NexusTextArea.defaultProps = {
     onTextChange: () => {},
     notesValue: '',
-    isDisabled: true,
 };
 
 export default NexusTextArea;
