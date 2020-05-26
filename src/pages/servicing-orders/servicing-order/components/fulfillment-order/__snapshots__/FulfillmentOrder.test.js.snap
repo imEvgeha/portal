@@ -1,102 +1,127 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
-<div
-  className="fulfillment-order"
->
+<Fragment>
   <div
-    className="fulfillment-order__title"
-  >
-    Fulfillment Order
-  </div>
-  <div
-    className="fulfillment-order__order-id"
-  >
-    Order ID: 
-    VU000134567-001
-  </div>
-  <div
-    className="fulfillment-order__row"
+    className="fulfillment-order"
   >
     <div
+<<<<<<< HEAD:src/pages/servicing-orders/servicing-order/components/fulfillment-order/__snapshots__/FulfillmentOrder.test.js.snap
       className="fulfillment-order__section"
+=======
+      className="fulfillment-order__title"
+    >
+      Fulfillment Order
+    </div>
+    <div
+      className="fulfillment-order__order-id"
+    >
+      Order ID: 
+      VU000134567-001
+    </div>
+    <div
+      className="fulfillment-order__row"
+>>>>>>> d8460186252681cd91ec869538cdf005c6882e0b:src/pages/servicing-orders/components/servicing-order/components/FulfillmentOrder/__snapshots__/FulfillmentOrder.test.js.snap
     >
       <div
-        className="fulfillment-order__select-wrapper"
+        className="fulfillment-order__section"
       >
-        Bill To
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          className="fulfillment-order__select"
-          onChange={[Function]}
-          options={
-            Array [
+        <div
+          className="fulfillment-order__select-wrapper"
+        >
+          Bill To
+          <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+            className="fulfillment-order__select"
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "MGM",
+                  "value": "MGM",
+                },
+                Object {
+                  "label": "WB",
+                  "value": "WB",
+                },
+              ]
+            }
+            value={
               Object {
                 "label": "MGM",
                 "value": "MGM",
-              },
-              Object {
-                "label": "WB",
-                "value": "WB",
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": "MGM",
-              "value": "MGM",
+              }
             }
-          }
-        />
-      </div>
-      <div
-        className="fulfillment-order__select-wrapper"
-      >
-        Rate Card
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          className="fulfillment-order__select"
-          onChange={[Function]}
-          options={
-            Array [
+          />
+        </div>
+        <div
+          className="fulfillment-order__select-wrapper"
+        >
+          Rate Card
+          <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+            className="fulfillment-order__select"
+            onChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "MGM Rate Card",
+                  "value": "MGM Rate Card",
+                },
+                Object {
+                  "label": "WB Rate Card",
+                  "value": "WB Rate Card",
+                },
+              ]
+            }
+            value={
               Object {
                 "label": "MGM Rate Card",
                 "value": "MGM Rate Card",
-              },
-              Object {
-                "label": "WB Rate Card",
-                "value": "WB Rate Card",
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": "MGM Rate Card",
-              "value": "MGM Rate Card",
+              }
             }
-          }
-        />
+          />
+        </div>
       </div>
     </div>
+<<<<<<< HEAD:src/pages/servicing-orders/servicing-order/components/fulfillment-order/__snapshots__/FulfillmentOrder.test.js.snap
   </div>
   <div
     className="fulfillment-order__row fulfillment-order__row--with-border"
   >
+=======
+>>>>>>> d8460186252681cd91ec869538cdf005c6882e0b:src/pages/servicing-orders/components/servicing-order/components/FulfillmentOrder/__snapshots__/FulfillmentOrder.test.js.snap
     <div
-      className="fulfillment-order__section"
+      className="fulfillment-order__row"
     >
       <div
-        className="fulfillment-order__input"
+        className="fulfillment-order__section"
       >
-        <span>
-          Servicer
-        </span>
-        <input
-          disabled={true}
-          value="DETE"
-        />
+        <div
+          className="fulfillment-order__input"
+        >
+          <span>
+            Servicer
+          </span>
+          <input
+            disabled={true}
+            value="DETE"
+          />
+        </div>
+        <div
+          className="fulfillment-order__input"
+        >
+          <span>
+            Recipient
+          </span>
+          <input
+            disabled={true}
+            value="QuanVision"
+          />
+        </div>
       </div>
       <div
-        className="fulfillment-order__input"
+        className="fulfillment-order__section"
       >
+<<<<<<< HEAD:src/pages/servicing-orders/servicing-order/components/fulfillment-order/__snapshots__/FulfillmentOrder.test.js.snap
         <span>
           Recipient
         </span>
@@ -108,6 +133,8 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
       <div
         className="fulfillment-order__section"
       >
+=======
+>>>>>>> d8460186252681cd91ec869538cdf005c6882e0b:src/pages/servicing-orders/components/servicing-order/components/FulfillmentOrder/__snapshots__/FulfillmentOrder.test.js.snap
         <div
           className="fulfillment-order__select-wrapper"
         >
@@ -191,9 +218,12 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     </div>
   </div>
   <div
+<<<<<<< HEAD:src/pages/servicing-orders/servicing-order/components/fulfillment-order/__snapshots__/FulfillmentOrder.test.js.snap
     className="fulfillment-order__row"
   />
   <div
+=======
+>>>>>>> d8460186252681cd91ec869538cdf005c6882e0b:src/pages/servicing-orders/components/servicing-order/components/FulfillmentOrder/__snapshots__/FulfillmentOrder.test.js.snap
     className="fulfillment-order__notes"
   >
     <h5>
@@ -205,5 +235,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
       onTextChange={[Function]}
     />
   </div>
+<<<<<<< HEAD:src/pages/servicing-orders/servicing-order/components/fulfillment-order/__snapshots__/FulfillmentOrder.test.js.snap
 </div>
+=======
+</Fragment>
+>>>>>>> d8460186252681cd91ec869538cdf005c6882e0b:src/pages/servicing-orders/components/servicing-order/components/FulfillmentOrder/__snapshots__/FulfillmentOrder.test.js.snap
 `;

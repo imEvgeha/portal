@@ -28,4 +28,8 @@ describe('SOFilter', () => {
         expect(wrapper.find('.so-panel-filter-detail__p')).toHaveLength(5);
 
     });
+
+    it('renders one select element', () => {
+        expect(wrapper.find('.so-panel-filter-detail__section')).toHaveLength(1);
+    });
 });

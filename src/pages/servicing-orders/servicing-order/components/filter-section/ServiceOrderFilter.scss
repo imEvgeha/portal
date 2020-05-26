@@ -7,6 +7,26 @@
   margin-left: 70px;
   justify-content: space-around;
   margin-bottom: 16px;
+  &__section {
+    color: #A5ADBA;
+    display: flex;
+    flex-direction: column;
+    & > div {
+      width: 135px;
+      > div {
+        background: #EBEDF0;
+        border: 0;
+      }
+    }
+    & > input {
+      width: 135px;
+      height: 40px;
+      background: #EBEDF0;
+      border: 0;
+      color: #42526E;
+      padding: 0 10px;
+    }
+  }
   &__span {
     margin: 0;
   }
