@@ -34,6 +34,7 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 
 import constants from '../../../MetadataConstants';
+import Button from "@atlaskit/button";
 
 const mapStateToProps = state => {
     return {
@@ -183,6 +184,11 @@ class EditorialMetadataEditMode extends Component {
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
             <div id="editorialMetadataEdit">
+                <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
+                    <Button onClick={() => null} appearance="danger">
+                        Delete Metadata
+                    </Button>
+                </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col>
                         <b>Locale</b>
