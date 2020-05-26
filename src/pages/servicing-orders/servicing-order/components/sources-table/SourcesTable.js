@@ -1,14 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Radio} from '@atlaskit/radio';
+import Badge from '@atlaskit/badge';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './SourcesTable.scss';
 import columnDefinitions from './columnDefinitions';
-import {NexusGrid, NexusTitle} from '../../../../../ui/elements';
+import {NexusGrid} from '../../../../../ui/elements';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {ADDITIONAL_COLUMN_DEF} from '../../../constants';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
+import constants from '../fulfillment-order/constants';
+
+const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourcesTable = ({data, onSelectedSourceChange}) => {
     const [sources, setSources] = useState([]);
@@ -70,16 +74,25 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         width: 40,
         colId: 'services',
         field: 'services',
-        cellRenderer: ({data}) => {
+        cellRendererFramework: ({data}) => {
             // TODO: fix this
             const name = data && `${data['fs'].toLowerCase()}Services`;
-            return name && data[name] && data[name].length;
+            const serviceLength = (name && data[name]) ? data[name].length : 0;
+
+            return (
+                <Badge>
+                    {serviceLength}
+                </Badge>
+            );
         }
     });
 
     return (
         <div className="nexus-c-sources-table">
-            <NexusTitle isSubTitle>{`Sources (${sources.length})`}</NexusTitle>
+            <div className="nexus-c-sources-table__header">
+                <div className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</div>
+                <div className="nexus-c-sources-table__subtitle">{SOURCE_SUBTITLE}</div>
+            </div>
             <NexusGrid 
                 columnDefs={[
                     radioButtonColumn,
