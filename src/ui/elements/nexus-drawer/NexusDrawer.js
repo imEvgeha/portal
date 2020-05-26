@@ -9,7 +9,8 @@ const NexusDrawer = ({
     width,
     isOpen,
     onClose,
-    title
+    title,
+    headerContent
 }) => {
     const [isOpenClass, setIsOpenClass] = useState('');
 
@@ -37,6 +38,15 @@ const NexusDrawer = ({
                 <div className='nexus-c-drawer__header'>
                     <div className='nexus-c-drawer__header--title'>{title}</div>
                     <CloseIcon className='nexus-c-drawer__header--close-btn' onClick={onClose} />
+                    {headerContent &&
+                    (
+                        <>
+                            <div className='break' />
+                            <div className='nexus-c-drawer__header__bottom'>
+                                {headerContent}
+                            </div>
+                        </>
+                    )}
                 </div>
                 {isOpen && children}
             </div>
@@ -49,11 +59,13 @@ NexusDrawer.propTypes = {
     width: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    headerContent: PropTypes.element
 };
 
 NexusDrawer.defaultProps = {
     title: '',
     width: 'medium',
+    headerContent: null
 };
 
 export default NexusDrawer;

@@ -15,8 +15,13 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     <div
       className="nexus-c-servicing-orders__customer-filter"
     >
-      Customer
+      <div
+        className="nexus-c-servicing-orders__customer-filter--label"
+      >
+        Customer
+      </div>
       <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+        className="nexus-c-servicing-orders__customer-filter--select"
         onChange={[Function]}
         options={
           Array [

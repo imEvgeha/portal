@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
-import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import './EventSectionCollapsible.scss';
 
-const EventSectionCollapsible = ({title, children, header}) => {
-    const [isOpened, setIsOpened] = useState(false);
+const EventSectionCollapsible = ({title, isInitiallyOpen, header, children}) => {
+    const [isOpened, setIsOpened] = useState(isInitiallyOpen);
     const toggleSection = () => setIsOpened(!isOpened);
 
     return (
         <div className="nexus-c-event-section-collapsible">
             <div className="nexus-c-event-section-collapsible__header">
                 <div className="nexus-c-event-section-collapsible__activator" onClick={toggleSection}>
-                    {isOpened ? <HipchatChevronUpIcon /> : <HipchatChevronDownIcon />}
+                    {isOpened ? <ChevronDownIcon /> : <ChevronRightIcon />}
                     {title}
                 </div>
                 {header}
@@ -30,11 +30,13 @@ const EventSectionCollapsible = ({title, children, header}) => {
 EventSectionCollapsible.propTypes = {
     title: PropTypes.string,
     header: PropTypes.element,
+    isInitiallyOpen: PropTypes.bool,
 };
 
 EventSectionCollapsible.defaultProps = {
     title: null,
     header: null,
+    isInitiallyOpen: true,
 };
 
 export default EventSectionCollapsible;

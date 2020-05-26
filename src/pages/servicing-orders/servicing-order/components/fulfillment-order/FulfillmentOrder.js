@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Constants from './constants';
-import NexusDatePicker
-    from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {getValidDate} from '../../../../../util/utils';
+import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
 
 const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
-    const {filterKeys} = Constants;
+    const {filterKeys, NOTES} = Constants;
     const {fulfillmentOrderId, notes, billTo, rateCard, servicer, recipient, startDate, dueDate, status} = selectedFulfillmentOrder;
     const [filters, setFilters] = useState({billTo, notes, rateCard, startDate, dueDate, status});
 
@@ -42,12 +42,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                 Order ID: {fulfillmentOrderId}
             </div>
             <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__notes'>
-                    Notes:
-                    <div>
-                        {notes}
-                    </div>
-                </div>
                 <div className='fulfillment-order__section'>
                     <div className='fulfillment-order__select-wrapper'>
                         Bill To
@@ -85,39 +79,47 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                             disabled
                         />
                     </div>
-                </div>
-                <div className='fulfillment-order__section'>
-                    <div className='fulfillment-order__select-wrapper'>
-                        Set Order Status
-                        <Select
-                            className='fulfillment-order__select'
-                            options={Constants.STATUS_LIST}
-                            value={{value: filters['status'], label: statusOption.label}}
-                            onChange={value => onFilterChange(filterKeys.STATUS, value)}
-                        />
-                    </div>
-                    <div className='fulfillment-order__select-wrapper'>
-                        <NexusDatePicker
-                            id='dueDate'
-                            label='Due Date'
-                            value={getValidDate(dueDate)}
-                            onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
-                            isReturningTime={false}
-                        />
-                    </div>
-                    <div className='fulfillment-order__select-wrapper'>
-                        <NexusDatePicker
-                            id='startDate'
-                            label='Start Date'
-                            value={getValidDate(startDate)}
-                            onChange={value => onDateChange(filterKeys.START_DATE, value)}
-                            isReturningTime={false}
-                        />
+                    <div className='fulfillment-order__section'>
+                        <div className='fulfillment-order__select-wrapper'>
+                            Set Order Status
+                            <Select
+                                className='fulfillment-order__select'
+                                options={Constants.STATUS_LIST}
+                                value={{value: filters['status'], label: statusOption.label}}
+                                onChange={value => onFilterChange(filterKeys.STATUS, value)}
+                            />
+                        </div>
+                        <div className='fulfillment-order__select-wrapper'>
+                            <NexusDatePicker
+                                id='dueDate'
+                                label='Due Date'
+                                value={getValidDate(dueDate)}
+                                onChange={value => onDateChange(filterKeys.DUE_DATE, value)}
+                                isReturningTime={false}
+                            />
+                        </div>
+                        <div className='fulfillment-order__select-wrapper'>
+                            <NexusDatePicker
+                                id='startDate'
+                                label='Start Date'
+                                value={getValidDate(startDate)}
+                                onChange={value => onDateChange(filterKeys.START_DATE, value)}
+                                isReturningTime={false}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
             <div className='fulfillment-order__row'>
                 {renderChildren()}
+            </div>
+            <div className='fulfillment-order__notes'>
+                <h5>Notes:</h5>
+                <NexusTextArea
+                    onTextChange={e => onFilterChange(NOTES, e.target)}
+                    notesValue={filters.notes}
+                    disabled={!fulfillmentOrderId}
+                />
             </div>
         </div>
     );

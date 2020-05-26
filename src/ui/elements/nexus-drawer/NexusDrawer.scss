@@ -34,10 +34,17 @@ $sizes: full, narrow, extended, medium, wide;
       height: 15px;
       fill: #A5ADBA;
     }
+
+    .break {
+      flex-basis: 100%;
+      height: 0;
+    }
+
   }
   &.nexus-c-drawer--is-open {
     .nexus-c-drawer__header {
       display: flex;
+      flex-wrap: wrap;
     }
   }
 

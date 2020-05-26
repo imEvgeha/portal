@@ -7,6 +7,13 @@ import {get} from 'lodash';
 const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLanguageIndex, languageOptions, audioTypesOptions}) => {
 
     const currentAudioLanguage = Array.isArray(existingAudioLanguageList) && existingAudioLanguageList[audioLanguageIndex];
+    if (currentAudioLanguage) {
+        languageOptions.forEach(option => {
+            if (option.value === currentAudioLanguage.language) {
+                currentAudioLanguage.label = option.label
+            }
+        });
+    }
     const errors = (currentAudioLanguage && currentAudioLanguage.errors) || [];
 
     const getError = (field, value, errorList = errors) => {
@@ -52,8 +59,8 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('language') ? getError('language').message : (returnValidData('language') && currentAudioLanguage['language']),
-                            value: returnValidData('language') && currentAudioLanguage['language']
+                            label: getError('label') ? getError('label').message : (returnValidData('label') && currentAudioLanguage['label']),
+                            value: returnValidData('label') && currentAudioLanguage['label']
                         } : ''
                 }
             >

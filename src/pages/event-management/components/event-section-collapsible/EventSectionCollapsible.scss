@@ -18,17 +18,14 @@
 }
 
 .nexus-c-event-section-collapsible__content {
-    margin: 10px 0;
+    margin: 10px 0 10px 24px;
     overflow: hidden;
     max-height: 0;
-    // TODO: delete it is set inside webpack
-    -webkit-transition: max-height 1s ease-in-out;
-    -moz-transition: max-height 1s ease-in-out;
-    -ms-transition: max-height 1s ease-in-out;
-    -o-transition: max-height 1s ease-in-out;
-    transition: max-height 1s ease-in-out;
+    transition: max-height .2s ease-in-out;
 
     &--active {
-        max-height: 250px;
+        // Arbitrarily big value because css doesn't support transitions
+        // from height: 0 to height: auto
+        max-height: 80vh;
     }
 }

@@ -7,7 +7,7 @@ describe('EventSectionCollapsible', () => {
     let wrapper;
 
     beforeAll(() => {
-        wrapper = shallow(<EventSectionCollapsible />);
+        wrapper = shallow(<EventSectionCollapsible isInitiallyOpen={false} />);
     });
 
     it('renders without crashing', () => {
