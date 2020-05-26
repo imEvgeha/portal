@@ -5,6 +5,7 @@ import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import './ServicingOrder.scss';
 import {servicingOrdersService} from '../servicingOrdersService';
 import SourcesTable from './components/sources-table/SourcesTable';
+import {prepareRowData} from './components/sources-table/util';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -38,6 +39,7 @@ const ServicingOrder = ({match}) => {
             <div className='servicing-order__right'>
                 <FulfillmentOrder selectedFulfillmentOrder={selectedOrder}>
                     <SourcesTable 
+                        data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
                 </FulfillmentOrder>

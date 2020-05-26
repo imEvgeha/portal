@@ -9,15 +9,13 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {ADDITIONAL_COLUMN_DEF} from '../../../constants';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
-import {prepareRowData} from './util';
 
 const SourcesTable = ({data, onSelectedSourceChange}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState();
 
     useEffect(() => {
-        const rowData = prepareRowData(data);
-        setSources(rowData);
+        setSources(data);
     }, [data]);
 
     useEffect(() => {
@@ -73,6 +71,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         colId: 'services',
         field: 'services',
         cellRenderer: ({data}) => {
+            // TODO: fix this
             const name = data && `${data['fs'].toLowerCase()}Services`;
             return name && data[name] && data[name].length;
         }
@@ -96,12 +95,12 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 };
 
 SourcesTable.propTypes = {
-    data: PropTypes.object,
+    data: PropTypes.array,
     onSelectedSourceChange: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {
-    data: {},
+    data: [],
 };
 
 export default SourcesTable;

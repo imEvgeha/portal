@@ -27,12 +27,6 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']) || {};
     const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']) || {};
 
-    const renderChildren = () => React.Children.map(children, child => {
-        return React.cloneElement(child, {
-            data: selectedFulfillmentOrder,
-        });
-    });
-
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__title'>
@@ -111,7 +105,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                 </div>
             </div>
             <div className='fulfillment-order__row'>
-                {renderChildren()}
+                {children}
             </div>
             <div className='fulfillment-order__notes'>
                 <h5>Notes:</h5>
