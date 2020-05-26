@@ -59,8 +59,8 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('label') ? getError('label').message : (returnValidData('label') && currentAudioLanguage['label']),
-                            value: returnValidData('label') && currentAudioLanguage['label']
+                            label: getError('language') ? getError('language').message : (returnValidData('language') && currentAudioLanguage['label']),
+                            value: returnValidData('language') && currentAudioLanguage['label']
                         } : ''
                 }
             >
