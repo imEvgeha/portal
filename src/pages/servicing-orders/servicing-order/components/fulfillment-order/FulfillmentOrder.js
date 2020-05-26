@@ -104,7 +104,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__row'>
+            <div className='fulfillment-order__column'>
                 {children}
             </div>
             <div className='fulfillment-order__notes'>

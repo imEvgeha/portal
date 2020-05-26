@@ -1,0 +1,24 @@
+@import '../../../../../styles/config.scss';
+
+.nexus-c-services-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.nexus-c-services-table__header {
+    display: flex;
+    flex-direction: row;
+}
+
+.nexus-c-services-table__title {
+    font-size: 16px;
+}
+
+.nexus-c-services-table__subtitle {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 15px;
+    color: map-get($colors, nexus-title-matching-secondary-color);
+}

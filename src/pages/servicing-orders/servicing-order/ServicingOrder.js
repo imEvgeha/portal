@@ -5,6 +5,7 @@ import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import './ServicingOrder.scss';
 import {servicingOrdersService} from '../servicingOrdersService';
 import SourcesTable from './components/sources-table/SourcesTable';
+import ServicesTable from './components/services-table/ServicesTable';
 import {prepareRowData} from './components/sources-table/util';
 
 const ServicingOrder = ({match}) => {
@@ -30,7 +31,7 @@ const ServicingOrder = ({match}) => {
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
-                { 
+                {
                     serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
                     <HeaderSection
                         orderDetails={serviceOrder}
@@ -42,10 +43,11 @@ const ServicingOrder = ({match}) => {
             </div>
             <div className='servicing-order__right'>
                 <FulfillmentOrder selectedFulfillmentOrder={selectedOrder}>
-                    <SourcesTable 
+                    <SourcesTable
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
+                    <ServicesTable data={selectedOrder} />
                 </FulfillmentOrder>
             </div>
         </div>
