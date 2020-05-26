@@ -20,22 +20,40 @@ const mockData = [
 ];
 
 const ServicesTable = ({data}) => {
-    //console.log(data);
-    return (
+
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        setServices(mockData);
+    }, [data]);
+
+    const orderingColumn = defineColumn({
+        headerName: '#',
+        width: 40,
+        colId: 'serviceId',
+        field: 'serviceId',
+        cellRendererFramework: (data) => {
+            return data.definition ? data.definition.length : 0;
+        }
+    });
+
+    console.log(data);
+    return data.fulfillmentOrderId ? (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${3})`}</div>
-                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: ABC124</div>
+                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${services.length})`}</div>
+                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {data.fulfillmentOrderId}</div>
             </div>
             <NexusGrid
                 columnDefs={[
+                    orderingColumn,
                     ...columnDefinitions
                 ]}
-                rowData={mockData}
+                rowData={services}
                 domLayout="autoHeight"
             />
         </div>
-    );
+    ) : null;
 };
 
 ServicesTable.propTypes = {

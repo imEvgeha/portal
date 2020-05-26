@@ -27,7 +27,6 @@ const ServicingOrder = ({match}) => {
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
     };
-
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>

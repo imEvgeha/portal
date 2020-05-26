@@ -86,7 +86,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             );
         }
     });
-    console.log(sources);
+
     return (
         <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
