@@ -29,11 +29,11 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
                 </div>
             </NexusDrawer>
             <div className='so-panel-filter-detail__section'>
-                Filter status
                 <Select
                     options={FILTER_LIST}
                     onChange={setFilter}
                     value={filter}
+                    placeholder="Select Status"
                 />
             </div>
         </div>
