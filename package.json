@@ -1,5 +1,5 @@
 {
-  "name": "NexusPortal",
+  "name": "nexus-portal",
   "version": "1.0.0",
   "description": "Nexus Portal React with Redux frontend app",
   "author": "Vubiquity",
@@ -45,6 +45,7 @@
     "@atlaskit/spinner": "^12.1.6",
     "@atlaskit/tag": "^9.0.10",
     "@atlaskit/tag-group": "^9.0.5",
+    "@atlaskit/textarea": "^2.2.9",
     "@atlaskit/textfield": "^2.0.4",
     "@atlaskit/theme": "^9.1.6",
     "@atlaskit/tooltip": "^15.0.14",
@@ -60,6 +61,7 @@
     "availity-reactstrap-validation": "^2.5.0",
     "bootstrap": "^4.1.3",
     "connected-react-router": "5.0.1",
+    "file-saver": "^2.0.2",
     "js-yaml": "^3.12.0",
     "jwt-decode": "^2.2.0",
     "keycloak-js": "^9.0.2",

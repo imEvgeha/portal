@@ -20,15 +20,19 @@ const ServicingOrder = ({match}) => {
             setServiceOrder(servicingOrder.data || {});
         });
     }, []);
-    
+
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
-                <HeaderSection
-                    orderDetails={serviceOrder}
-                    setSelectedFulfillmentOrder={setSelectedFulfillmentOrderID}
-                    selectedFulfillmentOrder={selectedFulfillmentOrderID}
-                />
+                { 
+                    serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
+                    <HeaderSection
+                        orderDetails={serviceOrder}
+                        setSelectedFulfillmentOrder={setSelectedFulfillmentOrderID}
+                        selectedFulfillmentOrder={selectedFulfillmentOrderID}
+                    />
+                    )
+                }
             </div>
             <div className='servicing-order__right'>
                 <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />

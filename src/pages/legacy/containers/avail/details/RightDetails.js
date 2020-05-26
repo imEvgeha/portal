@@ -33,6 +33,7 @@ import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
 import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {AVAILS_PATH} from '../../../../avails/availsRoutes';
+import {get} from 'lodash';
 
 const mapStateToProps = state => {
     return {
@@ -1053,7 +1054,6 @@ class RightDetails extends React.Component {
                 } else {
                     selectedVal = selectedVal ? [...selectedVal, item] : [item];
                 }
-
                 ref.current.handleChange(option ? selectedVal: null);
                 // ??? - call set state that clean state inside timeout
                 setTimeout(() => {
@@ -1091,19 +1091,14 @@ class RightDetails extends React.Component {
                 .map(language => {
                     return Object.assign({}, language);
                 });
-
-            const languagesWithLabel = options.reduce((acc, obj) => {
-                let result = {};
-                languages.forEach(lang => {
-                    if(lang.language === obj.value) {
-                        result.language = lang.language;
-                        result.label = obj.label;
-                        result.audioType = lang.audioType;
-                        acc.push(result);
-                    }
-                });
-                return acc;
-            }, []);
+            let languagesWithLabel = [];
+            if(options.length){
+                languagesWithLabel = languages.map(({language, audioType}) => ({
+                    language: language,
+                    audioType: audioType,
+                    label: get(options.find(o => o.value === language),'label','')
+                }));
+            }
 
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
@@ -1124,7 +1119,6 @@ class RightDetails extends React.Component {
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)}
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
@@ -1134,7 +1128,7 @@ class RightDetails extends React.Component {
                                         onSubmit={(e) => addAudioLanguage(e)}
                                         isOpen={this.state.isRightAudioLanguageFormOpen}
                                         onClose={this.toggleRightAudioLanguageForm}
-                                        existingAudioLanguageList={selectedVal}
+                                        existingAudioLanguageList={languagesWithLabel}
                                         audioLanguageIndex={this.state.audioLanguageIndex}
                                         isEdit={this.state.isEdit}
                                         languageOptions={options}

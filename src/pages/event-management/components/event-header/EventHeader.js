@@ -10,16 +10,19 @@ const EventHeader = ({event}) => {
 
     const generateEventFields = (event, fields) => (
         fields.map((fieldName, index) => {
-            return (
-                <div className="nexus-c-event-header__field" key={uid(event[fieldName], index)}>
-                    <div className="nexus-c-event-header__field-label">
-                        {startCase(fieldName)}
+            if (event[fieldName] && typeof event[fieldName] === 'string') {
+                return (
+                    <div className="nexus-c-event-header__field" key={uid(event[fieldName], index)}>
+                        <div className="nexus-c-event-header__field-label">
+                            {startCase(fieldName)}
+                        </div>
+                        <div className="nexus-c-event-header__field-value">
+                            {get(event, fieldName)}
+                        </div>
                     </div>
-                    <div className="nexus-c-event-header__field-value">
-                        {get(event, fieldName)}
-                    </div>
-                </div>
-            );
+                );
+            }
+            return '';
         })
     );
 
