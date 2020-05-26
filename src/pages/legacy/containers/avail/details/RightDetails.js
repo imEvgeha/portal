@@ -33,6 +33,7 @@ import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
 import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {AVAILS_PATH} from '../../../../avails/availsRoutes';
+import {get} from 'lodash';
 
 const mapStateToProps = state => {
     return {
@@ -1095,7 +1096,7 @@ class RightDetails extends React.Component {
                 languagesWithLabel = languages.map(({language, audioType}) => ({
                     language: language,
                     audioType: audioType,
-                    label: options.find(o => o.value === language).label
+                    label: get(options.find(o => o.value === language),'label','')
                 }));
             }
 
@@ -1118,7 +1119,6 @@ class RightDetails extends React.Component {
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)}
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
