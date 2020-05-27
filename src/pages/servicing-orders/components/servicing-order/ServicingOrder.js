@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
+import {get} from 'lodash';
+import {servicingOrdersService} from '../../servicingOrdersService';
 import HeaderSection from './components/HeaderSection/HeaderSection';
 import FulfillmentOrder from './components/FulfillmentOrder/FulfillmentOrder';
 import './ServicingOrder.scss';
-import {servicingOrdersService} from '../../servicingOrdersService';
-import {get} from 'lodash';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -18,13 +18,14 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
             setServiceOrder(servicingOrder.data || {});
+            setSelectedFulfillmentOrderID(get(servicingOrder, 'data.fulfillmentOrders[0].fulfillmentOrderId', ''));
         });
     }, []);
 
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
-                { 
+                {
                     serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
                     <HeaderSection
                         orderDetails={serviceOrder}

@@ -24,7 +24,7 @@ describe('ServicingOrder', () => {
                                     'billTo': 'MGM',
                                     'rateCard': 'MGM Rate Card',
                                     'servicer': 'DETE',
-                                    'recipient': 'QuanVision',
+                                    'priority': '10',
                                     'startDate': '07/05/2021'
                                 },
                                 {
@@ -35,7 +35,7 @@ describe('ServicingOrder', () => {
                                     'billTo': 'WB',
                                     'rateCard': 'WB Rate Card',
                                     'servicer': 'DETE2',
-                                    'recipient': 'QuanVision2',
+                                    'priority': '10',
                                     'startDate': '07/05/2021'
                                 }
                             ]

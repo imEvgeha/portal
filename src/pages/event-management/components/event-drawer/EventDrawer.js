@@ -60,7 +60,6 @@ const EventDrawer = ({event, onDrawerClose}) => (
                                           <NexusDownload
                                               data={event.attachments[key]}
                                               filename={get(event, 'eventId', '') + key}
-                                              mimeType={event.attachments[key].mimeType}
                                           />
                                       </>
                                   )}
