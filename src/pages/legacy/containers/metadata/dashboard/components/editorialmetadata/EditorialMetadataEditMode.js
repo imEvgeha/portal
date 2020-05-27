@@ -173,9 +173,7 @@ class EditorialMetadataEditMode extends Component {
         const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
     };
-
-
-
+    
     render() {
         const { handleDelete, data: currentMetaData } = this.props;
         this.prepareFieldsForUpdate();
