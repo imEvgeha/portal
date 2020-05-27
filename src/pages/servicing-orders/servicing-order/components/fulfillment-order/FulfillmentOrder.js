@@ -133,7 +133,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
             </div>
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__row--notes'>
-                    <h5>Notes:</h5>
+                    <h6>Notes:</h6>
                     <NexusTextArea
                         onTextChange={e => onFieldChange(NOTES, e.target)}
                         notesValue={filters.notes}

@@ -98,7 +98,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     return (
         <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
-                <div className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</div>
+                <h5 className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</h5>
                 <div className="nexus-c-sources-table__subtitle">{SOURCE_SUBTITLE}</div>
             </div>
             <NexusGrid

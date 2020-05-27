@@ -77,7 +77,7 @@ const ServicesTable = ({data}) => {
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockedData.length})`}</div>
+                <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockedData.length})`}</h5>
                 <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {services.amsAssetId}</div>
             </div>
             <NexusGrid
