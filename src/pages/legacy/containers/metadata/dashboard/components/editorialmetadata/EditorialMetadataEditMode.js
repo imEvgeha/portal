@@ -172,9 +172,12 @@ class EditorialMetadataEditMode extends Component {
 
         const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
-    }
+    };
+
+
 
     render() {
+        const { handleDelete, data: currentMetaData } = this.props;
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
         const { locale, language, format, service, episodic, synopsis, title, copyright, awards,
@@ -185,9 +188,9 @@ class EditorialMetadataEditMode extends Component {
         return (
             <div id="editorialMetadataEdit">
                 <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button onClick={() => null} appearance="danger">
-                        Delete Metadata
-                    </Button>
+                    <span style={{color:'red', cursor:'pointer'}} onClick={() => handleDelete(currentMetaData.id)} >
+                        Delete Editorial Metadata
+                    </span>
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col>

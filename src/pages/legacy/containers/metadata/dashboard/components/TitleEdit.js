@@ -618,6 +618,20 @@ class TitleEdit extends Component {
         this.updateEditedEditorialMetadata(edited, data.id);
     };
 
+    /* delete editorial metadata */
+    handleEditorialMetaDataDelete = (id) => {
+        let toBeDeleted = this.state.editorialMetadata.find(e => e.id === id);
+        if (toBeDeleted) {
+            let newData = this.state.editorialMetadata.filter(e => e.id !== id);
+            this.setState({
+                editorialMetadata: newData,
+                editorialMetadataActiveTab: CURRENT_TAB
+            });
+            toBeDeleted.metadataStatus = 'deleted';
+            this.updateEditedEditorialMetadata(toBeDeleted, id);
+        }
+    }
+
     handleEditorialMetadataGenreEditChange = (data, genres) => {
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
         if (!edited) {
@@ -1058,6 +1072,7 @@ class TitleEdit extends Component {
                         handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
+                        handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
                     />
 
                     <TerritoryMetadata
