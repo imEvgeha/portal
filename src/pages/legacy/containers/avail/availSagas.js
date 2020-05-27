@@ -144,7 +144,6 @@ export function* fetchAndStoreSelectItems(payload, type) {
         }
 
         options = deduplicate(options, 'label');
-        console.log(options);
 
         acc = {
             ...acc,
