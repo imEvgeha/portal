@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
-import Button from '@atlaskit/button';
 import { configFields } from '../../../../service/ConfigService';
 import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
