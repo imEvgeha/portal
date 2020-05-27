@@ -10,7 +10,7 @@ export const defaultConfiguration = {
         configuration: 'https://configapi.dev.vubiquity.com',
         assetManagementURL: 'https://asset-management-api.dev.vubiquity.com',
         eventApiUrl: 'https://eventapi.dev.vubiquity.com',
-        servicingOrdersUrl: 'https://service-order-manager.dev.vubiquity.com/',
+        servicingOrdersUrl: 'https://service-order-manager.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
             availsParser: '/avails-parser/v1', 
