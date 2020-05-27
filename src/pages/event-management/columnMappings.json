@@ -72,6 +72,57 @@
     "headerName": "Posted Time Stamp",
     "dataType": "timestamp",
     "searchDataType": "timestamp",
-    "enableSearch": true
+    "enableSearch": true,
+    "hide": true
+  },
+  {
+      "colId": "replyTo",
+      "javaVariableName": "replyTo",
+      "field": "replyTo",
+      "headerName": "Reply to",
+      "dataType": "string",
+      "searchDataType": "string",
+      "enableSearch": true,
+      "hide": true
+  },
+  {
+      "colId": "principal",
+      "javaVariableName": "principal",
+      "field": "principal",
+      "headerName": "Principal",
+      "dataType": "string",
+      "searchDataType": "string",
+      "enableSearch": true,
+      "hide": true
+  },
+  {
+      "colId": "avroClassName",
+      "javaVariableName": "avroClassName",
+      "field": "avroClassName",
+      "headerName": "Avro class name",
+      "dataType": "string",
+      "searchDataType": "string",
+      "enableSearch": true,
+      "hide": true
+  },
+  {
+      "colId": "eventClassName",
+      "javaVariableName": "eventClassName",
+      "field": "eventClassName",
+      "headerName": "Event class name",
+      "dataType": "string",
+      "searchDataType": "string",
+      "enableSearch": true,
+      "hide": true
+  },
+  {
+      "colId": "summary",
+      "javaVariableName": "summary",
+      "field": "summary",
+      "headerName": "Summary",
+      "dataType": "string",
+      "searchDataType": "string",
+      "enableSearch": true,
+      "hide": true
   }
 ]
