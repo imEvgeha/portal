@@ -22,6 +22,7 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
             setServiceOrder(servicingOrder.data || {});
+            setSelectedFulfillmentOrderID(get(servicingOrder, 'data.fulfillmentOrders[0].fulfillmentOrderId', ''));
         });
     }, []);
 

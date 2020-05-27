@@ -19,7 +19,22 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     className="fulfillment-order__row"
   >
     <div
-      className="fulfillment-order__section"
+      className="fulfillment-order__row--section"
+    >
+      <div
+        className="fulfillment-order__input"
+      >
+        <span>
+          Servicer
+        </span>
+        <input
+          disabled={true}
+          value="DETE"
+        />
+      </div>
+    </div>
+    <div
+      className="fulfillment-order__row--section"
     >
       <div
         className="fulfillment-order__select-wrapper"
@@ -102,91 +117,147 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
         </span>
         <input
           disabled={true}
-          value="QuanVision"
+          onChange={[Function]}
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    className="fulfillment-order__row"
+  >
+    <div
+      className="fulfillment-order__row--section"
+    >
+      <div
+        className="fulfillment-order__input"
+      >
+        <span>
+          Priority
+        </span>
+        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": 0,
+                "value": 0,
+              },
+              Object {
+                "label": 1,
+                "value": 1,
+              },
+              Object {
+                "label": 2,
+                "value": 2,
+              },
+              Object {
+                "label": 3,
+                "value": 3,
+              },
+              Object {
+                "label": 4,
+                "value": 4,
+              },
+              Object {
+                "label": 5,
+                "value": 5,
+              },
+              Object {
+                "label": 6,
+                "value": 6,
+              },
+              Object {
+                "label": 7,
+                "value": 7,
+              },
+              Object {
+                "label": 8,
+                "value": 8,
+              },
+              Object {
+                "label": 9,
+                "value": 9,
+              },
+            ]
+          }
+          value={
+            Object {
+              "label": "10",
+              "value": "10",
+            }
+          }
         />
       </div>
       <div
-        className="fulfillment-order__section"
+        className="fulfillment-order__select-wrapper"
       >
-        <div
-          className="fulfillment-order__select-wrapper"
-        >
-          Set Order Status
-          <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-            className="fulfillment-order__select"
-            onChange={[Function]}
-            options={
-              Array [
-                Object {
-                  "label": "Completed",
-                  "value": "Completed",
-                },
-                Object {
-                  "label": "On Hold",
-                  "value": "On Hold",
-                },
-                Object {
-                  "label": "In Progress",
-                  "value": "In Progress",
-                },
-                Object {
-                  "label": "Canceled",
-                  "value": "Canceled",
-                },
-                Object {
-                  "label": "Not Started",
-                  "value": "Not Started",
-                },
-                Object {
-                  "label": "Pending",
-                  "value": "Pending",
-                },
-              ]
-            }
-            value={
+        Set Order Status
+        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+          className="fulfillment-order__select"
+          onChange={[Function]}
+          options={
+            Array [
               Object {
                 "label": "Completed",
-                "value": "Completed",
-              }
+                "value": "completed",
+              },
+              Object {
+                "label": "On Hold",
+                "value": "on-hold",
+              },
+              Object {
+                "label": "In Progress",
+                "value": "in-progress",
+              },
+            ]
+          }
+          value={
+            Object {
+              "label": undefined,
+              "value": "Completed",
             }
-          />
-        </div>
-        <div
-          className="fulfillment-order__select-wrapper"
-        >
-          <NexusDatePicker
-            allowClear={false}
-            error=""
-            hideLabel={false}
-            id="dueDate"
-            isReadOnly={false}
-            isReturningTime={false}
-            isTimestamp={false}
-            isWithInlineEdit={false}
-            label="Due Date"
-            onChange={[Function]}
-            onConfirm={[Function]}
-            value="2021-10-05"
-          />
-        </div>
-        <div
-          className="fulfillment-order__select-wrapper"
-        >
-          <NexusDatePicker
-            allowClear={false}
-            error=""
-            hideLabel={false}
-            id="startDate"
-            isReadOnly={false}
-            isReturningTime={false}
-            isTimestamp={false}
-            isWithInlineEdit={false}
-            label="Start Date"
-            onChange={[Function]}
-            onConfirm={[Function]}
-            value="2021-07-05"
-          />
-        </div>
+          }
+        />
+      </div>
+    </div>
+    <div
+      className="fulfillment-order__row--section"
+    >
+      <div
+        className="fulfillment-order__select-wrapper"
+      >
+        <NexusDatePicker
+          allowClear={false}
+          error=""
+          hideLabel={false}
+          id="dueDate"
+          isReadOnly={false}
+          isReturningTime={false}
+          isTimestamp={false}
+          isWithInlineEdit={false}
+          label="Due Date"
+          onChange={[Function]}
+          onConfirm={[Function]}
+          value="2021-10-05"
+        />
+      </div>
+      <div
+        className="fulfillment-order__select-wrapper"
+      >
+        <NexusDatePicker
+          allowClear={false}
+          error=""
+          hideLabel={false}
+          id="startDate"
+          isReadOnly={false}
+          isReturningTime={false}
+          isTimestamp={false}
+          isWithInlineEdit={false}
+          label="Start Date"
+          onChange={[Function]}
+          onConfirm={[Function]}
+          value="2021-07-05"
+        />
       </div>
     </div>
   </div>
@@ -194,16 +265,20 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     className="fulfillment-order__row"
   />
   <div
-    className="fulfillment-order__notes"
+    className="fulfillment-order__row"
   >
-    <h5>
-      Notes:
-    </h5>
-    <NexusTextArea
-      disabled={false}
-      notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      onTextChange={[Function]}
-    />
+    <div
+      className="fulfillment-order__row--notes"
+    >
+      <h5>
+        Notes:
+      </h5>
+      <NexusTextArea
+        disabled={false}
+        notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        onTextChange={[Function]}
+      />
+    </div>
   </div>
 </div>
 `;

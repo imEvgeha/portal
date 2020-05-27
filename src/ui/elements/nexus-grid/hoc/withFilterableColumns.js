@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
+import {SetFilter} from 'ag-grid-enterprise';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {isObject} from '../../../../util/Common';
@@ -49,55 +50,91 @@ const withFilterableColumns = ({
 
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
-               setFilterableColumnDefs(updateColumnDefs(columnDefs));
+                setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
-        }, [columnDefs, selectValues, fixedFilter]);
+        }, [columnDefs, selectValues]);
+
+        useEffect(() => {
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+                setFilterableColumnDefs(updateColumnDefs(columnDefs));
+                setTimeout(()=>{
+                    initializeValues();
+                }, 0);
+            }
+        }, [fixedFilter]);
+
+        let waitForFilter = 0;
+        function initializeFilter(filterInstance, key, isCallback = false){
+            //initialize one column filter with value
+            if(!filterInstance) return;
+            const field = key.replace(/Match/, '');
+            const currentValue = get(filters, key, undefined);
+            let filterValue;
+            if(fixedFilter && fixedFilter[key]){
+                filterValue = fixedFilter[key];
+            }else{
+                filterValue = currentValue;
+            }
+
+            if(filterValue) {
+                if (filterInstance instanceof SetFilter) {
+                    const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
+                    applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
+                }else {
+                    filterValue = Array.isArray(filterValue) ? filterValue.join(', ') : filterValue;
+                    filterInstance.setModel({
+                        type: 'equals',
+                        filter: filterValue,
+                    });
+                }
+            }else{
+                if (filterInstance instanceof SetFilter) {
+                    filterInstance.selectEverything();
+                    filterInstance.applyModel();
+                }else {
+                    filterInstance.setModel(null);
+                }
+            }
+            if(isCallback) {
+                waitForFilter--;
+                if(!waitForFilter) {
+                    gridApi.onFilterChanged();
+                    setIsDatasourceEnabled(true);
+                }
+            }
+        }
+
+        useEffect(()=>{
+            initializeValues();
+        }, [gridApi, mapping]);
 
         // apply initial filter
-        useEffect(() => {
+        const initializeValues = () => {
+            //initialize all columns filters with values
+            waitForFilter = 0;
+            setIsDatasourceEnabled(false);
             if (gridApi && Array.isArray(mapping) && mapping.length) {
                 //union of keys for column filter and fixed filter
                 const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
                 keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
-                    const currentValue = get(filters, key, undefined);
-                    let filterValue;
-                    if(fixedFilter && fixedFilter.hasOwnProperty(key)){
-                        filterValue = fixedFilter[key];
-                    }else{
-                        filterValue = currentValue;
-                    }
-
                     if (filterInstance) {
-                        const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                        if(filterValue) {
-                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                                const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
-                                applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
-                            }else {
-                                filterInstance.setModel({
-                                    type: 'equals',
-                                    filter: filterValue,
-                                });
-                            }
-                        }else{
-                            if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType)) {
-                                filterInstance.selectEverything();
-                                filterInstance.applyModel();
-                            }else {
-                                filterInstance.setModel(null);
-                            }
-                        }
+                        //if filter is found or is not found but is not readonly
+                        initializeFilter(filterInstance, key);
+                    }else{
+                        //we need to use callback
+                        waitForFilter++;
+                        gridApi.getFilterInstance(field, (filterInstance) => initializeFilter(filterInstance, key, true));
                     }
                 });
 
-                gridApi.onFilterChanged();
-                setIsDatasourceEnabled(true);
-            } else {
-                setIsDatasourceEnabled(true);
+                if(!waitForFilter) {
+                    gridApi.onFilterChanged();
+                    setIsDatasourceEnabled(true);
+                }
             }
-        }, [gridApi, mapping, fixedFilter]);
+        };
 
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
@@ -107,15 +144,21 @@ const withFilterableColumns = ({
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
-                let locked=false;
-                if(fixedFilter && fixedFilter[queryParamName]){
-                    locked = true;
-                }
 
                 if (isFilterable) {
+                    let locked=false;
+                    if(fixedFilter && fixedFilter[queryParamName]){
+                        locked = true;
+                    }
+                    const filterInstance = gridApi && gridApi.getFilterInstance(field);
                     const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
                     const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
                     if(!locked) {
+                        if(filterInstance && searchDataType !== READONLY && filterInstance.reactComponent === CustomReadOnlyFilter){
+                            //if current filter is readonly (it just got unlocked) destroy to create the proper one
+                            gridApi.destroyFilter(field);
+                        }
+
                         switch (searchDataType) {
                             case READONLY:
                                 columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
@@ -203,6 +246,10 @@ const withFilterableColumns = ({
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
                         }
                     }else{
+                        if(filterInstance && filterInstance.reactComponent !== CustomReadOnlyFilter){
+                            //if we just locked the filter we need to destroy the previous one and replace it with read only filter
+                            gridApi.destroyFilter(field);
+                        }
                         const currentVal = Array.isArray(fixedFilter[queryParamName]) ? fixedFilter[queryParamName].join(', ') : fixedFilter[queryParamName];
                         columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
                         columnDef.filter = CUSTOM_READONLY;

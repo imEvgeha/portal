@@ -22,7 +22,7 @@ import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 const MIN_VALIDITY_SEC = 30;
 const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
 
-const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, injectUser, getAppOptions}) => {
+const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, addUser, getAppOptions, logoutUser}) => {
  // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +47,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, in
                     const {realmAccess, token, refreshToken} = keycloak;
                     const {roles} = realmAccess || {};
                     updateAbility(roles);
-                    injectUser({token, refreshToken});
+                    addUser({token, refreshToken});
                     loadUserAccount();
                     loadDashboardState(); // TODO: to remove 
                     loadCreateRightState(); // TODO: to remove 
@@ -64,7 +64,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, in
                 setIsAuthenticatedUser(isAuthenticated);
 
             } catch (error) {
-                store.dispatch(logout()); 
+                logoutUser();
             }
             if (cancel) {
                 return;
@@ -79,7 +79,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, in
 
     const loadUserAccount = async () => {
         const userAccount = await keycloak.loadUserProfile();
-        injectUser({userAccount});
+        addUser({userAccount});
         return userAccount;
     };
 
@@ -87,7 +87,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, in
         try {
             const token = getValidToken(accessToken);
             if (!token) {
-                logout();
+                logoutUser();
             }
             const tokenDuration = getTokenDuration(jwtDecode(token));
 
@@ -100,14 +100,14 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, in
             // update token; store new tokens
             const isRefreshed = await keycloak.updateToken(MIN_VALIDITY_SEC);
             if (isRefreshed) {
-                injectUser({token: keycloak.token, refreshToken: keycloak.refreshToken});
+                addUser({token: keycloak.token, refreshToken: keycloak.refreshToken});
             }
 
             // recursion
             updateUserToken(keycloak.token);
 
         } catch (error) {
-            logout();
+            logoutUser();
         }
     };
 
@@ -124,8 +124,8 @@ const mapStateToProps = ({root}) => ({
 
 const mapDispatchToProps = dispatch => ({
     getAppOptions: () => dispatch(fetchAvailMapping()),
-    injectUser: payload => dispatch(injectUser(payload)),
-    logout: () => dispatch(logout()),
+    addUser: payload => dispatch(injectUser(payload)),
+    logoutUser: () => dispatch(logout()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthProvider);

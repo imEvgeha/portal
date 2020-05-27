@@ -10,7 +10,7 @@
         {
           "fulfillmentOrderId": "VU000134567-001",
           "dueDate": "10/05/2021",
-          "status": "Completed",
+          "status": "completed",
           "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "billTo": "MGM",
           "rateCard": "MGM Rate Card",
@@ -57,12 +57,13 @@
                 "deteServices": []
               }
             ]
-          }
+          },
+          "priority": 5
         },
         {
           "fulfillmentOrderId": "VU000134597-002",
           "dueDate": "09/05/2021",
-          "status": "Pending",
+          "status": "in-progress",
           "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "billTo": "WB",
           "rateCard": "WB Rate Card",
@@ -73,10 +74,10 @@
           "definition": {
             "mgmSources": [
               {
-                "amsAssetId": "DA16142",
-                "barcode": "DA16142",
+                "amsAssetId": "DA16129",
+                "barcode": "DA16129",
                 "externalSources": {
-                  "externalId": "DA16142",
+                  "externalId": "DA16129",
                   "externalSystem": "VSOM",
                   "assetFormat": "VIDEO_CONFORMANCEGROUP",
                   "assetType": "MGM_FILE"
@@ -85,7 +86,19 @@
                 "mgmServices": []
               }
             ]
-          }
+          },
+          "priority": 2
+        },
+        {
+          "fulfillmentOrderId": "VU000134597-003",
+          "dueDate": "09/05/2021",
+          "status": "on-hold",
+          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "billTo": "WB",
+          "rateCard": "WB Rate Card",
+          "servicer": "DETE2",
+          "priority": 10,
+          "startDate": "07/05/2021"
         }
       ]
     },

@@ -12,7 +12,8 @@ class CustomComplexFloatingFilter extends React.Component {
         };
     }
 
-    onParentModelChanged = ({filter = {}}) => {
+    onParentModelChanged = (model) => {
+        const {filter={}} = model || {};
         this.setState({value: filter});
     };
 

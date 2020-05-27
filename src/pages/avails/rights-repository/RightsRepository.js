@@ -394,6 +394,7 @@ const RightsRepository = ({
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
             />
             <RightsRepositoryTable
                 id='rightsRepo'

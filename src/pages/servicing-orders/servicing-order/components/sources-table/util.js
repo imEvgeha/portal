@@ -1,5 +1,3 @@
-import {isObject} from 'lodash';
-
 export const prepareRowData = data => {
     const {fs, definition} = data || {};
     const sources = fs ? definition[`${fs.toLowerCase()}Sources`] : [];

@@ -12,12 +12,12 @@ import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
 
 const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
-    const [filter, setFilter] = useState({value: 'All', label: 'All'});
+    const [filter, setFilter] = useState('');
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
         let filteredList = [];
         if(orderDetails.fulfillmentOrders && Array.isArray(orderDetails.fulfillmentOrders)) {
-            if(filter.value === 'All')
+            if(!filter || filter.value === 'All')
                 filteredList =  orderDetails.fulfillmentOrders;
             else
                 filteredList = orderDetails.fulfillmentOrders.filter(item=> item.status === filter.value);
@@ -28,7 +28,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     return (
         <div className='panel-header'>
             <div className='panel-header__title'>
-                <div>
+                <div className='panel-header__title--section'>
                     <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
                         <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
                     </Link>
