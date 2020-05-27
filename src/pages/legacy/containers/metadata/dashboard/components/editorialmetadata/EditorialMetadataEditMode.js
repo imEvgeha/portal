@@ -34,7 +34,6 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 
 import constants from '../../../MetadataConstants';
-import Button from "@atlaskit/button";
 
 const mapStateToProps = state => {
     return {
