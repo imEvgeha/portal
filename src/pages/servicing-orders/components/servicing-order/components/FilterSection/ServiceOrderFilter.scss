@@ -1,29 +1,23 @@
 .so-panel-filter-detail {
   display: flex;
-  padding-right: 20px;
   flex-direction: column;
-  margin-top: 10px;
   text-align: left;
-  margin-left: 70px;
   justify-content: space-around;
-  margin-bottom: 16px;
+  font-size: 14px;
+  padding: 10px 50px 15px 60px;
   &__section {
-    color: #A5ADBA;
     display: flex;
     flex-direction: column;
     & > div {
-      width: 135px;
+      width: 100%;
       > div {
-        background: #EBEDF0;
         border: 0;
       }
     }
     & > input {
       width: 135px;
       height: 40px;
-      background: #EBEDF0;
       border: 0;
-      color: #42526E;
       padding: 0 10px;
     }
   }
@@ -39,7 +33,6 @@
   & button {
     width: 60%;
     margin-top: 5px;
-    background: #EBEDF0;
     color: #42526E;
     margin-bottom: 10px;
   }

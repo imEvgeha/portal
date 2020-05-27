@@ -31,7 +31,7 @@ export const COLUMN_KEYS = [
 
 export const FILTER_LIST =  [
     { value: 'All', label: 'All'},
-    { value: 'Completed', label: 'Completed'},
-    { value: 'On Hold', label: 'On Hold'},
-    { value: 'In Progress', label: 'In Progress'}
+    { value: 'completed', label: 'Completed'},
+    { value: 'on-hold', label: 'On Hold'},
+    { value: 'in-progress', label: 'In Progress'}
 ];

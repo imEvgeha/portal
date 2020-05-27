@@ -1,10 +1,11 @@
 export default {
-    filterKeys: {
+    fieldKeys: {
         BILL_TO: 'billTo',
         RATE_CARD: 'rateCard',
         STATUS: 'status',
         DUE_DATE: 'dueDate',
-        START_DATE: 'startDate'
+        START_DATE: 'startDate',
+        PRIORITY: 'priority'
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },
@@ -15,12 +16,9 @@ export default {
         { value: 'WB Rate Card', label: 'WB Rate Card' }
     ],
     STATUS_LIST: [
-        { value: 'Completed', label: 'Completed'},
-        { value: 'On Hold', label: 'On Hold'},
-        { value: 'In Progress', label: 'In Progress'},
-        { value: 'Canceled', label: 'Canceled'},
-        { value: 'Not Started', label: 'Not Started'},
-        { value: 'Pending', label: 'Pending'},
+        { value: 'completed', label: 'Completed'},
+        { value: 'on-hold', label: 'On Hold'},
+        { value: 'in-progress', label: 'In Progress'}
     ],
     NOTES: 'notes',
 };
