@@ -12,6 +12,7 @@ const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
     const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
     const [selectedOrder, setSelectedOrder] = useState({});
+    const [selectedSource, setSelectedSource] = useState();
 
     useEffect(() => {
         setSelectedOrder(get(serviceOrder, 'fulfillmentOrders', []).find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrderID) || {});
@@ -26,6 +27,8 @@ const ServicingOrder = ({match}) => {
 
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
+        setSelectedSource(source);
+
     };
     return (
         <div className='servicing-order'>
@@ -46,7 +49,9 @@ const ServicingOrder = ({match}) => {
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
-                    <ServicesTable data={selectedOrder} />
+                    {selectedSource &&
+                        <ServicesTable data={selectedSource} />}
+
                 </FulfillmentOrder>
             </div>
         </div>

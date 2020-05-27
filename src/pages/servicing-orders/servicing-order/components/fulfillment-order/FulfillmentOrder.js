@@ -62,14 +62,14 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
                         <input
-                            value={servicer}
+                            value={servicer || ''}
                             disabled
                         />
                     </div>
                     <div className='fulfillment-order__input'>
                         <span>Recipient</span>
                         <input
-                            value={recipient}
+                            value={recipient || ''}
                             disabled
                         />
                     </div>

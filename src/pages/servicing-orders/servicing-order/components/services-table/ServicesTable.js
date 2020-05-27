@@ -17,14 +17,26 @@ const mockData = [
         addRecipient: 'MGM',
         sourceStandard: '_1080_23_976',
     },
+    {
+        type: 'Audio',
+        version: 'French',
+        standard: '5.1',
+        operationalStatus: 'On Hold',
+        componentId: 'FML-897',
+        spec: 'M-DBS-2398 SCC',
+        addRecipient: 'Vubiquity',
+        sourceStandard: '_1080_23_976',
+    },
 ];
 
 const ServicesTable = ({data}) => {
 
-    const [services, setServices] = useState([]);
+    const [services, setServices] = useState({});
 
     useEffect(() => {
-        setServices(mockData);
+        if (data) {
+            setServices(data);
+        }
     }, [data]);
 
     const orderingColumn = defineColumn({
@@ -32,36 +44,36 @@ const ServicesTable = ({data}) => {
         width: 40,
         colId: 'serviceId',
         field: 'serviceId',
-        cellRendererFramework: (data) => {
-            return data.definition ? data.definition.length : 0;
+        cellRendererFramework: data => {
+            return data ? data.rowIndex : 0;
         }
     });
 
-    console.log(data);
-    return data.fulfillmentOrderId ? (
+    return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${services.length})`}</div>
-                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {data.fulfillmentOrderId}</div>
+                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockData.length})`}</div>
+                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {services.amsAssetId}</div>
             </div>
             <NexusGrid
                 columnDefs={[
                     orderingColumn,
                     ...columnDefinitions
                 ]}
-                rowData={services}
+                rowData={mockData}
                 domLayout="autoHeight"
+                onGridReady={params => params.api.sizeColumnsToFit()}
             />
         </div>
-    ) : null;
+    );
 };
 
 ServicesTable.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.object,
 };
 
 ServicesTable.defaultProps = {
-    data: [],
+    data: null,
 };
 
 export default ServicesTable;
