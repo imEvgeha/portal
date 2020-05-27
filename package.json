@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@atlaskit/avatar": "^16.0.8",
+    "@atlaskit/badge": "^13.1.9",
     "@atlaskit/blanket": "^10.0.14",
     "@atlaskit/button": "^13.1.1",
     "@atlaskit/checkbox": "^9.0.9",

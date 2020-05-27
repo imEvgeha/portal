@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {get} from 'lodash';
-import {servicingOrdersService} from '../../servicingOrdersService';
-import HeaderSection from './components/HeaderSection/HeaderSection';
-import FulfillmentOrder from './components/FulfillmentOrder/FulfillmentOrder';
+import HeaderSection from './components/header-section/HeaderSection';
+import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import './ServicingOrder.scss';
+import {servicingOrdersService} from '../servicingOrdersService';
+import SourcesTable from './components/sources-table/SourcesTable';
+import {prepareRowData} from './components/sources-table/util';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -22,6 +24,10 @@ const ServicingOrder = ({match}) => {
         });
     }, []);
 
+    const handleSelectedSourceChange = source => {
+        // CURRENT SELECTED SOURCE
+    };
+
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
@@ -36,7 +42,12 @@ const ServicingOrder = ({match}) => {
                 }
             </div>
             <div className='servicing-order__right'>
-                <FulfillmentOrder selectedFulfillmentOrder={selectedOrder} />
+                <FulfillmentOrder selectedFulfillmentOrder={selectedOrder}>
+                    <SourcesTable 
+                        data={prepareRowData(selectedOrder)}
+                        onSelectedSourceChange={handleSelectedSourceChange}
+                    />
+                </FulfillmentOrder>
             </div>
         </div>
     );

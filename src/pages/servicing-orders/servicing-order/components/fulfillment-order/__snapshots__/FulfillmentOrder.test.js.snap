@@ -93,6 +93,36 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     </div>
   </div>
   <div
+    className="fulfillment-order__row fulfillment-order__row--with-border"
+  >
+    <div
+      className="fulfillment-order__section"
+    >
+      <div
+        className="fulfillment-order__input"
+      >
+        <span>
+          Servicer
+        </span>
+        <input
+          disabled={true}
+          value="DETE"
+        />
+      </div>
+      <div
+        className="fulfillment-order__input"
+      >
+        <span>
+          Recipient
+        </span>
+        <input
+          disabled={true}
+          onChange={[Function]}
+        />
+      </div>
+    </div>
+  </div>
+  <div
     className="fulfillment-order__row"
   >
     <div
@@ -231,6 +261,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
       </div>
     </div>
   </div>
+  <div
+    className="fulfillment-order__row"
+  />
   <div
     className="fulfillment-order__row"
   >

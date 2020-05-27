@@ -1,6 +1,6 @@
 .servicing-order{
   display: flex;
-  height: 100%;
+
   &__left {
     display: flex;
     flex-direction: column;
@@ -13,4 +13,8 @@
     width: 100%;
     background-color: white;
   }
+}
+
+.servicing-order__tables {
+    margin-top: 20px;
 }

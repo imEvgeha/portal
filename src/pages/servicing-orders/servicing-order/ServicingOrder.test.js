@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import ServicingOrder from './ServicingOrder';
-import HeaderSection from './components/HeaderSection/HeaderSection';
+import HeaderSection from './components/header-section/HeaderSection';
 
 describe('ServicingOrder', () => {
     describe('service section with async data fetch', () => {

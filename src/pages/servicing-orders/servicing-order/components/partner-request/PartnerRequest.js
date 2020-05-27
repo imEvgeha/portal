@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
 import moment from 'moment';
-import {getServiceRequest} from '../../../../servicingOrdersService';
-import {parseSimulcast} from '../../../../../../util/DateTimeUtils';
+import {getServiceRequest} from '../../../servicingOrdersService';
+import {parseSimulcast} from '../../../../../util/DateTimeUtils';
 import {
     COLUMN_KEYS,
     COLUMNS,
@@ -12,7 +12,7 @@ import {
     DATE_FORMAT,
     MSS_ORDER_DETAILS,
     STUDIO
-} from '../FilterSection/constants';
+} from '../filter-section/constants';
 import './PartnerRequest.scss';
 
 const PartnerRequest = ({orderDetails}) => {
