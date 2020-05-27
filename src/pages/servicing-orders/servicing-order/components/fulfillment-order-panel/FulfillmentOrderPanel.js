@@ -4,12 +4,12 @@ import './FulfillmentOrderPanel.scss';
 import File from '../../../../../assets/file.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 
-const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfillmentOrder}) => {
+const FulfillmentOrderPanel = ({id, status, dueDate, selected, handleFulfillmentOrderChange}) => {
 
     return (
         <div
             className={`nexus-c-fulfillment-order-panel  ${selected ? 'nexus-c-fulfillment-order-panel--is-selected' : ''}`}
-            onClick={() => setSelectedFulfillmentOrder(id)}
+            onClick={() => handleFulfillmentOrderChange(id)}
         >
             <div className='nexus-c-fulfillment-order-panel__title'>
                 <File className='nexus-c-fulfillment-order-panel__file-icon' />
@@ -25,7 +25,7 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, setSelectedFulfil
 
 FulfillmentOrderPanel.propTypes = {
     id: PropTypes.string,
-    setSelectedFulfillmentOrder: PropTypes.func,
+    handleFulfillmentOrderChange: PropTypes.func,
     status: PropTypes.string,
     dueDate: PropTypes.string,
     selected: PropTypes.bool
@@ -33,7 +33,7 @@ FulfillmentOrderPanel.propTypes = {
 
 FulfillmentOrderPanel.defaultProps = {
     id: '',
-    setSelectedFulfillmentOrder: () => null,
+    handleFulfillmentOrderChange: () => null,
     status: '',
     dueDate: '',
     selected: false,

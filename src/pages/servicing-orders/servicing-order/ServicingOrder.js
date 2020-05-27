@@ -28,8 +28,17 @@ const ServicingOrder = ({match}) => {
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
         setSelectedSource(source);
+    };
+
+    const handleFulfillmentOrderChange = id => {
+        if (selectedFulfillmentOrderID !== id) {
+            setSelectedFulfillmentOrderID(id);
+            setSelectedSource(null);
+        }
+
 
     };
+
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
@@ -37,7 +46,7 @@ const ServicingOrder = ({match}) => {
                     serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
                     <HeaderSection
                         orderDetails={serviceOrder}
-                        setSelectedFulfillmentOrder={setSelectedFulfillmentOrderID}
+                        handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
                     />
                     )
