@@ -116,9 +116,9 @@ class RatingEditTab extends Component {
         return (
             <div id="ratingCreate">
                 <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
+                    <span style={{color:'red', cursor:'pointer'}} onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
                         Delete Rating
-                    </Button>
+                    </span>
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={3}>

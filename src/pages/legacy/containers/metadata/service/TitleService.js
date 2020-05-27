@@ -191,7 +191,7 @@ export const titleService = {
     },
 
     getEditorialMetadataByTitleId: (id) => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}`;
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/editorialmetadata?titleId=${id}&includeDeleted=false`;
         return nexusFetch(url);
     },
 
