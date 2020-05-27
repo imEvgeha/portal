@@ -22,7 +22,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     const previousData = usePrevious(data);
 
     useEffect(() => {
-        if(!isEqual(data, previousData)) {
+        if (!isEqual(data, previousData)) {
             setSelectedSource(null);
             setSources(data);
         }
@@ -49,6 +49,9 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         const {barcode} = data || {};
         const handleClick = () => {
             const updatedRowData = list.filter(el => el.barcode !== barcode);
+            if (selectedSource && selectedSource.barcode === barcode) {
+                setSelectedSource();
+            }
             setSources(updatedRowData);
         };
 

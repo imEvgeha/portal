@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import columnDefinitions from './columnDefinitions';
+import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusGrid} from '../../../../../ui/elements';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import constants from '../fulfillment-order/constants';
@@ -32,12 +34,30 @@ const mockData = [
 const ServicesTable = ({data}) => {
 
     const [services, setServices] = useState({});
+    const [mockedData, setMockedData] = useState([]);
 
     useEffect(() => {
         if (data) {
             setServices(data);
+            setMockedData(mockData);
         }
     }, [data]);
+
+    const handleServiceRemoval = id => {
+        const filteredServices = mockedData.filter(item => item.componentId != id);
+        // refactor when api response is clear or valid mock data supplied
+        setMockedData(filteredServices);
+    };
+
+    const closeButtonCell = ({data}) => {
+        return (
+            <CustomActionsCellRenderer id={data.componentId}>
+                <span onClick={() => handleServiceRemoval(data.componentId)}>
+                    <EditorCloseIcon />
+                </span>
+            </CustomActionsCellRenderer>
+        );
+    };
 
     const orderingColumn = defineColumn({
         headerName: '#',
@@ -49,18 +69,24 @@ const ServicesTable = ({data}) => {
         }
     });
 
+    const closeButtonColumn = defineButtonColumn({
+        cellRendererFramework: closeButtonCell,
+        cellRendererParams: mockedData,
+    });
+
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockData.length})`}</div>
+                <div className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockedData.length})`}</div>
                 <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {services.amsAssetId}</div>
             </div>
             <NexusGrid
                 columnDefs={[
                     orderingColumn,
+                    closeButtonColumn,
                     ...columnDefinitions
                 ]}
-                rowData={mockData}
+                rowData={mockedData}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
             />
