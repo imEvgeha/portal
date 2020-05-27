@@ -9,6 +9,9 @@ const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
 const REGION = '/regions';
 const GENRES = '/genres';
+const COUNTRIES = '/countries';
+const RATINGS = '/ratings';
+const AUDIO_TYPES = '/audio-types';
 const SORT_TYPE = 'label';
 
 export function* fetchAvailMapping(requestMethod) {
@@ -74,13 +77,31 @@ export function* fetchAndStoreSelectItems(payload, type) {
             return call(fetchAvailSelectValuesRequest, profileService.getSelectValues, configEndpoint, javaVariableName);
         })
     );
+
+    const deduplicate = (source, propName) => {
+        return Array.from(
+            source
+                .reduce(
+                    (acc, item) => (
+                        item && item[propName] && acc.set(item[propName], item),
+                            acc
+                    ), // using map (preserves ordering)
+                    new Map()
+                )
+                .values()
+        );
+    }
+
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
         let options;
         switch (configEndpoint) {
             case PRODUCTION_STUDIOS:
-                options = value.map(el => el.value === el.name);
+                options = value.map(code => {
+                    return {value: code.name, label: code.name};
+                });
+                options = getSortedData(options, SORT_TYPE, true);
                 break;
             case LANGUAGES:
                 options = value.map(code => {
@@ -100,9 +121,31 @@ export function* fetchAndStoreSelectItems(payload, type) {
                 });
                 options = getSortedData(options, SORT_TYPE, true);
                 break;
+            case COUNTRIES:
+                options = value.map(code => {
+                    return {value: code.countryCode, label: code.countryName}
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
+            case RATINGS:
+                options = value.map(code => {
+                    return {value: code.value, label: code.ratingSystem + ' - ' + code.value}
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
+            case AUDIO_TYPES:
+                options = value.map(code => {
+                    return {value: code.value, label: code.value}
+                });
+                options = getSortedData(options, SORT_TYPE, true);
+                break;
             default:
                 options = value;
         }
+
+        options = deduplicate(options, 'label');
+        console.log(options);
+
         acc = {
             ...acc,
             [key]: options 

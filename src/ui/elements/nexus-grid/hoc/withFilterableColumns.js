@@ -51,11 +51,17 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
-                // setTimeout(()=>{
-                //     initializeValues();
-                // }, 0);
             }
-        }, [columnDefs, selectValues, fixedFilter]);
+        }, [columnDefs, selectValues]);
+
+        useEffect(() => {
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+                setFilterableColumnDefs(updateColumnDefs(columnDefs));
+                setTimeout(()=>{
+                    initializeValues();
+                }, 0);
+            }
+        }, [fixedFilter]);
 
         let waitForFilter = 0;
         function initializeFilter(filterInstance, key, isCallback = false){
@@ -75,6 +81,7 @@ const withFilterableColumns = ({
                     const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
                     applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
                 }else {
+                    filterValue = Array.isArray(filterValue) ? filterValue.join(', ') : filterValue;
                     filterInstance.setModel({
                         type: 'equals',
                         filter: filterValue,
@@ -99,15 +106,16 @@ const withFilterableColumns = ({
 
         useEffect(()=>{
             initializeValues();
-        }, [gridApi, mapping, fixedFilter]);
+        }, [gridApi, mapping]);
 
         // apply initial filter
         const initializeValues = () => {
             //initialize all columns filters with values
+            waitForFilter = 0;
+            setIsDatasourceEnabled(false);
             if (gridApi && Array.isArray(mapping) && mapping.length) {
                 //union of keys for column filter and fixed filter
                 const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
-
                 keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
@@ -124,11 +132,7 @@ const withFilterableColumns = ({
                 if(!waitForFilter) {
                     gridApi.onFilterChanged();
                     setIsDatasourceEnabled(true);
-                }else{
-                    setIsDatasourceEnabled(false);
                 }
-            } else {
-                setIsDatasourceEnabled(false);
             }
         };
 
@@ -186,8 +190,6 @@ const withFilterableColumns = ({
                                     ...DEFAULT_FILTER_PARAMS,
                                     values: Array.isArray(columnDef.options) && !isEmpty(columnDef.options) ? columnDef.options : getFilterOptions(field),
                                 };
-
-
                                 break;
                             case TERRITORY:
                                 columnDef.filter = SET;

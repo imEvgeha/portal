@@ -47,8 +47,8 @@ export class CustomDateFilter extends React.Component {
         return ({
             type: 'range',
             filter: {
-                [`${this.props.colDef.field}From`]: startDate,
-                [`${this.props.colDef.field}To`]: endDate,
+                ...startDate && {[`${this.props.colDef.field}From`]: startDate},
+                ...endDate && {[`${this.props.colDef.field}To`]: endDate}
             }
         });
     };
