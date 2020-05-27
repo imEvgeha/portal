@@ -1,6 +1,7 @@
 .fulfillment-order {
     display: flex;
     flex-direction: column;
+    padding-bottom: 20px;
 
   &__title {
     font-size: 29px;
@@ -8,13 +9,17 @@
   }
   &__row {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 23px;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 14px;
     width: 100%;
 
-    &--with-border {
-        padding-bottom: 20px;
-        border-bottom: 1px solid #737E91;
+    &--section {
+      display: inline-flex;
+    }
+
+    &--notes {
+      width: 100%;
     }
   }
   &__select-wrapper {
@@ -35,5 +40,8 @@
       color: #42526E;
       padding: 0 10px;
     }
+  }
+  &__order-id{
+    font-size: 16px;
   }
 }

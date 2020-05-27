@@ -20,6 +20,7 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
             const servicingOrder = res['servicingOrder'];
             setServiceOrder(servicingOrder.data || {});
+            setSelectedFulfillmentOrderID(get(servicingOrder, 'data.fulfillmentOrders[0].fulfillmentOrderId', ''));
         });
     }, []);
 
@@ -30,7 +31,7 @@ const ServicingOrder = ({match}) => {
     return (
         <div className='servicing-order'>
             <div className='servicing-order__left'>
-                { 
+                {
                     serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
                     <HeaderSection
                         orderDetails={serviceOrder}

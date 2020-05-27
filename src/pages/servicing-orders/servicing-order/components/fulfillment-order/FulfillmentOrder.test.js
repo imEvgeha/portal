@@ -13,7 +13,7 @@ describe('FulfillmentOrder', () => {
             'billTo': 'MGM',
             'rateCard': 'MGM Rate Card',
             'servicer': 'DETE',
-            'recipient': 'QuanVision',
+            'priority': '10',
             'startDate': '07/05/2021'
         };
         const wrapper = shallow(<FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder}/>);
