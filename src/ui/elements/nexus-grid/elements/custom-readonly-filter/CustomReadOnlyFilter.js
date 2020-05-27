@@ -11,7 +11,7 @@ export default class CustomReadOnlyFilter extends React.Component {
     }
 
     setModel = (model) => {
-        this.setState({value : model ? model.value : this.props.readOnlyValue});
+        this.setState({value : model ? model.filter : this.props.readOnlyValue});
     };
 
     getModel = () => {
