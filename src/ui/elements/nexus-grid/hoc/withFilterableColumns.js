@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
+import {SetFilter} from 'ag-grid-enterprise';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {isObject} from '../../../../util/Common';
@@ -50,13 +51,9 @@ const withFilterableColumns = ({
         useEffect(() => {
             if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
-                setTimeout(()=>{
-                    //ag-grid doesn't like to process filters that have changed in same frame, particularly when we destroy and recreate a filter (we do that when we change type from regular to readonly)
-                    if(gridApi) {
-                        gridApi.onFilterChanged();
-                        initializeValues();
-                    }
-                }, 0);
+                // setTimeout(()=>{
+                //     initializeValues();
+                // }, 0);
             }
         }, [columnDefs, selectValues, fixedFilter]);
 
@@ -67,16 +64,14 @@ const withFilterableColumns = ({
             const field = key.replace(/Match/, '');
             const currentValue = get(filters, key, undefined);
             let filterValue;
-            let locked = false;
             if(fixedFilter && fixedFilter[key]){
-                locked = true;
                 filterValue = fixedFilter[key];
             }else{
                 filterValue = currentValue;
             }
-            const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
+
             if(filterValue) {
-                if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType) && !locked) {
+                if (filterInstance instanceof SetFilter) {
                     const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
                     applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
                 }else {
@@ -86,7 +81,7 @@ const withFilterableColumns = ({
                     });
                 }
             }else{
-                if (['multiselect', 'territoryType', 'audioTypeLanguage'].includes(searchDataType) && !locked) {
+                if (filterInstance instanceof SetFilter) {
                     filterInstance.selectEverything();
                     filterInstance.applyModel();
                 }else {
@@ -104,7 +99,7 @@ const withFilterableColumns = ({
 
         useEffect(()=>{
             initializeValues();
-        }, [gridApi, mapping]);
+        }, [gridApi, mapping, fixedFilter]);
 
         // apply initial filter
         const initializeValues = () => {
@@ -116,8 +111,7 @@ const withFilterableColumns = ({
                 keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
-                    const {searchDataType} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                    if (filterInstance || (!filterInstance && searchDataType !== 'readonly')) {
+                    if (filterInstance) {
                         //if filter is found or is not found but is not readonly
                         initializeFilter(filterInstance, key);
                     }else{
