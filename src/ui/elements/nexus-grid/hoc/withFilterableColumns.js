@@ -146,13 +146,13 @@ const withFilterableColumns = ({
                 const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
                     && (columns ? columns.includes(columnDef.field) : true)
                     && !excludedFilterColumns.includes(columnDef.field);
-                let locked=false;
-                if(fixedFilter && fixedFilter[queryParamName]){
-                    locked = true;
-                }
-                const filterInstance = gridApi && gridApi.getFilterInstance(field);
 
                 if (isFilterable) {
+                    let locked=false;
+                    if(fixedFilter && fixedFilter[queryParamName]){
+                        locked = true;
+                    }
+                    const filterInstance = gridApi && gridApi.getFilterInstance(field);
                     const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
                     const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
                     if(!locked) {
@@ -254,7 +254,6 @@ const withFilterableColumns = ({
                             //if we just locked the filter we need to destroy the previous one and replace it with read only filter
                             gridApi.destroyFilter(field);
                         }
-
                         const currentVal = Array.isArray(fixedFilter[queryParamName]) ? fixedFilter[queryParamName].join(', ') : fixedFilter[queryParamName];
                         columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
                         columnDef.filter = CUSTOM_READONLY;
