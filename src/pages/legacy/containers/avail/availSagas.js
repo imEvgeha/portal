@@ -143,7 +143,9 @@ export function* fetchAndStoreSelectItems(payload, type) {
                 options = value;
         }
 
-        options = deduplicate(options, 'label');
+        const label = options.find(item => item.label) ? 'label' : 'value';
+
+        options = deduplicate(options, label);
 
         acc = {
             ...acc,
