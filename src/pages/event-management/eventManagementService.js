@@ -1,9 +1,6 @@
-import {isEmpty, isObject} from 'lodash';
-import {nexusFetch} from '../../util/http-client';
+import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
-import mockData from './eventManagementMockData.json';
-
-const BASE_PARAM_NAME = 'event.messageHeader.';
+import {nexusFetch} from '../../util/http-client';
 
 export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) => {
     let paramString = '';
@@ -37,20 +34,33 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
                             filterParamKey = `${key.slice(0, -2)}End`;
                         }
 
-                        return `${paramString}&${BASE_PARAM_NAME}${filterParamKey}=${complexFilter[key]}`;
+                        return `${paramString}&${filterParamKey}=${complexFilter[key]}`;
                     }
                 }, paramString);
 
                 return paramString;
             }
 
-            return `${paramString}&${BASE_PARAM_NAME}${paramKey}=${params[paramKey]}`;
+            return `${paramString}&${paramKey}=${params[paramKey]}`;
         }, paramString);
     }
 
-    return Promise.resolve(mockData);
-    // const url = '';
-    // return nexusFetch(`${url}${paramString}`);
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/search/fts`;
+
+    return nexusFetch(`${url}${paramString}`).then(response => {
+        const {data = []} = response || {};
+
+        // Re-pack data to be more suitable for ag-grid consumption
+        const prettyData = data.map(datum => {
+            const eventHeaders = get(datum, 'event.headers', {});
+            const eventMessage = get(datum, 'event.message', {});
+
+            // Include `id` for ag-grid functionality and `message` for the EventDrawer
+            return {...eventHeaders, id: eventHeaders.eventId, message: eventMessage};
+        });
+
+        return {...response, data: prettyData};
+    });
 };
 
 export const replayEvent = ({eventId}) => {
