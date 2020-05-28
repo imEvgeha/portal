@@ -8,45 +8,22 @@ import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus
 import constants from '../fulfillment-order/constants';
 import './ServicesTable.scss';
 
-const mockData = [
-    {
-        type: 'Subtitles',
-        version: 'French',
-        standard: 'Forced',
-        operationalStatus: 'In Progress',
-        componentId: 'LOL-123',
-        spec: 'M-DBS-2398 SCC',
-        addRecipient: 'MGM',
-        sourceStandard: '_1080_23_976',
-    },
-    {
-        type: 'Audio',
-        version: 'French',
-        standard: '5.1',
-        operationalStatus: 'On Hold',
-        componentId: 'FML-897',
-        spec: 'M-DBS-2398 SCC',
-        addRecipient: 'Vubiquity',
-        sourceStandard: '_1080_23_976',
-    },
-];
-
 const ServicesTable = ({data}) => {
 
-    const [services, setServices] = useState({});
-    const [mockedData, setMockedData] = useState([]);
+    const [services, setServices] = useState();
+    const [providerServices, setProviderServices] = useState('');
 
     useEffect(() => {
         if (data) {
             setServices(data);
-            setMockedData(mockData);
+            setProviderServices(`${data.fs.toLowerCase()}Services`);
         }
     }, [data]);
 
     const handleServiceRemoval = id => {
-        const filteredServices = mockedData.filter(item => item.componentId != id);
-        // refactor when api response is clear or valid mock data supplied
-        setMockedData(filteredServices);
+        const filteredServices = services[`${providerServices}`].filter(item => item.componentId != id);
+        setServices({...services, [`${providerServices}`]: filteredServices});
+
     };
 
     const closeButtonCell = ({data}) => {
@@ -71,13 +48,13 @@ const ServicesTable = ({data}) => {
 
     const closeButtonColumn = defineButtonColumn({
         cellRendererFramework: closeButtonCell,
-        cellRendererParams: mockedData,
+        cellRendererParams: services && services[`${providerServices}`],
     });
 
-    return (
+    return services ? (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${mockedData.length})`}</h5>
+                <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${services[`${providerServices}`].length})`}</h5>
                 <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {services.amsAssetId}</div>
             </div>
             <NexusGrid
@@ -86,12 +63,12 @@ const ServicesTable = ({data}) => {
                     closeButtonColumn,
                     ...columnDefinitions
                 ]}
-                rowData={mockedData}
+                rowData={services[`${providerServices}`]}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
             />
         </div>
-    );
+    ) : null;
 };
 
 ServicesTable.propTypes = {

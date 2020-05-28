@@ -30,7 +30,28 @@
                   "assetType": "DETE_FILE"
                 },
                 "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": []
+                "deteServices": [
+                  {
+                    "type": "Subtitles",
+                    "version": "French",
+                    "standard": "Forced",
+                    "operationalStatus": "In Progress",
+                    "componentId": "LOL-123",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "MGM",
+                    "sourceStandard": "_1080_23_976"
+                  },
+                  {
+                    "type": "Audio",
+                    "version": "French",
+                    "standard": "5.1",
+                    "operationalStatus": "On Hold",
+                    "componentId": "FML-897",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "Vubiquity",
+                    "sourceStandard": "_1080_23_979"
+                  }
+                ]
               },
               {
                 "amsAssetId": "DA16130",
@@ -42,7 +63,28 @@
                   "assetType": "DETE_FILE"
                 },
                 "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": []
+                "deteServices": [
+                  {
+                    "type": "Subtitles",
+                    "version": "French",
+                    "standard": "Forced",
+                    "operationalStatus": "In Progress",
+                    "componentId": "LOL-123",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "MGM",
+                    "sourceStandard": "_1080_23_976"
+                  },
+                  {
+                    "type": "Audio",
+                    "version": "French",
+                    "standard": "5.1",
+                    "operationalStatus": "On Hold",
+                    "componentId": "FML-897",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "Vubiquity",
+                    "sourceStandard": "_1080_23_979"
+                  }
+                ]
               },
               {
                 "amsAssetId": "DA16132",
@@ -54,7 +96,28 @@
                   "assetType": "DETE_FILE"
                 },
                 "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": []
+                "deteServices": [
+                  {
+                    "type": "Subtitles",
+                    "version": "French",
+                    "standard": "Forced",
+                    "operationalStatus": "In Progress",
+                    "componentId": "LOL-123",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "MGM",
+                    "sourceStandard": "_1080_23_976"
+                  },
+                  {
+                    "type": "Audio",
+                    "version": "French",
+                    "standard": "5.1",
+                    "operationalStatus": "On Hold",
+                    "componentId": "FML-897",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "Vubiquity",
+                    "sourceStandard": "_1080_23_979"
+                  }
+                ]
               }
             ]
           },
@@ -83,7 +146,28 @@
                   "assetType": "MGM_FILE"
                 },
                 "startDate": "2020-05-19T15:13:13.731-03:00",
-                "mgmServices": []
+                "mgmServices": [
+                  {
+                    "type": "Subtitles",
+                    "version": "French",
+                    "standard": "Forced",
+                    "operationalStatus": "In Progress",
+                    "componentId": "LOL-123",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "MGM",
+                    "sourceStandard": "_1080_23_976"
+                  },
+                  {
+                    "type": "Audio",
+                    "version": "French",
+                    "standard": "5.1",
+                    "operationalStatus": "On Hold",
+                    "componentId": "FML-897",
+                    "spec": "M-DBS-2398 SCC",
+                    "addRecipient": "Vubiquity",
+                    "sourceStandard": "_1080_23_979"
+                  }
+                ]
               }
             ]
           },
