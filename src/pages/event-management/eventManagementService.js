@@ -45,7 +45,7 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
         }, paramString);
     }
 
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/search/fts`;
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/search/fts`;
 
     return nexusFetch(`${url}${paramString}`).then(response => {
         const {data = []} = response || {};
