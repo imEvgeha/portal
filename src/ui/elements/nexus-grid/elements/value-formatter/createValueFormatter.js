@@ -11,10 +11,12 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 const {[javaVariableName]: date = ''} = data || {};
                 return ISODateToView(date, dataType);
             };
+            
         case 'select':
             if (javaVariableName === 'contentType') {
                 return (params) => {
                     const {data = {}} = params || {};
+
                     if (data && data[javaVariableName]) {
                         return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
                     }
@@ -22,11 +24,16 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             } else {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const {[javaVariableName]: value = ''} = data || {};
-                    // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
-                    return isEmphasized ? startCase(camelCase(value)) : value;
+                    const {[javaVariableName]: value = null} = data || {};
+
+                    if (data && data[javaVariableName]) {
+                        // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
+
+                        return isEmphasized ? startCase(camelCase(value)) : value;
+                    }
                 };
             }
+
         case 'territoryType':
         case 'audioLanguageType':
             return (params) => {
