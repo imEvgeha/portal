@@ -93,7 +93,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     </div>
   </div>
   <div
-    className="fulfillment-order__row fulfillment-order__row--with-border"
+    className="fulfillment-order__row"
   >
     <div
       className="fulfillment-order__section"
