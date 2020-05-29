@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {isEmpty} from 'lodash';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import columnDefinitions from './columnDefinitions';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -28,7 +27,7 @@ const ServicesTable = ({data}) => {
 
     const closeButtonCell = ({data}) => {
         return (
-            <CustomActionsCellRenderer id={data.componentId}>
+            <CustomActionsCellRenderer id={data.componentId} classname="nexus-c-services__close-icon">
                 <span onClick={() => handleServiceRemoval(data.componentId)}>
                     <EditorCloseIcon />
                 </span>

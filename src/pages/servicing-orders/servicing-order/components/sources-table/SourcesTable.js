@@ -56,7 +56,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         };
 
         return (
-            <CustomActionsCellRenderer id={barcode}>
+            <CustomActionsCellRenderer id={barcode} classname="nexus-c-sources__close-icon">
                 <span onClick={handleClick}>
                     <EditorCloseIcon />
                 </span>
