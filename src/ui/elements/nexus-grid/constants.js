@@ -60,6 +60,11 @@ const FILTERABLE_DATA_TYPES = [
     DATETIME_FIELDS.REGIONAL_MIDNIGHT
 ];
 
+const MAPPING_DATA_TYPES = [
+    'multiselect',
+    'territoryType',
+];
+
 const AG_GRID_COLUMN_FILTER = {
     TEXT: 'agTextColumnFilter',
     NUMBER: 'agNumberColumnFilter',
@@ -84,6 +89,7 @@ export {
     DEFAULT_HOC_PROPS,
     FILTER_TYPE,
     FILTERABLE_DATA_TYPES,
+    MAPPING_DATA_TYPES,
     MAX_BLOCKS_IN_CACHE,
     MAX_CONCURRENT_DATASOURCE_REQUEST,
     NOT_FILTERABLE_COLUMNS,

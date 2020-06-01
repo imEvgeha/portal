@@ -4,6 +4,7 @@ import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
 import {getSortedData} from '../../../../util/Common';
+import {MAPPING_DATA_TYPES} from "../../../../ui/elements/nexus-grid/constants";
 
 const PRODUCTION_STUDIOS = '/production-studios';
 const LANGUAGES = '/languages';
@@ -60,7 +61,7 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
 }
 
 export function* fetchAndStoreSelectItems(payload, type) {
-    const multiSelectMappings = payload.filter(el => el.searchDataType === 'multiselect' );
+    const multiSelectMappings = payload.filter(el => MAPPING_DATA_TYPES.includes(el.searchDataType) );
     const mappingsWithOptions = multiSelectMappings
         .filter(el => el.options)
         .reduce((acc, {javaVariableName, options}) => {
