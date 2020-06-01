@@ -18,7 +18,7 @@ import Add from '../../../../../assets/action-add.svg';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import mappings  from '../../../../../../profile/sourceTableMapping';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import { SELECTED_VALUES, INIT_SOURCE_ROW, NON_EDITABLE_COLS } from './Constants';
+import { SELECT_VALUES, INIT_SOURCE_ROW, NON_EDITABLE_COLS } from './Constants';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
@@ -133,7 +133,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 domLayout="autoHeight"
                 mapping={mappings}
                 notEditableColumns={NON_EDITABLE_COLS}
-                selectValues={SELECTED_VALUES}
+                selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
             />
         </div>
