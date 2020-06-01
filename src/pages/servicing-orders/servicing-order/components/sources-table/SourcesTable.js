@@ -9,10 +9,7 @@ import './SourcesTable.scss';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../../../ui/elements';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {
-    defineColumn,
-    defineButtonColumn,
-} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import constants from '../fulfillment-order/constants';
 import Add from '../../../../../assets/action-add.svg';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
@@ -58,6 +55,9 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         const {barcode} = data || {};
         const handleClick = () => {
             const updatedRowData = list.filter(el => el.barcode !== barcode);
+            if (selectedSource && selectedSource.barcode === barcode) {
+                setSelectedSource();
+            }
             setSources(updatedRowData);
         };
 
@@ -94,7 +94,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         field: 'services',
         cellRendererFramework: ({data}) => {
             // TODO: fix this
-            const name = Object.keys(data).length && `${data['fs'].toLowerCase()}Services`;
+            const name = data && `${data['fs'].toLowerCase()}Services`;
             const serviceLength = (name && data[name]) ? data[name].length : 0;
 
             return (
@@ -116,7 +116,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     return (
         <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
-                <div className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</div>
+                <h5 className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</h5>
                 <div className="nexus-c-sources-table__subtitle">
                     {SOURCE_SUBTITLE}
                     <Add onClick={addNewRow} />
@@ -126,7 +126,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 columnDefs={[
                     radioButtonColumn,
                     closeButtonColumn,
-                    servicesColumn,
+                    servicesColumn, 
                     ...columnDefinitions
                 ]}
                 rowData={sources}

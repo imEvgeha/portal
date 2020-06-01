@@ -28,7 +28,7 @@ const EventSectionCollapsible = ({title, isInitiallyOpen, header, children}) => 
 };
 
 EventSectionCollapsible.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     header: PropTypes.element,
     isInitiallyOpen: PropTypes.bool,
 };

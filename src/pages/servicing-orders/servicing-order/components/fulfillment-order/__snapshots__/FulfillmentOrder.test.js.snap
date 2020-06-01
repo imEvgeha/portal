@@ -93,7 +93,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     </div>
   </div>
   <div
-    className="fulfillment-order__row fulfillment-order__row--with-border"
+    className="fulfillment-order__row"
   >
     <div
       className="fulfillment-order__section"
@@ -118,6 +118,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
         <input
           disabled={true}
           onChange={[Function]}
+          value=""
         />
       </div>
     </div>
@@ -262,7 +263,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     </div>
   </div>
   <div
-    className="fulfillment-order__row"
+    className="fulfillment-order__column"
   />
   <div
     className="fulfillment-order__row"
@@ -270,9 +271,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     <div
       className="fulfillment-order__row--notes"
     >
-      <h5>
+      <h6>
         Notes:
-      </h5>
+      </h6>
       <NexusTextArea
         disabled={false}
         notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."

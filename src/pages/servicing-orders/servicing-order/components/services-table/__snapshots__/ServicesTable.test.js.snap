@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicesTable should match snapshot 1`] = `
+<div
+  className="nexus-c-services-table"
+>
+  <div
+    className="nexus-c-services-table__header"
+  >
+    <h5
+      className="nexus-c-services-table__title"
+    >
+      Services (0)
+    </h5>
+    <div
+      className="nexus-c-services-table__subtitle"
+    >
+      Barcode
+      : 
+    </div>
+  </div>
+  <NexusGrid
+    columnDefs={
+      Array [
+        Object {
+          "cellRendererFramework": [Function],
+          "colId": "serviceId",
+          "field": "serviceId",
+          "headerName": "#",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "cellEditorFramework": undefined,
+          "cellRendererFramework": [Function],
+          "cellRendererParams": undefined,
+          "colId": "",
+          "editable": false,
+          "field": "buttons",
+          "headerName": "",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "colId": "type",
+          "field": "type",
+          "headerName": "Type",
+        },
+        Object {
+          "colId": "version",
+          "field": "version",
+          "headerName": "Version",
+        },
+        Object {
+          "colId": "standard",
+          "field": "standard",
+          "headerName": "Standard",
+        },
+        Object {
+          "colId": "operationalStatus",
+          "field": "operationalStatus",
+          "headerName": "Operational Status",
+        },
+        Object {
+          "colId": "componentId",
+          "field": "componentId",
+          "headerName": "Component ID",
+        },
+        Object {
+          "colId": "spec",
+          "field": "spec",
+          "headerName": "Spec",
+        },
+        Object {
+          "colId": "addRecipient",
+          "field": "addRecipient",
+          "headerName": "Add recipient",
+        },
+        Object {
+          "colId": "sourceStandard",
+          "field": "sourceStandard",
+          "headerName": "Source Standard",
+        },
+      ]
+    }
+    domLayout="autoHeight"
+    isGridHidden={false}
+    onGridEvent={null}
+    onGridReady={[Function]}
+    rowData={Array []}
+    setRowData={null}
+  />
+</div>
+`;

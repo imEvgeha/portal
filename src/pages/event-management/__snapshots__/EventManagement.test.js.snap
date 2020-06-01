@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventManagement should match snapshot 1`] = `
+<div
+  className="nexus-c-event-management"
+>
+  <div
+    className="nexus-c-event-management__title"
+  >
+    Event Management
+  </div>
+  <div
+    className="nexus-c-event-management__table"
+  >
+    <EventManagementTable
+      onGridEvent={[Function]}
+    />
+  </div>
+</div>
+`;

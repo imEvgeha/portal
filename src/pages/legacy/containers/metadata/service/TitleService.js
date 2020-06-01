@@ -170,7 +170,8 @@ export const titleService = {
     },
 
     getTerritoryMetadataById: (id) => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/territorymetadata?titleId=${id}`;
+        const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const url = `${api}?includeDeleted=false&titleId=${id}`;
         return nexusFetch(url);
     },
     
