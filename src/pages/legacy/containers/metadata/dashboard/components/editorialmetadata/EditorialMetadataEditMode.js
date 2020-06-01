@@ -59,7 +59,7 @@ class EditorialMetadataEditMode extends Component {
             genres,
             showGenreError: false,
             category,
-            showCategoryError: false,
+            showCategoryError: false
         };
     }
 
@@ -174,6 +174,11 @@ class EditorialMetadataEditMode extends Component {
     }
 
     render() {
+        // const isMaster = this.props.data['hasGeneratedChildren'] || false;
+        // const isDecorated = !!this.props.data['parentId'] || false;
+        const isMaster = true;
+        const isDecorated = false;
+
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
         const { locale, language, format, service, episodic, synopsis, title, copyright, awards,
@@ -194,6 +199,7 @@ class EditorialMetadataEditMode extends Component {
                             id="editorialLocal"
                             onChange={(e) => this.props.handleChange(e, this.props.data)}
                             value={locale}
+                            disabled={isMaster || isDecorated}
                         >
                             {
                                     this.props.configLocale && this.props.configLocale.value.map((e, index) => {
@@ -212,6 +218,7 @@ class EditorialMetadataEditMode extends Component {
                             id="editorialLanguage"
                             onChange={(e) => this.props.handleChange(e, this.props.data)}
                             value={language}
+                            disabled={isMaster || isDecorated}
                         >
                             {
                                     this.props.configLanguage && this.props.configLanguage.value.map((e, index) => {
@@ -230,6 +237,7 @@ class EditorialMetadataEditMode extends Component {
                             id="editorialFormat"
                             onChange={(e) => this.props.handleChange(e, this.props.data)}
                             value={format}
+                            disabled={isMaster || isDecorated}
                         >
                             <option value="">Select Format</option>
                             {
@@ -249,6 +257,7 @@ class EditorialMetadataEditMode extends Component {
                             id="editorialService"
                             onChange={(e) => this.props.handleChange(e, this.props.data)}
                             value={service}
+                            disabled={isMaster || isDecorated}
                         >
                             <option value="">Select Service</option>
                             {
@@ -316,6 +325,19 @@ class EditorialMetadataEditMode extends Component {
                               )}
                 </Row>
                       )}
+                {
+                    isMaster &&
+                    <Row style={{padding: '15px'}}>
+                        <Col md={2}>
+                            <AvField value={true}
+                                     type="checkbox"
+                                     name="decorateEditorialMetadata"
+                                     label='Auto-Decorate'
+                                     disabled
+                            />
+                        </Col>
+                    </Row>
+                }
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
@@ -338,6 +360,29 @@ class EditorialMetadataEditMode extends Component {
                         {this.state.showGenreError && <Label style={{ color: 'red' }}>Max 10 genres</Label>}
                     </Col>
                 </Row>
+
+                {
+                    isMaster &&
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Auto-Decorate Title</b>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type="text"
+                                id="editorialAutoDecorateTitle"
+                                name={this.getNameWithPrefix('shortTitleTemplate')}
+                                onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                validate={{
+                                    maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
+                                }}
+                            />
+                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
+                                    {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
+                                </span>
+                        </Col>
+                    </Row>
+                }
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
