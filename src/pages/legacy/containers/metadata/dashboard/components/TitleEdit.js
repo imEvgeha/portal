@@ -538,8 +538,12 @@ class TitleEdit extends Component {
                     const list = [].concat(this.state.territory);
                     const foundIndex = list.findIndex(x => x.id === response.id);
                     list[foundIndex] = response;
+
+                    // Filter out deleted territories
+                    const appliedTerritories = list.filter(({metadataStatus}) => metadataStatus !== 'deleted');
+
                     this.setState({
-                        territory: list
+                        territory: appliedTerritories,
                     });
                     return true;
                 }).catch(() => {

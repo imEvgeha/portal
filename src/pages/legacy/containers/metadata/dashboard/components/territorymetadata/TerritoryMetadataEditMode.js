@@ -1,12 +1,21 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {isEqual} from 'lodash';
+import moment from 'moment';
+import Button from '@atlaskit/button';
 import {Row, Col, Container} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 import NexusDatePicker from '../../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 
 class TerritoryMetadataEditMode extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isDeleted: false,
+        };
+    }
 
     getValidDate = (date) => {
         if (date) {
@@ -15,16 +24,34 @@ class TerritoryMetadataEditMode extends Component {
         return date;
     };
 
-    shouldComponentUpdate(nextProps) {
-        const differentData = this.props.data !== nextProps.data;
-        return differentData;
+    shouldComponentUpdate(nextProps, nextState) {
+        const {data: prevData} = this.props;
+        const {data: nextData} = nextProps;
+
+        return (!isEqual(prevData, nextData) || nextState.isDeleted);
     }
+
+    handleDeleteTerritorialMetadata = () => {
+        this.setState({
+            isDeleted: true,
+        });
+        this.props.handleChange({target: {name: 'metadataStatus', value: 'deleted'}}, this.props.data);
+    };
 
     render() {
         return (
             <div id="territoryMetadataEdit">
                 <Container>
                     <AvForm onValidSubmit={this.props.validSubmit}>
+                        <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
+                            <Button
+                                appearance="danger"
+                                onClick={this.handleDeleteTerritorialMetadata}
+                                isDisabled={this.state.isDeleted}
+                            >
+                                {this.state.isDeleted ? 'Deleted' : 'Delete Territorial Metadata'}
+                            </Button>
+                        </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
                                 <span>Locale</span> <br />
