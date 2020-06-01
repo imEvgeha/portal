@@ -5,6 +5,7 @@ import columnDefinitions from './columnDefinitions';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusGrid} from '../../../../../ui/elements';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import Add from '../../../../../assets/action-add.svg';
 import constants from '../fulfillment-order/constants';
 import './ServicesTable.scss';
 
@@ -58,6 +59,9 @@ const ServicesTable = ({data}) => {
             <div className="nexus-c-services-table__header">
                 <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${servicesCount})`}</h5>
                 <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {amsAssetID}</div>
+                <div className="nexus-c-services-table__add-icon">
+                    <Add onClick={() => {}} />
+                </div>
             </div>
             <NexusGrid
                 columnDefs={[
