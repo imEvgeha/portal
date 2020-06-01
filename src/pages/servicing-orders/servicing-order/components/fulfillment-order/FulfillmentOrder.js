@@ -1,4 +1,7 @@
 import React, {useState, useEffect} from 'react';
+import cloneDeep from 'lodash/cloneDeep';
+import {get, isEqual} from 'lodash';
+import Button from '@atlaskit/button';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Constants from './constants';
@@ -8,39 +11,58 @@ import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextAr
 
 const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const {fieldKeys, NOTES} = Constants;
-    const {fulfillmentOrderId, notes, billTo, rateCard, servicer, recipient, priority, startDate, dueDate, status} = selectedFulfillmentOrder;
-    const [filters, setFilters] = useState({billTo, notes, rateCard, startDate, dueDate, status});
+    const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(selectedFulfillmentOrder));
+    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
 
     useEffect(() => {
-        setFilters({billTo, notes, rateCard, startDate, dueDate, status});
+        setFulfillmentOrder(cloneDeep(selectedFulfillmentOrder));
+        setIsSaveDisabled(true);
     }, [selectedFulfillmentOrder]);
 
+    useEffect(() => {
+        setIsSaveDisabled(isEqual(fulfillmentOrder, selectedFulfillmentOrder));
+    }, [fulfillmentOrder]);
+
     const onFieldChange = (name, value) => {
-        setFilters({...filters, [name]: value.value});
+        setFulfillmentOrder({...fulfillmentOrder, [name]: value});
     };
 
-    const onDateChange = (name, value) => {
-        setFilters({...filters, [name]: value});
+    const billToOption = fulfillmentOrder ? Constants.BILL_TO_LIST.find(l => l.value === fulfillmentOrder['billTo']) : {};
+    const rateCardOption = fulfillmentOrder ? Constants.RATE_CARD_LIST.find(l => l.value === fulfillmentOrder['rateCard']) : {};
+    const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder['status']) : {};
+
+    const onCancel = () => {
+        setFulfillmentOrder(selectedFulfillmentOrder);
     };
 
-    const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']) || {};
-    const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']) || {};
-    const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']) || {};
+    const onSave = () => {
+
+    };
 
     return (
         <div className='fulfillment-order'>
-            <div className='fulfillment-order__title'>
-                Fulfillment Order
+            <div className='fulfillment-order__row'>
+                <div className='fulfillment-order__title'>
+                    Fulfillment Order
+                </div>
+                <div className='fulfillment-order__actions'>
+                    <div className='fulfillment-order__cancel'>
+                        <Button onClick={onCancel}>Cancel</Button>
+                    </div>
+                    <div className='fulfillment-order__save'>
+                        <Button onClick={onSave} appearance="primary" isDisabled={isSaveDisabled}>Save</Button>
+                    </div>
+                </div>
             </div>
             <div className='fulfillment-order__order-id'>
-                Order ID: {fulfillmentOrderId}
+                Order ID: {get(fulfillmentOrder, 'fulfillmentOrderId', '')}
             </div>
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__row--section'>
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
                         <input
-                            value={servicer}
+                            value={get(fulfillmentOrder, 'servicer', '')}
                             disabled
                         />
                     </div>
@@ -51,8 +73,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <Select
                             className='fulfillment-order__select'
                             options={Constants.BILL_TO_LIST}
-                            value={{value: filters['billTo'], label: billToOption.label}}
-                            onChange={value => onFieldChange(fieldKeys.BILL_TO, value)}
+                            value={{value: get(fulfillmentOrder, fieldKeys.BILL_TO, ''), label: billToOption && billToOption.label}}
+                            onChange={val => onFieldChange(fieldKeys.BILL_TO, val.value)}
                         />
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
@@ -60,8 +82,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <Select
                             className='fulfillment-order__select'
                             options={Constants.RATE_CARD_LIST}
-                            value={{value: filters['rateCard'], label: rateCardOption.label}}
-                            onChange={value => onFieldChange(filterKeys.RATE_CARD, value)}
+                            value={{value: get(fulfillmentOrder, fieldKeys.RATE_CARD, ''), label: rateCardOption && rateCardOption.label}}
+                            onChange={val => onFieldChange(fieldKeys.RATE_CARD, val.value)}
                         />
                     </div>
                 </div>
@@ -71,16 +93,16 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
                         <input
-                            value={servicer || ''}
+                            value={get(fulfillmentOrder, 'servicer', '')}
                             disabled
                         />
                     </div>
                     <div className='fulfillment-order__input'>
                         <span>Recipient</span>
                         <input
-                            value={recipient || ''}
+                            value={get(fulfillmentOrder, 'recipient', '')}
                             disabled
-                            onChange={value => onFieldChange(fieldKeys.RATE_CARD, value)}
+                            onChange={val => onFieldChange('recipient', val.value)}
                         />
                     </div>
                 </div>
@@ -90,11 +112,11 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <div className='fulfillment-order__input'>
                         <span>Priority</span>
                         <Select
-                            value={{value: priority, label:priority}}
+                            value={{value: get(fulfillmentOrder, fieldKeys.PRIORITY, ''), label:get(fulfillmentOrder, fieldKeys.PRIORITY, '')}}
                             options={new Array(10)
                                     .fill('')
                                     .map((val,idx) => ({value:idx, label:idx}))}
-                            onChange={value => onFieldChange(fieldKeys.PRIORITY, value)}
+                            onChange={val => onFieldChange(fieldKeys.PRIORITY, val.value)}
                         />
                     </div>
                     <div className='fulfillment-order__select-wrapper'>
@@ -102,8 +124,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <Select
                             className='fulfillment-order__select'
                             options={Constants.STATUS_LIST}
-                            value={{value: filters['status'], label: statusOption.label}}
-                            onChange={value => onFieldChange(fieldKeys.STATUS, value)}
+                            value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
+                            onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
                         />
                     </div>
                 </div>
@@ -112,8 +134,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <NexusDatePicker
                             id='dueDate'
                             label='Due Date'
-                            value={getValidDate(dueDate)}
-                            onChange={value => onDateChange(fieldKeys.DUE_DATE, value)}
+                            value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
+                            onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
                             isReturningTime={false}
                         />
                     </div>
@@ -121,8 +143,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <NexusDatePicker
                             id='startDate'
                             label='Start Date'
-                            value={getValidDate(startDate)}
-                            onChange={value => onDateChange(fieldKeys.START_DATE, value)}
+                            value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
+                            onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
                             isReturningTime={false}
                         />
                     </div>
@@ -135,9 +157,9 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                 <div className='fulfillment-order__row--notes'>
                     <h6>Notes:</h6>
                     <NexusTextArea
-                        onTextChange={e => onFieldChange(NOTES, e.target)}
-                        notesValue={filters.notes}
-                        disabled={!fulfillmentOrderId}
+                        onTextChange={e => onFieldChange(NOTES, e.target.value)}
+                        notesValue={get(fulfillmentOrder, 'notes', '')}
+                        disabled={!get(fulfillmentOrder, 'fulfillmentOrderId', '')}
                     />
                 </div>
             </div>
