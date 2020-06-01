@@ -71,14 +71,14 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
                         <input
-                            value={servicer}
+                            value={servicer || ''}
                             disabled
                         />
                     </div>
                     <div className='fulfillment-order__input'>
                         <span>Recipient</span>
                         <input
-                            value={recipient}
+                            value={recipient || ''}
                             disabled
                             onChange={value => onFieldChange(fieldKeys.RATE_CARD, value)}
                         />
@@ -128,12 +128,12 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__row'>
+            <div className='fulfillment-order__column'>
                 {children}
             </div>
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__row--notes'>
-                    <h5>Notes:</h5>
+                    <h6>Notes:</h6>
                     <NexusTextArea
                         onTextChange={e => onFieldChange(NOTES, e.target)}
                         notesValue={filters.notes}

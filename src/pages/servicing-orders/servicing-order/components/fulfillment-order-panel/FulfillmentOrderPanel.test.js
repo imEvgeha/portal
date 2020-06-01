@@ -4,13 +4,13 @@ import FulfillmentOrderPanel from './FulfillmentOrderPanel';
 
 describe('FulfillmentOrderPanel', () => {
     let wrapper;
-    let setSelectedFulfillmentOrder;
+    let handleFulfillmentOrderChange;
 
     beforeEach(() => {
-        setSelectedFulfillmentOrder = jest.fn();
+        handleFulfillmentOrderChange = jest.fn();
 
         const props = {
-            setSelectedFulfillmentOrder: setSelectedFulfillmentOrder,
+            handleFulfillmentOrderChange: handleFulfillmentOrderChange,
             id: 'VU000134567-001',
             dueDate: '10/05/2021',
             status: 'COMPLETED',
@@ -27,7 +27,7 @@ describe('FulfillmentOrderPanel', () => {
         const fulfillmentOrderPanel = wrapper.find('.nexus-c-fulfillment-order-panel');
         expect(fulfillmentOrderPanel).toHaveLength(1);
         fulfillmentOrderPanel.simulate('click');
-        expect(setSelectedFulfillmentOrder).toHaveBeenCalled();
+        expect(handleFulfillmentOrderChange).toHaveBeenCalled();
     });
 
 

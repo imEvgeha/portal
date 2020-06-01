@@ -35,10 +35,12 @@ const EventManagement = () => {
             <div className="nexus-c-event-management__table">
                 <EventManagementTable onGridEvent={onGridEvent} />
             </div>
-            <EventDrawer
-                event={selectedEvent}
-                onDrawerClose={closeEventDrawer}
-            />
+            {selectedEvent && (
+                <EventDrawer
+                    event={selectedEvent}
+                    onDrawerClose={closeEventDrawer}
+                />
+            )}
         </div>
     );
 };
