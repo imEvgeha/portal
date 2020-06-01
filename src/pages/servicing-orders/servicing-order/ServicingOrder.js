@@ -5,12 +5,14 @@ import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import './ServicingOrder.scss';
 import {servicingOrdersService} from '../servicingOrdersService';
 import SourcesTable from './components/sources-table/SourcesTable';
+import ServicesTable from './components/services-table/ServicesTable';
 import {prepareRowData} from './components/sources-table/util';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
     const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
     const [selectedOrder, setSelectedOrder] = useState({});
+    const [selectedSource, setSelectedSource] = useState();
 
     useEffect(() => {
         setSelectedOrder(get(serviceOrder, 'fulfillmentOrders', []).find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrderID) || {});
@@ -26,6 +28,16 @@ const ServicingOrder = ({match}) => {
 
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
+        setSelectedSource(source);
+    };
+
+    const handleFulfillmentOrderChange = id => {
+        if (selectedFulfillmentOrderID !== id) {
+            setSelectedFulfillmentOrderID(id);
+            setSelectedSource(null);
+        }
+
+
     };
 
     return (
@@ -35,7 +47,7 @@ const ServicingOrder = ({match}) => {
                     serviceOrder && Array.isArray(serviceOrder.fulfillmentOrders) && (
                     <HeaderSection
                         orderDetails={serviceOrder}
-                        setSelectedFulfillmentOrder={setSelectedFulfillmentOrderID}
+                        handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
                     />
                     )
@@ -43,10 +55,13 @@ const ServicingOrder = ({match}) => {
             </div>
             <div className='servicing-order__right'>
                 <FulfillmentOrder selectedFulfillmentOrder={selectedOrder}>
-                    <SourcesTable 
+                    <SourcesTable
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
+                    {selectedSource &&
+                        <ServicesTable data={selectedSource} />}
+
                 </FulfillmentOrder>
             </div>
         </div>

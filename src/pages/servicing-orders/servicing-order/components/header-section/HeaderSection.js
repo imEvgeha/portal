@@ -10,7 +10,7 @@ import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../assets/filter.svg';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
 
-const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfillmentOrder}) => {
+const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(false);
     const [filter, setFilter] = useState('');
     const toggleFilters = () => setShowFilter(!showFilter);
@@ -54,7 +54,7 @@ const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfi
                             status={status}
                             dueDate={dueDate}
                             selected={selectedFulfillmentOrder === fulfillmentOrderId}
-                            setSelectedFulfillmentOrder={setSelectedFulfillmentOrder}
+                            handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         />
                         )
                     )
@@ -66,12 +66,12 @@ const HeaderSection = ({orderDetails, setSelectedFulfillmentOrder, selectedFulfi
 
 HeaderSection.propTypes = {
     orderDetails: PropTypes.object.isRequired,
-    setSelectedFulfillmentOrder: PropTypes.func,
+    handleFulfillmentOrderChange: PropTypes.func,
     selectedFulfillmentOrder: PropTypes.string,
 };
 
 HeaderSection.defaultProps = {
-    setSelectedFulfillmentOrder: ()=>null,
+    handleFulfillmentOrderChange: () => null,
     selectedFulfillmentOrder: '',
 };
 export default HeaderSection;
