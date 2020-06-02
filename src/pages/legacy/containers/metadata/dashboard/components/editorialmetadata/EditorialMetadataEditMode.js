@@ -13,6 +13,7 @@ import { configFields, searchPerson } from '../../../service/ConfigService';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { EPISODE, SEASON } from '../../../../../constants/metadata/contentType';
+import Info from '@atlaskit/icon/glyph/info';
 
 import PersonList from '../coretitlemetadata/PersonList'; import {
     CREW_LIST_LABEL,
@@ -174,10 +175,8 @@ class EditorialMetadataEditMode extends Component {
     }
 
     render() {
-        // const isMaster = this.props.data['hasGeneratedChildren'] || false;
-        // const isDecorated = !!this.props.data['parentId'] || false;
-        const isMaster = true;
-        const isDecorated = false;
+        const isMaster = this.props.data['hasGeneratedChildren'] || false;
+        const isDecorated = !!this.props.data['parentEmetId'] || false;
 
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
@@ -188,6 +187,14 @@ class EditorialMetadataEditMode extends Component {
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
             <div id="editorialMetadataEdit">
+                {isMaster &&
+                    <Row style={{padding: '15px'}}>
+                        <Col className='info-master' md={12}>
+                            <Info/>
+                            You are about to edit a Master Editorial Record. All linked records will be updated accordingly.
+                        </Col>
+                    </Row>
+                }
                 <Row style={{ padding: '15px' }}>
                     <Col>
                         <b>Locale</b>
