@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import {get, isEqual} from 'lodash';
 import Button from '@atlaskit/button';
@@ -11,21 +10,31 @@ import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elem
 import {getValidDate} from '../../../../../util/utils';
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
+import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
 import {SAVE_FULFILLMENT_ORDER} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 
-export const FulfillmentOrderInner = ({selectedFulfillmentOrder = {}, children, isSaving, onSave}) => {
+export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const {fieldKeys, NOTES} = Constants;
-    const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(selectedFulfillmentOrder));
+    const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
+    const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+    const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
+    const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setFulfillmentOrder(cloneDeep(selectedFulfillmentOrder));
-        setIsSaveDisabled(true);
-    }, [selectedFulfillmentOrder]);
+        if(isSuccess){
+            setSavedFulfillmentOrder(fulfillmentOrder);
+        }
+    }, [isSuccess]);
 
     useEffect(() => {
-        setIsSaveDisabled(isEqual(fulfillmentOrder, selectedFulfillmentOrder));
+        setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
+    }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
+
+    useEffect(() => {
+        setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
     }, [fulfillmentOrder]);
 
     const onFieldChange = (name, value) => {
@@ -37,12 +46,12 @@ export const FulfillmentOrderInner = ({selectedFulfillmentOrder = {}, children, 
     const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS]) : {};
 
     const onCancel = () => {
-        setFulfillmentOrder(selectedFulfillmentOrder);
+        setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
     };
 
-    const onInnerSave = () => {
+    const onSave = () => {
         const payload = {data: fulfillmentOrder};
-        onSave(payload);
+        dispatch(saveFulfillmentOrder(payload));
     };
 
     return (
@@ -53,11 +62,16 @@ export const FulfillmentOrderInner = ({selectedFulfillmentOrder = {}, children, 
                 </div>
                 <div className='fulfillment-order__actions'>
                     <div className='fulfillment-order__cancel'>
-                        <Button onClick={onCancel}>Cancel</Button>
+                        <Button
+                            onClick={onCancel}
+                            isDisabled={isSaveDisabled || isSaving}
+                        >
+                            Cancel
+                        </Button>
                     </div>
                     <div className='fulfillment-order__save'>
                         <Button
-                            onClick={onInnerSave}
+                            onClick={onSave}
                             appearance="primary"
                             isDisabled={isSaveDisabled}
                             isLoading={isSaving}
@@ -180,25 +194,10 @@ export const FulfillmentOrderInner = ({selectedFulfillmentOrder = {}, children, 
     );
 };
 
-FulfillmentOrderInner.propTypes = {
-    isSaving: PropTypes.bool,
-    onSave: PropTypes.func
+FulfillmentOrder.propTypes = {
 };
 
-FulfillmentOrderInner.defaultProps = {
-    isSaving: false,
-    onSave: () => {}
+FulfillmentOrder.defaultProps = {
 };
 
-const createMapStateToProps = () => {
-    const savingFulfillmentOrderSelector = createLoadingSelector([SAVE_FULFILLMENT_ORDER]);
-    return (state) => ({
-        isSaving: savingFulfillmentOrderSelector(state),
-    });
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    onSave: payload => dispatch(saveFulfillmentOrder(payload)),
-});
-
-export default connect(createMapStateToProps, mapDispatchToProps)(FulfillmentOrderInner);
+export default FulfillmentOrder;
