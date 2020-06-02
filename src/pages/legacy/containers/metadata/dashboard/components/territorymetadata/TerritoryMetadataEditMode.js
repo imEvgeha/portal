@@ -24,7 +24,6 @@ class TerritoryMetadataEditMode extends Component {
                         <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
                             <span
                                 style={{color: 'red', cursor: 'pointer'}}
-                                appearance="danger"
                                 onClick={()=>this.props.handleDeleteTerritoryMetaData(this.props.data.id)}
                             >
                                 Delete Territorial Metadata
