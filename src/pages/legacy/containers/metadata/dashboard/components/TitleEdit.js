@@ -128,7 +128,8 @@ class TitleEdit extends Component {
         });
     }
 
-    loadEditorialMetadata(titleId) {
+    loadEditorialMetadata() {
+        const titleId = this.props.match.params.id;
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response.data;
             this.setState({
@@ -801,13 +802,9 @@ class TitleEdit extends Component {
 
     handleEditorialMetadataOnSave = () => {
         const promises = [];
+        this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
         promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
-            const list = [].concat(this.state.editorialMetadata);
-            const foundIndex = list.findIndex(x => x.id === response.data.id);
-            list[foundIndex] = response.data;
-            this.setState({
-                editorialMetadata: list
-            });
+            this.loadEditorialMetadata();
             return true;
         }).catch(() => {
             console.error('Unable to edit Editorial Metadata');
@@ -824,9 +821,9 @@ class TitleEdit extends Component {
                 promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
-                        editorialMetadata: [response.data, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
+                    this.loadEditorialMetadata();
                     return true;
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
