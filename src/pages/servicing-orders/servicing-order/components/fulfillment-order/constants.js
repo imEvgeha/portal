@@ -21,4 +21,8 @@ export default {
         { value: 'in-progress', label: 'In Progress'}
     ],
     NOTES: 'notes',
+    SOURCE_TITLE: 'Sources',
+    SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',
+    SERVICES_TITLE: 'Services',
+    SERVICES_BARCODE: 'Barcode',
 };

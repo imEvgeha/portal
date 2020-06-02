@@ -47,7 +47,7 @@ export const defineActionButtonColumn = ({field, cellRendererFramework}) => {
     return defineButtonColumn({headerName: 'Actions', cellRendererFramework});
 };
 
-export const defineButtonColumn = ({headerName = '', cellRendererFramework, cellEditorFramework, editable = false}) => {
+export const defineButtonColumn = ({headerName = '', cellRendererFramework, cellEditorFramework, editable = false, ...rest}) => {
     const columnDef = defineColumn({
         field: 'buttons',
         headerName: headerName,
@@ -55,7 +55,8 @@ export const defineButtonColumn = ({headerName = '', cellRendererFramework, cell
         cellRendererFramework,
         cellEditorFramework,
         editable: editable,
-        width: headerName !== ''? 100 : 40
+        width: headerName !== '' ? 100 : 40,
+        ...rest,
     });
 
     return columnDef;

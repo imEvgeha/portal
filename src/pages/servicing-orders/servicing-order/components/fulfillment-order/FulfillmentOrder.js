@@ -2,14 +2,13 @@ import React, {useState, useEffect} from 'react';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Constants from './constants';
-import NexusDatePicker
-    from '../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import NexusTextArea from '../../../../../../ui/elements/nexus-textarea/NexusTextArea';
-import {getValidDate} from '../../../../../../util/utils';
+import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import {getValidDate} from '../../../../../util/utils';
+import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
 
-const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
+const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const {fieldKeys, NOTES} = Constants;
-    const {fulfillmentOrderId, notes, billTo, rateCard, servicer, priority, startDate, dueDate, status} = selectedFulfillmentOrder;
+    const {fulfillmentOrderId, notes, billTo, rateCard, servicer, recipient, priority, startDate, dueDate, status} = selectedFulfillmentOrder;
     const [filters, setFilters] = useState({billTo, notes, rateCard, startDate, dueDate, status});
 
     useEffect(() => {
@@ -27,6 +26,7 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
     const billToOption = Constants.BILL_TO_LIST.find(l => l.value === filters['billTo']) || {};
     const rateCardOption = Constants.RATE_CARD_LIST.find(l => l.value === filters['rateCard']) || {};
     const statusOption = Constants.STATUS_LIST.find(l => l.value === filters['status']) || {};
+
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__title'>
@@ -61,6 +61,25 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                             className='fulfillment-order__select'
                             options={Constants.RATE_CARD_LIST}
                             value={{value: filters['rateCard'], label: rateCardOption.label}}
+                            onChange={value => onFieldChange(filterKeys.RATE_CARD, value)}
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className='fulfillment-order__row'>
+                <div className='fulfillment-order__section'>
+                    <div className='fulfillment-order__input'>
+                        <span>Servicer</span>
+                        <input
+                            value={servicer || ''}
+                            disabled
+                        />
+                    </div>
+                    <div className='fulfillment-order__input'>
+                        <span>Recipient</span>
+                        <input
+                            value={recipient || ''}
+                            disabled
                             onChange={value => onFieldChange(fieldKeys.RATE_CARD, value)}
                         />
                     </div>
@@ -109,9 +128,12 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}}) => {
                     </div>
                 </div>
             </div>
+            <div className='fulfillment-order__column'>
+                {children}
+            </div>
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__row--notes'>
-                    <h5>Notes:</h5>
+                    <h6>Notes:</h6>
                     <NexusTextArea
                         onTextChange={e => onFieldChange(NOTES, e.target)}
                         notesValue={filters.notes}

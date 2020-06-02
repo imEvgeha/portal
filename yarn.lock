@@ -82,6 +82,14 @@
     "@atlaskit/tooltip" "^15.2.0"
     tslib "^1.9.3"
 
+"@atlaskit/badge@^13.1.9":
+  version "13.1.9"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/badge/-/badge-13.1.9.tgz#7ecaa3acba5e8e99ef8187669d26da4472e39bac"
+  integrity sha512-XiGoL+MJDzLcbCIgFJOrYMeZ/SYmDW5MVCuYWX80DT76cmN3stnuXtRqjU4cAcsoAlvC/jcX9bmzwncqL7abkA==
+  dependencies:
+    "@atlaskit/theme" "^9.5.1"
+    tslib "^1.9.3"
+
 "@atlaskit/blanket@^10.0.14", "@atlaskit/blanket@^10.0.15":
   version "10.0.16"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/blanket/-/blanket-10.0.16.tgz#8964d2270c8341a1bf80722f8967fe9a6a96bc18"

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import NexusDrawer from '../../../../../../ui/elements/nexus-drawer/NexusDrawer';
+import moment from 'moment';
+import './ServiceOrderFilter.scss';
+import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import { FILTER_LIST } from './constants';
-import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
