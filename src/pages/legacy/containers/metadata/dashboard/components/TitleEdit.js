@@ -788,23 +788,32 @@ class TitleEdit extends Component {
         ]
     };
 
+    getUpdatedEditorialMetadata = () => {
+        return this.state.updatedEditorialMetadata.map(e => {
+            return {
+                "itemIndex": null,
+                "body": {
+                    "editorialMetadata": e
+                }
+            }
+        });
+    };
+
     handleEditorialMetadataOnSave = () => {
         const promises = [];
-        this.state.updatedEditorialMetadata.forEach(e => {
-                promises.push(titleService.updateEditorialMetadata(e).then((response) => {
-                    const list = [].concat(this.state.editorialMetadata);
-                    const foundIndex = list.findIndex(x => x.id === response.data.id);
-                    list[foundIndex] = response.data;
-                    this.setState({
-                        editorialMetadata: list
-                    });
-                    return true;
-                }).catch(() => {
-                    console.error('Unable to edit Editorial Metadata');
-                    return false;
-                })
-            );
-        });
+        promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
+            const list = [].concat(this.state.editorialMetadata);
+            const foundIndex = list.findIndex(x => x.id === response.data.id);
+            list[foundIndex] = response.data;
+            this.setState({
+                editorialMetadata: list
+            });
+            return true;
+        }).catch(() => {
+            console.error('Unable to edit Editorial Metadata');
+            return false;
+        })
+        );
         this.setState({
             updatedEditorialMetadata: []
         });

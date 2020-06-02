@@ -173,7 +173,7 @@ export const titleService = {
     },
 
     updateEditorialMetadata: (editedEditorialMetadata) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
+        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata', editedEditorialMetadata);
     },
 
     mergeTitles: (query) => {

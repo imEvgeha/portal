@@ -1,11 +1,11 @@
 {
   "gateway":{
-    "url":" https://availsapi.dev.vubiquity.com",
-    "availsParserUrl": "https://avails-parser.dev.vubiquity.com",
-    "titleUrl":"https://titlesapi.dev.vubiquity.com",
-    "configuration": "https://configapi.dev.vubiquity.com",
-    "assetManagementURL": "https://asset-management-api.dev.vubiquity.com",
-    "eventApiUrl": "https://eventapi.dev.vubiquity.com",
+    "url":" https://availsapi-dbg.dev.vubiquity.com",
+    "availsParserUrl": "https://avails-parser-dbg.dev.vubiquity.com",
+    "titleUrl":"https://titlesapi-dbg.dev.vubiquity.com",
+    "configuration": "https://configapi-dbg.dev.vubiquity.com",
+    "assetManagementURL": "https://asset-management-api-dbg.dev.vubiquity.com",
+    "eventApiUrl": "https://eventapi-dbg.dev.vubiquity.com",
     "service": {
       "avails": "/avails-api/v1",
       "availsParser": "/avails-parser/v1",
@@ -17,8 +17,8 @@
     }
   },
   "keycloak": {
-    "clientId": "temportalapp-dev",
+    "clientId": "portalapp-public",
     "realm": "Vubiquity",
-    "url": "https://auth.dev.vubiquity.com/auth"
+    "url": "https://auth-dbg.dev.vubiquity.com/auth"
   }
 }

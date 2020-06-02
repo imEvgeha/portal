@@ -181,7 +181,7 @@ class EditorialMetadataEditMode extends Component {
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
         const { locale, language, format, service, episodic, synopsis, title, copyright, awards,
-            sasktelInventoryId, sasktelLineupId, castCrew } = updateData || this.props.data;
+            sasktelInventoryId, sasktelLineupId, castCrew, shortTitleTemplate } = updateData || this.props.data;
         const { seriesName, seasonNumber, episodeNumber } = episodic || {};
         const { MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
@@ -383,6 +383,7 @@ class EditorialMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
+                                value={shortTitleTemplate}
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                                     {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
