@@ -35,7 +35,14 @@ export const getServiceRequest = () => {
     });
 };
 
+export const saveFulfillmentOrder = ({data}) => {
+    // TODO - integrate with backend when we have PUT API Endpoint
+    // console.log('Service.saveFulfillmentOrder data: ', data);
+    return new Promise((resolve, reject) => resolve());
+};
+
 export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,
+    saveFulfillmentOrder
 };

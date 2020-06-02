@@ -13,3 +13,4 @@ export const TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE = `You have successfully mat
 export const TITLE_MATCH_AND_CREATE_ERROR_MESSAGE = 'There is an error in the proccess of matching 1 title to the incoming right! Please, try again later.';
 export const REPLAY_EVENT_SUCCESS_MESSAGE = 'You have successfully replayed the event.';
 export const REPLICATE_EVENT_SUCCESS_MESSAGE = 'You have successfully replicated the event.';
+export const SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE = 'Success - Fulfillment Order successfully saved';

@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import cloneDeep from 'lodash/cloneDeep';
 import {get, isEqual} from 'lodash';
 import Button from '@atlaskit/button';
@@ -8,8 +10,11 @@ import Constants from './constants';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {getValidDate} from '../../../../../util/utils';
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
+import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
+import {SAVE_FULFILLMENT_ORDER} from '../../servicingOrderActionTypes';
+import {saveFulfillmentOrder} from '../../servicingOrderActions';
 
-const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
+export const FulfillmentOrderInner = ({selectedFulfillmentOrder = {}, children, isSaving, onSave}) => {
     const {fieldKeys, NOTES} = Constants;
     const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(selectedFulfillmentOrder));
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
@@ -27,16 +32,17 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
         setFulfillmentOrder({...fulfillmentOrder, [name]: value});
     };
 
-    const billToOption = fulfillmentOrder ? Constants.BILL_TO_LIST.find(l => l.value === fulfillmentOrder['billTo']) : {};
-    const rateCardOption = fulfillmentOrder ? Constants.RATE_CARD_LIST.find(l => l.value === fulfillmentOrder['rateCard']) : {};
-    const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder['status']) : {};
+    const billToOption = fulfillmentOrder ? Constants.BILL_TO_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.BILL_TO]) : {};
+    const rateCardOption = fulfillmentOrder ? Constants.RATE_CARD_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.RATE_CARD]) : {};
+    const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS]) : {};
 
     const onCancel = () => {
         setFulfillmentOrder(selectedFulfillmentOrder);
     };
 
-    const onSave = () => {
-
+    const onInnerSave = () => {
+        const payload = {data: fulfillmentOrder};
+        onSave(payload);
     };
 
     return (
@@ -50,12 +56,19 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <Button onClick={onCancel}>Cancel</Button>
                     </div>
                     <div className='fulfillment-order__save'>
-                        <Button onClick={onSave} appearance="primary" isDisabled={isSaveDisabled}>Save</Button>
+                        <Button
+                            onClick={onInnerSave}
+                            appearance="primary"
+                            isDisabled={isSaveDisabled}
+                            isLoading={isSaving}
+                        >
+                            Save
+                        </Button>
                     </div>
                 </div>
             </div>
             <div className='fulfillment-order__order-id'>
-                Order ID: {get(fulfillmentOrder, 'fulfillmentOrderId', '')}
+                Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
             </div>
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__row--section'>
@@ -93,16 +106,16 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <div className='fulfillment-order__input'>
                         <span>Servicer</span>
                         <input
-                            value={get(fulfillmentOrder, 'servicer', '')}
+                            value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
                             disabled
                         />
                     </div>
                     <div className='fulfillment-order__input'>
                         <span>Recipient</span>
                         <input
-                            value={get(fulfillmentOrder, 'recipient', '')}
+                            value={get(fulfillmentOrder, fieldKeys.RECIPIENT, '')}
                             disabled
-                            onChange={val => onFieldChange('recipient', val.value)}
+                            onChange={val => onFieldChange(fieldKeys.RECIPIENT, val.value)}
                         />
                     </div>
                 </div>
@@ -158,8 +171,8 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     <h6>Notes:</h6>
                     <NexusTextArea
                         onTextChange={e => onFieldChange(NOTES, e.target.value)}
-                        notesValue={get(fulfillmentOrder, 'notes', '')}
-                        disabled={!get(fulfillmentOrder, 'fulfillmentOrderId', '')}
+                        notesValue={get(fulfillmentOrder, NOTES, '')}
+                        disabled={!get(fulfillmentOrder, fieldKeys.ID, '')}
                     />
                 </div>
             </div>
@@ -167,4 +180,25 @@ const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     );
 };
 
-export default FulfillmentOrder;
+FulfillmentOrderInner.propTypes = {
+    isSaving: PropTypes.bool,
+    onSave: PropTypes.func
+};
+
+FulfillmentOrderInner.defaultProps = {
+    isSaving: false,
+    onSave: () => {}
+};
+
+const createMapStateToProps = () => {
+    const savingFulfillmentOrderSelector = createLoadingSelector([SAVE_FULFILLMENT_ORDER]);
+    return (state) => ({
+        isSaving: savingFulfillmentOrderSelector(state),
+    });
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    onSave: payload => dispatch(saveFulfillmentOrder(payload)),
+});
+
+export default connect(createMapStateToProps, mapDispatchToProps)(FulfillmentOrderInner);
