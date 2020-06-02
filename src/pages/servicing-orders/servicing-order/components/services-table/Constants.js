@@ -16,3 +16,14 @@ export const SELECT_VALUES = {
     addRecipient: ['MGM', 'Vubiquity'],
     sourceStandard: ['_1080_23_976']
 };
+
+export const ADD_EMPTY_SERVICE_ROW = {
+    type: '',
+    version: '',
+    standard: '',
+    operationalStatus: '',
+    componentId: '',
+    spec: '',
+    addRecipient: '',
+    sourceStandard: '',
+};
