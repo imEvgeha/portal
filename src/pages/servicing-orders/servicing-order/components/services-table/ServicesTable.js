@@ -1,13 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import {compose} from 'redux';
 import columnDefinitions from './columnDefinitions';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusGrid} from '../../../../../ui/elements';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import mappings from '../../../../../../profile/servicesTableMappings';
+import {SELECT_VALUES} from './Constants';
 import Add from '../../../../../assets/action-add.svg';
 import constants from '../fulfillment-order/constants';
 import './ServicesTable.scss';
+
+const ServicesTableGrid = compose(
+    withEditableColumns()
+)(NexusGrid);
 
 const ServicesTable = ({data}) => {
     const [services, setServices] = useState({});
@@ -53,7 +61,6 @@ const ServicesTable = ({data}) => {
 
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
     const amsAssetID = services.amsAssetId || null;
-
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
@@ -63,7 +70,7 @@ const ServicesTable = ({data}) => {
                     <Add onClick={() => {}} />
                 </div>
             </div>
-            <NexusGrid
+            <ServicesTableGrid
                 columnDefs={[
                     orderingColumn,
                     closeButtonColumn,
@@ -72,6 +79,8 @@ const ServicesTable = ({data}) => {
                 rowData={services[`${providerServices}`]}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
+                mapping={mappings}
+                selectValues={SELECT_VALUES}
             />
         </div>
     );

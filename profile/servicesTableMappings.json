@@ -1,0 +1,90 @@
+[
+  {
+    "javaVariableName": "type",
+    "displayName": "Type",
+    "dataType": "select",
+    "searchDataType": "select",
+    "queryParamName": "type",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "version",
+    "displayName": "Version",
+    "dataType": "select",
+    "searchDataType": "select",
+    "queryParamName": "type",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "standard",
+    "displayName": "Standard",
+    "dataType": "select",
+    "searchDataType": "select",
+    "queryParamName": "standard",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "operationalStatus",
+    "displayName": "Operational Status",
+    "dataType": "select",
+    "searchDataType": "select",
+    "queryParamName": "operationalStatus",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "componentId",
+    "displayName": "Component ID",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "componentId",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "spec",
+    "displayName": "Spec",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "spec",
+    "readOnly": true,
+    "enableSearch": true,
+    "enableEdit": false,
+    "required": true
+  },
+  {
+    "javaVariableName": "addRecipient",
+    "displayName": "Add Recipient",
+    "dataType": "select",
+    "searchDataType": "select",
+    "queryParamName": "addRecipient",
+    "readOnly": false,
+    "enableSearch": true,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "sourceStandard",
+    "displayName": "Source Standard",
+    "dataType": "string",
+    "searchDataType": "string",
+    "queryParamName": "sourceStandard",
+    "readOnly": true,
+    "enableSearch": true,
+    "enableEdit": false,
+    "required": true
+  }
+]
