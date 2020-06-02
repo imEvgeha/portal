@@ -1,11 +1,11 @@
 [
   {
-    "colId": "srId",
-    "field": "srId",
+    "colId": "external_id",
+    "field": "external_id",
     "headerName": "SR ID",
     "dataType": "string",
     "width": 150,
-    "javaVariableName": "srId",
+    "javaVariableName": "external_id",
     "displayName": "SR ID",
     "enableSearch": true,
     "searchDataType": "string"

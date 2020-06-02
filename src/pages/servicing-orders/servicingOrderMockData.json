@@ -2,11 +2,13 @@
   "servicingOrder": {
     "data":
     {
+      "external_id": "SR00001113",
       "soID": "123",
       "customer": "MGM",
       "orderId": "order123",
       "creationDate": "10/09/2020",
       "createdBy": "John Wick",
+      "configured_pr_id": "pr_xTAGT",
       "fulfillmentOrders": [
         {
           "fulfillmentOrderId": "VU000134567-001",

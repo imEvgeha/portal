@@ -11,6 +11,7 @@ export const COLUMNS = [
     'Due Date',
     'Primary Video',
     'Secondary Audio',
+    'Secondary Sub-titles',
     'Trailer',
     'Metadata',
     'Artwork',
@@ -18,14 +19,15 @@ export const COLUMNS = [
 ];
 
 export const COLUMN_KEYS = [
-    'title',
+    'id',
     'version',
-    'srDueDate',
+    'srdueDate',
     'primaryVideo',
     'secondaryAudio',
+    'subtitlesFull',
     'trailer',
-    'metadata',
-    'artwork',
+    'metaData',
+    'artWork',
     'materialNotes',
 ];
 

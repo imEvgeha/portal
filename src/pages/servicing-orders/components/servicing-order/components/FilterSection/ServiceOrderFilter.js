@@ -21,7 +21,10 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
                 width="extended"
                 title="Partner Request"
             >
-                <PartnerRequest orderDetails={orderDetails} />
+                <PartnerRequest
+                    externalId={orderDetails.external_id}
+                    configuredPrId={orderDetails.configured_pr_id}
+                />
             </NexusDrawer>
             <div className='so-panel-filter-detail__section'>
                 <Select
