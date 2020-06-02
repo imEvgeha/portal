@@ -594,6 +594,20 @@ class TitleEdit extends Component {
         return promises;
     };
 
+    /* delete Territory metadata */
+    handleTerritoryMetaDataDelete = (id) => {
+        let toBeDeleted = this.state.territory.find(e => e.id === id);
+        if (toBeDeleted) {
+            let newData = this.state.territory.filter(e => e.id !== id);
+            toBeDeleted.metadataStatus = 'deleted';
+            this.setState({
+                territory: newData,
+                territoryMetadataActiveTab: CURRENT_TAB,
+                updatedTerritories: [toBeDeleted, ...this.state.updatedTerritories]
+            });
+        }
+    }
+
     /**
      * Editorial Metadata document
      */
@@ -1094,6 +1108,7 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleTerritoryMetadataEditChange}
                         handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
                         isEditMode={this.state.isEditMode}
+                        handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
                     />
                 </AvForm>
             </EditPage>
