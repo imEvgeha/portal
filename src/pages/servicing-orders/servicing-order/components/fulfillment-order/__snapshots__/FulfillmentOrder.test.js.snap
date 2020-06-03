@@ -5,9 +5,39 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
   className="fulfillment-order"
 >
   <div
-    className="fulfillment-order__title"
+    className="fulfillment-order__row"
   >
-    Fulfillment Order
+    <div
+      className="fulfillment-order__title"
+    >
+      Fulfillment Order
+    </div>
+    <div
+      className="fulfillment-order__actions"
+    >
+      <div
+        className="fulfillment-order__cancel"
+      >
+        <WithAnalyticsContext(WithAnalyticsEvents(Button))
+          isDisabled={true}
+          onClick={[Function]}
+        >
+          Cancel
+        </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      </div>
+      <div
+        className="fulfillment-order__save"
+      >
+        <WithAnalyticsContext(WithAnalyticsEvents(Button))
+          appearance="primary"
+          isDisabled={true}
+          isLoading={Object {}}
+          onClick={[Function]}
+        >
+          Save
+        </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      </div>
+    </div>
   </div>
   <div
     className="fulfillment-order__order-id"
