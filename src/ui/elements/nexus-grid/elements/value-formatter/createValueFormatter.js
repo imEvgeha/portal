@@ -24,12 +24,11 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             } else {
                 return (params) => {
                     const {data = {}} = params || {};
-                    const {[javaVariableName]: value = null} = data || {};
 
                     if (data && data[javaVariableName]) {
                         // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
 
-                        return isEmphasized ? startCase(camelCase(value)) : value;
+                        return isEmphasized ? startCase(camelCase(data[javaVariableName])) : data[javaVariableName];
                     }
                 };
             }

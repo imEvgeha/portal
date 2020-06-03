@@ -374,6 +374,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case 'year' : return renderCloseableBtn(key, schema.displayName);
                                 case 'double' : return renderCloseableBtn(key, schema.displayName);
                                 case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'territoryType' : return renderCloseableSelectBtn(key, schema.displayName);
                                 case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
                                 case 'time' : return renderCloseableBtn(key, schema.displayName);
                                 case DATETIME_FIELDS.TIMESTAMP : return renderCloseableDateTimeBtn(key, schema.displayName);
@@ -381,7 +382,7 @@ class AdvancedSearchPanel extends React.Component {
                                 case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderCloseableDateBtn(key, schema.displayName);
                                 case 'boolean' : return renderCloseableBtn(key, schema.displayName);
                                 default:
-                                    console.warn('Unsupported DataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName); // eslint-disable-line
+                                    console.warn('Unsupported searchDataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName); // eslint-disable-line
                             }
                         } else {
                             if(key !== 'availHistoryIds') {
