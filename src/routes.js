@@ -1,12 +1,14 @@
+import React from 'react';
 import {canRender} from './ability';
 import availsRoutes from './pages/avails/availsRoutes';
 import metadataRoutes from './pages/metadata/metadataRoutes';
 import staticPagesRoutes from './pages/static/staticPagesRoutes';
-import ContractProfile from './pages/legacy/containers/contracts/profile/ContractProfile';
-import Contract from './pages/legacy/containers/contracts/search/Contract';
-import Media from './pages/legacy/containers/media/search/Media.js';
-import Settings from './pages/legacy/containers/settings/Settings';
-import NotFound from './pages/static/NotFound';
+import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
+const ContractProfile = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/legacy/containers/contracts/profile/ContractProfile'));
+const Contract = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'));
+const Media = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Media" */ './pages/legacy/containers/media/search/Media.js'));
+const Settings = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings'));
+import WithTracker from './util/hoc/withTracker';
 
 // TODO: on relevant page refactoring remove in to corresponding page folder
 const restRoutes = [
@@ -31,8 +33,15 @@ const restRoutes = [
 const routes = [
     ...availsRoutes,
     ...metadataRoutes,
+    ...servicingOrdersRoutes,
     ...restRoutes,
     ...staticPagesRoutes,
 ];
 
-export default routes;
+const routesWithTracking = routes.map(route => {
+    route.component = WithTracker(route.component);
+
+    return route;
+});
+
+export default routesWithTracking;

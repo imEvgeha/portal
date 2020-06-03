@@ -406,7 +406,7 @@
   "javaVariableName": "languageAudioTypes",
   "displayName": "Audio Language Types",
   "dataType": "audioLanguageType",
-  "searchDataType": "multiselect",
+  "searchDataType": "audioLanguageType",
   "configEndpoint": "/languages",
   "queryParamName": "audioTypeLanguage",
   "readOnly": false,
@@ -416,7 +416,6 @@
 },{
   "javaVariableName": "languageAudioTypes.language",
   "displayName": "Audio Language",
-  "dataType": "multiselect",
   "searchDataType": "multiselect",
   "configEndpoint": "/languages",
   "queryParamName": "audioTypeLanguage",
@@ -427,7 +426,6 @@
 }, {
   "javaVariableName": "languageAudioTypes.audioType",
   "displayName": "Audio Type",
-  "dataType": "string",
   "searchDataType": "multiselect",
   "configEndpoint": "/audio-types",
   "queryParamName": "audioType",
@@ -693,8 +691,8 @@
 }, {
   "javaVariableName": "releaseHistoryOriginal",
   "displayName": "Release History Original",
-  "dataType": "regionalMidnight",
-  "searchDataType": "regionalMidnight",
+  "dataType": "businessDateTime",
+  "searchDataType": "businessDateTime",
   "queryParamName": "releaseHistoryOriginal",
   "readOnly": false,
   "enableSearch": true,
@@ -703,8 +701,8 @@
 }, {
   "javaVariableName": "releaseHistoryPhysicalHV",
   "displayName": "Release History Physical HV",
-  "dataType": "regionalMidnight",
-  "searchDataType": "regionalMidnight",
+  "dataType": "businessDateTime",
+  "searchDataType": "businessDateTime",
   "queryParamName": "releaseHistoryPhysicalHV",
   "readOnly": false,
   "enableSearch": true,
@@ -959,8 +957,8 @@
 }, {
   "javaVariableName": "announceDate",
   "displayName": "Announce Date",
-  "dataType": "businessDateTime",
-  "searchDataType": "businessDateTime",
+  "dataType": "regionalMidnight",
+  "searchDataType": "regionalMidnight",
   "queryParamName": "announceDate",
   "readOnly": false,
   "enableSearch": true,
@@ -1578,7 +1576,17 @@
   "enableSearch": true,
   "enableEdit": true,
   "required": false
-},{
+}, {
+  "javaVariableName": "updatedCatalogReceivedAt",
+  "displayName": "Updated Catalog Received At",
+  "dataType": "timestamp",
+  "searchDataType": "timestamp",
+  "queryParamName": "updatedCatalogReceivedAt",
+  "readOnly": true,
+  "enableSearch": true,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "keywords",
   "displayName": "Keywords",
   "dataType": "string",
@@ -1601,10 +1609,10 @@
 }, {
   "javaVariableName": "createdAt",
   "displayName": "Created At",
-  "dataType": "businessDateTime",
-  "searchDataType": "businessDateTime",
+  "dataType": "timestamp",
+  "searchDataType": "timestamp",
   "queryParamName": "createdAt",
-  "readOnly": false,
+  "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
   "required": true
@@ -1614,7 +1622,7 @@
   "dataType": "timestamp",
   "searchDataType": "timestamp",
   "queryParamName": "updatedAt",
-  "readOnly": false,
+  "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
   "required": true

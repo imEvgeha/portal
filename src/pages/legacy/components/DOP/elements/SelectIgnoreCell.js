@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {rightsService} from '../../../containers/avail/service/RightsService';
@@ -55,18 +55,18 @@ class SelectIgnoreCell extends Component {
         const {node} = this.props;
         if (node && node.data && node.data.status === 'Ready') {
             return rightsService
-                .update({status: 'ReadyNew'}, node.data.id)
-                .then(res => {
-                    node.setData(res.data);
-                    this.setState({isIgnored: false, isLoaded: false});
-                });
-        } 
-        rightsService
-            .update({status: 'Ready'}, node.data.id)
+            .update({status: 'ReadyNew'}, node.data.id)
             .then(res => {
                 node.setData(res.data);
-                this.setState({isIgnored: true, isLoaded: false});
+                this.setState({isIgnored: false, isLoaded: false});
             });
+        } 
+        rightsService
+        .update({status: 'Ready'}, node.data.id)
+        .then(res => {
+            node.setData(res.data);
+            this.setState({isIgnored: true, isLoaded: false});
+        });
     };
 
     isIgnorable = () => {
@@ -81,26 +81,26 @@ class SelectIgnoreCell extends Component {
         return (
             <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 {isPromotable && (
-                    <button 
-                        className="btn"
-                        style={{background: this.isPromoted() ? selectedColor : defaultColor, margin: '5px'}}
-                        onClick={this.onPromoteClick}
-                    >
-                        {this.isPromoted() ? 'Unselect' : 'Select'}
-                    </button>
+                <button 
+                    className="btn"
+                    style={{background: this.isPromoted() ? selectedColor : defaultColor, margin: '5px'}}
+                    onClick={this.onPromoteClick}
+                >
+                    {this.isPromoted() ? 'Unselect' : 'Select'}
+                </button>
                 )}
                 {this.isIgnorable() && (
-                    <button 
-                        className="btn"
-                        style={{
-                            background: this.state.isIgnored ? ignoredColor : selectedColor,
-                            margin: '5px'
-                        }}
-                        onClick={this.onIgnoreClick}
-                        disabled={this.state.isLoaded}
-                    >
-                        {this.state.isIgnored ? 'Unignore' : 'Ignore'}
-                    </button>
+                <button 
+                    className="btn"
+                    style={{
+                    background: this.state.isIgnored ? ignoredColor : selectedColor,
+                    margin: '5px'
+                    }}
+                    onClick={this.onIgnoreClick}
+                    disabled={this.state.isLoaded}
+                >
+                    {this.state.isIgnored ? 'Unignore' : 'Ignore'}
+                </button>
                 )}
             </div>
         );
@@ -120,13 +120,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 SelectIgnoreCell.propTypes = {
-    node: t.object,
-    promotedRights: t.array,
-    promotedRightsFullData: t.array,
-    updatePromotedRights: t.func,
-    updatePromotedRightsFullData: t.func,
-    useSelectedTerritories: t.bool,
-    selectedTerritories: t.array
+    node: PropTypes.object,
+    promotedRights: PropTypes.array,
+    promotedRightsFullData: PropTypes.array,
+    updatePromotedRights: PropTypes.func,
+    updatePromotedRightsFullData: PropTypes.func,
+    useSelectedTerritories: PropTypes.bool,
+    selectedTerritories: PropTypes.array
 };
 
 SelectIgnoreCell.defaultProps = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import {store} from '../../../../../index';
 import {blockUI} from '../../../stores/actions/index';
@@ -10,8 +10,6 @@ import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import Select from 'react-select';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -58,9 +56,6 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-
-        NexusBreadcrumb.push(RIGHT_CREATE);
         this.right = {};
 
         if(this.props.availsMapping){
@@ -70,9 +65,6 @@ class RightCreate extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
-    }
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping) {
@@ -710,8 +702,8 @@ class RightCreate extends React.Component {
         const renderAudioLanguageField = (name, displayName, required, value) => {
             let options = [], audioTypeOptions = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if(this.props.selectValues && this.props.selectValues['languageAudioTypes.language']){
+                options  = this.props.selectValues['languageAudioTypes.language'];
             }
             if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
@@ -753,7 +745,7 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderDatepickerField = (name, displayName, required, value, useTime) => {
+        const renderDatepickerField = (name, displayName, required, value, useTime, isTimestamp) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
@@ -762,7 +754,7 @@ class RightCreate extends React.Component {
                 id: `right-create-${name}-text`,
                 value,
                 error,
-                isTimestamp: true,
+                isTimestamp,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
@@ -806,11 +798,11 @@ class RightCreate extends React.Component {
                              break;
                         case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
                             break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
                              break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true));
+                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
@@ -858,14 +850,14 @@ class RightCreate extends React.Component {
 }
 
 RightCreate.propTypes = {
-    selectValues: t.object,
-    availsMapping: t.any,
-    blocking: t.bool,
-    match: t.object
+    selectValues: PropTypes.object,
+    availsMapping: PropTypes.any,
+    blocking: PropTypes.bool,
+    match: PropTypes.object
 };
 
 RightCreate.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 export default connect(mapStateToProps, null)(RightCreate);

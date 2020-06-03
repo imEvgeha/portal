@@ -127,7 +127,11 @@ const NexusDateTimePicker = ({
                             if (isTimestamp) {
                                 onConfirm(moment(date).toISOString()); //YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
                             } else {
-                                onConfirm(isSimulcast ? date : date.slice(0, -1)); //YYY-MM-DD[T]HH:mm:ss(Z)
+                                if(date.endsWith('Z')) {
+                                    onConfirm(isSimulcast ? date : date.slice(0, -1)); //YYY-MM-DD[T]HH:mm:ss(Z)
+                                }else{
+                                    onConfirm(isSimulcast ? (date + 'Z') : date); //YYY-MM-DD[T]HH:mm:ss(Z)
+                                }
                             }
                         }}
                         readViewFitContainerWidth

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 
 import { AgGridReact } from 'ag-grid-react';
@@ -215,12 +215,12 @@ class AvailsIngestHistoryTable extends React.Component {
 }
 
 AvailsIngestHistoryTable.propTypes = {
-    searchCriteria: t.object,
-    advancedSearchCriteria: t.object,
-    availHistoryLoading: t.bool,
-    resultPageHistoryUpdate: t.func,
-    searchFormSetHistorySearchCriteria: t.func,
-    searchFormUpdateAdvancedHistorySearchCriteria: t.func
+    searchCriteria: PropTypes.object,
+    advancedSearchCriteria: PropTypes.object,
+    availHistoryLoading: PropTypes.bool,
+    resultPageHistoryUpdate: PropTypes.func,
+    searchFormSetHistorySearchCriteria: PropTypes.func,
+    searchFormUpdateAdvancedHistorySearchCriteria: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailsIngestHistoryTable);

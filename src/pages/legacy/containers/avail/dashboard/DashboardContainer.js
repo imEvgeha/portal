@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import './DashboardContainer.scss';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -17,7 +17,6 @@ import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
 import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
 import {isObjectEmpty} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 
@@ -49,7 +48,6 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidMount() {
-        NexusBreadcrumb.set(AVAILS_DASHBOARD);
         profileService.initAvailsMapping();
         configurationService.initConfiguration();
 
@@ -109,19 +107,12 @@ class DashboardContainer extends React.Component {
     }
 
     handleAvailsFreeTextSearch(searchCriteria) {
-        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
         rightSearchHelper.freeTextSearch(searchCriteria);
     }
 
     handleAvailsAdvancedSearch(searchCriteria) {
-        if (this.props.searchCriteria.availHistoryIds) {
-            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY, AVAILS_SEARCH_RESULTS]);
-        }else{
-            NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS]);
-        }
-
         this.props.resultPageShowSelected(false);
         this.props.searchFormShowSearchResults(true);
 
@@ -169,21 +160,21 @@ class DashboardContainer extends React.Component {
 }
 
 DashboardContainer.propTypes = {
-    availsMapping: t.any,
-    searchCriteria: t.any,
-    searchFormUpdateTextSearch: t.func,
-    searchFormShowAdvancedSearch: t.func,
-    searchFormShowSearchResults: t.func,
-    searchFormSetAdvancedSearchCriteria: t.func,
-    showAdvancedSearch: t.bool,
-    showSearchResults: t.bool,
-    location: t.object,
-    match: t.object,
-    resultPageShowSelected: t.func
+    availsMapping: PropTypes.any,
+    searchCriteria: PropTypes.any,
+    searchFormUpdateTextSearch: PropTypes.func,
+    searchFormShowAdvancedSearch: PropTypes.func,
+    searchFormShowSearchResults: PropTypes.func,
+    searchFormSetAdvancedSearchCriteria: PropTypes.func,
+    showAdvancedSearch: PropTypes.bool,
+    showSearchResults: PropTypes.bool,
+    location: PropTypes.object,
+    match: PropTypes.object,
+    resultPageShowSelected: PropTypes.func
 };
 
 DashboardContainer.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

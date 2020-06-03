@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {getDeepValue} from '../../../../util/Common';
+import {getDeepValue, isObject} from '../../../../util/Common';
 import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
 import RightsURL from '../../containers/avail/util/RightsURL';
 import LoadingGif from '../../../../assets/img/loading.gif';
-import {isObject} from '../../../../util/Common';
 
 export default class RightsResultsTable extends React.Component {
 
@@ -27,31 +26,41 @@ export default class RightsResultsTable extends React.Component {
                         const {[javaVariableName]: date = ''} = data || {};
                         return ISODateToView(date, dataType);
                     };
-                case 'string' : if(javaVariableName === 'castCrew') return function(params){
-                    if(params.data && params.data[javaVariableName]){
-                        let data = params.data[javaVariableName];
-                        data = data.map(({personType, displayName}) => personType + ': ' + displayName).join('; ');
-                        return data;
+                case 'string' :
+                    if (javaVariableName === 'castCrew') {
+                        return ({data = {}}) => {
+                            if (data && Array.isArray(data[javaVariableName])) {
+                                return data[javaVariableName]
+                                    .map(({personType, displayName}) => personType + ': ' + displayName)
+                                    .join('; ');
+                            }
+                        }
+                    } else {
+                        return null;
                     }
-                    return;
-                }; else return null;
-                case 'territoryType' : return function(params){
-                    if(params.data && params.data[javaVariableName]) {
-                        const cellValue = params.data[javaVariableName]
-                        .map(e => String(e.country)).join(', ');
-                        return cellValue;
+                case 'territoryType' :
+                case 'audioLanguageType':
+                    return ({data = {}}) => {
+                    if (data && Array.isArray(data[javaVariableName])) {
+                        return data[javaVariableName]
+                            .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                            .join(', ');
                     }
-                    return;
                 };
                 default: return null;
             }
         };
+
+        const {columnsSize} = this.props;
+
         mappings.filter(({dataType}) => dataType).map(column => colDef[column.javaVariableName] = {
             field:column.javaVariableName,
             headerName:column.displayName,
             cellRendererFramework: this.loadingRenderer,
             valueFormatter: formatter(column),
-            width: this.props.columnsSize && this.props.columnsSize.hasOwnProperty(column.javaVariableName)? this.props.columnsSize[column.javaVariableName] : 250,
+            width: (columnsSize && columnsSize.hasOwnProperty(column.javaVariableName))
+                ? columnsSize[column.javaVariableName]
+                : 300,
             sortable: !!column.queryParamName,
         });
 
@@ -169,20 +178,19 @@ export default class RightsResultsTable extends React.Component {
             };
 
             const regForSubField = /.([A-Za-z]+)$/;
-            const parsedFields = ['languageAudioTypes.languge', 'languageAudioTypes.audioType'];
 
             let errors = filterFieldErrors(params.data.validationErrors, colDef.field)
                 .filter(error => {
                     const {field} = error || {};
                     const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
-                    return errorSubField && parsedFields.every(field => !field.includes(errorSubField));
+                    return errorSubField;
                 });
 
             let parsedFieldsErrors = filterFieldErrors(params.data.validationErrors, colDef.field)
                 .filter(error => {
                     const {field} = error || {};
                     const errorSubField = field && field.match(regForSubField) && field.match(regForSubField)[1];
-                    return errorSubField && parsedFields.some(field => field.includes(errorSubField));
+                    return errorSubField;
                 })
                 .map(error => {
                     const errorSubField = error.field.match(regForSubField)[1];

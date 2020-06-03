@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
@@ -220,15 +220,15 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-    classes: t.object.isRequired,
-    loadFilterResults: t.func.isRequired,
-    loadSearchResults: t.func.isRequired,
-    keywordFilters: t.arrayOf(t.string),
-    selectFilterResults: t.func.isRequired,
-    selectedFilters: t.object,
-    addKeywordFilter: t.func.isRequired,
-    loadedFilters: t.array,
-    searchResults: t.arrayOf(t.object.isRequired),
+    classes: PropTypes.object.isRequired,
+    loadFilterResults: PropTypes.func.isRequired,
+    loadSearchResults: PropTypes.func.isRequired,
+    keywordFilters: PropTypes.arrayOf(PropTypes.string),
+    selectFilterResults: PropTypes.func.isRequired,
+    selectedFilters: PropTypes.object,
+    addKeywordFilter: PropTypes.func.isRequired,
+    loadedFilters: PropTypes.array,
+    searchResults: PropTypes.arrayOf(PropTypes.object.isRequired),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(style)(Dashboard));

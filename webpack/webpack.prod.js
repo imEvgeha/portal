@@ -5,6 +5,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const paths = require('./paths');
 
+const isCssModule = module => module.type === 'css/mini-extract';
+const FRAMEWORK_BUNDLES = ['react', 'react-dom', 'scheduler', 'prop-types'];
+
 module.exports = envFile => ({
     mode: 'production',
     devtool: (envFile && envFile.SOURCE_MAP) || false,
@@ -23,20 +26,39 @@ module.exports = envFile => ({
     },
     optimization: {
         splitChunks: {
+            chunks: 'initial',
             cacheGroups: {
-                vendorReact: {
-                    test: /[\\/]node_modules[\\/](react|react-dom|react-redux)[\\/]/,
-                    name: 'vendorReact',
+                default: false,
+                vendors: false,
+                framework: {
                     chunks: 'all',
-                    priority: 10
+                    name: 'framework',
+                    test: new RegExp(
+                        `(?<!node_modules.*)[\\\\/]node_modules[\\\\/](${FRAMEWORK_BUNDLES.join(
+                            '|'
+                        )})[\\\\/]`
+                    ),
+                    priority: 40,
+                    enforce: true,
                 },
                 vendor: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendor',
                     chunks: 'all',
-                    priority: 5
+                    enforce: true,
+                },
+                styles: {
+                    test(module) {
+                        return isCssModule(module);
+                    },
+                    name: 'styles',
+                    priority: 40,
+                    enforce: true,
                 }
             }
+        },
+        runtimeChunk: {
+            name: 'webpack-runtime',
         },
         minimizer: [
             new TerserPlugin({
@@ -45,6 +67,7 @@ module.exports = envFile => ({
                     compress: {
                         warnings: false,
                         comparisons: false,
+                        drop_console: true,
                     },
                     mangle: {
                         safari10: true,
@@ -70,6 +93,7 @@ module.exports = envFile => ({
         new HtmlWebpackPlugin({
             template: paths.appHtml,
             inject: true,
+            favicon: 'public/favicon.ico',
             minify: {
                 removeComments: true,
                 collapseWhitespace: true,
@@ -85,7 +109,8 @@ module.exports = envFile => ({
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash].css',
-            chunkFilename: 'css/[id].[contenthash].chunk.css'
+            chunkFilename: 'css/[id].[contenthash].chunk.css',
+            // ignoreOrder: true,
         }),
     ],
     output: {
@@ -93,5 +118,13 @@ module.exports = envFile => ({
         filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/'
+    },
+    // tell Webpack to provide empty mocks for imported Node modules not use
+    node: {
+        dgram: 'empty',
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        child_process: 'empty',
     },
 });

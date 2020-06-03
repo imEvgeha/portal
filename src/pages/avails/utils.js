@@ -9,11 +9,11 @@ import loadingGif from '../../assets/img/loading.gif';
 
 export function createColumnDefs(payload) {
     return payload.reduce((columnDefs, column) => {
-        const {javaVariableName, displayName, dataType} = column;
+        const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
-            colId: javaVariableName,
+            colId: sortParamName || queryParamName,
             cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
             width: (dataType === 'datetime') ? 235 : 150,
@@ -56,11 +56,6 @@ export const createColumnSchema = (list, field) => {
     const majorityRule = (occurence, total) => occurence > (total / 2); 
     const destructedField = field.split('.');
     const values = list.map(el => {
-        // TODO: we have as avails map languageAudioTypes.language and languageAudioTypes.audoType
-        // and data consists as field languageAudioTypes {Array of objects {language, audioType} )
-        if (destructedField.includes('languageAudioTypes') && Array.isArray(el['languageAudioTypes'])) {
-            return el['languageAudioTypes'].map(el => el[destructedField[1]]).filter(Boolean);
-        }
         return get(el, destructedField, {});
     });
 

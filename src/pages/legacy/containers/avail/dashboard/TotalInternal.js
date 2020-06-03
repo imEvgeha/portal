@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 const mapStateToProps = state => {
@@ -15,6 +15,6 @@ class TotalInternal extends Component {
 }
 
 TotalInternal.propTypes = {
-    total: t.number
+    total: PropTypes.number
 };
 export const Total = connect(mapStateToProps, null)(TotalInternal);

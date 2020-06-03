@@ -3,10 +3,8 @@ import React from 'react';
 import AvailsIngestHistoryTable from './components/AvailsIngestHistoryTable';
 import AdvancedHistorySearchPanel from './components/AdvancedHistorySearchPanel';
 import {advancedHistorySearchHelper} from './AdvancedHistorySearchHelper';
-import {AVAILS_DASHBOARD, AVAILS_HISTORY_SEARCH_RESULTS} from '../../../constants/breadcrumb';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
 import HistoryURL from '../util/HistoryURL';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {
     searchFormSetAdvancedHistorySearchCriteria,
     searchFormSetHistorySearchCriteria
@@ -32,13 +30,9 @@ class AvailIngestHistoryContainer extends React.Component {
     }
 
     componentDidMount() {
-        NexusBreadcrumb.set([AVAILS_DASHBOARD, AVAILS_HISTORY_SEARCH_RESULTS]);
         this.getSearchCriteriaFromURL();
     }
 
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
-    }
 
     getSearchCriteriaFromURL(){
         const params = HistoryURL.URLtoArray(this.props.location.search);
@@ -75,8 +69,8 @@ class AvailIngestHistoryContainer extends React.Component {
 }
 
 AvailIngestHistoryContainer.propTypes = {
-    location: t.object,
-    searchFormSetAdvancedHistorySearchCriteria: t.func
+    location: PropTypes.object,
+    searchFormSetAdvancedHistorySearchCriteria: PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailIngestHistoryContainer);

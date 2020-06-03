@@ -1,5 +1,5 @@
 import React from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {advancedHistorySearchHelper} from '../ingest-history/AdvancedHistorySearchHelper';
 import {URL} from '../../../../../util/Common';
 
@@ -92,7 +92,7 @@ class HistoryURL extends React.Component {
 }
 
 HistoryURL.contextTypes = {
-    router: t.object,
+    router: PropTypes.object,
 };
 
 export default HistoryURL;

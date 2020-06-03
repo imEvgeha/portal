@@ -31,6 +31,9 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 import constants from '../../../MetadataConstants';
 
+const US = 'US';
+const EN = 'en';
+
 const mapStateToProps = state => {
     return {
         configLanguage: state.titleReducer.configData.find(e => e.key === configFields.LANGUAGE),
@@ -45,16 +48,18 @@ class EditorialMetadataCreateTab extends Component {
         super(props);
         this.state = {
             showGenreError: false,
-            showCategoryError: false
+            showCategoryError: false,
+            autoDecorate: false
         };
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps, nextState) {
         const differentTitleContentType = this.props.titleContentType !== nextProps.titleContentType;
         const differentEditorialMetadataForCreate = this.props.editorialMetadataForCreate !== nextProps.editorialMetadataForCreate;
         const differentFieldsRequired = this.props.areFieldsRequired !== nextProps.areFieldsRequired;
+        const differentState = this.state !== nextState;
 
-        return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired;
+        return differentEditorialMetadataForCreate || differentTitleContentType || differentFieldsRequired || differentState;
     }
 
     handleFieldLength = (name) => {
@@ -139,6 +144,33 @@ class EditorialMetadataCreateTab extends Component {
         this.props.handleEditorialCastCrewCreate(castAndCrewList, this.props.editorialMetadataForCreate);
     }
 
+    onAutoDecorateClick = (e) => {
+        this.setState(prevState => ({
+            autoDecorate: !prevState.autoDecorate
+        }));
+        this.props.cleanField('format');
+        this.props.cleanField('service');
+        this.props.handleAutoDecorateChange(e);
+    };
+
+    handleLocaleChange = (e) => {
+       if(e.target.value !== US && this.state.autoDecorate) {
+           this.setState({
+               autoDecorate: false
+           });
+       }
+       this.props.handleChange(e);
+    };
+
+    handleLanguageChange = (e) => {
+        if(e.target.value !== EN && this.state.autoDecorate) {
+            this.setState({
+                autoDecorate: false
+            });
+        }
+        this.props.handleChange(e);
+    };
+
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
         const { MAX_SEASON_LENGTH, MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
@@ -155,7 +187,7 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('locale')}
                             id="editorialLocal"
                             required={this.props.areFieldsRequired}
-                            onChange={this.props.handleChange}
+                            onChange={this.handleLocaleChange}
                             errorMessage="Field cannot be empty!"
                         >
                             <option value=''>Select Locale</option>
@@ -175,7 +207,7 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('language')}
                             id="editorialLanguage"
                             required={this.props.areFieldsRequired}
-                            onChange={this.props.handleChange}
+                            onChange={this.handleLanguageChange}
                             errorMessage="Field cannot be empty!"
                         >
                             <option value=''>Select Language</option>
@@ -195,13 +227,15 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('format')}
                             id="editorialFormat"
                             onChange={this.props.handleChange}
+                            disabled={this.state.autoDecorate}
+                            value={this.props.editorialMetadataForCreate.format}
                         >
                             <option value="">Select Format</option>
                             {
-                                    resolutionFormat && resolutionFormat.map((item, i) => {
-                                        return <option key={i} value={item}>{item}</option>;
-                                    })
-                                }
+                                !this.state.autoDecorate  && resolutionFormat.map((item, i) => {
+                                    return <option key={i} value={item}>{item}</option>;
+                                })
+                            }
                         </AvField>
                     </Col>
                     <Col>
@@ -213,13 +247,15 @@ class EditorialMetadataCreateTab extends Component {
                             name={this.getNameWithPrefix('service')}
                             id="editorialService"
                             onChange={this.props.handleChange}
+                            disabled={this.state.autoDecorate}
+                            value={this.props.editorialMetadataForCreate.service}
                         >
                             <option value="">Select Service</option>
                             {
-                                    editorialMetadataService && editorialMetadataService.map((item, i) => {
-                                        return <option key={i} value={item}>{item}</option>;
-                                    })
-                                }
+                                !this.state.autoDecorate  && editorialMetadataService && editorialMetadataService.map((item, i) => {
+                                    return <option key={i} value={item}>{item}</option>;
+                                })
+                            }
                         </AvField>
                     </Col>
                 </Row>
@@ -277,7 +313,19 @@ class EditorialMetadataCreateTab extends Component {
                               )}
                 </Row>
                       )}
-
+                {!this.props.titleHasMaster && this.props.editorialMetadataForCreate.locale && this.props.editorialMetadataForCreate.locale === US &&
+                    this.props.editorialMetadataForCreate.language && this.props.editorialMetadataForCreate.language === EN &&
+                    <Row style={{padding: '15px'}}>
+                        <Col md={2}>
+                            <AvField value={this.state.autoDecorate}
+                                 type="checkbox"
+                                 name="decorateEditorialMetadata"
+                                 onChange={this.onAutoDecorateClick}
+                                 label='Auto-Decorate'
+                            />
+                        </Col>
+                    </Row>
+                }
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
                         <b>Genres:</b>
@@ -339,6 +387,28 @@ class EditorialMetadataCreateTab extends Component {
                         </span>
                     </Col>
                 </Row>
+
+                {this.state.autoDecorate &&
+                    <Row style={{ padding: '15px' }}>
+                        <Col md={2}>
+                            <b>Auto-Decorate Title</b>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type="text"
+                                id="editorialAutoDecorateTitle"
+                                name={this.getNameWithPrefix('shortTitleTemplate')}
+                                onChange={this.props.handleChange}
+                                validate={{
+                                    maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
+                                }}
+                            />
+                            <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
+                                {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
+                            </span>
+                        </Col>
+                    </Row>
+                }
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
                         <b>Brief Title</b>
@@ -600,6 +670,7 @@ EditorialMetadataCreateTab.propTypes = {
     handleSynopsisChange: PropTypes.func.isRequired,
     handleGenreChange: PropTypes.func.isRequired,
     areFieldsRequired: PropTypes.bool.isRequired,
+    cleanField: PropTypes.func.isRequired,
     titleContentType: PropTypes.string,
     editorialMetadataForCreate: PropTypes.object,
     configLanguage: PropTypes.object,

@@ -9,8 +9,6 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {oneOfValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import NexusBreadcrumb from '../../NexusBreadcrumb';
-import {AVAILS_DASHBOARD, RIGHT_CREATE} from '../../../constants/breadcrumb';
 import {URL, safeTrim} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
@@ -41,9 +39,6 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        if(NexusBreadcrumb.empty()) NexusBreadcrumb.set(AVAILS_DASHBOARD);
-
-        NexusBreadcrumb.push(RIGHT_CREATE);
         this.right = {};
 
         if(this.props.availsMapping){
@@ -51,10 +46,6 @@ class RightCreate extends React.Component {
         }else{
             profileService.initAvailsMapping();
         }
-    }
-
-    componentWillUnmount() {
-        NexusBreadcrumb.pop();
     }
 
     componentDidUpdate(prevProps) {

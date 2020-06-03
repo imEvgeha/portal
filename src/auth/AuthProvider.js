@@ -47,7 +47,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS}) => {
 
                     updateUserToken(token);
                 } else {
-                    window.location.reload();
+                    // window.location.reload();
                 }
                 setIsAuthenticatedUser(isAuthenticated);
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {validateDate} from '../../../../util/Validation';
 import {store} from '../../../../index';
 
@@ -153,13 +153,13 @@ class NexusDatePicker extends Component {
 }
 
 NexusDatePicker.propTypes = {
-    date: t.any,
-    id: t.string,
-    disabled: t.bool,
+    date: PropTypes.any,
+    id: PropTypes.string,
+    disabled: PropTypes.bool,
 
-    onChange: t.func,
-    handleKeyPress: t.func,
-    onInvalid: t.func,
+    onChange: PropTypes.func,
+    handleKeyPress: PropTypes.func,
+    onInvalid: PropTypes.func,
 };
 
 

@@ -1,13 +1,11 @@
 import React from 'react';
 import { Button } from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import { profileService } from '../../service/ProfileService';
 import { historyService } from '../../service/HistoryService';
 import { URL } from '../../../../../../util/Common';
 import { Can } from '../../../../../../ability';
-import NexusBreadcrumb from '../../../NexusBreadcrumb';
-import { RIGHTS_CREATE_FROM_PDF } from '../../../../constants/breadcrumb';
 import { connect } from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
@@ -75,7 +73,6 @@ class RightsCreateFromAttachment extends React.Component {
                 return;
             }
         }
-        if (NexusBreadcrumb.empty()) NexusBreadcrumb.set(RIGHTS_CREATE_FROM_PDF);
 
         if (!this.props.availsMapping) {
             profileService.initAvailsMapping();
@@ -286,15 +283,15 @@ class RightsCreateFromAttachment extends React.Component {
     }
 }
 RightsCreateFromAttachment.propTypes = {
-    match: t.object,
-    location: t.object,
-    availsMapping: t.any,
-    selectedTab: t.string,
-    updateManualRightsEntryColumns: t.func,
-    columns: t.array,
+    match: PropTypes.object,
+    location: PropTypes.object,
+    availsMapping: PropTypes.any,
+    selectedTab: PropTypes.string,
+    updateManualRightsEntryColumns: PropTypes.func,
+    columns: PropTypes.array,
 };
 
 RightsCreateFromAttachment.contextTypes = {
-    router: t.object
+    router: PropTypes.object
 };
 export default connect(mapStateToProps, mapDispatchToProps)(RightsCreateFromAttachment);

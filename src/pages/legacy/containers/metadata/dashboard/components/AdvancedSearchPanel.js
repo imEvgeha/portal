@@ -3,7 +3,7 @@ import {
     searchFormUpdateAdvancedSearchCriteria
 } from '../../../../stores/actions/metadata/index';
 import {connect} from 'react-redux';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {titleSearchHelper} from '../TitleSearchHelper';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
@@ -11,8 +11,6 @@ import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
 import { titleMapping } from '../../service/Profile';
-import NexusBreadcrumb from '../../../NexusBreadcrumb';
-import { BREADCRUMB_METADATA_DASHBOARD_PATH } from '../../../../constants/metadata/metadata-breadcrumb-paths';
 import {DATETIME_FIELDS} from '../../../../../../util/DateTimeUtils';
 
 const mapStateToProps = state => {
@@ -238,10 +236,7 @@ class AdvancedSearchPanel extends React.Component {
                     <CloseableBtn
                         title="Title History"
                         value={' = ' + this.props.searchCriteria.titleHistoryIds.subTitle}
-                        onClose={() => {
-                            this.props.searchFormUpdateAdvancedSearchCriteria({titleHistoryIds: null});
-                            NexusBreadcrumb.set(BREADCRUMB_METADATA_DASHBOARD_PATH);
-                        }}
+                        onClose={() => this.props.searchFormUpdateAdvancedSearchCriteria({titleHistoryIds: null})}
                         id={'dashboard-title-advanced-search-' + 'TitleId' + '-criteria'}
                     />
                 </div>
@@ -279,11 +274,11 @@ class AdvancedSearchPanel extends React.Component {
 }
 
 AdvancedSearchPanel.propTypes = {
-    searchCriteria: t.object,
-    titleTabPage: t.object,
-    onSearch: t.func,
-    searchFormUpdateAdvancedSearchCriteria: t.func,
-    onToggleAdvancedSearch: t.func,
-    hide: t.bool,
+    searchCriteria: PropTypes.object,
+    titleTabPage: PropTypes.object,
+    onSearch: PropTypes.func,
+    searchFormUpdateAdvancedSearchCriteria: PropTypes.func,
+    onToggleAdvancedSearch: PropTypes.func,
+    hide: PropTypes.bool,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);

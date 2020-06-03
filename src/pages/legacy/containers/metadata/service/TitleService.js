@@ -165,7 +165,7 @@ export const titleService = {
     },
 
     addEditorialMetadata: (editorialMetadata) => {
-        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editorialMetadata);
+        return http.post(config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata', editorialMetadata);
     },
 
     getEditorialMetadataByTitleId: (id) => {
@@ -173,7 +173,7 @@ export const titleService = {
     },
 
     updateEditorialMetadata: (editedEditorialMetadata) => {
-        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata', editedEditorialMetadata);
+        return http.put(config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata', editedEditorialMetadata);
     },
 
     mergeTitles: (query) => {

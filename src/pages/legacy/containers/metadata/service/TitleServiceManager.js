@@ -29,6 +29,11 @@ export const titleServiceManager = {
         if (isSeachCriteriaEmpty) {
             return titleService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
         } 
+        // metadata titles/search API expects 'AD' as content type,
+        // avails API expects 'Advertisement' as content type
+        if (searchCriteria.contentType && searchCriteria.contentType.toLowerCase() === 'advertisement') {
+            searchCriteria.contentType = 'Ad';
+        }
         return titleService.freeTextSearchWithGenres(searchCriteria, page, pageSize, sortedParams);
     },
 

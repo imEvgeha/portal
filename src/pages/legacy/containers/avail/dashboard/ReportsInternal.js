@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import {configurationService} from '../service/ConfigurationService';
 import {connect} from 'react-redux';
 
@@ -28,7 +28,7 @@ class ReportsInternal extends Component {
 }
 
 ReportsInternal.propTypes = {
-    onChange: t.func,
-    reportName: t.string
+    onChange: PropTypes.func,
+    reportName: PropTypes.string
 };
 export const Reports = connect(mapStateToProps, null)(ReportsInternal);

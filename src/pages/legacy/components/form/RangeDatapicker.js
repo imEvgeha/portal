@@ -1,4 +1,4 @@
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 import React from 'react';
 import NexusDatePicker from './NexusDatePicker';
 import {INVALID_DATE} from '../../constants/messages';
@@ -120,13 +120,13 @@ export default class RangeDatapicker extends React.Component {
 }
 
 RangeDatapicker.propTypes = {
-    id: t.string,
-    value: t.object,
-    displayName: t.string,
-    disabled: t.bool,
-    onFromDateChange: t.func,
-    onToDateChange: t.func,
-    onInvalid: t.func,
-    handleKeyPress: t.func,
-    hideLabel: t.bool
+    id: PropTypes.string,
+    value: PropTypes.object,
+    displayName: PropTypes.string,
+    disabled: PropTypes.bool,
+    onFromDateChange: PropTypes.func,
+    onToDateChange: PropTypes.func,
+    onInvalid: PropTypes.func,
+    handleKeyPress: PropTypes.func,
+    hideLabel: PropTypes.bool
 };

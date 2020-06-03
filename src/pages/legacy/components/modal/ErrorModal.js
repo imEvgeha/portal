@@ -2,7 +2,7 @@ import React from 'react';
 import {Component} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
-import t from 'prop-types';
+import PropTypes from 'prop-types';
 
 class ErrorModal extends React.Component{
 
@@ -80,12 +80,12 @@ export const errorModal = {
 };
 
 ErrorModal.propTypes = {
-    description: t.string,
-    className: t.string,
-    message: t.string,
-    buttonLabel: t.string,
-    accept: t.func,
-    closable: t.bool
+    description: PropTypes.string,
+    className: PropTypes.string,
+    message: PropTypes.string,
+    buttonLabel: PropTypes.string,
+    accept: PropTypes.func,
+    closable: PropTypes.bool
 };
 
 ErrorModal.defaultProps = {
