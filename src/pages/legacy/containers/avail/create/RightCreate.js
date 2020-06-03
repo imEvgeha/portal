@@ -606,22 +606,22 @@ class RightCreate extends React.Component {
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
-
-            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
-
+            options = options.filter(rec => rec.value).map(rec => {
+                return {
+                    ...rec,
+                    label: rec.label || rec.value,
+                    aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                };
+            });
             if(options.length > 0 && value){
                 val = value;
                 if(!required) {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
-
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
-
             return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
@@ -795,7 +795,8 @@ class RightCreate extends React.Component {
                             break;
                         case 'double' : renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'select' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'select' :
+                            renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
