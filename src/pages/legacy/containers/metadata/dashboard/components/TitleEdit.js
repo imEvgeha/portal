@@ -24,6 +24,10 @@ import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
 import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
+import withToasts from "../../../../../../ui/toast/hoc/withToasts";
+import {
+    WARNING_ICON
+} from "../../../../../../ui/elements/nexus-toast-notification/constants";
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -84,7 +88,7 @@ class TitleEdit extends Component {
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
         this.loadTerritoryMetadata(titleId);
-        this.loadEditorialMetadata(titleId);
+        this.loadEditorialMetadata();
     }
 
     loadTitle(titleId) {
@@ -128,7 +132,8 @@ class TitleEdit extends Component {
         });
     }
 
-    loadEditorialMetadata(titleId) {
+    loadEditorialMetadata() {
+        const titleId = this.props.match.params.id;
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response.data;
             this.setState({
@@ -788,23 +793,39 @@ class TitleEdit extends Component {
         ]
     };
 
+    getUpdatedEditorialMetadata = () => {
+        return this.state.updatedEditorialMetadata.map(e => {
+            return {
+                "itemIndex": null,
+                "body": {
+                    "editorialMetadata": e
+                }
+            }
+        });
+    };
+
     handleEditorialMetadataOnSave = () => {
         const promises = [];
-        this.state.updatedEditorialMetadata.forEach(e => {
-                promises.push(titleService.updateEditorialMetadata(e).then((response) => {
-                    const list = [].concat(this.state.editorialMetadata);
-                    const foundIndex = list.findIndex(x => x.id === response.data.id);
-                    list[foundIndex] = response.data;
-                    this.setState({
-                        editorialMetadata: list
-                    });
-                    return true;
-                }).catch(() => {
-                    console.error('Unable to edit Editorial Metadata');
-                    return false;
-                })
-            );
-        });
+        this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
+        promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
+            this.loadEditorialMetadata();
+            if(response.data[0].response.failed && response.data[0].response.failed.length > 0) {
+                const message = response.data[0].response.failed.map(e => e.description).join(' ');
+                this.props.addToast({
+                    title: 'Update Editorial Metadata Failed',
+                    description: message,
+                    icon: WARNING_ICON,
+                    isWithOverlay: true,
+                });
+                return false;
+            } else {
+                return true;
+            }
+        }).catch(() => {
+            console.error('Unable to edit Editorial Metadata');
+            return false;
+        })
+        );
         this.setState({
             updatedEditorialMetadata: []
         });
@@ -815,10 +836,21 @@ class TitleEdit extends Component {
                 promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
-                        editorialMetadata: [response.data, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
-                    return true;
+                    this.loadEditorialMetadata();
+                    if(response.data[0].response.failed && response.data[0].response.failed.length > 0) {
+                        const message = response.data[0].response.failed.map(e => e.description).join(' ');
+                        this.props.addToast({
+                            title: 'Create Editorial Metadata Failed',
+                            description: message,
+                            icon: WARNING_ICON,
+                            isWithOverlay: true,
+                        });
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
                     return false;
@@ -1119,4 +1151,4 @@ TitleEdit.propTypes = {
     match: PropTypes.object.isRequired
 };
 
-export default TitleEdit;
+export default withToasts(TitleEdit);
