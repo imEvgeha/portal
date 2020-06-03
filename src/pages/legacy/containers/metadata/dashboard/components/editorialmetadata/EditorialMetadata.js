@@ -12,6 +12,7 @@ import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
 import {URL} from '../../../../../../../util/Common';
 import {NexusDrawer} from '../../../../../../../ui/elements';
+import StatusLink from "../../../../../../../assets/status-linked.svg";
 
 const mapStateToProps = state => {
     return {
@@ -163,6 +164,7 @@ const EditorialMetadata = ({
                                 key={i}
                                 onClick={() => toggle(i)}
                             >
+                                <StatusLink className={`tablinks__status-link ${activeTab === i ? 'tablinks__status-link--active' :''}`} />
                                 <b>
                                     {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format || '')} ${(item.service || '')}`}
                                 </b>
