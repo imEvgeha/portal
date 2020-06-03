@@ -114,6 +114,8 @@ const EditorialMetadata = ({
                 }
                 {
                     editorialMetadata && editorialMetadata.map((item, i) => {
+                        const isMaster = item['hasGeneratedChildren'];
+                        const isDecorated = !!item['parentEmetId'];
                         return (
                             <span
                                 className="tablinks"
@@ -121,7 +123,7 @@ const EditorialMetadata = ({
                                 key={i}
                                 onClick={() => toggle(i)}
                             >
-                                <StatusLink className={`tablinks__status-link ${activeTab === i ? 'tablinks__status-link--active' :''}`} />
+                                {(isMaster || isDecorated) && <StatusLink className={`tablinks__status-link ${activeTab === i ? 'tablinks__status-link--active' :''}`} />}
                                 <b>
                                     {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
                                 </b>
