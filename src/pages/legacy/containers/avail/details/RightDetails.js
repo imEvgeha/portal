@@ -939,6 +939,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+
             const removeTerritoryNotOriginalFields = (list = []) => {
                 const {mappings} = this.props.availsMapping || [];
                 const originalFieldNames = mappings.filter(el => el.javaVariableName.startsWith('territory.'))

@@ -5,15 +5,9 @@ import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
 import {getSortedData} from '../../../../util/Common';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from "../../../../ui/elements/nexus-grid/constants";
-
-const PRODUCTION_STUDIOS = '/production-studios';
-const LANGUAGES = '/languages';
-const REGION = '/regions';
-const GENRES = '/genres';
-const COUNTRIES = '/countries';
-const RATINGS = '/ratings';
-const AUDIO_TYPES = '/audio-types';
-const SORT_TYPE = 'label';
+import { PRODUCTION_STUDIOS, AFFILIATES, AUDIO_TYPES, CONTENT_TYPES, COUNTRIES, CURRENCIES, FORMATS, GENRES, LANGUAGES,
+    LICENSE_RIGHT_DESC, LICENSEES, LICENSOR, NG_AUDIOS, RATING_SYSTEMS, RATINGS, REGION, SORT_TYPE, LICENSE_TYPES
+    } from './constants';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -67,7 +61,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
         .reduce((acc, {javaVariableName, options}) => {
             acc = {
                 ...acc,
-                [javaVariableName]: options
+                [javaVariableName]: options.map(item => { return { value: item, label: item } })
             };
             return acc;
         }, {});
@@ -99,8 +93,18 @@ export function* fetchAndStoreSelectItems(payload, type) {
         let options;
         switch (configEndpoint) {
             case PRODUCTION_STUDIOS:
+            case LICENSOR:
+            case LICENSEES:
+            case LICENSE_TYPES:
+            case CONTENT_TYPES:
+            case AFFILIATES:
+            case CURRENCIES:
+            case FORMATS:
+            case LICENSE_RIGHT_DESC:
+            case NG_AUDIOS:
+            case RATING_SYSTEMS:
                 options = value.map(code => {
-                    return {value: code.name, label: code.name};
+                    return {value: code.name || code.value, label: code.name || code.value};
                 });
                 options = getSortedData(options, SORT_TYPE, true);
                 break;

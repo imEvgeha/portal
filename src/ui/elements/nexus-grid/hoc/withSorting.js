@@ -7,7 +7,7 @@ const withSorting = (
     return (props) => {
         const onColumnVisible = ({column = {}}) => {
             const {gridApi, colId} = column || {};
-            const sortModel = gridApi.getSortModel ? gridApi.getSortModel() : [];
+            const sortModel = gridApi && gridApi.getSortModel ? gridApi.getSortModel() : [];
             // Index of removed column in sortModel array. If it's not found it will be -1
             const index = sortModel.findIndex(({colId: sortColId}) => sortColId === colId);
 

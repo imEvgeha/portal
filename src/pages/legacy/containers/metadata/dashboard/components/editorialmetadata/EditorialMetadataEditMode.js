@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import Button from '@atlaskit/button';
 import { Col, Label, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
@@ -186,9 +185,9 @@ class EditorialMetadataEditMode extends Component {
         return (
             <div id="editorialMetadataEdit">
                 <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button appearance="danger" onClick={() => handleDelete(currentMetadata.id)}>
+                    <span style={{color: 'red', cursor: 'pointer'}} onClick={() => handleDelete(currentMetadata.id)}>
                         Delete Editorial Metadata
-                    </Button>
+                    </span>
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col>

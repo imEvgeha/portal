@@ -151,9 +151,12 @@ const withEditableColumns = ({
 
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();
-        return (state, props) => ({
-            selectValues: availSelectValuesSelector(state, props),
-        });
+        return (state, props) => {
+            let selectValues = props.selectValues || availSelectValuesSelector(state, props);
+            return {
+            selectValues,
+            };
+        };
     };
 
     return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line

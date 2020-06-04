@@ -123,6 +123,7 @@ class TerritoryMetadata extends Component {
                                                             handleChangeDate={this.props.handleEditChangeDate}
                                                             key={i}
                                                             data={item}
+                                                            handleDeleteTerritoryMetaData={this.props.handleDeleteTerritoryMetaData}
                                                         />
                                                     </Col>
                                                 </Row>
