@@ -3,15 +3,7 @@ import config from 'react-global-configuration';
 import {store} from '../../../../../index';
 import { loadAvailsMapping, loadSelectLists } from '../../../stores/actions/index';
 import { errorModal } from '../../../components/modal/ErrorModal';
-import { getSortedData } from '../../../../../util/Common';
-
-const PRODUCTION_STUDIOS = '/production-studios';
-const AUDIO_TYPES = '/audio-types';
-const LANGUAGES = '/languages';
-const COUNTRIES = '/countries';
-const REGION = '/regions';
-const GENRES = '/genres';
-const SORT_TYPE = 'label';
+import { processOptions } from '../util/ProcessSelectOptions';
 
 const getAvailsMapping = () => {
     return nexusFetch('/availMapping.json', {isWithErrorHandling: false});
@@ -35,40 +27,8 @@ export const profileService = {
                         } else {
                             if (rec.configEndpoint) {
                                 getSelectValues(rec.configEndpoint).then((response) => {
-                                    let options = response.data;
-                                    switch (rec.configEndpoint) {
-                                        case GENRES:
-                                            options = options.map(code => ({value: code.name, label: code.name}));
-                                            options = getSortedData(options, SORT_TYPE, true);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        case REGION:
-                                            options = options.map(code => ({value: code.regionCode, label: code.regionName}));
-                                            options = getSortedData(options, SORT_TYPE, true);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        case PRODUCTION_STUDIOS:
-                                            options.forEach((option) => option.value = option.name);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        case LANGUAGES:
-                                            options = options.map(code => ({value: code.languageCode, label: code.languageName}));
-                                            options = getSortedData(options, SORT_TYPE, true);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        case COUNTRIES:
-                                            options = options.map(code => ({value: code.countryCode, label: code.countryName}));
-                                            options = getSortedData(options, SORT_TYPE, true);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        case AUDIO_TYPES:
-                                            options = options.map(code => ({value: code.value, label: code.value}));
-                                            options = getSortedData(options, SORT_TYPE, true);
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                            break;
-                                        default:
-                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                    }
+                                    const options = processOptions(response.data, rec.configEndpoint);
+                                    store.dispatch(loadSelectLists(rec.javaVariableName, options));
                                 });
                             } else {
                                 console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
