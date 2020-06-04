@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
+import Select from '@atlaskit/select';
+import {sortBy} from 'lodash';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
@@ -52,8 +54,42 @@ const EditorialMetadata = ({
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [currentFolder, setCurrentFolder] = useState({});
+    const [foldersOptions, setFoldersOptions] = useState([]);
+    const [foldersChildren, setFoldersChildren] = useState({});
+
+
+    // When editorialMetadata is received/updated, extract its items and categorize them in folders
+    useEffect(() => {
+        // Will hold all unique comibnations of locale+language
+        const foldersSet = new Set();
+
+        // Extract locale+language from each editorialMetadata item and add it to flodersSet set
+        Object.keys(editorialMetadata).forEach((key) => {
+            const {locale = '', language = ''} = editorialMetadata[key];
+            const folderName = `${locale} ${getLanguageByCode(language)}`;
+
+            foldersSet.add(folderName);
+        });
+
+        const categorizedEditorialMetadata = {};
+
+        // For each folder, extract its children
+        Array.from(foldersSet).forEach(folder => {
+            categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
+                return folder === `${locale} ${getLanguageByCode(language)}`;
+            });
+        });
+        setFoldersChildren(categorizedEditorialMetadata);
+
+        // Create options for react-select
+        setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
+    }, [editorialMetadata]);
+    useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
 
     const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
+
+    const {value: currentFolderName = ''} = currentFolder || {};
 
     const getLanguageByCode = (code) => {
         if (configLanguage) {
@@ -65,6 +101,7 @@ const EditorialMetadata = ({
         return code;
     };
 
+    const masterFirstFoldersChildren =  sortBy(foldersChildren[currentFolderName], ['hasGeneratedChildren']).reverse();
     return (
         <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
             <NexusDrawer
@@ -87,6 +124,19 @@ const EditorialMetadata = ({
                         <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
                     </Col>
                 )}
+            </Row>
+            <Row>
+                <div style={{width: '200px', margin: '5px 0 15px 15px'}}>
+                    <Select
+                        options={foldersOptions}
+                        defaultValue={foldersOptions[0]}
+                        value={currentFolder || foldersOptions[0]}
+                        onChange={folder => {
+                            toggle(0);
+                            setCurrentFolder(folder);
+                        }}
+                    />
+                </div>
             </Row>
             <div className='tab'>
                 {
@@ -113,19 +163,19 @@ const EditorialMetadata = ({
                         : null
                 }
                 {
-                    editorialMetadata && editorialMetadata.map((item, i) => {
-                        const isMaster = item['hasGeneratedChildren'];
+                    masterFirstFoldersChildren && masterFirstFoldersChildren.map((item, index) => {
                         const isDecorated = !!item['parentEmetId'];
+                        const isMaster = item['hasGeneratedChildren'];
                         return (
                             <span
                                 className="tablinks"
-                                style={{background: activeTab === i ? '#000' : '', color: activeTab === i ? '#FFF' : ''}}
-                                key={i}
-                                onClick={() => toggle(i)}
+                                style={{background: activeTab === index ? '#000' : '', color: activeTab === index ? '#FFF' : ''}}
+                                key={index}
+                                onClick={() => toggle(index)}
                             >
-                                {(isMaster || isDecorated) && <StatusLink className={`tablinks__status-link ${activeTab === i ? 'tablinks__status-link--active' :''}`} />}
+                                {(isMaster || isDecorated) && <StatusLink className={`tablinks__status-link ${activeTab === index ? 'tablinks__status-link--active' :''}`} />}
                                 <b>
-                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
+                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format || '')} ${(item.service || '')}`}
                                 </b>
                             </span>
                         );
@@ -134,8 +184,8 @@ const EditorialMetadata = ({
             </div>
             <TabContent activeTab={activeTab}>
                 {
-                    editorialMetadata && editorialMetadata.length > 0 ?
-                        !isEditMode && editorialMetadata.map((item, i) => {
+                    masterFirstFoldersChildren ?
+                        !isEditMode && masterFirstFoldersChildren.map((item, i) => {
                             return (
                                 <TabPane key={i} tabId={i}>
                                     <Row>
@@ -188,7 +238,7 @@ const EditorialMetadata = ({
                                 </Row>
                             </TabPane>
                             {
-                                editorialMetadata && editorialMetadata.map((item, i) => {
+                                masterFirstFoldersChildren && masterFirstFoldersChildren.map((item, i) => {
                                     return (
                                         <TabPane key={i} tabId={i}>
                                             <Row>

@@ -20,6 +20,11 @@
     }
   }
 }
+#titleContainer {
+  .css-lrg2au-singleValue {
+    line-height: unset;
+  }
+}
 .tablinks__status-link {
   &--active{
     fill: white;
