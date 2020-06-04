@@ -82,8 +82,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
                 .values()
         );
     }
-
-
+    
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
