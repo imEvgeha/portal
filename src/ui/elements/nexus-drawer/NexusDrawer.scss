@@ -5,7 +5,7 @@ $width: (
   full: 100vw,
   medium: 480px,
   narrow: 360px,
-  wide: 600px,
+  wide: 800px,
 );
 $sizes: full, narrow, extended, medium, wide;
 
@@ -53,6 +53,10 @@ $sizes: full, narrow, extended, medium, wide;
     // Set drawer widths
     &--is-#{$size}-width.nexus-c-drawer--is-open {
       width: map-get($width, #{$size});
+
+      @media (max-width: 800px) {
+        width: map-get($width, full);
+      }
     }
   }
 }
