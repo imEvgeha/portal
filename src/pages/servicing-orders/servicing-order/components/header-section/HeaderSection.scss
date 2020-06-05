@@ -1,0 +1,49 @@
+.panel-header{
+  &__title {
+    display: flex;
+    justify-content: space-around;
+    svg {
+      cursor: pointer;
+    }
+    &--text{
+      font-size: 29px;
+      color: #42526E;
+      margin-left: 5px;
+    }
+    &--section{
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+    & > :first-child {
+      border-top: 1px solid #DCDCDC;
+    }
+  }
+  &__filter {
+    display: flex;
+    align-items: center;
+
+    svg {
+      cursor: pointer;
+    }
+
+    &--pop {
+      margin-right: 20px;
+      fill: #A5ADBA;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      fill: #42526E;
+    }
+
+  }
+
+}

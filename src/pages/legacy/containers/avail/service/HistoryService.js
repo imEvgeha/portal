@@ -1,12 +1,10 @@
-import Http from '../../../../../util/Http';
 import config from 'react-global-configuration';
+import {nexusFetch} from '../../../../../util/http-client/index';
 import {prepareSortMatrixParam, encodedSerialize} from '../../../../../util/Common';
-
-const http = Http.create();
 
 export const historyService = {
 
-    advancedSearch: (searchCriteria, page, pageSize, sortedParams) => {
+    advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const params = {};
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
@@ -14,15 +12,20 @@ export const historyService = {
             }
         }
 
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') +'/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams), {paramsSerializer : encodedSerialize, params: {...params, page: page, size: pageSize}});
+        return nexusFetch(
+            config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/ingest/history/search' + prepareSortMatrixParam(sortedParams),
+            {
+                params: encodedSerialize({...params, page, size}),
+            }
+        );
     },
 
     getHistory: (id, appendErrorReports) => {
         const queryParam = appendErrorReports ? '?appendErrorReports=true' : '';
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/${id}${queryParam}`);
+        return nexusFetch(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/${id}${queryParam}`);
     },
 
     getAvailHistoryAttachment: (id) => {
-        return http.get(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/attachments/${id}`);
+        return nexusFetch(config.get('gateway.url') + config.get('gateway.service.avails') + `/avails/ingest/history/attachments/${id}`);
     }
 };

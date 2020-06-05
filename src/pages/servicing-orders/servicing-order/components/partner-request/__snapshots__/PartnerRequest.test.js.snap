@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartnerRequest should match snapshot 1`] = `
+<div
+  className="nexus-c-partner-request"
+>
+  <div
+    className="nexus-c-partner-request__info"
+  >
+    <div
+      className="nexus-c-partner-request__info-field"
+    >
+      Studio: 
+    </div>
+    <div
+      className="nexus-c-partner-request__info-field"
+    >
+      MSS Order Details: undefined
+    </div>
+    <div
+      className="nexus-c-partner-request__info-field"
+    >
+      Created Date: null
+    </div>
+    <div
+      className="nexus-c-partner-request__info-field"
+    >
+      Created By: 
+    </div>
+  </div>
+  <div
+    className="nexus-c-partner-request__table"
+  >
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="0"
+    >
+      Title
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="1"
+    >
+      Version
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="2"
+    >
+      Due Date
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="3"
+    >
+      Primary Video
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="4"
+    >
+      Secondary Audio
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="5"
+    >
+      Trailer
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="6"
+    >
+      Metadata
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="7"
+    >
+      Artwork
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="8"
+    >
+      Notes
+    </div>
+  </div>
+</div>
+`;

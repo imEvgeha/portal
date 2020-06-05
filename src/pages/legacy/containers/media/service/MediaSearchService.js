@@ -1,13 +1,17 @@
 import config from 'react-global-configuration';
-import Http from '../../../../../util/Http';
+import {nexusFetch} from '../../../../../util/http-client/index';
 
-const http = Http.create();
 export const mediaSearchService = {
     getFilters: () => {
-        return http.get(config.get('gateway.assetManagementURL') + config.get('gateway.service.assetManagement') + '/asset/search/filter');
+        const url = config.get('gateway.assetManagementURL') + config.get('gateway.service.assetManagement') + '/asset/search/filter';
+        return nexusFetch(url);
     },
 
-    getAssets: (filter) => {
-        return http.post(config.get('gateway.assetManagementURL') + config.get('gateway.service.assetManagement') + '/asset/search', filter);
-    }
+    getAssets: data => {
+        const url = config.get('gateway.assetManagementURL') + config.get('gateway.service.assetManagement') + '/asset/search';
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(data),
+        });
+    },
 };

@@ -1,0 +1,33 @@
+@import '../../../../styles/config';
+
+.nexus-c-event-drawer {
+    font-size: 14px;
+    .nexus-c-drawer {
+        &__header {
+            position: sticky;
+            top: 0;
+            height: 130px;
+            border-bottom: 1px solid map-get($colors, nexus-light-grey);
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        height: calc(100% - 130px);
+        overflow-y: auto;
+    }
+
+    &__attachment-name {
+        font-family: $nexus-font;
+        font-size: 15px;
+    }
+
+    &__attachment-mimetype,
+    &__attachment-base64 {
+        color: map-get($colors, nexus-light-grey);
+        font-family: $nexus-font;
+        font-size: 12px;
+    }
+}

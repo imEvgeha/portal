@@ -50,7 +50,8 @@ const EditorialMetadata = ({
     handleCategoryEditChange,
     coreTitleData,
     editorialTitleData,
-    cleanField
+    cleanField,
+    handleDeleteEditorialMetaData
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -252,6 +253,7 @@ const EditorialMetadata = ({
                                                         handleGenreEditChange={handleGenreEditChange}
                                                         updatedEditorialMetadata={updatedEditorialMetadata}
                                                         handleCategoryEditChange={handleCategoryEditChange}
+                                                        handleDelete={handleDeleteEditorialMetaData}
                                                         key={i}
                                                         data={item}
                                                     />

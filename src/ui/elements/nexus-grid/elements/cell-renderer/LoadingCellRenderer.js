@@ -1,14 +1,17 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {getDeepValue, isObject} from '../../../../../util/Common';
 import './LoadingCellRenderer.scss';
 import loadingGif from '../../../../../assets/img/loading.gif';
 
 const LoadingCellRenderer = (params) => {
-    const {data, colDef, valueFormatted, link = null} = params;
+    const {data, colDef, colDef: {field, colId},
+        valueFormatted, link = null, newTab = true} = params;
     if (!data && colDef !== 'actions') {
         return (<img src={loadingGif} alt='loadingSpinner' />);
     }
-    let value = getDeepValue(data, colDef.field);
+    const linkTo = link && `${link}${data.id || data[colId]}`;
+    let value = getDeepValue(data, field);
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
@@ -19,7 +22,7 @@ const LoadingCellRenderer = (params) => {
     if (content !== undefined && content !== null || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {
-            highlighted = data.highlightedFields.indexOf(colDef.field) > -1;
+            highlighted = data.highlightedFields.indexOf(field) > -1;
         }
         const displayValue = (
             <div className="nexus-c-loading-cell-renderer">
@@ -40,11 +43,10 @@ const LoadingCellRenderer = (params) => {
         );
 
         return (
-            link ? (
-                <a href={`${link}${data.id}`} target="_blank">
-                    {displayValue}
-                </a>
-            ) : (displayValue)
+            link ? (newTab ?
+                    (<a href={linkTo} target="_blank">{displayValue}</a>)
+                    : (<Link to={linkTo}>{displayValue}</Link>))
+                : (displayValue)
         );
     }
 

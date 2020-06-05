@@ -7,6 +7,7 @@ import DOP from '../../../../../util/DOP';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import {isEqual} from 'lodash';
 
 const DOP_POP_UP_TITLE = 'Select rights planning';
 const DOP_POP_UP_MESSAGE = 'No rights selected';
@@ -23,6 +24,14 @@ class SelectRightsDOPConnector extends Component {
 
     componentDidMount() {
         DOP.setDOPMessageCallback(this.showConfirmDialog);
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {promotedRights = []} = this.props;
+
+        if (!isEqual(prevProps.promotedRights, promotedRights)) {
+            DOP.setData(promotedRights);
+        }
     }
 
     openDOPPopUp = () => {
@@ -55,14 +64,14 @@ class SelectRightsDOPConnector extends Component {
         // send flag changes to server
         Promise.all(promotedRights.map(right => {
             return rightsService.get(right.rightId).then(response => {
-                if(response.data.territory && Array.isArray(response.data.territory)){
-                    const availableTerritories = response.data.territory.filter(({selected}) => !selected);
+                if(response.territory && Array.isArray(response.territory)){
+                    const availableTerritories = response.territory.filter(({selected}) => !selected);
                     const toChangeTerritories = availableTerritories.filter(({country}) => right.territories.includes(country));
                     if(toChangeTerritories.length > 0){
                         const toChangeTerritoriesCountry = toChangeTerritories.map(({country}) => country);
-                        const newTerritories = response.data.territory.
+                        const newTerritories = response.territory.
                         map(territory => {return {...territory, selected: territory.selected || toChangeTerritoriesCountry.includes(territory.country)};});
-                        // newTerritories = response.data.territory.map(territory => {return {...territory, selected: false}});
+                        // newTerritories = response.territory.map(territory => {return {...territory, selected: false}});
                         return rightsService.update({territory: newTerritories}, right.rightId).then(() => {
                             return {rightId: right.rightId, territories: toChangeTerritoriesCountry};
                         }).catch((e) => {

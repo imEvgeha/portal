@@ -9,10 +9,9 @@ export function* fetchConfigApiEndpoints(requestMethod) {
             payload: {},
         });
         const response = yield call(requestMethod);
-        const {data} = response;
         yield put({
             type: actionTypes.FETCH_CONFIG_API_ENDPOINTS_SUCCESS,
-            payload: data,
+            payload: response,
         });
     } catch (error) {
         yield put({

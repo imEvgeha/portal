@@ -6,17 +6,15 @@ import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents
 import './AudioLanguageField.scss';
 import {get} from 'lodash';
 
-const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
-
+const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
     const getLanguages = () => {
         return audioLanguages.map((lang, i) => (
             <NexusTag
                 key={uid(lang)}
-                text={lang.language}
+                text={`${lang.label} / ${lang.audioType}`}
                 value={lang}
                 removeButtonText='Remove'
                 onRemove={() => onRemoveClick(lang)}
-                onClick={() => onTagClick(i)}
             />
         ));
     };
@@ -52,7 +50,6 @@ AudioLanguageField.propTypes = {
     name: PropTypes.string.isRequired,
     onAddClick: PropTypes.func.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
-    onTagClick: PropTypes.func,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
     isTableMode: PropTypes.bool
@@ -61,7 +58,6 @@ AudioLanguageField.propTypes = {
 AudioLanguageField.defaultProps = {
     audioLanguages: [],
     renderChildren: () => null,
-    onTagClick: () => null,
     mappingErrorMessage: {},
     isTableMode: false
 };

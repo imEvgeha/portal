@@ -24,9 +24,9 @@ class AvailHistoryRecordRenderer extends React.Component {
 
         historyService.getAvailHistoryAttachment(attachment.id)
         .then(response => {
-            if(response && response.data && response.data.downloadUrl){
+            if(response && response.downloadUrl){
                 const link = document.createElement('a');
-                link.href = response.data.downloadUrl;
+                link.href = response.downloadUrl;
                 link.setAttribute('download', filename);
                 link.click();
             }

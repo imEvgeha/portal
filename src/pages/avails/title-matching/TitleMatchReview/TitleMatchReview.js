@@ -25,8 +25,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const getTitle = id => {
         return new Promise((resolve, reject) => {
             return titleService.getTitleById(id).then((response) => {
-                const title = response.data;
-                titleService.getEditorialMetadataByTitleId(id).then(({data}) => {
+                const title = response;
+                titleService.getEditorialMetadataByTitleId(id).then(data => {
                     const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
                     if(founded) {
                         title['editorialGenres'] = founded.genres;

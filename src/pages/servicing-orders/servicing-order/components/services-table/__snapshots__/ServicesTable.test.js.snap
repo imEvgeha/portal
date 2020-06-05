@@ -1,0 +1,281 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicesTable should match snapshot 1`] = `
+<div
+  className="nexus-c-services-table"
+>
+  <div
+    className="nexus-c-services-table__header"
+  >
+    <h5
+      className="nexus-c-services-table__title"
+    >
+      Services (0)
+    </h5>
+    <div
+      className="nexus-c-services-table__subtitle"
+    >
+      Barcode
+      : 
+    </div>
+    <div
+      className="nexus-c-services-table__add-icon"
+    >
+      <[object Object]
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <Connect(ComposedComponent)
+    columnDefs={
+      Array [
+        Object {
+          "cellRendererFramework": [Function],
+          "colId": "serviceId",
+          "field": "serviceId",
+          "headerName": "#",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "cellEditorFramework": undefined,
+          "cellRendererFramework": [Function],
+          "cellRendererParams": undefined,
+          "colId": "",
+          "editable": false,
+          "field": "buttons",
+          "headerName": "",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "colId": "type",
+          "field": "type",
+          "headerName": "Type",
+        },
+        Object {
+          "colId": "version",
+          "field": "version",
+          "headerName": "Version",
+        },
+        Object {
+          "colId": "standard",
+          "field": "standard",
+          "headerName": "Standard",
+        },
+        Object {
+          "colId": "operationalStatus",
+          "field": "operationalStatus",
+          "headerName": "Operational Status",
+        },
+        Object {
+          "colId": "componentId",
+          "field": "componentId",
+          "headerName": "Component ID",
+        },
+        Object {
+          "colId": "spec",
+          "field": "spec",
+          "headerName": "Spec",
+        },
+        Object {
+          "colId": "addRecipient",
+          "field": "addRecipient",
+          "headerName": "Add recipient",
+        },
+        Object {
+          "colId": "sourceStandard",
+          "field": "sourceStandard",
+          "headerName": "Source Standard",
+        },
+      ]
+    }
+    domLayout="autoHeight"
+    mapping={
+      Array [
+        Object {
+          "dataType": "select",
+          "displayName": "Type",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "type",
+          "queryParamName": "type",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Version",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "version",
+          "queryParamName": "type",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Standard",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "standard",
+          "queryParamName": "standard",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Operational Status",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "operationalStatus",
+          "queryParamName": "operationalStatus",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Component ID",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "componentId",
+          "queryParamName": "componentId",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Spec",
+          "enableEdit": false,
+          "enableSearch": true,
+          "javaVariableName": "spec",
+          "queryParamName": "spec",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Add Recipient",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "addRecipient",
+          "queryParamName": "addRecipient",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Source Standard",
+          "enableEdit": false,
+          "enableSearch": true,
+          "javaVariableName": "sourceStandard",
+          "queryParamName": "sourceStandard",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+      ]
+    }
+    onGridEvent={[Function]}
+    onGridReady={[Function]}
+    selectValues={
+      Object {
+        "addRecipient": Array [
+          "MGM",
+          "Vubiquity",
+        ],
+        "componentId": Array [
+          "LOL-123",
+        ],
+        "operationalStatus": Array [
+          "On Hold",
+          "In Progress",
+        ],
+        "sourceStandard": Array [
+          "_1080_23_976",
+        ],
+        "spec": Array [
+          "M-DBS-2396 SCC",
+        ],
+        "standard": Array [
+          Object {
+            "subtitles": Array [
+              "Text Type - Full Stream",
+              "Forced",
+              "SDH",
+            ],
+          },
+          Object {
+            "audio": Array [
+              "Mono",
+              "Stereo",
+              "2.0 LTRT",
+              "3.0",
+              "4.0",
+              "5.0",
+              "5.1",
+              "6.1",
+              "7.1",
+              "Dolby E",
+            ],
+          },
+          Object {
+            "video": Array [
+              "SD",
+              "HD",
+              "4K",
+            ],
+          },
+        ],
+        "type": Array [
+          "Subtitles",
+          "Audio",
+          "Video",
+        ],
+        "version": Array [
+          Object {
+            "subtitles": Array [
+              "English",
+              "French",
+              "Italian",
+            ],
+          },
+          Object {
+            "audio": Array [
+              "English",
+              "French",
+              "Italian",
+            ],
+          },
+          Object {
+            "video": Array [
+              "Theatrical",
+              "Broadcast",
+              "Director's cut",
+            ],
+          },
+        ],
+      }
+    }
+  />
+</div>
+`;

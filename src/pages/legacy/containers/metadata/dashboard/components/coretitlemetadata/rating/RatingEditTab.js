@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
-import Button from '@atlaskit/button';
 import { configFields } from '../../../../service/ConfigService';
 import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
 
@@ -116,9 +115,9 @@ class RatingEditTab extends Component {
         return (
             <div id="ratingCreate">
                 <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
+                    <span style={{color:'red', cursor:'pointer'}} onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
                         Delete Rating
-                    </Button>
+                    </span>
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={3}>

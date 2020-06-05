@@ -1,18 +1,16 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Blanket from '@atlaskit/blanket';
-import Button from '@atlaskit/button';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
-
+import CloseIcon from '../../../assets/action-cross.svg';
 import './NexusDrawer.scss';
 
 const NexusDrawer = ({
     children,
-    position,
     width,
     isOpen,
     onClose,
+    title,
+    headerContent
 }) => {
     const [isOpenClass, setIsOpenClass] = useState('');
 
@@ -33,25 +31,23 @@ const NexusDrawer = ({
             <div
                 className={
                     `nexus-c-drawer 
-                    nexus-c-drawer--is-${position} 
                     nexus-c-drawer--is-${width}-width
                     ${isOpenClass}`
                 }
             >
-                <Button
-                    appearance="subtle"
-                    onClick={onClose}
-                    className={
-                        `nexus-c-drawer__close-btn 
-                        nexus-c-drawer__close-btn--is-${position}`
-                    }
-                >
-                    {
-                        position === 'right'
-                            ? <ArrowRightIcon />
-                            : <ArrowLeftIcon />
-                    }
-                </Button>
+                <div className='nexus-c-drawer__header'>
+                    <div className='nexus-c-drawer__header--title'>{title}</div>
+                    <CloseIcon className='nexus-c-drawer__header--close-btn' onClick={onClose} />
+                    {headerContent &&
+                    (
+                        <>
+                            <div className='break' />
+                            <div className='nexus-c-drawer__header__bottom'>
+                                {headerContent}
+                            </div>
+                        </>
+                    )}
+                </div>
                 {isOpen && children}
             </div>
         </>
@@ -59,15 +55,17 @@ const NexusDrawer = ({
 };
 
 NexusDrawer.propTypes = {
-    position: PropTypes.string,
+    title: PropTypes.string,
     width: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    headerContent: PropTypes.element
 };
 
 NexusDrawer.defaultProps = {
-    position: 'right',
+    title: '',
     width: 'medium',
+    headerContent: null
 };
 
 export default NexusDrawer;

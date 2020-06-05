@@ -81,7 +81,7 @@ const withLocalRights = (selectedType) => WrappedComponent => {
         };
 
         selectAll() {
-            if (!this.table) return;
+            if (!this.table || !this.table.api) return;
             this.table.api.deselectAll();
             this.table.api.forEachNode(rowNode => {
                 if (rowNode.data && this.getSelectedRights().filter(sel => (sel.id === rowNode.data.id)).length > 0) {
