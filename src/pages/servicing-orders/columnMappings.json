@@ -80,7 +80,7 @@
     "isEmphasized": true,
     "enableSearch": true,
     "searchDataType": "multiselect",
-    "options": ["Completed", "On Hold", "In Progress", "Canceled", "Not Started"]
+    "options": ["New", "Accepted", "Rejected", "Complete", "Cancelled", "Failed"]
   },
   {
     "colId": "readiness",
@@ -93,6 +93,6 @@
     "isEmphasized": true,
     "enableSearch": true,
     "searchDataType": "multiselect",
-    "options": ["Completed", "Not Configured"]
+    "options": ["New", "Ready", "Hold"]
   }
 ]
