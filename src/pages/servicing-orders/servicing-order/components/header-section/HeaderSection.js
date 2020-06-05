@@ -11,7 +11,7 @@ import FilterIcon from '../../../../../assets/filter.svg';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
 
 const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
-    const [showFilter, setShowFilter] = useState(false);
+    const [showFilter, setShowFilter] = useState(true);
     const [filter, setFilter] = useState('');
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {

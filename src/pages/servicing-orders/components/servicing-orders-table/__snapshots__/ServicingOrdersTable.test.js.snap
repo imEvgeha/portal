@@ -9,13 +9,13 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
       Array [
         Object {
           "cellRenderer": "loadingCellRenderer",
-          "colId": "srId",
+          "colId": "external_id",
           "dataType": "string",
           "displayName": "SR ID",
           "enableSearch": true,
-          "field": "srId",
+          "field": "external_id",
           "headerName": "SR ID",
-          "javaVariableName": "srId",
+          "javaVariableName": "external_id",
           "searchDataType": "string",
           "valueFormatter": [Function],
           "width": 150,
@@ -151,13 +151,13 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     mapping={
       Array [
         Object {
-          "colId": "srId",
+          "colId": "external_id",
           "dataType": "string",
           "displayName": "SR ID",
           "enableSearch": true,
-          "field": "srId",
+          "field": "external_id",
           "headerName": "SR ID",
-          "javaVariableName": "srId",
+          "javaVariableName": "external_id",
           "searchDataType": "string",
           "width": 150,
         },

@@ -10,22 +10,27 @@ exports[`PartnerRequest should match snapshot 1`] = `
     <div
       className="nexus-c-partner-request__info-field"
     >
-      Studio: 
+      Studio
+      : 
     </div>
     <div
       className="nexus-c-partner-request__info-field"
     >
-      MSS Order Details: undefined
+      MSS Order Details
+      : 
+      345
     </div>
     <div
       className="nexus-c-partner-request__info-field"
     >
-      Created Date: null
+      Created Date
+      : 
     </div>
     <div
       className="nexus-c-partner-request__info-field"
     >
-      Created By: 
+      Created By
+      : 
     </div>
   </div>
   <div
@@ -35,55 +40,67 @@ exports[`PartnerRequest should match snapshot 1`] = `
       className="nexus-c-partner-request__table-column-header"
       key="0"
     >
-      Title
+      TITLE
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="1"
     >
-      Version
+      VERSION
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="2"
     >
-      Due Date
+      DUE DATE
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="3"
     >
-      Primary Video
+      PRIMARY VIDEO
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="4"
     >
-      Secondary Audio
+      SECONDARY AUDIO
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="5"
     >
-      Trailer
+      SUB-TITLES FULL
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="6"
     >
-      Metadata
+      SUB-TITLES FORCED
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="7"
     >
-      Artwork
+      TRAILER
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="8"
     >
-      Notes
+      METADATA
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="9"
+    >
+      ARTWORK
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="10"
+    >
+      NOTES
     </div>
   </div>
 </div>

@@ -13,7 +13,7 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
     margin-top: 20px;
     display: grid;
     grid-template-rows: 2em repeat(auto-fill, minmax(0, auto));
-    grid-template-columns: repeat(9, minmax(0, auto));
+    grid-template-columns: repeat(11, minmax(0, auto));
     border: $border;
     border-right: none;
   }

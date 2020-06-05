@@ -2,7 +2,7 @@
     "data":
     [
       {
-        "srId": "SR0000123456",
+        "external_id": "SR00001113",
         "soNumber": "SR0000123456",
         "soDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "businessPartnerId": "MGM",
@@ -13,7 +13,7 @@
         "readiness": "completed"
       },
       {
-        "srId": "SR0000123456",
+        "external_id": "SR0000123456",
         "soNumber": "SR0000123456",
         "soDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "businessPartnerId": "MGM",
@@ -24,7 +24,7 @@
         "readiness": "completed"
       },
       {
-        "srId": "SR0000123456",
+        "external_id": "SR0000123456",
         "soNumber": "SR0000123456",
         "soDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "businessPartnerId": "MGM",
@@ -35,7 +35,7 @@
         "readiness": "completed"
       },
       {
-        "srId": "SR0000123456",
+        "external_id": "SR0000123456",
         "soNumber": "SR0000123456",
         "soDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "businessPartnerId": "MGM",
@@ -46,7 +46,7 @@
         "readiness": "completed"
       },
       {
-        "srId": "SR0000123456",
+        "external_id": "SR0000123456",
         "soNumber": "SR0000123456",
         "soDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         "businessPartnerId": "MGM",
