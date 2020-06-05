@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {compose} from 'redux';
-import { clone } from 'lodash';
+import {clone, isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import {Radio} from '@atlaskit/radio';
 import Badge from '@atlaskit/badge';
@@ -12,6 +12,7 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import constants from '../fulfillment-order/constants';
 import Add from '../../../../../assets/action-add.svg';
+import usePrevious from '../../../../../util/hooks/usePrevious';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import mappings  from '../../../../../../profile/sourceTableMapping';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -28,8 +29,13 @@ const SourceTableGrid = compose(
 const SourcesTable = ({data, onSelectedSourceChange}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState();
+    const previousData = usePrevious(data);
 
     useEffect(() => {
+        if (!isEqual(data, previousData)) {
+            setSelectedSource(null);
+            setSources(data);
+        }
         setSources(data);
     }, [data]);
 
@@ -44,7 +50,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             <CustomActionsCellRenderer id={barcode}>
                 <Radio
                     name={barcode}
-                    isChecked={selectedItem.barcode === barcode}
+                    isChecked={selectedItem && selectedItem.barcode === barcode}
                     onChange={() => setSelectedSource(data)}
                 />
             </CustomActionsCellRenderer>
@@ -62,7 +68,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         };
 
         return (
-            <CustomActionsCellRenderer id={barcode}>
+            <CustomActionsCellRenderer id={barcode} classname="nexus-c-sources__close-icon">
                 <span onClick={handleClick}>
                     <EditorCloseIcon />
                 </span>
@@ -126,7 +132,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 columnDefs={[
                     radioButtonColumn,
                     closeButtonColumn,
-                    servicesColumn, 
+                    servicesColumn,
                     ...columnDefinitions
                 ]}
                 rowData={sources}

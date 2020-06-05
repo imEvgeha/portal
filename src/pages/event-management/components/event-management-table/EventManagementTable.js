@@ -9,10 +9,11 @@ import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import columnDefs from '../../columnMappings.json';
+import {INITIAL_SORT} from '../../eventManagementConstants';
 
 const EventManagementGrid = compose(
     withSideBar(),
-    withSorting(),
+    withSorting(INITIAL_SORT),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);

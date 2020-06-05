@@ -54,24 +54,24 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
         const prettyData = data.map(datum => {
             const eventHeaders = get(datum, 'event.headers', {});
             const eventMessage = get(datum, 'event.message', {});
+            const docId = get(datum, 'id', '');
 
             // Include `id` for ag-grid functionality and `message` for the EventDrawer
-            return {...eventHeaders, id: eventHeaders.eventId, message: eventMessage};
+            return {...eventHeaders, id: docId, message: eventMessage};
         });
-
         return {...response, data: prettyData};
     });
 };
 
-export const replayEvent = ({eventId}) => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/admin/replay/${eventId}`;
+export const replayEvent = ({docId}) => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replay/${docId}`;
     return nexusFetch(url, {
         method: 'post'
     });
 };
 
-export const replicateEvent = ({eventId}) => {
-    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/admin/replicate/${eventId}`;
+export const replicateEvent = ({docId}) => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replicate/${docId}`;
     return nexusFetch(url, {
         method: 'post'
     });

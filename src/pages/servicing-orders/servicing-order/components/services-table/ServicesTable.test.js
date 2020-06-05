@@ -38,4 +38,12 @@ describe('ServicesTable', () => {
     it('renders table wrapper', () => {
         expect(wrapper.find('.nexus-c-services-table')).toHaveLength(1);
     });
+
+    it('renders table title', () => {
+        expect(wrapper.find('.nexus-c-services-table__title').text()).toEqual('Services (0)');
+    });
+
+    it('renders table subtitle', () => {
+        expect(wrapper.find('.nexus-c-services-table__subtitle').text()).toEqual('Barcode: ');
+    });
 });
