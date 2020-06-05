@@ -56,7 +56,7 @@ const withEditableColumns = ({
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
                 const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
                 if (enableEdit && isEditable) {
-                    columnDef.editable = true; 
+                    columnDef.editable = true;
                     switch (dataType) {
                         case 'select':
                             columnDef.cellEditorFramework = SelectCellEditor;
@@ -73,7 +73,7 @@ const withEditableColumns = ({
                         case 'boolean':
                             columnDef.cellEditorFramework = SelectCellEditor;
                             columnDef.cellEditorParams = {
-                                options: [ 
+                                options: [
                                     {label: 'true', value: true},
                                     {label: 'false', value: false},
                                 ],
@@ -151,9 +151,12 @@ const withEditableColumns = ({
 
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();
-        return (state, props) => ({
-            selectValues: availSelectValuesSelector(state, props),
-        });
+        return (state, props) => {
+            let selectValues = props.selectValues || availSelectValuesSelector(state, props);
+            return {
+                selectValues,
+            };
+        };
     };
 
     return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line

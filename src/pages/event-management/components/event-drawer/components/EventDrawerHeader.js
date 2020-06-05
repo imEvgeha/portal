@@ -10,12 +10,12 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const onInnerReplay = () => {
-        const payload = {eventId: event.eventId};
+        const payload = {docId: event.id};
         onReplay(payload);
     };
 
     const onInnerReplicate = () => {
-        const payload = {eventId: event.eventId};
+        const payload = {docId: event.id};
         onReplicate(payload);
     };
 

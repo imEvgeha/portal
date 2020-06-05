@@ -13,11 +13,12 @@ export const defaultConfiguration = {
         servicingOrdersUrl: 'https://service-order-manager.dev.vubiquity.com',
         service: {
             avails: '/avails-api/v1',
-            availsParser: '/avails-parser/v1', 
+            availsParser: '/avails-parser/v1',
             title: '/titles-api/v1',
             configuration: '/configuration-api/v1',
             assetManagement: '/api/asset-management/v1',
             eventApi: '/api/event-api/v1',
+            eventApiV2: '/api/event-api/v2',
             servicingOrder: ''
         },
     },
@@ -68,7 +69,7 @@ export async function setEnvConfiguration (env) {
                 return '/config.json';
             case 'qa':
                 return '/configQA.json';
-            default: 
+            default:
                 return '/config.json';
         }
     };

@@ -1,20 +1,30 @@
 import React, {useState, useEffect} from 'react';
+import {compose} from 'redux';
+import {clone, isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import {Radio} from '@atlaskit/radio';
 import Badge from '@atlaskit/badge';
-import {isEqual} from 'lodash';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './SourcesTable.scss';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../../../ui/elements';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {ADDITIONAL_COLUMN_DEF} from '../../../constants';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import constants from '../fulfillment-order/constants';
+import Add from '../../../../../assets/action-add.svg';
 import usePrevious from '../../../../../util/hooks/usePrevious';
+import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import mappings  from '../../../../../../profile/sourceTableMapping';
+import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import { SELECT_VALUES, INIT_SOURCE_ROW, NON_EDITABLE_COLS } from './Constants';
+import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
+
+const SourceTableGrid = compose(
+    withColumnsResizing(),
+    withEditableColumns(),
+)(NexusGrid);
 
 const SourcesTable = ({data, onSelectedSourceChange}) => {
     const [sources, setSources] = useState([]);
@@ -26,6 +36,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             setSelectedSource(null);
             setSources(data);
         }
+        setSources(data);
     }, [data]);
 
     useEffect(() => {
@@ -34,6 +45,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 
     const serviceButtonCell = ({data, selectedItem = {}}) => { // eslint-disable-line
         const {barcode} = data || {};
+
         return (
             <CustomActionsCellRenderer id={barcode}>
                 <Radio
@@ -62,6 +74,10 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 </span>
             </CustomActionsCellRenderer>
         );
+    };
+
+    const addNewRow = () => {
+      setSources([...sources, clone(INIT_SOURCE_ROW)]);
     };
 
     const radioButtonColumn = defineColumn({
@@ -95,13 +111,24 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         }
     });
 
+    const onSourceTableChange = ({type, rowIndex, data}) => {
+        if( type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+            let newSources = sources.slice();
+            newSources[rowIndex] = data;
+            setSources(newSources);
+        }
+    };
+
     return (
         <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
                 <h5 className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</h5>
-                <div className="nexus-c-sources-table__subtitle">{SOURCE_SUBTITLE}</div>
+                <div className="nexus-c-sources-table__subtitle">
+                    {SOURCE_SUBTITLE}
+                    <Add onClick={addNewRow} />
+                </div>
             </div>
-            <NexusGrid
+            <SourceTableGrid
                 columnDefs={[
                     radioButtonColumn,
                     closeButtonColumn,
@@ -110,6 +137,10 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 ]}
                 rowData={sources}
                 domLayout="autoHeight"
+                mapping={mappings}
+                notEditableColumns={NON_EDITABLE_COLS}
+                selectValues={SELECT_VALUES}
+                onGridEvent={onSourceTableChange}
             />
         </div>
     );
