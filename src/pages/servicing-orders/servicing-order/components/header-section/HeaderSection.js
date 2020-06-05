@@ -47,13 +47,13 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             }
             <div className='panel-header__list'>
                 {
-                    getFilteredList().map(({fulfillmentOrderId, status, dueDate},index) => (
+                    getFilteredList().map(({id, status, dueDate},index) => (
                         <FulfillmentOrderPanel
                             key={index}
-                            id={fulfillmentOrderId}
+                            id={id}
                             status={status}
                             dueDate={dueDate}
-                            selected={selectedFulfillmentOrder === fulfillmentOrderId}
+                            selected={selectedFulfillmentOrder === id}
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         />
                         )

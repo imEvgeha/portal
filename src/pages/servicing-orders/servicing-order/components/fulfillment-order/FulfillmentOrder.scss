@@ -12,27 +12,26 @@
     justify-content: space-between;
     margin-top: 25px;
     font-size: 14px;
-    width: 100%;
-
-    &--section {
-      display: inline-flex;
-    }
-
-    &--notes {
-      width: 100%;
-    }
   }
+
   &__column {
     display: flex;
     flex-direction: column;
+
+    &--notes{
+      width: 500px;
+    }
   }
-  &__select-wrapper {
-    margin-left: 15px;
-    width: 160px;
-  }
-  &__section {
+
+  &--section {
     display: inline-flex;
   }
+
+  &__select-wrapper {
+    margin-right: 15px;
+    width: 160px;
+  }
+
   &__input {
     margin-right: 15px;
     width: 160px;
@@ -45,6 +44,7 @@
       padding: 0 10px;
     }
   }
+
   &__order-id{
     font-size: 16px;
   }

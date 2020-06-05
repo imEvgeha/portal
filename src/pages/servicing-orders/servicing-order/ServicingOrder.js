@@ -15,14 +15,23 @@ const ServicingOrder = ({match}) => {
     const [selectedSource, setSelectedSource] = useState();
 
     useEffect(() => {
-        setSelectedOrder(get(serviceOrder, 'fulfillmentOrders', []).find(s=> s && s.fulfillmentOrderId === selectedFulfillmentOrderID) || {});
+        setSelectedOrder(get(serviceOrder, 'fulfillmentOrders', []).find(s=> s && s.id === selectedFulfillmentOrderID) || {});
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
     useEffect(() => {
-        servicingOrdersService.getServicingOrderById(match.params.id) .then(res => {
-            const servicingOrder = res['servicingOrder'];
-            setServiceOrder(servicingOrder.data || {});
-            setSelectedFulfillmentOrderID(get(servicingOrder, 'data.fulfillmentOrders[0].fulfillmentOrderId', ''));
+        servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
+            // setServiceOrder(servicingOrder || {});
+            servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number).then(fulfillmentOrders => {
+                //convert definition field from string to json for each fulfillmentOrder
+                const parsedFulfillmentOrders = fulfillmentOrders.map((fo)=>{
+                    let {definition} = fo || {};
+                    const parsedDefinition = definition ? JSON.parse(definition) : {};
+                    return {...fo, definition: parsedDefinition};
+                });
+
+                setServiceOrder({...servicingOrder, fulfillmentOrders: parsedFulfillmentOrders});
+                setSelectedFulfillmentOrderID(get(parsedFulfillmentOrders, '[0].id', ''));
+            });
         });
     }, []);
 
