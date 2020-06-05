@@ -1,11 +1,11 @@
 export default {
     fieldKeys: {
-        BILL_TO: 'billTo',
-        RATE_CARD: 'rateCard',
+        ID: 'fulfillmentOrderId',
         STATUS: 'status',
-        DUE_DATE: 'dueDate',
-        START_DATE: 'startDate',
-        PRIORITY: 'priority'
+        DUE_DATE: 'definition.dueDate',
+        START_DATE: 'definition.startDate',
+        SERVICER: 'servicer',
+        NOTE: 'note',
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },

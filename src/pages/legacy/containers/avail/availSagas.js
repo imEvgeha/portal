@@ -3,10 +3,7 @@ import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
-import {getSortedData} from '../../../../util/Common';
-import { PRODUCTION_STUDIOS, AFFILIATES, AUDIO_TYPES, CONTENT_TYPES, COUNTRIES, CURRENCIES, FORMATS, GENRES, LANGUAGES,
-    LICENSE_RIGHT_DESC, LICENSEES, LICENSOR, NG_AUDIOS, RATING_SYSTEMS, RATINGS, REGION, SORT_TYPE, LICENSE_TYPES
-    } from './constants';
+import {processOptions} from './util/ProcessSelectOptions';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -85,69 +82,11 @@ export function* fetchAndStoreSelectItems(payload, type) {
                 .values()
         );
     }
-
+    
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
-        let options;
-        switch (configEndpoint) {
-            case PRODUCTION_STUDIOS:
-            case LICENSOR:
-            case LICENSEES:
-            case LICENSE_TYPES:
-            case CONTENT_TYPES:
-            case AFFILIATES:
-            case CURRENCIES:
-            case FORMATS:
-            case LICENSE_RIGHT_DESC:
-            case NG_AUDIOS:
-            case RATING_SYSTEMS:
-                options = value.map(code => {
-                    return {value: code.name || code.value, label: code.name || code.value};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case LANGUAGES:
-                options = value.map(code => {
-                    return {value: code.languageCode, label: code.languageName};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case REGION:
-                options = value.map(code => {
-                    return {value: code.regionCode, label: code.regionName};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case GENRES:
-                options = value.map(code => {
-                    return {value: code.name, label: code.name};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case COUNTRIES:
-                options = value.map(code => {
-                    return {value: code.countryCode, label: code.countryName}
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case RATINGS:
-                options = value.map(code => {
-                    return {value: code.value, label: code.ratingSystem + ' - ' + code.value}
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case AUDIO_TYPES:
-                options = value.map(code => {
-                    return {value: code.value, label: code.value}
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            default:
-                options = value;
-        }
-
-        options = deduplicate(options, 'label');
+        const options = deduplicate(processOptions(value,configEndpoint),'label');
 
         acc = {
             ...acc,

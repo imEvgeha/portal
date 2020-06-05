@@ -7,11 +7,20 @@
     font-size: 29px;
     color: #42526E;
   }
+
   &__row {
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
     font-size: 14px;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    button {
+      margin-left: 15px;
+    }
   }
 
   &__column {
