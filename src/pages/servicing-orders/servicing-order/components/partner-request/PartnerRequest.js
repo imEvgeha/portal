@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
-import moment from 'moment';
 import {getServiceRequest} from '../../../servicingOrdersService';
 import {parseSimulcast} from '../../../../../util/DateTimeUtils';
 import {

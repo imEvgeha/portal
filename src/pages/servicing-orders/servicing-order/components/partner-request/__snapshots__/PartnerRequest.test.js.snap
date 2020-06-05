@@ -70,29 +70,35 @@ exports[`PartnerRequest should match snapshot 1`] = `
       className="nexus-c-partner-request__table-column-header"
       key="5"
     >
-      SECONDARY SUB-TITLES
+      SUB-TITLES FULL
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="6"
     >
-      TRAILER
+      SUB-TITLES FORCED
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="7"
     >
-      METADATA
+      TRAILER
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="8"
     >
-      ARTWORK
+      METADATA
     </div>
     <div
       className="nexus-c-partner-request__table-column-header"
       key="9"
+    >
+      ARTWORK
+    </div>
+    <div
+      className="nexus-c-partner-request__table-column-header"
+      key="10"
     >
       NOTES
     </div>
