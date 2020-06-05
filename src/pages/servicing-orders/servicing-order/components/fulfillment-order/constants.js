@@ -1,10 +1,10 @@
 export default {
     fieldKeys: {
-        ID: 'fulfillmentOrderId',
+        ID: 'external_id',
         STATUS: 'status',
         DUE_DATE: 'definition.dueDate',
         START_DATE: 'definition.startDate',
-        SERVICER: 'servicer',
+        SERVICER: 'fs',
         NOTE: 'note',
     },
     BILL_TO_LIST: [

@@ -120,7 +120,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 <NexusDatePicker
                                     id='dueDate'
                                     label='Due Date'
-                                    value={getValidDate(get(fulfillmentOrder, ['definition', fieldKeys.DUE_DATE], ''))}
+                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
                                     onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
                                     isReturningTime={false}
                                 />
@@ -129,7 +129,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 <NexusDatePicker
                                     id='startDate'
                                     label='Start Date'
-                                    value={getValidDate(get(fulfillmentOrder, ['definition', fieldKeys.START_DATE], ''))}
+                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
                                     onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
                                     isReturningTime={false}
                                 />

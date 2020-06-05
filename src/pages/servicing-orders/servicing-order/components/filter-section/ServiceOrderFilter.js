@@ -32,6 +32,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
                 value={getValidDate(orderDetails.sr_due_date)}
                 isDisabled
                 isReturningTime={false}
+                onChange={() => {}}
             />
             <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Filter</p>
             <div className='so-panel-filter-detail__section'>
