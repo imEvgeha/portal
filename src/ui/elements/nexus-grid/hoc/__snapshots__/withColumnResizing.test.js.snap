@@ -1,53 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`withColumnsResizing should match snapshot 1`] = `
-<ContextProvider
-  value={null}
->
-  <ComposedComponent
-    columnDefs={
-      Array [
-        Object {
-          "colId": "title",
-          "field": "title",
-          "headerName": "Title",
-          "width": 150,
-        },
-        Object {
-          "colId": "releaseYear",
-          "field": "releaseYear",
-          "headerName": "Release Year",
-          "valueFormatter": null,
-          "width": 150,
-        },
-        Object {
-          "colId": "licensor",
-          "field": "licensor",
-          "headerName": "Licensor",
-          "width": 150,
-        },
-      ]
-    }
-    existingColumnsSize={
+<ComposedComponent
+  columnDefs={
+    Array [
       Object {
-        "rightsRepo": Object {
-          "licensor": 225,
-          "title": 368,
-        },
-      }
-    }
-    id="rightsRepo"
-    store={
+        "colId": "title",
+        "field": "title",
+        "headerName": "Title",
+        "width": 150,
+      },
       Object {
+        "colId": "releaseYear",
+        "field": "releaseYear",
+        "headerName": "Release Year",
+        "valueFormatter": null,
+        "width": 150,
+      },
+      Object {
+        "colId": "licensor",
+        "field": "licensor",
+        "headerName": "Licensor",
+        "width": 150,
+      },
+    ]
+  }
+  existingColumnsSize={
+    Object {
+      "rightsRepo": Object {
+        "licensor": 225,
+        "title": 368,
+      },
+    }
+  }
+  id="rightsRepo"
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  storeSubscription={
+    Subscription {
+      "listeners": Object {
+        "clear": [Function],
+        "get": [Function],
+        "notify": [Function],
+        "subscribe": [Function],
+      },
+      "onStateChange": [Function],
+      "parentSub": undefined,
+      "store": Object {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
         "getState": [Function],
         "replaceReducer": [Function],
         "subscribe": [Function],
-      }
+      },
+      "unsubscribe": [Function],
     }
-    updateGridColumnsSize={[Function]}
-  />
-</ContextProvider>
+  }
+  updateGridColumnsSize={[Function]}
+/>
 `;
