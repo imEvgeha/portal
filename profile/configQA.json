@@ -1,8 +1,8 @@
 {
-  "gateway":{
-    "url":"https://availsapi.qa.vubiquity.com",
+  "gateway": {
+    "url": "https://availsapi.qa.vubiquity.com",
     "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
-    "titleUrl":"https://titlesapi.qa.vubiquity.com",
+    "titleUrl": "https://titlesapi.qa.vubiquity.com",
     "configuration": "https://configapi.qa.vubiquity.com",
     "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
     "eventApiUrl": "https://eventapi.qa.vubiquity.com",
@@ -14,6 +14,7 @@
       "configuration": "/configuration-api/v1",
       "assetManagement": "/api/asset-management/v1",
       "eventApi": "/api/event-api/v1",
+      "eventApiV2": "/api/event-api/v2",
       "servicingOrder": ""
     }
   },
