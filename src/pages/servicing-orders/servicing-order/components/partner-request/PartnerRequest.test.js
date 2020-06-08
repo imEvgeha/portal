@@ -6,14 +6,7 @@ describe('PartnerRequest', () => {
     let wrapper;
 
     beforeEach(() => {
-        const orderDetails = {
-            customer: '',
-            srID: '',
-            creationDate: '',
-            createdBy: '',
-        };
-
-        wrapper = shallow(<PartnerRequest orderDetails={orderDetails} />);
+        wrapper = shallow(<PartnerRequest configuredPrId='123' externalId='345' />);
     });
 
     it('should render without crashing', () => {

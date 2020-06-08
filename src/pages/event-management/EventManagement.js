@@ -19,6 +19,7 @@ const EventManagement = () => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
         switch(type) {
             case READY:
+                api.sizeColumnsToFit();
                 setGridApi(api);
                 break;
             case SELECTION_CHANGED:
