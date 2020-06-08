@@ -98,6 +98,7 @@
     "react-toggle-button": "^2.2.0",
     "react-uid": "^2.2.0",
     "react-x-editable": "0.0.10-beta",
+    "react-xml-viewer": "^1.0.3",
     "reactjs-popup": "^1.4.2",
     "reactstrap": "^8.2.0",
     "redux": "^4.0.0",

@@ -8,12 +8,25 @@ import EventSectionCollapsible from '../event-section-collapsible/EventSectionCo
 import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
 import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
+import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
 import {DRAWER_TITLE, EVENT_MESSAGE, EVENT_HEADER, EVENT_ATTACHMENTS} from '../../eventManagementConstants';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
+    console.log(attachments);
+
+    const prepareXMLView = (key, data) => {
+        console.log(key, data);
+        let xml = `
+        <?xml version="1.0"?>
+        <${key}>
+            <rawData>${data.rawData}</rawData>
+        </${key}>
+        `;
+        return xml;
+    };
 
     return (
         <div className="nexus-c-event-drawer">
@@ -71,10 +84,17 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                 )}
                                 isDefaultOpened
                             >
+                                {attachments[key].mimeType === 'application/xml' ? (
+                                    <NexusXMLView
+                                        xml={prepareXMLView(key, attachments[key])}
+                                        indentSize={4}
+                                    />
+                            ) : (
                                 <NexusJsonView
-                                    src={attachments[key]}
+                                    src={{rawData: attachments[key].rawData}}
                                     name={key}
                                 />
+                            )}
                             </EventSectionCollapsible>
                         ))}
                     </EventSectionCollapsible>
