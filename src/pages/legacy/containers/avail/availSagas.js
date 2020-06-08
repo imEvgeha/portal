@@ -39,7 +39,8 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
         ]);
         if (!fetchMappingResult.error) {
             const {payload} = fetchMappingResult;
-            const mappings = (payload.mappings && payload.mappings.filter(el => el.dataType).filter(el => el.displayName)) || [];
+            const mappings = payload.mappings || [];
+
             yield put({
                 type: actionTypes.STORE_AVAIL_MAPPING,
                 payload: {mappings},
