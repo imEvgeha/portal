@@ -43,273 +43,138 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
     className="fulfillment-order__order-id"
   >
     Order ID: 
-    VU000134567-001
   </div>
   <div
     className="fulfillment-order__row"
   >
     <div
-      className="fulfillment-order__row--section"
+      className="fulfillment-order__column"
     >
       <div
-        className="fulfillment-order__input"
+        className="fulfillment-order__column--notes"
       >
-        <span>
-          Servicer
-        </span>
-        <input
-          disabled={true}
-          value="DETE"
+        <h6>
+          Notes:
+        </h6>
+        <NexusTextArea
+          notesValue=""
+          onTextChange={[Function]}
         />
       </div>
     </div>
     <div
-      className="fulfillment-order__row--section"
+      className="fulfillment-order__column"
     >
       <div
-        className="fulfillment-order__select-wrapper"
+        className="fulfillment-order__row"
       >
-        Bill To
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          className="fulfillment-order__select"
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "MGM",
-                "value": "MGM",
-              },
-              Object {
-                "label": "WB",
-                "value": "WB",
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": "MGM",
-              "value": "MGM",
-            }
-          }
-        />
+        <div
+          className="fulfillment-order--section"
+        >
+          <div
+            className="fulfillment-order__input"
+          >
+            <span>
+              Servicer
+            </span>
+            <input
+              disabled={true}
+              value=""
+            />
+          </div>
+          <div
+            className="fulfillment-order__select-wrapper"
+          >
+            Set Order Status
+            <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+              className="fulfillment-order__select"
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "New",
+                    "value": "new",
+                  },
+                  Object {
+                    "label": "Accepted",
+                    "value": "accepted",
+                  },
+                  Object {
+                    "label": "Rejected",
+                    "value": "rejected",
+                  },
+                  Object {
+                    "label": "Complete",
+                    "value": "complete",
+                  },
+                  Object {
+                    "label": "Canceled",
+                    "value": "canceled",
+                  },
+                  Object {
+                    "label": "Failed",
+                    "value": "failed",
+                  },
+                ]
+              }
+              value={
+                Object {
+                  "label": undefined,
+                  "value": "Completed",
+                }
+              }
+            />
+          </div>
+        </div>
       </div>
       <div
-        className="fulfillment-order__select-wrapper"
+        className="fulfillment-order__row"
       >
-        Rate Card
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          className="fulfillment-order__select"
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "MGM Rate Card",
-                "value": "MGM Rate Card",
-              },
-              Object {
-                "label": "WB Rate Card",
-                "value": "WB Rate Card",
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": "MGM Rate Card",
-              "value": "MGM Rate Card",
-            }
-          }
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    className="fulfillment-order__row"
-  >
-    <div
-      className="fulfillment-order__section"
-    >
-      <div
-        className="fulfillment-order__input"
-      >
-        <span>
-          Servicer
-        </span>
-        <input
-          disabled={true}
-          value="DETE"
-        />
-      </div>
-      <div
-        className="fulfillment-order__input"
-      >
-        <span>
-          Recipient
-        </span>
-        <input
-          disabled={true}
-          onChange={[Function]}
-          value=""
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    className="fulfillment-order__row"
-  >
-    <div
-      className="fulfillment-order__row--section"
-    >
-      <div
-        className="fulfillment-order__input"
-      >
-        <span>
-          Priority
-        </span>
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": 0,
-                "value": 0,
-              },
-              Object {
-                "label": 1,
-                "value": 1,
-              },
-              Object {
-                "label": 2,
-                "value": 2,
-              },
-              Object {
-                "label": 3,
-                "value": 3,
-              },
-              Object {
-                "label": 4,
-                "value": 4,
-              },
-              Object {
-                "label": 5,
-                "value": 5,
-              },
-              Object {
-                "label": 6,
-                "value": 6,
-              },
-              Object {
-                "label": 7,
-                "value": 7,
-              },
-              Object {
-                "label": 8,
-                "value": 8,
-              },
-              Object {
-                "label": 9,
-                "value": 9,
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": "10",
-              "value": "10",
-            }
-          }
-        />
-      </div>
-      <div
-        className="fulfillment-order__select-wrapper"
-      >
-        Set Order Status
-        <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-          className="fulfillment-order__select"
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "Completed",
-                "value": "completed",
-              },
-              Object {
-                "label": "On Hold",
-                "value": "on-hold",
-              },
-              Object {
-                "label": "In Progress",
-                "value": "in-progress",
-              },
-            ]
-          }
-          value={
-            Object {
-              "label": undefined,
-              "value": "Completed",
-            }
-          }
-        />
-      </div>
-    </div>
-    <div
-      className="fulfillment-order__row--section"
-    >
-      <div
-        className="fulfillment-order__select-wrapper"
-      >
-        <NexusDatePicker
-          allowClear={false}
-          error=""
-          hideLabel={false}
-          id="dueDate"
-          isReadOnly={false}
-          isReturningTime={false}
-          isTimestamp={false}
-          isWithInlineEdit={false}
-          label="Due Date"
-          onChange={[Function]}
-          onConfirm={[Function]}
-          value="2021-10-05"
-        />
-      </div>
-      <div
-        className="fulfillment-order__select-wrapper"
-      >
-        <NexusDatePicker
-          allowClear={false}
-          error=""
-          hideLabel={false}
-          id="startDate"
-          isReadOnly={false}
-          isReturningTime={false}
-          isTimestamp={false}
-          isWithInlineEdit={false}
-          label="Start Date"
-          onChange={[Function]}
-          onConfirm={[Function]}
-          value="2021-07-05"
-        />
+        <div
+          className="fulfillment-order--section"
+        >
+          <div
+            className="fulfillment-order__select-wrapper"
+          >
+            <NexusDatePicker
+              allowClear={false}
+              error=""
+              hideLabel={false}
+              id="dueDate"
+              isReadOnly={false}
+              isReturningTime={false}
+              isTimestamp={false}
+              isWithInlineEdit={false}
+              label="Due Date"
+              onChange={[Function]}
+              onConfirm={[Function]}
+              value=""
+            />
+          </div>
+          <div
+            className="fulfillment-order__select-wrapper"
+          >
+            <NexusDatePicker
+              allowClear={false}
+              error=""
+              hideLabel={false}
+              id="startDate"
+              isReadOnly={false}
+              isReturningTime={false}
+              isTimestamp={false}
+              isWithInlineEdit={false}
+              label="Start Date"
+              onChange={[Function]}
+              onConfirm={[Function]}
+              value=""
+            />
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <div
     className="fulfillment-order__column"
   />
-  <div
-    className="fulfillment-order__row"
-  >
-    <div
-      className="fulfillment-order__row--notes"
-    >
-      <h6>
-        Notes:
-      </h6>
-      <NexusTextArea
-        disabled={false}
-        notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        onTextChange={[Function]}
-      />
-    </div>
-  </div>
 </div>
 `;
