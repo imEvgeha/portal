@@ -20,21 +20,26 @@ const ServicingOrder = ({match}) => {
 
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
-            // setServiceOrder(servicingOrder || {});
-            if(servicingOrder.so_number) {
-                servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number).then(fulfillmentOrders => {
-                    //convert definition field from string to json for each fulfillmentOrder
-                    const parsedFulfillmentOrders = fulfillmentOrders.map((fo) => {
-                        let {definition} = fo || {};
-                        const parsedDefinition = definition ? JSON.parse(definition) : {};
-                        return {...fo, definition: parsedDefinition};
-                    });
+            if(servicingOrder) {
+                if (servicingOrder.so_number) {
+                    servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number).then(fulfillmentOrders => {
+                        //convert definition field from string to json for each fulfillmentOrder
+                        const parsedFulfillmentOrders = fulfillmentOrders.map((fo) => {
+                            let {definition} = fo || {};
+                            const parsedDefinition = definition ? JSON.parse(definition) : {};
+                            return {...fo, definition: parsedDefinition};
+                        });
 
-                    setServiceOrder({...servicingOrder, fulfillmentOrders: parsedFulfillmentOrders});
-                    setSelectedFulfillmentOrderID(get(parsedFulfillmentOrders, '[0].id', ''));
-                });
+                        setServiceOrder({...servicingOrder, fulfillmentOrders: parsedFulfillmentOrders});
+                        setSelectedFulfillmentOrderID(get(parsedFulfillmentOrders, '[0].id', ''));
+                    }).catch(() => {
+                        setServiceOrder(servicingOrder);
+                    });
+                } else {
+                    setServiceOrder(servicingOrder);
+                }
             }else{
-                setServiceOrder(servicingOrder);
+                setServiceOrder({});
             }
         });
     }, []);

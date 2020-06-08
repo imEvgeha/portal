@@ -13,18 +13,8 @@ export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams
 };
 
 export const getServicingOrderById = (id) => {
-    // return new Promise((resolve, reject) => resolve(servicingOrder));
-    // const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/so/${id}`;
-    // return nexusFetch(url);
-    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/search/so`;
-    const queryParams = parseAdvancedFilter({external_id:id});
-    const params = encodedSerialize({...queryParams});
-    return nexusFetch(url, {params}).then((response)=>{
-        if(response && response.total && response.data && Array.isArray(response.data) && response.data.length){
-            return response.data[0];
-        }
-        return response;
-    });
+    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/so/${id}`;
+    return nexusFetch(url);
 };
 
 export const getFulfilmentOrdersForServiceOrder = (id) => {
@@ -42,7 +32,7 @@ export const getServiceRequest = (externalId) => {
 export const saveFulfillmentOrder = ({data}) => {
     // TODO - integrate with backend when we have PUT API Endpoint
     // console.log('Service.saveFulfillmentOrder data: ', data);
-    return new Promise((resolve, reject) => resolve());
+    return new Promise((resolve, reject) => resolve(data));
 };
 
 export const servicingOrdersService = {
