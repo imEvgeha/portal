@@ -15,16 +15,15 @@ import './EventDrawer.scss';
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
-    console.log(attachments);
 
     const prepareXMLView = (key, data) => {
-        console.log(key, data);
-        let xml = `
-        <?xml version="1.0"?>
-        <${key}>
-            <rawData>${data.rawData}</rawData>
-        </${key}>
-        `;
+        const {base64Encoded = false, rawData = ''} = data;
+        let xml = base64Encoded
+            ? atob(rawData)
+            : `<?xml version="1.0"?>
+                <${key}>
+                    <rawData>${rawData}</rawData>
+                </${key}>`;
         return xml;
     };
 
@@ -91,7 +90,9 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                     />
                             ) : (
                                 <NexusJsonView
-                                    src={{rawData: attachments[key].rawData}}
+                                    src={attachments[key].base64Encoded
+                                        ? {rawData: JSON.parse(atob(attachments[key].rawData))}
+                                        : {rawData: JSON.parse(attachments[key].rawData)}}
                                     name={key}
                                 />
                             )}
