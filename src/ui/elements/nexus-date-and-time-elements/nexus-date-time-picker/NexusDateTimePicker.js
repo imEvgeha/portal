@@ -14,7 +14,7 @@ import {
     TIMESTAMP_TIME_FORMAT,
     RELATIVE_TIME_FORMAT, TIMESTAMP_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT,
 } from '../constants';
-import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/DateTimeUtils';
+import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDateTimePicker = ({
     id,

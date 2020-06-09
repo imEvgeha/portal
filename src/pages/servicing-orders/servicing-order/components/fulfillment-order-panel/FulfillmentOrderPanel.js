@@ -4,7 +4,7 @@ import './FulfillmentOrderPanel.scss';
 import File from '../../../../../assets/file.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 
-const FulfillmentOrderPanel = ({id, status, dueDate, selected, handleFulfillmentOrderChange}) => {
+const FulfillmentOrderPanel = ({id, external_id, status, dueDate, selected, handleFulfillmentOrderChange}) => {
 
     return (
         <div
@@ -13,7 +13,7 @@ const FulfillmentOrderPanel = ({id, status, dueDate, selected, handleFulfillment
         >
             <div className='nexus-c-fulfillment-order-panel__title'>
                 <File className='nexus-c-fulfillment-order-panel__file-icon' />
-                <span title={id} className='nexus-c-fulfillment-order-panel__filename'>{id}</span>
+                <span title={id} className='nexus-c-fulfillment-order-panel__filename'>{external_id}</span>
             </div>
             <div className='nexus-c-fulfillment-order-panel__status'>
                 <span className='nexus-c-fulfillment-order-panel__date'>Due Date: {dueDate}</span>

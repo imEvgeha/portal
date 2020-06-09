@@ -1,6 +1,6 @@
 {
   "gateway":{
-    "url":" https://availsapi.dev.vubiquity.com",
+    "url":"https://availsapi.dev.vubiquity.com",
     "availsParserUrl": "https://avails-parser.dev.vubiquity.com",
     "titleUrl":"https://titlesapi.dev.vubiquity.com",
     "configuration": "https://configapi.dev.vubiquity.com",

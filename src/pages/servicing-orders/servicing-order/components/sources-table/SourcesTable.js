@@ -22,8 +22,7 @@ import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(
-    withColumnsResizing(),
-    withEditableColumns(),
+    withColumnsResizing()
 )(NexusGrid);
 
 const SourcesTable = ({data, onSelectedSourceChange}) => {
@@ -125,13 +124,11 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 <h5 className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</h5>
                 <div className="nexus-c-sources-table__subtitle">
                     {SOURCE_SUBTITLE}
-                    <Add onClick={addNewRow} />
                 </div>
             </div>
             <SourceTableGrid
                 columnDefs={[
                     radioButtonColumn,
-                    closeButtonColumn,
                     servicesColumn,
                     ...columnDefinitions
                 ]}

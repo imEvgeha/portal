@@ -8,7 +8,8 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import {DATETIME_FIELDS, dateToISO} from '../../../../util/DateTimeUtils';
+import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 
 const mapStateToProps = state => {
     return {
@@ -363,6 +364,7 @@ class SelectableInput extends Component {
                 case 'year' : return renderYearField(selected, displayName);
                 case 'double' : return renderDoubleField(selected, displayName);
                 case 'multiselect' : return renderSelect(selected, displayName);
+                case 'territoryType' : return renderSelect(selected, displayName);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
                 case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderRangeDatepicker(selected, displayName, false);

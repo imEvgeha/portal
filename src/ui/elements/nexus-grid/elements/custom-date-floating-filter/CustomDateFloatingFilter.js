@@ -1,6 +1,7 @@
 import React from 'react';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import './CustomDateFloatingFilter.scss';
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 class CustomDateFloatingFilter extends React.Component {
     constructor(props) {

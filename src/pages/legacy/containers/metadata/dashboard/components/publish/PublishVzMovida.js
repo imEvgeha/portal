@@ -3,7 +3,8 @@ import moment from 'moment';
 import {capitalize} from 'lodash';
 import {default as AtlaskitButton} from '@atlaskit/button';
 import TitleSystems from '../../../../../constants/metadata/systems';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
 
 const {MOVIDA, VZ} = TitleSystems;
 

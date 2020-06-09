@@ -39,7 +39,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         "headerName": "Event Type",
         "javaVariableName": "eventType",
         "minWidth": 200,
-        "searchDataType": "multiselect",
+        "searchDataType": "string",
         "valueFormatter": undefined,
       },
       Object {
@@ -51,7 +51,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         "headerName": "Event Source",
         "javaVariableName": "eventSource",
         "minWidth": 200,
-        "searchDataType": "multiselect",
+        "searchDataType": "string",
         "valueFormatter": undefined,
       },
       Object {
@@ -198,7 +198,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         "headerName": "Event Type",
         "javaVariableName": "eventType",
         "minWidth": 200,
-        "searchDataType": "multiselect",
+        "searchDataType": "string",
       },
       Object {
         "colId": "eventSource",
@@ -208,7 +208,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         "headerName": "Event Source",
         "javaVariableName": "eventSource",
         "minWidth": 200,
-        "searchDataType": "multiselect",
+        "searchDataType": "string",
       },
       Object {
         "colId": "tenantId",
