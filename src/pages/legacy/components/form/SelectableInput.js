@@ -363,6 +363,7 @@ class SelectableInput extends Component {
                 case 'year' : return renderYearField(selected, displayName);
                 case 'double' : return renderDoubleField(selected, displayName);
                 case 'multiselect' : return renderSelect(selected, displayName);
+                case 'territoryType' : return renderSelect(selected, displayName);
                 case 'duration' : return renderRangeDurationField(selected, displayName);
                 case 'time' : return renderTimeField(selected, displayName);
                 case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderRangeDatepicker(selected, displayName, false);

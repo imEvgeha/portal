@@ -76,7 +76,7 @@
   "javaVariableName": "territory",
   "displayName": "Territory",
   "dataType": "territoryType",
-  "searchDataType": "multiselect",
+  "searchDataType": "territoryType",
   "configEndpoint": "/countries",
   "queryParamName": "territory",
   "readOnly": false,

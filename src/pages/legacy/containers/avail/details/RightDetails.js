@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom'; // we should remove thiss, replace use of findDomNode with ref
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import moment from 'moment';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is inside atlaskit componetn for editable
 import config from 'react-global-configuration';
-import {Button, Label} from 'reactstrap';
+import {Label} from 'reactstrap';
 import {cloneDeep} from 'lodash';
 import './RightDetails.scss';
 import {store} from '../../../../../index';
@@ -938,6 +937,7 @@ class RightDetails extends React.Component {
                     this.setState({});
                 }, 1);
             };
+
 
             const removeTerritoryNotOriginalFields = (list = []) => {
                 const {mappings} = this.props.availsMapping || [];
