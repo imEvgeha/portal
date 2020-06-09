@@ -23,16 +23,9 @@ const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
 
-    const prepareXMLView = (key, data) => {
+    const decodeXML = data => {
         const {base64Encoded = false, rawData = ''} = data;
-        let xml = base64Encoded
-            ? atob(rawData)
-            : `<?xml version="1.0" encoding="utf-8"?>
-                <${key}>
-                    <rawData>
-                        ${(new DOMParser()).parseFromString(rawData, XML_MIME_TYPE)}
-                    </rawData>
-                </${key}>`;
+        const xml = base64Encoded ? atob(rawData) : rawData;
         return xml;
     };
 
@@ -98,7 +91,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                             >
                                 {attachments[key].mimeType === XML_MIME_TYPE ? (
                                     <NexusXMLView
-                                        xml={prepareXMLView(key, attachments[key])}
+                                        xml={decodeXML(attachments[key])}
                                         indentSize={4}
                                     />
                             ) : (
