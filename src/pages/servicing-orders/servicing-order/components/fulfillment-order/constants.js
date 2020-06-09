@@ -1,14 +1,11 @@
 export default {
     fieldKeys: {
-        ID: 'fulfillmentOrderId',
-        BILL_TO: 'billTo',
-        RATE_CARD: 'rateCard',
+        ID: 'external_id',
         STATUS: 'status',
-        DUE_DATE: 'dueDate',
-        START_DATE: 'startDate',
-        PRIORITY: 'priority',
-        SERVICER: 'servicer',
-        RECIPIENT: 'recipient'
+        DUE_DATE: 'definition.dueDate',
+        START_DATE: 'definition.startDate',
+        SERVICER: 'fs',
+        NOTE: 'note',
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },
@@ -19,11 +16,13 @@ export default {
         { value: 'WB Rate Card', label: 'WB Rate Card' }
     ],
     STATUS_LIST: [
-        { value: 'completed', label: 'Completed'},
-        { value: 'on-hold', label: 'On Hold'},
-        { value: 'in-progress', label: 'In Progress'}
+        { value: 'NEW', label: 'New'},
+        { value: 'ACCEPTED', label: 'Accepted'},
+        { value: 'REJECTED', label: 'Rejected'},
+        { value: 'COMPLETE', label: 'Complete'},
+        { value: 'CANCELED', label: 'Canceled'},
+        { value: 'FAILED', label: 'Failed'}
     ],
-    NOTES: 'notes',
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',
     SERVICES_TITLE: 'Services',

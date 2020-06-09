@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {compose} from 'redux';
-import {cloneDeep} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -30,16 +30,17 @@ const ServicesTable = ({data}) => {
         }
     }, [data]);
 
-    const handleServiceRemoval = id => {
-        const filteredServices = services[`${providerServices}`].filter(item => item.componentId != id);
+    const handleServiceRemoval = index => {
+        const filteredServices = cloneDeep(services[`${providerServices}`]);
+        filteredServices.splice(index, 1);
         setServices({...services, [`${providerServices}`]: filteredServices});
 
     };
 
-    const closeButtonCell = ({data}) => {
+    const closeButtonCell = ({rowIndex}) => {
         return (
-            <CustomActionsCellRenderer id={data.componentId} classname="nexus-c-services__close-icon">
-                <span onClick={() => handleServiceRemoval(data.componentId)}>
+            <CustomActionsCellRenderer id={1} classname="nexus-c-services__close-icon">
+                <span onClick={() => handleServiceRemoval(rowIndex)}>
                     <EditorCloseIcon />
                 </span>
             </CustomActionsCellRenderer>
@@ -76,17 +77,25 @@ const ServicesTable = ({data}) => {
     });
 
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
-    const amsAssetID = services.amsAssetId || null;
+    const barcode = services.barcode || null;
+
+    const valueGetter = (params) => {
+        return get(params.data, params.colDef.dataSource || params.colDef.field, '');
+    };
+
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
                 <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${servicesCount})`}</h5>
-                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {amsAssetID}</div>
+                <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {barcode}</div>
                 <div className="nexus-c-services-table__add-icon">
                     <Add onClick={addEmptyServicesRow} />
                 </div>
             </div>
             <ServicesTableGrid
+                defaultColDef={
+                    {valueGetter}
+                }
                 columnDefs={[
                     orderingColumn,
                     closeButtonColumn,

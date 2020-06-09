@@ -16,14 +16,14 @@ const ServicingOrdersView = () => {
 
     useEffect(() => {
         setFixedFilter({
-            status: isHideCompleted ? ['On Hold', 'Not Started', 'In Progress', 'Canceled'] : undefined,
-            readiness: isHideReady ? ['Not Configured'] : undefined,
+            status: isHideCompleted ? ['New', 'Accepted', 'Rejected', 'Cancelled', 'Failed'] : undefined,
+            readiness: isHideReady ? ['New', 'Hold'] : undefined,
         });
     }, [isHideReady, isHideCompleted]);
 
     useEffect(() => {
         setExternalFilter({
-            ...customerFilter && customerFilter.value && {customer : customerFilter.value}
+            ...customerFilter && customerFilter.value && {tenant : customerFilter.value}
         });
     }, [customerFilter]);
 

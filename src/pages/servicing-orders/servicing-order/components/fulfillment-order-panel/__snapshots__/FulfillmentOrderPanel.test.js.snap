@@ -14,9 +14,7 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
     <span
       className="nexus-c-fulfillment-order-panel__filename"
       title="VU000134567-001"
-    >
-      VU000134567-001
-    </span>
+    />
   </div>
   <div
     className="nexus-c-fulfillment-order-panel__status"

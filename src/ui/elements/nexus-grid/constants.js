@@ -1,3 +1,5 @@
+import {DATETIME_FIELDS} from '../../../util/date-time/constants';
+
 const GRID_EVENTS = {
     READY: 'gridReady',
     SIZE_CHANGED: 'gridSizeChanged',
@@ -21,7 +23,6 @@ const DEFAULT_HOC_PROPS = [
     'mapping',
     'selectValues'
 ];
-import {DATETIME_FIELDS} from '../../../util/DateTimeUtils';
 
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {

@@ -9,8 +9,8 @@ import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 import {isObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
-import {DATETIME_FIELDS} from '../../../../util/DateTimeUtils';
 import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
     'mapping',

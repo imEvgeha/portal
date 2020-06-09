@@ -25,7 +25,7 @@ import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 
 const mapStateToProps = state => {

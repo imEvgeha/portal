@@ -1,6 +1,7 @@
 import Constants from './Constants';
 import {get, isEqual} from 'lodash';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 
 const { dataTypes: {DATE, AUDIO, RATING, METHOD},
     colors: {CURRENT_VALUE, STALE_VALUE}, RATING_SUBFIELD,
