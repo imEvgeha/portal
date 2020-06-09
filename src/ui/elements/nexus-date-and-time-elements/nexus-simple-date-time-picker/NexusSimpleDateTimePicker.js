@@ -13,7 +13,7 @@ import {
     TIMES
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
-import {getDateFormatBasedOnLocale} from '../../../../util/DateTimeUtils';
+import {getDateFormatBasedOnLocale} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusSimpleDateTimePicker = ({
     label,

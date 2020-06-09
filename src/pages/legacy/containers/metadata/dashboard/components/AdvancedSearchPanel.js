@@ -11,7 +11,7 @@ import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
 import { titleMapping } from '../../service/Profile';
-import {DATETIME_FIELDS} from '../../../../../../util/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../../util/date-time/constants';
 
 const mapStateToProps = state => {
     return {

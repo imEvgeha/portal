@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {getDateFormatBasedOnLocale} from './DateTimeUtils';
+import {getDateFormatBasedOnLocale} from './date-time/DateTimeUtils';
 
 const datePattern = new RegExp('[0-9]{2}[\\/][0-9]{2}[\\/][0-9]{4}');
 
