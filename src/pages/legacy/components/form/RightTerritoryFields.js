@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
-import {DatePicker} from '@atlaskit/datetime-picker';
+import Textfield from '@atlaskit/textfield'
 import {CreatableSelect} from '@atlaskit/select';
 
 const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
@@ -79,23 +79,13 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : 'false', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'False', value: false }}>
-                {({ fieldProps: { id, ...rest } }) => (
-                    <Select
-                        id={`select-${id}`}
-                        {...rest}
-                        isSearchable={false}
-                        placeholder="Add selected"
-                        options={[
-                            { label: 'true', value: true },
-                            { label: 'false', value: false },]}
+            <Field name="selected" defaultValue="False" label="SELECTED">
+                {() => (
+                    <Textfield
+                        name="readOnly"
+                        isDisabled
+                        defaultValue="False"
                     />
-                )}
-            </Field>
-
-            <Field label="DATE SELECTED" name="dateSelected" defaultValue={isEdit ? returnValidData('dateSelected') && existingTerritoryList[territoryIndex]['dateSelected'] ? existingTerritoryList[territoryIndex]['dateSelected'] : '' : ''}>
-                {({ fieldProps }) => (
-                    <DatePicker id="datepicker" placeholder="DD/MM/YYYY" {...fieldProps} dateFormat="DD/MM/YYYY" />
                 )}
             </Field>
 
