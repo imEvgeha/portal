@@ -1,50 +1,6 @@
 [
   {
-    "javaVariableName": "type",
-    "displayName": "Type",
-    "dataType": "select",
-    "searchDataType": "select",
-    "queryParamName": "type",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "version",
-    "displayName": "Version",
-    "dataType": "select",
-    "searchDataType": "select",
-    "queryParamName": "type",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "standard",
-    "displayName": "Standard",
-    "dataType": "select",
-    "searchDataType": "select",
-    "queryParamName": "standard",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "operationalStatus",
-    "displayName": "Operational Status",
-    "dataType": "select",
-    "searchDataType": "select",
-    "queryParamName": "operationalStatus",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "componentId",
+    "javaVariableName": "externalServices",
     "displayName": "Component ID",
     "dataType": "string",
     "searchDataType": "string",
@@ -62,7 +18,7 @@
     "queryParamName": "spec",
     "readOnly": true,
     "enableSearch": true,
-    "enableEdit": false,
+    "enableEdit": true,
     "required": true
   },
   {
@@ -77,14 +33,24 @@
     "required": true
   },
   {
-    "javaVariableName": "sourceStandard",
+    "javaVariableName": "overrideDueDate",
     "displayName": "Source Standard",
     "dataType": "string",
     "searchDataType": "string",
-    "queryParamName": "sourceStandard",
+    "queryParamName": "overrideDueDate",
     "readOnly": true,
     "enableSearch": true,
-    "enableEdit": false,
+    "enableEdit": true,
+    "required": true
+  },
+  {
+    "javaVariableName": "status",
+    "displayName": "Operational Status",
+    "dataType": "select",
+    "queryParamName": "status",
+    "readOnly": true,
+    "enableSearch": true,
+    "enableEdit": true,
     "required": true
   }
 ]

@@ -16,12 +16,12 @@ export default {
         { value: 'WB Rate Card', label: 'WB Rate Card' }
     ],
     STATUS_LIST: [
-        { value: 'new', label: 'New'},
-        { value: 'accepted', label: 'Accepted'},
-        { value: 'rejected', label: 'Rejected'},
-        { value: 'complete', label: 'Complete'},
-        { value: 'canceled', label: 'Canceled'},
-        { value: 'failed', label: 'Failed'}
+        { value: 'NEW', label: 'New'},
+        { value: 'ACCEPTED', label: 'Accepted'},
+        { value: 'REJECTED', label: 'Rejected'},
+        { value: 'COMPLETE', label: 'Complete'},
+        { value: 'CANCELED', label: 'Canceled'},
+        { value: 'FAILED', label: 'Failed'}
     ],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',

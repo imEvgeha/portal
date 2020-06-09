@@ -2,12 +2,33 @@ import {get} from 'lodash';
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
-    const sources = fs ? get(definition, `${fs.toLowerCase()}Sources`, []) : [];
-    const preparedSources = sources.map(el => {
-        const {externalSources, ...rest} = el || {};
-        const flatenData = {...externalSources, ...rest, fs};
-        return flatenData;
+
+    if(!fs) return [];
+
+    const preparedSources = {};
+
+    const servicesKey = `${fs.toLowerCase()}Services`;
+    const sourcesKey = `${fs.toLowerCase()}Sources`;
+
+    const services = get(definition, servicesKey, []);
+
+    services.forEach((service) => {
+        const sources = get(service, sourcesKey, {});
+        const {barcode} = sources;
+
+        if(barcode){
+            const source = get(preparedSources, barcode, {});
+            preparedSources[barcode] = source;
+            source.fs = fs;
+            source.barcode = barcode;
+            const preparedServices = get(source, servicesKey, []);
+            source[servicesKey] = preparedServices;
+            preparedServices.push(service);
+        }
     });
 
-    return preparedSources;
+
+    return Object.entries(preparedSources).map(
+        ([key, value]) => (value)
+    );
 };
