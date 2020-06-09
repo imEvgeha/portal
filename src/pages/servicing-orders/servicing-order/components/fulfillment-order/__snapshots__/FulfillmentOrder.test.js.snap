@@ -93,27 +93,27 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 Array [
                   Object {
                     "label": "New",
-                    "value": "new",
+                    "value": "NEW",
                   },
                   Object {
                     "label": "Accepted",
-                    "value": "accepted",
+                    "value": "ACCEPTED",
                   },
                   Object {
                     "label": "Rejected",
-                    "value": "rejected",
+                    "value": "REJECTED",
                   },
                   Object {
                     "label": "Complete",
-                    "value": "complete",
+                    "value": "COMPLETE",
                   },
                   Object {
                     "label": "Canceled",
-                    "value": "canceled",
+                    "value": "CANCELED",
                   },
                   Object {
                     "label": "Failed",
-                    "value": "failed",
+                    "value": "FAILED",
                   },
                 ]
               }

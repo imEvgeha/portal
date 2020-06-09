@@ -16,9 +16,6 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
       className="nexus-c-sources-table__subtitle"
     >
       Select source to view associated children services indicated by the badge
-      <[object Object]
-        onClick={[Function]}
-      />
     </div>
   </div>
   <Connect(ComposedComponent)
@@ -31,25 +28,6 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           },
           "colId": "radio",
           "field": "radio",
-          "headerName": "",
-          "lockPosition": true,
-          "menuTabs": Array [],
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 40,
-        },
-        Object {
-          "cellEditorFramework": undefined,
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {
-            "list": Array [],
-          },
-          "colId": "",
-          "editable": false,
-          "field": "buttons",
           "headerName": "",
           "lockPosition": true,
           "menuTabs": Array [],
@@ -78,55 +56,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           "colId": "barcode",
           "field": "barcode",
           "headerName": "Barcode",
-          "width": 100,
-        },
-        Object {
-          "colId": "title",
-          "field": "title",
-          "headerName": "Title",
-        },
-        Object {
-          "colId": "titleId",
-          "field": "titleId",
-          "headerName": "Title ID",
-          "width": 100,
-        },
-        Object {
-          "colId": "amsAssetId",
-          "field": "amsAssetId",
-          "headerName": "MP Asset ID",
-          "width": 100,
-        },
-        Object {
-          "colId": "assetFormat",
-          "field": "assetFormat",
-          "headerName": "Asset Format",
-        },
-        Object {
-          "colId": "standard",
-          "field": "standard",
-          "headerName": "Standard",
-        },
-        Object {
-          "colId": "assetStatus",
-          "field": "assetStatus",
-          "headerName": "Asset Status",
-        },
-        Object {
-          "colId": "shipVia",
-          "field": "shipVia",
-          "headerName": "Ship Via",
-        },
-        Object {
-          "colId": "shipListId",
-          "field": "shipListId",
-          "headerName": "Ship List ID",
-          "width": 150,
-        },
-        Object {
-          "colId": "startDate",
-          "field": "startDate",
-          "headerName": "Do not start before",
+          "width": 200,
         },
       ]
     }
