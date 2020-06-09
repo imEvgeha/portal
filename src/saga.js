@@ -6,6 +6,8 @@ import {titleMatchingWatcher} from './pages/avails/title-matching/titleMatchingS
 import rightHistoryWatcher from './pages/avails/right-history-view/rightHistorySagas';
 import availsWatcher from './pages/avails/availsSagas';
 import {metadataWatcher} from './pages/metadata/metadataSagas';
+import {eventManagementWatcher} from './pages/event-management/eventManagementSagas';
+import {servicingOrdersWatcher} from './pages/servicing-orders/servicingOrdersSaga';
 
 export default function* rootSaga() {
     yield all([
@@ -16,6 +18,8 @@ export default function* rootSaga() {
         fork(rightHistoryWatcher),
         fork(availsWatcher),
         fork(metadataWatcher),
+        fork(eventManagementWatcher),
+        fork(servicingOrdersWatcher),
     ]);
 }
 

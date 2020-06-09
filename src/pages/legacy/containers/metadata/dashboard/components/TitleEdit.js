@@ -93,7 +93,7 @@ class TitleEdit extends Component {
 
     loadTitle(titleId) {
         titleService.getTitleById(titleId).then((response) => {
-            const titleForm = response.data;
+            const titleForm = response;
             this.setState({ titleForm, editedForm: titleForm });
             this.loadParentTitle(titleForm);
         }).catch(() => {
@@ -107,7 +107,7 @@ class TitleEdit extends Component {
             if (parent) {
                 const parentId = parent.id;
                 titleService.getTitleById(parentId).then((response) => {
-                    const parentTitleForm = response.data;
+                    const parentTitleForm = response;
                     let newEpisodic = Object.assign(this.state.titleForm.episodic, { seriesTitleName: parentTitleForm.title });
                     let newTitleForm = Object.assign(this.state.titleForm, { episodic: newEpisodic });
                     this.setState({
@@ -123,7 +123,7 @@ class TitleEdit extends Component {
 
     loadTerritoryMetadata(titleId) {
         titleService.getTerritoryMetadataById(titleId).then((response) => {
-            const territoryMetadata = response.data;
+            const territoryMetadata = response;
             this.setState({
                 territory: territoryMetadata
             });
@@ -135,7 +135,7 @@ class TitleEdit extends Component {
     loadEditorialMetadata() {
         const titleId = this.props.match.params.id;
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
-            const editorialMetadata = response.data;
+            const editorialMetadata = response;
             this.setState({
                 editorialMetadata: editorialMetadata
             });
@@ -410,17 +410,16 @@ class TitleEdit extends Component {
     titleUpdate = (title, syncToVZ, syncToMovida, switchEditMode) => {
         return titleService.updateTitle(title, syncToVZ, syncToMovida).then((response) => {
             this.setState({
-                titleForm: response.data,
-                editedForm: response.data,
+                titleForm: response,
+                editedForm: response,
                 ratingForCreate: {},
                 territoryMetadataActiveTab: CURRENT_TAB,
                 editorialMetadataActiveTab: CURRENT_TAB,
                 titleRankingActiveTab: CURRENT_TAB,
             });
 
-            this.loadParentTitle(response.data);
+            this.loadParentTitle(response);
             return true;
-
         }).catch(() => {
             console.error('Unable to load Title Data');
             return false;
@@ -544,10 +543,14 @@ class TitleEdit extends Component {
             };
             promises.push(titleService.updateTerritoryMetadata(dataFormatted).then((response) => {
                     const list = [].concat(this.state.territory);
-                    const foundIndex = list.findIndex(x => x.id === response.data.id);
-                    list[foundIndex] = response.data;
+                    const foundIndex = list.findIndex(x => x.id === response.id);
+                    list[foundIndex] = response;
+
+                    // Filter out deleted territories
+                    const appliedTerritories = list.filter(({metadataStatus}) => metadataStatus !== 'deleted');
+
                     this.setState({
-                        territory: list
+                        territory: appliedTerritories,
                     });
                     return true;
                 }).catch(() => {
@@ -583,7 +586,7 @@ class TitleEdit extends Component {
             promises.push(titleService.addTerritoryMetadata(newTerritory).then((response) => {
                     this.cleanTerritoryMetadata();
                     this.setState({
-                        territory: [response.data, ...this.state.territory],
+                        territory: [response, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
                     return true;
@@ -597,6 +600,20 @@ class TitleEdit extends Component {
         }
         return promises;
     };
+
+    /* delete Territory metadata */
+    handleTerritoryMetaDataDelete = (id) => {
+        let toBeDeleted = this.state.territory.find(e => e.id === id);
+        if (toBeDeleted) {
+            let newData = this.state.territory.filter(e => e.id !== id);
+            toBeDeleted.metadataStatus = 'deleted';
+            this.setState({
+                territory: newData,
+                territoryMetadataActiveTab: CURRENT_TAB,
+                updatedTerritories: [toBeDeleted, ...this.state.updatedTerritories]
+            });
+        }
+    }
 
     /**
      * Editorial Metadata document
@@ -625,6 +642,20 @@ class TitleEdit extends Component {
 
         this.updateEditedEditorialMetadata(edited, data.id);
     };
+
+    /* delete editorial metadata */
+    handleEditorialMetaDataDelete = (id) => {
+        let toBeDeleted = this.state.editorialMetadata.find(e => e.id === id);
+        if (toBeDeleted) {
+            let newData = this.state.editorialMetadata.filter(e => e.id !== id);
+            this.setState({
+                editorialMetadata: newData,
+                editorialMetadataActiveTab: CURRENT_TAB
+            });
+            toBeDeleted.metadataStatus = 'deleted';
+            this.updateEditedEditorialMetadata(toBeDeleted, id);
+        }
+    }
 
     handleEditorialMetadataGenreEditChange = (data, genres) => {
         let edited = this.state.updatedEditorialMetadata.find(e => e.id === data.id);
@@ -809,8 +840,8 @@ class TitleEdit extends Component {
         this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
         promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
             this.loadEditorialMetadata();
-            if(response.data[0].response.failed && response.data[0].response.failed.length > 0) {
-                const message = response.data[0].response.failed.map(e => e.description).join(' ');
+            if(response[0].response.failed && response[0].response.failed.length > 0) {
+                const message = response[0].response.failed.map(e => e.description).join(' ');
                 this.props.addToast({
                     title: 'Update Editorial Metadata Failed',
                     description: message,
@@ -836,11 +867,12 @@ class TitleEdit extends Component {
                 promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
+                        editorialMetadata: [response, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
                     this.loadEditorialMetadata();
-                    if(response.data[0].response.failed && response.data[0].response.failed.length > 0) {
-                        const message = response.data[0].response.failed.map(e => e.description).join(' ');
+                    if(response[0].response.failed && response[0].response.failed.length > 0) {
+                        const message = response[0].response.failed.map(e => e.description).join(' ');
                         this.props.addToast({
                             title: 'Create Editorial Metadata Failed',
                             description: message,
@@ -1123,6 +1155,7 @@ class TitleEdit extends Component {
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
                         cleanField={this.cleanField}
+                        handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
                     />
 
                     <TerritoryMetadata
@@ -1140,6 +1173,7 @@ class TitleEdit extends Component {
                         handleEditChange={this.handleTerritoryMetadataEditChange}
                         handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
                         isEditMode={this.state.isEditMode}
+                        handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
                     />
                 </AvForm>
             </EditPage>

@@ -202,7 +202,7 @@ const RightsRepository = ({
         );
     };
 
-    const columnDefsWithRedirect = columnDefsClone.map(columnDef => {
+    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/'
@@ -394,6 +394,7 @@ const RightsRepository = ({
                 rowData={selectedRepoRights}
                 isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
             />
             <RightsRepositoryTable
                 id='rightsRepo'

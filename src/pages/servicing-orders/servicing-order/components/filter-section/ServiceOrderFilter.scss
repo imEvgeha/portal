@@ -1,0 +1,43 @@
+.so-panel-filter-detail {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: space-around;
+  font-size: 14px;
+  padding: 10px 50px 15px 60px;
+  &__section {
+    display: flex;
+    flex-direction: column;
+    & > div {
+      width: 100%;
+      > div {
+        border: 0;
+      }
+    }
+    & > input {
+      width: 135px;
+      height: 40px;
+      border: 0;
+      padding: 0 10px;
+    }
+  }
+  &__span {
+    margin: 0;
+  }
+  &__h2 {
+    margin-bottom: 20px;
+  }
+  &__p {
+    margin-bottom: 2px;
+  }
+  & button {
+    width: 60%;
+    margin-top: 5px;
+    color: #42526E;
+    margin-bottom: 10px;
+  }
+  &__drawer {
+    margin-left: 20px;
+    margin-top: 2px;
+  }
+}

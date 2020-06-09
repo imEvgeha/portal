@@ -34,10 +34,19 @@ class FreeTextSearch extends React.Component {
     }
 
     handleSearch() {
-        this.props.searchFormUpdateTextSearch({
-            title: this.state.title
-        });
-        this.props.onSearch({title: this.state.title});
+        const {title} = this.state;
+        const {searchFormUpdateTextSearch, onSearch} = this.props;
+
+        searchFormUpdateTextSearch({title});
+
+        // If title was wrapped with double-quotes then do an exact search,
+        // otherwise proceed with standard search
+        if (title.startsWith('"') && title.endsWith('"')) {
+            const strippedTitle = title.slice(1, title.length - 1); // Strip double-quotes
+            onSearch({title: strippedTitle, exactMatch: true});
+        } else {
+            onSearch({title});
+        }
     }
 
     render() {

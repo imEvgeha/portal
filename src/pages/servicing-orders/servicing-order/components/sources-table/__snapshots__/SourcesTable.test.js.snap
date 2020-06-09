@@ -1,0 +1,278 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SourceTable with rows Should match snapshot 1`] = `
+<div
+  className="nexus-c-sources-table"
+>
+  <div
+    className="nexus-c-sources-table__header"
+  >
+    <h5
+      className="nexus-c-sources-table__title"
+    >
+      Sources (0)
+    </h5>
+    <div
+      className="nexus-c-sources-table__subtitle"
+    >
+      Select source to view associated children services indicated by the badge
+      <[object Object]
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+  <Connect(ComposedComponent)
+    columnDefs={
+      Array [
+        Object {
+          "cellRendererFramework": [Function],
+          "cellRendererParams": Object {
+            "selectedItem": undefined,
+          },
+          "colId": "radio",
+          "field": "radio",
+          "headerName": "",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "cellEditorFramework": undefined,
+          "cellRendererFramework": [Function],
+          "cellRendererParams": Object {
+            "list": Array [],
+          },
+          "colId": "",
+          "editable": false,
+          "field": "buttons",
+          "headerName": "",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "cellRendererFramework": [Function],
+          "colId": "services",
+          "field": "services",
+          "headerName": "#",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 40,
+        },
+        Object {
+          "colId": "barcode",
+          "field": "barcode",
+          "headerName": "Barcode",
+          "width": 100,
+        },
+        Object {
+          "colId": "title",
+          "field": "title",
+          "headerName": "Title",
+        },
+        Object {
+          "colId": "titleId",
+          "field": "titleId",
+          "headerName": "Title ID",
+          "width": 100,
+        },
+        Object {
+          "colId": "amsAssetId",
+          "field": "amsAssetId",
+          "headerName": "MP Asset ID",
+          "width": 100,
+        },
+        Object {
+          "colId": "assetFormat",
+          "field": "assetFormat",
+          "headerName": "Asset Format",
+        },
+        Object {
+          "colId": "standard",
+          "field": "standard",
+          "headerName": "Standard",
+        },
+        Object {
+          "colId": "assetStatus",
+          "field": "assetStatus",
+          "headerName": "Asset Status",
+        },
+        Object {
+          "colId": "shipVia",
+          "field": "shipVia",
+          "headerName": "Ship Via",
+        },
+        Object {
+          "colId": "shipListId",
+          "field": "shipListId",
+          "headerName": "Ship List ID",
+          "width": 150,
+        },
+        Object {
+          "colId": "startDate",
+          "field": "startDate",
+          "headerName": "Do not start before",
+        },
+      ]
+    }
+    domLayout="autoHeight"
+    mapping={
+      Array [
+        Object {
+          "dataType": "string",
+          "displayName": "Barcode",
+          "enableEdit": true,
+          "enableSearch": false,
+          "javaVariableName": "barcode",
+          "readOnly": false,
+          "required": true,
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Title",
+          "enableEdit": false,
+          "enableSearch": false,
+          "javaVariableName": "title",
+          "queryParamName": "title",
+          "readOnly": true,
+          "required": true,
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Title ID",
+          "enableEdit": false,
+          "enableSearch": false,
+          "javaVariableName": "titleId",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "MP Asset ID",
+          "enableEdit": false,
+          "enableSearch": true,
+          "javaVariableName": "amsAssetId",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Asset Format",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "assetFormat",
+          "readOnly": false,
+          "required": true,
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Standard",
+          "enableEdit": false,
+          "enableSearch": true,
+          "javaVariableName": "standard",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Asset Status",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "assetStatus",
+          "options": Array [
+            "IN",
+            "Being Fixed",
+            "Being Made",
+          ],
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Ship Via",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "shipVia",
+          "options": Array [
+            "Aspera",
+            "Smart Jogs",
+          ],
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Ship List ID",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "shipListId",
+          "options": Array [
+            "Vubiquity",
+            "Receipient",
+          ],
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "select",
+        },
+        Object {
+          "dataType": "businessDateTime",
+          "displayName": "Do not start before",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "startDate",
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "businessDateTime",
+        },
+      ]
+    }
+    notEditableColumns={
+      Array [
+        "title",
+        "titleId",
+        "amsAssetId",
+        "standard",
+      ]
+    }
+    onGridEvent={[Function]}
+    rowData={Array []}
+    selectValues={
+      Object {
+        "assetStatus": Array [
+          "IN",
+          "Being Fixed",
+          "Being Made",
+        ],
+        "shipListId": Array [
+          "Vubiquity",
+          "Receipient",
+        ],
+        "shipVia": Array [
+          "Aspera",
+          "Smart Jogs",
+        ],
+      }
+    }
+  />
+</div>
+`;

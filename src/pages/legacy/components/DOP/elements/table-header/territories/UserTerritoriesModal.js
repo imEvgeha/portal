@@ -54,7 +54,7 @@ class UserTerritoriesModal extends React.Component {
             getConfigApiValues(configFields.LOCALE, 0, pageSize, 'countryName', 'countryName', searchValue)
                 .then((res) => {
                     this.setState({
-                        configTerritories: res.data.data,
+                        configTerritories: res.data,
                         isLoading: false,
                     });
                 });

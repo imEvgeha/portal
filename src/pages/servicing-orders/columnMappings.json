@@ -1,0 +1,109 @@
+[
+  {
+    "colId": "srId",
+    "field": "srId",
+    "headerName": "SR ID",
+    "dataType": "string",
+    "width": 150,
+    "javaVariableName": "srId",
+    "displayName": "SR ID",
+    "enableSearch": true,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "soNumber",
+    "field": "soNumber",
+    "dataType": "string",
+    "headerName": "SO Number",
+    "width": 150,
+    "javaVariableName": "soNumber",
+    "displayName": "SO Number",
+    "enableSearch": true,
+    "searchDataType": "string",
+    "cellRendererParams": {
+      "link": "/servicing-orders/",
+      "newTab": false
+    }
+  },
+  {
+    "colId": "soDescription",
+    "field": "soDescription",
+    "dataType": "string",
+    "headerName": "SO Description",
+    "width": 200,
+    "javaVariableName": "soDescription",
+    "displayName": "SO Description",
+    "enableSearch": true,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "businessPartnerId",
+    "field": "businessPartnerId",
+    "dataType": "string",
+    "headerName": "Business Partner ID",
+    "width": 150,
+    "javaVariableName": "businessPartnerId",
+    "displayName": "Business Partner ID",
+    "enableSearch": true,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "clientProfile",
+    "field": "clientProfile",
+    "dataType": "string",
+    "headerName": "Client Profile",
+    "width": 150,
+    "javaVariableName": "clientProfile",
+    "displayName": "Client Profile",
+    "enableSearch": true,
+    "searchDataType": "string"
+  },
+  {
+    "colId": "srDueDate",
+    "field": "srDueDate",
+    "dataType": "regionalMidnight",
+    "headerName": "SR Due Date",
+    "width": 200,
+    "javaVariableName": "srDueDate",
+    "displayName": "SR Due Date",
+    "enableSearch": true,
+    "searchDataType": "regionalMidnight"
+  },
+  {
+    "colId": "submittedDate",
+    "field": "submittedDate",
+    "dataType": "regionalMidnight",
+    "headerName": "Submitted Date",
+    "width": 200,
+    "javaVariableName": "submittedDate",
+    "displayName": "Submitted Date",
+    "enableSearch": true,
+    "searchDataType": "regionalMidnight"
+  },
+  {
+    "colId": "status",
+    "field": "status",
+    "dataType": "select",
+    "headerName": "Status",
+    "width": 150,
+    "javaVariableName": "status",
+    "displayName": "Status",
+    "isEmphasized": true,
+    "enableSearch": true,
+    "searchDataType": "multiselect",
+    "options": ["Completed", "On Hold", "In Progress", "Canceled", "Not Started"]
+  },
+  {
+    "colId": "readiness",
+    "field": "readiness",
+    "dataType": "select",
+    "headerName": "Readiness",
+    "width": 150,
+    "javaVariableName": "readiness",
+    "displayName": "Readiness",
+    "isEmphasized": true,
+    "enableSearch": true,
+    "searchDataType": "multiselect",
+    "options": ["Completed", "Not Configured"]
+  }
+]

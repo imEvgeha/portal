@@ -1,0 +1,32 @@
+.nexus-c-event-section-collapsible {
+    margin-bottom: 10px;
+}
+
+.nexus-c-event-section-collapsible__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 16px;
+}
+
+.nexus-c-event-section-collapsible__activator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.nexus-c-event-section-collapsible__content {
+    margin: 10px 0 10px 24px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .2s ease-in-out;
+
+    &--active {
+        // Arbitrarily big value because css doesn't support transitions
+        // from height: 0 to height: auto
+        max-height: 80vh;
+    }
+}

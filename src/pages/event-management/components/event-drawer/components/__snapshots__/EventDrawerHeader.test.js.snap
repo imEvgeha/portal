@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventDrawerHeader should match snapshot 1`] = `
+<div
+  className="nexus-c-event-drawer-header"
+>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-drawer-header__replay-button"
+    isDisabled={false}
+    isLoading={false}
+    onClick={[Function]}
+  >
+    Replay
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-drawer-header__replicate-button"
+    isDisabled={false}
+    isLoading={false}
+    onClick={[Function]}
+  >
+    Replicate
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  <NexusDownload
+    className="nexus-c-event-drawer-header__download-button"
+    data={
+      Object {
+        "eventId": "123",
+      }
+    }
+    filename="123"
+    isDisabled={false}
+    label="Download"
+    mimeType="application/json"
+  />
+</div>
+`;

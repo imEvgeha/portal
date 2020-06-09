@@ -1,6 +1,6 @@
 import config from 'react-global-configuration'; // config returns error for gateway
 import {identity, pickBy} from 'lodash';
-import Http from '../../../util/Http';
+import {nexusFetch} from '../../../util/http-client/index';
 import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../../util/Common';
 import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
@@ -8,41 +8,41 @@ import {
 import {store} from '../../../index';
 import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
 
-const http = Http.create();
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = queryParams.status ? {...queryParams, page, size} : {status: 'pending', ...queryParams, page, size};
-    return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
-        {paramsSerializer: encodedSerialize, params}
-    );
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`;
+
+    return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
 export const getCombinedRight = (rightIds) => {
-    return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`
-    );
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
+    return nexusFetch(url);
 };
 
 export const putCombinedRight = (rightIds, combinedRight) => {
-    const httpReq = Http.create({
-        errorToast: {
-            description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-        }});
-    return httpReq.put(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`,
-        combinedRight
-    );
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
+    const errorToast = {
+        description: SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
+    };
+
+    return nexusFetch(url, {
+        method: 'put',
+        body: JSON.stringify(combinedRight),
+        errorToast,
+    });
 };
 
 export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParams) => {
     const queryParams = pickBy(searchCriteria, identity) || {};
     const params = {...queryParams, page, size};
-    return http.get(
-        `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`,
-        {paramsSerializer : encodedSerialize, params}
-    ).then(response => {
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(sortedParams)}`;
+
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    }).then(response => {
         const {rightMatching} = store.getState().avails || {};
         const {focusedRight} = rightMatching || {};
         const {id} = focusedRight || {};
@@ -55,17 +55,15 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
             }
             return data;
         };
-        const updatedData = getUpdatedData(response.data, id);
+        const updatedData = getUpdatedData(response, id);
 
         const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
         const updatedResponse = {
             ...response,
-            data: {
-                ...response.data,
-                data: updatedData,
-                total:  foundFocusRightInRightsRepository ? response.data.total - 1 : response.data.total,
-            }
+            data: updatedData,
+            total:  foundFocusRightInRightsRepository ? response.total - 1 : response.total,
         };
+
         return updatedResponse;
     });
 };
@@ -74,10 +72,8 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
     const {availSource = {}, id} = payload || {};
     const {provider, templateName} = availSource || {};
     const params = {templateName};
-    return http.get(
-        `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`,
-        {paramsSerializer: encodedSerialize, params}
-    ).then(({data}) => {
+    const url = `${config.get('gateway.availsParserUrl')}${config.get('gateway.service.availsParser')}/providers/${provider}/search-criteria`;
+    return nexusFetch(url, {params: encodedSerialize(params)}).then(data => {
         const {fieldSearchCriteria} = data || {};
         // temporary FE handling for createing query params
         const fieldTypeSearchCriteria = fieldSearchCriteria.filter(({type}) => (!type || type === 'Field'));
@@ -125,13 +121,10 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
         }, {});
 
         return {
-            data: {
-                fieldSearchCriteria: {
-                    id,
-                    params: result,
-                }
-            },
-            status: 200,
+            fieldSearchCriteria: {
+                id,
+                params: result,
+            }
         };
     })
     .catch(error => {
@@ -141,17 +134,18 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
 
 
 export const createRightById = (id) => {
-    const httpReq = Http.create({
-        errorCodesToast: [{
-            status: 400,
-        }],
-        errorToast: {
-            description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
-        },
-        successToast: {
-            description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-        }
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`;
+    const errorCodesToast = [{
+        status: 400,
+    }];
+    const errorToast = {
+        description: CREATE_NEW_RIGHT_ERROR_MESSAGE,
+    };
+
+    return nexusFetch(url, {
+        method: 'put',
+        errorCodesToast,
+        errorToast,
     });
-    return httpReq.put(`${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`);
 };
 

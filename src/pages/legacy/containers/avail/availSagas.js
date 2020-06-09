@@ -3,13 +3,7 @@ import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
-import {getSortedData} from '../../../../util/Common';
-
-const PRODUCTION_STUDIOS = '/production-studios';
-const LANGUAGES = '/languages';
-const REGION = '/regions';
-const GENRES = '/genres';
-const SORT_TYPE = 'label';
+import {processOptions} from './util/ProcessSelectOptions';
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -18,13 +12,12 @@ export function* fetchAvailMapping(requestMethod) {
             payload: {},
         });
         const response = yield call(requestMethod);
-        const {data} = response;
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_SUCCESS,
             // TODO - check why we have mappings prop inside availsMappings store
-            payload: data,
+            payload: response,
         });
-        yield fork(fetchAndStoreSelectItems, data && data.mappings);
+        yield fork(fetchAndStoreSelectItems, response && response.mappings);
     } catch(error) {
         yield put({
             type: actionTypes.FETCH_AVAIL_MAPPING_ERROR,
@@ -64,7 +57,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
         .reduce((acc, {javaVariableName, options}) => {
             acc = {
                 ...acc,
-                [javaVariableName]: options
+                [javaVariableName]: options.map(item => { return { value: item, label: item } })
             };
             return acc;
         }, {});
@@ -75,35 +68,26 @@ export function* fetchAndStoreSelectItems(payload, type) {
             return call(fetchAvailSelectValuesRequest, profileService.getSelectValues, configEndpoint, javaVariableName);
         })
     );
+
+    const deduplicate = (source, propName) => {
+        return Array.from(
+            source
+                .reduce(
+                    (acc, item) => (
+                        item && item[propName] && acc.set(item[propName], item),
+                            acc
+                    ), // using map (preserves ordering)
+                    new Map()
+                )
+                .values()
+        );
+    }
+    
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
-        let options;
-        switch (configEndpoint) {
-            case PRODUCTION_STUDIOS:
-                options = value.map(el => el.value === el.name);
-                break;
-            case LANGUAGES:
-                options = value.map(code => {
-                    return {value: code.languageCode, label: code.languageName};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case REGION:
-                options = value.map(code => {
-                    return {value: code.regionCode, label: code.regionName};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            case GENRES:
-                options = value.map(code => {
-                    return {value: code.name, label: code.name};
-                });
-                options = getSortedData(options, SORT_TYPE, true);
-                break;
-            default:
-                options = value;
-        }
+        const options = deduplicate(processOptions(value,configEndpoint),'label');
+
         acc = {
             ...acc,
             [key]: options 
@@ -135,7 +119,7 @@ export function* fetchAvailSelectValuesRequest(requestMethod, requestParams, key
         return {
             [key]: {
                 key,
-                value: response.data.data,
+                value: response.data,
                 configEndpoint: requestParams,
             }
         };
@@ -154,8 +138,7 @@ export function* fetchAvailConfiguration(requestMethod) {
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_REQUEST,
             payload: {},
         });
-        const response = yield call(requestMethod);
-        const {data} = response;
+        const data = yield call(requestMethod);
         yield put({
             type: actionTypes.FETCH_AVAIL_CONFIGURATION_SUCCESS,
             payload: data,

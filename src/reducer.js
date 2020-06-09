@@ -13,6 +13,8 @@ import settings from './pages/legacy/containers/settings/settingsReducer';
 import rightHistory from './pages/avails/right-history-view/rightHistoryReducer';
 import availsReducer from './pages/avails/availsReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
+import eventManagementReducer from './pages/event-management/eventManagementReducer';
+import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
 import uiReducer from './ui/uiReducer.js';
 import authReducer from './auth/authReducer';
 import {availsPersistConfig, authPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
@@ -35,6 +37,8 @@ const createRootReducer = routerHistory => combineReducers({
     // new structure
     avails: createPersistReducer(availsPersistConfig, availsReducer),
     metadata: metadataReducer,
+    eventManagement: eventManagementReducer,
+    servicingOrders: servicingOrdersReducer,
     ui: uiReducer,
     auth: createPersistReducer(authPersistConfig, authReducer),
 });

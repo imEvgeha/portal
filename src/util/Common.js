@@ -2,7 +2,6 @@ import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
 function downloadFile(data) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
@@ -269,7 +268,7 @@ const lazyWithPreload = factory => {
 };
 
 export {
-    downloadFile, 
+    downloadFile,
     momentToISO, 
     isObject, 
     mergeDeep, 

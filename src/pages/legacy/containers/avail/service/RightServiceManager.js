@@ -33,8 +33,7 @@ export const rightServiceManager = {
         return searchFn(store.getState().dashboard.session.searchCriteria, page, pageSize, sortedParams)
             .then(response => {
                 return response;
-            }
-            ).catch((error) => {
+            }).catch((error) => {
                 store.dispatch(resultPageLoading(false));
                 console.warn('unexpected error'); // eslint-disable-line
                 console.error(error); // eslint-disable-line

@@ -35,12 +35,12 @@
   {
     "javaVariableName": "contentType",
     "displayName": "Content Type",
-    "dataType": "select",
-    "searchDataType": "multiselect",
+    "dataType": "string",
+    "searchDataType": "readonly",
     "configEndpoint": "/content-types",
     "queryParamName": "contentType",
-    "readOnly": false,
-    "enableSearch": true,
+    "readOnly": true,
+    "enableSearch": false,
     "enableEdit": true,
     "required": true
   },

@@ -39,7 +39,7 @@ const withInfiniteScrolling = ({
             if (gridApi && isDatasourceEnabled) {
                 updateData(fetchData, gridApi);
             }
-        }, [gridApi, props.isDatasourceEnabled]);
+        }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
 
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
@@ -49,7 +49,7 @@ const withInfiniteScrolling = ({
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = filterBy(filterModel, props.prepareFilterParams);
+            const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -68,7 +68,7 @@ const withInfiniteScrolling = ({
             }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
-                    const {page = 0, size = 0, total = 0, data} = (response && response.data) || {};
+                    const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
                     if (typeof props.setTotalCount === 'function') { 
                         props.setTotalCount(total);

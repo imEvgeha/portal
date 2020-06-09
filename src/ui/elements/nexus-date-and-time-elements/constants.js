@@ -7,6 +7,7 @@ export const SIMULCAST_TIME_FORMAT = ' hh:mm:ss A [(UTC)]';
 export const RELATIVE_TIME_FORMAT = ' hh:mm:ss A';
 export const TIMESTAMP_TIME_FORMAT = ' hh:mm:ss.SSS A [(UTC)]';
 export const ATLASKIT_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm';
+export const TIMESTAMP_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]';
 export const SIMULCAST_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss[Z]';
 export const RELATIVE_DATE_FORMAT = 'YYYY-MM-DD[T]HH:mm:ss';
 export const RELATIVE_DATE_FORMAT_WITHOUT_TIME = 'YYYY-MM-DD';

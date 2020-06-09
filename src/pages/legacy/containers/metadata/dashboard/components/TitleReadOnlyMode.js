@@ -52,10 +52,10 @@ class TitleReadOnlyMode extends Component {
         return (
             <Container fluid id="titleContainer">
                 <Row style={{ marginTop: '5px' }}>
-                    <Col xs="4">
-                        <img width="700" height="350" src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png" alt="Slide" />
+                    <Col md="4">
+                        <img width="700" height="350" src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png" alt="" className="placeholder-img" />
                     </Col>
-                    <Col>
+                    <Col md="8">
                         <Row>
                             <Col>
                                 <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{ color: '#999' }}>Empty</span>}</h2></Alert>
@@ -78,21 +78,21 @@ class TitleReadOnlyMode extends Component {
                         <>
                             <Row>
                                 {seriesTitleName && (
-                                    <Col>
+                                    <Col md="12">
                                         <Alert color="light" id="titleSeriesName">
                                             <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
                                         </Alert>
                                     </Col>
                                 )}
                                 {seasonNumber && (
-                                    <Col>
+                                    <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
                                             <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
                                         </Alert>
                                     </Col>
                                 )}
                                 {episodeNumber && (
-                                    <Col md={6}>
+                                    <Col md="6">
                                         <Alert color="light" id="titleEpisodeNumber">
                                             <b>Episode Number: </b>{episodeNumber}
                                         </Alert>
@@ -127,28 +127,28 @@ class TitleReadOnlyMode extends Component {
                         </Row>
                         <Row>
                             {this.addBooleanQuotes(animated) && (
-                                <Col>
+                                <Col className='no-wrap'>
                                     <Alert color="light" id="titleAnimated">
                                         <b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}
                                     </Alert>
                                 </Col>
                             )}
                             {countryOfOrigin && (
-                                <Col>
+                                <Col className='no-wrap'>
                                     <Alert color="light" id="titleCountryOfOrigin">
                                         <b>Country of Origin: </b>{countryOfOrigin}
                                     </Alert>
                                 </Col>
                             )}
                             {originalLanguage && (
-                                <Col>
+                                <Col className='no-wrap'>
                                     <Alert color="light" id="titleOriginalLanguage">
                                         <b>Original Language: </b>{originalLanguage}
                                     </Alert>
                                 </Col>
                             )}
                             {duration && (
-                                <Col>
+                                <Col className='no-wrap'>
                                     <Alert color="light" id="titleDuration">
                                         <b>Duration: </b>{duration}
                                     </Alert>

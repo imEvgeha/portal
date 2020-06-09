@@ -92,7 +92,7 @@ class RightCreate extends React.Component {
         this.checkRight(name, value, true);
     }
 
-    handleArrayPush = (e, name) => {         
+    handleArrayPush = (e, name) => {
         let newArray;
         if(this.right[name]) {
             newArray = Array.from(this.right[name]);
@@ -157,12 +157,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    handleDatepickerChange(name, displayName, date) {
-        const mapping = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
-        let val = date;
-        if(date && mapping.dataType === DATETIME_FIELDS.REGIONAL_MIDNIGHT) {
-            val = momentToISO(moment(date).utcOffset(0, true));
-        }
+    handleDatepickerChange(name, displayName, val) {
         this.checkRight(name, val, true);
         if(!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
@@ -224,17 +219,21 @@ class RightCreate extends React.Component {
     validateField(name, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
         const isOriginRightIdRequired = name === 'originalRightId' && this.right.temporaryPriceReduction === true && this.right.status && this.right.status.value === 'Ready';
-        if(map && (map.required || isOriginRightIdRequired)) {
-            if(Array.isArray(value)){
-                return value.length === 0 ? 'Field can not be empty' : '';
+        if(map) {
+            const canCreate =  !map.readOnly && can('create', 'Avail', map.javaVariableName);
+
+            if (canCreate && (map.required || isOriginRightIdRequired)) {
+                if (Array.isArray(value)) {
+                    return value.length === 0 ? 'Field can not be empty' : '';
+                }
+                return this.validateNotEmpty(value);
             }
-            return this.validateNotEmpty(value);
         }
         return '';
     }
 
     areMandatoryFieldsEmpty() {
-        if(this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
+        if(this.props.availsMapping.mappings.filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
         return false;
     }
 
@@ -258,11 +257,11 @@ class RightCreate extends React.Component {
         rightsService.create(this.right).then((response) => {
             this.right={};
             this.setState({});
-            if(response && response.data && response.data.id){
+            if(response && response.id){
                 if(this.props.match.params.availHistoryId){
                     this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
                 }else{
-                    this.context.router.history.push(RightsURL.getRightUrl(response.data.id));
+                    this.context.router.history.push(RightsURL.getRightUrl(response.id));
                 }
 
             }
@@ -607,22 +606,22 @@ class RightCreate extends React.Component {
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
-
-            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
-            
+            options = options.filter(rec => rec.value).map(rec => {
+                return {
+                    ...rec,
+                    label: rec.label || rec.value,
+                    aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                };
+            });
             if(options.length > 0 && value){
                 val = value;
                 if(!required) {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
-
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
-
             return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
@@ -673,7 +672,7 @@ class RightCreate extends React.Component {
             options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
                 label: rec.label || rec.value,
                 aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
-            
+
             if(options.length > 0 && value){
                 val = value;
                 if(!required) {
@@ -715,9 +714,15 @@ class RightCreate extends React.Component {
 
             if(options.length > 0 && value){
                 val = value;
-                if(!required) {
-                    options.unshift({value: '', label: value ? 'Select...' : ''});
-                }
+            }
+            if (val) {
+                val.forEach(item => {
+                    options.map(option => {
+                        if (option.value === item.language) {
+                            item.label = option.label
+                        }
+                    });
+                });
             }
             return renderFieldTemplate(name, displayName, required, null, (
                 <AudioLanguageField
@@ -755,6 +760,7 @@ class RightCreate extends React.Component {
                 value,
                 error,
                 isTimestamp,
+                isReturningTime:useTime,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
@@ -789,7 +795,8 @@ class RightCreate extends React.Component {
                             break;
                         case 'double' : renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'select' : renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'select' :
+                            renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;

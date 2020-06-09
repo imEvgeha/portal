@@ -69,13 +69,13 @@ class SearchResultsTab extends React.Component {
         };
 
         if(response && response.data){
-            updatedResult.pages = response.data.page + 1;
-            updatedResult.pageSize = response.data.data.length;
-            updatedResult.total = response.data.total;
-            if(response.data.page === 0) {
-                updatedResult.avails = response.data.data;
+            updatedResult.pages = response.page + 1;
+            updatedResult.pageSize = response.data.length;
+            updatedResult.total = response.total;
+            if(response.page === 0) {
+                updatedResult.avails = response.data;
             } else {
-                updatedResult.avails = [...this.props.avails, ...response.data.data];
+                updatedResult.avails = [...this.props.avails, ...response.data];
             }
         }
 
@@ -126,7 +126,10 @@ class SearchResultsTab extends React.Component {
                                     </span>
                                 </a>
                               )}
-                            <Clear clearAllSelected={() => {this.clearAllSelected && this.clearAllSelected(); }} />
+                            <Clear clearAllSelected={() => {
+                                this.clearAllSelected && this.clearAllSelected();
+                                this.clearAllSelectedMainTable && this.clearAllSelectedMainTable(); 
+                                }} />
                         </div>
                         <div style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
@@ -154,6 +157,7 @@ class SearchResultsTab extends React.Component {
                             availsMapping={this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             onDataLoaded={this.storeData}
+                            setClearAllSelected={clearAllSelected => this.clearAllSelectedMainTable = clearAllSelected}
                         />
                     </div>
                     <div>

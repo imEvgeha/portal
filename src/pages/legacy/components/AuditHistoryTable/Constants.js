@@ -92,6 +92,7 @@ export default {
         method: '-',
         lastUpdateReceivedAt: 'History(+/-)',
         headerRow: true,
+        separationRow: true,
     },
     SYSTEM: 'service-account-avails-client',
     RULES_ENGINE_INFO: [

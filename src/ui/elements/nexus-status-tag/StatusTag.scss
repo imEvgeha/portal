@@ -10,7 +10,7 @@
   &.completed {
     background: #36B37E;
   }
-  &.manual {
+  &.manual, &.in_progress {
     background: #00B8D9;
   }
   &.pending {
@@ -18,5 +18,8 @@
   }
   &.failed {
     background: #DE350B;
+  }
+  &.on_hold {
+    background: #FFC400;
   }
 }

@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {isEqual} from 'lodash';
+import moment from 'moment';
+import Button from '@atlaskit/button';
 import {Row, Col, Container} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
-import PropTypes from 'prop-types';
-import moment from 'moment';
 import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 import NexusDatePicker from '../../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 
 class TerritoryMetadataEditMode extends Component {
-
     getValidDate = (date) => {
         if (date) {
             return moment(date).format(DATE_FORMAT);
@@ -15,16 +16,19 @@ class TerritoryMetadataEditMode extends Component {
         return date;
     };
 
-    shouldComponentUpdate(nextProps) {
-        const differentData = this.props.data !== nextProps.data;
-        return differentData;
-    }
-
     render() {
         return (
             <div id="territoryMetadataEdit">
                 <Container>
                     <AvForm onValidSubmit={this.props.validSubmit}>
+                        <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
+                            <span
+                                style={{color: 'red', cursor: 'pointer'}}
+                                onClick={()=>this.props.handleDeleteTerritoryMetaData(this.props.data.id)}
+                            >
+                                Delete Territorial Metadata
+                            </span>
+                        </Row>
                         <Row style={{ padding: '15px' }}>
                             <Col>
                                 <span>Locale</span> <br />
