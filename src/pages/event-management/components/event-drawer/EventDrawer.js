@@ -9,7 +9,14 @@ import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload'
 import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
-import {DRAWER_TITLE, EVENT_MESSAGE, EVENT_HEADER, EVENT_ATTACHMENTS} from '../../eventManagementConstants';
+import {
+    DRAWER_TITLE,
+    EVENT_MESSAGE,
+    EVENT_HEADER,
+    EVENT_ATTACHMENTS,
+    JSON_MIME_TYPE,
+    XML_MIME_TYPE
+} from '../../eventManagementConstants';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
@@ -20,9 +27,11 @@ const EventDrawer = ({event, onDrawerClose}) => {
         const {base64Encoded = false, rawData = ''} = data;
         let xml = base64Encoded
             ? atob(rawData)
-            : `<?xml version="1.0"?>
+            : `<?xml version="1.0" encoding="utf-8"?>
                 <${key}>
-                    <rawData>${rawData}</rawData>
+                    <rawData>
+                        ${(new DOMParser()).parseFromString(rawData, XML_MIME_TYPE)}
+                    </rawData>
                 </${key}>`;
         return xml;
     };
@@ -52,6 +61,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                             <NexusDownload
                                 data={message}
                                 filename={get(event, 'eventId', '')}
+                                mimeType={JSON_MIME_TYPE}
                             />
                         )}
                     >
@@ -76,14 +86,17 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                             base64 encoded: {get(attachments, [key, 'base64Encoded'], '').toString()}
                                         </span>
                                         <NexusDownload
-                                            data={attachments[key]}
+                                            data={attachments[key].base64Encoded
+                                                ? atob(attachments[key].rawData)
+                                                : attachments[key].rawData}
                                             filename={get(event, 'eventId', '') + key}
+                                            mimeType={get(attachments, [key, 'mimeType'], '')}
                                         />
                                     </>
                                 )}
                                 isDefaultOpened
                             >
-                                {attachments[key].mimeType === 'application/xml' ? (
+                                {attachments[key].mimeType === XML_MIME_TYPE ? (
                                     <NexusXMLView
                                         xml={prepareXMLView(key, attachments[key])}
                                         indentSize={4}

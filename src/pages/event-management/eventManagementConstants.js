@@ -24,3 +24,6 @@ export const EVENT_ATTACHMENTS = 'Event Attachments';
 export const DOWNLOAD = 'Download';
 
 export const INITIAL_SORT = {colId: 'createdTimeStamp', sort: 'desc'};
+
+export const JSON_MIME_TYPE = 'application/json';
+export const XML_MIME_TYPE = 'application/xml';
