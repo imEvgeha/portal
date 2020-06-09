@@ -160,6 +160,7 @@ const withFilterableColumns = ({
                         }
 
                         switch (searchDataType) {
+
                             case READONLY:
                                 columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
                                 columnDef.filter = CUSTOM_READONLY;

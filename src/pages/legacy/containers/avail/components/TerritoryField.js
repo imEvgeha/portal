@@ -7,6 +7,7 @@ import './TerritoryField.scss';
 
 const TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
 
+
     const getTerritories = () => {
         return territory.map((terr, i) => (
             <NexusTag
