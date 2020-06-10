@@ -19,8 +19,12 @@ export const EVENT_HEADER_SECONDARY_FIELDS = [
     'summary',
 ];
 
+export const NOT_FILTERABLE_FIELDS = ['principal', 'avroClassName', 'eventClassName', 'summary'];
+
 export const EVENT_MESSAGE = 'Event Message';
 export const EVENT_ATTACHMENTS = 'Event Attachments';
 export const DOWNLOAD = 'Download';
 
 export const INITIAL_SORT = {colId: 'createdTimeStamp', sort: 'desc'};
+
+
