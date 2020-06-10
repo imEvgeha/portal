@@ -1,6 +1,16 @@
+.ag-floating-filter-body{
+  max-width: calc(100% - 28px);
+}
+.ag-react-container{
+  max-width: 100%;
+}
 .nexus-c-complex-floating-filter{
   padding-top: 5px;
+  display: flex;
+  flex: 1;
   span{
-    padding-right: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

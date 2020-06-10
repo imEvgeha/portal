@@ -33,6 +33,7 @@ import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS, dateToISO} from '../../../../../util/DateTimeUtils';
 import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {AVAILS_PATH} from '../../../../avails/availsRoutes';
+import {get} from 'lodash';
 
 const mapStateToProps = state => {
     return {
@@ -95,25 +96,25 @@ class RightDetails extends React.Component {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
-                    if (res && res.data) {
+                    if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
                         const {
-                            validationErrors = [], 
+                            validationErrors = [],
                             territory = [],
-                            affiliate = [], 
-                            affiliateExclude = [], 
+                            affiliate = [],
+                            affiliateExclude = [],
                             castCrew = [],
                             languageAudioTypes =  [],
-                        } = res.data || {};
+                        } = res || {};
                         // temporary solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
                                 const matchObj = error.fieldName.match(regForEror);
                                 if (matchObj) {
                                     const matchSubField = error.fieldName.match(regForSubField);
-                                    error.index = Number(matchObj[1]); 
-                                    error.subField = matchSubField[1]; 
+                                    error.index = Number(matchObj[1]);
+                                    error.subField = matchSubField[1];
                                 }
                                 return error;
                             })) || [];
@@ -161,7 +162,7 @@ class RightDetails extends React.Component {
                         .map(error => {
                             const matchObj = error.fieldName.match(regForEror);
                             if (matchObj) {
-                                error.index = Number(matchObj[1]); 
+                                error.index = Number(matchObj[1]);
                             }
                             return error;
                         })) || [];
@@ -190,7 +191,7 @@ class RightDetails extends React.Component {
                         .map(error => {
                             const matchObj = error.fieldName.match(regForEror);
                             if (matchObj) {
-                                error.index = Number(matchObj[1]); 
+                                error.index = Number(matchObj[1]);
                             }
                             return error;
                         })) || [];
@@ -215,8 +216,8 @@ class RightDetails extends React.Component {
                         })];
 
                         this.setState({
-                            right: res.data,
-                            flatRight: this.flattenRight(res.data),
+                            right: res,
+                            flatRight: this.flattenRight(res),
                             territory: territories,
                             audioLanguage: audioLanguages,
                             affiliates,
@@ -300,7 +301,7 @@ class RightDetails extends React.Component {
         const updatedRight = { [name]: value };
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
-            .then(({data: editedRight = {}})=> {
+            .then((editedRight = {})=> {
                 this.setState({
                     right: editedRight,
                     flatRight: this.flattenRight(editedRight),
@@ -457,14 +458,14 @@ class RightDetails extends React.Component {
             const displayFunc = (val) => {
                 if (error) {
                     return (
-                        <div 
+                        <div
                             title={error}
                             style={{
                                 textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap',
                                 color: error ? '#a94442' : null
                             }}
-                        > 
-                            {error} 
+                        >
+                            {error}
                         </div>
                     );
                 }
@@ -748,7 +749,7 @@ class RightDetails extends React.Component {
             ));
         };
 
-        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {  
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error && !name.includes('affiliate')) {
                 priorityError = (
@@ -888,7 +889,7 @@ class RightDetails extends React.Component {
             }
 
             let options = [];
-            // deepClone(value) returns null for country 
+            // deepClone(value) returns null for country
             let selectedVal = ref.current ? ref.current.state.value : value;
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
@@ -923,7 +924,7 @@ class RightDetails extends React.Component {
                  }
 
                  ref.current.handleChange(option ? selectedVal: null);
-                 // ??? - call set state that clean state inside timeout 
+                 // ??? - call set state that clean state inside timeout
                  setTimeout(() => {
                      this.setState({});
                  }, 1);
@@ -1053,7 +1054,6 @@ class RightDetails extends React.Component {
                 } else {
                     selectedVal = selectedVal ? [...selectedVal, item] : [item];
                 }
-
                 ref.current.handleChange(option ? selectedVal: null);
                 // ??? - call set state that clean state inside timeout
                 setTimeout(() => {
@@ -1091,11 +1091,20 @@ class RightDetails extends React.Component {
                 .map(language => {
                     return Object.assign({}, language);
                 });
+            let languagesWithLabel = [];
+            if(options.length){
+                languagesWithLabel = languages.map(({language, audioType}) => ({
+                    language: language,
+                    audioType: audioType,
+                    label: get(options.find(o => o.value === language),'label','')
+                }));
+            }
+
             return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
-                    originalFieldList={languages}
+                    originalFieldList={languagesWithLabel}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -1106,11 +1115,10 @@ class RightDetails extends React.Component {
                     showError={false}
                     helperComponent={(
                         <AudioLanguageField
-                            audioLanguages={languages}
+                            audioLanguages={languagesWithLabel}
                             name={name}
                             onRemoveClick={(language) => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
-                            onTagClick={(i) => this.toggleRightAudioLanguageForm(i)}
                             renderChildren={() => (
                                 <>
                                     <div style={{position: 'absolute', right: '10px'}}>
@@ -1120,7 +1128,7 @@ class RightDetails extends React.Component {
                                         onSubmit={(e) => addAudioLanguage(e)}
                                         isOpen={this.state.isRightAudioLanguageFormOpen}
                                         onClose={this.toggleRightAudioLanguageForm}
-                                        existingAudioLanguageList={selectedVal}
+                                        existingAudioLanguageList={languagesWithLabel}
                                         audioLanguageIndex={this.state.audioLanguageIndex}
                                         isEdit={this.state.isEdit}
                                         languageOptions={options}
@@ -1160,7 +1168,8 @@ class RightDetails extends React.Component {
                 );
             };
 
-            const error = priorityError || validate(value);
+            const valError = validate(value);
+            const error = priorityError || valError;
 
             const props = {
                 id: displayName,
@@ -1173,7 +1182,7 @@ class RightDetails extends React.Component {
                     }));
                 },
                 onConfirm: (date) => (
-                    !error && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
+                    !valError && this.handleEditableSubmit(name, date, revertChanges) || revertChanges()
                 ),
                 defaultValue: value,
                 value:  (
@@ -1257,26 +1266,26 @@ class RightDetails extends React.Component {
                             break;
                         case 'select': renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
                             break;
-                        case 'multiselect': 
+                        case 'multiselect':
                             if (mapping.javaVariableName === 'affiliate') {
                                 renderFields.push(renderMultiSelectField(
-                                    mapping.javaVariableName, 
-                                    mapping.displayName, 
-                                    this.state.affiliates, 
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')), 
-                                    readOnly, 
-                                    required, 
+                                    mapping.javaVariableName,
+                                    mapping.displayName,
+                                    this.state.affiliates,
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude')),
+                                    readOnly,
+                                    required,
                                     highlighted
                                 ));
                                 break;
                             } else if (mapping.javaVariableName === 'affiliateExclude') {
                                 renderFields.push(renderMultiSelectField(
-                                    mapping.javaVariableName, 
-                                    mapping.displayName, 
-                                    this.state.affiliatesExclude, 
-                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')), 
-                                    readOnly, 
-                                    required, 
+                                    mapping.javaVariableName,
+                                    mapping.displayName,
+                                    this.state.affiliatesExclude,
+                                    Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliateExclude')),
+                                    readOnly,
+                                    required,
                                     highlighted
                                 ));
                                 break;
@@ -1297,12 +1306,12 @@ class RightDetails extends React.Component {
                             break;
                         case 'territoryType': renderFields.push(
                              renderTerritoryField(
-                                 mapping.javaVariableName, 
-                                 mapping.displayName, 
-                                 this.state.territory, 
-                                 Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')), 
-                                 readOnly, 
-                                 required, 
+                                 mapping.javaVariableName,
+                                 mapping.displayName,
+                                 this.state.territory,
+                                 Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory')),
+                                 readOnly,
+                                 required,
                                  highlighted
                             ));
                             break;

@@ -135,11 +135,11 @@ class EditorialMetadataEditMode extends Component {
     loadOptionsPerson = (searchPersonText, type) => {
         if (type === CAST) {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true)
-                .then(res => getFilteredCastList(res.data.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                .then(res => getFilteredCastList(res.data, true, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         } else {
             return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW)
-                .then(res => getFilteredCrewList(res.data.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
+                .then(res => getFilteredCrewList(res.data, true).map(e => { return { id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e) }; })
                 );
         }
     };
@@ -172,9 +172,10 @@ class EditorialMetadataEditMode extends Component {
 
         const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
-    }
+    };
 
     render() {
+        const { handleDelete, data: currentMetadata } = this.props;
         const isMaster = this.props.data['hasGeneratedChildren'] || false;
         const isDecorated = !!this.props.data['parentEmetId'] || false;
 
@@ -187,6 +188,11 @@ class EditorialMetadataEditMode extends Component {
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
             <div id="editorialMetadataEdit">
+                <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
+                    <span style={{color: 'red', cursor: 'pointer'}} onClick={() => handleDelete(currentMetadata.id)}>
+                        Delete Editorial Metadata
+                    </span>
+                </Row>
                 {isMaster &&
                     <Row style={{padding: '15px'}}>
                         <Col className='info-master' md={12}>

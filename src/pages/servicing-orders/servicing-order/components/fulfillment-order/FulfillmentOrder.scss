@@ -1,0 +1,60 @@
+.fulfillment-order {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+
+  &__title {
+    font-size: 29px;
+    color: #42526E;
+  }
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 14px;
+    width: 100%;
+
+    &--section {
+      display: inline-flex;
+    }
+
+    &--notes {
+      width: 100%;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    button {
+      margin-left: 15px;
+    }
+  }
+
+  &__column{
+    display: flex;
+    flex-direction: column;
+  }
+  &__select-wrapper {
+    margin-left: 15px;
+    width: 160px;
+  }
+  &__section {
+    display: inline-flex;
+  }
+  &__input {
+    margin-right: 15px;
+    width: 160px;
+    & > input {
+      width: 160px;
+      height: 40px;
+      background: #EBEDF0;
+      border: 0;
+      color: #42526E;
+      padding: 0 10px;
+    }
+  }
+  &__order-id{
+    font-size: 16px;
+  }
+}

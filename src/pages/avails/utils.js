@@ -16,7 +16,7 @@ export function createColumnDefs(payload) {
             colId: sortParamName || queryParamName,
             cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
-            width: (dataType === 'datetime') ? 235 : 150,
+            width: (['businessDateTime', 'timestamp'].includes(dataType)) ? 235 : 150,
         };
         return [...columnDefs, columnDef];
     }, []);

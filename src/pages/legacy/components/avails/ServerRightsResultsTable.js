@@ -97,14 +97,14 @@ class ServerRightsResultsTable extends RightsResultsTable {
         }
 
     parseServerResponse(response, callback){
-        if(response && response.data.total > 0){
+        if(response && response.total > 0){
             // if on or after the last page, work out the last row.
             let lastRow = -1;
-            if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                lastRow = response.data.total;
+            if ((response.page + 1) * response.size >= response.total) {
+                lastRow = response.total;
             }
             if(this.state.table){
-                callback.successCallback(response.data.data, lastRow);
+                callback.successCallback(response.data, lastRow);
                 this.state.table.api.hideOverlay();
             }
         }else{

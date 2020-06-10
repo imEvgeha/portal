@@ -57,10 +57,10 @@ class RightDetails extends React.Component {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             rightsService.get(this.props.match.params.id)
                 .then(res => {
-                    if (res && res.data) {
+                    if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
-                        const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res.data || {};
+                        const {validationErrors = [], territory = [], affiliate = [], affiliateExclude = [], castCrew = []} = res || {};
                         // temporary solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes(TERRITORY_TYPE) && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
@@ -139,8 +139,8 @@ class RightDetails extends React.Component {
                         })];
 
                         this.setState({
-                            right: res.data,
-                            flatRight: this.flattenRight(res.data),
+                            right: res,
+                            flatRight: this.flattenRight(res),
                         });
                     }
                 })
@@ -201,11 +201,10 @@ class RightDetails extends React.Component {
         }
         store.dispatch(blockUI(true));
         rightsService.update(updatedRight, this.state.right.id)
-            .then(res => {
-                const editedRight = res.data;
+            .then(editedRight => {
                 this.setState({
-                    right: res.data,
-                    flatRight: this.flattenRight(res.data),
+                    right: editedRight,
+                    flatRight: this.flattenRight(editedRight),
                     errorMessage: ''
                 });
                 store.dispatch(blockUI(false));

@@ -18,7 +18,7 @@ const configureStore = (initialState = {}, history) => {
     ];
     
     // log redux actions 
-    if (process.env.NODE_ENV === 'development' && typeof window !== 'undfined') {
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
         middleware = [...middleware, createLogger()];
     }
 

@@ -1,0 +1,55 @@
+.nexus-c-fulfillment-order-panel {
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid #DCDCDC;
+  background: #FFFFFF;
+  font-size: 14px;
+
+  display: block;
+
+  &--is-selected {
+    background: #E0ECF7;
+
+    &:hover {
+      background: #E0ECF7;
+    }
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: #A5ADBA;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__date {
+    font-size: 11px;
+    color: #737E91;
+  }
+
+  &__file-icon {
+    margin-right: 12px;
+  }
+
+  &__filename {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    font-weight: bold;
+  }
+
+  &__status {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 28px;
+  }
+}

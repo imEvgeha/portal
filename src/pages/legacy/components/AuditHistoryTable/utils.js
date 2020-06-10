@@ -16,6 +16,11 @@ export const valueFormatter = ({colId, field, dataType}) => {
             return (params) => {
                 const {data = {}} = params || {};
                 const {[field]: date = ''} = data || {};
+
+                if(data.separationRow){
+                    return date;
+                }
+
                 return ISODateToView(date, DATETIME_FIELDS.BUSINESS_DATETIME);
             };
         case RATING:

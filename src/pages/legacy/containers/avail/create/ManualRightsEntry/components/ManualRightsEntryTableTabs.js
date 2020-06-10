@@ -43,13 +43,13 @@ const ManualRightEntryTableTabs = ({
 
     useEffect(() => {
         rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
-            .then(response => isMounted && setTotalRightsCount(response.data.total));
+            .then(response => isMounted && setTotalRightsCount(response.total));
         rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
-            .then(response => isMounted && setSuccessCount(response.data.total));
+            .then(response => isMounted && setSuccessCount(response.total));
         rightsService.advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
-            .then(response => isMounted && setPendingCount(response.data.total));
+            .then(response => isMounted && setPendingCount(response.total));
         rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
-            .then(response => isMounted && setErrorsCount(response.data.total));
+            .then(response => isMounted && setErrorsCount(response.total));
     }, [historyData]);
 
     const getCustomTotalCount = () => {

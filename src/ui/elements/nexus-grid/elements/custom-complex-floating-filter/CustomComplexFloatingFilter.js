@@ -1,5 +1,5 @@
 import React from 'react';
-import {isEmpty} from 'lodash';
+import {isObject} from 'lodash';
 import './CustomComplexFloatingFilter.scss';
 
 class CustomComplexFloatingFilter extends React.Component {
@@ -12,16 +12,37 @@ class CustomComplexFloatingFilter extends React.Component {
         };
     }
 
-    onParentModelChanged = ({filter = {}}) => {
+    onParentModelChanged = (model) => {
+        const {filter={}} = model || {};
         this.setState({value: filter});
     };
 
     render() {
-        const {value} = this.state;
+        const {value = {}} = this.state;
+        let arrayContent = [];
+        let keyContent;
+        isObject(value) && Object.keys(value).forEach((key) => {
+            keyContent = '';
+            if(value[key]) {
+                if(Array.isArray(value[key])){
+                    if(value[key].length > 0) {
+                        keyContent = value[key].join(', ');
+                    }
+                }else{
+                    keyContent = value[key];
+                }
+
+                if(keyContent) {
+                    arrayContent.push(key + ': ' + keyContent);
+                }
+            }
+        });
+
+        const content = arrayContent.join(' ');
 
         return (
             <div className='nexus-c-complex-floating-filter'>
-                { value && !isEmpty(value) && <span>{JSON.stringify(value)}</span>}
+                <span title={content}>{content}</span>
             </div>
         );
     }

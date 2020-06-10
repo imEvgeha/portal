@@ -174,7 +174,7 @@ class AdvancedSearchPanel extends React.Component {
         }
         exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns, this.props.availTabPageSort)
         .then(function (response) {
-            downloadFile(response.data);
+            downloadFile(response);
         })
         .catch(function (error) {
             console.error(error);
@@ -243,9 +243,9 @@ class AdvancedSearchPanel extends React.Component {
     getHistoryData(availHistoryId) {
         historyService.getHistory(availHistoryId)
             .then(res => {
-                if(res && res.data && this.loadingHistoryData[availHistoryId]) {
+                if(res && this.loadingHistoryData[availHistoryId]) {
                     delete this.loadingHistoryData[availHistoryId];
-                    this.props.setHistoryCache({[availHistoryId] : res.data});
+                    this.props.setHistoryCache({[availHistoryId] : res});
                 }
             })
             .catch(() => {

@@ -15,6 +15,7 @@ const MAX_BLOCKS_IN_CACHE = 100;
 const ROW_MODEL_TYPE = 'infinite';
 const DEFAULT_HOC_PROPS = [
     'initialFilter',
+    'fixedFilter',
     'filterableColumns',
     'notFilterableColumns',
     'mapping',
@@ -38,6 +39,7 @@ const FILTER_TYPE = {
     MULTISELECT: 'multiselect',
     TERRITORY: 'territoryType',
     AUDIO_LANGUAGE: 'audioLanguageType',
+    READONLY: 'readonly',
     TIMESTAMP: DATETIME_FIELDS.TIMESTAMP,
     BUSINESS_DATETIME: DATETIME_FIELDS.BUSINESS_DATETIME,
     REGIONAL_MIDNIGHT: DATETIME_FIELDS.REGIONAL_MIDNIGHT
@@ -52,6 +54,7 @@ const FILTERABLE_DATA_TYPES = [
     'audioLanguageType',
     'year',
     'duration',
+    'readonly',
     DATETIME_FIELDS.TIMESTAMP,
     DATETIME_FIELDS.BUSINESS_DATETIME,
     DATETIME_FIELDS.REGIONAL_MIDNIGHT
@@ -63,6 +66,8 @@ const AG_GRID_COLUMN_FILTER = {
     SET: 'agSetColumnFilter',
     CUSTOM_DATE: 'customDateFilter',
     CUSTOM_COMPLEX: 'customComplexFilter',
+    CUSTOM_READONLY: 'customReadOnlyFilter',
+    CUSTOM_FLOAT_READONLY: 'customReadOnlyFloatingFilter',
 };
 
 const DATEPICKER_LABELS = ['From', 'To'];
