@@ -15,17 +15,49 @@ import {
     EVENT_HEADER,
     EVENT_ATTACHMENTS,
     JSON_MIME_TYPE,
-    XML_MIME_TYPE
+    XML_MIME_TYPE,
+    JSON_DECODING_ERR_MSG,
+    XML_DECODING_ERR_MSG,
+    JSON_PARSING_ERR_MSG,
+    XML_EMPTY_ELEMENT
 } from '../../eventManagementConstants';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
+
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
 
-    const decodeXML = (base64Encoded, rawData) => {
-        const xml = base64Encoded ? atob(rawData) : rawData;
-        return xml;
+    const decodeBase64 = (data, mimeType) => {
+        if (!data && mimeType === XML_MIME_TYPE) {
+            return XML_EMPTY_ELEMENT;
+        }
+        if (!data && mimeType === JSON_MIME_TYPE) {
+            return '{}';
+        }
+        let decode;
+        try {
+            decode = atob(data);
+        }
+        catch(e) {
+            mimeType === XML_MIME_TYPE
+                ? decode = XML_DECODING_ERR_MSG
+                : decode = JSON_DECODING_ERR_MSG;
+
+        }
+        return decode;
+    };
+
+    const parseJSON = str => {
+        if (!str) return {};
+        let parsedString = '';
+        try {
+            parsedString = JSON.parse(str);
+        }
+        catch(e) {
+            parsedString = JSON_PARSING_ERR_MSG;
+        }
+        return parsedString;
     };
 
     return (
@@ -81,7 +113,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                             </span>
                                             <NexusDownload
                                                 data={base64Encoded
-                                                    ? atob(rawData)
+                                                    ? decodeBase64(rawData, mimeType)
                                                     : rawData}
                                                 filename={get(event, 'eventId', '') + key}
                                                 mimeType={mimeType}
@@ -92,14 +124,16 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                 >
                                     {mimeType === XML_MIME_TYPE ? (
                                         <NexusXMLView
-                                            xml={decodeXML(base64Encoded, rawData)}
+                                            xml={base64Encoded
+                                                ? decodeBase64(rawData, mimeType)
+                                                : rawData}
                                             indentSize={4}
                                         />
                             ) : (
                                 <NexusJsonView
                                     src={base64Encoded
-                                        ? {rawData: JSON.parse(atob(attachments[key].rawData))}
-                                        : {rawData: JSON.parse(attachments[key].rawData)}}
+                                        ? {rawData: parseJSON(decodeBase64(rawData, mimeType))}
+                                        : {rawData: parseJSON(rawData)}}
                                     name={key}
                                 />
                             )}

@@ -6,7 +6,18 @@ import {DOWNLOAD, JSON_MIME, XML_MIME} from './constants';
 
 const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
 
-    const parsedData = typeof data === 'string' && mimeType === JSON_MIME ? JSON.parse(data) : data;
+    const tryParseJSON = data => {
+        let parsedData;
+        try {
+            parsedData = JSON.parse(data);
+        }
+        catch(e) {
+            parsedData = '{}';
+        }
+        return parsedData;
+    };
+
+    const parsedData = typeof data === 'string' && mimeType === JSON_MIME ? tryParseJSON(data) : data;
 
     const handleDownload = () => {
         const blob = mimeType === XML_MIME
