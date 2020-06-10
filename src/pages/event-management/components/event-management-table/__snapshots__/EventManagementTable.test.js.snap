@@ -304,6 +304,14 @@ exports[`EventManagementTable should match snapshot 1`] = `
       },
     ]
   }
+  notFilterableColumns={
+    Array [
+      "principal",
+      "avroClassName",
+      "eventClassName",
+      "summary",
+    ]
+  }
   onGridEvent={[MockFunction]}
   rowSelection="single"
 />
