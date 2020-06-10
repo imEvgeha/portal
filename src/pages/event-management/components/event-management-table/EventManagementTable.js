@@ -37,6 +37,7 @@ const EventManagementTable = ({onGridEvent}) => {
             rowSelection="single"
             onGridEvent={onGridEvent}
             mapping={columnDefs}
+            notFilterableColumns={['principal', 'avroClassName', 'eventClassName', 'summary']}
         />
     );
 };
