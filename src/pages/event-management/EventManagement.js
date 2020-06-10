@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {get} from 'lodash';
+import Button from '@atlaskit/button';
 import EventDrawer from './components/event-drawer/EventDrawer';
-import {TITLE} from './eventManagementConstants';
+import {TITLE, REFRESH_BTN} from './eventManagementConstants';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import './EventManagement.scss';
@@ -32,6 +33,11 @@ const EventManagement = () => {
         <div className='nexus-c-event-management'>
             <div className='nexus-c-event-management__title'>
                 {TITLE}
+                <Button
+                    // onClick={() => setIsHideReady(!isHideReady)}
+                >
+                    {REFRESH_BTN}
+                </Button>
             </div>
             <div className="nexus-c-event-management__table">
                 <EventManagementTable onGridEvent={onGridEvent} />

@@ -5,8 +5,12 @@
   padding: 24px 0 0;
   &__title {
     font-size: 29px;
-    padding-left: 22px;
+    padding: 0 22px;
     color: #42526E;
+    button {
+      font-size: 14px;
+      float: right;
+    }
   }
   &__table {
     width: 100%;
