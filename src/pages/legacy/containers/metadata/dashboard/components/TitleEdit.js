@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
@@ -26,8 +27,9 @@ import PublishVzMovida from './publish/PublishVzMovida';
 import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
 import withToasts from "../../../../../../ui/toast/hoc/withToasts";
 import {
+    SUCCESS_ICON,
     WARNING_ICON
-} from "../../../../../../ui/elements/nexus-toast-notification/constants";
+} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -804,6 +806,50 @@ class TitleEdit extends Component {
         });
     };
 
+    handleRegenerateDecoratedMetadata = () => {
+        const {editorialMetadata} = this.state;
+
+        // Find the master/parent EMet for which to regenerate metadata
+        const masterEmet = editorialMetadata.find(({hasGeneratedChildren}, index) => {
+            return hasGeneratedChildren && editorialMetadata[index];
+        });
+
+        // Prepare data for back-end
+        const requestBody = [{
+            "itemIndex": null,
+            "body": {
+                "editorialMetadata": masterEmet,
+            }
+        }];
+
+        // Calls the API to update decorated EMets based on the master
+        titleService.updateEditorialMetadata(requestBody).then((response) => {
+            const failed = get(response, ['data', '0', 'response', 'failed'], []);
+            const {addToast} = this.props;
+
+            // If some EMets failed to regenerate/update, toast the error messages
+            if (failed.length) {
+                const message = failed.map(e => e.description).join(' ');
+                addToast({
+                    title: 'Regenerating Editorial Metadata Failed',
+                    description: message,
+                    icon: WARNING_ICON,
+                    isWithOverlay: true,
+                });
+                return false;
+            } else {
+                addToast({
+                    title: 'Success',
+                    description: 'Editorial Metadata Successfully Regenerated!',
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: true,
+                    isAutoDismiss: true,
+                })
+                return true;
+            }
+        })
+    }
+
     handleEditorialMetadataOnSave = () => {
         const promises = [];
         this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
@@ -1123,6 +1169,7 @@ class TitleEdit extends Component {
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
                         cleanField={this.cleanField}
+                        handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
                     />
 
                     <TerritoryMetadata
