@@ -104,7 +104,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 />
                             </div>
                             <div className='fulfillment-order__select-wrapper'>
-                                Set Order Status
+                                Fulfillment Status
                                 <Select
                                     className='fulfillment-order__select'
                                     options={Constants.STATUS_LIST}
