@@ -51,7 +51,8 @@ const EditorialMetadata = ({
     coreTitleData,
     editorialTitleData,
     cleanField,
-    handleDeleteEditorialMetaData
+    handleDeleteEditorialMetaData,
+    handleRegenerateDecoratedMetadata,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -120,11 +121,20 @@ const EditorialMetadata = ({
                 <Col>
                     <h2>Editorial Metadata</h2>
                 </Col>
-                {URL.isLocalOrDevOrQA() && (
-                    <Col style={{display: 'flex', justifyContent: 'end'}}>
+                <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
+                    {URL.isLocalOrDevOrQA() && (
                         <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
-                    </Col>
-                )}
+                    )}
+                    {titleHasMaster && !isEditMode &&
+                        <Button
+                            appearance="primary"
+                            style={{marginLeft: '15px'}}
+                            onClick={handleRegenerateDecoratedMetadata}
+                        >
+                            Regenerate Auto-Decorated Metadata
+                        </Button>
+                    }
+                </Col>
             </Row>
             <Row>
                 <div style={{width: '200px', margin: '5px 0 15px 15px'}}>
