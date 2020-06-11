@@ -27,4 +27,10 @@ export const DOWNLOAD = 'Download';
 
 export const INITIAL_SORT = {colId: 'createdTimeStamp', sort: 'desc'};
 
+export const JSON_MIME_TYPE = 'application/json';
+export const XML_MIME_TYPE = 'application/xml';
 
+export const JSON_DECODING_ERR_MSG = {error: 'data decoding error'};
+export const JSON_PARSING_ERR_MSG = {error: 'data parsing error'};
+export const XML_DECODING_ERR_MSG = '<rawData>data decoding error</rawData>';
+export const XML_EMPTY_ELEMENT = '<rawData></rawData>';
