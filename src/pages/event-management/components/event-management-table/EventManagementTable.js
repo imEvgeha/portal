@@ -16,7 +16,7 @@ const EventManagementGrid = compose(
     withSideBar(),
     withColumnsResizing(),
     withSorting(INITIAL_SORT),
-    withFilterableColumns(),
+    withFilterableColumns({useDatesWithTime:true}),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 

@@ -74,7 +74,7 @@ export class CustomDateFilter extends React.Component {
         return (
             <div className='nexus-c-custom-date-range-filter'>
                 <NexusDateTimeWindowPicker
-                    isUsingTime={false}
+                    isUsingTime={this.props.isUsingTime}
                     startDateTimePickerProps={{
                         id:`${field}-filter__from`, defaultValue: startDate
                     }}
@@ -92,10 +92,12 @@ export class CustomDateFilter extends React.Component {
 
 CustomDateFilter.propTypes = {
     initialFilters: PropTypes.object,
+    isUsingTime: PropTypes.bool
 };
 
 CustomDateFilter.defaultProps = {
     initialFilters: {},
+    isUsingTime: false
 };
 
 export default CustomDateFilter;
