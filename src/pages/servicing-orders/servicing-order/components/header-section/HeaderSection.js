@@ -18,44 +18,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     const [showFilter, setShowFilter] = useState(true);
     const [filter, setFilter] = useState(FILTER_LIST[0]);
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
-    orderDetails = {
-        soID: '12345',
-        customer: 'Paramount',
-        description: 'ADDAMS FAMILY | Videoland / RTL NL | SLA 10',
-        creationDate: '10/09/2020',
-        createdBy: 'John Wick',
-        tenant: 'MGM',
-        external_id: 'VU00001363',
-        fulfillmentOrders: [
-            {
-                fulfillmentOrderId: 'VU000134567-001',
-                external_id: 'VU000134567-001',
-                dueDate: '10/05/2021',
-                definition: {
-                    dueDate: '10/05/2021'
-                },
-                status: 'COMPLETED'
-            },
-            {
-                fulfillmentOrderId: 'VU000134597-002',
-                external_id: 'VU000134597-002',
-                dueDate: '09/05/2021',
-                definition: {
-                    dueDate: '09/05/2021'
-                },
-                status: 'PENDING'
-            },
-            {
-                fulfillmentOrderId: 'VU000134597-003',
-                external_id: 'VU000134597-003',
-                dueDate: '11/05/2021',
-                definition: {
-                    dueDate: '11/05/2021'
-                },
-                status: 'PENDING'
-            }
-        ]
-    };
+    
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
         let filteredList = [];
