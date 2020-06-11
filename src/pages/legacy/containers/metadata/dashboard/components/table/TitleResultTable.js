@@ -270,17 +270,15 @@ class TitleResultTable extends React.Component {
     };
 
     getFormatTitle = (parents, item, contentType) => {
-        const parent = this.getSeriesParent(item, parents);
-        const {title: seriesTitle} = parent || {};
         const {episodic, title: episodeTitle} = item || {};
-        const {seasonNumber, episodeNumber} = episodic || {};
+        const {seriesTitleName, seasonNumber, episodeNumber} = episodic || {};
 
         switch (contentType) {
             case SEASON.apiName:
-                return parent ? `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+                return seriesTitleName ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
             case EPISODE.apiName:
-                return parent ?
-                    `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
+                return seriesTitleName ?
+                    `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
                     : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
         }
 
