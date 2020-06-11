@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
+import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield'
 import {CreatableSelect} from '@atlaskit/select';
 
@@ -9,7 +10,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    
+    const {dateSelected = ''} = territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
@@ -42,12 +43,13 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     const returnValidData = data => {
         return existingTerritoryList && existingTerritoryList[territoryIndex] && existingTerritoryList[territoryIndex][data] && existingTerritoryList[territoryIndex][data] !== null;
     };
-    
+
     return (
         <>
             <Field
                 label="COUNTRY"
                 isRequired
+                isDisabled={isEdit}
                 name="country"
                 validate={validate}
                 defaultValue={
@@ -83,12 +85,22 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 {() => (
                     <Textfield
                         name="readOnly"
-                        isDisabled
+                        isReadOnly={true}
                         defaultValue="False"
                     />
                 )}
             </Field>
-
+            {(isEdit && dateSelected) && (
+                <Field name="date selected" defaultValue="" label="DATE SELECTED">
+                    {() => (
+                        <Textfield
+                            name="readOnly"
+                            isReadOnly={true}
+                            defaultValue={ISODateToView(dateSelected, 'businessDateTime')}
+                        />
+                    )}
+                </Field>
+            )}
             <Field
                 label="RIGHTS CONTRACT STATUS"
                 isRequired
