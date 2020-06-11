@@ -10,7 +10,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    const {dateSelected = ''} = territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
+    const {dateSelected = '', selected = false} = territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
@@ -86,7 +86,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     <Textfield
                         name="readOnly"
                         isReadOnly={true}
-                        defaultValue="False"
+                        defaultValue={selected.toString()}
                     />
                 )}
             </Field>
