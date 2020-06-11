@@ -85,11 +85,17 @@ class TitleReadOnlyMode extends Component {
                                         </Alert>
                                     </Col>
                                 )}
-                                {( seasonNumber || contentType === 'SERIES') && (
+                                {seasonNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
-                                            { contentType === 'SERIES' ? <b>Seasons: </b> : <b>Season Number: </b> }
-                                            <a href={seasonLink || `/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">{seasonNumber || 0}</a>
+                                            <span><b>Season Number: </b> <a href={seasonLink } className="linked-data">{seasonNumber}</a> </span>
+                                        </Alert>
+                                    </Col>
+                                )}
+                                {contentType === 'SERIES' && (
+                                    <Col md="6">
+                                        <Alert color="light" id="titleSeries">
+                                            <a href={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">Show all seasons</a>
                                         </Alert>
                                     </Col>
                                 )}
