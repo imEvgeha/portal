@@ -1,5 +1,4 @@
 import './DashboardContainer.scss';
-
 import React from 'react';
 import {connect} from 'react-redux';
 import FreeTextSearch from './components/FreeTextSearch';
@@ -22,7 +21,9 @@ const mapStateToProps = state => {
         profileInfo: state.profileInfo,
         selected: state.titleReducer.session.titleTabPageSelection.selected,
         showSearchResults: state.titleReducer.session.showSearchResults,
-        searchCriteria: state.titleReducer.session.advancedSearchCriteria,
+        searchCriteria: state.titleReducer.session.searchCriteria,
+        advancedSearchCriteria: state.titleReducer.session.advancedSearchCriteria,
+        lastSearch: state.titleReducer.freeTextSearch.title || '',
     };
 };
 
@@ -45,9 +46,19 @@ class DashboardContainer extends React.Component {
         this.cleanSelection = this.cleanSelection.bind(this);
     }
 
+    componentWillMount() {
+        const parentId =  new URLSearchParams(this.props.location.search).get("parentId");
+        const contentType =  new URLSearchParams(this.props.location.search).get("contentType");
+        if (parentId && contentType) {
+            this.handleTitleFreeTextSearch({parentId, contentType});
+        }
+        else if(this.props.searchCriteria.parentId) {
+            this.handleTitleFreeTextSearch({});
+        }
+    }
+
     componentDidMount() {
         configService.initConfigMapping();
-        
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.titleHistory) {
@@ -72,8 +83,6 @@ class DashboardContainer extends React.Component {
     handleBackToDashboard() {
         this.props.searchFormShowSearchResults(false);
     }
-
-
 
     handleTitleFreeTextSearch(searchCriteria) {
         this.props.searchFormShowSearchResults(true);
@@ -102,6 +111,7 @@ class DashboardContainer extends React.Component {
                                             disabled={false}
                                             containerId="dashboard-title"
                                             onSearch={this.handleTitleFreeTextSearch}
+                                            lastSearch={this.props.lastSearch}
                                         />
                                     </td>  
                                 </tr>
@@ -124,6 +134,7 @@ class DashboardContainer extends React.Component {
 
 DashboardContainer.propTypes = {
     searchCriteria: PropTypes.any,
+    advancedSearchCriteria: PropTypes.any,
     searchFormUseAdvancedSearch: PropTypes.func,
     resultPageSelect: PropTypes.func,
     searchFormShowAdvancedSearch: PropTypes.func,

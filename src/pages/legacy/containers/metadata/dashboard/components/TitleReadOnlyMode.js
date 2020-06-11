@@ -35,7 +35,8 @@ class TitleReadOnlyMode extends Component {
             originalLanguage,
             episodic,
             parentIds,
-            category
+            category,
+            id
         } = data;
         const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
@@ -84,10 +85,11 @@ class TitleReadOnlyMode extends Component {
                                         </Alert>
                                     </Col>
                                 )}
-                                {seasonNumber && (
+                                {( seasonNumber || contentType === 'SERIES') && (
                                     <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
-                                            <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                            { contentType === 'SERIES' ? <b>Seasons: </b> : <b>Season Number: </b> }
+                                            <a href={seasonLink || `/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">{seasonNumber || 0}</a>
                                         </Alert>
                                     </Col>
                                 )}
@@ -163,14 +165,14 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {totalNumberOfEpisodes && (
+                            {totalNumberOfEpisodes !== 0 && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodes">
                                         <b>Episodes: </b>{totalNumberOfEpisodes}
                                     </Alert>
                                 </Col>
                             )}
-                            {episodeCount && (
+                            {episodeCount !== 0 && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
                                         <b>Episode Count: </b>{episodeCount}
