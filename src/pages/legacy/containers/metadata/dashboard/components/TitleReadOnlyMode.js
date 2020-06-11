@@ -88,7 +88,7 @@ class TitleReadOnlyMode extends Component {
                                 {seasonNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
-                                            <span><b>Season Number: </b> <a href={seasonLink } className="linked-data">{seasonNumber}</a> </span>
+                                            <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
                                         </Alert>
                                     </Col>
                                 )}
