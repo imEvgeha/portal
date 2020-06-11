@@ -35,7 +35,8 @@ class TitleReadOnlyMode extends Component {
             originalLanguage,
             episodic,
             parentIds,
-            category
+            category,
+            id
         } = data;
         const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
@@ -88,6 +89,13 @@ class TitleReadOnlyMode extends Component {
                                     <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
                                             <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                        </Alert>
+                                    </Col>
+                                )}
+                                {contentType === 'SERIES' && (
+                                    <Col md="6">
+                                        <Alert color="light" id="titleSeries">
+                                            <a href={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">Show all seasons</a>
                                         </Alert>
                                     </Col>
                                 )}
@@ -163,14 +171,14 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {totalNumberOfEpisodes && (
+                            { !!totalNumberOfEpisodes && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodes">
                                         <b>Episodes: </b>{totalNumberOfEpisodes}
                                     </Alert>
                                 </Col>
                             )}
-                            {episodeCount && (
+                            { !!episodeCount && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
                                         <b>Episode Count: </b>{episodeCount}
