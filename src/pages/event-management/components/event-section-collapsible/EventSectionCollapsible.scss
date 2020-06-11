@@ -27,6 +27,6 @@
     &--active {
         // Arbitrarily big value because css doesn't support transitions
         // from height: 0 to height: auto
-        max-height: 80vh;
+        max-height: initial;
     }
 }
