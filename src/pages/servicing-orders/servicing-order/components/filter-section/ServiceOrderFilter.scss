@@ -23,16 +23,16 @@
     }
   }
 
-  &__span {
-    margin: 0;
-  }
-
   &__h2 {
     margin-bottom: 20px;
   }
+
+  &__info-section {
+    margin-bottom: .8rem;
+  }
   
-  &__p {
-    margin-bottom: 2px;
+  &__info {
+    margin-bottom: 0;
   }
 
   button {
