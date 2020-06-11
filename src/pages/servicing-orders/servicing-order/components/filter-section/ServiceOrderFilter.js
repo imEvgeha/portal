@@ -30,11 +30,13 @@ const ServiceOrderFilter = ({
                 </p>
             </div>
 
-            <div className="so-panel-filter-detail__info-section">
-                <p className="so-panel-filter-detail__info so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Description: {orderDetails.description}
-                </p>
-            </div>
+            {orderDetails.description != null ? (
+                <div className="so-panel-filter-detail__info-section">
+                    <p className="so-panel-filter-detail__info so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                        Description: {orderDetails.description}
+                    </p>
+                </div>
+            ) : null}
 
             <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
             <NexusDrawer
