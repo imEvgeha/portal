@@ -1,18 +1,21 @@
 .fulfillment-order {
     display: flex;
     flex-direction: column;
-    padding-bottom: 20px;
+    font-size: 14px;  // Setting base font size to correct
 
-  &__title {
-    font-size: 29px;
-    color: #42526E;
-  }
+    /* AtlasKit Bugfix */
+    input[disabled] {
+      height: auto;
+    }
+
+    label {
+      color: gray;
+    }
 
   &__row {
     display: flex;
     justify-content: space-between;
-    margin-top: 25px;
-    font-size: 14px;
+    margin-bottom: 1rem;
   }
 
   &__actions {
@@ -39,19 +42,11 @@
   &__select-wrapper {
     margin-right: 15px;
     width: 160px;
+    margin-bottom: 1rem;
   }
 
   &__input {
-    margin-right: 15px;
-    width: 160px;
-    & > input {
-      width: 160px;
-      height: 40px;
-      background: #EBEDF0;
-      border: 0;
-      color: #42526E;
-      padding: 0 10px;
-    }
+    margin-bottom: 1rem;
   }
 
   &__order-id{

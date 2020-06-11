@@ -4,6 +4,7 @@ import {get, set, isEqual, cloneDeep} from 'lodash';
 import Button from '@atlaskit/button';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
+import Textfield from '@atlaskit/textfield';
 import Constants from './constants';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {getValidDate} from '../../../../../util/utils';
@@ -56,8 +57,11 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     return (
         <div className='fulfillment-order'>
             <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__title'>
-                    Fulfillment Order
+                <div className='fulfillment-order__column'>
+                    <h2>Fulfillment Order</h2>
+                    <div className='fulfillment-order__order-id'>
+                        Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
+                    </div>
                 </div>
                 <div className='fulfillment-order__actions'>
                     <div className='fulfillment-order__cancel'>
@@ -80,14 +84,13 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__order-id'>
-                Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
-            </div>
+
             <div className='fulfillment-order__row'>
                 <div className='fulfillment-order__column'>
                     <div className='fulfillment-order__column--notes'>
-                        <h6>Notes:</h6>
+                        <label htmlFor='notes'>Notes:</label>
                         <NexusTextArea
+                            name='notes'
                             onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
                             notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
                         />
@@ -95,34 +98,25 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                 </div>
                 <div className='fulfillment-order__column'>
                     <div className='fulfillment-order__row'>
-                        <div className='fulfillment-order--section'>
+                        <div className='fulfillment-order__column'>
                             <div className='fulfillment-order__input'>
-                                <span>Servicer</span>
-                                <input
+                                <label htmlFor='servicer'>Servicer</label>
+                                <Textfield
+                                    name='servicer'
                                     value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                                    disabled
+                                    isDisabled={true}
                                 />
                             </div>
+                        </div>
+                        <div className='fulfillment-order__column'>
                             <div className='fulfillment-order__select-wrapper'>
-                                Fulfillment Status
+                                <label htmlFor="fulfillment-status">Fulfillment Status</label>
                                 <Select
+                                    name="fulfillment-status"
                                     className='fulfillment-order__select'
                                     options={Constants.STATUS_LIST}
                                     value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
                                     onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='fulfillment-order__row'>
-                        <div className='fulfillment-order--section'>
-                            <div className='fulfillment-order__select-wrapper'>
-                                <NexusDatePicker
-                                    id='dueDate'
-                                    label='Due Date'
-                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
-                                    onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
-                                    isReturningTime={false}
                                 />
                             </div>
                             <div className='fulfillment-order__select-wrapper'>
@@ -135,9 +129,31 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 />
                             </div>
                         </div>
+                        <div className='fulfillment-order__column'>
+                            <div className='fulfillment-order__select-wrapper'>
+                                <label htmlFor="rediness-status">Rediness Status</label>
+                                <Select
+                                    name='rediness-status'
+                                    className='fulfillment-order__select'
+                                    options={Constants.STATUS_LIST}
+                                    value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
+                                    onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
+                                />
+                            </div>
+                            <div className='fulfillment-order__select-wrapper'>
+                                <NexusDatePicker
+                                    id='dueDate'
+                                    label='Due Date'
+                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
+                                    onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
+                                    isReturningTime={false}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <hr />
             <div className='fulfillment-order__column'>
                 {children}
             </div>
