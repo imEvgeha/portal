@@ -35,7 +35,7 @@ describe('NexusDownload', () => {
         button.simulate('click');
 
         expect(spy).toHaveBeenCalledWith({
-            content: [JSON.stringify(props.data)],
+            content: [JSON.stringify(props.data, null, 2)],
             options: {
                 type: props.mimeType
             }

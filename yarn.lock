@@ -20155,6 +20155,13 @@ react-x-editable@0.0.10-beta:
     react-bootstrap "^0.31.0"
     react-css-modules "^4.3.0"
 
+react-xml-viewer@^1.0.3:
+  version "1.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-xml-viewer/-/react-xml-viewer-1.0.3.tgz#435b8c8f8431d0be358352565dd7c9156814d729"
+  integrity sha512-5wRkmG7ad5Vl7NuDXKxg2EiBl60LcabWxLrPUM/1GU8oFEvA1fyDe47A4tz6Hjgxut3G1CrRvAhMLVXd5VDF5w==
+  dependencies:
+    xml-js "^1.6.11"
+
 react@16.5.2:
   version "16.5.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react/-/react-16.5.2.tgz#19f6b444ed139baa45609eee6dc3d318b3895d42"
@@ -24901,6 +24908,13 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
   integrity sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ=
+
+xml-js@^1.6.11:
+  version "1.6.11"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/xml-js/-/xml-js-1.6.11.tgz#927d2f6947f7f1c19a316dd8eea3614e8b18f8e9"
+  integrity sha512-7rVi2KMfwfWFl+GpPg6m80IVMWXLRjO+PxTq7V2CDhoGak0wzYzFgUY2m4XJ47OGdXd8eLE8EmwfAmdjw7lC1g==
+  dependencies:
+    sax "^1.2.4"
 
 xml-name-validator@^2.0.1:
   version "2.0.1"
