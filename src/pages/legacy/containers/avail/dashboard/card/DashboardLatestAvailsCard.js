@@ -10,7 +10,8 @@ import IngestReport from './components/IngestReport';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
 import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../../util/date-time/constants';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;
 

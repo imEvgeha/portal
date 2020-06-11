@@ -10,35 +10,24 @@ describe('ServicingOrder', () => {
                 () =>
                     resolve({
                         data: {
-                            'soID': '123',
-                            'customer': 'MGM',
-                            'orderId': 'order123',
-                            'creationDate': '10/09/2020',
-                            'createdBy': 'John Wick',
-                            'fulfillmentOrders': [
-                                {
-                                    'fulfillmentOrderId': 'VU000134567-001',
-                                    'dueDate': '10/05/2021',
-                                    'status': 'Completed',
-                                    'notes': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                    'billTo': 'MGM',
-                                    'rateCard': 'MGM Rate Card',
-                                    'servicer': 'DETE',
-                                    'priority': '10',
-                                    'startDate': '07/05/2021'
-                                },
-                                {
-                                    'fulfillmentOrderId': 'VU000134597-002',
-                                    'dueDate': '09/05/2021',
-                                    'status': 'Pending',
-                                    'notes': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                                    'billTo': 'WB',
-                                    'rateCard': 'WB Rate Card',
-                                    'servicer': 'DETE2',
-                                    'priority': '10',
-                                    'startDate': '07/05/2021'
-                                }
-                            ]
+                            'configured_pr_id': 'pr_riEGi',
+                            'createdAt': '2020-05-25T18:09:41.614Z',
+                            'createdBy': null,
+                            'description': 'DEMO',
+                            'external_id': 'SR00001116',
+                            'id': 'so_riEGi',
+                            'notes': '',
+                            'readiness': 'NEW',
+                            'rush_order': '',
+                            'so_number': 'SO_0000000004',
+                            'sr_due_date': '2026-05-25T18:09:00.775Z',
+                            'status': 'NOT_STARTED',
+                            'submitted_by': '',
+                            'submitted_date': '',
+                            'tenant': 'MGM',
+                            'type': 'ServicingOrder',
+                            'updatedAt': '2020-05-25T18:09:41.614Z',
+                            'updatedBy': null
                         },
                     }),
                 100
@@ -51,7 +40,7 @@ describe('ServicingOrder', () => {
         it('should render right section', () => {
             expect(wrapper.find('.servicing-order__right').length).toEqual(1);
         });
-        expect(wrapper.find(HeaderSection).length).toEqual(0);
+        expect(wrapper.find(HeaderSection).length).toEqual(1);
         promise.then(() => {
             expect(wrapper.find(HeaderSection).length).toEqual(1);
         });

@@ -27,7 +27,7 @@
     "field": "eventType",
     "headerName": "Event Type",
     "dataType": "string",
-    "searchDataType": "multiselect",
+    "searchDataType": "string",
     "enableSearch": true,
     "minWidth": 200
   },
@@ -37,7 +37,7 @@
     "field": "eventSource",
     "headerName": "Event Source",
     "dataType": "string",
-    "searchDataType": "multiselect",
+    "searchDataType": "string",
     "enableSearch": true,
     "minWidth": 200
   },

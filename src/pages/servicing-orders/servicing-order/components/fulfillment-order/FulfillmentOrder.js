@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import cloneDeep from 'lodash/cloneDeep';
-import {get, isEqual} from 'lodash';
+import {get, set, isEqual, cloneDeep} from 'lodash';
 import Button from '@atlaskit/button';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
@@ -15,7 +14,7 @@ import {SAVE_FULFILLMENT_ORDER} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 
 export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
-    const {fieldKeys, NOTES} = Constants;
+    const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
     const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
@@ -37,12 +36,12 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
         setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
     }, [fulfillmentOrder]);
 
-    const onFieldChange = (name, value) => {
-        setFulfillmentOrder({...fulfillmentOrder, [name]: value});
+    const onFieldChange = (path, value) => {
+        const fo = cloneDeep(fulfillmentOrder);
+        set(fo, path, value);
+        setFulfillmentOrder(fo);
     };
 
-    const billToOption = fulfillmentOrder ? Constants.BILL_TO_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.BILL_TO]) : {};
-    const rateCardOption = fulfillmentOrder ? Constants.RATE_CARD_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.RATE_CARD]) : {};
     const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS]) : {};
 
     const onCancel = () => {
@@ -85,110 +84,62 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                 Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
             </div>
             <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__row--section'>
-                    <div className='fulfillment-order__input'>
-                        <span>Servicer</span>
-                        <input
-                            value={get(fulfillmentOrder, 'servicer', '')}
-                            disabled
+                <div className='fulfillment-order__column'>
+                    <div className='fulfillment-order__column--notes'>
+                        <h6>Notes:</h6>
+                        <NexusTextArea
+                            onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
+                            notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
                         />
                     </div>
                 </div>
-                <div className='fulfillment-order__row--section'>
-                    <div className='fulfillment-order__select-wrapper'>
-                        Bill To
-                        <Select
-                            className='fulfillment-order__select'
-                            options={Constants.BILL_TO_LIST}
-                            value={{value: get(fulfillmentOrder, fieldKeys.BILL_TO, ''), label: billToOption && billToOption.label}}
-                            onChange={val => onFieldChange(fieldKeys.BILL_TO, val.value)}
-                        />
+                <div className='fulfillment-order__column'>
+                    <div className='fulfillment-order__row'>
+                        <div className='fulfillment-order--section'>
+                            <div className='fulfillment-order__input'>
+                                <span>Servicer</span>
+                                <input
+                                    value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
+                                    disabled
+                                />
+                            </div>
+                            <div className='fulfillment-order__select-wrapper'>
+                                Set Order Status
+                                <Select
+                                    className='fulfillment-order__select'
+                                    options={Constants.STATUS_LIST}
+                                    value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
+                                    onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div className='fulfillment-order__select-wrapper'>
-                        Rate Card
-                        <Select
-                            className='fulfillment-order__select'
-                            options={Constants.RATE_CARD_LIST}
-                            value={{value: get(fulfillmentOrder, fieldKeys.RATE_CARD, ''), label: rateCardOption && rateCardOption.label}}
-                            onChange={val => onFieldChange(fieldKeys.RATE_CARD, val.value)}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__section'>
-                    <div className='fulfillment-order__input'>
-                        <span>Servicer</span>
-                        <input
-                            value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                            disabled
-                        />
-                    </div>
-                    <div className='fulfillment-order__input'>
-                        <span>Recipient</span>
-                        <input
-                            value={get(fulfillmentOrder, fieldKeys.RECIPIENT, '')}
-                            disabled
-                            onChange={val => onFieldChange(fieldKeys.RECIPIENT, val.value)}
-                        />
-                    </div>
-                </div>
-            </div>
-            <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__row--section'>
-                    <div className='fulfillment-order__input'>
-                        <span>Priority</span>
-                        <Select
-                            value={{value: get(fulfillmentOrder, fieldKeys.PRIORITY, ''), label:get(fulfillmentOrder, fieldKeys.PRIORITY, '')}}
-                            options={new Array(10)
-                                    .fill('')
-                                    .map((val,idx) => ({value:idx, label:idx}))}
-                            onChange={val => onFieldChange(fieldKeys.PRIORITY, val.value)}
-                        />
-                    </div>
-                    <div className='fulfillment-order__select-wrapper'>
-                        Set Order Status
-                        <Select
-                            className='fulfillment-order__select'
-                            options={Constants.STATUS_LIST}
-                            value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
-                            onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
-                        />
-                    </div>
-                </div>
-                <div className='fulfillment-order__row--section'>
-                    <div className='fulfillment-order__select-wrapper'>
-                        <NexusDatePicker
-                            id='dueDate'
-                            label='Due Date'
-                            value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
-                            onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
-                            isReturningTime={false}
-                        />
-                    </div>
-                    <div className='fulfillment-order__select-wrapper'>
-                        <NexusDatePicker
-                            id='startDate'
-                            label='Start Date'
-                            value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
-                            onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
-                            isReturningTime={false}
-                        />
+                    <div className='fulfillment-order__row'>
+                        <div className='fulfillment-order--section'>
+                            <div className='fulfillment-order__select-wrapper'>
+                                <NexusDatePicker
+                                    id='dueDate'
+                                    label='Due Date'
+                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
+                                    onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
+                                    isReturningTime={false}
+                                />
+                            </div>
+                            <div className='fulfillment-order__select-wrapper'>
+                                <NexusDatePicker
+                                    id='startDate'
+                                    label='Start Date'
+                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
+                                    onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
+                                    isReturningTime={false}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div className='fulfillment-order__column'>
                 {children}
-            </div>
-            <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__row--notes'>
-                    <h6>Notes:</h6>
-                    <NexusTextArea
-                        onTextChange={e => onFieldChange(NOTES, e.target.value)}
-                        notesValue={get(fulfillmentOrder, NOTES, '')}
-                        disabled={!get(fulfillmentOrder, fieldKeys.ID, '')}
-                    />
-                </div>
             </div>
         </div>
     );

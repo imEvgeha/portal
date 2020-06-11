@@ -9,6 +9,7 @@ import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPa
 import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../assets/filter.svg';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
+import {getValidDate} from '../../../../../util/utils';
 
 const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(true);
@@ -47,13 +48,14 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             }
             <div className='panel-header__list'>
                 {
-                    getFilteredList().map(({fulfillmentOrderId, status, dueDate},index) => (
+                    getFilteredList().map(({id, external_id, status, definition: {dueDate} = {}},index) => (
                         <FulfillmentOrderPanel
                             key={index}
-                            id={fulfillmentOrderId}
+                            id={id}
+                            external_id={external_id}
                             status={status}
-                            dueDate={dueDate}
-                            selected={selectedFulfillmentOrder === fulfillmentOrderId}
+                            dueDate={getValidDate(dueDate)}
+                            selected={selectedFulfillmentOrder === id}
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         />
                         )

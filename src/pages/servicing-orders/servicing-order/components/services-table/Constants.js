@@ -1,4 +1,5 @@
 export const SELECT_VALUES = {
+    status: ['New', 'Accepted', 'Rejected', 'Complete', 'Cancelled', 'Failed'],
     type: ['Subtitles', 'Audio', 'Video'],
     version: [
         {subtitles: ['English', 'French', 'Italian']},

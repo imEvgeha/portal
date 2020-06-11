@@ -4,8 +4,8 @@ import {URL} from '../../../../../util/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from "../../../../../ui/elements/nexus-grid/constants";
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 const PASS_THROUGH = ['availHistoryIds'];
 
