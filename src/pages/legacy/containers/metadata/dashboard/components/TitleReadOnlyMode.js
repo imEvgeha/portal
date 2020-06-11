@@ -171,14 +171,14 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {( totalNumberOfEpisodes || totalNumberOfEpisodes === 0) && (
+                            { !!totalNumberOfEpisodes && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodes">
                                         <b>Episodes: </b>{totalNumberOfEpisodes}
                                     </Alert>
                                 </Col>
                             )}
-                            { (episodeCount || episodeCount === 0) && (
+                            { !!episodeCount && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
                                         <b>Episode Count: </b>{episodeCount}

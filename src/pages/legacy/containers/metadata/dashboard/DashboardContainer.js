@@ -22,7 +22,6 @@ const mapStateToProps = state => {
         selected: state.titleReducer.session.titleTabPageSelection.selected,
         showSearchResults: state.titleReducer.session.showSearchResults,
         searchCriteria: state.titleReducer.session.searchCriteria,
-        advancedSearchCriteria: state.titleReducer.session.advancedSearchCriteria,
         lastSearch: state.titleReducer.freeTextSearch.title || '',
     };
 };
@@ -49,7 +48,7 @@ class DashboardContainer extends React.Component {
     componentWillMount() {
         const parentId =  new URLSearchParams(this.props.location.search).get("parentId");
         const contentType =  new URLSearchParams(this.props.location.search).get("contentType");
-        if (parentId && contentType) {
+        if (parentId) {
             this.handleTitleFreeTextSearch({parentId, contentType});
         }
         else if(this.props.searchCriteria.parentId) {
@@ -134,7 +133,6 @@ class DashboardContainer extends React.Component {
 
 DashboardContainer.propTypes = {
     searchCriteria: PropTypes.any,
-    advancedSearchCriteria: PropTypes.any,
     searchFormUseAdvancedSearch: PropTypes.func,
     resultPageSelect: PropTypes.func,
     searchFormShowAdvancedSearch: PropTypes.func,
