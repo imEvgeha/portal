@@ -11,6 +11,7 @@ const EventManagement = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [gridApi, setGridApi] = useState(null);
 
+
     const closeEventDrawer = () => {
         setSelectedEvent(null);
         gridApi && gridApi.deselectAll();
@@ -29,15 +30,13 @@ const EventManagement = () => {
         }
     };
 
+
+
     return (
         <div className='nexus-c-event-management'>
             <div className='nexus-c-event-management__title'>
                 {TITLE}
-                <Button
-                    // onClick={() => setIsHideReady(!isHideReady)}
-                >
-                    {REFRESH_BTN}
-                </Button>
+
             </div>
             <div className="nexus-c-event-management__table">
                 <EventManagementTable onGridEvent={onGridEvent} />

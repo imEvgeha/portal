@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {omit, isEqual} from 'lodash';
+import {omit, isEqual, isNumber} from 'lodash';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
@@ -44,7 +44,7 @@ const withInfiniteScrolling = ({
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
-                .filter(key => !filterModel.hasOwnProperty(key))
+                .filter(key => !filterModel.hasOwnProperty(key) && key !=='pageNumber')
                 .reduce((object, key) => {
                     object[key] = props.params[key];
                     return object;
@@ -52,7 +52,7 @@ const withInfiniteScrolling = ({
             const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
-            const pageNumber = Math.floor(startRow / pageSize);
+            const pageNumber = props.params && isNumber(props.params.pageNumber) ?  props.params.pageNumber : Math.floor(startRow / pageSize);
 
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();

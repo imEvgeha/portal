@@ -1,0 +1,10 @@
+.nexus-c-event-management-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  button {
+    font-size: 14px;
+    float: right;
+    place-self: flex-end;
+  }
+}
