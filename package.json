@@ -73,6 +73,7 @@
     "moment": "^2.22.2",
     "popper.js": "^1.14.3",
     "prop-types": "15.x",
+    "re-resizable": "^6.4.0",
     "react": "16.8.5",
     "react-beautiful-dnd": "^11.0.5",
     "react-block-ui": "^1.1.3",
