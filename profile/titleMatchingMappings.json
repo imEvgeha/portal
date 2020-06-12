@@ -45,6 +45,24 @@
     "required": true
   },
   {
+    "javaVariableName": "episodic.seriesTitleName",
+    "displayName": "Series",
+    "dataType": "string",
+    "readOnly": true,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
+    "javaVariableName": "episodic.seasonNumber",
+    "displayName": "Season",
+    "dataType": "string",
+    "readOnly": true,
+    "enableSearch": false,
+    "enableEdit": false,
+    "required": false
+  },
+  {
     "javaVariableName": "castCrew.director",
     "displayName": "Director",
     "dataType": "string",
