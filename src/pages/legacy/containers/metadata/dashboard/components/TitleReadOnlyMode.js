@@ -49,7 +49,7 @@ class TitleReadOnlyMode extends Component {
                 seasonLink = e.id;
             }
         });
-
+        console.log('content type: ', contentType);
         return (
             <Container fluid id="titleContainer">
                 <Row style={{ marginTop: '5px' }}>
@@ -86,16 +86,9 @@ class TitleReadOnlyMode extends Component {
                                     </Col>
                                 )}
                                 {seasonNumber && (
-                                    <Col md="6">
+                                    <Col>
                                         <Alert color="light" id="titleSeasonNumber">
                                             <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
-                                        </Alert>
-                                    </Col>
-                                )}
-                                {contentType === 'SERIES' && (
-                                    <Col md="6">
-                                        <Alert color="light" id="titleSeries">
-                                            <a href={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">Show all seasons</a>
                                         </Alert>
                                     </Col>
                                 )}
@@ -126,9 +119,17 @@ class TitleReadOnlyMode extends Component {
                         </>
                         <Row>
                             {totalNumberOfSeasons && (
+
+                                    <Col>
+                                        <Alert color="light" id="titleSeasons">
+                                            <b>Seasons: </b>{totalNumberOfSeasons}
+                                        </Alert>
+                                    </Col>
+                            )}
+                            { contentType === 'SERIES' && (
                                 <Col>
-                                    <Alert color="light" id="titleSeasons">
-                                        <b>Seasons: </b>{totalNumberOfSeasons}
+                                    <Alert color="light" id="titleSeries">
+                                        <a href={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-url">Show all seasons</a>
                                     </Alert>
                                 </Col>
                             )}
@@ -172,16 +173,16 @@ class TitleReadOnlyMode extends Component {
                                 </Col>
                             )}
                             { !!totalNumberOfEpisodes && (
-                                <Col>
-                                    <Alert color="light" id="titleEpisodes">
-                                        <b>Episodes: </b>{totalNumberOfEpisodes}
-                                    </Alert>
-                                </Col>
+                                    <Col>
+                                        <Alert color="light" id="titleEpisodes">
+                                            <b>Episodes: </b>{totalNumberOfEpisodes}
+                                        </Alert>
+                                    </Col>
                             )}
-                            { !!episodeCount && (
+                            { contentType === 'SEASON' && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
-                                        <b>Episode Count: </b>{episodeCount}
+                                        <a href={`/metadata?parentId=${id}`} className="linked-url">Show all episodes</a>
                                     </Alert>
                                 </Col>
                             )}
