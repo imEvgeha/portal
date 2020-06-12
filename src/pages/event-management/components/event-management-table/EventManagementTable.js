@@ -43,7 +43,7 @@ const EventManagementTable = ({onGridEvent}) => {
     };
 
     return (
-        <div className={'nexus-c-event-management-table'}>
+        <div className="nexus-c-event-management-table">
             <Button
                 onClick={() => setPageNumber(0)}
             >
