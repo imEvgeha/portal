@@ -1,6 +1,6 @@
 import React from 'react';
 import XMLViewer from 'react-xml-viewer';
-import {Resizable} from 're-resizable';
+import NexusVerticalResizable from '../nexus-vertical-resizable/NexusVerticalResizable';
 import './NexusXMLView.scss';
 
 const customTheme = {
@@ -9,18 +9,13 @@ const customTheme = {
 };
 
 const NexusXMLView = props => (
-    <Resizable
-        defaultSize={{
-            height: 250
-        }}
-        minWidth='100%'
-        maxWidth='100%'
-        enable={{top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:true, bottomLeft:false, topLeft:false}}
+    <NexusVerticalResizable
+        defaultHeight={250}
     >
         <div className="nexus-c-xml-view">
             <XMLViewer theme={customTheme} {...props} />
         </div>
-    </Resizable>
+    </NexusVerticalResizable>
 );
 
 export default NexusXMLView;

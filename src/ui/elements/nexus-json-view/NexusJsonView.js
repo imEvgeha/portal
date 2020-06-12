@@ -1,16 +1,11 @@
 import React from 'react';
 import ReactJsonView from 'react-json-view';
-import {Resizable} from 're-resizable';
+import NexusVerticalResizable from '../nexus-vertical-resizable/NexusVerticalResizable';
 import './NexusJsonView.scss';
 
 const NexusJsonView = props => (
-    <Resizable
-        defaultSize={{
-            height: 250
-        }}
-        minWidth='100%'
-        maxWidth='100%'
-        enable={{top:false, right:false, bottom:true, left:false, topRight:false, bottomRight:true, bottomLeft:false, topLeft:false}}
+    <NexusVerticalResizable
+        defaultHeight={250}
     >
         <div className="nexus-c-json-view">
             <ReactJsonView
@@ -21,7 +16,7 @@ const NexusJsonView = props => (
                 {...props}
             />
         </div>
-    </Resizable>
+    </NexusVerticalResizable>
 );
 
 export default NexusJsonView;
