@@ -49,7 +49,7 @@ class TitleReadOnlyMode extends Component {
                 seasonLink = e.id;
             }
         });
-        console.log('content type: ', contentType);
+
         return (
             <Container fluid id="titleContainer">
                 <Row style={{ marginTop: '5px' }}>
@@ -173,11 +173,11 @@ class TitleReadOnlyMode extends Component {
                                 </Col>
                             )}
                             { !!totalNumberOfEpisodes && (
-                                    <Col>
-                                        <Alert color="light" id="titleEpisodes">
-                                            <b>Episodes: </b>{totalNumberOfEpisodes}
-                                        </Alert>
-                                    </Col>
+                                <Col>
+                                    <Alert color="light" id="titleEpisodes">
+                                        <b>Episodes: </b>{totalNumberOfEpisodes}
+                                    </Alert>
+                                </Col>
                             )}
                             { contentType === 'SEASON' && (
                                 <Col>
