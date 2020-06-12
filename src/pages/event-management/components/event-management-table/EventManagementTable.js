@@ -12,14 +12,14 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import columnDefs from '../../columnMappings.json';
-import {INITIAL_SORT, REFRESH_BTN} from '../../eventManagementConstants';
+import {INITIAL_SORT, NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
 import './EventManagementTable.scss';
 
 const EventManagementGrid = compose(
     withSideBar(),
     withColumnsResizing(),
     withSorting(INITIAL_SORT),
-    withFilterableColumns(),
+    withFilterableColumns({useDatesWithTime:true}),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
@@ -54,6 +54,7 @@ const EventManagementTable = ({onGridEvent}) => {
                 rowSelection="single"
                 onGridEvent={onGridEvent}
                 mapping={columnDefs}
+                notFilterableColumns={NOT_FILTERABLE_FIELDS}
                 params={{pageNumber: pageNumber}}
                 successDataFetchCallback={successDataFetchCallback}
             />

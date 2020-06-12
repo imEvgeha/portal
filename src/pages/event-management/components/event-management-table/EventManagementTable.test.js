@@ -16,10 +16,15 @@ describe('EventManagementTable', () => {
 
     it('should pass rowSelection prop to EventManagementGrid', () => {
         expect(wrapper.props().rowSelection).toEqual('single');
+        expect(wrapper.props().successDataFetchCallback).toBe.a.function;
     });
 
     it('should pass onGridEvent prop to EventManagementGrid', () => {
         wrapper.props().onGridEvent();
         expect(onGridEventMock.mock.calls.length).toEqual(1);
+    });
+
+    it('should have a Refresh button', () => {
+        expect(wrapper.find('Button').length).toEqual(1);
     });
 });
