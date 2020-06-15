@@ -98,8 +98,8 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
     const handleGridEvent = ({type, api, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             setGridApi(api);
-            const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'castCrew.director');
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 1); // +3 indicates pinned columns on the left side
+            const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
+            columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
     };
 
