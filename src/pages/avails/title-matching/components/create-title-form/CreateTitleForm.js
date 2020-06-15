@@ -101,8 +101,9 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
             }
             close();
         }).catch((error) => {
-            const {response: {description, message} = {}}  = error;
-            setError(description || message);
+            const {message: {description, bindingResult} = {}} = error;
+
+            setError(description || bindingResult);
         });
     };
 

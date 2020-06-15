@@ -4,7 +4,8 @@ import {URL} from '../../../../../util/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {DATETIME_FIELDS} from '../../../../../util/DateTimeUtils';
+import {MULTISELECT_SEARCHABLE_DATA_TYPES} from "../../../../../ui/elements/nexus-grid/constants";
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 const PASS_THROUGH = ['availHistoryIds'];
 
@@ -66,10 +67,11 @@ class RightsURL extends React.Component {
                     if (map) {
                         if (!filter[name]) found++;
                         if (!subkey) {
-                            if (map.searchDataType === 'multiselect') {
+                            const multiSelectSearchDataType = MULTISELECT_SEARCHABLE_DATA_TYPES.includes(map.searchDataType);
+                            if (multiSelectSearchDataType) {
                                 let vals = val.split(',');
                                 let allOptions;
-                                if(map.searchDataType === 'multiselect') {
+                                if(multiSelectSearchDataType) {
                                     allOptions = vals.map(val => {
                                         return {value: val};
                                     });

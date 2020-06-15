@@ -11,6 +11,8 @@ export const COLUMNS = [
     'Due Date',
     'Primary Video',
     'Secondary Audio',
+    'Sub-titles Full',
+    'Sub-titles Forced',
     'Trailer',
     'Metadata',
     'Artwork',
@@ -18,20 +20,25 @@ export const COLUMNS = [
 ];
 
 export const COLUMN_KEYS = [
-    'title',
+    'productDesc',
     'version',
-    'srDueDate',
+    'srdueDate',
     'primaryVideo',
     'secondaryAudio',
+    'subtitlesFull',
+    'subtitlesForced',
     'trailer',
-    'metadata',
-    'artwork',
+    'metaData',
+    'artWork',
     'materialNotes',
 ];
 
 export const FILTER_LIST =  [
     { value: 'All', label: 'All'},
-    { value: 'completed', label: 'Completed'},
-    { value: 'on-hold', label: 'On Hold'},
-    { value: 'in-progress', label: 'In Progress'}
+    { value: 'new', label: 'New'},
+    { value: 'accepted', label: 'Accepted'},
+    { value: 'rejected', label: 'Rejected'},
+    { value: 'complete', label: 'Complete'},
+    { value: 'canceled', label: 'Canceled'},
+    { value: 'failed', label: 'Failed'}
 ];

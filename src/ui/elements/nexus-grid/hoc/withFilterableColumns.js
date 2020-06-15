@@ -29,6 +29,7 @@ const withFilterableColumns = ({
     filterableColumns = null,
     initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
+    useDatesWithTime = false,
     prepareFilterParams = (params) => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = (props) => {
@@ -160,6 +161,7 @@ const withFilterableColumns = ({
                         }
 
                         switch (searchDataType) {
+
                             case READONLY:
                                 columnDef.floatingFilterComponent = CUSTOM_FLOAT_READONLY;
                                 columnDef.filter = CUSTOM_READONLY;
@@ -239,6 +241,7 @@ const withFilterableColumns = ({
                                     filterOptions: ['inRange'],
                                     //
                                     initialFilters,
+                                    isUsingTime: useDatesWithTime && [TIMESTAMP, BUSINESS_DATETIME].includes(searchDataType)
                                 };
                                 break;
                             default:

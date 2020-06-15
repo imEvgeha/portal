@@ -9,8 +9,9 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import EmphasizedCellRenderer
     from '../../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import columnDefs from '../../columnMappings.json';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import './ServicingOrdersTable.scss';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 
 const ServicingOrderGrid = compose(
     withSideBar(),

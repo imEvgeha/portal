@@ -61,100 +61,49 @@ exports[`ServicesTable should match snapshot 1`] = `
           "width": 40,
         },
         Object {
-          "colId": "type",
-          "field": "type",
-          "headerName": "Type",
-        },
-        Object {
-          "colId": "version",
-          "field": "version",
-          "headerName": "Version",
-        },
-        Object {
-          "colId": "standard",
-          "field": "standard",
-          "headerName": "Standard",
-        },
-        Object {
-          "colId": "operationalStatus",
-          "field": "operationalStatus",
-          "headerName": "Operational Status",
-        },
-        Object {
-          "colId": "componentId",
-          "field": "componentId",
+          "colId": "externalServices",
+          "dataSource": "externalServices.externalId",
+          "field": "externalServices",
           "headerName": "Component ID",
         },
         Object {
           "colId": "spec",
+          "dataSource": "externalServices.formatType",
           "field": "spec",
           "headerName": "Spec",
         },
         Object {
           "colId": "addRecipient",
+          "dataSource": "deteTasks.deteDeliveries.externalDelivery.deliverToId",
           "field": "addRecipient",
           "headerName": "Add recipient",
         },
         Object {
-          "colId": "sourceStandard",
-          "field": "sourceStandard",
-          "headerName": "Source Standard",
+          "colId": "overrideDueDate",
+          "field": "overrideDueDate",
+          "headerName": "Do not start before",
+        },
+        Object {
+          "colId": "status",
+          "field": "status",
+          "headerName": "Operational Status",
         },
       ]
+    }
+    defaultColDef={
+      Object {
+        "valueGetter": [Function],
+      }
     }
     domLayout="autoHeight"
     mapping={
       Array [
         Object {
-          "dataType": "select",
-          "displayName": "Type",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "type",
-          "queryParamName": "type",
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Version",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "version",
-          "queryParamName": "type",
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Standard",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "standard",
-          "queryParamName": "standard",
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Operational Status",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "operationalStatus",
-          "queryParamName": "operationalStatus",
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
           "dataType": "string",
           "displayName": "Component ID",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "componentId",
+          "javaVariableName": "externalServices",
           "queryParamName": "componentId",
           "readOnly": false,
           "required": true,
@@ -163,7 +112,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         Object {
           "dataType": "string",
           "displayName": "Spec",
-          "enableEdit": false,
+          "enableEdit": true,
           "enableSearch": true,
           "javaVariableName": "spec",
           "queryParamName": "spec",
@@ -185,13 +134,23 @@ exports[`ServicesTable should match snapshot 1`] = `
         Object {
           "dataType": "string",
           "displayName": "Source Standard",
-          "enableEdit": false,
+          "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "sourceStandard",
-          "queryParamName": "sourceStandard",
+          "javaVariableName": "overrideDueDate",
+          "queryParamName": "overrideDueDate",
           "readOnly": true,
           "required": true,
           "searchDataType": "string",
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Operational Status",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "status",
+          "queryParamName": "status",
+          "readOnly": true,
+          "required": true,
         },
       ]
     }
@@ -245,6 +204,14 @@ exports[`ServicesTable should match snapshot 1`] = `
               "4K",
             ],
           },
+        ],
+        "status": Array [
+          "New",
+          "Accepted",
+          "Rejected",
+          "Complete",
+          "Cancelled",
+          "Failed",
         ],
         "type": Array [
           "Subtitles",

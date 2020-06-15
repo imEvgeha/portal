@@ -1,3 +1,5 @@
+import {DATETIME_FIELDS} from '../../../util/date-time/constants';
+
 const GRID_EVENTS = {
     READY: 'gridReady',
     SIZE_CHANGED: 'gridSizeChanged',
@@ -21,7 +23,6 @@ const DEFAULT_HOC_PROPS = [
     'mapping',
     'selectValues'
 ];
-import {DATETIME_FIELDS} from '../../../util/DateTimeUtils';
 
 const NOT_FILTERABLE_COLUMNS = ['id'];
 const DEFAULT_FILTER_PARAMS = {
@@ -60,6 +61,11 @@ const FILTERABLE_DATA_TYPES = [
     DATETIME_FIELDS.REGIONAL_MIDNIGHT
 ];
 
+const MULTISELECT_SEARCHABLE_DATA_TYPES = [
+    'multiselect',
+    'territoryType',
+];
+
 const AG_GRID_COLUMN_FILTER = {
     TEXT: 'agTextColumnFilter',
     NUMBER: 'agNumberColumnFilter',
@@ -84,6 +90,7 @@ export {
     DEFAULT_HOC_PROPS,
     FILTER_TYPE,
     FILTERABLE_DATA_TYPES,
+    MULTISELECT_SEARCHABLE_DATA_TYPES,
     MAX_BLOCKS_IN_CACHE,
     MAX_CONCURRENT_DATASOURCE_REQUEST,
     NOT_FILTERABLE_COLUMNS,

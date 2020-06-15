@@ -2,14 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
-import {DatePicker} from '@atlaskit/datetime-picker';
+import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import Textfield from '@atlaskit/textfield'
 import {CreatableSelect} from '@atlaskit/select';
 
 const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    
+    const {dateSelected = '', selected = false} = territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
@@ -42,12 +43,13 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     const returnValidData = data => {
         return existingTerritoryList && existingTerritoryList[territoryIndex] && existingTerritoryList[territoryIndex][data] && existingTerritoryList[territoryIndex][data] !== null;
     };
-    
+
     return (
         <>
             <Field
                 label="COUNTRY"
                 isRequired
+                isDisabled={isEdit}
                 name="country"
                 validate={validate}
                 defaultValue={
@@ -79,26 +81,26 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 )}
 
             </Field>
-            <Field label="SELECTED" name="selected" defaultValue={isEdit ? { label: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : 'false', value: returnValidData('selected') ? existingTerritoryList[territoryIndex]['selected'] : false } : { label: 'False', value: false }}>
-                {({ fieldProps: { id, ...rest } }) => (
-                    <Select
-                        id={`select-${id}`}
-                        {...rest}
-                        isSearchable={false}
-                        placeholder="Add selected"
-                        options={[
-                            { label: 'true', value: true },
-                            { label: 'false', value: false },]}
+            <Field name="selected" defaultValue="False" label="SELECTED">
+                {() => (
+                    <Textfield
+                        name="readOnly"
+                        isReadOnly={true}
+                        defaultValue={selected.toString()}
                     />
                 )}
             </Field>
-
-            <Field label="DATE SELECTED" name="dateSelected" defaultValue={isEdit ? returnValidData('dateSelected') && existingTerritoryList[territoryIndex]['dateSelected'] ? existingTerritoryList[territoryIndex]['dateSelected'] : '' : ''}>
-                {({ fieldProps }) => (
-                    <DatePicker id="datepicker" placeholder="DD/MM/YYYY" {...fieldProps} dateFormat="DD/MM/YYYY" />
-                )}
-            </Field>
-
+            {(isEdit && dateSelected) && (
+                <Field name="date selected" defaultValue="" label="DATE SELECTED">
+                    {() => (
+                        <Textfield
+                            name="readOnly"
+                            isReadOnly={true}
+                            defaultValue={ISODateToView(dateSelected, 'businessDateTime')}
+                        />
+                    )}
+                </Field>
+            )}
             <Field
                 label="RIGHTS CONTRACT STATUS"
                 isRequired

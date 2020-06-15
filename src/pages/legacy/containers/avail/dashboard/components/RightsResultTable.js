@@ -22,7 +22,8 @@ import {
     equalOrIncluded
 } from '../../../../../../util/Common';
 import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
-import {DATETIME_FIELDS, ISODateToView} from '../../../../../../util/DateTimeUtils';
+import {ISODateToView} from '../../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../../util/date-time/constants';
 
 const colDef = [];
 let registeredOnSelect= false;
@@ -413,16 +414,16 @@ class RightsResultTable extends React.Component {
         }
         this.doSearch(Math.floor(params.startRow/this.state.pageSize), this.state.pageSize, this.props.tabPageSort)
                    .then(response => {
-                        if(response && response.data.total > 0){
-                            this.addLoadedItems(response.data);
+                        if(response && response.total > 0){
+                            this.addLoadedItems(response);
                             // if on or after the last page, work out the last row.
                             let lastRow = -1;
-                            if ((response.data.page + 1) * response.data.size >= response.data.total) {
-                                lastRow = response.data.total;
+                            if ((response.page + 1) * response.size >= response.total) {
+                                lastRow = response.total;
                             }
 
                             if(this.table){
-                                params.successCallback(response.data.data, lastRow);
+                                params.successCallback(response.data, lastRow);
                                 if(this.props.tabPageSelection.selected.length > 0){
                                     this.table.api.forEachNode(rowNode => {
                                         if(rowNode.data && this.props.tabPageSelection.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0){

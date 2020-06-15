@@ -1,17 +1,11 @@
 import moment from 'moment';
-import {store} from '../index';
+import {store} from '../../index';
 import {
-    RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT,
+    RELATIVE_TIME_FORMAT,
+    SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT
-} from '../ui/elements/nexus-date-and-time-elements/constants';
-
-const DATETIME_FIELDS = {
-    TIMESTAMP: 'timestamp',
-    BUSINESS_DATETIME: 'businessDateTime',
-    SIMULCAST: 'simulcast',
-    REGIONAL: 'regional',
-    REGIONAL_MIDNIGHT: 'regionalMidnight'
-};
+} from '../../ui/elements/nexus-date-and-time-elements/constants';
+import {DATETIME_FIELDS} from './constants';
 
 // Create date format based on locale
 const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
@@ -66,7 +60,6 @@ const dateToISO = (date, type) => {
 };
 
 export {
-    DATETIME_FIELDS,
     getDateFormatBasedOnLocale,
     parseSimulcast,
     ISODateToView,
