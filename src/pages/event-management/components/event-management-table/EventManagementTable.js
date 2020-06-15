@@ -24,12 +24,10 @@ const EventManagementGrid = compose(
 )(NexusGrid);
 
 const EventManagementTable = ({onGridEvent}) => {
-    const [pageNumber, setPageNumber] =  useState(null);
+    let forceRefresh = null;
 
-    const successDataFetchCallback = () => {
-        if(isNumber(pageNumber)) {
-            setPageNumber(null);
-        }
+    const forceRefreshCallback = (refresh) => {
+        forceRefresh = refresh;
     };
 
     const updateColumnDefs = (columnDefs) => {
@@ -45,7 +43,7 @@ const EventManagementTable = ({onGridEvent}) => {
     return (
         <div className="nexus-c-event-management-table">
             <Button
-                onClick={() => setPageNumber(0)}
+                onClick={() => forceRefresh && forceRefresh()}
             >
                 {REFRESH_BTN}
             </Button>
@@ -56,8 +54,7 @@ const EventManagementTable = ({onGridEvent}) => {
                 onGridEvent={onGridEvent}
                 mapping={columnDefs}
                 notFilterableColumns={NOT_FILTERABLE_FIELDS}
-                params={{pageNumber: pageNumber}}
-                successDataFetchCallback={successDataFetchCallback}
+                setForceRefresh={forceRefreshCallback}
             />
         </div>
     );

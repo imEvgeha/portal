@@ -21,6 +21,17 @@ const withInfiniteScrolling = ({
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
+        const refresh = () => {
+            updateData(fetchData, gridApi);
+        };
+
+        // refresh
+        useEffect(() => {
+            if (props.setForceRefresh) {
+                props.setForceRefresh(refresh);
+            }
+        }, [props.setForceRefresh]);
+
         //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
@@ -44,7 +55,7 @@ const withInfiniteScrolling = ({
         const getRows = (params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
-                .filter(key => !filterModel.hasOwnProperty(key) && key !=='pageNumber')
+                .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
                     object[key] = props.params[key];
                     return object;
@@ -52,7 +63,7 @@ const withInfiniteScrolling = ({
             const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || 100;
-            const pageNumber = props.params && isNumber(props.params.pageNumber) ?  props.params.pageNumber : Math.floor(startRow / pageSize);
+            const pageNumber = Math.floor(startRow / pageSize);
 
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
