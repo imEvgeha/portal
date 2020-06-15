@@ -54,7 +54,7 @@
     "required": false
   },
   {
-    "javaVariableName": "episodic.seasonNumber",
+    "javaVariableName": "episodic.seasonTitleName",
     "displayName": "Season",
     "dataType": "string",
     "readOnly": true,
