@@ -15,18 +15,19 @@
     margin: 1.7rem 0;
   }
 
-  /* AtlasKit Bugfi */
+  /* AtlasKit Bugfix */
   input[disabled] {
     height: auto;
-  }
-
-  &__select {
   }
 
   &__button-row {
     display: flex;
     justify-content: flex-end;
     margin: 16px;
+  }
+
+  &__input {
+    margin-bottom: 16px;
   }
 }
 

@@ -16,14 +16,13 @@ export default {
         { value: 'MGM Rate Card', label: 'MGM Rate Card' },
         { value: 'WB Rate Card', label: 'WB Rate Card' }
     ],
-    STATUS_LIST: [
-        { value: 'NEW', label: 'New'},
-        { value: 'ACCEPTED', label: 'Accepted'},
-        { value: 'REJECTED', label: 'Rejected'},
-        { value: 'COMPLETE', label: 'Complete'},
-        { value: 'CANCELED', label: 'Canceled'},
-        { value: 'FAILED', label: 'Failed'}
-    ],
+    STATUS: {
+        NOT_STARTED: 'Not Started',
+        IN_PROGRESS: 'In Progress',
+        COMPLETE: 'Complete',
+        CANCELLED: 'Cancelled',
+        FAILED: 'Failed'
+    },
     REDINESS_STATUS: [
         { value: 'NEW', label: 'New' },
         { value: 'READY', label: 'Ready' },

@@ -4,7 +4,6 @@ import {clone, isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import {Radio} from '@atlaskit/radio';
 import Badge from '@atlaskit/badge';
-import { typography } from '@atlaskit/theme';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './SourcesTable.scss';
 import columnDefinitions from './columnDefinitions';

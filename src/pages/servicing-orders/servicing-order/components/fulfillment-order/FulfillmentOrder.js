@@ -79,7 +79,6 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
         }
     };
 
-    const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS]) : {};
     const redinessOption = fulfillmentOrder ? Constants.REDINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.REDINESS]) : {};
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -124,66 +123,66 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         </div>
                         <Grid>
                             <GridColumn medium={6}>
-                                <div>
-                                    <label htmlFor='notes'>Notes:</label>
-                                    <NexusTextArea
-                                        name='notes'
-                                        onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
-                                        notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
+                                <label htmlFor='notes'>Notes:</label>
+                                <NexusTextArea
+                                    name='notes'
+                                    onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
+                                    isDisabled={isFormDisabled}
+                                />
+                            </GridColumn>
+                            <GridColumn medium={2}>
+                                <label htmlFor='servicer'>Servicer</label>
+                                <Textfield
+                                    name='servicer'
+                                    value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
+                                    isDisabled={true}
+                                />
+                            </GridColumn>
+
+                            <GridColumn medium={2}>
+                                <div className="fulfillment-order__input">
+                                    <label htmlFor='fulfillment-status'>Fulfillment Status</label>
+                                    <Textfield
+                                        name='fulfillment-status'
+                                        value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')]}
+                                        isDisabled={true}
+                                    />
+                                </div>
+                                <div className="fulfillment-order__input">
+                                    <NexusDatePicker
+                                        id='dueDate'
+                                        label='Start Date'
+                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
+                                        onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
+                                        isReturningTime={false}
                                         isDisabled={isFormDisabled}
                                     />
                                 </div>
                             </GridColumn>
 
                             <GridColumn medium={2}>
-                                <div className="fulfillment-order__input-column">
-                                    <label htmlFor='servicer'>Servicer</label>
-                                    <Textfield
-                                        name='servicer'
-                                        value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                                        isDisabled={true}
+                                <div className="fulfillment-order__input">
+                                    <label htmlFor='rediness-status'>Rediness Status</label>
+                                    <Select
+                                        name='rediness-status'
+                                        className='fulfillment-order__select'
+                                        options={Constants.REDINESS_STATUS}
+                                        value={{value: get(fulfillmentOrder, fieldKeys.REDINESS, ''), label: redinessOption && redinessOption.label}}
+                                        onChange={val => onFieldChange(fieldKeys.REDINESS, val.value)}
+                                        isDisabled={isFormDisabled}
                                     />
                                 </div>
-                            </GridColumn>
-
-                            <GridColumn medium={2}>
-                                <label htmlFor='fulfillment-status'>Fulfillment Status</label>
-                                <Select
-                                    name='fulfillment-status'
-                                    className='fulfillment-order__select'
-                                    options={Constants.STATUS_LIST}
-                                    value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
-                                    onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
-                                    isDisabled={isFormDisabled}
-                                />
-                                <NexusDatePicker
-                                    id='dueDate'
-                                    label='Start Date'
-                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
-                                    onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
-                                    isReturningTime={false}
-                                    isDisabled={isFormDisabled}
-                                />
-                            </GridColumn>
-
-                            <GridColumn medium={2}>
-                                <label htmlFor='rediness-status'>Rediness Status</label>
-                                <Select
-                                    name='rediness-status'
-                                    className='fulfillment-order__select'
-                                    options={Constants.REDINESS_STATUS}
-                                    value={{value: get(fulfillmentOrder, fieldKeys.REDINESS, ''), label: redinessOption && redinessOption.label}}
-                                    onChange={val => onFieldChange(fieldKeys.REDINESS, val.value)}
-                                    isDisabled={isFormDisabled}
-                                />
-                                <NexusDatePicker
-                                    id='dueDate'
-                                    label='Due Date'
-                                    value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
-                                    onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
-                                    isReturningTime={false}
-                                    isDisabled={isFormDisabled}
-                                />
+                                <div className="fulfillment-order__input">
+                                    <NexusDatePicker
+                                        id='dueDate'
+                                        label='Due Date'
+                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
+                                        onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
+                                        isReturningTime={false}
+                                        isDisabled={isFormDisabled}
+                                    />
+                                </div>
                             </GridColumn>
                         </Grid>
                         <hr />
