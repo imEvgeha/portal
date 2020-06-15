@@ -1,0 +1,9 @@
+.nexus-c-event-management-table {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__refresh-button {
+    float: right;
+    place-self: flex-end;
+  }
+}

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
@@ -35,7 +36,8 @@ class TitleReadOnlyMode extends Component {
             originalLanguage,
             episodic,
             parentIds,
-            category
+            category,
+            id
         } = data;
         const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
         let seriesLink;
@@ -126,6 +128,15 @@ class TitleReadOnlyMode extends Component {
                             )}
                         </Row>
                         <Row>
+                            { contentType === 'SERIES' && (
+                                <Col>
+                                    <Alert color="light" id="titleSeries">
+                                        <Link to={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-url">Show all seasons</Link>
+                                    </Alert>
+                                </Col>
+                            )}
+                        </Row>
+                        <Row>
                             {this.addBooleanQuotes(animated) && (
                                 <Col className='no-wrap'>
                                     <Alert color="light" id="titleAnimated">
@@ -163,17 +174,26 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            {totalNumberOfEpisodes && (
+                            { !!totalNumberOfEpisodes && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodes">
                                         <b>Episodes: </b>{totalNumberOfEpisodes}
                                     </Alert>
                                 </Col>
                             )}
-                            {episodeCount && (
+                            { !!episodeCount && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
                                         <b>Episode Count: </b>{episodeCount}
+                                    </Alert>
+                                </Col>
+                            )}
+                        </Row>
+                        <Row>
+                            { contentType === 'SEASON' && (
+                                <Col>
+                                    <Alert color="light" id="titleEpisodeCount">
+                                        <Link to={`/metadata?parentId=${id}`} className="linked-url">Show all episodes</Link>
                                     </Alert>
                                 </Col>
                             )}
