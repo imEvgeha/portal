@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
+import Button from '@atlaskit/button';
 import {getEventSearch} from '../../eventManagementService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -10,7 +11,8 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import columnDefs from '../../columnMappings.json';
-import {INITIAL_SORT, NOT_FILTERABLE_FIELDS} from '../../eventManagementConstants';
+import {INITIAL_SORT, NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
+import './EventManagementTable.scss';
 
 const EventManagementGrid = compose(
     withSideBar(),
@@ -21,6 +23,8 @@ const EventManagementGrid = compose(
 )(NexusGrid);
 
 const EventManagementTable = ({onGridEvent}) => {
+    let forceRefresh = null;
+
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -32,13 +36,23 @@ const EventManagementTable = ({onGridEvent}) => {
     };
 
     return (
-        <EventManagementGrid
-            columnDefs={updateColumnDefs(columnDefs)}
-            rowSelection="single"
-            onGridEvent={onGridEvent}
-            mapping={columnDefs}
-            notFilterableColumns={NOT_FILTERABLE_FIELDS}
-        />
+        <div className="nexus-c-event-management-table">
+            <Button
+                className="nexus-c-event-management-table__refresh-button"
+                onClick={() => forceRefresh && forceRefresh()}
+            >
+                {REFRESH_BTN}
+            </Button>
+            <EventManagementGrid
+                className="nexus-c-event-management-grid"
+                columnDefs={updateColumnDefs(columnDefs)}
+                rowSelection="single"
+                onGridEvent={onGridEvent}
+                mapping={columnDefs}
+                notFilterableColumns={NOT_FILTERABLE_FIELDS}
+                setForceRefresh={(refresh) => forceRefresh = refresh}
+            />
+        </div>
     );
 };
 
