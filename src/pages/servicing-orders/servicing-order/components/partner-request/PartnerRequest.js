@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
-import moment from 'moment';
 import {getServiceRequest} from '../../../servicingOrdersService';
-import {parseSimulcast} from '../../../../../util/DateTimeUtils';
+import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {
     COLUMN_KEYS,
     COLUMNS,
@@ -15,41 +14,43 @@ import {
 } from '../filter-section/constants';
 import './PartnerRequest.scss';
 
-const PartnerRequest = ({orderDetails}) => {
-    const {customer, soID, creationDate, createdBy} = orderDetails;
-    const [orders, setOrders] = useState([]);
+const PartnerRequest = ({externalId, configuredPrId}) => {
+    const [data, setData] = useState({list:[]});
 
     useEffect(() => {
-        getServiceRequest().then(res => setOrders(res));
+        getServiceRequest(externalId).then(res => {
+            const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
+            const {tenant, createdBy, createdAt, definition} = partnerRequest;
+            setData({
+                list: JSON.parse(definition).materials,
+                tenant, createdBy, createdAt
+            });
+        });
     }, []);
 
     return (
         <div className="nexus-c-partner-request">
             <div className="nexus-c-partner-request__info">
                 <div className="nexus-c-partner-request__info-field">
-                    {`${STUDIO}: ${customer}`}
+                    {STUDIO}: {data.tenant}
                 </div>
                 <div className="nexus-c-partner-request__info-field">
-                    {`${MSS_ORDER_DETAILS}: ${soID}`}
+                    {MSS_ORDER_DETAILS}: {externalId}
                 </div>
                 <div className="nexus-c-partner-request__info-field">
-                    {`${CREATED_DATE}: ${
-                        moment(creationDate).isValid()
-                            ? parseSimulcast(creationDate, DATE_FORMAT)
-                            : null
-                    }`}
+                    {CREATED_DATE}: {data.createdAt ? parseSimulcast(data.createdAt, DATE_FORMAT): ''}
                 </div>
                 <div className="nexus-c-partner-request__info-field">
-                    {`${CREATED_BY}: ${createdBy}`}
+                    {CREATED_BY}: {(data.createdBy || '')}
                 </div>
             </div>
             <div className="nexus-c-partner-request__table">
                 {COLUMNS.map((columnHeader, index) => (
                     <div key={index} className="nexus-c-partner-request__table-column-header">
-                        {columnHeader}
+                        {columnHeader.toUpperCase()}
                     </div>
                 ))}
-                {orders.map((order) => (
+                {data.list.map((order) => (
                     COLUMN_KEYS.map((key, index) => (
                         <div
                             key={uid(key, index)}
@@ -65,21 +66,13 @@ const PartnerRequest = ({orderDetails}) => {
 };
 
 PartnerRequest.propTypes = {
-    orderDetails: PropTypes.shape({
-        customer: PropTypes.string,
-        soID: PropTypes.string,
-        creationDate: PropTypes.string,
-        createdBy: PropTypes.string,
-    }),
+    externalId: PropTypes.string,
+    configuredPrId: PropTypes.string,
 };
 
 PartnerRequest.defaultProps = {
-    orderDetails: {
-        customer: '',
-        soID: '',
-        creationDate: '',
-        createdBy: '',
-    }
+    externalId: '',
+    configuredPrId: ''
 };
 
 export default PartnerRequest;

@@ -32,6 +32,7 @@ describe('EventManagement', () => {
         const gridApiMock = {
             deselectAll: deselectAllMock,
             getSelectedRows: () => ([event]),
+            sizeColumnsToFit: () => {}
         };
 
         beforeEach(() => {

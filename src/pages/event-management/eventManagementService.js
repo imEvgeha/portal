@@ -8,7 +8,7 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
     // Build sortParams string if sortParams are provided
     if (!isEmpty(sortedParams)) {
         paramString = sortedParams.reduce((sortedParams, {colId, sort}) => (
-            `${sortedParams}${colId}=${sort}`
+            `${sortedParams}${colId}=${sort};`
         ), ';');
     }
 

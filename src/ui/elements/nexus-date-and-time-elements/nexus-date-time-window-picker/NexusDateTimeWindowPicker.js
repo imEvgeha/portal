@@ -17,7 +17,7 @@ import {
     RELATIVE_DATE_FORMAT,
 } from '../constants';
 import CustomIntlProvider from '../../nexus-layout/CustomIntlProvider';
-import {isUtc} from '../../../../util/DateTimeUtils';
+import {isUtc} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDateTimeWindowPicker = ({
     label,

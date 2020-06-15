@@ -13,7 +13,7 @@ import {
     RELATIVE_DATE_FORMAT_WITHOUT_TIME
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/DateTimeUtils';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDatePicker = ({
     id,

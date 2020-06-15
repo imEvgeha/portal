@@ -4,6 +4,7 @@ import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
 import {processOptions} from './util/ProcessSelectOptions';
+import {MULTISELECT_SEARCHABLE_DATA_TYPES} from "../../../../ui/elements/nexus-grid/constants";
 
 export function* fetchAvailMapping(requestMethod) {
     try {
@@ -36,7 +37,8 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
         ]);
         if (!fetchMappingResult.error) {
             const {payload} = fetchMappingResult;
-            const mappings = (payload.mappings && payload.mappings.filter(el => el.dataType).filter(el => el.displayName)) || [];
+            const mappings = payload.mappings || [];
+
             yield put({
                 type: actionTypes.STORE_AVAIL_MAPPING,
                 payload: {mappings},
@@ -51,7 +53,7 @@ export function* fetchAndStoreAvailMapping(requestMethod) {
 }
 
 export function* fetchAndStoreSelectItems(payload, type) {
-    const multiSelectMappings = payload.filter(el => el.searchDataType === 'multiselect' );
+    const multiSelectMappings = payload.filter(el => MULTISELECT_SEARCHABLE_DATA_TYPES.includes(el.searchDataType));
     const mappingsWithOptions = multiSelectMappings
         .filter(el => el.options)
         .reduce((acc, {javaVariableName, options}) => {
@@ -86,7 +88,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
-        const options = deduplicate(processOptions(value,configEndpoint),'label');
+        const options = deduplicate(processOptions(value,configEndpoint), 'value');
 
         acc = {
             ...acc,
