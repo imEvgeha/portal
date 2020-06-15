@@ -162,6 +162,7 @@ class TitleEdit extends Component {
             territories: emptyTerritory,
             editorialMetadataForCreate: emptyEditorial,
             updatedEditorialMetadata: [],
+            updatedTerritories: [],
             editorialMetadata: this.editorialRef.current,
             territory: this.territoryRef.current,
         }));
@@ -953,7 +954,7 @@ class TitleEdit extends Component {
                         areTerritoryMetadataFieldsRequired: false,
                         areRatingFieldsRequired: false
                     });
-                    this.territoryRef.current = this.state.territory;
+                    this.territoryRef.current =  this.state.territory;
                     this.editorialRef.current = this.state.editorialMetadata;
                 }else{
                     this.setState({
