@@ -9,13 +9,15 @@ import NexusDownload from '../../../../../ui/elements/nexus-download/NexusDownlo
 import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
+    const {eventId = '', id = ''} = event || {};
+
     const onInnerReplay = () => {
-        const payload = {docId: event.id};
+        const payload = {docId: id};
         onReplay(payload);
     };
 
     const onInnerReplicate = () => {
-        const payload = {docId: event.id};
+        const payload = {docId: id};
         onReplicate(payload);
     };
 
@@ -25,7 +27,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 className="nexus-c-event-drawer-header__replay-button"
                 onClick={onInnerReplay}
                 isLoading={isReplaying}
-                isDisabled={!event || !event.eventId}
+                isDisabled={!event || !eventId}
             >
                 Replay
             </Button>
@@ -33,15 +35,15 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 className="nexus-c-event-drawer-header__replicate-button"
                 onClick={onInnerReplicate}
                 isLoading={isReplicating}
-                isDisabled={!event || !event.eventId}
+                isDisabled={!event || !eventId}
             >
                 Replicate
             </Button>
             <NexusDownload
                 className="nexus-c-event-drawer-header__download-button"
                 data={event}
-                filename={event.eventId}
-                isDisabled={!event || !event.eventId}
+                filename={`${eventId}-event`}
+                isDisabled={!event || !eventId}
             />
         </div>
     );

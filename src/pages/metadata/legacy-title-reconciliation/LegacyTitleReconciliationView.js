@@ -61,16 +61,16 @@ const LegacyTitleReconciliationView = ({
     const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
             setGridApi(api);
-            const contentTypeIndex = updatedColumnDefs.findIndex(({field}) => field === 'contentType');
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex);
+            const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
+            columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
     };
 
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
-        episodeAndSeasonNumberColumnDef,
-        ...columnDefs
+        ...columnDefs,
+        episodeAndSeasonNumberColumnDef
     ];
 
     return (
