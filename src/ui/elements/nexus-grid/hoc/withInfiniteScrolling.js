@@ -21,6 +21,19 @@ const withInfiniteScrolling = ({
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
+        const refresh = () => {
+            if (fetchData && gridApi) {
+                updateData(fetchData, gridApi);
+            }
+        };
+
+        // handle force refresh
+        useEffect(() => {
+            if (props.setForceRefresh) {
+                props.setForceRefresh(refresh);
+            }
+        }, [props.setForceRefresh]);
+
         //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
@@ -170,6 +183,7 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
         isDatasourceEnabled: PropTypes.bool,
+        setForceRefresh: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
@@ -180,6 +194,7 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: null,
         params: null,
         isDatasourceEnabled: true,
+        setForceRefresh: null,
     };
 
     return ComposedComponent;
