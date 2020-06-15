@@ -17,10 +17,12 @@ import {momentToISO, safeTrim, URL} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
 
+import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
 import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import PriceField from '../components/PriceField';
 import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
@@ -49,6 +51,7 @@ class RightCreate extends React.Component {
         this.mappingErrorMessage = {};
         this.right = {};
         this.state = {
+            isRightPriceFormOpen: false,
             isRightTerritoryFormOpen: false,
             isRightAudioLanguageFormOpen: false
         };
@@ -295,6 +298,12 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage =  mappingErrorMessage;
     };
+
+    toggleRightPriceForm = () => {
+        this.setState({
+            isRightPriceFormOpen: !this.state.isRightPriceFormOpen
+        });
+    }
 
     toggleRightTerritoryForm = () => {
         this.setState({
@@ -662,6 +671,53 @@ class RightCreate extends React.Component {
             ));
         };
 
+        const renderPriceField = (name, displayName, required, value) => {
+            let priceTypeOptions = [], priceCurrencyOptions = [];
+            let val;
+
+            if(this.props.selectValues && this.props.selectValues['pricing.priceType']){
+                priceTypeOptions  = this.props.selectValues['pricing.priceType'];
+            }
+            if (this.props.selectValues && this.props.selectValues['pricing.priceCurrency']) {
+                priceCurrencyOptions = this.props.selectValues['pricing.priceCurrency'];
+            }
+
+            priceTypeOptions = priceTypeOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (priceTypeOptions.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? priceTypeOptions.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+
+            if(priceTypeOptions.length > 0 && value){
+                val = value;
+                if(!required) {
+                    priceTypeOptions.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
+            return renderFieldTemplate(name, displayName, required, null, (
+                <PriceField
+                    prices={this.right.pricing}
+                    name={name}
+                    onRemoveClick={(price) => this.handleDeleteObjectFromArray(price.priceType, 'pricing', 'priceType')}
+                    onAddClick={this.toggleRightPriceForm}
+                    renderChildren={() => (
+                        <>
+                            <div style={{position: 'absolute', right: '10px'}}>
+                                <AddButton onClick={this.toggleRightPriceForm}>+</AddButton>
+                            </div>
+                            <RightPriceForm
+                                onSubmit={(e) => this.handleArrayPush(e, 'pricing')}
+                                isOpen={this.state.isRightPriceFormOpen}
+                                onClose={this.toggleRightPriceForm}
+                                data={val}
+                                priceTypeOptions={priceTypeOptions}
+                                priceCurrencyOptions={priceCurrencyOptions}
+                            />
+                        </>
+                    )}
+                    mappingErrorMessage={this.mappingErrorMessage}
+                />
+            ));
+        };
+
         const renderTerritoryField = (name, displayName, required, value) => {
             let options = [];
             let val;
@@ -813,6 +869,8 @@ class RightCreate extends React.Component {
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
+                        case 'priceType': renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
                         case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         case 'audioLanguageType': renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));
