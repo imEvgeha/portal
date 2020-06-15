@@ -1,7 +1,6 @@
-import React, {useState, useEffect}  from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
-import {isNumber} from 'lodash';
 import Button from '@atlaskit/button';
 import {getEventSearch} from '../../eventManagementService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -43,12 +42,13 @@ const EventManagementTable = ({onGridEvent}) => {
     return (
         <div className="nexus-c-event-management-table">
             <Button
+                className="nexus-c-event-management-table__refresh-button"
                 onClick={() => forceRefresh && forceRefresh()}
             >
                 {REFRESH_BTN}
             </Button>
             <EventManagementGrid
-                className='nexus-c-event-management-grid'
+                className="nexus-c-event-management-grid"
                 columnDefs={updateColumnDefs(columnDefs)}
                 rowSelection="single"
                 onGridEvent={onGridEvent}

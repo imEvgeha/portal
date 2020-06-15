@@ -18,7 +18,7 @@ describe('EventManagementTable', () => {
 
     it('should pass rowSelection prop to EventManagementGrid', () => {
         expect(eventManagementGrid.props().rowSelection).toEqual('single');
-        expect(eventManagementGrid.props().successDataFetchCallback).toBeInstanceOf(Function);
+        expect(eventManagementGrid.props().setForceRefresh).toBeInstanceOf(Function);
     });
 
     it('should pass onGridEvent prop to EventManagementGrid', () => {

@@ -5,6 +5,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
   className="nexus-c-event-management-table"
 >
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-event-management-table__refresh-button"
     onClick={[Function]}
   >
     Refresh
@@ -322,13 +323,8 @@ exports[`EventManagementTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[MockFunction]}
-    params={
-      Object {
-        "pageNumber": null,
-      }
-    }
     rowSelection="single"
-    successDataFetchCallback={[Function]}
+    setForceRefresh={[Function]}
   />
 </div>
 `;
