@@ -17,26 +17,27 @@ const ServiceOrderFilter = ({
     setDueDateSortDirection
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+    const { tenant, external_id, description, configured_pr_id, sr_due_date } = orderDetails || {};
+    
     return (
         <div className="so-panel-filter-detail">
             <div className="so-panel-filter-detail__info-section">
                 <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Customer: {orderDetails.tenant}
+                    Customer: {tenant}
                 </p>
 
                 <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Order ID: {orderDetails.external_id}
+                    Order ID: {external_id}
                 </p>
             </div>
 
-            {orderDetails.description != null ? (
+            {description !== null && (
                 <div className="so-panel-filter-detail__info-section">
                     <p className="so-panel-filter-detail__info so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                        Description: {orderDetails.description}
+                        Description: {description}
                     </p>
                 </div>
-            ) : null}
+            )}
 
             <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
             <NexusDrawer
@@ -46,14 +47,14 @@ const ServiceOrderFilter = ({
                 title="Partner Request"
             >
                 <PartnerRequest
-                    externalId={orderDetails.external_id}
-                    configuredPrId={orderDetails.configured_pr_id}
+                    externalId={external_id}
+                    configuredPrId={configured_pr_id}
                 />
             </NexusDrawer>
             <NexusDatePicker
                 id="dueDate"
                 label="SO Due Date"
-                value={getValidDate(orderDetails.sr_due_date)}
+                value={getValidDate(sr_due_date)}
                 isDisabled
                 isReturningTime={false}
                 onChange={() => {}}
