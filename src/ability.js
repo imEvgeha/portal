@@ -52,10 +52,10 @@ const updateAbility = (roles = []) => {
     if (roles && roles.includes('configuration_viewer')) {
         can('read', 'ConfigUI');
     }
-    if (roles && roles.includes('configuration_user')) {        
+    if (roles && roles.includes('configuration_user')) {
         can(['create', 'read', 'update'], 'ConfigUI');
     }
-    if (roles && roles.includes('configuration_admin')) {        
+    if (roles && roles.includes('configuration_admin')) {
         can(['create', 'read', 'update', 'delete'], 'ConfigUI');
     }
 
@@ -74,6 +74,9 @@ const updateAbility = (roles = []) => {
 
     // ******** Event Management *************
     can(['create', 'read', 'update', 'delete'], 'EventManagement');
+
+    // ******** Sync Log *************
+    can(['create', 'read', 'update', 'delete'], 'SyncLog');
 
     ability.update(rules);
 };
