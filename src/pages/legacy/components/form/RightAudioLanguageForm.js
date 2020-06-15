@@ -33,7 +33,7 @@ class RightAudioLanguageForm extends React.Component {
                                 <Form onSubmit={data => this.onSubmit(data)}>
                                     {({ formProps }) => (
                                         <ModalBody>
-                                            <form {...formProps} className={className}>
+                                            <form {...formProps} className={`${className} audio-language-form`}>
                                                 {children}
                                             </form>
                                         </ModalBody>
