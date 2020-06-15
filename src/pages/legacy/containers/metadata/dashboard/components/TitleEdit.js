@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
@@ -75,6 +75,8 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             ratingForCreate: {}
         };
+        this.editorialRef = React.createRef();
+        this.territoryRef = React.createRef();
     }
 
     componentDidMount() {
@@ -121,6 +123,7 @@ class TitleEdit extends Component {
             this.setState({
                 territory: territoryMetadata
             });
+            this.territoryRef.current = territoryMetadata;
         }).catch(() => {
             console.error('Unable to load Territory Metadata');
         });
@@ -132,6 +135,7 @@ class TitleEdit extends Component {
             this.setState({
                 editorialMetadata: editorialMetadata
             });
+            this.editorialRef.current = editorialMetadata;
         }).catch(() => {
             console.error('Unable to load Editorial Metadata');
         });
@@ -157,7 +161,9 @@ class TitleEdit extends Component {
             titleRankingActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
             editorialMetadataForCreate: emptyEditorial,
-            updatedEditorialMetadata: []
+            updatedEditorialMetadata: [],
+            editorialMetadata: this.editorialRef.current,
+            territory: this.territoryRef.current,
         }));
     };
 
@@ -441,6 +447,7 @@ class TitleEdit extends Component {
      * Territory Metadata document
      */
     handleTerritoryMetadataEditChange = (e, data) => {
+        console.log('this.state.updatedTerritories ',this.state.updatedTerritories );
         let edited = this.state.updatedTerritories.find(e => e.id === data.id);
         if (edited) {
             edited[e.target.name] = e.target.value;
@@ -947,12 +954,15 @@ class TitleEdit extends Component {
                         areTerritoryMetadataFieldsRequired: false,
                         areRatingFieldsRequired: false
                     });
+                    this.territoryRef.current = this.state.territory;
+                    this.editorialRef.current = this.state.editorialMetadata;
                 }else{
                     this.setState({
                         isLoading: false
                     });
                     console.error('Unable to Save');
                 }
+
             });
     };
 
