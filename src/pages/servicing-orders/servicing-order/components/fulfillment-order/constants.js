@@ -6,6 +6,7 @@ export default {
         START_DATE: 'definition.startDate',
         SERVICER: 'fs',
         NOTE: 'note',
+        REDINESS: 'readiness'
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },
@@ -22,6 +23,11 @@ export default {
         { value: 'COMPLETE', label: 'Complete'},
         { value: 'CANCELED', label: 'Canceled'},
         { value: 'FAILED', label: 'Failed'}
+    ],
+    REDINESS_STATUS: [
+        { value: 'NEW', label: 'New' },
+        { value: 'READY', label: 'Ready' },
+        { value: 'ON_HOLD', label: 'On Hold' }
     ],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',
