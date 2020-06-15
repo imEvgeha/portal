@@ -50,6 +50,7 @@ const EventManagementTable = ({onGridEvent}) => {
                 {REFRESH_BTN}
             </Button>
             <EventManagementGrid
+                className='nexus-c-event-management-grid'
                 columnDefs={updateColumnDefs(columnDefs)}
                 rowSelection="single"
                 onGridEvent={onGridEvent}

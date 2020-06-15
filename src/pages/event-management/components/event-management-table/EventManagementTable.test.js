@@ -1,13 +1,15 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import EventManagementTable from './EventManagementTable';
+import Button from '@atlaskit/button';
 
 describe('EventManagementTable', () => {
-    let wrapper;
+    let wrapper, eventManagementGrid;
     const onGridEventMock = jest.fn();
 
     beforeEach(() => {
         wrapper = shallow(<EventManagementTable onGridEvent={onGridEventMock} />);
+        eventManagementGrid = wrapper.find('.nexus-c-event-management-grid');
     });
 
     it('should match snapshot', () => {
@@ -15,16 +17,16 @@ describe('EventManagementTable', () => {
     });
 
     it('should pass rowSelection prop to EventManagementGrid', () => {
-        expect(wrapper.props().rowSelection).toEqual('single');
-        expect(wrapper.props().successDataFetchCallback).toBe.a.function;
+        expect(eventManagementGrid.props().rowSelection).toEqual('single');
+        expect(eventManagementGrid.props().successDataFetchCallback).toBeInstanceOf(Function);
     });
 
     it('should pass onGridEvent prop to EventManagementGrid', () => {
-        wrapper.props().onGridEvent();
+        eventManagementGrid.props().onGridEvent();
         expect(onGridEventMock.mock.calls.length).toEqual(1);
     });
 
     it('should have a Refresh button', () => {
-        expect(wrapper.find('Button').length).toEqual(1);
+        expect(wrapper.find(Button).length).toEqual(1);
     });
 });
