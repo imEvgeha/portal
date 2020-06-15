@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {get} from 'lodash';
 import EventDrawer from './components/event-drawer/EventDrawer';
-import {TITLE, REFRESH_BTN} from './eventManagementConstants';
+import {TITLE} from './eventManagementConstants';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import './EventManagement.scss';

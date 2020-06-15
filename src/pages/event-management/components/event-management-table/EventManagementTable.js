@@ -25,10 +25,6 @@ const EventManagementGrid = compose(
 const EventManagementTable = ({onGridEvent}) => {
     let forceRefresh = null;
 
-    const forceRefreshCallback = (refresh) => {
-        forceRefresh = refresh;
-    };
-
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -54,7 +50,7 @@ const EventManagementTable = ({onGridEvent}) => {
                 onGridEvent={onGridEvent}
                 mapping={columnDefs}
                 notFilterableColumns={NOT_FILTERABLE_FIELDS}
-                setForceRefresh={forceRefreshCallback}
+                setForceRefresh={(refresh) => forceRefresh = refresh}
             />
         </div>
     );
