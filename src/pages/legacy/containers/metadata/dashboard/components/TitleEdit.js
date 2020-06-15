@@ -447,7 +447,6 @@ class TitleEdit extends Component {
      * Territory Metadata document
      */
     handleTerritoryMetadataEditChange = (e, data) => {
-        console.log('this.state.updatedTerritories ',this.state.updatedTerritories );
         let edited = this.state.updatedTerritories.find(e => e.id === data.id);
         if (edited) {
             edited[e.target.name] = e.target.value;
@@ -962,7 +961,6 @@ class TitleEdit extends Component {
                     });
                     console.error('Unable to Save');
                 }
-
             });
     };
 
