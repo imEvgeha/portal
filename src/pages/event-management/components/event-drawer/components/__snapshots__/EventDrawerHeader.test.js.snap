@@ -27,7 +27,7 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
         "eventId": "123",
       }
     }
-    filename="123"
+    filename="123-event"
     isDisabled={false}
     label="Download"
     mimeType="application/json"
