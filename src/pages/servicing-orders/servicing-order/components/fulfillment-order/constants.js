@@ -6,7 +6,7 @@ export default {
         START_DATE: 'definition.startDate',
         SERVICER: 'fs',
         NOTE: 'note',
-        REDINESS: 'readiness'
+        READINESS: 'readiness'
     },
     BILL_TO_LIST: [
         { value: 'MGM', label: 'MGM' },
@@ -23,7 +23,7 @@ export default {
         CANCELLED: 'Cancelled',
         FAILED: 'Failed'
     },
-    REDINESS_STATUS: [
+    READINESS_STATUS: [
         { value: 'NEW', label: 'New' },
         { value: 'READY', label: 'Ready' },
         { value: 'ON_HOLD', label: 'On Hold' }

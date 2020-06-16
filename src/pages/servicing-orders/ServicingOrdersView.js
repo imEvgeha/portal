@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
-
-import '@atlaskit/css-reset';  // TODO: This needs to be added to global when legacy components are removed
-
 import './ServicingOrdersView.scss';
 import {SERVICING_ORDERS_TTL, CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN} from './constants';
 

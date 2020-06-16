@@ -50,36 +50,39 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
 
     useEffect(() => {
+
         setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        get(fulfillmentOrder, fieldKeys.REDINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
+        // get(fulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
     }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
+        console.log(path, value);
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
-
-        if (get(fo, fieldKeys.REDINESS, '') === 'READY') {
-            setModalContentAndTitle(ModalContent, modalHeading);
-            setModalStyle(modalStyle);
-            setModalActions([{
-                text: 'Continue',
-                onClick: () => {
-                    close();
-                    setFulfillmentOrder(fo);
-                }
-            },
-            {
-                text: 'Cancel',
-                onClick: () => {
-                    close();
-                }
-            }]);
-        } else {
+        get(fo, fieldKeys.READINESS, '') === 'READY' ?
+            openWarningModal(fo) :
             setFulfillmentOrder(fo);
-        }
     };
 
-    const redinessOption = fulfillmentOrder ? Constants.REDINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.REDINESS]) : {};
+    const openWarningModal = (fo) => {
+        setModalContentAndTitle(ModalContent, modalHeading);
+        setModalStyle(modalStyle);
+        setModalActions([{
+            text: 'Continue',
+            onClick: () => {
+                close();
+                setFulfillmentOrder(fo);
+            }
+        },
+        {
+            text: 'Cancel',
+            onClick: () => {
+                close();
+            }
+        }]);
+    };
+
+    const readinessOption = fulfillmentOrder ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS]) : {};
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
@@ -100,7 +103,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         <div className="fulfillment-order__row fulfillment-order__header">
                             <div className="fulfillment-order__title">
                                 <h1>Fulfillment Order</h1>
-                                Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
+                                <div>Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
                             </div>
                             <div className="fulfillment-order__save-buttons">
                                 <ButtonGroup>
@@ -145,7 +148,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                     <label htmlFor='fulfillment-status'>Fulfillment Status</label>
                                     <Textfield
                                         name='fulfillment-status'
-                                        value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')]}
+                                        value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || ''}
                                         isDisabled={true}
                                     />
                                 </div>
@@ -163,13 +166,14 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
 
                             <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
-                                    <label htmlFor='rediness-status'>Rediness Status</label>
+                                    <label htmlFor='readiness-status'>Readiness Status</label>
                                     <Select
-                                        name='rediness-status'
-                                        className='fulfillment-order__select'
-                                        options={Constants.REDINESS_STATUS}
-                                        value={{value: get(fulfillmentOrder, fieldKeys.REDINESS, ''), label: redinessOption && redinessOption.label}}
-                                        onChange={val => onFieldChange(fieldKeys.REDINESS, val.value)}
+                                        id="readiness-status"
+                                        name='readiness-status'
+                                        className='fulfillment-order__readiness-status'
+                                        options={Constants.READINESS_STATUS}
+                                        value={{value: get(fulfillmentOrder, fieldKeys.READINESS, ''), label: readinessOption && readinessOption.label}}
+                                        onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
                                         isDisabled={isFormDisabled}
                                     />
                                 </div>
