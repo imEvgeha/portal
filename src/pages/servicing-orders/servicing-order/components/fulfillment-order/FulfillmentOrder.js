@@ -21,7 +21,6 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
-
     useEffect(() => {
         if(isSuccess){
             setSavedFulfillmentOrder(fulfillmentOrder);

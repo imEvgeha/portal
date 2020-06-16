@@ -5,8 +5,6 @@ export default {
         {
             label: 'Studio',
             content: 'licensor',
-            type: 'Email',
-            icon: 'far fa-envelope'
         },
         {
             label: 'PDF Attachments',
@@ -17,5 +15,9 @@ export default {
             type: 'Excel',
         }
     ],
+    EMAIL_BUTTON: {
+        type: 'Email',
+        icon: 'far fa-envelope'
+    },
     REFRESH_INTERVAL: 5 * 1000, //5 seconds
 };

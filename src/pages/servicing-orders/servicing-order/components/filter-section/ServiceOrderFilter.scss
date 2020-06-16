@@ -4,13 +4,14 @@
   text-align: left;
   justify-content: space-around;
   font-size: 14px;
-  padding: 10px 50px 15px 60px;
-  &__section {
+  padding: 10px 15px 15px 60px;
+
+  &__dropdown-element {
     display: flex;
     flex-direction: column;
     & > div {
       width: 100%;
-      > div {
+      & > div {
         border: 0;
       }
     }
@@ -21,23 +22,45 @@
       padding: 0 10px;
     }
   }
-  &__span {
-    margin: 0;
-  }
+
   &__h2 {
     margin-bottom: 20px;
   }
-  &__p {
-    margin-bottom: 2px;
+
+  &__info-section {
+    margin-bottom: .8rem;
   }
-  & button {
+  
+  &__info {
+    margin-bottom: 0;
+  }
+
+  button {
     width: 60%;
     margin-top: 5px;
-    color: #42526E;
+    color: #42526e;
     margin-bottom: 10px;
   }
+
   &__drawer {
     margin-left: 20px;
     margin-top: 2px;
+  }
+
+  &__dropdowns {
+    display: flex;
+  }
+
+  &__dropdown {
+    flex: 1;
+
+    &:first-child {
+      margin-right: 8px;
+    }
+  }
+
+  &__dropdown-title {
+    margin-bottom: 2px;
+    margin-top: 8px;
   }
 }
