@@ -958,8 +958,6 @@ class TitleEdit extends Component {
                         areTerritoryMetadataFieldsRequired: false,
                         areRatingFieldsRequired: false
                     });
-                    this.territoryRef.current =  this.state.territory;
-                    this.editorialRef.current = this.state.editorialMetadata;
                 }else{
                     this.setState({
                         isLoading: false
