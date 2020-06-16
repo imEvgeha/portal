@@ -10,5 +10,5 @@ export const createKeycloakInstance = () => {
 export const KEYCLOAK_INIT_OPTIONS = {
     onLoad: 'login-required',
     promiseType: 'native',
+    checkLoginIframe: false  // Fix for Safari infinite loop: https://github.com/dasniko/keycloak-reactjs-demo/issues/3
 };
-

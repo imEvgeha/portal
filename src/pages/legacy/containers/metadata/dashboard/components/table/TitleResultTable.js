@@ -237,12 +237,7 @@ class TitleResultTable extends React.Component {
                 const {data, total} = response || {};
                 if (total > 0) {
                     this.addLoadedItems(response);
-                    const ids = this.getParentTitleIds(data);
-                    if(ids.length > 0) {
-                        this.addUpdatedItemToTable(response, ids, params);
-                    } else {
-                        this.addItemToTable(response, params);
-                    }
+                    this.addItemToTable(response, params);
                 } else {
                     this.table && this.table.api && this.table.api.showNoRowsOverlay();
                 }
@@ -253,46 +248,20 @@ class TitleResultTable extends React.Component {
             });
     }
 
-    addUpdatedItemToTable = (request, ids, params) => {
-        const titleRequest = Object.assign({}, request);
-        titleService.bulkGetTitles(ids).then(res => {
-            const parents = res;
-            titleRequest.data = titleRequest.data.map(title => {
-                if(title.contentType.toUpperCase() === SEASON.apiName) {
-                    title.title = this.getFormatTitle(parents, title, SEASON.apiName);
-                } else if(title.contentType.toUpperCase() === EPISODE.apiName) {
-                    title.title = this.getFormatTitle(parents, title, EPISODE.apiName);
-                }
-                return title;
-            });
-            this.addItemToTable(titleRequest, params);
-        });
-    };
-
-    getFormatTitle = (parents, item, contentType) => {
-        const parent = this.getSeriesParent(item, parents);
-        const {title: seriesTitle} = parent || {};
+    getFormatTitle = (item, contentType) => {
         const {episodic, title: episodeTitle} = item || {};
-        const {seasonNumber, episodeNumber} = episodic || {};
+        const {seriesTitleName, seasonNumber, episodeNumber} = episodic || {};
 
         switch (contentType) {
             case SEASON.apiName:
-                return parent ? `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+                return seriesTitleName ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
             case EPISODE.apiName:
-                return parent ?
-                    `${seriesTitle}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
+                return seriesTitleName ?
+                    `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
                     : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
         }
 
         return item.title;
-    };
-
-    getSeriesParent = (item, parents) => {
-        const parentId = this.getSeriesParentId(item);
-        if (parentId) {
-            return parents.find(t => t.id === parentId);
-        }
-        return null;
     };
 
     addItemToTable = (data, params) => {
@@ -301,7 +270,20 @@ class TitleResultTable extends React.Component {
         if ((data.page + 1) * data.size >= data.total) {
             lastRow = data.total;
         }
-        params.successCallback(data.data, lastRow);
+
+        const rows = data.data.map((row) => {
+            const contentType = row.contentType.toUpperCase();
+
+            if(contentType === SEASON.apiName) {
+                row.title = this.getFormatTitle(row, SEASON.apiName);
+            } else if(contentType === EPISODE.apiName) {
+                row.title = this.getFormatTitle(row, EPISODE.apiName);
+            }
+
+            return row;
+        });
+
+        params.successCallback(rows, lastRow);
 
         if (this.props.titleTabPageSelection.selected.length > 0) {
             this.table.api.forEachNode(rowNode => {
@@ -313,29 +295,6 @@ class TitleResultTable extends React.Component {
 
         this.table.api.hideOverlay();
         this.onSelectionChanged(this.table);
-    };
-
-    getParentTitleIds = (items) => {
-        const parents = items.filter(item => item.contentType.toUpperCase() === SEASON.apiName || item.contentType.toUpperCase() === EPISODE.apiName && item.parentIds)
-            .map(t => {
-                const id = this.getSeriesParentId(t);
-                if (id) {
-                    return {id};
-                }
-                return {};
-            });
-        return uniqBy(parents, 'id');
-    };
-
-    getSeriesParentId = (title) => {
-        const {parentIds} = title;
-        if(parentIds) {
-            const parent = parentIds.find(el => el.contentType.toUpperCase() === SERIES.apiName);
-            if(parent) {
-                return parent.id;
-            }
-        }
-        return null;
     };
 
     addLoadedItems(data) {

@@ -25,7 +25,7 @@ import {
 import UploadIngestButton
 from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
 
-const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, ERROR_MESSAGE} = Constants;
+const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, EMAIL_BUTTON, ERROR_MESSAGE} = Constants;
 
 const mapStateToProps = () => {
     const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
@@ -212,11 +212,11 @@ class RightsCreateFromAttachment extends React.Component {
                                 ))
                             )
                         }
-                        <section>
+                        <section className='nexus-c-manual-rights-entry__attachment'>
                             <label>Received By:</label>
-                            <span>{ingestType}</span>
+                            {ingestType} {this.renderAttachments(EMAIL_BUTTON.type, EMAIL_BUTTON.icon)}
                         </section>
-                        <section>
+                        <section className='nexus-c-manual-rights-entry__attachment'>
                             <label>Status:</label>
                             <StatusIcon status={status} />
                         </section>

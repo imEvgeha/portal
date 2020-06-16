@@ -29,6 +29,9 @@ describe('FulfillmentOrder', () => {
             'startDate': '07/05/2021'
         };
 
+        let useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+        let useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
+
         const wrapper = shallow(<FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder} />);
         it('should be FulfillmentOrder', () => {
             expect(wrapper.is(FulfillmentOrder));

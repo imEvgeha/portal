@@ -48,6 +48,10 @@ html {
         line-height: 52px;
     }
 
+    .ag-popup-child {
+        overflow: visible;
+    }
+
     .ag-header-cell.ag-header-cell-sortable::after {
         display: none;
     }

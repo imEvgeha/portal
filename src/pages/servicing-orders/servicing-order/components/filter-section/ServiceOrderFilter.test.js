@@ -2,6 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import ServiceOrderFilter from './ServiceOrderFilter';
+import PartnerRequest from '../partner-request/PartnerRequest';
 
 describe('SOFilter', () => {
     let wrapper;
@@ -19,17 +20,14 @@ describe('SOFilter', () => {
         expect(wrapper.find('.so-panel-filter-detail')).toHaveLength(1);
     });
 
-    it('renders one button element and a modal when clicked', () => {
+    it('renders one button element and a drawer when clicked', () => {
         const btn = wrapper.find(Button);
         expect(btn).toHaveLength(1);
         btn.simulate('click');
-        expect(wrapper.find('.so-panel-filter-detail__span')).toHaveLength(1);
-        expect(wrapper.find('PartnerRequest')).toHaveLength(1);
-        expect(wrapper.find('.so-panel-filter-detail__p')).toHaveLength(2);
-
+        expect(wrapper.find(PartnerRequest)).toHaveLength(1);
     });
 
-    it('renders one select element', () => {
-        expect(wrapper.find('.so-panel-filter-detail__section')).toHaveLength(1);
+    it('renders two select elements', () => {
+        expect(wrapper.find('.so-panel-filter-detail__dropdown-element')).toHaveLength(2);
     });
 });
