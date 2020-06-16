@@ -22,7 +22,6 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
@@ -50,13 +49,11 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
 
     useEffect(() => {
-
         setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        // get(fulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
+        get(fulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
     }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
-        console.log(path, value);
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
         get(fo, fieldKeys.READINESS, '') === 'READY' ?
