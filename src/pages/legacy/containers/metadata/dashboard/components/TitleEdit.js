@@ -69,14 +69,14 @@ class TitleEdit extends Component {
             editedForm: {},
             territories: {},
             territory: [],
+            prevTerritories: [],
             updatedTerritories: [],
             editorialMetadata: [],
+            prevEditorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
             ratingForCreate: {}
         };
-        this.editorialRef = React.createRef();
-        this.territoryRef = React.createRef();
     }
 
     componentDidMount() {
@@ -121,9 +121,9 @@ class TitleEdit extends Component {
         titleService.getTerritoryMetadataById(titleId).then((response) => {
             const territoryMetadata = response;
             this.setState({
-                territory: territoryMetadata
+                territory: territoryMetadata,
+                prevTerritories: territoryMetadata,
             });
-            this.territoryRef.current = territoryMetadata;
         }).catch(() => {
             console.error('Unable to load Territory Metadata');
         });
@@ -133,9 +133,9 @@ class TitleEdit extends Component {
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response;
             this.setState({
-                editorialMetadata: editorialMetadata
+                editorialMetadata: editorialMetadata,
+                prevEditorialMetadata: editorialMetadata,
             });
-            this.editorialRef.current = editorialMetadata;
         }).catch(() => {
             console.error('Unable to load Editorial Metadata');
         });
@@ -163,8 +163,8 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: emptyEditorial,
             updatedEditorialMetadata: [],
             updatedTerritories: [],
-            editorialMetadata: this.editorialRef.current,
-            territory: this.territoryRef.current,
+            editorialMetadata: prevState.prevEditorialMetadata,
+            territory: prevState.prevTerritories,
         }));
     };
 
@@ -551,6 +551,7 @@ class TitleEdit extends Component {
 
                     this.setState({
                         territory: appliedTerritories,
+                        prevTerritories: appliedTerritories,
                     });
                     return true;
                 }).catch(() => {
@@ -587,6 +588,7 @@ class TitleEdit extends Component {
                     this.cleanTerritoryMetadata();
                     this.setState({
                         territory: [response, ...this.state.territory],
+                        prevTerritories:[response, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
                     return true;
@@ -805,7 +807,8 @@ class TitleEdit extends Component {
                     const foundIndex = list.findIndex(x => x.id === response.id);
                     list[foundIndex] = response;
                     this.setState({
-                        editorialMetadata: list
+                        editorialMetadata: list,
+                        prevEditorialMetadata: list,
                     });
                     return true;
                 }).catch(() => {
@@ -825,6 +828,7 @@ class TitleEdit extends Component {
                     this.cleanEditorialMetadata();
                     this.setState({
                         editorialMetadata: [response, ...this.state.editorialMetadata],
+                        prevEditorialMetadata: [response, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
                     return true;
