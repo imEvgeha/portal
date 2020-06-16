@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {uniq} from 'lodash';
 import './BulkMatchView.scss';
+import {NexusTooltip} from '../../../ui/elements';
 
 const BulkMatchView = ({selectedRights}) => {
 
     const checkSelectedRights = () => {
+        if(selectedRights.length <= 0){
+            return false;
+        }
         // all rights have coreTitleId empty and same contentType
         const emptyCoreTitle = selectedRights.every(r => r.coreTitleId === null && r.contentType === selectedRights[0].contentType);
         if(!emptyCoreTitle){
@@ -22,17 +26,23 @@ const BulkMatchView = ({selectedRights}) => {
         return false;
     };
 
-    return (
-        <span
+    const addSpan = () => {
+        return <span
             className={`
-                nx-container-margin
-                table-top-text
-                nexus-c-bulk-match-view
-                ${selectedRights.length > 0 && checkSelectedRights() ? 'active-link' :''}
-            `}
-        >
-            Bulk Match Titles
-        </span>
+                        nx-container-margin
+                        table-top-text
+                        nexus-c-bulk-match-view
+                        ${checkSelectedRights() ? 'active-link' :''}
+                    `}
+            >
+                    Bulk Match Titles
+            </span>;
+    };
+
+    return (
+        <NexusTooltip  content={`${!checkSelectedRights() ? 'Rights selected must be the same criteria to make the feature available': ''}`}>
+            {addSpan()}
+        </NexusTooltip>
     );
 };
 
