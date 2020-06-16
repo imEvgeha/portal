@@ -25,11 +25,9 @@ describe('SOFilter', () => {
         btn.simulate('click');
         expect(wrapper.find('.so-panel-filter-detail__span')).toHaveLength(1);
         expect(wrapper.find('PartnerRequest')).toHaveLength(1);
-        expect(wrapper.find('.so-panel-filter-detail__p')).toHaveLength(2);
-
     });
 
-    it('renders one select element', () => {
-        expect(wrapper.find('.so-panel-filter-detail__section')).toHaveLength(1);
+    it('renders two select elements', () => {
+        expect(wrapper.find('.so-panel-filter-detail__dropdown-element')).toHaveLength(2);
     });
 });
