@@ -106,9 +106,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
             </Field>
             <Field
                 label="Price Currency"
-                isRequired
                 name="priceCurrency"
-                validate={validate}
                 defaultValue={
                     isEdit
                         ? {
