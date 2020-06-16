@@ -47,7 +47,7 @@ export default class RightsResultsTable extends React.Component {
                             .map(e => String(e.country || `${e.language}/${e.audioType}`))
                             .join(', ');
                     }
-                    };
+                };
                 case 'boolean':
                     return ({value}) => value ? 'Yes' : value === false ? 'No' : null;
                 default: return null;
