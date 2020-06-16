@@ -1,27 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import './SyncLog.scss';
+import './SyncLogView.scss';
 import {TITLE} from './syncLogConstants';
 import {NexusTitle} from '../../ui/elements/';
 import {URL} from '../../util/Common';
 
-const SyncLog = () => {
-    const previousPageRoute = '/';
-
+const SyncLogView = () => {
     return (
-        <div className='nexus-c-sync-log'>
+        <div className='nexus-c-sync-log-view'>
             <NexusTitle>
-                <Link to={URL.keepEmbedded(previousPageRoute)}>
+                <Link to={URL.keepEmbedded('/metadata')}>
                     <ArrowLeftIcon size='large' />
                 </Link>
-                <span>{TITLE}</span>
+                <span className="nexus-c-sync-log-view__title">{TITLE}</span>
             </NexusTitle>
-            <div className="nexus-c-sync-log__table">
-                {/* Sync Log Table */}
+            <div className="nexus-c-sync-log-view__table">
+                {/* SyncLog Table */}
             </div>
         </div>
     );
 };
 
-export default SyncLog;
+export default SyncLogView;
