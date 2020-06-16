@@ -3,7 +3,7 @@ import {nexusFetch} from '../../../../../util/http-client/index';
 import {parseAdvancedFilter} from './RightsService';
 import {prepareSortMatrixParam, encodedSerialize} from '../../../../../util/Common';
 
-const languagehack  = (cols) => {
+const filterColumnNames = (cols) => {
     const columns = [...cols];
 
     const index1 = columns.indexOf('languageAudioTypes.language');
@@ -24,14 +24,14 @@ const languagehack  = (cols) => {
         }
     }
 
-    return columns;
+    return columns.filter((col) => { return !col.includes('territory.') });
 };
 
 export const exportService = {
     exportAvails: (rightsIDs, columns) => {
         const abortAfter = config.get('avails.export.http.timeout');
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export';
-        const data = {columnNames: languagehack(columns), rightIds: rightsIDs};
+        const data = {columnNames: filterColumnNames(columns), rightIds: rightsIDs};
 
         return nexusFetch(url, {
             method: 'post',
@@ -43,7 +43,7 @@ export const exportService = {
         const params = parseAdvancedFilter(searchCriteria);
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export/bulk' + prepareSortMatrixParam(sortedParams);
         const abortAfter = config.get('avails.export.http.timeout');
-        const data = {columnNames: languagehack(columns)};
+        const data = {columnNames: filterColumnNames(columns)};
 
         return nexusFetch(url, {
             method: 'post',
