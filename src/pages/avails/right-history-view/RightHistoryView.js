@@ -34,8 +34,7 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
             <div>
                 {selectedAvails.map((avail, index) => (
                     <AuditHistoryTable key={avail.id} focusedRight={avail} data={rightsEventHistory[index]} />
-                    )
-                )}
+                ))}
             </div>
         );
     };
@@ -57,12 +56,6 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
     return (
         <span
             onClick={openHistoryModal}
-            className={`
-                nx-container-margin
-                table-top-text
-                view-history-link
-                ${selectedAvails.length > 0 ? 'active-link' :''}
-            `}
         >
             View Audit History
         </span>

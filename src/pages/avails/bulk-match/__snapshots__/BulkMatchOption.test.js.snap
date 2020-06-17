@@ -3,6 +3,7 @@
 exports[`EventManagementTable should match snapshot 1`] = `
 <NexusTooltip
   content=""
+  isDisabled={false}
 >
   <span
     className="nx-container-margin table-top-text nexus-c-bulk-match-option active-link"
