@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
@@ -23,6 +24,12 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
+import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
+import withToasts from "../../../../../../ui/toast/hoc/withToasts";
+import {
+    SUCCESS_ICON,
+    WARNING_ICON
+} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -75,6 +82,7 @@ class TitleEdit extends Component {
             prevEditorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
+            editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {}
         };
     }
@@ -84,7 +92,7 @@ class TitleEdit extends Component {
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
         this.loadTerritoryMetadata(titleId);
-        this.loadEditorialMetadata(titleId);
+        this.loadEditorialMetadata();
     }
 
     loadTitle(titleId) {
@@ -129,7 +137,8 @@ class TitleEdit extends Component {
         });
     }
 
-    loadEditorialMetadata(titleId) {
+    loadEditorialMetadata() {
+        const titleId = this.props.match.params.id;
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response;
             this.setState({
@@ -709,6 +718,12 @@ class TitleEdit extends Component {
         });
     };
 
+    handleEditorialMetadataAutoDecorateChange = (e) => {
+        this.setState({
+            editorialMetadataForCreateAutoDecorate: e.target.checked
+        });
+    };
+
     handleEditorialMetadataGenreChange = (e) => {
         const newEditorialMetadataForCreate = {
             ...this.state.editorialMetadataForCreate,
@@ -779,6 +794,15 @@ class TitleEdit extends Component {
         });
     };
 
+    cleanField = (field) => {
+        let updatedEditorialMetadata =  this.state.editorialMetadataForCreate;
+        updatedEditorialMetadata[field] =null;
+
+        this.setState({
+            editorialMetadataForCreate: updatedEditorialMetadata
+        });
+    };
+
     toggleEditorialMetadata = (tab) => {
         this.setState({
             editorialMetadataActiveTab: tab,
@@ -799,24 +823,95 @@ class TitleEdit extends Component {
         });
     };
 
+    getNewCreatedEditorialMetadata = (newEditorialMetadata) => {
+        return [
+            {
+                "itemIndex": "1",
+                "body": {
+                    "editorialMetadata": newEditorialMetadata,
+                    "decorateEditorialMetadata": this.state.editorialMetadataForCreateAutoDecorate
+                }
+            }
+        ]
+    };
+
+    getUpdatedEditorialMetadata = () => {
+        return this.state.updatedEditorialMetadata.map(e => {
+            return {
+                "itemIndex": null,
+                "body": {
+                    "editorialMetadata": e
+                }
+            }
+        });
+    };
+
+    handleRegenerateDecoratedMetadata = () => {
+        const {editorialMetadata} = this.state;
+
+        // Find the master/parent EMet for which to regenerate metadata
+        const masterEmet = editorialMetadata.find(({hasGeneratedChildren}, index) => {
+            return hasGeneratedChildren && editorialMetadata[index];
+        });
+
+        // Prepare data for back-end
+        const requestBody = [{
+            "itemIndex": null,
+            "body": {
+                "editorialMetadata": masterEmet,
+            }
+        }];
+
+        // Calls the API to update decorated EMets based on the master
+        titleService.updateEditorialMetadata(requestBody).then((response) => {
+            const failed = get(response, ['data', '0', 'response', 'failed'], []);
+            const {addToast} = this.props;
+
+            // If some EMets failed to regenerate/update, toast the error messages
+            if (failed.length) {
+                const message = failed.map(e => e.description).join(' ');
+                addToast({
+                    title: 'Regenerating Editorial Metadata Failed',
+                    description: message,
+                    icon: WARNING_ICON,
+                    isWithOverlay: true,
+                });
+                return false;
+            } else {
+                addToast({
+                    title: 'Success',
+                    description: 'Editorial Metadata Successfully Regenerated!',
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: true,
+                    isAutoDismiss: true,
+                })
+                return true;
+            }
+        })
+    }
+
     handleEditorialMetadataOnSave = () => {
         const promises = [];
-        this.state.updatedEditorialMetadata.forEach(e => {
-                promises.push(titleService.updateEditorialMetadata(e).then((response) => {
-                    const list = [].concat(this.state.editorialMetadata);
-                    const foundIndex = list.findIndex(x => x.id === response.id);
-                    list[foundIndex] = response;
-                    this.setState({
-                        editorialMetadata: list,
-                        prevEditorialMetadata: list,
-                    });
-                    return true;
-                }).catch(() => {
-                    console.error('Unable to edit Editorial Metadata');
-                    return false;
-                })
-            );
-        });
+        this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
+        promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
+            this.loadEditorialMetadata();
+            if(response[0].response.failed && response[0].response.failed.length > 0) {
+                const message = response[0].response.failed.map(e => e.description).join(' ');
+                this.props.addToast({
+                    title: 'Update Editorial Metadata Failed',
+                    description: message,
+                    icon: WARNING_ICON,
+                    isWithOverlay: true,
+                });
+                return false;
+            } else {
+                return true;
+            }
+        }).catch(() => {
+            console.error('Unable to edit Editorial Metadata');
+            return false;
+        })
+        );
         this.setState({
             updatedEditorialMetadata: []
         });
@@ -824,14 +919,26 @@ class TitleEdit extends Component {
         if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
             const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
-                promises.push(titleService.addEditorialMetadata(newEditorialMetadata).then((response) => {
+                promises.push(titleService.addEditorialMetadata(this.getNewCreatedEditorialMetadata(newEditorialMetadata)).then((response) => {
                     this.cleanEditorialMetadata();
                     this.setState({
                         editorialMetadata: [response, ...this.state.editorialMetadata],
                         prevEditorialMetadata: [response, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
-                    return true;
+                    this.loadEditorialMetadata();
+                    if(response[0].response.failed && response[0].response.failed.length > 0) {
+                        const message = response[0].response.failed.map(e => e.description).join(' ');
+                        this.props.addToast({
+                            title: 'Create Editorial Metadata Failed',
+                            description: message,
+                            icon: WARNING_ICON,
+                            isWithOverlay: true,
+                        });
+                        return false;
+                    } else {
+                        return true;
+                    }
                 }).catch(() => {
                     console.error('Unable to add Editorial Metadata');
                     return false;
@@ -1034,10 +1141,11 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
-
+                {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
                 <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                     <Row>
                         <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
@@ -1085,6 +1193,7 @@ class TitleEdit extends Component {
                         handleSubmit={this.handleEditorialMetadataSubmit}
                         editorialMetadata={editorialMetadata}
                         handleChange={this.handleEditorialMetadataChange}
+                        handleAutoDecorateChange={this.handleEditorialMetadataAutoDecorateChange}
                         handleGenreChange={this.handleEditorialMetadataGenreChange}
                         handleTitleChange={this.handleTitleEditorialMetadataChange}
                         handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
@@ -1101,6 +1210,8 @@ class TitleEdit extends Component {
                         handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
                         coreTitleData={this.state.titleForm}
                         editorialTitleData={this.state.editorialMetadata}
+                        cleanField={this.cleanField}
+                        handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
                         handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
                     />
 
@@ -1131,4 +1242,4 @@ TitleEdit.propTypes = {
     match: PropTypes.object.isRequired
 };
 
-export default TitleEdit;
+export default withToasts(TitleEdit);

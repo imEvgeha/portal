@@ -1,24 +1,38 @@
+@import '../../../../../styles/config';
+
 .rights-more-actions{
   position: relative;
+
   svg {
     cursor: pointer;
   }
+
   .rights-more-actions__menu{
     position: absolute;
     top: 30px;
     border: 1px solid #A5ADBA;
     background: #FFFFFF;
-    z-index: 1;
+    z-index: 2; // 1 goes above ag-grid, 2 goes above ag-grid's separators...
     padding: 10px;
     display: none;
-    &.open {
+
+    &--is-open {
       display: block;
     }
   }
-  .view-history-link {
-    font-size: 14px;
-    white-space: nowrap;
-    display: inline-block;
-    top: 0;
+
+  .rights-more-actions__menu-item {
+    color: map-get($colors, nexus-primary-color);
+    white-space: nowrap; // Keep each option in one line
+    padding-bottom: 10px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    &--is-active {
+      color: map-get($colors, nexus-secondary-color);
+      cursor: pointer;
+    }
   }
 }

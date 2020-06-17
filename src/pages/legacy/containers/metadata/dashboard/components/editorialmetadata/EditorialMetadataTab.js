@@ -20,7 +20,7 @@ import './EditorialMetadata.scss';
 const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
 
     const { episodic, locale, language, format, service, genres, category, synopsis, castCrew,
-        copyright, awards, sasktelInventoryId, sasktelLineupId } = data;
+        copyright, awards, sasktelInventoryId, sasktelLineupId, shortTitleTemplate } = data;
     const {title, shortTitle, mediumTitle, longTitle, sortTitle} = data.title || {};
     const {seriesName, seasonNumber, episodeNumber} = episodic || {};
     const {description, shortDescription, longDescription } = synopsis || {};
@@ -69,6 +69,11 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
             <Row>
                 <Col className='wrap-value'>
                     <b>Display Title:</b> {title || emptySpan()}
+                </Col>
+            </Row>
+            <Row>
+                <Col className='wrap-value'>
+                    <b>Auto-Decorate Title:</b> {shortTitleTemplate || emptySpan()}
                 </Col>
             </Row>
             <Row>
