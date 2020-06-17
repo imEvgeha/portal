@@ -30,6 +30,7 @@ import {
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
+import MSVEditComponent from "./MSVEditComponent";
 
 const mapStateToProps = state => {
     return {
@@ -37,13 +38,17 @@ const mapStateToProps = state => {
     };
 };
 
+const dummyMSV = ['Verizon Technology^00^ATMP0000000000017037', 'Paramount1234', 'Bla Bla','Verizon Technology^00^ATMP0000003000017067', 'Verizon Technology^00^ATMP0000010000017067', 'Verizon Technology^00^ATMP0000000000017067'];
+
 class CoreMetadataEditMode extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            ratings: []
-        };    
+            ratings: [],
+            externalIDs: {},
+        };
+        this.handleMSVIDs = this.handleMSVIDs.bind(this);
     }
 
     handleRatingSystemValue = (e) => {
@@ -76,9 +81,17 @@ class CoreMetadataEditMode extends Component {
                 .then(res => getFilteredCrewList(res.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
             );
         }
-    };  
+    };
+
+    handleMSVIDs(data)  {
+        this.setState({
+            externalIDs: { ...this.state.externalIDs, msvAssociationId: data}
+        });
+        console.log('state: ', this.state);
+    }
 
     render() {
+        console.log(this.props.data);
         return (
             <>
                 <Row>
@@ -314,24 +327,7 @@ class CoreMetadataEditMode extends Component {
                     }}
                             />
                         </Col>
-                        <Col md={1}>
-                            <Label for='overrideMsvAssociationId'>
-                                Override MSV Association ID
-                            </Label>
-                        </Col>
-                        <Col>
-                            <AvField
-                                type='text'
-                                onChange={e => this.props.handleOnExternalIds(e)}
-                                name='overrideMsvAssociationId'
-                                id='overrideMsvAssociationId'
-                                value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : ''}
-                                placeholder='Override MSV Association ID'
-                                validate={{
-                      maxLength: { value: 200 }
-                    }}
-                            />
-                        </Col>
+
                     </Row>
                     <Row style={{ marginTop: '10px' }}>
                         <Col md={1}>
@@ -449,6 +445,15 @@ class CoreMetadataEditMode extends Component {
                             }}
                         />
                     </Col>
+
+                        <Col md={2}>
+                            <Label for='overrideMsvAssociationId'>
+                                Override MSV Association ID
+                            </Label>
+                        </Col>
+                        <Col>
+                            <MSVEditComponent data={ this.props.data.externalIds.msvAssociationId || dummyMSV} saveData={this.handleMSVIDs} />
+                        </Col>
                 </div>
             </>
         );
