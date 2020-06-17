@@ -69,7 +69,7 @@ const NexusDatePicker = ({
   return (
       <>
           {!hideLabel && label && (
-          <label htmlFor={id}> {label} </label>
+          <label htmlFor={id}>{label}</label>
               )}
           {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)

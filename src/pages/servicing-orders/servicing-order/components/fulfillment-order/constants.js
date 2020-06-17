@@ -5,7 +5,7 @@ export default {
         DUE_DATE: 'definition.dueDate',
         START_DATE: 'definition.startDate',
         SERVICER: 'fs',
-        NOTE: 'note',
+        NOTES: 'notes',
         READINESS: 'readiness'
     },
     BILL_TO_LIST: [

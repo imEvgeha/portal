@@ -1,18 +1,18 @@
-import Button, {ButtonGroup} from '@atlaskit/button';
-import Page, {Grid, GridColumn} from '@atlaskit/page';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEqual, set} from 'lodash';
-import React, {useContext, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import { cloneDeep, get, isEqual, set } from 'lodash';
+import { default as React, default as React, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import { NexusModalContext } from '../../../../../ui/elements/nexus-modal/NexusModal';
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
-import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
-import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
-import {getValidDate} from '../../../../../util/utils';
-import {saveFulfillmentOrder} from '../../servicingOrderActions';
-import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
+import { createLoadingSelector } from '../../../../../ui/loading/loadingSelectors';
+import { createSuccessMessageSelector } from '../../../../../ui/success/successSelector';
+import { getValidDate } from '../../../../../util/utils';
+import { saveFulfillmentOrder } from '../../servicingOrderActions';
+import { SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS } from '../../servicingOrderActionTypes';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
 
@@ -60,27 +60,27 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
         [isSuccess]
     );
 
-    useEffect(
-        () => {
+    useEffect(() => {
+        if (!_.isEmpty(selectedFulfillmentOrder)) {
             setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
-        },
-        [selectedFulfillmentOrder, savedFulfillmentOrder]
-    );
 
-    useEffect(
-        () => {
-            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-            get(fulfillmentOrder, fieldKeys.READINESS, '') === 'READY'
-                ? setIsFormDisabled(true)
-                : setIsFormDisabled(false);
-        },
-        [fulfillmentOrder]
-    );
+            // Disable form if status is READY
+            get(selectedFulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
+        }
+    }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
+
+    useEffect(() => {
+        setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
+    }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
-        get(fo, fieldKeys.READINESS, '') === 'READY' ? openWarningModal(fo) : setFulfillmentOrder(fo);
+
+        // Show warning modal when status is set to READY
+        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness' ?
+            openWarningModal(fo) :
+            setFulfillmentOrder(fo);
     };
 
     const openWarningModal = fo => {
