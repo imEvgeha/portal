@@ -6,6 +6,7 @@ import staticPagesRoutes from './pages/static/staticPagesRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
 import withTracker from './util/hoc/withTracker';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
+import syncLogRoutes from './pages/sync-log/syncLogRoutes';
 
 const ContractProfile = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/legacy/containers/contracts/profile/ContractProfile'));
 const Contract = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "Contract" */ './pages/legacy/containers/contracts/search/Contract'));
@@ -37,6 +38,7 @@ export const routes = [
     ...metadataRoutes,
     ...servicingOrdersRoutes,
     ...eventManagementRoutes,
+    ...syncLogRoutes,
     ...restRoutes,
     ...staticPagesRoutes,
 ];
