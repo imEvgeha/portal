@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {uniq} from 'lodash';
 import './BulkMatchView.scss';
 import {NexusTooltip} from '../../../ui/elements';
+import {WARNING_MSG, LABEL} from './bulkMatchConstants';
 
 const BulkMatchView = ({selectedRights}) => {
 
@@ -27,20 +28,22 @@ const BulkMatchView = ({selectedRights}) => {
     };
 
     const addSpan = () => {
-        return <span
-            className={`
+        return (
+            <span
+                className={`
                         nx-container-margin
                         table-top-text
                         nexus-c-bulk-match-view
                         ${checkSelectedRights() ? 'active-link' :''}
                     `}
             >
-                    Bulk Match Titles
-            </span>;
+                {LABEL}
+            </span>
+);
     };
 
     return (
-        <NexusTooltip  content={`${!checkSelectedRights() ? 'Rights selected must be the same criteria to make the feature available': ''}`}>
+        <NexusTooltip content={`${!checkSelectedRights() ? WARNING_MSG : ''}`}>
             {addSpan()}
         </NexusTooltip>
     );

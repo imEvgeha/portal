@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventManagementTable should match snapshot 1`] = `
+<NexusTooltip
+  content=""
+>
+  <span
+    className="
+                        nx-container-margin
+                        table-top-text
+                        nexus-c-bulk-match-view
+                        active-link
+                    "
+  >
+    Bulk Match Titles
+  </span>
+</NexusTooltip>
+`;
