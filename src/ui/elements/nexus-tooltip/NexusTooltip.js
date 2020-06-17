@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
 
-const NexusTooltip = ({content, children, ...restProps}) => {
+const NexusTooltip = ({content, isDisabled, children, ...restProps}) => {
     return (
         <Tooltip
-            content={content}
+            content={!isDisabled && content}
             {...restProps}
         >
             {children}
@@ -12,8 +13,14 @@ const NexusTooltip = ({content, children, ...restProps}) => {
     );
 };
 
+NexusTooltip.propTypes = {
+    content: PropTypes.string,
+    isDisabled: PropTypes.bool,
+};
+
 NexusTooltip.defaultProps = {
     content: null,
+    isDisabled: false,
 };
 
 export default NexusTooltip;
