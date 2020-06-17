@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {uniqBy} from 'lodash';
+import classNames from 'classnames';
 import RightViewHistory from '../../RightHistoryView';
 import BulkMatchOption from '../../../bulk-match/BulkMatchOption';
 import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
@@ -45,30 +46,34 @@ const MoreActions = ({selectedAvails}) => {
     return (
         <div className="rights-more-actions" ref={node}>
             <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
-            <div className={`rights-more-actions__menu ${menuOpened ? 'rights-more-actions__menu--is-open' : ''}`}>
+            <div
+                className={classNames(
+                    'rights-more-actions__menu',
+                    menuOpened && 'rights-more-actions__menu--is-open'
+                )}
+            >
                 <div
-                    className={
-                        `rights-more-actions__menu-item 
-                        ${selectedAvails.length ? 'rights-more-actions__menu-item--is-active' : ''}`
-                    }
+                    className={classNames(
+                        'rights-more-actions__menu-item',
+                        selectedAvails.length && 'rights-more-actions__menu-item--is-active'
+                    )}
                     data-test-id="view-history"
                 >
                     <RightViewHistory selectedAvails={selectedAvails} />
                 </div>
                 <div
-                    className={
-                        `rights-more-actions__menu-item 
-                        ${selectedAvails.length ? 'rights-more-actions__menu-item--is-active' : ''}`
-                    }
-                    data-test-id="view-history"
+                    className={classNames(
+                        'rights-more-actions__menu-item',
+                        selectedAvails.length && 'rights-more-actions__menu-item--is-active'
+                    )}
                 >
                     <BulkMatchOption selectedRights={selectedAvails} />
                 </div>
                 <div
-                    className={
-                        `rights-more-actions__menu-item 
-                        ${isUnmatchable ? 'rights-more-actions__menu-item--is-active' : ''}`
-                    }
+                    className={classNames(
+                        'rights-more-actions__menu-item',
+                        isUnmatchable && 'rights-more-actions__menu-item--is-active'
+                    )}
                     data-test-id="bulk-unmatch"
                 >
                     <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
