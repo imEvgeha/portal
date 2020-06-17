@@ -11,9 +11,7 @@ import {NexusGrid} from '../../../../../ui/elements';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import constants from '../fulfillment-order/constants';
-import Add from '../../../../../assets/action-add.svg';
 import usePrevious from '../../../../../util/hooks/usePrevious';
-import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import mappings  from '../../../../../../profile/sourceTableMapping';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import { SELECT_VALUES, INIT_SOURCE_ROW, NON_EDITABLE_COLS } from './Constants';
@@ -121,10 +119,8 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     return (
         <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
-                <h5 className="nexus-c-sources-table__title">{`${SOURCE_TITLE} (${sources.length})`}</h5>
-                <div className="nexus-c-sources-table__subtitle">
-                    {SOURCE_SUBTITLE}
-                </div>
+                <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
+                <div>{SOURCE_SUBTITLE}</div>
             </div>
             <SourceTableGrid
                 columnDefs={[

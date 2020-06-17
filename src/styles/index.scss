@@ -1,4 +1,6 @@
 /* Global styling */
+// TODO: Add AtlasKit reset when legacy components are removed
+// @import '@atlaskit/css-reset'; // AtlasKit official reset
 @import './reset';
 @import './box-sizing';
 @import './config';
