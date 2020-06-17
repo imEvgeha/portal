@@ -11,8 +11,10 @@ const TitleMatchingTable = ({data}) => {
 
     useEffect(() => {
         if(data.length > 0) {
-            console.log(data);
             setTableData(data);
+        }
+        else {
+            setTableData([]);
         }
     }, [data]);
 

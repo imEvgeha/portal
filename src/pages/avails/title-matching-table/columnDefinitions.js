@@ -3,7 +3,6 @@ const columnDefinitions = [
         colId: 'title',
         field: 'title',
         headerName: 'Title',
-        width: 150,
     },
     {
         colId: 'releaseYear',

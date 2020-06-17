@@ -35,7 +35,6 @@ import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import BulkMatching from '../bulk-matching/BulkMatching';
-import TitleMatchingTable from '../title-matching-table/TitleMatchingTable';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -420,9 +419,7 @@ const RightsRepository = ({
                 isOpen={openBulkDrawer}
                 width="wide"
             >
-                <BulkMatching>
-                    <TitleMatchingTable data={selectedRepoRights} />
-                </BulkMatching>
+                <BulkMatching data={selectedRepoRights} />
             </NexusDrawer>
         </div>
     );
