@@ -75,7 +75,6 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
             };
         };
         const payload = {data: transformClientToServerFulfillmentOrder(fulfillmentOrder)};
-        console.log(payload);
         dispatch(saveFulfillmentOrder(payload));
 
         //refetch to keep UI consistent with database
