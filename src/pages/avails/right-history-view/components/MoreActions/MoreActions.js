@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {uniqBy} from 'lodash';
 import RightViewHistory from '../../RightHistoryView';
+import BulkMatchOption from '../../../bulk-match/BulkMatchOption';
 import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
 import MoreIcon from '../../../../../assets/more-icon.svg';
@@ -53,6 +54,15 @@ const MoreActions = ({selectedAvails}) => {
                     data-test-id="view-history"
                 >
                     <RightViewHistory selectedAvails={selectedAvails} />
+                </div>
+                <div
+                    className={
+                        `rights-more-actions__menu-item 
+                        ${selectedAvails.length ? 'rights-more-actions__menu-item--is-active' : ''}`
+                    }
+                    data-test-id="view-history"
+                >
+                    <BulkMatchOption selectedRights={selectedAvails} />
                 </div>
                 <div
                     className={
