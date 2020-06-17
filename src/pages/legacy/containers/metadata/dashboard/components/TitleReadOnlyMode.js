@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
@@ -92,13 +93,6 @@ class TitleReadOnlyMode extends Component {
                                         </Alert>
                                     </Col>
                                 )}
-                                {contentType === 'SERIES' && (
-                                    <Col md="6">
-                                        <Alert color="light" id="titleSeries">
-                                            <a href={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-data">Show all seasons</a>
-                                        </Alert>
-                                    </Col>
-                                )}
                                 {episodeNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleEpisodeNumber">
@@ -129,6 +123,15 @@ class TitleReadOnlyMode extends Component {
                                 <Col>
                                     <Alert color="light" id="titleSeasons">
                                         <b>Seasons: </b>{totalNumberOfSeasons}
+                                    </Alert>
+                                </Col>
+                            )}
+                        </Row>
+                        <Row>
+                            { contentType === 'SERIES' && (
+                                <Col>
+                                    <Alert color="light" id="titleSeries">
+                                        <Link to={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-url">Show all seasons</Link>
                                     </Alert>
                                 </Col>
                             )}
@@ -182,6 +185,15 @@ class TitleReadOnlyMode extends Component {
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
                                         <b>Episode Count: </b>{episodeCount}
+                                    </Alert>
+                                </Col>
+                            )}
+                        </Row>
+                        <Row>
+                            { contentType === 'SEASON' && (
+                                <Col>
+                                    <Alert color="light" id="titleEpisodeCount">
+                                        <Link to={`/metadata?parentId=${id}`} className="linked-url">Show all episodes</Link>
                                     </Alert>
                                 </Col>
                             )}

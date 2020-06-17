@@ -23,7 +23,7 @@ describe('FulfillmentOrder', () => {
         useSelectorSpy.mockReturnValue({});
         useDispatchSpy.mockImplementation(() => (cb) => (cb));
 
-        const wrapper = shallow(<FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder}/>);
+        const wrapper = shallow(<FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder} />);
         it('should be FulfillmentOrder', () => {
             expect(wrapper.is(FulfillmentOrder));
         });

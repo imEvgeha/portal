@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import moment from 'moment';
-import './ServiceOrderFilter.scss';
-import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
-import PartnerRequest from '../partner-request/PartnerRequest';
-import { FILTER_LIST } from './constants';
+import PropTypes from 'prop-types';
+import React, {useState} from 'react';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '../../../../../util/utils';
+import PartnerRequest from '../partner-request/PartnerRequest';
+import {FILTER_LIST, SORT_DIRECTION} from './constants';
+import './ServiceOrderFilter.scss';
 
-const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
+const ServiceOrderFilter = ({
+    orderDetails,
+    filter,
+    setFilter,
+    dueDateSortDirection,
+    setDueDateSortDirection
+}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const { tenant, external_id, description, configured_pr_id, sr_due_date } = orderDetails || {};
+    
+    return (
+        <div className="so-panel-filter-detail">
+            <div className="so-panel-filter-detail__info-section">
+                <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                    Customer: {tenant}
+                </p>
 
-    return(
-        <div className='so-panel-filter-detail'>
-            <span className='so-panel-filter-detail__span nexus-c-table-toolbar__title--is-active'>Customer: {orderDetails.tenant}</span>
-            <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Order ID: {orderDetails.external_id}</p>
+                <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                    Order ID: {external_id}
+                </p>
+            </div>
+
+            {description !== null && (
+                <div className="so-panel-filter-detail__info-section">
+                    <p className="so-panel-filter-detail__info so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                        Description: {description}
+                    </p>
+                </div>
+            )}
+
             <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
             <NexusDrawer
                 isOpen={isDrawerOpen}
@@ -25,26 +47,45 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter}) => {
                 title="Partner Request"
             >
                 <PartnerRequest
-                    externalId={orderDetails.external_id}
-                    configuredPrId={orderDetails.configured_pr_id}
+                    externalId={external_id}
+                    configuredPrId={configured_pr_id}
                 />
             </NexusDrawer>
             <NexusDatePicker
-                id='dueDate'
-                label='SO Due Date'
-                value={getValidDate(orderDetails.sr_due_date)}
+                id="dueDate"
+                label="SO Due Date"
+                value={getValidDate(sr_due_date)}
                 isDisabled
                 isReturningTime={false}
                 onChange={() => {}}
             />
-            <p className='so-panel-filter-detail__p nexus-c-table-toolbar__title--is-active'>Filter</p>
-            <div className='so-panel-filter-detail__section'>
-                <Select
-                    options={FILTER_LIST}
-                    onChange={setFilter}
-                    value={filter}
-                    placeholder="Select Status"
-                />
+            <div className="so-panel-filter-detail__dropdowns">
+                <div className="so-panel-filter-detail__dropdown">
+                    <p className="so-panel-filter-detail__dropdown-title nexus-c-table-toolbar__title--is-active">
+                        Status Filter
+                    </p>
+                    <div className="so-panel-filter-detail__dropdown-element">
+                        <Select
+                            options={FILTER_LIST}
+                            onChange={setFilter}
+                            value={filter}
+                            placeholder="Select Status"
+                        />
+                    </div>
+                </div>
+                <div className="so-panel-filter-detail__dropdown">
+                    <p className="so-panel-filter-detail__dropdown-title nexus-c-table-toolbar__title--is-active">
+                        Sort by Due Date
+                    </p>
+                    <div className="so-panel-filter-detail__dropdown-element">
+                        <Select
+                            options={SORT_DIRECTION}
+                            onChange={setDueDateSortDirection}
+                            value={dueDateSortDirection}
+                            placeholder="Select Date"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     );
