@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MoreActions should match snapshot 1`] = `
+<div
+  className="rights-more-actions"
+>
+  <[object Object]
+    fill="#A5ADBA"
+    onClick={[Function]}
+  />
+  <div
+    className="rights-more-actions__menu "
+  >
+    <div
+      className="rights-more-actions__menu-item 
+                        "
+      data-test-id="view-history"
+    >
+      <Connect(RightHistoryView)
+        selectedAvails={Array []}
+      />
+    </div>
+    <div
+      className="rights-more-actions__menu-item 
+                        "
+      data-test-id="bulk-unmatch"
+    >
+      <NexusTooltip
+        content="This feature is enabled when: (All selected rights have Source Right ID populated AND all Source Right IDs are unique) OR (Source Right IDs are all empty) AND have all Core Title IDs populated"
+        isDisabled={false}
+      >
+        <div>
+          Bulk Unmatch Titles
+        </div>
+      </NexusTooltip>
+    </div>
+  </div>
+</div>
+`;
