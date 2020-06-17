@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
@@ -76,8 +76,10 @@ class TitleEdit extends Component {
             editedForm: {},
             territories: {},
             territory: [],
+            prevTerritories: [],
             updatedTerritories: [],
             editorialMetadata: [],
+            prevEditorialMetadata: [],
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
             editorialMetadataForCreateAutoDecorate: false,
@@ -127,7 +129,8 @@ class TitleEdit extends Component {
         titleService.getTerritoryMetadataById(titleId).then((response) => {
             const territoryMetadata = response;
             this.setState({
-                territory: territoryMetadata
+                territory: territoryMetadata,
+                prevTerritories: territoryMetadata,
             });
         }).catch(() => {
             console.error('Unable to load Territory Metadata');
@@ -139,7 +142,8 @@ class TitleEdit extends Component {
         titleService.getEditorialMetadataByTitleId(titleId).then((response) => {
             const editorialMetadata = response;
             this.setState({
-                editorialMetadata: editorialMetadata
+                editorialMetadata: editorialMetadata,
+                prevEditorialMetadata: editorialMetadata,
             });
         }).catch(() => {
             console.error('Unable to load Editorial Metadata');
@@ -166,7 +170,10 @@ class TitleEdit extends Component {
             titleRankingActiveTab: CURRENT_TAB,
             territories: emptyTerritory,
             editorialMetadataForCreate: emptyEditorial,
-            updatedEditorialMetadata: []
+            updatedEditorialMetadata: [],
+            updatedTerritories: [],
+            editorialMetadata: prevState.prevEditorialMetadata,
+            territory: prevState.prevTerritories,
         }));
     };
 
@@ -553,6 +560,7 @@ class TitleEdit extends Component {
 
                     this.setState({
                         territory: appliedTerritories,
+                        prevTerritories: appliedTerritories,
                     });
                     return true;
                 }).catch(() => {
@@ -589,6 +597,7 @@ class TitleEdit extends Component {
                     this.cleanTerritoryMetadata();
                     this.setState({
                         territory: [response, ...this.state.territory],
+                        prevTerritories:[response, ...this.state.territory],
                         territoryMetadataActiveTab: CURRENT_TAB,
                     });
                     return true;
@@ -914,6 +923,7 @@ class TitleEdit extends Component {
                     this.cleanEditorialMetadata();
                     this.setState({
                         editorialMetadata: [response, ...this.state.editorialMetadata],
+                        prevEditorialMetadata: [response, ...this.state.editorialMetadata],
                         editorialMetadataActiveTab: CURRENT_TAB
                     });
                     this.loadEditorialMetadata();

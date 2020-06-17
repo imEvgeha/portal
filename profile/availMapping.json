@@ -270,7 +270,7 @@
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "coreTitleId",
-  "readOnly": false,
+  "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
   "required": false
@@ -278,7 +278,7 @@
   "javaVariableName": "storeLanguage",
   "displayName": "Store Language",
   "dataType": "select",
-  "searchDataType": "multiselect",  
+  "searchDataType": "multiselect",
   "configEndpoint": "/languages",
   "queryParamName": "storeLanguage",
   "readOnly": false,
