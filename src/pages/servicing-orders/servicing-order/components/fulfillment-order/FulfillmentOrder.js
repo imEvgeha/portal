@@ -44,13 +44,16 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     }, [isSuccess]);
 
     useEffect(() => {
-        setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
+        if (!_.isEmpty(selectedFulfillmentOrder)) {
+            setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
+            // Disable form if status is READY
+            get(selectedFulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
+        }
     }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
 
     useEffect(() => {
         setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        get(fulfillmentOrder, fieldKeys.READINESS, '') === 'READY' ?  setIsFormDisabled(true) : setIsFormDisabled(false);
     }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
@@ -126,7 +129,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 <label htmlFor="notes">Notes:</label>
                                 <NexusTextArea
                                     name="notes"
-                                    onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
+                                    onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target.value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
                                     isDisabled={isFormDisabled}
                                 />
