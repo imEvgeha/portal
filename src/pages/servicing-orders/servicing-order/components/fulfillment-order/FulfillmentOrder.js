@@ -123,18 +123,18 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         </div>
                         <Grid>
                             <GridColumn medium={6}>
-                                <label htmlFor='notes'>Notes:</label>
+                                <label htmlFor="notes">Notes:</label>
                                 <NexusTextArea
-                                    name='notes'
+                                    name="notes"
                                     onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
                                     isDisabled={isFormDisabled}
                                 />
                             </GridColumn>
                             <GridColumn medium={2}>
-                                <label htmlFor='servicer'>Servicer</label>
+                                <label htmlFor="servicer">Servicer</label>
                                 <Textfield
-                                    name='servicer'
+                                    name="servicer"
                                     value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
                                     isDisabled={true}
                                 />
@@ -142,17 +142,17 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
 
                             <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
-                                    <label htmlFor='fulfillment-status'>Fulfillment Status</label>
+                                    <label htmlFor="fulfillment-status">Fulfillment Status</label>
                                     <Textfield
-                                        name='fulfillment-status'
+                                        name="fulfillment-status"
                                         value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || ''}
                                         isDisabled={true}
                                     />
                                 </div>
                                 <div className="fulfillment-order__input">
                                     <NexusDatePicker
-                                        id='dueDate'
-                                        label='Start Date'
+                                        id="dueDate"
+                                        label="Start Date"
                                         value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
                                         onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
                                         isReturningTime={false}
@@ -163,11 +163,11 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
 
                             <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
-                                    <label htmlFor='readiness-status'>Readiness Status</label>
+                                    <label htmlFor="readiness-status">Readiness Status</label>
                                     <Select
                                         id="readiness-status"
-                                        name='readiness-status'
-                                        className='fulfillment-order__readiness-status'
+                                        name="readiness-status"
+                                        className="fulfillment-order__readiness-status"
                                         options={Constants.READINESS_STATUS}
                                         value={{value: get(fulfillmentOrder, fieldKeys.READINESS, ''), label: readinessOption && readinessOption.label}}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
@@ -176,8 +176,8 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 </div>
                                 <div className="fulfillment-order__input">
                                     <NexusDatePicker
-                                        id='dueDate'
-                                        label='Due Date'
+                                        id="dueDate"
+                                        label="Due Date"
                                         value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
                                         onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
                                         isReturningTime={false}

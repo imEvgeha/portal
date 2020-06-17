@@ -117,7 +117,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     };
 
     return (
-        <>
+        <div className="nexus-c-sources-table">
             <div className="nexus-c-sources-table__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
@@ -135,7 +135,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
             />
-        </>
+        </div>
     );
 };
 
