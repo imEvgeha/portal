@@ -1,7 +1,9 @@
-import './DashboardContainer.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import FreeTextSearch from './components/FreeTextSearch';
+import moment from 'moment';
+import Button, {ButtonGroup} from '@atlaskit/button';
+import {URL} from '../../../../../util/Common';
 import {
     resultPageLoading,
     resultPageSort,
@@ -9,12 +11,12 @@ import {
     resultPageSelect,
     searchFormShowSearchResults,
 } from '../../../stores/actions/metadata/index';
-import DashboardTab from './DashboardTab';
-import PropTypes from 'prop-types';
-import {titleSearchHelper} from '../dashboard/TitleSearchHelper';
-import moment from 'moment';
 import {configService} from '../service/ConfigService';
+import './DashboardContainer.scss';
+import FreeTextSearch from './components/FreeTextSearch';
 import TitleResultTable from './components/table/TitleResultTable';
+import {titleSearchHelper} from './TitleSearchHelper';
+import DashboardTab from './DashboardTab';
 
 const mapStateToProps = state => {
     return {
@@ -112,17 +114,24 @@ class DashboardContainer extends React.Component {
                                             onSearch={this.handleTitleFreeTextSearch}
                                             lastSearch={this.props.lastSearch}
                                         />
-                                    </td>  
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            
+
                 <DashboardTab />
                 <div id="dashboard-result-table">
                     <div className="container-fluid">
-                        Title Records
+                        <div className="vu-data-table-header">
+                            <span>Title Records</span>
+                            <ButtonGroup>
+                                <Button onClick={() => this.props.history.push(URL.keepEmbedded('/sync-log'))}>
+                                    Sync Log
+                                </Button>
+                            </ButtonGroup>
+                        </div>
                         <TitleResultTable />
                     </div>
                 </div>
@@ -142,6 +151,7 @@ DashboardContainer.propTypes = {
     showAdvancedSearch: PropTypes.bool,
     showSearchResults: PropTypes.bool,
     useAdvancedSearch: PropTypes.bool,
+    history: PropTypes.object,
     location: PropTypes.object,
 };
 
