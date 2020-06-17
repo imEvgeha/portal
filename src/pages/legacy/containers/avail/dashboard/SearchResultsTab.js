@@ -115,7 +115,9 @@ class SearchResultsTab extends React.Component {
                                 Results: <Total />
                             </span>
                             <Selected toggleShowSelected={this.toggleShowSelected} />
-                            <RightViewHistory selectedAvails={this.props.selectedAvails} />
+                            <span className="nx-container-margin table-top-text">
+                                <RightViewHistory selectedAvails={this.props.selectedAvails} />
+                            </span>
                             {this.props.showSelectedAvails && (
                                 <a href="#" onClick={this.toggleShowSelected}>
                                     <span

@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Row, Col, Container, TabContent, TabPane, Alert, Tooltip} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
+import Select from '@atlaskit/select';
+import {sortBy} from 'lodash';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
@@ -11,6 +13,7 @@ import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
 import {URL} from '../../../../../../../util/Common';
 import {NexusDrawer} from '../../../../../../../ui/elements';
+import StatusLink from "../../../../../../../assets/status-linked.svg";
 
 const mapStateToProps = state => {
     return {
@@ -22,6 +25,7 @@ const EditorialMetadata = ({
     isEditMode,
     editorialMetadata,
     handleChange,
+    handleAutoDecorateChange,
     handleTitleChange,
     handleEpisodicChange,
     handleSynopsisChange,
@@ -46,10 +50,48 @@ const EditorialMetadata = ({
     handleCategoryEditChange,
     coreTitleData,
     editorialTitleData,
-    handleDeleteEditorialMetaData
+    cleanField,
+    handleDeleteEditorialMetaData,
+    handleRegenerateDecoratedMetadata,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [currentFolder, setCurrentFolder] = useState({});
+    const [foldersOptions, setFoldersOptions] = useState([]);
+    const [foldersChildren, setFoldersChildren] = useState({});
+
+
+    // When editorialMetadata is received/updated, extract its items and categorize them in folders
+    useEffect(() => {
+        // Will hold all unique comibnations of locale+language
+        const foldersSet = new Set();
+
+        // Extract locale+language from each editorialMetadata item and add it to flodersSet set
+        Object.keys(editorialMetadata).forEach((key) => {
+            const {locale = '', language = ''} = editorialMetadata[key];
+            const folderName = `${locale} ${getLanguageByCode(language)}`;
+
+            foldersSet.add(folderName);
+        });
+
+        const categorizedEditorialMetadata = {};
+
+        // For each folder, extract its children
+        Array.from(foldersSet).forEach(folder => {
+            categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
+                return folder === `${locale} ${getLanguageByCode(language)}`;
+            });
+        });
+        setFoldersChildren(categorizedEditorialMetadata);
+
+        // Create options for react-select
+        setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
+    }, [editorialMetadata]);
+    useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
+
+    const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);
+
+    const {value: currentFolderName = ''} = currentFolder || {};
 
     const getLanguageByCode = (code) => {
         if (configLanguage) {
@@ -61,6 +103,7 @@ const EditorialMetadata = ({
         return code;
     };
 
+    const masterFirstFoldersChildren =  sortBy(foldersChildren[currentFolderName], ['hasGeneratedChildren']).reverse();
     return (
         <Container fluid id="titleContainer" style={{marginTop: '30px'}}>
             <NexusDrawer
@@ -78,11 +121,33 @@ const EditorialMetadata = ({
                 <Col>
                     <h2>Editorial Metadata</h2>
                 </Col>
-                {URL.isLocalOrDevOrQA() && (
-                    <Col style={{display: 'flex', justifyContent: 'end'}}>
+                <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
+                    {URL.isLocalOrDevOrQA() && (
                         <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>
-                    </Col>
-                )}
+                    )}
+                    {titleHasMaster && !isEditMode &&
+                        <Button
+                            appearance="primary"
+                            style={{marginLeft: '15px'}}
+                            onClick={handleRegenerateDecoratedMetadata}
+                        >
+                            Regenerate Auto-Decorated Metadata
+                        </Button>
+                    }
+                </Col>
+            </Row>
+            <Row>
+                <div style={{width: '200px', margin: '5px 0 15px 15px'}}>
+                    <Select
+                        options={foldersOptions}
+                        defaultValue={foldersOptions[0]}
+                        value={currentFolder || foldersOptions[0]}
+                        onChange={folder => {
+                            toggle(0);
+                            setCurrentFolder(folder);
+                        }}
+                    />
+                </div>
             </Row>
             <div className='tab'>
                 {
@@ -109,16 +174,19 @@ const EditorialMetadata = ({
                         : null
                 }
                 {
-                    editorialMetadata && editorialMetadata.map((item, i) => {
+                    masterFirstFoldersChildren && masterFirstFoldersChildren.map((item, index) => {
+                        const isDecorated = !!item['parentEmetId'];
+                        const isMaster = item['hasGeneratedChildren'];
                         return (
                             <span
                                 className="tablinks"
-                                style={{background: activeTab === i ? '#000' : '', color: activeTab === i ? '#FFF' : ''}}
-                                key={i}
-                                onClick={() => toggle(i)}
+                                style={{background: activeTab === index ? '#000' : '', color: activeTab === index ? '#FFF' : ''}}
+                                key={index}
+                                onClick={() => toggle(index)}
                             >
+                                {(isMaster || isDecorated) && <StatusLink className={`tablinks__status-link ${activeTab === index ? 'tablinks__status-link--active' :''}`} />}
                                 <b>
-                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format ? item.format : '')} ${(item.service ? item.service : '')}`}
+                                    {`${item.locale} ${getLanguageByCode(item.language)} ${(item.format || '')} ${(item.service || '')}`}
                                 </b>
                             </span>
                         );
@@ -127,8 +195,8 @@ const EditorialMetadata = ({
             </div>
             <TabContent activeTab={activeTab}>
                 {
-                    editorialMetadata && editorialMetadata.length > 0 ?
-                        !isEditMode && editorialMetadata.map((item, i) => {
+                    masterFirstFoldersChildren ?
+                        !isEditMode && masterFirstFoldersChildren.map((item, i) => {
                             return (
                                 <TabPane key={i} tabId={i}>
                                     <Row>
@@ -165,6 +233,7 @@ const EditorialMetadata = ({
                                             validSubmit={validSubmit}
                                             areFieldsRequired={areFieldsRequired}
                                             handleChange={handleChange}
+                                            handleAutoDecorateChange={handleAutoDecorateChange}
                                             handleTitleChange={handleTitleChange}
                                             handleEpisodicChange={handleEpisodicChange}
                                             editorialMetadataForCreate={editorialMetadataForCreate}
@@ -173,12 +242,14 @@ const EditorialMetadata = ({
                                             handleCategoryChange={handleCategoryChange}
                                             handleEditorialCastCrewCreate={handleEditorialCastCrewCreate}
                                             titleContentType={titleContentType}
+                                            cleanField={cleanField}
+                                            titleHasMaster={titleHasMaster}
                                         />
                                     </Col>
                                 </Row>
                             </TabPane>
                             {
-                                editorialMetadata && editorialMetadata.map((item, i) => {
+                                masterFirstFoldersChildren && masterFirstFoldersChildren.map((item, i) => {
                                     return (
                                         <TabPane key={i} tabId={i}>
                                             <Row>
@@ -215,9 +286,11 @@ EditorialMetadata.propTypes = {
     isEditMode: PropTypes.bool.isRequired,
     editorialMetadata: PropTypes.array,
     handleChange: PropTypes.func.isRequired,
+    handleAutoDecorateChange: PropTypes.func.isRequired,
     handleTitleChange: PropTypes.func.isRequired,
     handleEpisodicChange: PropTypes.func.isRequired,
     handleSynopsisChange: PropTypes.func.isRequired,
+    cleanField: PropTypes.func.isRequired,
     activeTab: PropTypes.any,
     areFieldsRequired: PropTypes.bool,
     toggle: PropTypes.func,

@@ -50,14 +50,12 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
             onClick: () => handleClick(SERVICING_ORDERS),
         }
     ),
-    URL.isLocalOrDevOrQA() && (
-        {
-            icon: RecentIcon,
-            id: EVENT_MANAGEMENT,
-            tooltip: 'Event Management',
-            isSelected: (selectedItem === EVENT_MANAGEMENT),
-            onClick: () => handleClick(EVENT_MANAGEMENT),
-        }
-    )
+    {
+        icon: RecentIcon,
+        id: EVENT_MANAGEMENT,
+        tooltip: 'Event Management',
+        isSelected: (selectedItem === EVENT_MANAGEMENT),
+        onClick: () => handleClick(EVENT_MANAGEMENT),
+    }
 ];
 
