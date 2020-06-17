@@ -54,8 +54,11 @@ const ServicingOrder = ({match}) => {
             setSelectedFulfillmentOrderID(id);
             setSelectedSource(null);
         }
+    };
 
-
+    const isFormDisabled = selectedOrder => {
+        const {readiness} = selectedOrder;
+        return readiness === 'READY';
     };
 
     return (
@@ -77,9 +80,12 @@ const ServicingOrder = ({match}) => {
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
-                    {selectedSource &&
-                        <ServicesTable data={selectedSource} />}
-
+                    {selectedSource && (
+                        <ServicesTable
+                            data={selectedSource}
+                            isDisabled={isFormDisabled(selectedOrder)}
+                        />
+                      )}
                 </FulfillmentOrder>
             </div>
         </div>

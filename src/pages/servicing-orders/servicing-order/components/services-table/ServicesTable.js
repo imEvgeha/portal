@@ -19,7 +19,7 @@ const ServicesTableGrid = compose(
     withEditableColumns()
 )(NexusGrid);
 
-const ServicesTable = ({data}) => {
+const ServicesTable = ({data, isDisabled}) => {
     const [services, setServices] = useState({});
     const [providerServices, setProviderServices] = useState('');
 
@@ -40,9 +40,13 @@ const ServicesTable = ({data}) => {
     const closeButtonCell = ({rowIndex}) => {
         return (
             <CustomActionsCellRenderer id={1} classname="nexus-c-services__close-icon">
-                <span onClick={() => handleServiceRemoval(rowIndex)}>
-                    <EditorCloseIcon />
-                </span>
+                {
+                !isDisabled && (
+                    <span onClick={() => handleServiceRemoval(rowIndex)}>
+                        <EditorCloseIcon />
+                    </span>
+                )
+                }
             </CustomActionsCellRenderer>
         );
     };
@@ -75,7 +79,6 @@ const ServicesTable = ({data}) => {
         cellRendererFramework: closeButtonCell,
         cellRendererParams: services && services[`${providerServices}`],
     });
-
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
     const barcode = services.barcode || null;
 
@@ -86,10 +89,10 @@ const ServicesTable = ({data}) => {
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
-                <h5 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${servicesCount})`}</h5>
+                <h3 className="nexus-c-services-table__title">{`${constants.SERVICES_TITLE} (${servicesCount})`}</h3>
                 <div className="nexus-c-services-table__subtitle">{constants.SERVICES_BARCODE}: {barcode}</div>
                 <div className="nexus-c-services-table__add-icon">
-                    <Add onClick={addEmptyServicesRow} />
+                    { !isDisabled && <Add onClick={addEmptyServicesRow} /> }
                 </div>
             </div>
             <ServicesTableGrid

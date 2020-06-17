@@ -132,7 +132,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 <NexusTextArea
                                     name="notes"
                                     onTextChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '')}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
                                     isDisabled={isFormDisabled}
                                 />
                             </GridColumn>
