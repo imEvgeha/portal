@@ -16,6 +16,13 @@ import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../serv
 import Constants from './constants';
 import './FulfillmentOrder.scss';
 
+export const transformClientToServerFulfillmentOrder = clientFulfillmentOrder => {
+    return {
+        ...clientFulfillmentOrder,
+        definition: JSON.stringify(clientFulfillmentOrder.definition)
+    };
+};
+
 export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmentOrders, serviceOrder, children}) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -121,13 +128,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
     };
 
-    const onSaveHandler = async () => {
-        const transformClientToServerFulfillmentOrder = clientFulfillmentOrder => {
-            return {
-                ...clientFulfillmentOrder,
-                definition: JSON.stringify(clientFulfillmentOrder.definition)
-            };
-        };
+    const onSaveHandler = () => {
         const payload = {data: transformClientToServerFulfillmentOrder(fulfillmentOrder)};
         dispatch(saveFulfillmentOrder(payload));
     };
