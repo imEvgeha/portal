@@ -1,60 +1,36 @@
 .fulfillment-order {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 20px;
-
-  &__title {
-    font-size: 29px;
-    color: #42526E;
-  }
 
   &__row {
     display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
-    font-size: 14px;
-  }
-
-  &__actions {
-    display: flex;
     flex-direction: row;
-    button {
-      margin-left: 15px;
-    }
+    width: 100%;
+    margin-bottom: 1.7rem;  //TODO: Create mixin for calculating spacing
   }
 
-  &__column {
+  &__header {
+    justify-content: space-between;
+  }
+
+  hr {
+    margin: 1.7rem 0;
+  }
+
+  /* AtlasKit Bugfix */
+  input[disabled] {
+    height: auto;
+  }
+
+  &__button-row {
     display: flex;
-    flex-direction: column;
-
-    &--notes{
-      width: 500px;
-    }
-  }
-
-  &--section {
-    display: inline-flex;
-  }
-
-  &__select-wrapper {
-    margin-right: 15px;
-    width: 160px;
+    justify-content: flex-end;
+    margin: 1.14rem;
   }
 
   &__input {
-    margin-right: 15px;
-    width: 160px;
-    & > input {
-      width: 160px;
-      height: 40px;
-      background: #EBEDF0;
-      border: 0;
-      color: #42526E;
-      padding: 0 10px;
-    }
+    margin-bottom: 1.14rem;
   }
+}
 
-  &__order-id{
-    font-size: 16px;
-  }
+.right-align {
+  text-align: right;
 }
