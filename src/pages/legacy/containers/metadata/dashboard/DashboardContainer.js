@@ -126,11 +126,15 @@ class DashboardContainer extends React.Component {
                     <div className="container-fluid">
                         <div className="vu-data-table-header">
                             <span>Title Records</span>
-                            <ButtonGroup>
-                                <Button onClick={() => this.props.history.push(URL.keepEmbedded('/sync-log'))}>
-                                    Sync Log
-                                </Button>
-                            </ButtonGroup>
+                            {
+                                URL.isLocalOrDevOrQA() && (
+                                    <ButtonGroup>
+                                        <Button onClick={() => this.props.history.push(URL.keepEmbedded('/sync-log'))}>
+                                            Sync Log
+                                        </Button>
+                                    </ButtonGroup>
+                                )
+                            }
                         </div>
                         <TitleResultTable />
                     </div>
