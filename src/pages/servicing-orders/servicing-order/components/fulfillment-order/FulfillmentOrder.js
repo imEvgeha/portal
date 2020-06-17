@@ -1,39 +1,57 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {get, set, isEqual, cloneDeep} from 'lodash';
 import Button from '@atlaskit/button';
-import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
-import Constants from './constants';
+import {cloneDeep, get, isEqual, set} from 'lodash';
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import {getValidDate} from '../../../../../util/utils';
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
-import {SAVE_FULFILLMENT_ORDER} from '../../servicingOrderActionTypes';
+import {getValidDate} from '../../../../../util/utils';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
+import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
+import Constants from './constants';
+import './FulfillmentOrder.scss';
 
-export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
+export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmentOrders, serviceOrder, children}) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
-    const [fulfillmentOrder, setFulfillmentOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
+    const [fulfillmentOrder, setFulfillmentOrder] = useState(
+        cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder)
+    );
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
-    useEffect(() => {
-        if(isSuccess){
-            setSavedFulfillmentOrder(fulfillmentOrder);
-        }
-    }, [isSuccess]);
 
-    useEffect(() => {
-        setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
-    }, [selectedFulfillmentOrder, savedFulfillmentOrder]);
+    useEffect(
+        () => {
+            if (isSuccess && isSuccess !== 'ALREADY_SET') {
+                fetchFulfillmentOrders(serviceOrder).then(() => {
+                    setSavedFulfillmentOrder(fulfillmentOrder);
+                    dispatch({
+                        type: SAVE_FULFILLMENT_ORDER_SUCCESS,
+                        payload: 'ALREADY_SET'
+                    });
+                });
+            }
+        },
+        [isSuccess]
+    );
 
-    useEffect(() => {
-        setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-    }, [fulfillmentOrder]);
+    useEffect(
+        () => {
+            setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
+        },
+        [selectedFulfillmentOrder, savedFulfillmentOrder]
+    );
+
+    useEffect(
+        () => {
+            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
+        },
+        [fulfillmentOrder]
+    );
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
@@ -41,35 +59,42 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
         setFulfillmentOrder(fo);
     };
 
-    const statusOption = fulfillmentOrder ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS]) : {};
+    const statusOption = fulfillmentOrder
+        ? Constants.STATUS_LIST.find(l => l.value === fulfillmentOrder[fieldKeys.STATUS])
+        : {};
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
     };
 
-    const onSave = () => {
-        const payload = {data: fulfillmentOrder};
+    const onSaveHandler = async () => {
+        const transformClientToServerFulfillmentOrder = clientFulfillmentOrder => {
+            return {
+                ...clientFulfillmentOrder,
+                definition: JSON.stringify(clientFulfillmentOrder.definition)
+            };
+        };
+        const payload = {data: transformClientToServerFulfillmentOrder(fulfillmentOrder)};
+        console.log(payload);
         dispatch(saveFulfillmentOrder(payload));
+
+        //refetch to keep UI consistent with database
+        // fetchFulfillmentOrders(serviceOrder);
     };
 
     return (
-        <div className='fulfillment-order'>
-            <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__title'>
-                    Fulfillment Order
-                </div>
-                <div className='fulfillment-order__actions'>
-                    <div className='fulfillment-order__cancel'>
-                        <Button
-                            onClick={onCancel}
-                            isDisabled={isSaveDisabled || isSaving}
-                        >
+        <div className="fulfillment-order">
+            <div className="fulfillment-order__row">
+                <div className="fulfillment-order__title">Fulfillment Order</div>
+                <div className="fulfillment-order__actions">
+                    <div className="fulfillment-order__cancel">
+                        <Button onClick={onCancel} isDisabled={isSaveDisabled || isSaving}>
                             Cancel
                         </Button>
                     </div>
-                    <div className='fulfillment-order__save'>
+                    <div className="fulfillment-order__save">
                         <Button
-                            onClick={onSave}
+                            onClick={onSaveHandler}
                             appearance="primary"
                             isDisabled={isSaveDisabled}
                             isLoading={isSaving}
@@ -79,12 +104,10 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__order-id'>
-                Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}
-            </div>
-            <div className='fulfillment-order__row'>
-                <div className='fulfillment-order__column'>
-                    <div className='fulfillment-order__column--notes'>
+            <div className="fulfillment-order__order-id">Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
+            <div className="fulfillment-order__row">
+                <div className="fulfillment-order__column">
+                    <div className="fulfillment-order__column--notes">
                         <h6>Notes:</h6>
                         <NexusTextArea
                             onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target)}
@@ -92,42 +115,42 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                         />
                     </div>
                 </div>
-                <div className='fulfillment-order__column'>
-                    <div className='fulfillment-order__row'>
-                        <div className='fulfillment-order--section'>
-                            <div className='fulfillment-order__input'>
+                <div className="fulfillment-order__column">
+                    <div className="fulfillment-order__row">
+                        <div className="fulfillment-order--section">
+                            <div className="fulfillment-order__input">
                                 <span>Servicer</span>
-                                <input
-                                    value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                                    disabled
-                                />
+                                <input value={get(fulfillmentOrder, fieldKeys.SERVICER, '')} disabled />
                             </div>
-                            <div className='fulfillment-order__select-wrapper'>
+                            <div className="fulfillment-order__select-wrapper">
                                 Set Order Status
                                 <Select
-                                    className='fulfillment-order__select'
+                                    className="fulfillment-order__select"
                                     options={Constants.STATUS_LIST}
-                                    value={{value: get(fulfillmentOrder, fieldKeys.STATUS, ''), label: statusOption && statusOption.label}}
+                                    value={{
+                                        value: get(fulfillmentOrder, fieldKeys.STATUS, ''),
+                                        label: statusOption && statusOption.label
+                                    }}
                                     onChange={val => onFieldChange(fieldKeys.STATUS, val.value)}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className='fulfillment-order__row'>
-                        <div className='fulfillment-order--section'>
-                            <div className='fulfillment-order__select-wrapper'>
+                    <div className="fulfillment-order__row">
+                        <div className="fulfillment-order--section">
+                            <div className="fulfillment-order__select-wrapper">
                                 <NexusDatePicker
-                                    id='dueDate'
-                                    label='Due Date'
+                                    id="dueDate"
+                                    label="Due Date"
                                     value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
                                     onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
                                     isReturningTime={false}
                                 />
                             </div>
-                            <div className='fulfillment-order__select-wrapper'>
+                            <div className="fulfillment-order__select-wrapper">
                                 <NexusDatePicker
-                                    id='startDate'
-                                    label='Start Date'
+                                    id="startDate"
+                                    label="Start Date"
                                     value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
                                     onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
                                     isReturningTime={false}
@@ -137,17 +160,13 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                     </div>
                 </div>
             </div>
-            <div className='fulfillment-order__column'>
-                {children}
-            </div>
+            <div className="fulfillment-order__column">{children}</div>
         </div>
     );
 };
 
-FulfillmentOrder.propTypes = {
-};
+FulfillmentOrder.propTypes = {};
 
-FulfillmentOrder.defaultProps = {
-};
+FulfillmentOrder.defaultProps = {};
 
 export default FulfillmentOrder;
