@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {get, set, isEqual, cloneDeep} from 'lodash';
-import Button, { ButtonGroup }from '@atlaskit/button';
+import Button, {ButtonGroup} from '@atlaskit/button';
 import './FulfillmentOrder.scss';
 import Select from '@atlaskit/select/dist/cjs/Select';
-import Page, { Grid, GridColumn } from '@atlaskit/page';
+import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Textfield from '@atlaskit/textfield';
 import Constants from './constants';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -61,7 +61,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
         set(fo, path, value);
 
         // Show warning modal when status is set to READY
-        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'?
+        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness' ?
             openWarningModal(fo) :
             setFulfillmentOrder(fo);
     };

@@ -2,7 +2,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import * as Redux from 'react-redux';
 import FulfillmentOrder from './FulfillmentOrder';
-import { act } from 'react-dom/test-utils';
+import {act} from 'react-dom/test-utils';
 
 
 describe('FulfillmentOrder', () => {
