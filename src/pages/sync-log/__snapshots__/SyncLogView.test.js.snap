@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SyncLogView HTML content should match snapshot 1`] = `
+<div
+  className="nexus-c-sync-log-view"
+>
+  <NexusTitle
+    className=""
+    isInline={false}
+    isSubTitle={false}
+    title={null}
+  >
+    <Link
+      replace={false}
+      to="/metadata"
+    >
+      <ArrowLeftIcon
+        size="large"
+      />
+    </Link>
+    <span
+      className="nexus-c-sync-log-view__title"
+    >
+      Sync Log
+    </span>
+  </NexusTitle>
+  <div
+    className="nexus-c-sync-log-view__table"
+  />
+</div>
+`;
