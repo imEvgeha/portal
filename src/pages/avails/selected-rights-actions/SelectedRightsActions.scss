@@ -1,13 +1,13 @@
 @import '../../../styles/config';
 
-.rights-more-actions{
+.nexus-c-selected-rights-actions{
   position: relative;
 
   svg {
     cursor: pointer;
   }
 
-  .rights-more-actions__menu{
+  .nexus-c-selected-rights-actions__menu{
     position: absolute;
     top: 30px;
     border: 1px solid #A5ADBA;
@@ -21,7 +21,7 @@
     }
   }
 
-  .rights-more-actions__menu-item {
+  .nexus-c-selected-rights-actions__menu-item {
     color: map-get($colors, nexus-primary-color);
     white-space: nowrap; // Keep each option in one line
     padding-bottom: 10px;

@@ -1,33 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MoreActions should match snapshot 1`] = `
+exports[`SelectedRightsActions should match snapshot 1`] = `
 <div
-  className="rights-more-actions"
+  className="nexus-c-selected-rights-actions"
 >
   <[object Object]
     fill="#A5ADBA"
     onClick={[Function]}
   />
   <div
-    className="rights-more-actions__menu"
+    className="nexus-c-selected-rights-actions__menu"
   >
     <div
-      className="rights-more-actions__menu-item"
+      className="nexus-c-selected-rights-actions__menu-item"
       data-test-id="view-history"
     >
       <Connect(RightHistoryView)
-        selectedRights={Array []}
+        selectedAvails={Array []}
       />
     </div>
     <div
-      className="rights-more-actions__menu-item"
+      className="nexus-c-selected-rights-actions__menu-item"
     >
-      <BulkMatchOption
-        selectedRights={Array []}
-      />
+      <NexusTooltip
+        content="Rights selected must be the same criteria to make the feature available"
+        isDisabled={false}
+      >
+        Bulk Match Titles
+      </NexusTooltip>
     </div>
     <div
-      className="rights-more-actions__menu-item"
+      className="nexus-c-selected-rights-actions__menu-item"
       data-test-id="bulk-unmatch"
     >
       <NexusTooltip
@@ -36,9 +39,7 @@ exports[`MoreActions should match snapshot 1`] = `
 OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated"
         isDisabled={false}
       >
-        <div>
-          Bulk Unmatch Titles
-        </div>
+        Bulk Unmatch Titles
       </NexusTooltip>
     </div>
   </div>

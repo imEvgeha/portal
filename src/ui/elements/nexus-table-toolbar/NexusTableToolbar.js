@@ -7,7 +7,7 @@ import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB
 } from '../../../pages/avails/rights-repository/RightsRepository';
-import MoreActions from '../../../pages/avails/MoreActions/MoreActions';
+import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 
 const NexusTableToolbar = ({
     title,
@@ -25,7 +25,7 @@ const NexusTableToolbar = ({
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            <MoreActions selectedRights={selectedRepoRights} />
+            <SelectedRightsActions selectedRights={selectedRepoRights} />
             <div
                 className={`
                     nexus-c-table-toolbar__title 

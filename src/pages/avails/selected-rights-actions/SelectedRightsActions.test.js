@@ -1,28 +1,28 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import MoreActions from './MoreActions';
+import SelectedRightsActions from './SelectedRightsActions';
 
-describe('MoreActions', () => {
+describe('SelectedRightsActions', () => {
     let wrapper = null;
-    const menuItemClass = 'rights-more-actions__menu-item';
+    const menuItemClass = 'nexus-c-selected-rights-actions__menu-item';
 
     afterEach(() => {
         wrapper = null;
     });
 
     it('should match snapshot', () => {
-       wrapper = shallow(<MoreActions selectedRights={[]} />);
+       wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
        expect(wrapper).toMatchSnapshot();
     });
 
     it('should disable "View Rights History" option when no rights are selected', () => {
-        wrapper = shallow(<MoreActions selectedRights={[]} />);
+        wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
         const viewHistoryOption = wrapper.find('[data-test-id="view-history"]');
         expect(viewHistoryOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
     });
 
     it('should disable "Bulk Unmatch" option when no rights are selected', () => {
-        wrapper = shallow(<MoreActions selectedRights={[]} />);
+        wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
         const bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
         expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
     });
@@ -31,7 +31,7 @@ describe('MoreActions', () => {
         let bulkUnmatchOption = null;
 
         const init = (selectedRights) => {
-            wrapper = shallow(<MoreActions selectedRights={selectedRights} />);
+            wrapper = shallow(<SelectedRightsActions selectedRights={selectedRights} />);
             bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
         };
 

@@ -6,9 +6,9 @@ import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {BULK_MATCH, BULK_MATCH_DISABLED_TOOLTIP, BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
 import MoreIcon from '../../../assets/more-icon.svg';
-import './MoreActions.scss';
+import './SelectedRightsActions.scss';
 
-const MoreActions = ({selectedRights}) => {
+const SelectedRightsActions = ({selectedRights}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -55,18 +55,18 @@ const MoreActions = ({selectedRights}) => {
     };
 
     return (
-        <div className="rights-more-actions" ref={node}>
+        <div className="nexus-c-selected-rights-actions" ref={node}>
             <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
             <div
                 className={classNames(
-                    'rights-more-actions__menu',
-                    menuOpened && 'rights-more-actions__menu--is-open'
+                    'nexus-c-selected-rights-actions__menu',
+                    menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
                 )}
             >
                 <div
                     className={classNames(
-                        'rights-more-actions__menu-item',
-                        selectedRights.length && 'rights-more-actions__menu-item--is-active'
+                        'nexus-c-selected-rights-actions__menu-item',
+                        selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
                     data-test-id="view-history"
                 >
@@ -75,8 +75,8 @@ const MoreActions = ({selectedRights}) => {
                 </div>
                 <div
                     className={classNames(
-                        'rights-more-actions__menu-item',
-                        isMatchable && 'rights-more-actions__menu-item--is-active'
+                        'nexus-c-selected-rights-actions__menu-item',
+                        isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
                 >
                     <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
@@ -85,8 +85,8 @@ const MoreActions = ({selectedRights}) => {
                 </div>
                 <div
                     className={classNames(
-                        'rights-more-actions__menu-item',
-                        isUnmatchable && 'rights-more-actions__menu-item--is-active'
+                        'nexus-c-selected-rights-actions__menu-item',
+                        isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
                     data-test-id="bulk-unmatch"
                 >
@@ -99,12 +99,12 @@ const MoreActions = ({selectedRights}) => {
     );
 };
 
-MoreActions.propTypes = {
+SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
 };
 
-MoreActions.defaultProps = {
+SelectedRightsActions.defaultProps = {
     selectedRights: [],
 };
 
-export default MoreActions;
+export default SelectedRightsActions;
