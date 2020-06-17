@@ -59,7 +59,9 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
-        get(fo, fieldKeys.READINESS, '') === 'READY' ?
+
+        // Show warning modal when status is set to READY
+        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'?
             openWarningModal(fo) :
             setFulfillmentOrder(fo);
     };
@@ -129,8 +131,8 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, children}) => {
                                 <label htmlFor="notes">Notes:</label>
                                 <NexusTextArea
                                     name="notes"
-                                    onTextChange={e => onFieldChange(fieldKeys.NOTE, e.target.value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTE, '')}
+                                    onTextChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '')}
                                     isDisabled={isFormDisabled}
                                 />
                             </GridColumn>
