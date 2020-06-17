@@ -7,7 +7,7 @@ import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB
 } from '../../../pages/avails/rights-repository/RightsRepository';
-import MoreActions from '../../../pages/avails/right-history-view/components/MoreActions/MoreActions';
+import MoreActions from '../../../pages/avails/MoreActions/MoreActions';
 
 const NexusTableToolbar = ({
     title,
