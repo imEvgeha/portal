@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SourceTable with rows Should match snapshot 1`] = `
-<Fragment>
+<div
+  className="nexus-c-sources-table"
+>
   <div
     className="nexus-c-sources-table__header"
   >
@@ -198,5 +200,5 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
       }
     }
   />
-</Fragment>
+</div>
 `;

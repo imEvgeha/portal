@@ -56,7 +56,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <NexusTextArea
               isDisabled={false}
               name="notes"
-              notesValue=""
+              notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onTextChange={[Function]}
             />
           </WithTheme(AkGridColumn)>
