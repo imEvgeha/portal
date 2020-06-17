@@ -74,7 +74,7 @@ export const titleService = {
             }
         }
 
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles' + 
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') +'/titles' +
             prepareSortMatrixParamTitles(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
 
@@ -184,7 +184,7 @@ export const titleService = {
     },
 
     addEditorialMetadata: (editorialMetadata) => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata';
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
@@ -197,7 +197,7 @@ export const titleService = {
     },
 
     updateEditorialMetadata: (editedEditorialMetadata) => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/editorialmetadata';
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/editorialmetadata';
         return nexusFetch(url, {
             method:'put',
             body: JSON.stringify(editedEditorialMetadata),
