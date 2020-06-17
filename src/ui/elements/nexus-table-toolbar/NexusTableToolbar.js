@@ -13,7 +13,6 @@ const NexusTableToolbar = ({
     title,
     totalRows,
     selectedRightsCount,
-    hasSelectedTab,
     hasDownloadButton,
     selectedRows,
     activeTab,
@@ -26,7 +25,7 @@ const NexusTableToolbar = ({
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            <MoreActions selectedAvails={selectedRepoRights} />
+            <MoreActions selectedRights={selectedRepoRights} />
             <div
                 className={`
                     nexus-c-table-toolbar__title 

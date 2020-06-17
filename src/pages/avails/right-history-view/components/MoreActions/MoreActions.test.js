@@ -11,18 +11,18 @@ describe('MoreActions', () => {
     });
 
     it('should match snapshot', () => {
-       wrapper = shallow(<MoreActions selectedAvails={[]} />);
+       wrapper = shallow(<MoreActions selectedRights={[]} />);
        expect(wrapper).toMatchSnapshot();
     });
 
     it('should disable "View Rights History" option when no rights are selected', () => {
-        wrapper = shallow(<MoreActions selectedAvails={[]} />);
+        wrapper = shallow(<MoreActions selectedRights={[]} />);
         const viewHistoryOption = wrapper.find('[data-test-id="view-history"]');
         expect(viewHistoryOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
     });
 
     it('should disable "Bulk Unmatch" option when no rights are selected', () => {
-        wrapper = shallow(<MoreActions selectedAvails={[]} />);
+        wrapper = shallow(<MoreActions selectedRights={[]} />);
         const bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
         expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
     });
@@ -30,8 +30,8 @@ describe('MoreActions', () => {
     describe('Bulk Unmatch', () => {
         let bulkUnmatchOption = null;
 
-        const init = (selectedAvails) => {
-            wrapper = shallow(<MoreActions selectedAvails={selectedAvails} />);
+        const init = (selectedRights) => {
+            wrapper = shallow(<MoreActions selectedRights={selectedRights} />);
             bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
         };
 

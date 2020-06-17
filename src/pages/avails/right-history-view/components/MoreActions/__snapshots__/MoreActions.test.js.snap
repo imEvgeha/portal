@@ -16,7 +16,7 @@ exports[`MoreActions should match snapshot 1`] = `
       data-test-id="view-history"
     >
       <Connect(RightHistoryView)
-        selectedAvails={Array []}
+        selectedRights={Array []}
       />
     </div>
     <div

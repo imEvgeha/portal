@@ -9,7 +9,7 @@ import {BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
 import MoreIcon from '../../../../../assets/more-icon.svg';
 import './MoreActions.scss';
 
-const MoreActions = ({selectedAvails}) => {
+const MoreActions = ({selectedRights}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const node = useRef();
@@ -25,16 +25,16 @@ const MoreActions = ({selectedAvails}) => {
     // Check the criteria for enabling specific actions
     useEffect(() => {
         // Bulk unmatch criteria check
-        const hasCoreTitleIds = selectedAvails.every(({coreTitleId}) => !!coreTitleId);
-        const hasEmptySourceRightIds = selectedAvails.every(({sourceRightId}) => !sourceRightId);
-        const hasUniqueSourceRightIds = selectedAvails.length === uniqBy(selectedAvails, 'sourceRightId').length;
+        const hasCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId);
+        const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
+        const hasUniqueSourceRightIds = selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
 
         setIsUnmatchable(
-            !!selectedAvails.length
+            !!selectedRights.length
             && hasCoreTitleIds
             && (hasUniqueSourceRightIds || hasEmptySourceRightIds)
         );
-    }, [selectedAvails]);
+    }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);
     const removeMenu = e => {
@@ -55,19 +55,19 @@ const MoreActions = ({selectedAvails}) => {
                 <div
                     className={classNames(
                         'rights-more-actions__menu-item',
-                        selectedAvails.length && 'rights-more-actions__menu-item--is-active'
+                        selectedRights.length && 'rights-more-actions__menu-item--is-active'
                     )}
                     data-test-id="view-history"
                 >
-                    <RightViewHistory selectedAvails={selectedAvails} />
+                    <RightViewHistory selectedRights={selectedRights} />
                 </div>
                 <div
                     className={classNames(
                         'rights-more-actions__menu-item',
-                        selectedAvails.length && 'rights-more-actions__menu-item--is-active'
+                        selectedRights.length && 'rights-more-actions__menu-item--is-active'
                     )}
                 >
-                    <BulkMatchOption selectedRights={selectedAvails} />
+                    <BulkMatchOption selectedRights={selectedRights} />
                 </div>
                 <div
                     className={classNames(
@@ -88,11 +88,11 @@ const MoreActions = ({selectedAvails}) => {
 };
 
 MoreActions.propTypes = {
-    selectedAvails: PropTypes.array,
+    selectedRights: PropTypes.array,
 };
 
 MoreActions.defaultProps = {
-    selectedAvails: [],
+    selectedRights: [],
 };
 
 export default MoreActions;
