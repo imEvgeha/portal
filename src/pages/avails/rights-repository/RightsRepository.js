@@ -33,8 +33,6 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
-import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
-import BulkMatching from '../bulk-matching/BulkMatching';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
 import CustomActionsCellRenderer
     from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -91,7 +89,6 @@ const RightsRepository = ({
     const {search} = location;
     const previousActiveTab = usePrevious(activeTab);
     const [selectedFilter, setSelectedFilter] = useState({});
-    const [openBulkDrawer, setOpenBulkDrawer] = useState(false);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -321,7 +318,6 @@ const RightsRepository = ({
             case SELECTION_CHANGED:
                 // Get IDs from all selected rights from selectedRights ag-grid table
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
-                setOpenBulkDrawer(true);
                 // Get ID of a right to be deselected
                 const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
@@ -360,7 +356,6 @@ const RightsRepository = ({
                 : selectedRights
         );
     };
-
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -414,13 +409,6 @@ const RightsRepository = ({
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
             />
-            <NexusDrawer
-                onClose={() => setOpenBulkDrawer(false)}
-                isOpen={openBulkDrawer}
-                width="wider"
-            >
-                <BulkMatching data={selectedRepoRights} />
-            </NexusDrawer>
         </div>
     );
 };
