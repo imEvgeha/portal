@@ -417,7 +417,7 @@ const RightsRepository = ({
             <NexusDrawer
                 onClose={() => setOpenBulkDrawer(false)}
                 isOpen={openBulkDrawer}
-                width="wide"
+                width="wider"
             >
                 <BulkMatching data={selectedRepoRights} />
             </NexusDrawer>
