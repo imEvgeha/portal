@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '../../../../../assets/more-icon.svg';
 import RightViewHistory from '../../RightHistoryView';
+import BulkMatchOption from '../../../bulk-match/BulkMatchOption';
 import './MoreActions.scss';
 
 const MoreActions = ({selectedAvails}) => {
@@ -29,6 +30,7 @@ const MoreActions = ({selectedAvails}) => {
             <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
             <div className={`rights-more-actions__menu ${menuOpened?'open':''}`}>
                 <RightViewHistory selectedAvails={selectedAvails} />
+                <BulkMatchOption selectedRights={selectedAvails} />
             </div>
         </div>
     );
