@@ -14,7 +14,7 @@ const NexusTooltip = ({content, isDisabled, children, ...restProps}) => {
 };
 
 NexusTooltip.propTypes = {
-    content: PropTypes.string,
+    content: PropTypes.node,
     isDisabled: PropTypes.bool,
 };
 
