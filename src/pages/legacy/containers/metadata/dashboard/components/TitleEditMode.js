@@ -237,29 +237,6 @@ class TitleEditMode extends Component {
                                                 placeholder="Enter Season ID"
                                                 onChange={e => this.props.handleChangeEpisodic(e)}
                                             />
-                                            <Row>
-                                                <Col>
-                                                    <Label for='totalNumberOfEpisodes'>
-                                                        Episodes
-                                                    </Label>
-
-                                                    <AvField
-                                                        type='number'
-                                                        name='totalNumberOfEpisodes'
-                                                        id='totalNumberOfEpisodes'
-                                                        onChange={e => this.props.handleOnChangeEdit(e)}
-                                                        value={totalNumberOfEpisodes}
-                                                        placeholder='Episodes'
-                                                        validate={{
-                                      max: { value: constants.MAX_NUMBER_OF_EPISODES, errorMessage: 'Please enter a valid episode number!' },
-                                      pattern: {
-                                        value: '^[0-9]+$',
-                                        errorMessage: 'Please enter a number!'
-                                      }
-                                    }}
-                                                    />
-                                                </Col>
-                                            </Row>
                                         </Col>
                         ) : (
                             <Col>
