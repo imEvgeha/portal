@@ -9,7 +9,7 @@ import {NexusGrid} from '../../../../../ui/elements';
 import {defineColumn, defineButtonColumn, defineCheckboxSelectionColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import mappings from '../../../../../../profile/servicesTableMappings';
-import {SELECT_VALUES, ADD_EMPTY_SERVICE_ROW} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import Add from '../../../../../assets/action-add.svg';
 import constants from '../fulfillment-order/constants';
@@ -25,10 +25,15 @@ const ServicesTable = ({data, isDisabled}) => {
     const [providerServices, setProviderServices] = useState('');
 
     useEffect(() => {
-        if (data) {
-            // I'm not able to edit/save a nested object using the Nexus Grid. It keeps adding the updated value to the highest level.
-            // I went ahead and flattened the object here with only necessary table data.
-            const flattenedObject = data[`${data.fs.toLowerCase()}Services`].map(service => ({
+        if (!_.isEmpty(data)) {
+            setProviderServices(`${data.fs.toLowerCase()}Services`);
+            setServices(data);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (!_.isEmpty(services)) {
+            const flattenedObject = services[providerServices].map(service => ({
                 componentId: service.externalServices.externalId,
                 spec: service.externalServices.formatType,
                 doNotStartBefore: service.overrideDueDate,
@@ -36,20 +41,14 @@ const ServicesTable = ({data, isDisabled}) => {
                 deliverToVu: service.deteTasks.deteDeliveries.externalDelivery.deliverToId === 'VUBIQUITY',
                 operationalStatus: service.status
             }));
-            setServices(data);
             setTableData(flattenedObject);
-            setProviderServices(`${data.fs.toLowerCase()}Services`);
         }
-    }, [data]);
+    }, [services]);
 
     const handleServiceRemoval = index => {
-        const removedRowTable = cloneDeep(tableData);
-        removedRowTable.splice(index, 1);
-        setTableData(removedRowTable);
-
-        // TODO: Can there be 0 services in a source?
-
-       // TODO: This change needs to be propogated up to the Fulfillment Order form to submit
+        const updatedService = cloneDeep(services[`${providerServices}`]);
+        updatedService.splice(index, 1);
+        setServices({...services, [`${providerServices}`]: updatedService});
     };
 
     const closeButtonCell = ({rowIndex}) => {
@@ -70,7 +69,6 @@ const ServicesTable = ({data, isDisabled}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
             const updatedServices = cloneDeep(services[`${providerServices}`]);
             const currentService = updatedServices[rowIndex];
-
             // TODO: Super inefficient, need to find a better way
             // Re-mapping the data
             currentService.externalServices.externalId = data.componentId;
@@ -82,19 +80,14 @@ const ServicesTable = ({data, isDisabled}) => {
 
             setServices({...services, [`${providerServices}`]: updatedServices});
 
-            // TODO: This change needs to be propogated up to the Fulfillment Order form to submit
+            // TODO: This change needs to be propogated up to the Servicing Order form to submit
         }
     };
 
     const addEmptyServicesRow = () => {
-        const updatedTableData = cloneDeep(tableData);
-        updatedTableData.push(ADD_EMPTY_SERVICE_ROW);
-        setTableData(updatedTableData);
-
-        // TODO: What does a new service look like schema-wise when added? There are 24
-        // properties in a service and we're only editing 6. What are the defaults for the other values?
-
-        // TODO: This change needs to be propogated up to the Fulfillment Order form to submit
+        const updatedService = cloneDeep(services[`${providerServices}`]);
+        updatedService.push(SERVICE_SCHEMA);
+        setServices({...services, [`${providerServices}`]: updatedService});
     };
 
     const orderingColumn = defineColumn({

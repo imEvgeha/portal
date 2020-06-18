@@ -19,7 +19,7 @@ export const SELECT_VALUES = {
     sourceStandard: ['_1080_23_976']
 };
 
-export const ADD_EMPTY_SERVICE_ROW = {
+export const TABLE_ROW = {
     componentId: '',
     spec: '',
     doNotStartBefore: '',
@@ -27,3 +27,49 @@ export const ADD_EMPTY_SERVICE_ROW = {
     deliverToVu: false,
     operationalStatus: 'Ready'
 };
+
+export const SERVICE_SCHEMA =
+    {
+        deteSources: {
+          amsAssetId: '',
+          barcode: '',
+          externalSources: {
+            externalId: '',
+            externalSystem: '',
+            assetFormat: '',
+            assetType: ''
+          }
+        },
+        deteTasks: {
+          deteDeliveries: {
+            deliveryMethod: '',
+            externalDelivery: {
+              externalId: '',
+              externalSystem: '',
+              customerId: '',
+              deliverToId: ''
+            }
+          },
+          dueDate: '',
+          typeAttribute: ''
+        },
+        externalServices: {
+          externalId: '',
+          externalSystem: '',
+          formatType: '',
+          parameters: [
+            {
+              name: 'Priority',
+              value: ''
+            }
+          ],
+          requiresPropagation: '',
+          serviceType: '',
+          subordinateFlag: ''
+        },
+        mediaFormat: '',
+        overrideDueDate: '',
+        quantity: '',
+        sequence: '',
+        status: ''
+      };
