@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
+import {getAffectedRights} from './bulkMatchingService';
 import TitleMatchingTable from '../title-matching-table/TitleMatchingTable';
 import './BulkMatching.scss';
 import {TITLE_MATCHING_MSG} from './constants';
-
 
 const BulkMatching = ({data}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -16,12 +16,22 @@ const BulkMatching = ({data}) => {
         setAffectedTableActive(!affectedTableActive);
     };
 
-
     useEffect(() => {
-        if (data) {
+        if (data.length) {
             setSelectedTableData(data);
         }
     }, []);
+
+    useEffect(() => {
+        if (selectedTableData.length) {
+            const rightIds = selectedTableData.map(right => right.id);
+            getAffectedRights(rightIds).then(res => {
+                if (Array.isArray(res) && res.length) {
+                    setAffectedTableData(res);
+                }
+            });
+        }
+    }, [selectedTableData]);
 
     return (
         <div className="nexus-c-bulk-matching">

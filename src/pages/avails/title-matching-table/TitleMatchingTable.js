@@ -1,17 +1,31 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {get, cloneDeep} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './titleMatchingTableMappings.json';
-//import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 
 const TitleMatchingTable = ({data}) => {
 
     const [tableData, setTableData] = useState([]);
 
+    const flattenData = data => {
+        let tableData = cloneDeep(data).filter(item => {
+            if (Array.isArray(item.territory)) {
+                item.territory = get(item.territory[0], 'country', '');
+            }
+            return item;
+        });
+        return tableData;
+    };
+
+    const handleRowSelectionChange = ({api}) => {
+        // get selected row data with api.getSelectedRows()
+    };
+
     useEffect(() => {
-        if(data.length > 0) {
-            setTableData(data);
+        if (data.length) {
+            setTableData(flattenData(data));
         }
         else {
             setTableData([]);
@@ -24,7 +38,9 @@ const TitleMatchingTable = ({data}) => {
                 columnDefs={columnDefinitions}
                 mapping={mappings}
                 rowData={tableData}
+                rowSelection='single'
                 domLayout="autoHeight"
+                onSelectionChanged={handleRowSelectionChange}
             />
         </div>
     );

@@ -1,5 +1,10 @@
 const columnDefinitions = [
     {
+        colId: 'coreTitleId',
+        field: 'coreTitleId',
+        headerName: 'Core Title Id',
+    },
+    {
         colId: 'title',
         field: 'title',
         headerName: 'Title',
