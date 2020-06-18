@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -8,7 +8,9 @@ const NexusTooltip = ({content, isDisabled, children, ...restProps}) => {
             content={!isDisabled && content}
             {...restProps}
         >
-            {children}
+            <>
+                {children}
+            </>
         </Tooltip>
     );
 };
