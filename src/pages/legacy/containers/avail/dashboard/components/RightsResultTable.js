@@ -228,12 +228,13 @@ class RightsResultTable extends React.Component {
                     } else {
                         return null;
                     }
+                case 'priceType':
                 case 'territoryType' :
                 case 'audioLanguageType':
                     return ({data = {}}) => {
                         if (data && Array.isArray(data[javaVariableName])) {
                             const cellValue = data[javaVariableName]
-                                .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                .map(e => String(e.country || `${e.language}/${e.audioType}` || `${e.priceType} ${e.priceValue}`))
                                 .join(', ');
                             return cellValue || undefined;
                         } else {

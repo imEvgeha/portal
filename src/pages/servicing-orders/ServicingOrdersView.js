@@ -16,8 +16,8 @@ const ServicingOrdersView = () => {
 
     useEffect(() => {
         setFixedFilter({
-            status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'COMPLETE', 'CANCELLED', 'FAILED'] : undefined,
-            readiness: isHideReady ? ['NEW', 'READY', 'ON_HOLD'] : undefined,
+            status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
+            readiness: isHideReady ? ['NEW', 'ON_HOLD'] : undefined,
         });
     }, [isHideReady, isHideCompleted]);
 

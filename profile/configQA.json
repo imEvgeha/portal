@@ -6,7 +6,7 @@
     "configuration": "https://configapi.qa.vubiquity.com",
     "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
     "eventApiUrl": "https://eventapi.qa.vubiquity.com",
-    "servicingOrdersUrl": "https://service-order-manager.dev.vubiquity.com",
+    "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
     "service": {
       "avails": "/avails-api/v1",
       "availsParser": "/avails-parser/v1",
