@@ -46,7 +46,6 @@ class CoreMetadataEditMode extends Component {
             ratings: [],
             externalIDs: {},
         };
-        this.handleMSVIDs = this.handleMSVIDs.bind(this);
     }
 
     handleRatingSystemValue = (e) => {
@@ -81,9 +80,9 @@ class CoreMetadataEditMode extends Component {
         }
     };
 
-    handleMSVIDs(data)  {
+    handleMSVIDs = data =>  {
         /* TODO: modify to save data locally or in the consumer component to send saved data to put api */
-        this.setState({
+       this.setState({
             externalIDs: { ...this.state.externalIDs, msvAssociationId: data}
         });
     }
@@ -443,7 +442,7 @@ class CoreMetadataEditMode extends Component {
                     </Col>
                     <Col md={2}>
                         <Label for='overrideMsvAssociationId'>
-                            Override MSV Association ID
+                            MSV Association ID
                         </Label>
                     </Col>
                     <Col>

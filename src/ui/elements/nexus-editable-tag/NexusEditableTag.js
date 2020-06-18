@@ -5,7 +5,7 @@ import './NexusEditableTag.scss';
 
 const ENTER_KEY_CODE = 13;
 
-const NexusEditableTag = ({text, remove, save, index=null, inputWidth='220px'}) => {
+const NexusEditableTag = ({text, remove, save, index, inputWidth}) => {
     const [isEditing, setEditing] = useState(false);
     const [value, setValue] = useState(text);
 
@@ -16,8 +16,8 @@ const NexusEditableTag = ({text, remove, save, index=null, inputWidth='220px'}) 
         }
     };
 
-    if (isEditing) {
-        return (
+    return (
+        isEditing? (
             <input
                 className='nexus-edit-tag-input'
                 style={{width: inputWidth}}
@@ -27,17 +27,16 @@ const NexusEditableTag = ({text, remove, save, index=null, inputWidth='220px'}) 
                 onKeyDown={handleKeyDown}
                 autoFocus
             />
+          )
+            : (
+                <span className='nexus-edit-tag'>
+                    <span onClick={()=>setEditing(prev => !prev)} className='nexus-edit-tag__label'>
+                        {value}
+                        <span className='nexus-edit-tag__remove-button' onClick={remove}> <EditorCloseIcon size='small' /></span>
+                    </span>
+                </span>
+          )
         );
-    }
-
-    return (
-        <span className='nexus-edit-tag'>
-            <span onClick={()=>setEditing(prev => !prev)} className='nexus-edit-tag__label'>
-                {value}
-                <span className='nexus-edit-tag__remove-button' onClick={remove}> <EditorCloseIcon size='small' /></span>
-            </span>
-        </span>
-    );
 };
 
 NexusEditableTag.propTypes = {
@@ -46,6 +45,12 @@ NexusEditableTag.propTypes = {
     inputWidth: PropTypes.string,
     save: PropTypes.func,
     index: PropTypes.number,
+};
+
+NexusEditableTag.defaultProps = {
+    index: null,
+    inputWidth: '220px',
+    save: null
 };
 
 export default NexusEditableTag;

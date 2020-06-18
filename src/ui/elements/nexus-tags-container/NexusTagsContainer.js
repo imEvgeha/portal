@@ -12,7 +12,7 @@ const NexusTagsContainer = ({data, saveData}) => {
     };
 
     const saveItem = (index, value) => {
-        let newArray = [...data];
+        let newArray = [...dataset];
         newArray[index] = value;
         setDataSet(newArray);
         saveData(newArray);
