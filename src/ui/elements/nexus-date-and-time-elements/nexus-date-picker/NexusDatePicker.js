@@ -69,13 +69,14 @@ const NexusDatePicker = ({
   return (
       <>
           {!hideLabel && label && (
-          <> {label} </>
+          <label htmlFor={id}>{label}</label>
               )}
           {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)
                 : (
                     <div className='nexus-c-date-picker__date-clear-wrapper'>
                         <DatePicker
+                            name={id}
                             id={id}
                             locale={locale}
                             placeholder={dateFormat}

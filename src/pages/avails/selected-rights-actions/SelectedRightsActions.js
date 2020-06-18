@@ -33,7 +33,8 @@ const SelectedRightsActions = ({selectedRights}) => {
         const hasNoEmptySourceRightId = selectedRights.every(({sourceRightId}) => !!sourceRightId);
         const hasUniqueSourceRightIds = selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
-            ({coreTitleId, contentType}) => coreTitleId === null && contentType === selectedRights[0].contentType);
+            ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
+        );
 
         // Bulk match criteria check
         setIsMatchable(
@@ -86,6 +87,7 @@ const SelectedRightsActions = ({selectedRights}) => {
                         'nexus-c-selected-rights-actions__menu-item',
                         isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
+                        data-test-id="bulk-match"
                     >
                         <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
                             <div onClick={isMatchable ? setDrawerState : null}>

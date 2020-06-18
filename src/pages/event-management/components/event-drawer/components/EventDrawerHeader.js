@@ -42,7 +42,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
             <NexusDownload
                 className="nexus-c-event-drawer-header__download-button"
                 data={event}
-                filename={`${eventId}-event`}
+                filename={`${eventId} - event`}
                 isDisabled={!event || !eventId}
             />
         </div>

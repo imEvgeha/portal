@@ -21,6 +21,7 @@ exports[`SelectedRightsActions should match snapshot 1`] = `
     </div>
     <div
       className="nexus-c-selected-rights-actions__menu-item"
+      data-test-id="bulk-match"
     >
       <NexusTooltip
         content="Rights selected must be the same criteria to make the feature available"

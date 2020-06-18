@@ -214,6 +214,15 @@
     react-syntax-highlighter "^10.0.1"
     tslib "^1.9.3"
 
+"@atlaskit/css-reset@^5.0.12":
+  version "5.0.12"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/css-reset/-/css-reset-5.0.12.tgz#7e259644f1e7ba4fb15b912639d2ecbd8f566413"
+  integrity sha512-YWV5v31ecJWP8zGUtcaC7BCD2lkyNeD4tt+TXIyXLhIrgxJ3Jau0A4cjdHqjbDaGKMTNHIQEtPDhBsU29GpOqg==
+  dependencies:
+    "@atlaskit/theme" "^9.5.1"
+    fbjs "^1.0.0"
+    mkdirp "^0.5.1"
+
 "@atlaskit/datetime-picker@^6.4.0":
   version "6.5.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/datetime-picker/-/datetime-picker-6.5.1.tgz#e24fdd18c6565bc15ebd3280ddc1cbc14ad6ffd3"
@@ -7299,7 +7308,7 @@ core-js@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/core-js/-/core-js-1.2.7.tgz#652294c14651db28fa93bd2d5ff2983a4f08c636"
   integrity sha1-ZSKUwUZR2yj6k70tX/KYOk8IxjY=
 
-core-js@^2.2.0, core-js@^2.4.0, core-js@^2.5.0, core-js@^2.6.5:
+core-js@^2.2.0, core-js@^2.4.0, core-js@^2.4.1, core-js@^2.5.0, core-js@^2.6.5:
   version "2.6.11"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
@@ -10221,6 +10230,11 @@ fbemitter@^2.0.0:
   dependencies:
     fbjs "^0.8.4"
 
+fbjs-css-vars@^1.0.0:
+  version "1.0.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
+  integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
+
 fbjs@^0.6.1:
   version "0.6.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/fbjs/-/fbjs-0.6.1.tgz#9636b7705f5ba9684d44b72f78321254afc860f7"
@@ -10238,6 +10252,20 @@ fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.9:
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
   dependencies:
     core-js "^1.0.0"
+    isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.18"
+
+fbjs@^1.0.0:
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
+  integrity sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
+  dependencies:
+    core-js "^2.4.1"
+    fbjs-css-vars "^1.0.0"
     isomorphic-fetch "^2.1.1"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
@@ -13893,6 +13921,13 @@ jest-pnp-resolver@^1.2.1:
   version "1.2.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/jest-pnp-resolver/-/jest-pnp-resolver-1.2.1.tgz#ecdae604c077a7fbc70defb6d517c3c1c898923a"
   integrity sha512-pgFw2tm54fzgYvc/OHrnysABEObZCUNFnhjoRjaVOCN8NYc032/gVjPaHD4Aq6ApkSieWtfKAFQtmDKAmhupnQ==
+
+jest-react-hooks-shallow@^1.4.1:
+  version "1.4.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/jest-react-hooks-shallow/-/jest-react-hooks-shallow-1.4.1.tgz#5a0082c7ef72c0434f55bd7ef4ff8fdbe4e0ab1d"
+  integrity sha512-el9oYNAp77WEUgVdBEjPMU+5koOFXfAhitlVShuBine/y2AVCL5nEF9kRDSu9iAo2mMocbwmeTEPyDsw/LAHvg==
+  dependencies:
+    react "^16.8.0"
 
 jest-regex-util@^20.0.3:
   version "20.0.3"
@@ -20216,6 +20251,15 @@ react@^16.4.0:
   version "16.12.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+
+react@^16.8.0:
+  version "16.13.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
+  integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
