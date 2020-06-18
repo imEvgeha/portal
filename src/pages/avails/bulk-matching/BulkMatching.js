@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
+import classNames from 'classnames';
 import {getAffectedRights} from './bulkMatchingService';
 import SimpleRightsMatchingTable from '../rights-matching-table/SimpleRightsMatchingTable';
 import './BulkMatching.scss';
@@ -38,16 +39,18 @@ const BulkMatching = ({data, headerTitle}) => {
             <h2>{headerTitle}</h2>
             <div className="nexus-c-bulk-matching__header">
                 <div
-                    className={`nexus-c-bulk-matching__selected ${!affectedTableActive
-                        ? 'nexus-c-bulk-matching__selected--active'
-                        : ''}`}
+                    className={classNames(
+                        'nexus-c-bulk-matching__selected',
+                        !affectedTableActive && 'nexus-c-bulk-matching__selected--active'
+                    )}
                     onClick={affectedTableActive ? changeActiveTable : null}
                 >Selected Rights ({selectedTableData.length})
                 </div>
                 <div
-                    className={`nexus-c-bulk-matching__affected ${affectedTableActive
-                        ? 'nexus-c-bulk-matching__affected--active'
-                        : ''}`}
+                    className={classNames(
+                        'nexus-c-bulk-matching__affected',
+                        affectedTableActive && 'nexus-c-bulk-matching__affected--active'
+                    )}
                     onClick={!affectedTableActive ? changeActiveTable : null}
                 >Affected Rights ({affectedTableData.length})
                 </div>
