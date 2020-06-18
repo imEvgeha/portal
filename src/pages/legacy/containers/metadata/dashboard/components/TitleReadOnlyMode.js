@@ -174,13 +174,6 @@ class TitleReadOnlyMode extends Component {
                                     </Alert>
                                 </Col>
                             )}
-                            { !!totalNumberOfEpisodes && (
-                                <Col>
-                                    <Alert color="light" id="titleEpisodes">
-                                        <b>Episodes: </b>{totalNumberOfEpisodes}
-                                    </Alert>
-                                </Col>
-                            )}
                         </Row>
                         <Row>
                             { contentType === 'SEASON' && (
