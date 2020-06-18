@@ -1,20 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import {compose} from 'redux';
-import {clone, isEqual} from 'lodash';
+import {isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import {Radio} from '@atlaskit/radio';
 import Badge from '@atlaskit/badge';
-import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './SourcesTable.scss';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../../../ui/elements';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {defineColumn, defineButtonColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import constants from '../fulfillment-order/constants';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import mappings  from '../../../../../../profile/sourceTableMapping';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import { SELECT_VALUES, INIT_SOURCE_ROW, NON_EDITABLE_COLS } from './Constants';
+import { SELECT_VALUES, NON_EDITABLE_COLS } from './Constants';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
@@ -50,25 +49,6 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
                     isChecked={selectedItem && selectedItem.barcode === barcode}
                     onChange={() => setSelectedSource(data)}
                 />
-            </CustomActionsCellRenderer>
-        );
-    };
-
-    const closeButtonCell = ({data, list = []}) => {
-        const {barcode} = data || {};
-        const handleClick = () => {
-            const updatedRowData = list.filter(el => el.barcode !== barcode);
-            if (selectedSource && selectedSource.barcode === barcode) {
-                setSelectedSource();
-            }
-            setSources(updatedRowData);
-        };
-
-        return (
-            <CustomActionsCellRenderer id={barcode} classname="nexus-c-sources__close-icon">
-                <span onClick={handleClick}>
-                    <EditorCloseIcon />
-                </span>
             </CustomActionsCellRenderer>
         );
     };
@@ -109,7 +89,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
     };
 
     return (
-        <div className="nexus-c-sources-table">
+        <div className="nexus-c-sources">
             <div className="nexus-c-sources-table__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
