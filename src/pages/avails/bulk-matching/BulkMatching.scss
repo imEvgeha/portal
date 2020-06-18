@@ -3,8 +3,9 @@
 .nexus-c-bulk-matching {
     margin: 20px;
 
-    h3 {
+    h2 {
         color: map-get($colors, nexus-title-color);
+        margin-bottom: 20px;
     }
 }
 
@@ -23,6 +24,7 @@
 
 .nexus-c-bulk-matching__selected,
 .nexus-c-bulk-matching__affected {
+    font-size: 16px;
     cursor: pointer;
     color: map-get($colors, nexus-light-grey);
 }
@@ -31,13 +33,19 @@
     margin-left: 20px;
 
     &--active {
-        color: #000;
+        color: map-get($colors, nexus-title-color);
     }
 }
 
 .nexus-c-bulk-matching__selected {
 
     &--active {
-        color: #000;
+        color: map-get($colors, nexus-title-color);
     }
+}
+
+.nexus-c-bulk-matching__link {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #0052CC;
 }

@@ -1,14 +1,5 @@
 [
     {
-        "javaVariableName": "coreTitleId",
-        "displayName": "Core Title Id",
-        "dataType": "string",
-        "searchDataType": "string",
-        "queryParamName": "coreTitleId",
-        "readOnly": true,
-        "required": false
-    },
-    {
         "javaVariableName": "title",
         "displayName": "Title",
         "dataType": "string",
@@ -32,6 +23,15 @@
         "dataType": "string",
         "searchDataType": "string",
         "queryParamName": "licensor",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "coreTitleId",
+        "displayName": "Core Title Id",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "coreTitleId",
         "readOnly": true,
         "required": false
     },

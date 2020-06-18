@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {get, cloneDeep} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
-import mappings from './titleMatchingTableMappings.json';
+import mappings from './SimpleRightsMatchingTable.json';
 
-const TitleMatchingTable = ({data}) => {
+const SimpleRightsMatchingTable = ({data}) => {
 
     const [tableData, setTableData] = useState([]);
 
@@ -33,7 +33,7 @@ const TitleMatchingTable = ({data}) => {
     }, [data]);
 
     return (
-        <div className="nexus-c-title-matching-table">
+        <div className="nexus-c-simple-rights-matching-table">
             <NexusGrid
                 columnDefs={columnDefinitions}
                 mapping={mappings}
@@ -46,12 +46,12 @@ const TitleMatchingTable = ({data}) => {
     );
 };
 
-TitleMatchingTable.propTypes = {
+SimpleRightsMatchingTable.propTypes = {
     data: PropTypes.array,
 };
 
-TitleMatchingTable.defaultProps = {
+SimpleRightsMatchingTable.defaultProps = {
     data: null,
 };
 
-export default TitleMatchingTable;
+export default SimpleRightsMatchingTable;

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import {getAffectedRights} from './bulkMatchingService';
-import TitleMatchingTable from '../title-matching-table/TitleMatchingTable';
+import SimpleRightsMatchingTable from '../rights-matching-table/SimpleRightsMatchingTable';
 import './BulkMatching.scss';
 import {TITLE_MATCHING_MSG} from './constants';
 
-const BulkMatching = ({data}) => {
+const BulkMatching = ({data, headerTitle}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [affectedTableActive, setAffectedTableActive] = useState(false);
@@ -35,7 +35,7 @@ const BulkMatching = ({data}) => {
 
     return (
         <div className="nexus-c-bulk-matching">
-            <h3>Title Matching</h3>
+            <h2>{headerTitle}</h2>
             <div className="nexus-c-bulk-matching__header">
                 <div
                     className={`nexus-c-bulk-matching__selected ${!affectedTableActive
@@ -53,12 +53,17 @@ const BulkMatching = ({data}) => {
                 </div>
                 <Button className="nexus-c-bulk-matching__btn" onClick={() => {}}>New Title</Button>
             </div>
-            <TitleMatchingTable
+            <SimpleRightsMatchingTable
                 data={affectedTableActive ? affectedTableData : selectedTableData}
             />
             <SectionMessage>
                 <div className="nexus-c-bulk-matching__info-msg">
-                    {TITLE_MATCHING_MSG}<span>New Title</span>
+                    {TITLE_MATCHING_MSG}
+                    <span
+                        className="nexus-c-bulk-matching__link"
+                        onClick={() => {}}
+                    >New Title
+                    </span>
                 </div>
             </SectionMessage>
         </div>
@@ -67,6 +72,11 @@ const BulkMatching = ({data}) => {
 
 BulkMatching.propTypes = {
     data: PropTypes.array.isRequired,
+    headerTitle: PropTypes.string,
+};
+
+BulkMatching.defaultProps = {
+    headerTitle: '',
 };
 
 export default BulkMatching;

@@ -1,13 +1,9 @@
 const columnDefinitions = [
     {
-        colId: 'coreTitleId',
-        field: 'coreTitleId',
-        headerName: 'Core Title Id',
-    },
-    {
         colId: 'title',
         field: 'title',
         headerName: 'Title',
+        cellRenderer: 'loadingCellRenderer',
     },
     {
         colId: 'releaseYear',
@@ -20,6 +16,11 @@ const columnDefinitions = [
         field: 'licensor',
         headerName: 'Licensor',
         width: 120,
+    },
+    {
+        colId: 'coreTitleId',
+        field: 'coreTitleId',
+        headerName: 'Core Title Id',
     },
     {
         colId: 'totalRuntime',
