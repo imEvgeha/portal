@@ -34,12 +34,13 @@ const withRightsResultsTable = BaseComponent => {
                             return ISODateToView(data[javaVariableName], dataType);
                         }
                     };
+                    case 'priceType':
                     case 'territoryType':
                     case 'audioLanguageType':
                         return (params) => {
                             const {data} = params;
                             if(data && Array.isArray(data[column.javaVariableName])) {
-                                return data[column.javaVariableName].map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
+                                return data[column.javaVariableName].map(e => String(e.country || `${e.language}/${e.audioType}` || `${e.priceType} ${e.priceValue}`)).join(', ');
                             }
                         };
                     case 'string': 
