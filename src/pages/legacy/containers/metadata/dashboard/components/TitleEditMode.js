@@ -398,25 +398,6 @@ class TitleEditMode extends Component {
                   contentType === EPISODE.apiName ? (
                       <>
                           <Col>
-                              <Label for='titleEpisodeCount'>
-                                  Episode Count
-                              </Label>
-                              <AvField
-                                  type='text'
-                                  name='episodeCount'
-                                  value={
-                            this.props.data.episodic !== null &&
-                              this.props.data.episodic.episodeCount
-                              ? this.props.data.episodic.episodeCount
-                              : ''
-                          }
-                                  id='titleEpisodeCount'
-                                  placeholder="Enter Episode Count"
-                                  onChange={e =>
-                            this.props.handleChangeEpisodic(e)}
-                              />
-                          </Col>
-                          <Col>
                               <Label for='seasonPremiere'>Season Premiere</Label>
                               <Input
                                   type='select'
