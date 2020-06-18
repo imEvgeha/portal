@@ -324,7 +324,6 @@ class CoreMetadataEditMode extends Component {
                     }}
                             />
                         </Col>
-
                     </Row>
                     <Row style={{ marginTop: '10px' }}>
                         <Col md={1}>
@@ -442,15 +441,14 @@ class CoreMetadataEditMode extends Component {
                             }}
                         />
                     </Col>
-
-                        <Col md={2}>
-                            <Label for='overrideMsvAssociationId'>
-                                Override MSV Association ID
-                            </Label>
-                        </Col>
-                        <Col>
-                            <NexusTagsContainer data={ this.props.data.externalIds ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
-                        </Col>
+                    <Col md={2}>
+                        <Label for='overrideMsvAssociationId'>
+                            Override MSV Association ID
+                        </Label>
+                    </Col>
+                    <Col>
+                        <NexusTagsContainer data={ this.props.data.externalIds ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
+                    </Col>
                 </div>
             </>
         );
