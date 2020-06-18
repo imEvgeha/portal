@@ -73,10 +73,6 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         );
     };
 
-    const addNewRow = () => {
-      setSources([...sources, clone(INIT_SOURCE_ROW)]);
-    };
-
     const radioButtonColumn = defineColumn({
         width: 40,
         colId: 'radio',
@@ -85,10 +81,6 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         cellRendererFramework: serviceButtonCell,
     });
 
-    const closeButtonColumn = defineButtonColumn({
-        cellRendererFramework: closeButtonCell,
-        cellRendererParams: {list: sources},
-    });
 
     const servicesColumn = defineColumn({
         headerName: '#',
