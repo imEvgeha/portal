@@ -16,7 +16,7 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
 
     useEffect(() => {
         if(mapping) {
-            setMappingColumnNames(mapping.map(({javaVariableName}) => javaVariableName));
+            setMappingColumnNames(mapping.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName));
         }
     }, [mapping]);
 
