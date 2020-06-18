@@ -84,7 +84,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                         header={(
                             <NexusDownload
                                 data={message}
-                                filename={`${get(event, 'eventId', '')}-message`}
+                                filename={`${get(event, 'eventId', '')} - message`}
                                 mimeType={JSON_MIME_TYPE}
                             />
                         )}
@@ -115,7 +115,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                                 data={base64Encoded
                                                     ? decodeBase64(rawData, mimeType)
                                                     : rawData}
-                                                filename={`${get(event, 'eventId', '')}-${key}`}
+                                                filename={`${get(event, 'eventId', '')} - ${key}`}
                                                 mimeType={mimeType}
                                             />
                                         </>
@@ -132,9 +132,8 @@ const EventDrawer = ({event, onDrawerClose}) => {
                             ) : (
                                 <NexusJsonView
                                     src={base64Encoded
-                                        ? {rawData: parseJSON(decodeBase64(rawData, mimeType))}
-                                        : {rawData: parseJSON(rawData)}}
-                                    name={key}
+                                        ? parseJSON(decodeBase64(rawData, mimeType))
+                                        : parseJSON(rawData)}
                                 />
                             )}
                                 </EventSectionCollapsible>
