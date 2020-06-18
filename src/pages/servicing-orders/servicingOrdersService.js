@@ -12,7 +12,18 @@ const baseServicingOrdersURL = config => {
 
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
-    const queryParams = parseAdvancedFilter(searchCriteria);
+    let queryParams = {};
+    Object.keys(searchCriteria).forEach((key) => {
+        let value = searchCriteria[key];
+        if(value instanceof Object) {
+            queryParams = {
+                ...queryParams,
+                ...value
+            };
+        } else {
+            queryParams[key] = value;
+        }
+    });
     const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(
         sortedParams
     )}`;

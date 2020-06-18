@@ -99,11 +99,13 @@ const ServicingOrder = ({match}) => {
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
-                    {selectedSource && (
+                    {
+                        selectedSource && (
                         <ServicesTable
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
-                        />)
+                        />
+                        )
                     }
                 </FulfillmentOrder>
             </div>
