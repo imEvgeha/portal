@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
 import Button from '@atlaskit/button';
-import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
-import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import RightPriceFields from './RightPriceFields';
 import {getProperPriceFormValues} from './utils';
+import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
+import RightPriceFields from './RightPriceFields';
+
 
 // TODO: write this from scratch
 // component rerender 11 times

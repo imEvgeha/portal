@@ -1,22 +1,21 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Button, Input, Label} from 'reactstrap';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import BlockUi from 'react-block-ui';
+import Select from 'react-select';
 import {store} from '../../../../../index';
 import {blockUI} from '../../../stores/actions/index';
-import BlockUi from 'react-block-ui';
-import {Button, Input, Label} from 'reactstrap';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
-import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import Select from 'react-select';
-import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim, URL} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
-
+import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
@@ -28,7 +27,6 @@ import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
-
 
 const mapStateToProps = state => {
     return {
