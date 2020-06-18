@@ -839,9 +839,7 @@ class TitleEdit extends Component {
         return this.state.updatedEditorialMetadata.map(e => {
             return {
                 "itemIndex": null,
-                "body": {
-                    "editorialMetadata": e
-                }
+                "body": e
             }
         });
     };
