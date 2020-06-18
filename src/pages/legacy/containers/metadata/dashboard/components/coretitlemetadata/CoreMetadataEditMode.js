@@ -38,8 +38,6 @@ const mapStateToProps = state => {
     };
 };
 
-const dummyMSV = ['Verizon Technology^00^ATMP0000000000017037', 'Paramount1234', 'Bla Bla','Verizon Technology^00^ATMP0000003000017067', 'Verizon Technology^00^ATMP0000010000017067', 'Verizon Technology^00^ATMP0000000000017067'];
-
 class CoreMetadataEditMode extends Component {
 
     constructor(props) {
@@ -451,7 +449,7 @@ class CoreMetadataEditMode extends Component {
                             </Label>
                         </Col>
                         <Col>
-                            <NexusTagsContainer data={ (this.props.data.externalIds && this.props.data.externalIds.msvAssociationId) || dummyMSV} saveData={this.handleMSVIDs} />
+                            <NexusTagsContainer data={ this.props.data.externalIds ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
                         </Col>
                 </div>
             </>
