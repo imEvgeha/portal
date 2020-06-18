@@ -1,180 +1,181 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
-<div
-  className="fulfillment-order"
+<AkPage
+  bannerHeight={52}
+  isBannerOpen={false}
 >
-  <div
-    className="fulfillment-order__row"
-  >
-    <div
-      className="fulfillment-order__title"
-    >
-      Fulfillment Order
-    </div>
-    <div
-      className="fulfillment-order__actions"
-    >
+  <WithTheme(AkGrid)>
+    <WithTheme(AkGridColumn)>
       <div
-        className="fulfillment-order__cancel"
-      >
-        <WithAnalyticsContext(WithAnalyticsEvents(Button))
-          isDisabled={true}
-          onClick={[Function]}
-        >
-          Cancel
-        </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-      </div>
-      <div
-        className="fulfillment-order__save"
-      >
-        <WithAnalyticsContext(WithAnalyticsEvents(Button))
-          appearance="primary"
-          isDisabled={true}
-          isLoading={Object {}}
-          onClick={[Function]}
-        >
-          Save
-        </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-      </div>
-    </div>
-  </div>
-  <div
-    className="fulfillment-order__order-id"
-  >
-    Order ID: 
-  </div>
-  <div
-    className="fulfillment-order__row"
-  >
-    <div
-      className="fulfillment-order__column"
-    >
-      <div
-        className="fulfillment-order__column--notes"
-      >
-        <h6>
-          Notes:
-        </h6>
-        <NexusTextArea
-          notesValue=""
-          onTextChange={[Function]}
-        />
-      </div>
-    </div>
-    <div
-      className="fulfillment-order__column"
-    >
-      <div
-        className="fulfillment-order__row"
+        className="fulfillment-order"
       >
         <div
-          className="fulfillment-order--section"
+          className="fulfillment-order__row fulfillment-order__header"
         >
           <div
-            className="fulfillment-order__input"
+            className="fulfillment-order__title"
           >
-            <span>
+            <h1>
+              Fulfillment Order
+            </h1>
+            <div>
+              Order ID: 
+            </div>
+          </div>
+          <div
+            className="fulfillment-order__save-buttons"
+          >
+            <ButtonGroup>
+              <WithAnalyticsContext(WithAnalyticsEvents(Button))
+                isDisabled={true}
+                onClick={[Function]}
+              >
+                Cancel
+              </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+              <WithAnalyticsContext(WithAnalyticsEvents(Button))
+                appearance="primary"
+                isDisabled={true}
+                isLoading={Object {}}
+                onClick={[Function]}
+              >
+                Save
+              </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+            </ButtonGroup>
+          </div>
+        </div>
+        <WithTheme(AkGrid)>
+          <WithTheme(AkGridColumn)
+            medium={6}
+          >
+            <label
+              htmlFor="notes"
+            >
+              Notes:
+            </label>
+            <NexusTextArea
+              isDisabled={false}
+              name="notes"
+              notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              onTextChange={[Function]}
+            />
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)
+            medium={2}
+          >
+            <label
+              htmlFor="servicer"
+            >
               Servicer
-            </span>
-            <input
-              disabled={true}
+            </label>
+            <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+              isDisabled={true}
+              name="servicer"
               value=""
             />
-          </div>
-          <div
-            className="fulfillment-order__select-wrapper"
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)
+            medium={2}
           >
-            Set Order Status
-            <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-              className="fulfillment-order__select"
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "New",
-                    "value": "NEW",
-                  },
-                  Object {
-                    "label": "Accepted",
-                    "value": "ACCEPTED",
-                  },
-                  Object {
-                    "label": "Rejected",
-                    "value": "REJECTED",
-                  },
-                  Object {
-                    "label": "Complete",
-                    "value": "COMPLETE",
-                  },
-                  Object {
-                    "label": "Canceled",
-                    "value": "CANCELED",
-                  },
-                  Object {
-                    "label": "Failed",
-                    "value": "FAILED",
-                  },
-                ]
-              }
-              value={
-                Object {
-                  "label": undefined,
-                  "value": "Completed",
+            <div
+              className="fulfillment-order__input"
+            >
+              <label
+                htmlFor="fulfillment-status"
+              >
+                Fulfillment Status
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+                isDisabled={true}
+                name="fulfillment-status"
+                value=""
+              />
+            </div>
+            <div
+              className="fulfillment-order__input"
+            >
+              <NexusDatePicker
+                allowClear={false}
+                error=""
+                hideLabel={false}
+                id="dueDate"
+                isDisabled={false}
+                isReadOnly={false}
+                isReturningTime={false}
+                isTimestamp={false}
+                isWithInlineEdit={false}
+                label="Start Date"
+                onChange={[Function]}
+                onConfirm={[Function]}
+                value=""
+              />
+            </div>
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)
+            medium={2}
+          >
+            <div
+              className="fulfillment-order__input"
+            >
+              <label
+                htmlFor="readiness-status"
+              >
+                Readiness Status
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+                className="fulfillment-order__readiness-status"
+                id="readiness-status"
+                isDisabled={false}
+                name="readiness-status"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "New",
+                      "value": "NEW",
+                    },
+                    Object {
+                      "label": "Ready",
+                      "value": "READY",
+                    },
+                    Object {
+                      "label": "On Hold",
+                      "value": "ON_HOLD",
+                    },
+                  ]
                 }
-              }
-            />
-          </div>
-        </div>
+                value={
+                  Object {
+                    "label": undefined,
+                    "value": "",
+                  }
+                }
+              />
+            </div>
+            <div
+              className="fulfillment-order__input"
+            >
+              <NexusDatePicker
+                allowClear={false}
+                error=""
+                hideLabel={false}
+                id="dueDate"
+                isDisabled={false}
+                isReadOnly={false}
+                isReturningTime={false}
+                isTimestamp={false}
+                isWithInlineEdit={false}
+                label="Due Date"
+                onChange={[Function]}
+                onConfirm={[Function]}
+                value=""
+              />
+            </div>
+          </WithTheme(AkGridColumn)>
+        </WithTheme(AkGrid)>
+        <hr />
       </div>
-      <div
-        className="fulfillment-order__row"
-      >
-        <div
-          className="fulfillment-order--section"
-        >
-          <div
-            className="fulfillment-order__select-wrapper"
-          >
-            <NexusDatePicker
-              allowClear={false}
-              error=""
-              hideLabel={false}
-              id="dueDate"
-              isReadOnly={false}
-              isReturningTime={false}
-              isTimestamp={false}
-              isWithInlineEdit={false}
-              label="Due Date"
-              onChange={[Function]}
-              onConfirm={[Function]}
-              value=""
-            />
-          </div>
-          <div
-            className="fulfillment-order__select-wrapper"
-          >
-            <NexusDatePicker
-              allowClear={false}
-              error=""
-              hideLabel={false}
-              id="startDate"
-              isReadOnly={false}
-              isReturningTime={false}
-              isTimestamp={false}
-              isWithInlineEdit={false}
-              label="Start Date"
-              onChange={[Function]}
-              onConfirm={[Function]}
-              value=""
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    className="fulfillment-order__column"
-  />
-</div>
+    </WithTheme(AkGridColumn)>
+  </WithTheme(AkGrid)>
+</AkPage>
 `;
