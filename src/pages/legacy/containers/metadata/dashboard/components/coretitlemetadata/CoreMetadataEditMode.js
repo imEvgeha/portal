@@ -30,7 +30,7 @@ import {
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
-import MSVEditComponent from "./MSVEditComponent";
+import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
 
 const mapStateToProps = state => {
     return {
@@ -84,14 +84,13 @@ class CoreMetadataEditMode extends Component {
     };
 
     handleMSVIDs(data)  {
+        /* TODO: modify to save data locally or in the consumer component to send saved data to put api */
         this.setState({
             externalIDs: { ...this.state.externalIDs, msvAssociationId: data}
         });
-        console.log('state: ', this.state);
     }
 
     render() {
-        console.log(this.props.data);
         return (
             <>
                 <Row>
@@ -452,7 +451,7 @@ class CoreMetadataEditMode extends Component {
                             </Label>
                         </Col>
                         <Col>
-                            <MSVEditComponent data={ this.props.data.externalIds.msvAssociationId || dummyMSV} saveData={this.handleMSVIDs} />
+                            <NexusTagsContainer data={ (this.props.data.externalIds && this.props.data.externalIds.msvAssociationId) || dummyMSV} saveData={this.handleMSVIDs} />
                         </Col>
                 </div>
             </>

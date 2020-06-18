@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-
 import './NexusEditableTag.scss';
 
 const ENTER_KEY_CODE = 13;
 
-const NexusEditableTag = ({text, remove, save, id=null, inputWidth='220px'}) => {
+const NexusEditableTag = ({text, remove, save, index=null, inputWidth='220px'}) => {
     const [isEditing, setEditing] = useState(false);
     const [value, setValue] = useState(text);
 
     const handleKeyDown = e => {
         if (e.keyCode === ENTER_KEY_CODE) {
             setEditing(false);
-            typeof save === 'function' && id !== null && save(id,e.target.value);
+            typeof save === 'function' && index !== null && save(index,e.target.value);
         }
     };
 
@@ -46,7 +45,7 @@ NexusEditableTag.propTypes = {
     remove: PropTypes.func.isRequired,
     inputWidth: PropTypes.string,
     save: PropTypes.func,
-    id: PropTypes.number,
+    index: PropTypes.number,
 };
 
 export default NexusEditableTag;
