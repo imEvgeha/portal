@@ -23,7 +23,15 @@ export const transformClientToServerFulfillmentOrder = clientFulfillmentOrder =>
     };
 };
 
-export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmentOrders, serviceOrder, children}) => {
+export const FulfillmentOrder = ({
+    selectedFulfillmentOrder = {},
+    setSelectedOrder,
+    setSelectedFulfillmentOrderID,
+    fetchFulfillmentOrders,
+    serviceOrder,
+    updatedServices,
+    children
+}) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
     const [fulfillmentOrder, setFulfillmentOrder] = useState(
@@ -56,7 +64,10 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
         () => {
             if (isSuccess && isSuccess !== 'ALREADY_SET') {
                 fetchFulfillmentOrders(serviceOrder).then(() => {
-                    setSavedFulfillmentOrder(fulfillmentOrder);
+                    setSavedFulfillmentOrder(null);
+                    setFulfillmentOrder(fulfillmentOrder);
+                    setSelectedOrder(fulfillmentOrder);
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrder, 'id', ''));
                     dispatch({
                         type: SAVE_FULFILLMENT_ORDER_SUCCESS,
                         payload: 'ALREADY_SET'
@@ -79,6 +90,25 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
             }
         },
         [selectedFulfillmentOrder, savedFulfillmentOrder]
+    );
+
+    // effect runs when the services table is updated
+    useEffect(
+        () => {
+            const updatedDeteServices = get(fulfillmentOrder, 'definition.deteServices', []).map(deteService => {
+                if (get(deteService, 'deteSources.barcode') === updatedServices.barcode) {
+                    return {
+                        ...deteService,
+                        ...updatedServices.deteServices[0]
+                    };
+                }
+            });
+
+            const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
+            set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
+            setFulfillmentOrder(fulfillmentOrderClone);
+        },
+        [updatedServices]
     );
 
     useEffect(

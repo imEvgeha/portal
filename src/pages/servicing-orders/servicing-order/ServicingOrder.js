@@ -14,12 +14,13 @@ const ServicingOrder = ({match}) => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
 
+    // this piece of state is used for when a service is updated in the services table
+    const [updatedServices, setUpdatedServices] = useState({});
+
     useEffect(
         () => {
             setSelectedOrder(
-                get(serviceOrder, 'fulfillmentOrders', []).find(
-                    s => s && s.id === selectedFulfillmentOrderID
-                ) || {}
+                get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {}
             );
         },
         [serviceOrder, selectedFulfillmentOrderID]
@@ -92,21 +93,23 @@ const ServicingOrder = ({match}) => {
             <div className="servicing-order__right">
                 <FulfillmentOrder
                     selectedFulfillmentOrder={selectedOrder}
+                    setSelectedOrder={setSelectedOrder}
+                    setSelectedFulfillmentOrderID={setSelectedFulfillmentOrderID}
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
+                    updatedServices={updatedServices}
                 >
                     <SourcesTable
                         data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
                     />
-                    {
-                        selectedSource && (
+                    {selectedSource && (
                         <ServicesTable
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
+                            setUpdatedServices={setUpdatedServices}
                         />
-                        )
-                    }
+                    )}
                 </FulfillmentOrder>
             </div>
         </div>
