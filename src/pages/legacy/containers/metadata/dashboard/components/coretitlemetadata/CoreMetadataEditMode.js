@@ -446,7 +446,7 @@ class CoreMetadataEditMode extends Component {
                         </Label>
                     </Col>
                     <Col>
-                        <NexusTagsContainer data={ this.props.data.externalIds ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
+                        <NexusTagsContainer data={ this.props.data.externalIds && this.props.data.externalIds.msvAssociationId ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
                     </Col>
                 </div>
             </>

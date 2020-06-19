@@ -648,7 +648,7 @@ class TitleEdit extends Component {
         } else if (isEpisodic){
             this.updateEditorialMetadataInnerObject(edited, 'episodic', targetName, e.target.value);
         } else {
-            edited[targetName] = e.target.value;
+            edited[targetName] = e.target.value || null;
         }
 
         this.updateEditedEditorialMetadata(edited, data.id);
