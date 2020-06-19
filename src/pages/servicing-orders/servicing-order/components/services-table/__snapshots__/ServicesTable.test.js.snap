@@ -7,11 +7,11 @@ exports[`ServicesTable should match snapshot 1`] = `
   <div
     className="nexus-c-services-table__header"
   >
-    <h5
+    <h3
       className="nexus-c-services-table__title"
     >
       Services (0)
-    </h5>
+    </h3>
     <div
       className="nexus-c-services-table__subtitle"
     >
@@ -61,31 +61,37 @@ exports[`ServicesTable should match snapshot 1`] = `
           "width": 40,
         },
         Object {
-          "colId": "externalServices",
-          "dataSource": "externalServices.externalId",
-          "field": "externalServices",
+          "colId": "componentId",
+          "dataSource": "componentId",
+          "field": "componentId",
           "headerName": "Component ID",
         },
         Object {
           "colId": "spec",
-          "dataSource": "externalServices.formatType",
+          "dataSource": "spec",
           "field": "spec",
           "headerName": "Spec",
         },
         Object {
-          "colId": "addRecipient",
-          "dataSource": "deteTasks.deteDeliveries.externalDelivery.deliverToId",
-          "field": "addRecipient",
-          "headerName": "Add recipient",
-        },
-        Object {
-          "colId": "overrideDueDate",
-          "field": "overrideDueDate",
+          "colId": "doNotStartBefore",
+          "field": "doNotStartBefore",
           "headerName": "Do not start before",
         },
         Object {
-          "colId": "status",
-          "field": "status",
+          "colId": "priority",
+          "dataSource": "priority",
+          "field": "priority",
+          "headerName": "Priority",
+        },
+        Object {
+          "colId": "deliverToVu",
+          "dataSource": "deliverToVu",
+          "field": "deliverToVu",
+          "headerName": "Deliver to VU",
+        },
+        Object {
+          "colId": "operationalStatus",
+          "field": "operationalStatus",
           "headerName": "Operational Status",
         },
       ]
@@ -103,7 +109,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "displayName": "Component ID",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "externalServices",
+          "javaVariableName": "componentId",
           "queryParamName": "componentId",
           "readOnly": false,
           "required": true,
@@ -116,39 +122,48 @@ exports[`ServicesTable should match snapshot 1`] = `
           "enableSearch": true,
           "javaVariableName": "spec",
           "queryParamName": "spec",
-          "readOnly": true,
+          "readOnly": false,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Do Not Start Before",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "doNotStartBefore",
+          "queryParamName": "doNotStartBefore",
+          "readOnly": false,
           "required": true,
           "searchDataType": "string",
         },
         Object {
           "dataType": "select",
-          "displayName": "Add Recipient",
+          "displayName": "Priority",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "addRecipient",
-          "queryParamName": "addRecipient",
+          "javaVariableName": "priority",
+          "queryParamName": "priority",
           "readOnly": false,
           "required": true,
-          "searchDataType": "select",
         },
         Object {
-          "dataType": "string",
-          "displayName": "Source Standard",
+          "dataType": "boolean",
+          "displayName": "Deliver to VU",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "overrideDueDate",
-          "queryParamName": "overrideDueDate",
-          "readOnly": true,
+          "javaVariableName": "deliverToVU",
+          "queryParamName": "deliverToVU",
+          "readOnly": false,
           "required": true,
-          "searchDataType": "string",
         },
         Object {
           "dataType": "select",
           "displayName": "Operational Status",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "status",
-          "queryParamName": "status",
+          "javaVariableName": "operationalStatus",
+          "queryParamName": "operationalStatus",
           "readOnly": true,
           "required": true,
         },
@@ -156,6 +171,7 @@ exports[`ServicesTable should match snapshot 1`] = `
     }
     onGridEvent={[Function]}
     onGridReady={[Function]}
+    rowData={Array []}
     selectValues={
       Object {
         "addRecipient": Array [
@@ -166,8 +182,15 @@ exports[`ServicesTable should match snapshot 1`] = `
           "LOL-123",
         ],
         "operationalStatus": Array [
+          "Ready",
           "On Hold",
           "In Progress",
+        ],
+        "priority": Array [
+          "10",
+          "20",
+          "60",
+          "50",
         ],
         "sourceStandard": Array [
           "_1080_23_976",
@@ -204,14 +227,6 @@ exports[`ServicesTable should match snapshot 1`] = `
               "4K",
             ],
           },
-        ],
-        "status": Array [
-          "New",
-          "Accepted",
-          "Rejected",
-          "Complete",
-          "Cancelled",
-          "Failed",
         ],
         "type": Array [
           "Subtitles",

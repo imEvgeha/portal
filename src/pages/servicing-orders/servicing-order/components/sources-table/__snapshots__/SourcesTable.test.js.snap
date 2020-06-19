@@ -2,7 +2,7 @@
 
 exports[`SourceTable with rows Should match snapshot 1`] = `
 <div
-  className="nexus-c-sources-table"
+  className="nexus-c-sources"
 >
   <div
     className="nexus-c-sources-table__header"
@@ -20,7 +20,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
         Object {
           "cellRendererFramework": [Function],
           "cellRendererParams": Object {
-            "selectedItem": undefined,
+            "selectedItem": null,
           },
           "colId": "radio",
           "field": "radio",

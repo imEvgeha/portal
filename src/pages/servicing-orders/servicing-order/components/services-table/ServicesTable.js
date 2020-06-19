@@ -52,7 +52,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const handleServiceRemoval = index => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
         updatedService.splice(index, 1);
-        setServices({...services, [`${providerServices}`]: updatedService});
+        const newServices = {...services, [`${providerServices}`]: updatedService};
+        setServices(newServices);
+        setUpdatedServices(newServices);
     };
 
     const closeButtonCell = ({rowIndex}) => {
@@ -93,8 +95,12 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     const addEmptyServicesRow = () => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
-        updatedService.push(SERVICE_SCHEMA);
-        setServices({...services, [`${providerServices}`]: updatedService});
+        const blankService = cloneDeep(SERVICE_SCHEMA);
+        blankService.deteSources.barcode = data.barcode;
+        updatedService.push(blankService);
+        const newServices = {...services, [`${providerServices}`]: updatedService};
+        setServices(newServices);
+        setUpdatedServices(newServices);
     };
 
     const orderingColumn = defineColumn({

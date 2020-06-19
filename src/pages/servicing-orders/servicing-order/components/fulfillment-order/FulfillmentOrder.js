@@ -99,7 +99,7 @@ export const FulfillmentOrder = ({
                 if (get(deteService, 'deteSources.barcode') === updatedServices.barcode) {
                     return {
                         ...deteService,
-                        ...updatedServices.deteServices[0]
+                        ...updatedServices.deteServices
                     };
                 }
             });
