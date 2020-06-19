@@ -2,7 +2,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEqual, set} from 'lodash';
+import {cloneDeep, get, isEqual, set, isEmpty} from 'lodash';
 import React, {useContext, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -80,7 +80,7 @@ export const FulfillmentOrder = ({
 
     useEffect(
         () => {
-            if (!_.isEmpty(selectedFulfillmentOrder)) {
+            if (!isEmpty(selectedFulfillmentOrder)) {
                 setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
                 // Disable form if status is READY

@@ -1,5 +1,5 @@
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import {cloneDeep, get} from 'lodash';
+import {cloneDeep, get, isEmpty} from 'lodash';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
@@ -24,7 +24,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     useEffect(
         () => {
-            if (!_.isEmpty(data)) {
+            if (!isEmpty(data)) {
                 setProviderServices(`${data.fs.toLowerCase()}Services`);
                 setServices(data);
             }
@@ -34,7 +34,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     useEffect(
         () => {
-            if (!_.isEmpty(services)) {
+            if (!isEmpty(services)) {
                 const flattenedObject = services[providerServices].map(service => ({
                     componentId: service.externalServices.externalId,
                     spec: service.externalServices.formatType,
@@ -157,11 +157,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 };
 
 ServicesTable.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    isDisabled: PropTypes.bool,
+    setUpdatedServices: PropTypes.func,
 };
 
 ServicesTable.defaultProps = {
-    data: null
+    data: null,
+    isDisabled: false,
+    setUpdatedServices: () => null,
 };
 
 export default ServicesTable;

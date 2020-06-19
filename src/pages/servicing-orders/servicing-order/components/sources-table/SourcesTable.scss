@@ -5,17 +5,9 @@
         flex-direction: column;
         width: 100%;
 
-    &____header {
+    &__header {
         display: flex;
         flex-direction: column;
-    }
-
-    &__title {
-        padding-bottom: 1.75rem;
-    }
-
-    &__close-icon {
-        cursor: pointer;
     }
 
     .nexus-c-nexus-grid {

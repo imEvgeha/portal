@@ -52,8 +52,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         [selectedSource]
     );
 
-    const serviceButtonCell = ({data, selectedItem = {}}) => {
-        // eslint-disable-line
+    const serviceButtonCell = ({data, selectedItem = {}}) => { // eslint-disable-line
         const {barcode} = data || {};
 
         return (
@@ -99,7 +98,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 
     return (
         <div className="nexus-c-sources">
-            <div className="nexus-c-sources-table__header">
+            <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
             </div>

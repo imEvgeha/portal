@@ -182,9 +182,12 @@ exports[`ServicesTable should match snapshot 1`] = `
           "LOL-123",
         ],
         "operationalStatus": Array [
-          "Ready",
-          "On Hold",
-          "In Progress",
+          "New",
+          "Accepted",
+          "Rejected",
+          "Complete",
+          "Cancelled",
+          "Failed",
         ],
         "priority": Array [
           "10",

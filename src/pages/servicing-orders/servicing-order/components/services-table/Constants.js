@@ -11,8 +11,7 @@ export const SELECT_VALUES = {
         {audio: ['Mono', 'Stereo', '2.0 LTRT', '3.0', '4.0', '5.0', '5.1', '6.1', '7.1', 'Dolby E']},
         {video: ['SD', 'HD', '4K']}
     ],
-    priority:['10', '20', '60', '50'],
-    operationalStatus: ['Ready', 'On Hold', 'In Progress'],
+    priority: ['10', '20', '60', '50'],
     componentId: ['LOL-123'],
     spec: ['M-DBS-2396 SCC'],
     addRecipient: ['MGM', 'Vubiquity'],
@@ -28,48 +27,47 @@ export const TABLE_ROW = {
     operationalStatus: 'Ready'
 };
 
-export const SERVICE_SCHEMA =
-    {
-        deteSources: {
-          amsAssetId: '',
-          barcode: '',
-          externalSources: {
+export const SERVICE_SCHEMA = {
+    deteSources: {
+        amsAssetId: '',
+        barcode: '',
+        externalSources: {
             externalId: '',
             externalSystem: '',
             assetFormat: '',
             assetType: ''
-          }
-        },
-        deteTasks: {
-          deteDeliveries: {
+        }
+    },
+    deteTasks: {
+        deteDeliveries: {
             deliveryMethod: '',
             externalDelivery: {
-              externalId: '',
-              externalSystem: '',
-              customerId: '',
-              deliverToId: ''
+                externalId: '',
+                externalSystem: '',
+                customerId: '',
+                deliverToId: ''
             }
-          },
-          dueDate: '',
-          typeAttribute: ''
         },
-        externalServices: {
-          externalId: '',
-          externalSystem: '',
-          formatType: '',
-          parameters: [
+        dueDate: '',
+        typeAttribute: ''
+    },
+    externalServices: {
+        externalId: '',
+        externalSystem: '',
+        formatType: '',
+        parameters: [
             {
-              name: 'Priority',
-              value: ''
+                name: 'Priority',
+                value: ''
             }
-          ],
-          requiresPropagation: '',
-          serviceType: '',
-          subordinateFlag: ''
-        },
-        mediaFormat: '',
-        overrideDueDate: '',
-        quantity: '',
-        sequence: '',
-        status: ''
-      };
+        ],
+        requiresPropagation: '',
+        serviceType: '',
+        subordinateFlag: ''
+    },
+    mediaFormat: '',
+    overrideDueDate: '',
+    quantity: '',
+    sequence: '',
+    status: ''
+};

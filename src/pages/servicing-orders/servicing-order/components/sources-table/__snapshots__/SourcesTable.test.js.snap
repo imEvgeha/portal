@@ -5,7 +5,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
   className="nexus-c-sources"
 >
   <div
-    className="nexus-c-sources-table__header"
+    className="nexus-c-sources__header"
   >
     <h2>
       Sources (0)
