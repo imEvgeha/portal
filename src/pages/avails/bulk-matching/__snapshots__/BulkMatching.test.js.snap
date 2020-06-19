@@ -33,7 +33,7 @@ exports[`BulkMatching should match snapshot 1`] = `
       New Title
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
-  <SimpleRightsMatchingTable
+  <TitleMatchingRightsTable
     data={Array []}
   />
   <SectionMessage

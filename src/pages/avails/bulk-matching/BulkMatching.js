@@ -4,24 +4,24 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import classNames from 'classnames';
 import {getAffectedRights} from './bulkMatchingService';
-import SimpleRightsMatchingTable from '../rights-matching-table/SimpleRightsMatchingTable';
+import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {TITLE_MATCHING_MSG} from './constants';
 import './BulkMatching.scss';
 
 const BulkMatching = ({data, headerTitle}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
-    const [affectedTableActive, setAffectedTableActive] = useState(false);
+    const [activeTab, setActiveTab] = useState(false);
 
-    const changeActiveTable = () => {
-        setAffectedTableActive(!affectedTableActive);
+    const changeActiveTab = () => {
+        setActiveTab(!activeTab);
     };
 
     useEffect(() => {
         if (data.length) {
             setSelectedTableData(data);
         }
-    }, []);
+    }, [data]);
 
     useEffect(() => {
         if (selectedTableData.length) {
@@ -41,30 +41,30 @@ const BulkMatching = ({data, headerTitle}) => {
                 <div
                     className={classNames(
                         'nexus-c-bulk-matching__selected',
-                        !affectedTableActive && 'nexus-c-bulk-matching__selected--active'
+                        !activeTab && 'nexus-c-bulk-matching__selected--active'
                     )}
-                    onClick={affectedTableActive ? changeActiveTable : null}
+                    onClick={activeTab ? changeActiveTab : null}
                 >Selected Rights ({selectedTableData.length})
                 </div>
                 <div
                     className={classNames(
                         'nexus-c-bulk-matching__affected',
-                        affectedTableActive && 'nexus-c-bulk-matching__affected--active'
+                        activeTab && 'nexus-c-bulk-matching__affected--active'
                     )}
-                    onClick={!affectedTableActive ? changeActiveTable : null}
+                    onClick={!activeTab ? changeActiveTab : null}
                 >Affected Rights ({affectedTableData.length})
                 </div>
-                <Button className="nexus-c-bulk-matching__btn" onClick={() => {}}>New Title</Button>
+                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>New Title</Button>
             </div>
-            <SimpleRightsMatchingTable
-                data={affectedTableActive ? affectedTableData : selectedTableData}
+            <TitleMatchingRightsTable
+                data={activeTab ? affectedTableData : selectedTableData}
             />
             <SectionMessage>
                 <div className="nexus-c-bulk-matching__info-msg">
                     {TITLE_MATCHING_MSG}
                     <span
                         className="nexus-c-bulk-matching__link"
-                        onClick={() => {}}
+                        onClick={() => null}
                     >New Title
                     </span>
                 </div>

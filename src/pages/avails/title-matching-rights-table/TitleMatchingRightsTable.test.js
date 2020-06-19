@@ -1,12 +1,13 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import SimpleRightsMatchingTable from './SimpleRightsMatchingTable';
+import TitleMatchingRightsTable from './TitleMatchingRightsTable';
 
-describe('SimpleRightsMatchingTable', () => {
-    let wrapper, NexusGrid;
+describe('TitleMatchingRightsTable', () => {
+    let wrapper = null;
+    let NexusGrid = null;
 
     beforeEach(() => {
-        wrapper = shallow(<SimpleRightsMatchingTable data={[]} />);
+        wrapper = shallow(<TitleMatchingRightsTable data={[]} />);
         NexusGrid = wrapper.find('NexusGrid');
     });
 
@@ -15,7 +16,7 @@ describe('SimpleRightsMatchingTable', () => {
     });
 
     it('renders table wrapper', () => {
-        expect(wrapper.find('.nexus-c-simple-rights-matching-table')).toHaveLength(1);
+        expect(wrapper.find('.nexus-c-title-matching-rights-table')).toHaveLength(1);
     });
 
     it('renders Nexus Grid', () => {

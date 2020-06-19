@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import {get, cloneDeep} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
-import mappings from './SimpleRightsMatchingTable.json';
+import mappings from './TitleMatchingRightsTable.json';
 
-const SimpleRightsMatchingTable = ({data}) => {
-
+const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
 
     const flattenData = data => {
-        let tableData = cloneDeep(data).filter(item => {
+        const tableData = cloneDeep(data).filter(item => {
             if (Array.isArray(item.territory)) {
                 item.territory = get(item.territory[0], 'country', '');
             }
@@ -26,19 +25,18 @@ const SimpleRightsMatchingTable = ({data}) => {
     useEffect(() => {
         if (data.length) {
             setTableData(flattenData(data));
-        }
-        else {
+        } else {
             setTableData([]);
         }
     }, [data]);
 
     return (
-        <div className="nexus-c-simple-rights-matching-table">
+        <div className="nexus-c-title-matching-rights-table">
             <NexusGrid
                 columnDefs={columnDefinitions}
                 mapping={mappings}
                 rowData={tableData}
-                rowSelection='single'
+                rowSelection="single"
                 domLayout="autoHeight"
                 onSelectionChanged={handleRowSelectionChange}
             />
@@ -46,12 +44,12 @@ const SimpleRightsMatchingTable = ({data}) => {
     );
 };
 
-SimpleRightsMatchingTable.propTypes = {
+TitleMatchingRightsTable.propTypes = {
     data: PropTypes.array,
 };
 
-SimpleRightsMatchingTable.defaultProps = {
+TitleMatchingRightsTable.defaultProps = {
     data: null,
 };
 
-export default SimpleRightsMatchingTable;
+export default TitleMatchingRightsTable;

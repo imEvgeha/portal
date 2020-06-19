@@ -4,14 +4,16 @@ import BulkMatching from './BulkMatching';
 import Button from '@atlaskit/button';
 
 describe('BulkMatching', () => {
-    let wrapper = null, simpleRightsMatchingTable = null, sectionMessage = null;
+    let wrapper = null;
+    let titleMatchingRightsTable = null;
+    let sectionMessage = null;
     const selectedClass = 'nexus-c-bulk-matching__selected';
     const affectedClass = 'nexus-c-bulk-matching__affected';
     const headerTitle = 'Title Matching';
 
     beforeEach(() => {
         wrapper = shallow(<BulkMatching data={[]} headerTitle={headerTitle} />);
-        simpleRightsMatchingTable = wrapper.find('SimpleRightsMatchingTable');
+        titleMatchingRightsTable = wrapper.find('TitleMatchingRightsTable');
         sectionMessage = wrapper.find('SectionMessage');
     });
 
@@ -20,7 +22,7 @@ describe('BulkMatching', () => {
     });
 
     it('should render SimpleRightsMatchingTable', () => {
-        expect(simpleRightsMatchingTable.length).toEqual(1);
+        expect(titleMatchingRightsTable.length).toEqual(1);
     });
 
     it('should render Section message', () => {

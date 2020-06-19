@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SimpleRightsMatchingTable should match snapshot 1`] = `
+exports[`TitleMatchingRightsTable should match snapshot 1`] = `
 <div
-  className="nexus-c-simple-rights-matching-table"
+  className="nexus-c-title-matching-rights-table"
 >
   <NexusGrid
     columnDefs={
