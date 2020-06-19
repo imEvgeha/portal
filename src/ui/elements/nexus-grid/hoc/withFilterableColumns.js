@@ -114,8 +114,8 @@ const withFilterableColumns = ({
         const initializeValues = () => {
             //initialize all columns filters with values
             waitForFilter = 0;
-            setIsDatasourceEnabled(false);
             if (gridApi && Array.isArray(mapping) && mapping.length) {
+                setIsDatasourceEnabled(false);
                 //union of keys for column filter and fixed filter
                 const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
                 keys.forEach(key => {
