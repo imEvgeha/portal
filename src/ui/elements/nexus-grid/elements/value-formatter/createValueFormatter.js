@@ -106,14 +106,14 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 switch (value) {
                     case true:
                     case 'true':
-                        return 'Yes'
+                        return 'Yes';
                     case false:
                     case 'false':
-                        return 'No'
+                        return 'No';
                     default:
-                        return value
+                        return value;
                 }
-            }
+            };
         default:
             return null;
     }
