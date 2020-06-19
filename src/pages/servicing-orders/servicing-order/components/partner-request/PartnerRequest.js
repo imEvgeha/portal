@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
+import classNames from 'classnames';
 import {getServiceRequest} from '../../../servicingOrdersService';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {
@@ -54,7 +55,9 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                     COLUMN_KEYS.map((key, index) => (
                         <div
                             key={uid(key, index)}
-                            className="nexus-c-partner-request__table-cell"
+                            className={classNames('nexus-c-partner-request__table-cell', {
+                                'nexus-c-partner-request__table-cell--word-wrapped': key === 'materialNotes',
+                            })}
                         >
                             {order[key]}
                         </div>
