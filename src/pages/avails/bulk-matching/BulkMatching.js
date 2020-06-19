@@ -5,8 +5,8 @@ import SectionMessage from '@atlaskit/section-message';
 import classNames from 'classnames';
 import {getAffectedRights} from './bulkMatchingService';
 import SimpleRightsMatchingTable from '../rights-matching-table/SimpleRightsMatchingTable';
-import './BulkMatching.scss';
 import {TITLE_MATCHING_MSG} from './constants';
+import './BulkMatching.scss';
 
 const BulkMatching = ({data, headerTitle}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
