@@ -110,6 +110,7 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             return switchCase(fieldValues)(value)(criteria);
         };
 
+        // For testing: Remove initial filters for Start and End fields
         let result = searchCriteria.filter(s => s.fieldName === 'Title' || s.fieldName === 'ContentType' || s.fieldName === 'Licensor' || s.fieldName === 'Licensee' || s.fieldName === 'LicenseType' || s.fieldName === 'PlatformCategory' || s.fieldName === 'ReleaseYear' || s.fieldName === 'LicenseRightsDescription').
         reduce((query, field) => {
             const {targetFieldName, fieldName, subFieldName, criteria} = field;
