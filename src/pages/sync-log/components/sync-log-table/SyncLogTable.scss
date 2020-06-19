@@ -1,0 +1,10 @@
+.nexus-c-sync-log-table {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.nexus-c-sync-log-table__download-button {
+    float: right;
+    place-self: flex-end;
+}

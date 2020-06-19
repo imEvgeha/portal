@@ -1,0 +1,92 @@
+[
+  {
+    "colId": "status",
+    "javaVariableName": "status",
+    "field": "status",
+    "headerName": "Error/Success",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 100
+  },
+  {
+    "colId": "updatedAt",
+    "javaVariableName": "updatedAt",
+    "field": "updatedAt",
+    "headerName": "UpdatedAt",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 150
+  },
+  {
+    "colId": "title",
+    "javaVariableName": "title",
+    "field": "title",
+    "headerName": "Title Name",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 150
+  },
+  {
+    "colId": "titleId",
+    "javaVariableName": "titleId",
+    "field": "titleId",
+    "headerName": "Title ID",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 100
+  },
+  {
+    "colId": "documentType",
+    "javaVariableName": "documentType",
+    "field": "documentType",
+    "headerName": "DocumentType**",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 100
+  },
+  {
+    "colId": "legacySystem",
+    "javaVariableName": "legacySystem",
+    "field": "legacySystem",
+    "headerName": "Legacy System",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 100
+  },
+  {
+    "colId": "publishedAt",
+    "javaVariableName": "publishedAt",
+    "field": "publishedAt",
+    "headerName": "publishedAt",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 150
+  },
+  {
+    "colId": "publishErrors",
+    "javaVariableName": "publishErrors",
+    "field": "publishErrors",
+    "headerName": "publishErrors",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "minWidth": 200
+  },
+  {
+    "colId": "summary",
+    "javaVariableName": "summary",
+    "field": "summary",
+    "headerName": "Summary",
+    "dataType": "string",
+    "searchDataType": "string",
+    "enableSearch": false,
+    "hide": true
+  }
+]

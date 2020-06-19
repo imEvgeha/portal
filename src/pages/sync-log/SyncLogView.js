@@ -3,8 +3,9 @@ import {Link} from 'react-router-dom';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './SyncLogView.scss';
 import {TITLE} from './syncLogConstants';
-import {NexusTitle} from '../../ui/elements/';
 import {URL} from '../../util/Common';
+import {NexusTitle} from '../../ui/elements/';
+import SyncLogTable from './components/sync-log-table/SyncLogTable';
 
 const SyncLogView = () => {
     return (
@@ -16,7 +17,7 @@ const SyncLogView = () => {
                 <span className="nexus-c-sync-log-view__title">{TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-sync-log-view__table">
-                {/* SyncLog Table */}
+                <SyncLogTable />
             </div>
         </div>
     );
