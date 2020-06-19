@@ -2,6 +2,7 @@ import React from 'react';
 import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import './CustomDateFloatingFilter.scss';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+import {NexusTooltip} from '../../../index';
 
 class CustomDateFloatingFilter extends React.Component {
     constructor(props) {
@@ -27,11 +28,15 @@ class CustomDateFloatingFilter extends React.Component {
 
     render() {
         const {from, to} = this.state;
-
+        const type = this.props.filterParams.isUsingTime ? DATETIME_FIELDS.TIMESTAMP : DATETIME_FIELDS.REGIONAL_MIDNIGHT;
+        const fromDate = from ? `From: ${ISODateToView(from, type)} ` : '';
+        const toDate = to ? `To: ${ISODateToView(to, type)}` : '';
+        const dateRange = `${fromDate}${toDate}`;
         return (
             <div className='nexus-c-date-range-floating-filter'>
-                { from && <span>From: {ISODateToView(from, DATETIME_FIELDS.REGIONAL_MIDNIGHT)}</span>}
-                { to && <span>To: {ISODateToView(to, DATETIME_FIELDS.REGIONAL_MIDNIGHT)}</span>}
+                <NexusTooltip content={dateRange}>
+                    <span>{dateRange}</span>
+                </NexusTooltip>
             </div>
         );
     }
