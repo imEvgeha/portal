@@ -45,4 +45,23 @@ const getProperAudioLanguageFormValues = (data, isEdit, existingAudioLanguageLis
     }
 };
 
-export {getProperTerritoryFormValues, getProperAudioLanguageFormValues};
+const getProperPriceFormValues = (data, isEdit, existingPriceList, priceIndex) => {
+    if (data.priceType) {
+        const newObject = {
+            priceType: get(data, 'priceType.value', get(existingPriceList, [priceIndex, 'priceType'], '')),
+            priceValue: get(data, 'priceValue', get(existingPriceList, [priceIndex, 'priceValue'], '')),
+            priceCurrency: get(data, 'priceCurrency.value', get(existingPriceList, [priceIndex, 'priceCurrency'], '')),
+        };
+        const updatedObject = {};
+        for (const objectField in newObject) {
+            if (newObject[objectField]) {
+                updatedObject[objectField] = newObject[objectField];
+            } else {
+                updatedObject[objectField] = null;
+            }
+        }
+        return updatedObject;
+    }
+};
+
+export {getProperTerritoryFormValues, getProperAudioLanguageFormValues, getProperPriceFormValues};

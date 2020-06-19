@@ -7,14 +7,10 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
   <div
     className="nexus-c-sources-table__header"
   >
-    <h5
-      className="nexus-c-sources-table__title"
-    >
+    <h2>
       Sources (0)
-    </h5>
-    <div
-      className="nexus-c-sources-table__subtitle"
-    >
+    </h2>
+    <div>
       Select source to view associated children services indicated by the badge
     </div>
   </div>

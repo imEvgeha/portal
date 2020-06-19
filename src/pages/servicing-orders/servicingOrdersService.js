@@ -4,35 +4,56 @@ import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {parseAdvancedFilter} from '../legacy/containers/avail/service/RightsService';
 import {nexusFetch} from '../../util/http-client';
 
+const baseServicingOrdersURL = config => {
+    return `${config.get('gateway.servicingOrdersUrl')}${config.get(
+        'gateway.service.servicingOrder'
+    )}`;
+};
+
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
-    const queryParams = parseAdvancedFilter(searchCriteria);
-    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/search/so${prepareSortMatrixParam(sortedParams)}`;
+    let queryParams = {};
+    Object.keys(searchCriteria).forEach((key) => {
+        let value = searchCriteria[key];
+        if(value instanceof Object) {
+            queryParams = {
+                ...queryParams,
+                ...value
+            };
+        } else {
+            queryParams[key] = value;
+        }
+    });
+    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(
+        sortedParams
+    )}`;
     const params = encodedSerialize({...queryParams, page, size});
     return nexusFetch(url, {params});
 };
 
-export const getServicingOrderById = (id) => {
-    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/so/${id}`;
+export const getServicingOrderById = id => {
+    const url = `${baseServicingOrdersURL(config)}/so/${id}`;
     return nexusFetch(url);
 };
 
-export const getFulfilmentOrdersForServiceOrder = (id) => {
-    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/so/${id}/fo`;
+export const getFulfilmentOrdersForServiceOrder = id => {
+    const url = `${baseServicingOrdersURL(config)}/so/${id}/fo`;
     return nexusFetch(url);
 };
 
-export const getServiceRequest = (externalId) => {
-    const url = `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}/so/${externalId}/pr`;
+export const getServiceRequest = externalId => {
+    const url = `${baseServicingOrdersURL(config)}/so/${externalId}/pr`;
     return nexusFetch(url, {
-        method: 'get',
+        method: 'get'
     });
 };
 
 export const saveFulfillmentOrder = ({data}) => {
-    // TODO - integrate with backend when we have PUT API Endpoint
-    // console.log('Service.saveFulfillmentOrder data: ', data);
-    return new Promise((resolve, reject) => resolve(data));
+    const url = `${baseServicingOrdersURL(config)}/fo`;
+    return nexusFetch(url, {
+        method: 'put',
+        body: JSON.stringify(data)
+    });
 };
 
 export const servicingOrdersService = {
