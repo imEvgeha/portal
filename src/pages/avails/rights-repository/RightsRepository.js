@@ -228,7 +228,6 @@ const RightsRepository = ({
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
-
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
@@ -318,7 +317,6 @@ const RightsRepository = ({
             case SELECTION_CHANGED:
                 // Get IDs from all selected rights from selectedRights ag-grid table
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
-
                 // Get ID of a right to be deselected
                 const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
@@ -357,7 +355,6 @@ const RightsRepository = ({
                 : selectedRights
         );
     };
-
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -368,7 +365,7 @@ const RightsRepository = ({
                     downloadIngestEmail={downloadIngestEmail}
                     downloadIngestFile={downloadIngestFile}
                     attachment={attachment}
-                    filterByStatus={filterByStatus} 
+                    filterByStatus={filterByStatus}
                 />
             )}
             <NexusTableToolbar
