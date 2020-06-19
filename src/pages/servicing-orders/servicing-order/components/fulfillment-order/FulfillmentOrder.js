@@ -2,7 +2,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEqual, set} from 'lodash';
+import {cloneDeep, get, isEqual, set, isEmpty} from 'lodash';
 import React, {useContext, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -23,7 +23,15 @@ export const transformClientToServerFulfillmentOrder = clientFulfillmentOrder =>
     };
 };
 
-export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmentOrders, serviceOrder, children}) => {
+export const FulfillmentOrder = ({
+    selectedFulfillmentOrder = {},
+    setSelectedOrder,
+    setSelectedFulfillmentOrderID,
+    fetchFulfillmentOrders,
+    serviceOrder,
+    updatedServices,
+    children
+}) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
     const [fulfillmentOrder, setFulfillmentOrder] = useState(
@@ -56,7 +64,10 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
         () => {
             if (isSuccess && isSuccess !== 'ALREADY_SET') {
                 fetchFulfillmentOrders(serviceOrder).then(() => {
-                    setSavedFulfillmentOrder(fulfillmentOrder);
+                    setSavedFulfillmentOrder(null);
+                    setFulfillmentOrder(fulfillmentOrder);
+                    setSelectedOrder(fulfillmentOrder);
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrder, 'id', ''));
                     dispatch({
                         type: SAVE_FULFILLMENT_ORDER_SUCCESS,
                         payload: 'ALREADY_SET'
@@ -69,7 +80,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
 
     useEffect(
         () => {
-            if (!_.isEmpty(selectedFulfillmentOrder)) {
+            if (!isEmpty(selectedFulfillmentOrder)) {
                 setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
                 // Disable form if status is READY
@@ -79,6 +90,25 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
             }
         },
         [selectedFulfillmentOrder, savedFulfillmentOrder]
+    );
+
+    // effect runs when the services table is updated
+    useEffect(
+        () => {
+            const updatedDeteServices = get(fulfillmentOrder, 'definition.deteServices', []).map(deteService => {
+                if (get(deteService, 'deteSources.barcode') === updatedServices.barcode) {
+                    return {
+                        ...deteService,
+                        ...updatedServices.deteServices
+                    };
+                }
+            });
+
+            const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
+            set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
+            setFulfillmentOrder(fulfillmentOrderClone);
+        },
+        [updatedServices]
     );
 
     useEffect(
@@ -168,7 +198,7 @@ export const FulfillmentOrder = ({selectedFulfillmentOrder = {}, fetchFulfillmen
                                 <NexusTextArea
                                     name="notes"
                                     onTextChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '')}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
                                     isDisabled={isFormDisabled}
                                 />
                             </GridColumn>

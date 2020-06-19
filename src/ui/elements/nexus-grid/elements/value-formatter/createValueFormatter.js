@@ -100,6 +100,20 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 };
             }
             return;
+        case 'boolean':
+            return ({ value }) => {
+                // HACK: ag-grid converts boolean values to string when calling this function to format the filter
+                switch (value) {
+                    case true:
+                    case 'true':
+                        return 'Yes';
+                    case false:
+                    case 'false':
+                        return 'No';
+                    default:
+                        return value;
+                }
+            };
         default:
             return null;
     }
