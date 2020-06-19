@@ -60,14 +60,8 @@ const BulkMatching = ({data, headerTitle}) => {
                 data={activeTab ? affectedTableData : selectedTableData}
             />
             <SectionMessage>
-                <div className="nexus-c-bulk-matching__info-msg">
-                    {TITLE_MATCHING_MSG}
-                    <span
-                        className="nexus-c-bulk-matching__link"
-                        onClick={() => null}
-                    >New Title
-                    </span>
-                </div>
+                {TITLE_MATCHING_MSG}
+                <Button spacing="none" appearance="link"> New Title</Button>
             </SectionMessage>
         </div>
     );
