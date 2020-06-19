@@ -2,7 +2,7 @@ import React from 'react';
 import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import './CustomDateFloatingFilter.scss';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
-import {NexusTooltip} from '../../../index';
+import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 
 class CustomDateFloatingFilter extends React.Component {
     constructor(props) {
