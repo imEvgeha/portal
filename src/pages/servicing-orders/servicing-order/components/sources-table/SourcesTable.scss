@@ -1,32 +1,16 @@
 @import '../../../../../styles/config.scss';
 
-.nexus-c-sources-table {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
+.nexus-c-sources {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
 
-.nexus-c-sources-table__header {
-    display: flex;
-    flex-direction: column;
-}
-
-.nexus-c-sources-table__title {
-    padding-bottom: 6px;
-}
-
-.nexus-c-sources-table__subtitle {
-    font-size: 12px;
-    color: map-get($colors, nexus-title-color);
-    display: flex;
-    justify-content: space-between;
-    svg {
-        height: 15px;
-        width: 15px;
-        cursor: pointer;
+    &__header {
+        display: flex;
+        flex-direction: column;
     }
-}
 
-.nexus-c-sources__close-icon {
-    cursor: pointer;
+    .nexus-c-nexus-grid {
+        width: 17.7rem;  // Just display 1 column
+    }
 }

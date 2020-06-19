@@ -1,30 +1,36 @@
 const columnDefinitions = [
     {
-        colId: 'externalServices',
-        field: 'externalServices',
-        dataSource: 'externalServices.externalId',
+        colId: 'componentId',
+        field: 'componentId',
+        dataSource: 'componentId',
         headerName: 'Component ID',
     },
     {
         colId: 'spec',
         field: 'spec',
-        dataSource: 'externalServices.formatType',
+        dataSource: 'spec',
         headerName: 'Spec',
     },
     {
-        colId: 'addRecipient',
-        field: 'addRecipient',
-        dataSource: 'deteTasks.deteDeliveries.externalDelivery.deliverToId',
-        headerName: 'Add recipient',
-    },
-    {
-        colId: 'overrideDueDate',
-        field: 'overrideDueDate',
+        colId: 'doNotStartBefore',
+        field: 'doNotStartBefore',
         headerName: 'Do not start before',
     },
     {
-        colId: 'status',
-        field: 'status',
+        colId: 'priority',
+        field: 'priority',
+        dataSource: 'priority',
+        headerName: 'Priority',
+    },
+    {
+        colId: 'deliverToVu',
+        field: 'deliverToVu',
+        dataSource: 'deliverToVu',
+        headerName: 'Deliver to VU',
+    },
+    {
+        colId: 'operationalStatus',
+        field: 'operationalStatus',
         headerName: 'Operational Status',
     }
 ];
