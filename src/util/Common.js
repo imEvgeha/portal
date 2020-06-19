@@ -63,7 +63,7 @@ const encodedSerialize = function(params){
 
 function prepareSortMatrixParam(sortedParams) {
     let matrix = '';
-    if(sortedParams){
+    if(sortedParams && Array.isArray(sortedParams)) {
         sortedParams.forEach(({id, colId, sort, desc}) => {
             matrix += `;${id || colId}=${sort || (desc ? 'DESC' : 'ASC')}`;
         });

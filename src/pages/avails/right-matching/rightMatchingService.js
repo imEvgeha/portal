@@ -110,15 +110,20 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             return switchCase(fieldValues)(value)(criteria);
         };
 
-        const result = searchCriteria.reduce((query, field) => {
+        let result = searchCriteria.filter(s => s.fieldName === 'Title' || s.fieldName === 'ContentType' || s.fieldName === 'Licensor' || s.fieldName === 'Licensee' || s.fieldName === 'LicenseType' || s.fieldName === 'PlatformCategory' || s.fieldName === 'ReleaseYear' || s.fieldName === 'LicenseRightsDescription').
+        reduce((query, field) => {
             const {targetFieldName, fieldName, subFieldName, criteria} = field;
             const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
             const fieldValue = targetFieldName || fieldName;
-            const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
+            const preparedFieldValue = payload[`${fieldValue.slice(0, 1).toLowerCase()}${fieldValue.slice(1)}`];
             const key = parseFieldNames(criteria, preparedName);
             query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
-            return query;
+
+                return query;
+
         }, {});
+
+
 
         return {
             fieldSearchCriteria: {
