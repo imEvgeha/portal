@@ -175,7 +175,7 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             case BOOLEAN:
-                                columnDef.filter = TEXT;
+                                columnDef.filter = SET;
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
                                     values: [false, true]
