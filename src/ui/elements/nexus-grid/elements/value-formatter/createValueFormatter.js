@@ -35,6 +35,14 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             }
 
         case 'priceType':
+            return (params) => {
+                const {data = {}} = params || {};
+                if (data && Array.isArray(data[javaVariableName])) {
+                    return data[javaVariableName]
+                        .filter(Boolean)
+                        .map(e => String(`${e.priceType} ${e.priceValue}`)).join(', ');
+                }
+            };
         case 'territoryType':
         case 'audioLanguageType':
             return (params) => {
@@ -42,7 +50,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(e.country || `${e.language}/${e.audioType}` || `${e.priceType} ${e.priceValue}`)).join(', ');
+                        .map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
                 }
             };
         case 'string':
