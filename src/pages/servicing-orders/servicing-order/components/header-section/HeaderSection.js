@@ -9,14 +9,15 @@ import FilterIcon from '../../../../../assets/filter.svg';
 import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import {getValidDate} from '../../../../../util/utils';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';
-import {FILTER_LIST, SORT_DIRECTION} from '../filter-section/constants';
+import {SORT_DIRECTION} from '../filter-section/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
+import Constants from '../fulfillment-order/constants';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import './HeaderSection.scss';
 
 const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(true);
-    const [filter, setFilter] = useState(FILTER_LIST[0]);
+    const [filter, setFilter] = useState({ value: 'All', label: 'All' });
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
     
     const toggleFilters = () => setShowFilter(!showFilter);

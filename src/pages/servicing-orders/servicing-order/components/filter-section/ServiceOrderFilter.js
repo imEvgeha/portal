@@ -6,7 +6,8 @@ import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elem
 import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '../../../../../util/utils';
 import PartnerRequest from '../partner-request/PartnerRequest';
-import {FILTER_LIST, SORT_DIRECTION} from './constants';
+import {SORT_DIRECTION} from './constants';
+import Constants from '../fulfillment-order/constants';
 import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({
@@ -18,7 +19,11 @@ const ServiceOrderFilter = ({
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const { tenant, external_id, description, configured_pr_id, sr_due_date } = orderDetails || {};
-    
+    let FilterList = [{ value: 'All', label: 'All' }];
+    FilterList = FilterList.concat(Object.keys(Constants.STATUS).map(key => ({
+        label: Constants.STATUS[key],
+        value: key
+    })));
     return (
         <div className="so-panel-filter-detail">
             <div className="so-panel-filter-detail__info-section">
@@ -66,7 +71,7 @@ const ServiceOrderFilter = ({
                     </p>
                     <div className="so-panel-filter-detail__dropdown-element">
                         <Select
-                            options={FILTER_LIST}
+                            options={FilterList}
                             onChange={setFilter}
                             value={filter}
                             placeholder="Select Status"

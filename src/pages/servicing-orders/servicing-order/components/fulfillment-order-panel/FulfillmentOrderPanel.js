@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import File from '../../../../../assets/file.svg';
-import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import Constants from '../fulfillment-order/constants';
 import './FulfillmentOrderPanel.scss';
 
 const FulfillmentOrderPanel = ({id, external_id, status, dueDate, selected, handleFulfillmentOrderChange}) => {
@@ -20,7 +20,7 @@ const FulfillmentOrderPanel = ({id, external_id, status, dueDate, selected, hand
             </div>
             <div className="nexus-c-fulfillment-order-panel__status">
                 <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
-                <StatusTag status={status.toUpperCase().replace('-', '_')} />
+                <span>{Constants.STATUS[status]}</span>
             </div>
         </div>
     );

@@ -76,6 +76,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
+          "valueFormatter": [Function],
         },
         Object {
           "colId": "priority",
