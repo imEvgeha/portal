@@ -26,6 +26,8 @@ exports[`SyncLogView HTML content should match snapshot 1`] = `
   </NexusTitle>
   <div
     className="nexus-c-sync-log-view__table"
-  />
+  >
+    <SyncLogTable />
+  </div>
 </div>
 `;

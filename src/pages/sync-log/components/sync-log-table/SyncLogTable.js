@@ -1,20 +1,18 @@
 import React from 'react';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
-// import {getSyncLog} from '../../syncLogService';
+import {getSyncLog} from '../../syncLogService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-// import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import columnDefs from '../../columnMappings.json';
-import {INITIAL_SORT, DOWNLOAD_BTN} from '../../syncLogConstants';
+import columnMappings from '../../columnMappings.json';
+import {DOWNLOAD_BTN} from '../../syncLogConstants';
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(
     withColumnsResizing(),
-    withSorting(INITIAL_SORT),
-    // withInfiniteScrolling({fetchData: getSyncLog})
+    withInfiniteScrolling({fetchData: getSyncLog})
 )(NexusGrid);
 
 const SyncLogTable = () => {
@@ -38,9 +36,9 @@ const SyncLogTable = () => {
             </Button>
             <SyncLogGrid
                 className="nexus-c-sync-log-grid"
-                columnDefs={updateColumnDefs(columnDefs)}
+                columnDefs={updateColumnDefs(columnMappings)}
+                mapping={columnMappings}
                 rowSelection="single"
-                mapping={columnDefs}
             />
         </div>
     );
