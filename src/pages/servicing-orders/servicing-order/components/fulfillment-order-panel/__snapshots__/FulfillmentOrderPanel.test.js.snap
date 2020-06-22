@@ -25,9 +25,7 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
       Due Date: 
       10/05/2021
     </span>
-    <StatusTag
-      status="COMPLETED"
-    />
+    <span />
   </div>
 </div>
 `;

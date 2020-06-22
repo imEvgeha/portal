@@ -1,3 +1,6 @@
+import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+
 const columnDefinitions = [
     {
         colId: 'componentId',
@@ -15,6 +18,8 @@ const columnDefinitions = [
         colId: 'doNotStartBefore',
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
+        valueFormatter: params =>
+            ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.REGIONAL_MIDNIGHT)
     },
     {
         colId: 'priority',
