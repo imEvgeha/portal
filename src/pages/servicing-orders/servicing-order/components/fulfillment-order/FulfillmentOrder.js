@@ -2,7 +2,8 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEqual, set, isEmpty} from 'lodash';
+import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
+import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -23,7 +24,8 @@ export const FulfillmentOrder = ({
     fetchFulfillmentOrders,
     serviceOrder,
     updatedServices,
-    children
+    children,
+    cancelEditing
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -90,7 +92,7 @@ export const FulfillmentOrder = ({
         () => {
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
-            
+
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
         },
@@ -142,6 +144,7 @@ export const FulfillmentOrder = ({
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
+        cancelEditing();
     };
 
     const onSaveHandler = () => {
@@ -255,9 +258,27 @@ export const FulfillmentOrder = ({
     );
 };
 
-FulfillmentOrder.propTypes = {};
+FulfillmentOrder.propTypes = {
+    selectedFulfillmentOrder: PropTypes.object,
+    setSelectedOrder: PropTypes.func,
+    setSelectedFulfillmentOrderID: PropTypes.func,
+    fetchFulfillmentOrders: PropTypes.func,
+    serviceOrder: PropTypes.object,
+    updatedServices: PropTypes.object,
+    children: PropTypes.any,
+    cancelEditing: PropTypes.func
+};
 
-FulfillmentOrder.defaultProps = {};
+FulfillmentOrder.defaultProps = {
+    selectedFulfillmentOrder: {},
+    setSelectedOrder: () => {},
+    setSelectedFulfillmentOrderID: () => {},
+    fetchFulfillmentOrders: () => {},
+    serviceOrder: {},
+    updatedServices: {},
+    children: null,
+    cancelEditing: () => {}
+};
 
 export default FulfillmentOrder;
 

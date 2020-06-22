@@ -98,6 +98,7 @@ const ServicingOrder = ({match}) => {
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
                     updatedServices={updatedServices}
+                    cancelEditing={() => setSelectedSource({...selectedSource})}
                 >
                     <SourcesTable
                         data={prepareRowData(selectedOrder)}
