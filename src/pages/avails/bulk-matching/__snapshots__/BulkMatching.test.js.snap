@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkMatching should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-matching"
+>
+  <h2>
+    Title Matching
+  </h2>
+  <div
+    className="nexus-c-bulk-matching__header"
+  >
+    <div
+      className="nexus-c-bulk-matching__selected nexus-c-bulk-matching__selected--active"
+      onClick={null}
+    >
+      Selected Rights (
+      0
+      )
+    </div>
+    <div
+      className="nexus-c-bulk-matching__affected"
+      onClick={[Function]}
+    >
+      Affected Rights (
+      0
+      )
+    </div>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-bulk-matching__btn"
+      onClick={[Function]}
+    >
+      New Title
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+  <TitleMatchingRightsTable
+    data={Array []}
+  />
+  <SectionMessage
+    appearance="info"
+  >
+    <div
+      className="nexus-c-bulk-matching__info-msg"
+    >
+      Select titles from the repositories that match the incoming right or declare a 
+      <span
+        className="nexus-c-bulk-matching__link"
+        onClick={[Function]}
+      >
+        New Title
+      </span>
+    </div>
+  </SectionMessage>
+</div>
+`;

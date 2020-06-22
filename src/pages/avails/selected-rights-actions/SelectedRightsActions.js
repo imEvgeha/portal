@@ -4,6 +4,8 @@ import {uniqBy} from 'lodash';
 import classNames from 'classnames';
 import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
+import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
+import BulkMatching from '../bulk-matching/BulkMatching';
 import {BULK_MATCH, BULK_MATCH_DISABLED_TOOLTIP, BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
@@ -12,6 +14,7 @@ const SelectedRightsActions = ({selectedRights}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const node = useRef();
 
     useEffect(function() {
@@ -55,49 +58,64 @@ const SelectedRightsActions = ({selectedRights}) => {
         }
     };
 
+    const setDrawerState = () => {
+        setDrawerOpen(!drawerOpen);
+    };
+
     return (
-        <div className="nexus-c-selected-rights-actions" ref={node}>
-            <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
-            <div
-                className={classNames(
+        <>
+            <div className="nexus-c-selected-rights-actions" ref={node}>
+                <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
+                <div
+                    className={classNames(
                     'nexus-c-selected-rights-actions__menu',
                     menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
                 )}
-            >
-                <div
-                    className={classNames(
+                >
+                    <div
+                        className={classNames(
                         'nexus-c-selected-rights-actions__menu-item',
                         selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
-                    data-test-id="view-history"
-                >
-                    {/*TODO: Rewrite like the rest of the options when old design gets removed*/}
-                    <RightViewHistory selectedAvails={selectedRights} />
-                </div>
-                <div
-                    className={classNames(
+                        data-test-id="view-history"
+                    >
+                        {/*TODO: Rewrite like the rest of the options when old design gets removed*/}
+                        <RightViewHistory selectedAvails={selectedRights} />
+                    </div>
+                    <div
+                        className={classNames(
                         'nexus-c-selected-rights-actions__menu-item',
                         isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
-                    data-test-id="bulk-match"
-                >
-                    <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
-                        {BULK_MATCH}
-                    </NexusTooltip>
-                </div>
-                <div
-                    className={classNames(
+                        data-test-id="bulk-match"
+                    >
+                        <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
+                            <div onClick={isMatchable ? setDrawerState : null}>
+                                {BULK_MATCH}
+                            </div>
+                        </NexusTooltip>
+                    </div>
+                    <div
+                        className={classNames(
                         'nexus-c-selected-rights-actions__menu-item',
                         isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                     )}
-                    data-test-id="bulk-unmatch"
-                >
-                    <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                        {BULK_UNMATCH}
-                    </NexusTooltip>
+                        data-test-id="bulk-unmatch"
+                    >
+                        <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
+                            {BULK_UNMATCH}
+                        </NexusTooltip>
+                    </div>
                 </div>
             </div>
-        </div>
+            <NexusDrawer
+                onClose={setDrawerState}
+                isOpen={drawerOpen}
+                width="wider"
+            >
+                <BulkMatching data={selectedRights} headerTitle="Title Matching" />
+            </NexusDrawer>
+        </>
     );
 };
 

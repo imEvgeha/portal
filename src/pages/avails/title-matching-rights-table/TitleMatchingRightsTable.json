@@ -1,0 +1,119 @@
+[
+    {
+        "javaVariableName": "title",
+        "displayName": "Title",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "title",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "releaseYear",
+        "displayName": "Release Year",
+        "dataType": "year",
+        "searchDataType": "year",
+        "queryParamName": "releaseYear",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "licensor",
+        "displayName": "Licensor",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "licensor",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "coreTitleId",
+        "displayName": "Core Title Id",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "coreTitleId",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "totalRuntime",
+        "displayName": "Runtime",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "totalRuntime",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "rightStatus",
+        "displayName": "Right Status",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "rightStatus",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "status",
+        "displayName": "Status",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "status",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "licenseType",
+        "displayName": "License Type",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "licenseType",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "territory",
+        "displayName": "Country",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "territory",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "contentType",
+        "displayName": "Content Type",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "contentType",
+        "readOnly": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "seasonNumber",
+        "displayName": "Season Number",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "seasonNumber",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "episodeNumber",
+        "displayName": "Episode Number",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "episodeNumber",
+        "readOnly": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "format",
+        "displayName": "Format",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "format",
+        "readOnly": true,
+        "required": true
+    }
+]

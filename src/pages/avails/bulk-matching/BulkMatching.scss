@@ -1,0 +1,45 @@
+@import '../../../styles/config';
+
+.nexus-c-bulk-matching {
+    margin: 20px;
+
+    h2 {
+        color: map-get($colors, nexus-title-color);
+        margin-bottom: 20px;
+    }
+}
+
+.nexus-c-bulk-matching__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nexus-c-bulk-matching__btn {
+    margin-left: auto;
+    min-width: 120px;
+    display: flex;
+    justify-content: center;
+}
+
+.nexus-c-bulk-matching__selected,
+.nexus-c-bulk-matching__affected {
+    font-size: 16px;
+    cursor: pointer;
+    color: map-get($colors, nexus-light-grey);
+}
+
+.nexus-c-bulk-matching__affected {
+    margin-left: 20px;
+
+    &--active {
+        color: map-get($colors, nexus-title-color);
+    }
+}
+
+.nexus-c-bulk-matching__selected {
+
+    &--active {
+        color: map-get($colors, nexus-title-color);
+    }
+}
