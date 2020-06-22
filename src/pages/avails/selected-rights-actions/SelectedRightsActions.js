@@ -64,9 +64,7 @@ const SelectedRightsActions = ({selectedRights}) => {
         }
     };
 
-    const toggleDrawerState = () => {
-        setDrawerOpen(!drawerOpen);
-    };
+    const toggleDrawerState = () => setDrawerOpen(prevDrawerOpen => !prevDrawerOpen);
 
     const openBulkUnmatchModal = () => {
         setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
@@ -75,7 +73,6 @@ const SelectedRightsActions = ({selectedRights}) => {
                 text: BULK_UNMATCH_CANCEL_BTN,
                 onClick: () => {
                     close();
-                    setIsModalOpen(false);
                 },
                 appearance: 'default',
             },
