@@ -5,6 +5,7 @@ import SectionMessage from '@atlaskit/section-message';
 import classNames from 'classnames';
 import {getAffectedRights} from './bulkMatchingService';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
+import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
 import {TITLE_MATCHING_MSG} from './constants';
 import './BulkMatching.scss';
 
@@ -33,7 +34,6 @@ const BulkMatching = ({data, headerTitle}) => {
             });
         }
     }, [selectedTableData]);
-
     return (
         <div className="nexus-c-bulk-matching">
             <h2>{headerTitle}</h2>
@@ -63,6 +63,7 @@ const BulkMatching = ({data, headerTitle}) => {
                 {TITLE_MATCHING_MSG}
                 <Button spacing="none" appearance="link"> New Title</Button>
             </SectionMessage>
+            <RightsMatchingTitlesTable data={selectedTableData} />
         </div>
     );
 };
