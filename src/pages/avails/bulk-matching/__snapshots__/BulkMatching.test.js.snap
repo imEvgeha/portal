@@ -44,7 +44,7 @@ exports[`BulkMatching should match snapshot 1`] = `
       appearance="link"
       spacing="none"
     >
-       New Title
+      New Title
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </SectionMessage>
 </div>
