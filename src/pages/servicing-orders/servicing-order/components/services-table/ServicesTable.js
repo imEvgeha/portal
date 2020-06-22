@@ -109,7 +109,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         colId: 'serviceId',
         field: 'serviceId',
         cellRendererFramework: data => {
-            return data ? data.rowIndex : 0;
+            return data ? data.rowIndex + 1 : null;
         }
     });
 
