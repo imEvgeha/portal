@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BulkUnmatch should match snapshot 1`] = `
+exports[`BulkMatching should match snapshot 1`] = `
 <div
   className="nexus-c-bulk-matching"
 >
