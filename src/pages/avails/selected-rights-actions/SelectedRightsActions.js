@@ -9,7 +9,7 @@ import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {BULK_MATCH, BULK_MATCH_DISABLED_TOOLTIP, BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
-import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 
@@ -70,26 +70,29 @@ const SelectedRightsActions = ({selectedRights}) => {
     };
 
     const toggleModalState = () => {
-        setIsModalOpen(prevIsModalOpen => !prevIsModalOpen);
-        if (isModalOpen) {
-            setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
-            setModalActions([
-                {
-                    text: 'Cancel',
-                    onClick: () => {
-                        close();
-                        setIsModalOpen(false);
+        setIsModalOpen(prevIsModalOpen => {
+            if (!prevIsModalOpen) {
+                setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
+                setModalActions([
+                    {
+                        text: BULK_UNMATCH_CANCEL_BTN,
+                        onClick: () => {
+                            close();
+                            setIsModalOpen(false);
+                        },
+                        appearance: 'default',
                     },
-                    appearance: 'default',
-                },
-                {
-                    text: 'Confirm',
-                    onClick: () => { /* Call some sweet API */ },
-                    appearance: 'primary',
-                },
-            ]);
-            setModalStyle({width: '90%'});
-        }
+                    {
+                        text: BULK_UNMATCH_CONFIRM_BTN,
+                        onClick: () => { /* Call some sweet API */ },
+                        appearance: 'primary',
+                    },
+                ]);
+                setModalStyle({width: '70%'});
+            }
+
+            return !prevIsModalOpen;
+        });
     };
 
     return (

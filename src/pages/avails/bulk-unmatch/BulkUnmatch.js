@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
@@ -11,14 +11,12 @@ import {BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';
 
 const BulkUnmatch = ({selectedRights = [], columnDefs = []}) => {
-    const [affectedRights, setAffectedRights] = ([]);
+    const [affectedRights, setAffectedRights] = useState([]);
 
     useEffect(
         () => {
             const selectedRightsIds = selectedRights.map(({id}) => id);
-            if (typeof setAffectedRights === 'function') {
-                getAffectedRights(selectedRightsIds).then(affectedRights => setAffectedRights(affectedRights));
-            }
+            getAffectedRights(selectedRightsIds).then(affectedRights => setAffectedRights(affectedRights));
         },
         [selectedRights]
     );
@@ -28,14 +26,16 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = []}) => {
             <p className="nexus-c-bulk-unmatch__confirmation-message">
                 {`Core title ID's will be removed from ${affectedRights.length} right(s). Do you want to continue?`}
             </p>
-            <SectionMessage appearance="warning">
-                <p>{BULK_UNMATCH_WARNING}</p>
-            </SectionMessage>
-            {affectedRights.length && (
-                <NexusGrid
-                    rowData={affectedRights}
-                    columnDefs={columnDefs}
-                />
+            {!!affectedRights.length && (
+                <>
+                    <SectionMessage appearance="warning">
+                        <p>{BULK_UNMATCH_WARNING}</p>
+                    </SectionMessage>
+                    <NexusGrid
+                        rowData={affectedRights}
+                        columnDefs={columnDefs}
+                    />
+                </>
             )}
         </div>
     );
