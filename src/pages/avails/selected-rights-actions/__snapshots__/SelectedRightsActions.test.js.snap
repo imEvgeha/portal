@@ -52,7 +52,7 @@ OR Source Right IDs are all empty) AND all selected rights have Core Title IDs p
   </div>
   <NexusDrawer
     headerContent={null}
-    isOpen={false}
+    isOpen={true}
     onClose={[Function]}
     title=""
     width="wider"

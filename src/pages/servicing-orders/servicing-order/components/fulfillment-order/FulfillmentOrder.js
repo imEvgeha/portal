@@ -16,13 +16,6 @@ import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../serv
 import Constants from './constants';
 import './FulfillmentOrder.scss';
 
-export const transformClientToServerFulfillmentOrder = clientFulfillmentOrder => {
-    return {
-        ...clientFulfillmentOrder,
-        definition: JSON.stringify(clientFulfillmentOrder.definition)
-    };
-};
-
 export const FulfillmentOrder = ({
     selectedFulfillmentOrder = {},
     setSelectedOrder,
@@ -95,16 +88,9 @@ export const FulfillmentOrder = ({
     // effect runs when the services table is updated
     useEffect(
         () => {
-            const updatedDeteServices = get(fulfillmentOrder, 'definition.deteServices', []).map(deteService => {
-                if (get(deteService, 'deteSources.barcode') === updatedServices.barcode) {
-                    return {
-                        ...deteService,
-                        ...updatedServices.deteServices
-                    };
-                }
-            });
-
+            const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
+            
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
         },
@@ -274,3 +260,10 @@ FulfillmentOrder.propTypes = {};
 FulfillmentOrder.defaultProps = {};
 
 export default FulfillmentOrder;
+
+export function transformClientToServerFulfillmentOrder(clientFulfillmentOrder) {
+    return {
+        ...clientFulfillmentOrder,
+        definition: JSON.stringify(clientFulfillmentOrder.definition)
+    };
+}
