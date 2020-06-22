@@ -34,7 +34,7 @@ describe('BulkMatching', () => {
     });
 
     it('should have a New Title button', () => {
-        expect(wrapper.find(Button).length).toEqual(1);
+        expect(wrapper.find(Button).length).toEqual(2);
     });
 
     it('should display selected rights tab on load', () => {
