@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import { AvField } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 import { configFields, searchPerson } from '../../../service/ConfigService';
@@ -446,7 +447,7 @@ class CoreMetadataEditMode extends Component {
                         </Label>
                     </Col>
                     <Col>
-                        <NexusTagsContainer data={ this.props.data.externalIds && this.props.data.externalIds.msvAssociationId ? this.props.data.externalIds.msvAssociationId : [] } saveData={this.handleMSVIDs} />
+                        <NexusTagsContainer data={ get(this.props, 'data.externalIds.msvAssociationId', []) } saveData={this.handleMSVIDs} />
                     </Col>
                 </div>
             </>
