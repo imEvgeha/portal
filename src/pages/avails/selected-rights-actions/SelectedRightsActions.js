@@ -18,7 +18,6 @@ const SelectedRightsActions = ({selectedRights}) => {
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const node = useRef();
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -69,30 +68,24 @@ const SelectedRightsActions = ({selectedRights}) => {
         setDrawerOpen(!drawerOpen);
     };
 
-    const toggleModalState = () => {
-        setIsModalOpen(prevIsModalOpen => {
-            if (!prevIsModalOpen) {
-                setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
-                setModalActions([
-                    {
-                        text: BULK_UNMATCH_CANCEL_BTN,
-                        onClick: () => {
-                            close();
-                            setIsModalOpen(false);
-                        },
-                        appearance: 'default',
-                    },
-                    {
-                        text: BULK_UNMATCH_CONFIRM_BTN,
-                        onClick: () => { /* Call some sweet API */ },
-                        appearance: 'primary',
-                    },
-                ]);
-                setModalStyle({width: '70%'});
-            }
-
-            return !prevIsModalOpen;
-        });
+    const openBulkUnmatchModal = () => {
+        setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
+        setModalActions([
+            {
+                text: BULK_UNMATCH_CANCEL_BTN,
+                onClick: () => {
+                    close();
+                    setIsModalOpen(false);
+                },
+                appearance: 'default',
+            },
+            {
+                text: BULK_UNMATCH_CONFIRM_BTN,
+                onClick: () => { /* Call some sweet API */ },
+                appearance: 'primary',
+            },
+        ]);
+        setModalStyle({width: '70%'});
     };
 
     return (
@@ -135,7 +128,7 @@ const SelectedRightsActions = ({selectedRights}) => {
                             isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="bulk-unmatch"
-                        onClick={isUnmatchable && toggleModalState}
+                        onClick={isUnmatchable && openBulkUnmatchModal}
                     >
                         <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
                             {BULK_UNMATCH}
