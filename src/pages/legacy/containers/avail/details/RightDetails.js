@@ -20,11 +20,13 @@ import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {equalOrIncluded, getDeepValue, isObject, safeTrim, URL} from '../../../../../util/Common';
 import BlockUi from 'react-block-ui';
 import {confirmModal} from '../../../components/modal/ConfirmModal';
+import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
 import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/components/ManualRightsEntryDOPConnector';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import PriceField from '../components/PriceField';
 import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
@@ -59,8 +61,10 @@ class RightDetails extends React.Component {
             errorMessage: '',
             isRightTerritoryFormOpen: false,
             isRightAudioLanguageFormOpen: false,
+            isRightPriceFormOpen: false,
             territoryIndex: null,
             audioLanguageIndex: null,
+            priceIndex: null,
             isEdit: false,
             editedRight: {},
         };
@@ -106,7 +110,33 @@ class RightDetails extends React.Component {
                             affiliateExclude = [],
                             castCrew = [],
                             languageAudioTypes =  [],
+                            pricing = []
                         } = res || {};
+                        // temporary solution for price - all should be refactor
+                        const priceErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('pricing') )
+                            .map(error => {
+                                const matchObj = error.fieldName.match(regForEror);
+                                if (matchObj) {
+                                    const matchSubField = error.fieldName.match(regForSubField);
+                                    error.index = Number(matchObj[1]);
+                                    error.subField = matchSubField[1];
+                                }
+                                return error;
+                            })) || [];
+
+                        const prices = (Array.isArray(pricing) && pricing.filter(Boolean).map((el, index) => {
+                            const error = priceErrors.find(error => error.index === index);
+                            if (error) {
+                                el.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
+                                el.isValid = false;
+                                el.errors = priceErrors.filter(error => error.index === index);
+                            } else {
+                                el.isValid = true;
+                                el.value = el.priceType;
+                            }
+                            el.id = index;
+                            return el;
+                        })) || [];
                         // temporary solution for territory - all should be refactor
                         const territoryErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('territory') && !el.fieldName.includes('territoryExcluded') )
                             .map(error => {
@@ -119,7 +149,7 @@ class RightDetails extends React.Component {
                                 return error;
                             })) || [];
 
-                            const territories = (Array.isArray(territory) && territory.filter(Boolean).map((el, index) => {
+                        const territories = (Array.isArray(territory) && territory.filter(Boolean).map((el, index) => {
                             const error = territoryErrors.find(error => error.index === index);
                             if (error) {
                                 el.value = `${error.message} ${error.sourceDetails && error.sourceDetails.originalValue}`;
@@ -157,6 +187,7 @@ class RightDetails extends React.Component {
                             el.id = index;
                             return el;
                         })) || [];
+
                         // temporary solution for affiliate and affilateExclude
                         const affiliateErrors = (Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('affiliate') && !el.fieldName.includes('affiliateExclude'))
                         .map(error => {
@@ -218,6 +249,7 @@ class RightDetails extends React.Component {
                         this.setState({
                             right: res,
                             flatRight: this.flattenRight(res),
+                            pricing: prices,
                             territory: territories,
                             audioLanguage: audioLanguages,
                             affiliates,
@@ -385,6 +417,14 @@ class RightDetails extends React.Component {
         }
     }
 
+    toggleRightPriceForm = (index) => {
+        this.setState(state => ({
+            isEdit: true,
+            priceIndex: index,
+            isRightPriceFormOpen: !state.isRightPriceFormOpen
+        }));
+    }
+
     toggleRightTerritoryForm = (index) => {
         this.setState(state => ({
             isEdit: true,
@@ -398,6 +438,13 @@ class RightDetails extends React.Component {
             isEdit: true,
             audioLanguageIndex: index,
             isRightAudioLanguageFormOpen: !state.isRightAudioLanguageFormOpen
+        }));
+    }
+
+    toggleAddRightPriceForm = () => {
+        this.setState(state => ({
+            isRightPriceFormOpen: !state.isRightPriceFormOpen,
+            isEdit: false,
         }));
     }
 
@@ -872,6 +919,139 @@ class RightDetails extends React.Component {
             ));
         };
 
+        const renderPriceField = (name, displayName, value, errors, readOnly, required, highlighted) => {
+            let ref;
+            if (this.fields[name]) {
+                ref = this.fields[name];
+            } else {
+                this.fields[name] = ref = React.createRef();
+            }
+
+            let options = [], currencyOptions = [];
+            let selectedVal = ref.current ? ref.current.state.value : value;
+            if (this.props.selectValues && this.props.selectValues['pricing.priceType']) {
+                options = this.props.selectValues['pricing.priceType'];
+            }
+            if (this.props.selectValues && this.props.selectValues['pricing.priceCurrency']) {
+                currencyOptions = this.props.selectValues['pricing.priceCurrency'];
+            }
+
+            options = options.filter((rec) => (rec.value)).map(rec => {
+                return {
+                    ...rec,
+                    label: rec.label || rec.value,
+                    aliasValue: (rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
+                };
+            });
+            const onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            const addPrice = (option) => {
+                const {priceIndex, isEdit} = this.state;
+                const item = {
+                    ...option,
+                    isValid: true,
+                    id: isEdit ? priceIndex : selectedVal.length,
+                };
+                if(this.state.isEdit) {
+                    selectedVal.splice(this.state.priceIndex, 1, item);
+                } else {
+                    selectedVal = selectedVal ? [...selectedVal, item] : [item];
+                }
+                ref.current.handleChange(option ? selectedVal: null);
+                // ??? - call set state that clean state inside timeout
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+
+            };
+
+            const deletePrice = (price) => {
+                const newArray = selectedVal && selectedVal.filter(e => e.id !== price.id && e.priceType !== price.priceType);
+                ref.current.handleChange(newArray);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
+
+            const removePriceNotOriginalFields = (list = []) => {
+                const {mappings} = this.props.availsMapping || [];
+                const originalFieldNames = mappings.filter(el => el.javaVariableName.startsWith('pricing.'))
+                    .map(mapping => mapping.javaVariableName.split('.')[1]);
+
+                const formattedList = [];
+                list.forEach(el => {
+                    const price = Object.assign({}, el);
+                    Object.keys(price).forEach(key => {
+                        if(originalFieldNames.findIndex(name => name === key) < 0) {
+                            delete price[key];
+                        }
+                    });
+                    formattedList.push(price);
+                });
+                return formattedList;
+            };
+            const prices = removePriceNotOriginalFields(selectedVal)
+                .map(price => {
+                    return Object.assign({}, price);
+                });
+            let pricesWithLabel = [];
+            if(options.length){
+                pricesWithLabel = prices.map(({priceType, priceValue, priceCurrency}) => ({
+                    priceType: priceType,
+                    priceValue: priceValue,
+                    priceCurrency: priceCurrency,
+                    label: get(options.find(o => o.value === priceType),'label','')
+                }));
+            }
+
+            return renderFieldTemplate(name, displayName, value, errors, readOnly, required, highlighted, null, ref, (
+                <EditableBaseComponent
+                    ref={ref}
+                    value={value}
+                    originalFieldList={pricesWithLabel}
+                    name={name}
+                    disabled={readOnly}
+                    isArrayOfObject={true}
+                    validate={() => { }}
+                    displayName={displayName}
+                    onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
+                    onCancel={onCancel}
+                    showError={false}
+                    helperComponent={(
+                        <PriceField
+                            prices={pricesWithLabel}
+                            name={name}
+                            onRemoveClick={(price) => deletePrice(price)}
+                            onAddClick={this.toggleAddRightPriceForm}
+                            renderChildren={() => (
+                                <>
+                                    <div style={{position: 'absolute', right: '10px'}}>
+                                        <AddButton onClick={this.toggleAddRightPriceForm}>+</AddButton>
+                                    </div>
+                                    <RightPriceForm
+                                        onSubmit={(e) => addPrice(e)}
+                                        isOpen={this.state.isRightPriceFormOpen}
+                                        onClose={this.toggleRightPriceForm}
+                                        existingPriceList={pricesWithLabel}
+                                        priceIndex={this.state.priceIndex}
+                                        isEdit={this.state.isEdit}
+                                        priceTypeOptions={options}
+                                        priceCurrencyOptions={currencyOptions}
+                                    />
+                                </>
+                            )}
+                        />
+                    )}
+                />
+
+            ));
+        };
+
         const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             {/*let priorityError = null;
             if (error) {
@@ -1304,6 +1484,17 @@ class RightDetails extends React.Component {
                         case DATETIME_FIELDS.BUSINESS_DATETIME: renderFields.push(renderDatepickerField(true, mapping.javaVariableName, mapping.displayName, valueV2, error, readOnly, required, highlighted, false));
                             break;
                         case 'boolean': renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, value, error, readOnly, required, highlighted));
+                            break;
+                        case 'priceType': renderFields.push(
+                            renderPriceField(
+                                mapping.javaVariableName,
+                                mapping.displayName,
+                                this.state.pricing,
+                                Array.isArray(validationErrors) && validationErrors.filter(el => el.fieldName && el.fieldName.includes('pricing')),
+                                readOnly,
+                                required,
+                                highlighted
+                            ));
                             break;
                         case 'territoryType': renderFields.push(
                              renderTerritoryField(

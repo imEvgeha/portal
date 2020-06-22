@@ -28,6 +28,11 @@ class EditableBaseComponent extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
+            // dirty fix for price field
+            if (this.props.displayName === 'Price' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].priceType) {
+                return;
+            }
+
             // dirty fix for territory field
             if (this.props.displayName === 'Territory' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
                 return;
@@ -106,6 +111,8 @@ class EditableBaseComponent extends Component {
         const displayFunc = (value) => {
             const getComplexFieldValue = (name, element) => {
                 switch (name) {
+                    case 'Price':
+                        return element.priceType;
                     case 'Territory':
                         return element.country;
                     case 'Audio Language Types':
@@ -127,7 +134,7 @@ class EditableBaseComponent extends Component {
                 return updatedArr;
             };
 
-            const valueToUse = ['Territory', 'Audio Language Types'].includes(displayName) ? originalFieldList : value;
+            const valueToUse = ['Price', 'Territory', 'Audio Language Types'].includes(displayName) ? originalFieldList : value;
 
             return (
                 <span
@@ -138,7 +145,7 @@ class EditableBaseComponent extends Component {
                     {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
                         <NexusTag
                             key={i}
-                            text={e.country || e.value || `${e.label} / ${e.audioType}`}
+                            text={e.country || e.value || `${e.label}`}
                             value={e}
                         />
                     )) : setSimpleArrayWithError(value) : '' : value}
