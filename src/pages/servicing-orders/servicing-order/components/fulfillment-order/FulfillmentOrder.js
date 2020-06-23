@@ -159,7 +159,7 @@ export const FulfillmentOrder = ({
                     <div className="fulfillment-order">
                         <div className="fulfillment-order__row fulfillment-order__header">
                             <div className="fulfillment-order__title">
-                                <h1>Fulfillment Order</h1>
+                                <div className='fulfillment-order__title--text'>Fulfillment Order</div>
                                 <div>Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
                             </div>
                             <div className="fulfillment-order__save-buttons">

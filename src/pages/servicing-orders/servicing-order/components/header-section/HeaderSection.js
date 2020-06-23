@@ -63,7 +63,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                     <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
                         <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
                     </Link>
-                    <h1>Servicing Order</h1>
+                    <span className="panel-header__title--text">Servicing Order</span>
                 </div>
                 <div className="panel-header__filter">
                     <div onClick={toggleFilters}>

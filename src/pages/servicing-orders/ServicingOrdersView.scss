@@ -6,6 +6,12 @@
   height: 100%;
   @include addSpace('padding', 3);
 
+
+  &__title {
+    font-size: 29px;
+    color: map-get($colors, nexus-title-color);
+  }
+
   &__external-filters {
     display: flex;
     justify-content: flex-end;

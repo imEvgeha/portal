@@ -44,7 +44,7 @@ describe('HeaderSection', () => {
         const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
 
         it('should render header title', () => {
-            expect(wrapper.find('.panel-header .panel-header__title h1').text()).toEqual(
+            expect(wrapper.find('.panel-header__title--text').text()).toEqual(
                 'Servicing Order'
             );
         });
