@@ -89,7 +89,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "cellRendererFramework": [Function],
           "colId": "deliverToVu",
           "field": "deliverToVu",
-          "headerName": "Deliver To VU",
+          "headerName": "Deliver to VU",
         },
         Object {
           "colId": "operationalStatus",

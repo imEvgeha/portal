@@ -131,7 +131,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     // Checkbox
     const checkboxColumn = {
-        headerName: 'Deliver To VU',
+        headerName: 'Deliver to VU',
         colId: 'deliverToVu',
         field: 'deliverToVu',
         cellRendererFramework: ({data}) => {
