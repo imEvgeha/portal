@@ -8,6 +8,11 @@
     h5 {
         margin: 0;
     }
+
+    .ag-cell-value {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 
 .nexus-c-services-table__header {
