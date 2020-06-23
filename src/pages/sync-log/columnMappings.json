@@ -8,6 +8,8 @@
   {
     "colId": "updatedAt",
     "field": "updatedAt",
+    "javaVariableName": "updatedAt",
+    "dataType": "timestamp",
     "headerName": "UpdatedAt",
     "minWidth": 150
   },
@@ -38,6 +40,8 @@
   {
     "colId": "publishedAt",
     "field": "publishedAt",
+    "javaVariableName": "publishedAt",
+    "dataType": "timestamp",
     "headerName": "publishedAt",
     "minWidth": 150
   },
