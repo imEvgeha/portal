@@ -23,14 +23,13 @@ exports[`SelectedRightsActions should match snapshot 1`] = `
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"
+        onClick={null}
       >
         <NexusTooltip
           content="Rights selected must be the same criteria to make the feature available"
           isDisabled={false}
         >
-          <div
-            onClick={null}
-          >
+          <div>
             Bulk Match Titles
           </div>
         </NexusTooltip>
@@ -38,6 +37,7 @@ exports[`SelectedRightsActions should match snapshot 1`] = `
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-unmatch"
+        onClick={false}
       >
         <NexusTooltip
           content="This feature is enabled when: 
