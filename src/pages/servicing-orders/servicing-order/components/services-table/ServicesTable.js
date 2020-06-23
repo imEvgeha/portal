@@ -156,6 +156,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         return get(params.data, params.colDef.dataSource || params.colDef.field, '');
     };
 
+    const disableMappings = () => {
+        return cloneDeep(mappings).map(mapping => ({
+            ...mapping,
+            readOnly: true,
+            enableEdit: false
+            })
+        );
+    };
+
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
@@ -179,7 +188,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 rowData={tableData}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
-                mapping={mappings}
+                mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={SELECT_VALUES}
                 onGridEvent={handleRowDataChange}
             />
