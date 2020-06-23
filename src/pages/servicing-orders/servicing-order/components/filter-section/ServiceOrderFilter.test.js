@@ -28,6 +28,6 @@ describe('SOFilter', () => {
     });
 
     it('renders two select elements', () => {
-        expect(wrapper.find('.so-panel-filter-detail__dropdown-element')).toHaveLength(2);
+        expect(wrapper.find('.so-panel-filter-detail__dropdown')).toHaveLength(2);
     });
 });
