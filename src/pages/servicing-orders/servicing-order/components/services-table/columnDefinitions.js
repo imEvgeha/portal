@@ -18,7 +18,7 @@ const columnDefinitions = [
         colId: 'doNotStartBefore',
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
-        width: 300,
+        width: 320,
         valueFormatter: params =>
             ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME)
         },
