@@ -18,9 +18,10 @@ const columnDefinitions = [
         colId: 'doNotStartBefore',
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
+        width: 320,
         valueFormatter: params =>
-            ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.REGIONAL_MIDNIGHT)
-    },
+            ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME)
+        },
     {
         colId: 'priority',
         field: 'priority',
