@@ -12,14 +12,19 @@ const FulfillmentOrderPanel = ({id, external_id, status, dueDate, selected, hand
             }`}
             onClick={() => handleFulfillmentOrderChange(id)}
         >
-            <div className="nexus-c-fulfillment-order-panel__title">
-                <File className="nexus-c-fulfillment-order-panel__file-icon" />
-                <span title={id} className="nexus-c-fulfillment-order-panel__filename">
-                    {external_id}
-                </span>
-            </div>
-            <div className="nexus-c-fulfillment-order-panel__status">
+            <div className="nexus-c-fulfillment-order-panel__title-and-date">
+                <div className="nexus-c-fulfillment-order-panel__title-container">
+                    <File className="nexus-c-fulfillment-order-panel__file-icon" />
+                    <span title={id} className="nexus-c-fulfillment-order-panel__title">
+                        {external_id}
+                    </span>
+                </div>
                 <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
+            </div>
+            <div className="nexus-c-fulfillment-order-panel__description-and-status">
+                <span className="nexus-c-fulfillment-order-panel__description">
+                    {/* TODO: put description here */}
+                </span>
                 <span>{Constants.STATUS[status]}</span>
             </div>
         </div>
