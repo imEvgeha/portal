@@ -134,8 +134,6 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
                 return query;
             }, {});
 
-
-
         return {
             fieldSearchCriteria: {
                 id,
