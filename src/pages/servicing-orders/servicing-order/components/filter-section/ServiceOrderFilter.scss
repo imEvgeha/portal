@@ -1,46 +1,26 @@
+@import '../../../../../styles/mixins.scss';
+
 .so-panel-filter-detail {
   display: flex;
   flex-direction: column;
   text-align: left;
   justify-content: space-around;
-  font-size: 14px;
-  padding: 10px 15px 15px 60px;
+  @include addSpace('margin-top', 1);
+  @include addSpace('margin-left', 6);
+  @include addSpace('margin-right', 3);
 
-  &__dropdown-element {
-    display: flex;
-    flex-direction: column;
-    & > div {
-      width: 100%;
-      & > div {
-        border: 0;
-      }
-    }
-    & > input {
-      width: 135px;
-      height: 40px;
-      border: 0;
-      padding: 0 10px;
+
+  &__row {
+    margin-bottom: 1rem;
+    @include addSpace('margin-bottom', 1.5);
+
+    &--inline {
+      display: flex;
+      flex-direction: row;
     }
   }
 
-  &__h2 {
-    margin-bottom: 20px;
-  }
 
-  &__info-section {
-    margin-bottom: .8rem;
-  }
-  
-  &__info {
-    margin-bottom: 0;
-  }
-
-  button {
-    width: 60%;
-    margin-top: 5px;
-    color: #42526e;
-    margin-bottom: 10px;
-  }
 
   &__drawer {
     margin-left: 20px;
@@ -49,6 +29,7 @@
 
   &__dropdowns {
     display: flex;
+    margin-top: 1rem;
   }
 
   &__dropdown {
@@ -57,10 +38,5 @@
     &:first-child {
       margin-right: 8px;
     }
-  }
-
-  &__dropdown-title {
-    margin-bottom: 2px;
-    margin-top: 8px;
   }
 }

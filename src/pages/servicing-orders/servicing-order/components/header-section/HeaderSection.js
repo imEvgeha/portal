@@ -19,7 +19,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     const [showFilter, setShowFilter] = useState(true);
     const [filter, setFilter] = useState({ value: 'All', label: 'All' });
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
-    
+
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
         let filteredList = [];
@@ -63,7 +63,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                     <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
                         <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
                     </Link>
-                    <span className="panel-header__title--text">Servicing Order</span>
+                    <h1>Servicing Order</h1>
                 </div>
                 <div className="panel-header__filter">
                     <div onClick={toggleFilters}>
