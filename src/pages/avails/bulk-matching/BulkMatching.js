@@ -13,6 +13,7 @@ const BulkMatching = ({data, headerTitle}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [activeTab, setActiveTab] = useState(false);
+    const [totalCount, setTotalCount] = useState(0);
 
     const changeActiveTab = () => {
         setActiveTab(!activeTab);
@@ -63,7 +64,18 @@ const BulkMatching = ({data, headerTitle}) => {
                 {TITLE_MATCHING_MSG}
                 <Button spacing="none" appearance="link">New Title</Button>
             </SectionMessage>
-            <RightsMatchingTitlesTable data={selectedTableData} />
+            <div className="nexus-c-bulk-matching__titles-table-header">
+                <div className="nexus-c-bulk-matching__titles-table-header-title">Titles ({totalCount})</div>
+                <Button
+                    className="nexus-c-bulk-matching__titles-table-selected-btn"
+                    onClick={() => null}
+                >Selected(0)
+                </Button>
+            </div>
+            <RightsMatchingTitlesTable
+                data={selectedTableData}
+                setTotalCount={setTotalCount}
+            />
         </div>
     );
 };

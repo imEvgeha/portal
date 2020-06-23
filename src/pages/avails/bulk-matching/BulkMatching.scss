@@ -43,3 +43,19 @@
         color: map-get($colors, nexus-title-color);
     }
 }
+
+.nexus-c-bulk-matching__titles-table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.nexus-c-bulk-matching__titles-table-selected-btn {
+    margin-left: auto;
+}
+
+.nexus-c-bulk-matching__titles-table-header-title {
+    font-size: 16px;
+    color: map-get($colors, nexus-title-color);
+}
