@@ -110,15 +110,29 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             return switchCase(fieldValues)(value)(criteria);
         };
 
-        const result = searchCriteria.reduce((query, field) => {
-            const {targetFieldName, fieldName, subFieldName, criteria} = field;
-            const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
-            const fieldValue = targetFieldName || fieldName;
-            const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
-            const key = parseFieldNames(criteria, preparedName);
-            query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
-            return query;
-        }, {});
+        // This was added to exclude custom filters which were causing issues with ag-grid
+        // Check http://agile.vubiquity.com/browse/PORT-2530
+        const criteriaToBeApplied = [
+            'Title',
+            'ContentType',
+            'Licensor',
+            'Licensee',
+            'LicenseType',
+            'PlatformCategory',
+            'ReleaseYear',
+            'LicenseRightsDescription'
+        ];
+        let result = searchCriteria.filter(({fieldName}) => criteriaToBeApplied.includes(fieldName))
+            .reduce((query, field) => {
+                const {targetFieldName, fieldName, subFieldName, criteria} = field;
+                const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
+                const fieldValue = targetFieldName || fieldName;
+                const preparedFieldValue = payload[`${fieldValue.slice(0, 1).toLowerCase()}${fieldValue.slice(1)}`];
+                const key = parseFieldNames(criteria, preparedName);
+                query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
+
+                return query;
+            }, {});
 
         return {
             fieldSearchCriteria: {
