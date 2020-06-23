@@ -61,7 +61,7 @@ const BulkMatching = ({data, headerTitle}) => {
             />
             <SectionMessage>
                 {TITLE_MATCHING_MSG}
-                <Button spacing="none" appearance="link"> New Title</Button>
+                <Button spacing="none" appearance="link">New Title</Button>
             </SectionMessage>
             <RightsMatchingTitlesTable data={selectedTableData} />
         </div>

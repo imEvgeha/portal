@@ -36,10 +36,10 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
     border-bottom: $border;
     background: rgba(map_get($colors, nexus-title-color), .1);
 
-    &--word-wrapped {
-        overflow-wrap: break-word;
-        word-wrap: break-word;
-        word-break: break-all;
-        hyphens: auto;
-    }
+    // fixes content leaking from all table cells
+    // see http://agile.vubiquity.com/browse/PORT-2513
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    hyphens: auto;
 }
