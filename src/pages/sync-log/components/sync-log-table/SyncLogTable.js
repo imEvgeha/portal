@@ -28,12 +28,13 @@ const SyncLogTable = () => {
 
     return (
         <div className="nexus-c-sync-log-table">
-            <Button
-                className="nexus-c-sync-log-table__download-button"
-                onClick={() => {/* XML Download action */}}
-            >
-                {DOWNLOAD_BTN}
-            </Button>
+            <div className="nexus-c-sync-log-table__actions">
+                <Button
+                    onClick={() => {/* XML Download action */}}
+                >
+                    {DOWNLOAD_BTN}
+                </Button>
+            </div>
             <SyncLogGrid
                 className="nexus-c-sync-log-grid"
                 columnDefs={updateColumnDefs(columnMappings)}
