@@ -1,9 +1,10 @@
 @import '@atlaskit/css-reset'; // TODO: This needs to be added to global when legacy components are removed
 @import '../../styles/config';
+@import '../../styles/mixins';
 
 .nexus-c-servicing-orders{
   height: 100%;
-  padding: 24px 0 0;
+  @include addSpace('padding', 3);
 
   &__title {
     font-size: 29px;
@@ -15,7 +16,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    font-size: 14px;
+    margin-right: 1rem;
 
     button {
       margin-left: 5px;

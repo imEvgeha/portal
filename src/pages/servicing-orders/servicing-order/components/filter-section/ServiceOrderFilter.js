@@ -26,70 +26,68 @@ const ServiceOrderFilter = ({
     })));
     return (
         <div className="so-panel-filter-detail">
-            <div className="so-panel-filter-detail__info-section">
-                <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+            <div className="so-panel-filter-detail__row">
+                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
                     Customer: {tenant}
-                </p>
+                </div>
 
-                <p className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
                     Order ID: {external_id}
-                </p>
+                </div>
             </div>
 
             {description !== null && (
-                <div className="so-panel-filter-detail__info-section">
-                    <p className="so-panel-filter-detail__info so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                <div className="so-panel-filter-detail__row">
+                    <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
                         Description: {description}
-                    </p>
+                    </div>
                 </div>
             )}
+            <div className="so-panel-filter-detail__row">
+                <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
+                <NexusDrawer
+                    isOpen={isDrawerOpen}
+                    onClose={() => setIsDrawerOpen(false)}
+                    width="extended"
+                    title="Partner Request"
+                >
+                    <PartnerRequest
+                        externalId={external_id}
+                        configuredPrId={configured_pr_id}
+                    />
+                </NexusDrawer>
+            </div>
 
-            <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
-            <NexusDrawer
-                isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen(false)}
-                width="extended"
-                title="Partner Request"
-            >
-                <PartnerRequest
-                    externalId={external_id}
-                    configuredPrId={configured_pr_id}
+            <div className="so-panel-filter-detail__row">
+                <NexusDatePicker
+                    id="dueDate"
+                    label="SO Due Date"
+                    value={getValidDate(sr_due_date)}
+                    isDisabled
+                    isReturningTime={false}
+                    onChange={() => {}}
                 />
-            </NexusDrawer>
-            <NexusDatePicker
-                id="dueDate"
-                label="SO Due Date"
-                value={getValidDate(sr_due_date)}
-                isDisabled
-                isReturningTime={false}
-                onChange={() => {}}
-            />
-            <div className="so-panel-filter-detail__dropdowns">
+            </div>
+            <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">
-                    <p className="so-panel-filter-detail__dropdown-title nexus-c-table-toolbar__title--is-active">
-                        Status Filter
-                    </p>
-                    <div className="so-panel-filter-detail__dropdown-element">
-                        <Select
-                            options={FilterList}
-                            onChange={setFilter}
-                            value={filter}
-                            placeholder="Select Status"
-                        />
-                    </div>
+                    <label>Status Filter</label>
+                    <Select
+                        options={FilterList}
+                        onChange={setFilter}
+                        value={filter}
+                        placeholder="Select Status"
+                    />
+
                 </div>
                 <div className="so-panel-filter-detail__dropdown">
-                    <p className="so-panel-filter-detail__dropdown-title nexus-c-table-toolbar__title--is-active">
-                        Sort by Due Date
-                    </p>
-                    <div className="so-panel-filter-detail__dropdown-element">
-                        <Select
-                            options={SORT_DIRECTION}
-                            onChange={setDueDateSortDirection}
-                            value={dueDateSortDirection}
-                            placeholder="Select Date"
-                        />
-                    </div>
+                    <label>Sort by Due Date</label>
+                    <Select
+                        options={SORT_DIRECTION}
+                        onChange={setDueDateSortDirection}
+                        value={dueDateSortDirection}
+                        placeholder="Select Date"
+                    />
+
                 </div>
             </div>
         </div>
