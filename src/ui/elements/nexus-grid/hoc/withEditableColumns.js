@@ -9,6 +9,7 @@ import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 import {isObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
+import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
 import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 const DEFAULT_HOC_PROPS = [
@@ -17,6 +18,7 @@ const DEFAULT_HOC_PROPS = [
     'selectValues',
 ];
 const DEFAULT_EDITABLE_DATA_TYPES = [
+    'priceType',
     'audioLanguageType',
     'boolean',
     DATETIME_FIELDS.TIMESTAMP,
@@ -93,6 +95,15 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = DateTimeCellEditor;
                             // Check the comment above for 'date' field and PORT-1393
                             columnDef.suppressKeyboardEvent = params => params.event.key === 'Enter';
+                            break;
+                        case 'priceType':
+                            columnDef.cellEditorFramework = PriceTypeCellEditor;
+                            columnDef.cellEditorParams = {
+                                options: {
+                                    priceTypes: (isObject(selectValues) && selectValues['pricing.priceType']) || [],
+                                    currencies: (isObject(selectValues) && selectValues['pricing.priceCurrency']) || [],
+                                },
+                            };
                             break;
                         case 'territoryType':
                             columnDef.cellEditorFramework = TerritoryCellEditor;
