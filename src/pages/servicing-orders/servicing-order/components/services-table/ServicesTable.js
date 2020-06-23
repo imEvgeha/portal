@@ -75,7 +75,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     const closeButtonColumn = defineButtonColumn({
         cellRendererFramework: closeButtonCell,
-        cellRendererParams: services && services[`${providerServices}`]
+        cellRendererParams: services && services[providerServices]
     });
 
     const handleRowDataChange = ({rowIndex, type, data}) => {
@@ -100,7 +100,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     };
 
     const setDeliverToId = (deliverToVu, index) => {
-        const deliverToId = !!originalServices[providerServices][index] && originalServices[providerServices][index].deteTasks.deteDeliveries.externalDelivery.deliverToId;
+        const deliverToId = get(originalServices, [providerServices, index, 'deteTasks', 'deteDeliveries', 'externalDelivery', 'deliverToId'], '');
         if (deliverToVu) {
             return 'VU';
         } else {
@@ -161,8 +161,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             ...mapping,
             readOnly: true,
             enableEdit: false
-            })
-        );
+        }));
     };
 
     return (
