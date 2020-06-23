@@ -1,30 +1,42 @@
+import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+
 const columnDefinitions = [
     {
-        colId: 'externalServices',
-        field: 'externalServices',
-        dataSource: 'externalServices.externalId',
+        colId: 'componentId',
+        field: 'componentId',
+        dataSource: 'componentId',
         headerName: 'Component ID',
     },
     {
         colId: 'spec',
         field: 'spec',
-        dataSource: 'externalServices.formatType',
+        dataSource: 'spec',
         headerName: 'Spec',
     },
     {
-        colId: 'addRecipient',
-        field: 'addRecipient',
-        dataSource: 'deteTasks.deteDeliveries.externalDelivery.deliverToId',
-        headerName: 'Add recipient',
-    },
-    {
-        colId: 'overrideDueDate',
-        field: 'overrideDueDate',
+        colId: 'doNotStartBefore',
+        field: 'doNotStartBefore',
         headerName: 'Do not start before',
+        width: 320,
+        valueFormatter: params =>
+            ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME)
+        },
+    {
+        colId: 'priority',
+        field: 'priority',
+        dataSource: 'priority',
+        headerName: 'Priority',
     },
     {
-        colId: 'status',
-        field: 'status',
+        colId: 'deliverToVu',
+        field: 'deliverToVu',
+        dataSource: 'deliverToVu',
+        headerName: 'Deliver to VU',
+    },
+    {
+        colId: 'operationalStatus',
+        field: 'operationalStatus',
         headerName: 'Operational Status',
     }
 ];

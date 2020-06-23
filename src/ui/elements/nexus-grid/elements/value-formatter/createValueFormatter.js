@@ -34,6 +34,15 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 };
             }
 
+        case 'priceType':
+            return (params) => {
+                const {data = {}} = params || {};
+                if (data && Array.isArray(data[javaVariableName])) {
+                    return data[javaVariableName]
+                        .filter(Boolean)
+                        .map(e => String(`${e.priceType} ${e.priceValue}`)).join(', ');
+                }
+            };
         case 'territoryType':
         case 'audioLanguageType':
             return (params) => {
@@ -99,6 +108,20 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 };
             }
             return;
+        case 'boolean':
+            return ({ value }) => {
+                // HACK: ag-grid converts boolean values to string when calling this function to format the filter
+                switch (value) {
+                    case true:
+                    case 'true':
+                        return 'Yes';
+                    case false:
+                    case 'false':
+                        return 'No';
+                    default:
+                        return value;
+                }
+            };
         default:
             return null;
     }

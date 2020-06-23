@@ -6,8 +6,9 @@ $width: (
   medium: 480px,
   narrow: 360px,
   wide: 800px,
+  wider: 60vw,
 );
-$sizes: full, narrow, extended, medium, wide;
+$sizes: full, narrow, extended, medium, wide, wider;
 
 .nexus-c-drawer {
   position: absolute;

@@ -140,19 +140,19 @@ class CoreMetadataReadOnlyMode extends Component {
                                     { (externalIds.eidrTitleId ||  externalIds.tmsId) && (
                                     <Row style={{ marginTop: '10px' }}>
                                         {
-                                                    externalIds.eidrTitleId ? (
-                                                        <Col>
-                                                            <Alert color='light'><b style={{ color: '#000' }}>EIDR Title ID: </b> {externalIds ? externalIds.eidrTitleId : null}</Alert>
-                                                        </Col>
-                                                      ) : null
-                                                }
+                                            externalIds.eidrTitleId ? (
+                                                <Col>
+                                                    <Alert color='light'><b style={{ color: '#000' }}>EIDR Title ID: </b> {externalIds ? externalIds.eidrTitleId : null}</Alert>
+                                                </Col>
+                                            ) : null
+                                        }
                                         {
-                                                    externalIds.tmsId ? (
-                                                        <Col>
-                                                            <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {externalIds ? externalIds.tmsId : null}</Alert>
-                                                        </Col>
-                                                      ) : null
-                                                }
+                                            externalIds.tmsId ? (
+                                                <Col>
+                                                    <Alert color='light'><b style={{ color: '#000' }}>TMS ID: </b> {externalIds ? externalIds.tmsId : null}</Alert>
+                                                </Col>
+                                            ) : null
+                                        }
                                     </Row>
                                           )}
                                     {(externalIds.eidrEditId || externalIds.xfinityMovieId) && (
@@ -207,7 +207,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                             }
                                         </Row>
                                       )}
-                                    {(externalIds.isan || externalIds.overrideMsvAssociationId) && (
+                                    {externalIds.isan && (
                                         <Row style={{marginTop: '10px'}}>
                                             {
                                                 externalIds.isan ? (
@@ -216,17 +216,6 @@ class CoreMetadataReadOnlyMode extends Component {
                                                             <b style={{color: '#000'}}>
                                                                 ISAN:
                                                             </b> {externalIds ? externalIds.isan : null}
-                                                        </Alert>
-                                                    </Col>
-                                                  ) : null
-                                            }
-                                            {
-                                                externalIds.overrideMsvAssociationId ? (
-                                                    <Col>
-                                                        <Alert color='light'>
-                                                            <b style={{color: '#000'}}>
-                                                                Override MSV Association ID:
-                                                            </b> {externalIds ? externalIds.overrideMsvAssociationId : null}
                                                         </Alert>
                                                     </Col>
                                                   ) : null
@@ -317,6 +306,18 @@ class CoreMetadataReadOnlyMode extends Component {
                                     </Col>
                                 </Row>
                             )}
+                            <Row>
+                                {externalIds && externalIds.msvAssociationId ? (
+                                    <Col>
+                                        <Alert color='light'>
+                                            <b style={{color: '#000'}}>
+                                                MSV Association ID:
+                                            </b> {externalIds.msvAssociationId.join(',')}
+                                        </Alert>
+                                    </Col>
+                                ) : null }
+                            </Row>
+
                         </div>
                     </>
                   )

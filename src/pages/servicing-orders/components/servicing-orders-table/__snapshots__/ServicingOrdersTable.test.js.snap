@@ -79,14 +79,14 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "rush_order",
-          "dataType": "boolean",
+          "dataType": "string",
           "displayName": "Rush",
           "enableSearch": true,
           "field": "rush_order",
           "headerName": "Rush",
           "javaVariableName": "rush_order",
-          "searchDataType": "boolean",
-          "valueFormatter": undefined,
+          "searchDataType": "string",
+          "valueFormatter": [Function],
           "width": 100,
         },
         Object {
@@ -199,13 +199,13 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
         Object {
           "colId": "rush_order",
-          "dataType": "boolean",
+          "dataType": "string",
           "displayName": "Rush",
           "enableSearch": true,
           "field": "rush_order",
           "headerName": "Rush",
           "javaVariableName": "rush_order",
-          "searchDataType": "boolean",
+          "searchDataType": "string",
           "width": 100,
         },
         Object {

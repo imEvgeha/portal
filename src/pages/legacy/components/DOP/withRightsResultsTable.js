@@ -34,6 +34,13 @@ const withRightsResultsTable = BaseComponent => {
                             return ISODateToView(data[javaVariableName], dataType);
                         }
                     };
+                    case 'priceType':
+                        return (params) => {
+                            const {data} = params;
+                            if(data && Array.isArray(data[column.javaVariableName])) {
+                                return data[column.javaVariableName].map(e => String(`${e.priceType} ${e.priceValue}`)).join(', ');
+                            }
+                        };
                     case 'territoryType':
                     case 'audioLanguageType':
                         return (params) => {

@@ -33,16 +33,6 @@ export const COLUMN_KEYS = [
     'materialNotes'
 ];
 
-export const FILTER_LIST = [
-    { value: 'All', label: 'All' },
-    { value: 'new', label: 'New' },
-    { value: 'accepted', label: 'Accepted' },
-    { value: 'rejected', label: 'Rejected' },
-    { value: 'complete', label: 'Complete' },
-    { value: 'canceled', label: 'Canceled' },
-    { value: 'failed', label: 'Failed' }
-];
-
 export const SORT_DIRECTION = [
     { value: 'NONE', label: 'None' },
     { value: 'ASCENDING', label: 'Ascending' },

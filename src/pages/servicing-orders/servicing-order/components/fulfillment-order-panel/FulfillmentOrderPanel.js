@@ -1,23 +1,31 @@
-import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import './FulfillmentOrderPanel.scss';
+import React from 'react';
 import File from '../../../../../assets/file.svg';
-import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import Constants from '../fulfillment-order/constants';
+import './FulfillmentOrderPanel.scss';
 
 const FulfillmentOrderPanel = ({id, external_id, status, dueDate, selected, handleFulfillmentOrderChange}) => {
-
     return (
         <div
-            className={`nexus-c-fulfillment-order-panel  ${selected ? 'nexus-c-fulfillment-order-panel--is-selected' : ''}`}
+            className={`nexus-c-fulfillment-order-panel  ${
+                selected ? 'nexus-c-fulfillment-order-panel--is-selected' : ''
+            }`}
             onClick={() => handleFulfillmentOrderChange(id)}
         >
-            <div className='nexus-c-fulfillment-order-panel__title'>
-                <File className='nexus-c-fulfillment-order-panel__file-icon' />
-                <span title={id} className='nexus-c-fulfillment-order-panel__filename'>{external_id}</span>
+            <div className="nexus-c-fulfillment-order-panel__title-and-date">
+                <div className="nexus-c-fulfillment-order-panel__title-container">
+                    <File className="nexus-c-fulfillment-order-panel__file-icon" />
+                    <span title={id} className="nexus-c-fulfillment-order-panel__title">
+                        {external_id}
+                    </span>
+                </div>
+                <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
             </div>
-            <div className='nexus-c-fulfillment-order-panel__status'>
-                <span className='nexus-c-fulfillment-order-panel__date'>Due Date: {dueDate}</span>
-                <StatusTag status={status.toUpperCase().replace('-','_')} />
+            <div className="nexus-c-fulfillment-order-panel__description-and-status">
+                <span className="nexus-c-fulfillment-order-panel__description">
+                    {/* TODO: put description here */}
+                </span>
+                <span>{Constants.STATUS[status]}</span>
             </div>
         </div>
     );
@@ -36,7 +44,7 @@ FulfillmentOrderPanel.defaultProps = {
     handleFulfillmentOrderChange: () => null,
     status: '',
     dueDate: '',
-    selected: false,
+    selected: false
 };
 
 export default FulfillmentOrderPanel;

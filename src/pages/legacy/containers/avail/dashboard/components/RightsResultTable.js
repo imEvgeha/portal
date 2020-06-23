@@ -228,6 +228,17 @@ class RightsResultTable extends React.Component {
                     } else {
                         return null;
                     }
+                case 'priceType':
+                    return ({data = {}}) => {
+                        if (data && Array.isArray(data[javaVariableName])) {
+                            const cellValue = data[javaVariableName]
+                                .map(e => String(`${e.priceType} ${e.priceValue}`))
+                                .join(', ');
+                            return cellValue || undefined;
+                        } else {
+                            return undefined;
+                        }
+                    };
                 case 'territoryType' :
                 case 'audioLanguageType':
                     return ({data = {}}) => {
@@ -239,7 +250,7 @@ class RightsResultTable extends React.Component {
                         } else {
                             return undefined;
                         }
-                };
+                    };
                 default: return null;
             }
         };

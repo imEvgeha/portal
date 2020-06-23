@@ -1,32 +1,32 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {Button, Input, Label} from 'reactstrap';
+import {AvField, AvForm} from 'availity-reactstrap-validation';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
+import BlockUi from 'react-block-ui';
+import Select from 'react-select';
 import {store} from '../../../../../index';
 import {blockUI} from '../../../stores/actions/index';
-import BlockUi from 'react-block-ui';
-import {Button, Input, Label} from 'reactstrap';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
-import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import {rightsService} from '../service/RightsService';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import Select from 'react-select';
-import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {momentToISO, safeTrim, URL} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
-
+import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
+import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
 import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import PriceField from '../components/PriceField';
 import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
-
 
 const mapStateToProps = state => {
     return {
@@ -49,6 +49,7 @@ class RightCreate extends React.Component {
         this.mappingErrorMessage = {};
         this.right = {};
         this.state = {
+            isRightPriceFormOpen: false,
             isRightTerritoryFormOpen: false,
             isRightAudioLanguageFormOpen: false
         };
@@ -295,6 +296,12 @@ class RightCreate extends React.Component {
 
         this.mappingErrorMessage =  mappingErrorMessage;
     };
+
+    toggleRightPriceForm = () => {
+        this.setState({
+            isRightPriceFormOpen: !this.state.isRightPriceFormOpen
+        });
+    }
 
     toggleRightTerritoryForm = () => {
         this.setState({
@@ -662,6 +669,53 @@ class RightCreate extends React.Component {
             ));
         };
 
+        const renderPriceField = (name, displayName, required, value) => {
+            let priceTypeOptions = [], priceCurrencyOptions = [];
+            let val;
+
+            if(this.props.selectValues && this.props.selectValues['pricing.priceType']){
+                priceTypeOptions  = this.props.selectValues['pricing.priceType'];
+            }
+            if (this.props.selectValues && this.props.selectValues['pricing.priceCurrency']) {
+                priceCurrencyOptions = this.props.selectValues['pricing.priceCurrency'];
+            }
+
+            priceTypeOptions = priceTypeOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
+                label: rec.label || rec.value,
+                aliasValue:(rec.aliasId ? (priceTypeOptions.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? priceTypeOptions.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+
+            if(priceTypeOptions.length > 0 && value){
+                val = value;
+                if(!required) {
+                    priceTypeOptions.unshift({value: '', label: value ? 'Select...' : ''});
+                }
+            }
+            return renderFieldTemplate(name, displayName, required, null, (
+                <PriceField
+                    prices={this.right.pricing}
+                    name={name}
+                    onRemoveClick={(price) => this.handleDeleteObjectFromArray(price.priceType, 'pricing', 'priceType')}
+                    onAddClick={this.toggleRightPriceForm}
+                    renderChildren={() => (
+                        <>
+                            <div style={{position: 'absolute', right: '10px'}}>
+                                <AddButton onClick={this.toggleRightPriceForm}>+</AddButton>
+                            </div>
+                            <RightPriceForm
+                                onSubmit={(e) => this.handleArrayPush(e, 'pricing')}
+                                isOpen={this.state.isRightPriceFormOpen}
+                                onClose={this.toggleRightPriceForm}
+                                data={val}
+                                priceTypeOptions={priceTypeOptions}
+                                priceCurrencyOptions={priceCurrencyOptions}
+                            />
+                        </>
+                    )}
+                    mappingErrorMessage={this.mappingErrorMessage}
+                />
+            ));
+        };
+
         const renderTerritoryField = (name, displayName, required, value) => {
             let options = [];
             let val;
@@ -813,6 +867,8 @@ class RightCreate extends React.Component {
                             break;
                         case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
+                        case 'priceType': renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
+                            break;
                         case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
                         case 'audioLanguageType': renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));

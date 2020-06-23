@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import { AvField } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 import { configFields, searchPerson } from '../../../service/ConfigService';
@@ -30,6 +31,7 @@ import {
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
+import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
 
 const mapStateToProps = state => {
     return {
@@ -42,8 +44,9 @@ class CoreMetadataEditMode extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ratings: []
-        };    
+            ratings: [],
+            externalIDs: {},
+        };
     }
 
     handleRatingSystemValue = (e) => {
@@ -76,7 +79,14 @@ class CoreMetadataEditMode extends Component {
                 .then(res => getFilteredCrewList(res.data, true).map(e => {return {id: e.id, name: e.displayName, byline: e.personType.toString().toUpperCase(), original: JSON.stringify(e)};})
             );
         }
-    };  
+    };
+
+    handleMSVIDs = data =>  {
+        /* TODO: modify to save data locally or in the consumer component to send saved data to put api */
+       this.setState({
+            externalIDs: { ...this.state.externalIDs, msvAssociationId: data}
+        });
+    }
 
     render() {
         return (
@@ -314,24 +324,6 @@ class CoreMetadataEditMode extends Component {
                     }}
                             />
                         </Col>
-                        <Col md={1}>
-                            <Label for='overrideMsvAssociationId'>
-                                Override MSV Association ID
-                            </Label>
-                        </Col>
-                        <Col>
-                            <AvField
-                                type='text'
-                                onChange={e => this.props.handleOnExternalIds(e)}
-                                name='overrideMsvAssociationId'
-                                id='overrideMsvAssociationId'
-                                value={this.props.data.externalIds ? this.props.data.externalIds.overrideMsvAssociationId : ''}
-                                placeholder='Override MSV Association ID'
-                                validate={{
-                      maxLength: { value: 200 }
-                    }}
-                            />
-                        </Col>
                     </Row>
                     <Row style={{ marginTop: '10px' }}>
                         <Col md={1}>
@@ -448,6 +440,14 @@ class CoreMetadataEditMode extends Component {
                                 maxLength: { value: 200 }
                             }}
                         />
+                    </Col>
+                    <Col md={2}>
+                        <Label for='overrideMsvAssociationId'>
+                            MSV Association ID
+                        </Label>
+                    </Col>
+                    <Col>
+                        <NexusTagsContainer data={ get(this.props, 'data.externalIds.msvAssociationId', []) } saveData={this.handleMSVIDs} />
                     </Col>
                 </div>
             </>

@@ -17,7 +17,8 @@ module.exports = {
     appServerJs: resolveApp('src/server.js'),
     appPackageJson: resolveApp('package.json'),
     appSrc: resolveApp('src'),
-    testsSetup: resolveApp('src/setupTests.js'),
+    testEnvSetup: resolveApp('src/setupTestEnv.js'),
+    testFrameworkSetup: resolveApp('src/setupTestFramework.js'),
     appNodeModules: resolveApp('node_modules'),
     publicUrl: getPublicUrl(resolveApp('package.json')),
 };

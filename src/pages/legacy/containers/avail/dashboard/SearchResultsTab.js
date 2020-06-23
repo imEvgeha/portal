@@ -42,7 +42,7 @@ const mapStateToProps = state => {
         reportName: state.dashboard.session.reportName,
         availsMapping: state.root.availsMapping,
         avails: state.dashboard.availTabPage.avails,
-        selectedAvails: state.dashboard.session.availTabPageSelection.selected,
+        selectedRights: state.dashboard.session.availTabPageSelection.selected,
     };
 };
 
@@ -116,7 +116,7 @@ class SearchResultsTab extends React.Component {
                             </span>
                             <Selected toggleShowSelected={this.toggleShowSelected} />
                             <span className="nx-container-margin table-top-text">
-                                <RightViewHistory selectedAvails={this.props.selectedAvails} />
+                                <RightViewHistory selectedAvails={this.props.selectedRights} />
                             </span>
                             {this.props.showSelectedAvails && (
                                 <a href="#" onClick={this.toggleShowSelected}>
@@ -184,7 +184,7 @@ SearchResultsTab.propTypes = {
     resultPageShowSelected: PropTypes.func,
     showSelectedAvails: PropTypes.bool,
     avails: PropTypes.array,
-    selectedAvails: PropTypes.array
+    selectedRights: PropTypes.array
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 

@@ -3,22 +3,23 @@
 $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
 
 .nexus-c-partner-request {
-  padding: 0 20px;
+    padding: 0 20px;
+}
 
-  &__info-field {
+.nexus-c-partner-request__info-field {
     color: map-get($colors, nexus-title-color);
-  }
+}
 
-  &__table {
+.nexus-c-partner-request__table {
     margin-top: 20px;
     display: grid;
     grid-template-rows: 2em repeat(auto-fill, minmax(0, auto));
     grid-template-columns: repeat(11, minmax(0, auto));
     border: $border;
     border-right: none;
-  }
+}
 
-  &__table-column-header {
+.nexus-c-partner-request__table-column-header {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -27,12 +28,18 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
     border-bottom: $border;
     border-right: $border;
     padding: 5px;
-  }
+}
 
-  &__table-cell {
+.nexus-c-partner-request__table-cell {
     padding: 5px;
     border-right: $border;
     border-bottom: $border;
     background: rgba(map_get($colors, nexus-title-color), .1);
-  }
+
+    // fixes content leaking from all table cells
+    // see http://agile.vubiquity.com/browse/PORT-2513
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    hyphens: auto;
 }

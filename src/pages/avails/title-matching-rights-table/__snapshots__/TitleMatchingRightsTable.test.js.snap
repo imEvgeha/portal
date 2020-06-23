@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMatchingRightsTable should match snapshot 1`] = `
+<div
+  className="nexus-c-title-matching-rights-table"
+>
+  <NexusGrid
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "title",
+          "field": "title",
+          "headerName": "Title",
+        },
+        Object {
+          "colId": "releaseYear",
+          "field": "releaseYear",
+          "headerName": "Release Year",
+          "width": 120,
+        },
+        Object {
+          "colId": "licensor",
+          "field": "licensor",
+          "headerName": "Licensor",
+          "width": 120,
+        },
+        Object {
+          "colId": "coreTitleId",
+          "field": "coreTitleId",
+          "headerName": "Core Title Id",
+        },
+        Object {
+          "colId": "totalRuntime",
+          "field": "totalRuntime",
+          "headerName": "Runtime",
+          "width": 120,
+        },
+        Object {
+          "colId": "rightStatus",
+          "field": "rightStatus",
+          "headerName": "Right Status",
+          "width": 120,
+        },
+        Object {
+          "colId": "status",
+          "field": "status",
+          "headerName": "Status",
+          "width": 120,
+        },
+        Object {
+          "colId": "licenseType",
+          "field": "licenseType",
+          "headerName": "License Type",
+          "width": 120,
+        },
+        Object {
+          "colId": "territory",
+          "field": "territory",
+          "headerName": "Country",
+          "width": 120,
+        },
+        Object {
+          "colId": "contentType",
+          "field": "contentType",
+          "headerName": "Content Type",
+          "width": 120,
+        },
+        Object {
+          "colId": "seasonNumber",
+          "field": "seasonNumber",
+          "headerName": "Season Number",
+          "width": 150,
+        },
+        Object {
+          "colId": "episodeNumber",
+          "field": "episodeNumber",
+          "headerName": "Episode Number",
+          "width": 150,
+        },
+        Object {
+          "colId": "format",
+          "field": "format",
+          "headerName": "Format",
+          "width": 100,
+        },
+      ]
+    }
+    domLayout="autoHeight"
+    isGridHidden={false}
+    mapping={
+      Array [
+        Object {
+          "dataType": "string",
+          "displayName": "Title",
+          "javaVariableName": "title",
+          "queryParamName": "title",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "year",
+          "displayName": "Release Year",
+          "javaVariableName": "releaseYear",
+          "queryParamName": "releaseYear",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "year",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Licensor",
+          "javaVariableName": "licensor",
+          "queryParamName": "licensor",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Core Title Id",
+          "javaVariableName": "coreTitleId",
+          "queryParamName": "coreTitleId",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Runtime",
+          "javaVariableName": "totalRuntime",
+          "queryParamName": "totalRuntime",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Right Status",
+          "javaVariableName": "rightStatus",
+          "queryParamName": "rightStatus",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Status",
+          "javaVariableName": "status",
+          "queryParamName": "status",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "License Type",
+          "javaVariableName": "licenseType",
+          "queryParamName": "licenseType",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Country",
+          "javaVariableName": "territory",
+          "queryParamName": "territory",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Content Type",
+          "javaVariableName": "contentType",
+          "queryParamName": "contentType",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Season Number",
+          "javaVariableName": "seasonNumber",
+          "queryParamName": "seasonNumber",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Episode Number",
+          "javaVariableName": "episodeNumber",
+          "queryParamName": "episodeNumber",
+          "readOnly": true,
+          "required": false,
+          "searchDataType": "string",
+        },
+        Object {
+          "dataType": "string",
+          "displayName": "Format",
+          "javaVariableName": "format",
+          "queryParamName": "format",
+          "readOnly": true,
+          "required": true,
+          "searchDataType": "string",
+        },
+      ]
+    }
+    onGridEvent={null}
+    onSelectionChanged={[Function]}
+    rowData={Array []}
+    rowSelection="single"
+    setRowData={null}
+  />
+</div>
+`;

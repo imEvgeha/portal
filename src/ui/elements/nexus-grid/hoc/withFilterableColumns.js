@@ -21,6 +21,7 @@ import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/Cu
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
+import PriceTypeFormSchema from '../../../../pages/legacy/components/form/PriceTypeSearchFormSchema';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 
@@ -113,8 +114,8 @@ const withFilterableColumns = ({
         const initializeValues = () => {
             //initialize all columns filters with values
             waitForFilter = 0;
-            setIsDatasourceEnabled(false);
             if (gridApi && Array.isArray(mapping) && mapping.length) {
+                setIsDatasourceEnabled(false);
                 //union of keys for column filter and fixed filter
                 const keys = [...new Set([...filters ? Object.keys(filters) : [], ...fixedFilter ? Object.keys(fixedFilter) : []])];
                 keys.forEach(key => {
@@ -153,7 +154,7 @@ const withFilterableColumns = ({
                     }
                     const filterInstance = gridApi && gridApi.getFilterInstance(field);
                     const {TEXT, NUMBER, SET, CUSTOM_DATE, CUSTOM_COMPLEX, CUSTOM_READONLY, CUSTOM_FLOAT_READONLY} = AG_GRID_COLUMN_FILTER;
-                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
+                    const {BOOLEAN, INTEGER, DOUBLE, YEAR, MULTISELECT, PRICE, TERRITORY, AUDIO_LANGUAGE, TIMESTAMP, BUSINESS_DATETIME, REGIONAL_MIDNIGHT, READONLY} = FILTER_TYPE;
                     if(!locked) {
                         if(filterInstance && searchDataType !== READONLY && filterInstance.reactComponent === CustomReadOnlyFilter){
                             //if current filter is readonly (it just got unlocked) destroy to create the proper one
@@ -175,7 +176,7 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             case BOOLEAN:
-                                columnDef.filter = TEXT;
+                                columnDef.filter = SET;
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
                                     values: [false, true]
@@ -202,6 +203,26 @@ const withFilterableColumns = ({
                                 columnDef.keyCreator = params => {
                                     const countries = params.value.map(({country}) => country);
                                     return countries;
+                                };
+                                break;
+                            case PRICE:
+                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                                const priceTypes = getFilterOptions(`${field}.priceType`);
+                                const currencies = getFilterOptions(`${field}.priceCurrency`);
+                                const priceSchema = PriceTypeFormSchema(priceTypes, currencies);
+                                columnDef.filter = CUSTOM_COMPLEX;
+                                const priceType = filters['priceType'];
+                                const priceValue = filters['priceValue'];
+                                const priceCurrency = filters['priceCurrency'];
+                                const pricingInitialFilters = {
+                                    ...(priceType && {priceType}),
+                                    ...(priceValue && {priceValue}),
+                                    ...(priceCurrency && {priceCurrency})
+                                };
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                    initialFilters: pricingInitialFilters,
+                                    schema: priceSchema
                                 };
                                 break;
                             case AUDIO_LANGUAGE:

@@ -648,7 +648,7 @@ class TitleEdit extends Component {
         } else if (isEpisodic){
             this.updateEditorialMetadataInnerObject(edited, 'episodic', targetName, e.target.value);
         } else {
-            edited[targetName] = e.target.value;
+            edited[targetName] = e.target.value || null;
         }
 
         this.updateEditedEditorialMetadata(edited, data.id);
@@ -839,9 +839,7 @@ class TitleEdit extends Component {
         return this.state.updatedEditorialMetadata.map(e => {
             return {
                 "itemIndex": null,
-                "body": {
-                    "editorialMetadata": e
-                }
+                "body": e
             }
         });
     };
@@ -857,9 +855,7 @@ class TitleEdit extends Component {
         // Prepare data for back-end
         const requestBody = [{
             "itemIndex": null,
-            "body": {
-                "editorialMetadata": masterEmet,
-            }
+            "body": masterEmet
         }];
 
         // Calls the API to update decorated EMets based on the master
