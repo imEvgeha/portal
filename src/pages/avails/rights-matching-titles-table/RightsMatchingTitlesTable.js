@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
-import {get, cloneDeep} from 'lodash';
-import Button from '@atlaskit/button';
+import {Checkbox} from '@atlaskit/checkbox';
+import {Radio} from '@atlaskit/radio';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -10,8 +10,13 @@ import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {titleServiceManager} from '../../legacy/containers/metadata/service/TitleServiceManager';
+import {getRepositoryName, getRepositoryCell} from '../utils';
+import TitleSystems from '../../legacy/constants/metadata/systems';
+import Constants from '../title-matching/titleMatchingConstants';
 import mappings from './RightsMatchingTitlesTable.json';
 import './RightsMatchingTitlesTable.scss';
 
@@ -24,26 +29,64 @@ const TitlesTable = compose(
 )(NexusGrid);
 
 const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
-    const [tableData, setTableData] = useState([]);
+    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
 
-    useEffect(() => {
-        if (data && data.length) {
-            setTableData(data);
-        } else {
-            setTableData([]);
-        }
-    }, [data]);
+    const matchButtonCell = ({data}) => { // eslint-disable-line
+        const {id} = data || {};
+        const repoName = getRepositoryName(id);
+        return (
+            <CustomActionsCellRenderer id={id}>
+                <Radio
+                    name={repoName}
+                    isChecked={matchList[repoName] && matchList[repoName].id === id}
+                    onChange={event => handleMatchClick(data, repoName, event.target.checked)}
+                />
+            </CustomActionsCellRenderer>
+        );
+    };
+
+    const duplicateButtonCell = ({data}) => { // eslint-disable-line
+        const {id} = data || {};
+        const repo = getRepositoryName(id);
+        return (
+            repo !== TitleSystems.NEXUS && (
+                <CustomActionsCellRenderer id={id}>
+                    <Checkbox
+                        isChecked={duplicateList[id]}
+                        onChange={event => handleDuplicateClick(data, repo, event.currentTarget.checked)}
+                    />
+                </CustomActionsCellRenderer>
+            )
+        );
+    };
+
+    const matchButton = {
+        ...Constants.ADDITIONAL_COLUMN_DEF,
+        colId: 'matchButton',
+        field: 'matchButton',
+        headerName: 'Match',
+        cellRendererParams: matchList,
+        cellRendererFramework: matchButtonCell,
+    };
+    const duplicateButton = {
+        ...Constants.ADDITIONAL_COLUMN_DEF,
+        colId: 'duplicateButton',
+        field: 'duplicateButton',
+        headerName: 'Duplicate',
+        cellRendererParams: duplicateList,
+        cellRendererFramework: duplicateButtonCell,
+    };
 
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefinitions]);
+    const repository = getRepositoryCell();
 
     return (
         <div className="nexus-c-rights-matching-titles-table">
             <TitlesTable
-                columnDefs={updatedColumnDefs}
+                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 setTotalCount={setTotalCount}
-                domLayout="autoHeight"
             />
         </div>
     );
@@ -51,10 +94,12 @@ const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
 
 RightsMatchingTitlesTable.propTypes = {
     data: PropTypes.array,
+    setTotalCount: PropTypes.func,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
     data: null,
+    setTotalCount: () => null,
 };
 
 export default RightsMatchingTitlesTable;

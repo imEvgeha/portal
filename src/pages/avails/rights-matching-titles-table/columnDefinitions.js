@@ -12,7 +12,7 @@ const columnDefinitions = [
         'headerName': 'Title',
         'colId': 'title',
         'cellRenderer': 'loadingCellRenderer',
-        'width': 150
+        'width': 250
     },
     {
         'field': 'releaseYear',
