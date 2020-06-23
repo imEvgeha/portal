@@ -6,9 +6,9 @@
   height: 100%;
   @include addSpace('padding', 3);
 
+
   &__title {
     font-size: 29px;
-    padding-left: 22px;
     color: map-get($colors, nexus-title-color);
   }
 

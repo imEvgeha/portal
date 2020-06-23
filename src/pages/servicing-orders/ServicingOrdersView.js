@@ -30,7 +30,9 @@ const ServicingOrdersView = () => {
     return (
         <div className='nexus-c-servicing-orders'>
 
-            <h1>{SERVICING_ORDERS_TTL}</h1>
+            <span className='nexus-c-servicing-orders__title'>
+                {SERVICING_ORDERS_TTL}
+            </span>
 
             <div className='nexus-c-servicing-orders__external-filters'>
                 <div className='nexus-c-servicing-orders__customer-filter'>

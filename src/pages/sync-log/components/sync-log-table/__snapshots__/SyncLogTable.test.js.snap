@@ -25,10 +25,12 @@ exports[`EventManagementTable should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "updatedAt",
+          "dataType": "timestamp",
           "field": "updatedAt",
           "headerName": "UpdatedAt",
+          "javaVariableName": "updatedAt",
           "minWidth": 150,
-          "valueFormatter": null,
+          "valueFormatter": [Function],
         },
         Object {
           "cellRenderer": "loadingCellRenderer",
@@ -65,10 +67,12 @@ exports[`EventManagementTable should match snapshot 1`] = `
         Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "publishedAt",
+          "dataType": "timestamp",
           "field": "publishedAt",
           "headerName": "publishedAt",
+          "javaVariableName": "publishedAt",
           "minWidth": 150,
-          "valueFormatter": null,
+          "valueFormatter": [Function],
         },
         Object {
           "cellRenderer": "loadingCellRenderer",
@@ -90,8 +94,10 @@ exports[`EventManagementTable should match snapshot 1`] = `
         },
         Object {
           "colId": "updatedAt",
+          "dataType": "timestamp",
           "field": "updatedAt",
           "headerName": "UpdatedAt",
+          "javaVariableName": "updatedAt",
           "minWidth": 150,
         },
         Object {
@@ -120,8 +126,10 @@ exports[`EventManagementTable should match snapshot 1`] = `
         },
         Object {
           "colId": "publishedAt",
+          "dataType": "timestamp",
           "field": "publishedAt",
           "headerName": "publishedAt",
+          "javaVariableName": "publishedAt",
           "minWidth": 150,
         },
         Object {
