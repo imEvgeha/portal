@@ -159,13 +159,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 ServicesTable.propTypes = {
     data: PropTypes.object,
     isDisabled: PropTypes.bool,
-    setUpdatedServices: PropTypes.func,
+    setUpdatedServices: PropTypes.func
 };
 
 ServicesTable.defaultProps = {
     data: null,
     isDisabled: false,
-    setUpdatedServices: () => null,
+    setUpdatedServices: () => null
 };
 
 export default ServicesTable;
