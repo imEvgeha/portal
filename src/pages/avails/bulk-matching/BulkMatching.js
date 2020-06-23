@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import classNames from 'classnames';
-import {getAffectedRights} from './bulkMatchingService';
+import {getAffectedRights} from '../availsService';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import {TITLE_MATCHING_MSG} from './constants';
 import './BulkMatching.scss';
