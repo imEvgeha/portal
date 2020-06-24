@@ -11,13 +11,12 @@ import {getValidDate} from '../../../../../util/utils';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';
 import {SORT_DIRECTION} from '../filter-section/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
-import Constants from '../fulfillment-order/constants';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import './HeaderSection.scss';
 
 const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulfillmentOrder}) => {
     const [showFilter, setShowFilter] = useState(true);
-    const [filter, setFilter] = useState({ value: 'All', label: 'All' });
+    const [filter, setFilter] = useState({value: 'All', label: 'All'});
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
 
     const toggleFilters = () => setShowFilter(!showFilter);
@@ -27,9 +26,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             if (!filter || filter.value === 'All') {
                 filteredList = orderDetails.fulfillmentOrders;
             } else {
-                filteredList = orderDetails.fulfillmentOrders.filter(
-                    item => item.status === filter.value
-                );
+                filteredList = orderDetails.fulfillmentOrders.filter(item => item.status === filter.value);
             }
         }
         return filteredList;
@@ -45,9 +42,6 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
         const diff = prevFulfillmentOrderDueDate.diff(currFulfillmentOrderDueDate);
 
         switch (dueDateSortDirection.value) {
-            case 'NONE':
-                return 0;
-
             case 'ASCENDING':
                 return diff;
 
@@ -55,6 +49,14 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                 return -diff;
         }
     };
+
+    // determines whether to sort the fulfillment order panels or not
+    const getSortedFilteredList = () =>
+        dueDateSortDirection !== SORT_DIRECTION[0]
+            ? getFilteredList()
+                  .slice() // creates a copy of the list so that the sort doesn't mutate the original array
+                  .sort(sortByDueDate)
+            : getFilteredList();
 
     return (
         <div className="panel-header">
@@ -66,9 +68,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                     <span className="panel-header__title--text">Servicing Order</span>
                 </div>
                 <div className="panel-header__filter">
-                    <div onClick={toggleFilters}>
-                        {showFilter ? <FilterSolidIcon /> : <FilterIcon />}
-                    </div>
+                    <div onClick={toggleFilters}>{showFilter ? <FilterSolidIcon /> : <FilterIcon />}</div>
                 </div>
             </div>
             {showFilter && (
@@ -81,9 +81,8 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                 />
             )}
             <div className="panel-header__list">
-                {getFilteredList()
-                    .sort(sortByDueDate)
-                    .map(({id, external_id, status, definition: {dueDate} = {}, product_description}, index) => (
+                {getSortedFilteredList().map(
+                    ({id, external_id, status, definition: {dueDate} = {}, product_description}, index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={id}
@@ -94,7 +93,8 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                             productDescription={product_description}
                         />
-                    ))}
+                    )
+                )}
             </div>
         </div>
     );
