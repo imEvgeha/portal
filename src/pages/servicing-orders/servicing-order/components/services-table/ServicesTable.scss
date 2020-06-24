@@ -16,6 +16,12 @@
         }
     }
 
+    &__checkbox {
+        // AtlasKit Checkbox override
+        label {
+            justify-content: center;
+        }
+    }
 }
 
 .nexus-c-services-table__header {

@@ -68,6 +68,15 @@ describe('HeaderSection', () => {
             expect(dueDates).toEqual(['2021-10-05', '2021-09-05', '2021-11-05']);
         });
 
+        it('renders FulfillmentOrderPanel components with correct product_descriptions', () => {
+            const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
+            const productDescriptions = wrapper
+                .find('FulfillmentOrderPanel')
+                .map(node => node.props().productDescription);
+
+            expect(productDescriptions).toEqual(['Movie1', 'Movie2', 'Movie3']);
+        });
+
         it('sorts FulfillmentOrderPanel components by ascending due dates correctly', () => {
             wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[1]);
             const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
@@ -80,15 +89,6 @@ describe('HeaderSection', () => {
             const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
 
             expect(dueDates).toEqual(['2021-11-05', '2021-10-05', '2021-09-05']);
-        });
-
-        it('renders FulfillmentOrderPanel components with correct product_descriptions', () => {
-            const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
-            const productDescriptions = wrapper
-                .find('FulfillmentOrderPanel')
-                .map(node => node.props().productDescription);
-
-            expect(productDescriptions).toEqual(['Movie1', 'Movie2', 'Movie3']);
         });
     });
 });

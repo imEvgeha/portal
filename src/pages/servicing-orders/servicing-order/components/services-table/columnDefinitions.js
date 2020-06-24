@@ -21,18 +21,12 @@ const columnDefinitions = [
         width: 320,
         valueFormatter: params =>
             ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME)
-        },
+    },
     {
         colId: 'priority',
         field: 'priority',
         dataSource: 'priority',
         headerName: 'Priority',
-    },
-    {
-        colId: 'deliverToVu',
-        field: 'deliverToVu',
-        dataSource: 'deliverToVu',
-        headerName: 'Deliver to VU',
     },
     {
         colId: 'operationalStatus',
