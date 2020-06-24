@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
-import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
@@ -15,6 +14,7 @@ import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../.
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {titleServiceManager} from '../../legacy/containers/metadata/service/TitleServiceManager';
 import {getRepositoryName, getRepositoryCell} from '../utils';
+import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import Constants from '../title-matching/titleMatchingConstants';
 import mappings from './RightsMatchingTitlesTable.json';
@@ -30,6 +30,17 @@ const TitlesTable = compose(
 
 const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+
+    const updateColumnDefs = (columnDefs) => {
+        return columnDefs.map(columnDef => (
+            {
+                ...columnDef,
+                valueFormatter: createValueFormatter(columnDef),
+                cellRenderer: 'loadingCellRenderer',
+            }
+        ));
+    };
+    const updatedColumns = updateColumnDefs(mappings);
 
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -78,7 +89,7 @@ const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
     };
 
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
-    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefinitions]);
+    const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
     const repository = getRepositoryCell();
 
     return (
