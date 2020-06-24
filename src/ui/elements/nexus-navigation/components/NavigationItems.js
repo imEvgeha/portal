@@ -41,15 +41,13 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
         isSelected: (selectedItem === `${AVAILS}/v2`),
         onClick: () => handleClick(`${AVAILS}/v2`),
     },
-    URL.isLocalOrDevOrQA() && (
-        {
-            icon: DetailViewIcon,
-            id: SERVICING_ORDERS,
-            tooltip: 'Servicing Orders',
-            isSelected: (selectedItem === SERVICING_ORDERS),
-            onClick: () => handleClick(SERVICING_ORDERS),
-        }
-    ),
+    {
+        icon: DetailViewIcon,
+        id: SERVICING_ORDERS,
+        tooltip: 'Servicing Orders',
+        isSelected: (selectedItem === SERVICING_ORDERS),
+        onClick: () => handleClick(SERVICING_ORDERS),
+    },
     {
         icon: RecentIcon,
         id: EVENT_MANAGEMENT,

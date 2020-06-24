@@ -32,7 +32,7 @@ describe('FulfillmentOrder', () => {
         });
 
         it('should render header title', () => {
-            expect(wrapper.find('.fulfillment-order .fulfillment-order__title h1').text()).toEqual('Fulfillment Order');
+            expect(wrapper.find('.fulfillment-order__title--text').text()).toEqual('Fulfillment Order');
         });
 
         it('should match snapshot', () => {

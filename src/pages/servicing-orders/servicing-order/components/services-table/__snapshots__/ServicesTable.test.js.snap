@@ -77,6 +77,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
           "valueFormatter": [Function],
+          "width": 320,
         },
         Object {
           "colId": "priority",
@@ -85,8 +86,8 @@ exports[`ServicesTable should match snapshot 1`] = `
           "headerName": "Priority",
         },
         Object {
+          "cellRendererFramework": [Function],
           "colId": "deliverToVu",
-          "dataSource": "deliverToVu",
           "field": "deliverToVu",
           "headerName": "Deliver to VU",
         },
@@ -128,7 +129,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "searchDataType": "string",
         },
         Object {
-          "dataType": "string",
+          "dataType": "businessDateTime",
           "displayName": "Do Not Start Before",
           "enableEdit": true,
           "enableSearch": true,
@@ -136,7 +137,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "queryParamName": "doNotStartBefore",
           "readOnly": false,
           "required": true,
-          "searchDataType": "string",
+          "searchDataType": "businessDateTime",
         },
         Object {
           "dataType": "select",

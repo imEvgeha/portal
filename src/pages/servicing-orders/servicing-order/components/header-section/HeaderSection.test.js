@@ -1,6 +1,6 @@
-import { shallow } from 'enzyme';
+import {shallow} from 'enzyme';
 import React from 'react';
-import { SORT_DIRECTION } from '../filter-section/constants';
+import {SORT_DIRECTION} from '../filter-section/constants';
 import HeaderSection from './HeaderSection';
 
 describe('HeaderSection', () => {
@@ -18,7 +18,8 @@ describe('HeaderSection', () => {
                     definition: {
                         dueDate: '10/05/2021'
                     },
-                    status: 'COMPLETED'
+                    status: 'COMPLETED',
+                    product_description: 'Movie1'
                 },
                 {
                     fulfillmentOrderId: 'VU000134597-002',
@@ -27,7 +28,8 @@ describe('HeaderSection', () => {
                     definition: {
                         dueDate: '09/05/2021'
                     },
-                    status: 'PENDING'
+                    status: 'PENDING',
+                    product_description: 'Movie2'
                 },
                 {
                     fulfillmentOrderId: 'VU000134597-003',
@@ -36,7 +38,8 @@ describe('HeaderSection', () => {
                     definition: {
                         dueDate: '11/05/2021'
                     },
-                    status: 'PENDING'
+                    status: 'PENDING',
+                    product_description: 'Movie3'
                 }
             ]
         };
@@ -44,9 +47,7 @@ describe('HeaderSection', () => {
         const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
 
         it('should render header title', () => {
-            expect(wrapper.find('.panel-header .panel-header__title span').text()).toEqual(
-                'Servicing Order'
-            );
+            expect(wrapper.find('.panel-header__title--text').text()).toEqual('Servicing Order');
         });
 
         it('should have a Link component with link to servicing-orders page', () => {
@@ -63,27 +64,29 @@ describe('HeaderSection', () => {
         });
 
         it('does not sort by default', () => {
-            const dueDates = wrapper
-                .find('FulfillmentOrderPanel')
-                .map(node => node.props().dueDate);
+            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
             expect(dueDates).toEqual(['2021-10-05', '2021-09-05', '2021-11-05']);
         });
 
-        it('sorts FulfillmentOrderPanel components by ascending due dates correctly', () => {
-            
-            wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[1]);
-            const dueDates = wrapper
+        it('renders FulfillmentOrderPanel components with correct product_descriptions', () => {
+            const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
+            const productDescriptions = wrapper
                 .find('FulfillmentOrderPanel')
-                .map(node => node.props().dueDate);
+                .map(node => node.props().productDescription);
+
+            expect(productDescriptions).toEqual(['Movie1', 'Movie2', 'Movie3']);
+        });
+
+        it('sorts FulfillmentOrderPanel components by ascending due dates correctly', () => {
+            wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[1]);
+            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
 
             expect(dueDates).toEqual(['2021-09-05', '2021-10-05', '2021-11-05']);
         });
 
         it('sorts FulfillmentOrderPanel components by descending due dates correctly', () => {
             wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[2]);
-            const dueDates = wrapper
-                .find('FulfillmentOrderPanel')
-                .map(node => node.props().dueDate);
+            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
 
             expect(dueDates).toEqual(['2021-11-05', '2021-10-05', '2021-09-05']);
         });

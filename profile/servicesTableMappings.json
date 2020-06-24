@@ -24,8 +24,8 @@
   {
     "javaVariableName": "doNotStartBefore",
     "displayName": "Do Not Start Before",
-    "dataType": "string",
-    "searchDataType": "string",
+    "dataType": "businessDateTime",
+    "searchDataType": "businessDateTime",
     "queryParamName": "doNotStartBefore",
     "readOnly": false,
     "enableSearch": true,

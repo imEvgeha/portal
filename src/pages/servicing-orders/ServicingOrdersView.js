@@ -29,15 +29,18 @@ const ServicingOrdersView = () => {
 
     return (
         <div className='nexus-c-servicing-orders'>
-            <div className='nexus-c-servicing-orders__title'>
+
+            <span className='nexus-c-servicing-orders__title'>
                 {SERVICING_ORDERS_TTL}
-            </div>
+            </span>
+
             <div className='nexus-c-servicing-orders__external-filters'>
                 <div className='nexus-c-servicing-orders__customer-filter'>
-                    <div className='nexus-c-servicing-orders__customer-filter--label'>
+                    <label htmlFor="customer">
                         {CUSTOMER_LBL}
-                    </div>
+                    </label>
                     <Select
+                        name="customer"
                         options={[
                             NO_CUSTOMER_FILTER,
                             { label: 'MGM', value: 'MGM' },

@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EventManagementTable should match snapshot 1`] = `
+<div
+  className="nexus-c-sync-log-table"
+>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    className="nexus-c-sync-log-table__download-button"
+    onClick={[Function]}
+  >
+    Download
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  <Connect(ComposedComponent)
+    className="nexus-c-sync-log-grid"
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "status",
+          "field": "status",
+          "headerName": "Error/Success",
+          "valueFormatter": null,
+          "width": 120,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "updatedAt",
+          "dataType": "timestamp",
+          "field": "updatedAt",
+          "headerName": "UpdatedAt",
+          "javaVariableName": "updatedAt",
+          "minWidth": 150,
+          "valueFormatter": [Function],
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "titleName",
+          "field": "titleName",
+          "headerName": "Title Name",
+          "minWidth": 150,
+          "valueFormatter": null,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "coreTitleId",
+          "field": "coreTitleId",
+          "headerName": "Title ID",
+          "valueFormatter": null,
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "type",
+          "field": "type",
+          "headerName": "Document Type",
+          "valueFormatter": null,
+          "width": 150,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "externalSystemId",
+          "field": "externalSystemId",
+          "headerName": "Legacy System",
+          "valueFormatter": null,
+          "width": 120,
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "publishedAt",
+          "dataType": "timestamp",
+          "field": "publishedAt",
+          "headerName": "publishedAt",
+          "javaVariableName": "publishedAt",
+          "minWidth": 150,
+          "valueFormatter": [Function],
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "publishErrors",
+          "minWidth": 150,
+          "valueFormatter": null,
+        },
+      ]
+    }
+    mapping={
+      Array [
+        Object {
+          "colId": "status",
+          "field": "status",
+          "headerName": "Error/Success",
+          "width": 120,
+        },
+        Object {
+          "colId": "updatedAt",
+          "dataType": "timestamp",
+          "field": "updatedAt",
+          "headerName": "UpdatedAt",
+          "javaVariableName": "updatedAt",
+          "minWidth": 150,
+        },
+        Object {
+          "colId": "titleName",
+          "field": "titleName",
+          "headerName": "Title Name",
+          "minWidth": 150,
+        },
+        Object {
+          "colId": "coreTitleId",
+          "field": "coreTitleId",
+          "headerName": "Title ID",
+          "width": 150,
+        },
+        Object {
+          "colId": "type",
+          "field": "type",
+          "headerName": "Document Type",
+          "width": 150,
+        },
+        Object {
+          "colId": "externalSystemId",
+          "field": "externalSystemId",
+          "headerName": "Legacy System",
+          "width": 120,
+        },
+        Object {
+          "colId": "publishedAt",
+          "dataType": "timestamp",
+          "field": "publishedAt",
+          "headerName": "publishedAt",
+          "javaVariableName": "publishedAt",
+          "minWidth": 150,
+        },
+        Object {
+          "colId": "publishErrors",
+          "field": "publishErrors",
+          "headerName": "publishErrors",
+          "minWidth": 150,
+        },
+      ]
+    }
+    rowSelection="single"
+  />
+</div>
+`;

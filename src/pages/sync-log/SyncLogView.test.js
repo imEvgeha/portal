@@ -4,7 +4,13 @@ import SyncLogView from './SyncLogView';
 
 describe('SyncLogView', () => {
     describe('HTML content', () => {
-        const wrapper = shallow(<SyncLogView />);
+        let wrapper = null;
+        let syncLogTableWrapper = null;
+
+        beforeEach(() => {
+            wrapper = shallow(<SyncLogView />);
+            syncLogTableWrapper = wrapper.find('SyncLogTable');
+        });
 
         it('should render Sync Log view title', () => {
             expect(wrapper.find('.nexus-c-sync-log-view__title').text()).toEqual('Sync Log');
@@ -12,6 +18,10 @@ describe('SyncLogView', () => {
 
         it('should match snapshot', () => {
             expect(wrapper).toMatchSnapshot();
+        });
+
+        it('should render SyncLogTable', () => {
+            expect(syncLogTableWrapper.length).toEqual(1);
         });
     });
 });

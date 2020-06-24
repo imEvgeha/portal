@@ -19,7 +19,7 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     const [showFilter, setShowFilter] = useState(true);
     const [filter, setFilter] = useState({ value: 'All', label: 'All' });
     const [dueDateSortDirection, setDueDateSortDirection] = useState(SORT_DIRECTION[0]);
-    
+
     const toggleFilters = () => setShowFilter(!showFilter);
     const getFilteredList = () => {
         let filteredList = [];
@@ -83,15 +83,16 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             <div className="panel-header__list">
                 {getFilteredList()
                     .sort(sortByDueDate)
-                    .map(({id, external_id, status, definition: {dueDate} = {}}, index) => (
+                    .map(({id, external_id, status, definition: {dueDate} = {}, product_description}, index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={id}
-                            external_id={external_id}
+                            externalId={external_id}
                             status={status}
                             dueDate={getValidDate(dueDate)}
                             selected={selectedFulfillmentOrder === id}
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
+                            productDescription={product_description}
                         />
                     ))}
             </div>

@@ -16,9 +16,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           <div
             className="fulfillment-order__title"
           >
-            <h1>
+            <div
+              className="fulfillment-order__title--text"
+            >
               Fulfillment Order
-            </h1>
+            </div>
             <div>
               Order ID: 
             </div>
