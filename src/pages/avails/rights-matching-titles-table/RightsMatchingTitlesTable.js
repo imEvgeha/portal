@@ -28,9 +28,8 @@ const TitlesTable = compose(
     withSorting(),
 )(NexusGrid);
 
-const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
+const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType}) => {
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
-
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -45,13 +44,20 @@ const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
         const repoName = getRepositoryName(id);
+        let isRestricted = false;
+        restrictedCoreTitleIds.forEach(title => {
+            if (title.includes(id)) isRestricted = true;
+        });
         return (
             <CustomActionsCellRenderer id={id}>
-                <Radio
-                    name={repoName}
-                    isChecked={matchList[repoName] && matchList[repoName].id === id}
-                    onChange={event => handleMatchClick(data, repoName, event.target.checked)}
-                />
+                {!isRestricted ? (
+                    <Radio
+                        name={repoName}
+                        isChecked={matchList[repoName] && matchList[repoName].id === id}
+                        onChange={event => handleMatchClick(data, repoName, event.target.checked)}
+                    />
+                ) : null}
+
             </CustomActionsCellRenderer>
         );
     };
@@ -97,6 +103,7 @@ const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
             <TitlesTable
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
+                initialFilter={{contentType: contentType}}
                 setTotalCount={setTotalCount}
             />
         </div>
@@ -104,13 +111,15 @@ const RightsMatchingTitlesTable = ({data, setTotalCount}) => {
 };
 
 RightsMatchingTitlesTable.propTypes = {
-    data: PropTypes.array,
+    restrictedCoreTitleIds: PropTypes.array,
     setTotalCount: PropTypes.func,
+    contentType: PropTypes.string,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
-    data: null,
+    restrictedCoreTitleIds: [],
     setTotalCount: () => null,
+    contentType: null,
 };
 
 export default RightsMatchingTitlesTable;
