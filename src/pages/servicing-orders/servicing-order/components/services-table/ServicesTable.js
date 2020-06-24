@@ -137,7 +137,12 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         cellRendererFramework: ({data}) => {
             return (
                 <div className="nexus-c-services-table__checkbox">
-                    <Checkbox isChecked={data.deliverToVu} value="" onChange={() => onCheckboxChange(data)} />
+                    <Checkbox
+                        isChecked={data.deliverToVu}
+                        value=""
+                        onChange={() => onCheckboxChange(data)}
+                        isDisabled={isDisabled}
+                    />
                 </div>
             );
         }
