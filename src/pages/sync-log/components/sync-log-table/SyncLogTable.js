@@ -33,6 +33,7 @@ const SyncLogTable = () => {
         const {READY} = GRID_EVENTS;
         switch(type) {
             case READY:
+                api.sizeColumnsToFit();
                 setGridApi(api);
                 break;
         }
