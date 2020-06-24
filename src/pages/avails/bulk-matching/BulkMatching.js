@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
-import {getAffectedRights, getRestrictedTitles} from './bulkMatchingService';
+import {getAffectedRights, getRestrictedTitles} from '../availsService';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
 import {TITLE_MATCHING_MSG} from './constants';
