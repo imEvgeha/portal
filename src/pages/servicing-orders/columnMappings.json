@@ -61,13 +61,15 @@
   {
     "colId": "rush_order",
     "field": "rush_order",
-    "dataType": "string",
+    "dataType": "select",
     "headerName": "Rush",
     "width": 100,
     "javaVariableName": "rush_order",
     "displayName": "Rush",
+    "isEmphasized": true,
     "enableSearch": true,
-    "searchDataType": "string"
+    "searchDataType": "multiselect",
+    "options": ["Y", "N"]
   },
   {
     "colId": "status",
