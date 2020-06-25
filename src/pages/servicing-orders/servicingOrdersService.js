@@ -56,6 +56,15 @@ export const saveFulfillmentOrder = ({data}) => {
     });
 };
 
+export const exportServicingOrders = (servicingOrders) => {
+    // TODO: Add correct URL when available
+    const url = `${baseServicingOrdersURL(config)}/so/export`;
+    return nexusFetch(url, {
+        method: 'put',
+        body: JSON.stringify(servicingOrders)
+    });
+};
+
 export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,

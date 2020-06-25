@@ -3,16 +3,20 @@ import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import './ServicingOrdersView.scss';
+import ServicingOrdersService from './servicingOrdersService';
 import {SERVICING_ORDERS_TTL, CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN} from './constants';
+import { downloadFile } from '../../util/Common';
 
 const ServicingOrdersView = () => {
 
     const [isHideReady, setIsHideReady] = useState(false);
     const [isHideCompleted, setIsHideCompleted] = useState(false);
+    const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);
     const NO_CUSTOMER_FILTER = { label: 'Select...', value: '' };
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
+    const [isExporting, setIsExporting] = useState(false);
 
     useEffect(() => {
         setFixedFilter({
@@ -26,6 +30,16 @@ const ServicingOrdersView = () => {
             ...customerFilter && customerFilter.value && {tenant : customerFilter.value}
         });
     }, [customerFilter]);
+
+    const exportSelectedServicingOrders = () => {
+        setIsExporting(true);
+        ServicingOrdersService.exportServicingOrders(selectedServicingOrders)
+            .then(response => {
+                downloadFile(response);
+                setIsExporting(false);
+            }
+        );
+    };
 
     return (
         <div className='nexus-c-servicing-orders'>
@@ -63,6 +77,13 @@ const ServicingOrdersView = () => {
                     onClick={() => setIsHideCompleted(!isHideCompleted)}
                 >
                     {HIDE_COMPLETED_BTN}
+                </Button>
+                <Button
+                    isDisabled={!selectedServicingOrders.length}
+                    onClick={() => exportSelectedServicingOrders()}
+                    isLoading={isExporting}
+                >
+                    Export
                 </Button>
             </div>
             <ServicingOrdersTable
