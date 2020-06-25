@@ -1,9 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
-import './CustomDateFilter.scss';
-import NexusDateTimeWindowPicker
-    from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import PropTypes from 'prop-types';
+import React from 'react';
+import NexusDateTimeWindowPicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import {DATEPICKER_LABELS} from '../../constants';
 import './CustomDateFilter.scss';
 
@@ -23,18 +21,28 @@ export class CustomDateFilter extends React.Component {
         const {filterChangedCallback} = this.props;
         const {startDate, endDate} = this.state.dates;
         const keys = Object.keys(dateRange);
-        if (keys.includes('startDate') && (dateRange.startDate !== startDate)){
+        if (keys.includes('startDate') && dateRange.startDate !== startDate) {
             const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : true;
-            this.setState({ dates: {
-                startDate: dateRange.startDate,
-                endDate
-            }}, () => (!dateRange.startDate || needUpdate) && filterChangedCallback());
-        } else if (keys.includes('endDate') && (dateRange.endDate !== endDate)){
+            this.setState(
+                {
+                    dates: {
+                        startDate: dateRange.startDate,
+                        endDate
+                    }
+                },
+                () => (!dateRange.startDate || needUpdate) && filterChangedCallback()
+            );
+        } else if (keys.includes('endDate') && dateRange.endDate !== endDate) {
             const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : true;
-            this.setState({ dates: {
-                endDate: dateRange.endDate,
-                startDate
-            }}, () => (!dateRange.endDate || needUpdate) && filterChangedCallback());
+            this.setState(
+                {
+                    dates: {
+                        endDate: dateRange.endDate,
+                        startDate
+                    }
+                },
+                () => (!dateRange.endDate || needUpdate) && filterChangedCallback()
+            );
         }
     };
 
@@ -44,13 +52,18 @@ export class CustomDateFilter extends React.Component {
 
     getModel = () => {
         const {startDate, endDate} = this.state.dates;
-        return ({
+        const fieldVariable = this.props.colDef.field;
+        const {
+            customDateFilterParamSuffixes: [customStartSuffix, customEndSuffix]
+        } = this.props;
+
+        return {
             type: 'range',
             filter: {
-                ...startDate && {[`${this.props.colDef.field}From`]: startDate},
-                ...endDate && {[`${this.props.colDef.field}To`]: endDate}
+                ...(startDate && {[`${fieldVariable}${customStartSuffix || 'From'}`]: startDate}),
+                ...(endDate && {[`${fieldVariable}${customEndSuffix || 'To'}`]: endDate})
             }
-        });
+        };
     };
 
     isFilterActive = () => {
@@ -58,7 +71,7 @@ export class CustomDateFilter extends React.Component {
         return !!(startDate || endDate);
     };
 
-    doesFilterPass = (params) => {
+    doesFilterPass = params => {
         const {startDate, endDate} = this.state.dates;
         const {field} = this.props.colDef;
         const fieldValue = params.data[field];
@@ -67,19 +80,23 @@ export class CustomDateFilter extends React.Component {
         return isAfterStartDate && isBeforeEndDate;
     };
 
-    render (){
-        const {colDef: {field}} = this.props;
+    render() {
+        const {
+            colDef: {field}
+        } = this.props;
         const {startDate, endDate} = this.state.dates;
 
         return (
-            <div className='nexus-c-custom-date-range-filter'>
+            <div className="nexus-c-custom-date-range-filter">
                 <NexusDateTimeWindowPicker
                     isUsingTime={this.props.isUsingTime}
                     startDateTimePickerProps={{
-                        id:`${field}-filter__from`, defaultValue: startDate
+                        id: `${field}-filter__from`,
+                        defaultValue: startDate
                     }}
                     endDateTimePickerProps={{
-                        id:`${field}-filter__to`, defaultValue: endDate
+                        id: `${field}-filter__to`,
+                        defaultValue: endDate
                     }}
                     onChangeAny={this.onChange}
                     labels={DATEPICKER_LABELS}
