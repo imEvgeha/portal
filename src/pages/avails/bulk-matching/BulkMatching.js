@@ -90,7 +90,8 @@ const BulkMatching = ({data, headerTitle}) => {
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => null}
-                        >Selected(0)
+                        >
+                            Selected(0)
                         </Button>
                     </div>
                     <RightsMatchingTitlesTable
@@ -103,7 +104,7 @@ const BulkMatching = ({data, headerTitle}) => {
                 <div className="nexus-c-bulk-matching__spinner">
                     <Spinner size="large" />
                 </div>
-                )}
+            )}
         </div>
     );
 };
