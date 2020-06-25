@@ -138,7 +138,11 @@ const SelectedRightsActions = ({selectedRights}) => {
                 isOpen={drawerOpen}
                 width="wider"
             >
-                <BulkMatching data={selectedRights} headerTitle="Title Matching" />
+                <BulkMatching
+                    data={selectedRights}
+                    headerTitle="Title Matching"
+                    closeDrawer={toggleDrawerState}
+                />
             </NexusDrawer>
         </>
     );

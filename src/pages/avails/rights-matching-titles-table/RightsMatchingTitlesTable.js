@@ -11,7 +11,6 @@ import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {titleServiceManager} from '../../legacy/containers/metadata/service/TitleServiceManager';
 import {getRepositoryName, getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -28,8 +27,7 @@ const TitlesTable = compose(
     withSorting(),
 )(NexusGrid);
 
-const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType}) => {
-    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType, matchList, handleMatchClick, handleDuplicateClick, duplicateList}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {

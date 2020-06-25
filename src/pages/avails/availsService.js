@@ -10,3 +10,10 @@ export const getRestrictedTitles = params => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/restrictedCoreTitleIds?rightIds=${params}`;
     return nexusFetch(url);
 };
+
+export const bulkUpdateAllRights = ({coreTitleId}, rightIds) => {
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/coreTitleId?coreTitleId=${coreTitleId}&rightIds=${rightIds}`;
+    return nexusFetch(url, {
+        method: 'PATCH',
+    });
+};
