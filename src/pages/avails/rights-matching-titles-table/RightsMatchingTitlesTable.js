@@ -17,7 +17,7 @@ import {getRepositoryName, getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import Constants from '../title-matching/titleMatchingConstants';
-import mappings from './RightsMatchingTitlesTable.json';
+import mappings from './RightsMatchingTitlesTableMappings.json';
 import './RightsMatchingTitlesTable.scss';
 
 const TitlesTable = compose(
@@ -41,7 +41,7 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
     };
     const updatedColumns = updateColumnDefs(mappings);
 
-    const matchButtonCell = ({data}) => { // eslint-disable-line
+    const matchButtonCell = ({data}) => {
         const {id} = data || {};
         const repoName = getRepositoryName(id);
         let isRestricted = false;
@@ -62,7 +62,7 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
         );
     };
 
-    const duplicateButtonCell = ({data}) => { // eslint-disable-line
+    const duplicateButtonCell = ({data}) => {
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
@@ -99,8 +99,9 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
     const repository = getRepositoryCell();
 
     return (
-        <div className="nexus-c-rights-matching-titles-table">
+        <div className="nexus-c-rights-matching-titles-table-wrapper">
             <TitlesTable
+                className="nexus-c-rights-matching-titles-table"
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 initialFilter={{contentType: contentType}}

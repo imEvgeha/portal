@@ -47,5 +47,16 @@ exports[`BulkMatching should match snapshot 1`] = `
       New Title
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </SectionMessage>
+  <div
+    className="nexus-c-bulk-matching__spinner"
+  >
+    <Spinner
+      delay={100}
+      invertColor={false}
+      isCompleting={false}
+      onComplete={[Function]}
+      size="large"
+    />
+  </div>
 </div>
 `;
