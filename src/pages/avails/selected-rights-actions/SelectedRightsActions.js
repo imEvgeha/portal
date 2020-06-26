@@ -97,6 +97,7 @@ const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
                         description: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
                         icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
                     });
                 }),
                 appearance: 'primary',
