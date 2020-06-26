@@ -13,25 +13,23 @@ import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(
     withColumnsResizing(),
-    withInfiniteScrolling({fetchData: getSyncLog})
+    withInfiniteScrolling({fetchData: getSyncLog}),
 )(NexusGrid);
 
 const SyncLogTable = () => {
     const [gridApi, setGridApi] = useState(null);
 
     const updateColumnDefs = (columnDefs) => {
-        return columnDefs.map(columnDef => (
-            {
-                ...columnDef,
-                valueFormatter: createValueFormatter(columnDef),
-                cellRenderer: 'loadingCellRenderer',
-            }
-        ));
+        return columnDefs.map(columnDef => ({
+            ...columnDef,
+            valueFormatter: createValueFormatter(columnDef),
+            cellRenderer: 'loadingCellRenderer',
+        }));
     };
 
     const onGridEvent = ({type, api}) => {
         const {READY} = GRID_EVENTS;
-        switch(type) {
+        switch (type) {
             case READY:
                 api.sizeColumnsToFit();
                 setGridApi(api);
