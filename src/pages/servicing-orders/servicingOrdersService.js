@@ -56,8 +56,12 @@ export const saveFulfillmentOrder = ({data}) => {
     });
 };
 
+/**
+ * Export a list of servicing orders as an excel spreadsheet. This endpoint
+ * returns a data blob which can be converted to a .xls file.
+ * @param servicingOrders - Array of servicing order ids
+ */
 export const exportServicingOrders = (servicingOrders) => {
-    // TODO: Add correct URL when available
     const url = `${baseServicingOrdersURL(config)}/so/export`;
     return nexusFetch(url, {
         method: 'put',
