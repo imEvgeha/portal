@@ -50,6 +50,12 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
         ));
     };
 
+    const onFirstDataRendered = params => {
+        // Resizes the table to fit the current width.
+        // Needs to be removed if more table rows are added to prevent overcrowding
+        params.api.sizeColumnsToFit();
+    };
+
     const [columns, setColumns] = useState(updateColumnDefs(columnDefs));
 
     useEffect(() => {
@@ -66,6 +72,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
                 }}
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
+                onFirstDataRendered={onFirstDataRendered}
             />
         </div>
     );
