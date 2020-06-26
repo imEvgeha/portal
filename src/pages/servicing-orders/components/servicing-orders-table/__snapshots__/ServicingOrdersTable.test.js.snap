@@ -262,6 +262,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
       ]
     }
+    onFirstDataRendered={[Function]}
   />
 </div>
 `;
