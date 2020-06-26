@@ -28,7 +28,15 @@ const TitlesTable = compose(
     withSorting(),
 )(NexusGrid);
 
-const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType, matchList, handleMatchClick, handleDuplicateClick, duplicateList, setTitlesTableIsReady}) => {
+const RightsMatchingTitlesTable = ({
+    restrictedCoreTitleIds,
+    setTotalCount,
+    contentType,
+    matchList,
+    handleMatchClick,
+    handleDuplicateClick,
+    duplicateList,
+    setTitlesTableIsReady}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -122,6 +130,10 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
 
 RightsMatchingTitlesTable.propTypes = {
     restrictedCoreTitleIds: PropTypes.array,
+    handleMatchClick: PropTypes.func,
+    handleDuplicateClick: PropTypes.func,
+    matchList: PropTypes.object,
+    duplicateList: PropTypes.object,
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
@@ -129,6 +141,10 @@ RightsMatchingTitlesTable.propTypes = {
 
 RightsMatchingTitlesTable.defaultProps = {
     restrictedCoreTitleIds: [],
+    handleMatchClick: () => null,
+    handleDuplicateClick: () => null,
+    duplicateList: {},
+    matchList: {},
     setTotalCount: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,

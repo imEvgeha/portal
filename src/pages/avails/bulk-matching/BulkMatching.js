@@ -5,19 +5,21 @@ import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
 import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
+import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import {TITLE_MATCHING_MSG} from './constants';
-import {getDomainName, URL} from '../../../util/Common';
+import {getDomainName} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
+    TITLE_MATCH_ERROR_MESSAGE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -79,19 +81,34 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const onViewTitleClick = () => window.open(url, '_blank');
+        const coreTitleId = matchList[NEXUS].id;
 
-        const updatedRight = {'coreTitleId': matchList[NEXUS].id};
-        setCoreTitleId(updatedRight, mergeRightIds(affectedRightIds, duplicateList))
-            .then(res => console.log(res));
-
-        addToast({
-            title: SUCCESS_TITLE,
-            description: TITLE_MATCH_SUCCESS_MESSAGE,
-            icon: SUCCESS_ICON,
-            actions: [
-                {content: 'View Title', onClick: onViewTitleClick}
-            ],
-            isWithOverlay: true,
+        setCoreTitleId({
+            rightIds: mergeRightIds(affectedRightIds, duplicateList),
+            coreTitleId
+        }).then(res => {
+            // handle combined rights list
+            console.log(res);
+            addToast({
+                title: SUCCESS_TITLE,
+                description: TITLE_MATCH_SUCCESS_MESSAGE,
+                icon: SUCCESS_ICON,
+                actions: [
+                    {content: 'View Title', onClick: onViewTitleClick}
+                ],
+                isWithOverlay: true,
+            });
+        }).catch(err => {
+            const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message ? err.message : {};
+            addToast({
+                title: ERROR_TITLE,
+                description: message ? message : TITLE_MATCH_ERROR_MESSAGE,
+                icon: ERROR_ICON,
+                actions: [
+                    {content: 'Ok', onClick: () => removeToast()},
+                ],
+                isWithOverlay: true,
+            });
         });
     };
 
@@ -102,7 +119,19 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
 
     const mergeSingle = () => {
         removeToast();
-        mergeTitles();
+        mergeTitles(matchList);
+    };
+
+    const mergeTitles = matchList => {
+        const extractTitleIds = Object.values(matchList).reduce((acc, curr) => {
+            return [...acc, curr.id];
+        }, []);
+        titleService.bulkMergeTitles({
+            idsToMerge: extractTitleIds,
+            idsToHide: mergeRightIds([], duplicateList),
+        }).then(res => {
+            console.log(res);
+        });
     };
 
     const onMatchAndCreate = () => {
@@ -112,14 +141,14 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                 description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
                 icon: WARNING_ICON,
                 actions: [
-                    {content: 'Cancel', onClick: removeToast},
+                    {content: 'Cancel', onClick: () => removeToast()},
                     {content: 'Ok', onClick: mergeSingle}
                 ],
                 isWithOverlay: true,
             });
         }
         else {
-            mergeTitles();
+            mergeTitles(matchList);
         }
     };
 
@@ -137,7 +166,8 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                         !activeTab && 'nexus-c-bulk-matching__selected--active'
                     )}
                     onClick={activeTab ? changeActiveTab : null}
-                >Selected Rights ({selectedTableData.length})
+                >
+                    Selected Rights ({selectedTableData.length})
                 </div>
                 <div
                     className={classNames(
@@ -145,9 +175,12 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                         activeTab && 'nexus-c-bulk-matching__affected--active'
                     )}
                     onClick={!activeTab ? changeActiveTab : null}
-                >Affected Rights ({affectedTableData.length})
+                >
+                    Affected Rights ({affectedTableData.length})
                 </div>
-                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>New Title</Button>
+                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
+                    New Title
+                </Button>
             </div>
             <TitleMatchingRightsTable
                 data={activeTab ? affectedTableData : selectedTableData}
@@ -164,7 +197,9 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                     )}
                 >
                     <div className="nexus-c-bulk-matching__titles-table-header">
-                        <div className="nexus-c-bulk-matching__titles-table-header-title">Titles ({totalCount})</div>
+                        <div className="nexus-c-bulk-matching__titles-table-header-title">
+                            Titles ({totalCount})
+                        </div>
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => null}
@@ -184,7 +219,6 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                     />
                     <BulkMatchingActionsBar
                         matchList={matchList}
-                        //mergeTitles={() => mergeTitles(matchList, duplicateList, rightId)}
                         onMatch={onMatch}
                         onMatchAndCreate={onMatchAndCreate}
                         onCancel={onCancel}
