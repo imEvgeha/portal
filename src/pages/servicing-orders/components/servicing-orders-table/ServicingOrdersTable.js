@@ -11,14 +11,13 @@ import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import './ServicingOrdersTable.scss';
-
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
+const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders}) => {
     const valueFormatter = ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
             case 'string':
@@ -45,10 +44,26 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
         }));
     };
 
-    const onFirstDataRendered = params => {
+    const onFirstDataRendered = ({api}) => {
         // Resizes the table to fit the current width.
         // Needs to be removed if more table rows are added to prevent overcrowding
-        params.api.sizeColumnsToFit();
+        api.sizeColumnsToFit();
+    };
+
+    /**
+     * Runs when the selections are changed.
+     * This current function is being used to gather an array of so_numbers of the selected rows
+     * @param params - the grid params object containing the api
+     */
+    const onSelectionChanged = ({api}) => {
+        // gets the selected row's nodes
+        const selectedRowNodes = api.getSelectedNodes();
+
+        // build an array of so_numbers using the row data (the unique ID of the servicing order)
+        const selectedRowIds = selectedRowNodes.map(node => node.data);
+
+        // set the new array to state
+        setSelectedServicingOrders(selectedRowIds);
     };
 
     const [columns, setColumns] = useState(updateColumnDefs(columnDefs));
@@ -70,8 +85,11 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter}) => {
                 }}
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
-                customDateFilterParamSuffixes={['Start', 'End']}
                 onFirstDataRendered={onFirstDataRendered}
+                customDateFilterParamSuffixes={['Start', 'End']}
+                onSelectionChanged={onSelectionChanged}
+                rowSelection="multiple"
+                rowDeselection={true} // lets users deselect a row with cmd/ctrl + click
             />
         </div>
     );
