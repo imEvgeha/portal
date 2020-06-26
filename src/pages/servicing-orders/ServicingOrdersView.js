@@ -3,9 +3,9 @@ import Select from '@atlaskit/select';
 import React, {useEffect, useState} from 'react';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL} from './constants';
+import {downloadFile} from '../../util/Common';
 import './ServicingOrdersView.scss';
 import {exportServicingOrders} from './servicingOrdersService';
-import { downloadFile } from '../../util/Common';
 
 const ServicingOrdersView = () => {
     const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);
@@ -40,7 +40,7 @@ const ServicingOrdersView = () => {
         setIsExporting(true);
         exportServicingOrders(selectedServicingOrders)
             .then(response => {
-                downloadFile(response);
+                downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
             }
         );

@@ -60,7 +60,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
         const selectedRowNodes = api.getSelectedNodes();
 
         // build an array of so_numbers using the row data (the unique ID of the servicing order)
-        const selectedRowIds = selectedRowNodes.map(node => node.data);
+        const selectedRowIds = selectedRowNodes.map(node => node.data.so_number);
 
         // set the new array to state
         setSelectedServicingOrders(selectedRowIds);

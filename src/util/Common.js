@@ -2,14 +2,21 @@ import moment from 'moment';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function downloadFile(data) {
+/**
+ * Download File
+ * @param data - Byte array format (application/octet-stream)
+ * @param fileNamePrefix - Prefix for file naming
+ * @param fileExtension - File extension
+ * @param showTime - Show time in file name timestamp
+ */
+function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required
     //for now we recreate the filename using the same syntax as server
     const currentTime = new Date();
-    let filename = 'INT_avails_';
-    filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate() + '_';
-    filename += currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds();
-    filename += '.xlsx';
+    let filename = fileNamePrefix;
+    filename += currentTime.getFullYear() + '_' + (currentTime.getMonth() + 1) + '_' + currentTime.getDate();
+    filename += showTime ? '_' + currentTime.getHours() + '_' + currentTime.getMinutes() + '_' + currentTime.getSeconds() : '';
+    filename += fileExtension;
 
     const url = window.URL.createObjectURL(new Blob([data], {type: 'application/octet-stream'}));
     const link = document.createElement('a');
@@ -197,7 +204,7 @@ const URL = {
 
 // TODO: transform this to simple helper function - no need for React Component
 const IfEmbedded = ({value, children}) => (
-    <> 
+    <>
         {URL.isEmbedded() === value && children}
     </>
 );
@@ -232,7 +239,7 @@ const normalizeDataForStore = (data) => {
             if (item.id) {
                 obj[item.id] = item;
             }
-            return obj; 
+            return obj;
         }, {});
     }
 };
@@ -244,10 +251,10 @@ const cleanObject = function(object, allowEmptyStrings = false) {
             if (v && typeof v === 'object') {
                 cleanObject(v);
             }
-            if (v && 
-                typeof v === 'object' && 
+            if (v &&
+                typeof v === 'object' &&
                 !Object.keys(v).length ||
-                v === null || 
+                v === null ||
                 v === undefined ||
                 (!allowEmptyStrings && v.length === 0)
             ) {
@@ -269,16 +276,16 @@ const lazyWithPreload = factory => {
 
 export {
     downloadFile,
-    momentToISO, 
-    isObject, 
-    mergeDeep, 
-    prepareSortMatrixParam, 
-    safeTrim, 
-    equalOrIncluded, 
-    getDeepValue, 
-    prepareSortMatrixParamTitles, 
-    isObjectEmpty, 
-    encodedSerialize, 
+    momentToISO,
+    isObject,
+    mergeDeep,
+    prepareSortMatrixParam,
+    safeTrim,
+    equalOrIncluded,
+    getDeepValue,
+    prepareSortMatrixParamTitles,
+    isObjectEmpty,
+    encodedSerialize,
     nextFrame,
     URL,
     IfEmbedded,
