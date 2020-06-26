@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
+import './BulkMatchingActionsBar.scss';
 
 const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}) => {
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
@@ -18,18 +19,18 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}
     }, [matchList]);
 
     return (
-        <div className="nexus-c-title-matching-custom-actions">
+        <div className="nexus-c-bulk-actions-bar">
             <ButtonGroup>
                 <Button
                     onClick={onCancel}
-                    className="nexus-c-button"
+                    className="nexus-c-bulk-actions-bar__btn"
                 >
                     Cancel
                 </Button>
                 <Button
                     onClick={onMatch}
                     isDisabled={!buttonStatus.match}
-                    className="nexus-c-button"
+                    className="nexus-c-bulk-actions-bar__btn"
                     appearance="primary"
                 >
                     Match
@@ -37,7 +38,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}
                 <Button
                     onClick={onMatchAndCreate}
                     isDisabled={!buttonStatus.matchAndCreate}
-                    className="nexus-c-button"
+                    className="nexus-c-bulk-actions-bar__btn"
                     appearance="primary"
                 >
                     Match & Create
