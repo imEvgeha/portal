@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
-import {getAffectedRights, getRestrictedTitles, bulkUpdateAllRights} from '../availsService';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
@@ -13,8 +13,6 @@ import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import {TITLE_MATCHING_MSG} from './constants';
 import {getDomainName, URL} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
-import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import DOP from '../../../util/DOP';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
@@ -35,6 +33,7 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
     const [restrictedCoreTitleIds, setRestrictedCoreTitleIds] = useState([]);
     const [loadTitlesTable, setLoadTitlesTable] = useState(false);
     const [activeTab, setActiveTab] = useState(false);
+    const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
     const [totalCount, setTotalCount] = useState(0);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
@@ -82,7 +81,7 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
         const onViewTitleClick = () => window.open(url, '_blank');
 
         const updatedRight = {'coreTitleId': matchList[NEXUS].id};
-        bulkUpdateAllRights(updatedRight, mergeRightIds(affectedRightIds, duplicateList))
+        setCoreTitleId(updatedRight, mergeRightIds(affectedRightIds, duplicateList))
             .then(res => console.log(res));
 
         addToast({
@@ -158,7 +157,12 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                 <Button spacing="none" appearance="link">New Title</Button>
             </SectionMessage>
             {loadTitlesTable ? (
-                <>
+                <div
+                    className={classNames(
+                        'nexus-c-bulk-matching__titles-wrapper',
+                        titlesTableIsReady && 'nexus-c-bulk-matching__titles-wrapper--is-active'
+                    )}
+                >
                     <div className="nexus-c-bulk-matching__titles-table-header">
                         <div className="nexus-c-bulk-matching__titles-table-header-title">Titles ({totalCount})</div>
                         <Button
@@ -176,6 +180,7 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                         handleMatchClick={handleMatchClick}
                         handleDuplicateClick={handleDuplicateClick}
                         duplicateList={duplicateList}
+                        setTitlesTableIsReady={setTitlesTableIsReady}
                     />
                     <BulkMatchingActionsBar
                         matchList={matchList}
@@ -184,7 +189,7 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                         onMatchAndCreate={onMatchAndCreate}
                         onCancel={onCancel}
                     />
-                </>
+                </div>
             ) : (
                 <div className="nexus-c-bulk-matching__spinner">
                     <Spinner size="large" />

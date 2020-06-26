@@ -11,7 +11,7 @@ export const getRestrictedTitles = params => {
     return nexusFetch(url);
 };
 
-export const bulkUpdateAllRights = ({coreTitleId}, rightIds) => {
+export const setCoreTitleId = ({rightIds, coreTitleId}) => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/coreTitleId?coreTitleId=${coreTitleId}&rightIds=${rightIds}`;
     return nexusFetch(url, {
         method: 'PATCH',

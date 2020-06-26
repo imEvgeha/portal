@@ -4,6 +4,7 @@ import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import {NexusGrid} from '../../../ui/elements';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -27,7 +28,7 @@ const TitlesTable = compose(
     withSorting(),
 )(NexusGrid);
 
-const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType, matchList, handleMatchClick, handleDuplicateClick, duplicateList}) => {
+const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType, matchList, handleMatchClick, handleDuplicateClick, duplicateList, setTitlesTableIsReady}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -75,6 +76,15 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
         );
     };
 
+    const onGridReady = ({type, columnApi}) => {
+        if (type === GRID_EVENTS.READY) {
+            setTitlesTableIsReady(true);
+            const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+            // +3 indicates pinned columns on the left side
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 3);
+        }
+    };
+
     const matchButton = {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'matchButton',
@@ -102,6 +112,7 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
                 className="nexus-c-rights-matching-titles-table"
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
+                onGridEvent={onGridReady}
                 initialFilter={{contentType: contentType}}
                 setTotalCount={setTotalCount}
             />
@@ -113,12 +124,14 @@ RightsMatchingTitlesTable.propTypes = {
     restrictedCoreTitleIds: PropTypes.array,
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
+    setTitlesTableIsReady: PropTypes.func,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
     restrictedCoreTitleIds: [],
     setTotalCount: () => null,
     contentType: null,
+    setTitlesTableIsReady: () => null,
 };
 
 export default RightsMatchingTitlesTable;

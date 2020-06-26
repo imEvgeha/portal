@@ -44,6 +44,14 @@
     }
 }
 
+.nexus-c-bulk-matching__titles-wrapper {
+    display: none;
+
+    &--is-active {
+        display: block;
+    }
+}
+
 .nexus-c-bulk-matching__titles-table-header {
     display: flex;
     flex-direction: row;
@@ -62,7 +70,7 @@
 }
 
 .nexus-c-bulk-matching__spinner {
-    margin-top: 150px;
+    height: calc(100vh - 500px);
     display: flex;
     justify-content: center;
     align-items: center;
