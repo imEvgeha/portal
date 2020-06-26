@@ -3,6 +3,7 @@ import {compose} from 'redux';
 import Button from '@atlaskit/button';
 import {getSyncLog} from '../../syncLogService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -40,6 +41,27 @@ const SyncLogTable = () => {
     return (
         <div className="nexus-c-sync-log-table">
             <div className="nexus-c-sync-log-table__actions">
+                <div />
+                <div className="nexus-c-sync-log-table__date-filter">
+                    <div className="nexus-c-sync-log-table__date-field">
+                        <NexusDatePicker
+                            id="dateFrom"
+                            label="Date From"
+                            onChange={() => {
+                                gridApi.onFilterChanged();
+                            }}
+                            isReturningTime={false}
+                        />
+                    </div>
+                    <div className="nexus-c-sync-log-table__date-field">
+                        <NexusDatePicker
+                            id="dateTo"
+                            label="Date To"
+                            onChange={() => {}}
+                            isReturningTime={false}
+                        />
+                    </div>
+                </div>
                 <Button
                     onClick={() => gridApi.exportDataAsExcel({fileName: EXCEL_EXPORT_FILE_NAME})}
                     isDisabled={!gridApi}
