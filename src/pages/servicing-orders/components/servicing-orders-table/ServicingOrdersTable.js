@@ -10,6 +10,7 @@ import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
+import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
 import './ServicingOrdersTable.scss';
 const ServicingOrderGrid = compose(
     withSideBar(),
@@ -18,6 +19,11 @@ const ServicingOrderGrid = compose(
 )(NexusGrid);
 
 const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders}) => {
+    const [statusBarInfo, setStatusBarInfo] = useState({
+        totalRows: 0,
+        selectedRows: 0
+    });
+
     const valueFormatter = ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
             case 'string':
@@ -64,6 +70,11 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
 
         // set the new array to state
         setSelectedServicingOrders(selectedRowIds);
+        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowIds.length});
+    };
+
+    const setTotalCount = total => {
+        setStatusBarInfo({...statusBarInfo, totalRows: total});
     };
 
     const [columns, setColumns] = useState(updateColumnDefs(columnDefs));
@@ -88,8 +99,11 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                 onFirstDataRendered={onFirstDataRendered}
                 onSelectionChanged={onSelectionChanged}
                 rowSelection="multiple"
-                rowDeselection={true} // lets users deselect a row with cmd/ctrl + click
+                // lets users deselect a row with cmd/ctrl + click
+                rowDeselection={true}
+                setTotalCount={setTotalCount}
             />
+            <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
         </div>
     );
 };
