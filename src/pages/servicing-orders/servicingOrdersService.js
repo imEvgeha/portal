@@ -59,7 +59,7 @@ export const saveFulfillmentOrder = ({data}) => {
 /**
  * Export a list of servicing orders as an excel spreadsheet. This endpoint
  * returns a data blob which can be converted to a .xls file.
- * @param servicingOrders - Array of servicing order ids
+ * @param {string[]} servicingOrders - Array of servicing order numbers (so_number)
  */
 export const exportServicingOrders = (servicingOrders) => {
     const url = `${baseServicingOrdersURL(config)}/so/export`;
