@@ -8,12 +8,12 @@ const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
 
     return (
         <div className={baseClassName}>
-            <span className={`${baseClassName}__info`}>
-                Rows: <span className={`${baseClassName}__info--bold`}>{totalRows}</span>
+            <span className={`${baseClassName}__description`}>
+                Rows: <span className={`${baseClassName}__value`}>{totalRows}</span>
             </span>
             {selectedRows > 0 && (
-                <span className={`${baseClassName}__info`}>
-                    Selected: <span className={`${baseClassName}__info--bold`}>{selectedRows}</span>
+                <span className={`${baseClassName}__description`}>
+                    Selected: <span className={`${baseClassName}__value`}>{selectedRows}</span>
                 </span>
             )}
         </div>

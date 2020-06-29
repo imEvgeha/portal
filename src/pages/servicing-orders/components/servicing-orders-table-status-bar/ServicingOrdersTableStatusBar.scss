@@ -12,13 +12,13 @@
   border-bottom-right-radius: 2px;
   font-size: 12px;
 
-  &__info {
+  &__description {
     &:not(:last-of-type) {
       margin-right: 12px;
     }
+  }
 
-    &--bold {
-      font-weight: bold;
-    }
+  &__value {
+    font-weight: bold;
   }
 }
