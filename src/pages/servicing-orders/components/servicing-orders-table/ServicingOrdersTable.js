@@ -97,6 +97,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
+                customDateFilterParamSuffixes={['Start', 'End']}
                 onSelectionChanged={onSelectionChanged}
                 rowSelection="multiple"
                 // lets users deselect a row with cmd/ctrl + click

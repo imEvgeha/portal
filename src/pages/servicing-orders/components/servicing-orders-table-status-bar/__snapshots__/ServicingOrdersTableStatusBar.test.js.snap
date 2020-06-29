@@ -5,21 +5,21 @@ exports[`ServicingOrdersTableStatusBar should match snapshot 1`] = `
   className="nexus-c-servicing-orders-table-status-bar"
 >
   <span
-    className="nexus-c-servicing-orders-table-status-bar__info"
+    className="nexus-c-servicing-orders-table-status-bar__description"
   >
     Rows: 
     <span
-      className="nexus-c-servicing-orders-table-status-bar__info--bold"
+      className="nexus-c-servicing-orders-table-status-bar__value"
     >
       5
     </span>
   </span>
   <span
-    className="nexus-c-servicing-orders-table-status-bar__info"
+    className="nexus-c-servicing-orders-table-status-bar__description"
   >
     Selected: 
     <span
-      className="nexus-c-servicing-orders-table-status-bar__info--bold"
+      className="nexus-c-servicing-orders-table-status-bar__value"
     >
       3
     </span>

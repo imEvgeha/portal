@@ -130,6 +130,12 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
       ]
     }
+    customDateFilterParamSuffixes={
+      Array [
+        "Start",
+        "End",
+      ]
+    }
     frameworkComponents={
       Object {
         "emphasizedStringCellRenderer": [Function],
