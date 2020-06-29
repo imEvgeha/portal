@@ -61,10 +61,18 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     >
       Hide Completed
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      isDisabled={true}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Export
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
   <ServicingOrdersTable
     externalFilter={Object {}}
     fixedFilter={Object {}}
+    setSelectedServicingOrders={[Function]}
   />
 </div>
 `;
