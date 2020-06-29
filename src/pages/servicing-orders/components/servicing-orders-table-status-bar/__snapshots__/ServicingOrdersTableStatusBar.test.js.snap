@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrdersTableStatusBar should match snapshot 1`] = `
+<div
+  className="nexus-c-servicing-orders-table-status-bar"
+>
+  <span
+    className="nexus-c-servicing-orders-table-status-bar__description"
+  >
+    Rows: 
+    <span
+      className="nexus-c-servicing-orders-table-status-bar__value"
+    >
+      5
+    </span>
+  </span>
+  <span
+    className="nexus-c-servicing-orders-table-status-bar__description"
+  >
+    Selected: 
+    <span
+      className="nexus-c-servicing-orders-table-status-bar__value"
+    >
+      3
+    </span>
+  </span>
+</div>
+`;
