@@ -4,7 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import './BulkMatchingActionsBar.scss';
 
-const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}) => {
+const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate, matchIsLoading, matchAndCreateIsLoading}) => {
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
@@ -30,6 +30,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}
                 <Button
                     onClick={onMatch}
                     isDisabled={!buttonStatus.match}
+                    isLoading={matchIsLoading}
                     className="nexus-c-bulk-actions-bar__btn"
                     appearance="primary"
                 >
@@ -38,6 +39,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate}
                 <Button
                     onClick={onMatchAndCreate}
                     isDisabled={!buttonStatus.matchAndCreate}
+                    isLoading={matchAndCreateIsLoading}
                     className="nexus-c-bulk-actions-bar__btn"
                     appearance="primary"
                 >
@@ -52,6 +54,8 @@ BulkMatchingActionsBar.propTypes = {
     onCancel: PropTypes.func,
     onMatch: PropTypes.func,
     onMatchAndCreate: PropTypes.func,
+    matchIsLoading: PropTypes.bool,
+    matchAndCreateIsLoading: PropTypes.bool,
 };
 
 BulkMatchingActionsBar.defaultProps = {
@@ -59,6 +63,9 @@ BulkMatchingActionsBar.defaultProps = {
     onCancel: () => null,
     onMatch: () => null,
     onMatchAndCreate: () => null,
+    matchIsLoading: false,
+    matchAndCreateIsLoading: false,
+
 };
 
 export default BulkMatchingActionsBar;

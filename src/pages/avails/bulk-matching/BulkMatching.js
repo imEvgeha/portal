@@ -17,9 +17,11 @@ import TitleSystems from '../../legacy/constants/metadata/systems';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
+    ERROR_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
     TITLE_MATCH_ERROR_MESSAGE,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -37,6 +39,10 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
     const [activeTab, setActiveTab] = useState(false);
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
     const [totalCount, setTotalCount] = useState(0);
+    const [matchIsLoading, setMatchIsLoading] = useState(false);
+    const [matchAndCreateIsLoading, setMatchAndCreateIsLoading] = useState(false);
+    const [combinedTitle, setCombinedTitle] = useState({});
+    const [matchedTitles, setMatchedTitles] = useState([]);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
@@ -78,26 +84,35 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
         }
     }, [affectedTableData]);
 
-    const onMatch = () => {
-        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const onViewTitleClick = () => window.open(url, '_blank');
-        const coreTitleId = matchList[NEXUS].id;
+    const goToTitleDetailsPage = url => window.open(url, '_blank');
 
+    const onMatch = () => {
+        setMatchIsLoading(true);
+        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
+        const coreTitleId = matchList[NEXUS].id;
+        bulkTitleMatch(coreTitleId, url);
+    };
+
+    const bulkTitleMatch = (coreTitleId, url) => {
         setCoreTitleId({
             rightIds: mergeRightIds(affectedRightIds, duplicateList),
             coreTitleId
         }).then(res => {
-            // handle combined rights list
-            console.log(res);
+            if (Array.isArray(res) && res.length) {
+                //handle matched titles
+                setMatchedTitles(res);
+            }
             addToast({
                 title: SUCCESS_TITLE,
                 description: TITLE_MATCH_SUCCESS_MESSAGE,
                 icon: SUCCESS_ICON,
                 actions: [
-                    {content: 'View Title', onClick: onViewTitleClick}
+                    {content: 'View Title', onClick: () => goToTitleDetailsPage(url)}
                 ],
                 isWithOverlay: true,
             });
+            setMatchIsLoading(false);
+            setMatchAndCreateIsLoading(false);
         }).catch(err => {
             const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message ? err.message : {};
             addToast({
@@ -109,6 +124,8 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                 ],
                 isWithOverlay: true,
             });
+            setMatchIsLoading(false);
+            setMatchAndCreateIsLoading(false);
         });
     };
 
@@ -130,11 +147,27 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
             idsToMerge: extractTitleIds,
             idsToHide: mergeRightIds([], duplicateList),
         }).then(res => {
-            console.log(res);
+            setCombinedTitle(res);
+            const {id} = res || {};
+            const url = `${getDomainName()}/metadata/detail/${id}`;
+            bulkTitleMatch(id, url);
+        }).catch(err => {
+            const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message ? err.message : {};
+            addToast({
+                title: ERROR_TITLE,
+                description: message ? message : TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+                icon: ERROR_ICON,
+                actions: [
+                    {content: 'Ok', onClick: () => removeToast()},
+                ],
+                isWithOverlay: true,
+            });
+            setMatchAndCreateIsLoading(false);
         });
     };
 
     const onMatchAndCreate = () => {
+        setMatchAndCreateIsLoading(true);
         if (Object.keys(matchList).length === 1) {
             addToast({
                 title: WARNING_TITLE,
@@ -222,6 +255,8 @@ const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) =
                         onMatch={onMatch}
                         onMatchAndCreate={onMatchAndCreate}
                         onCancel={onCancel}
+                        matchIsLoading={matchIsLoading}
+                        matchAndCreateIsLoading={matchAndCreateIsLoading}
                     />
                 </div>
             ) : (
