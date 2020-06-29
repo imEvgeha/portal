@@ -65,6 +65,7 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
   <ServicingOrdersTable
     externalFilter={Object {}}
     fixedFilter={Object {}}
+    setSelectedServicingOrders={[Function]}
   />
 </div>
 `;
