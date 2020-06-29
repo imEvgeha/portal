@@ -1,7 +1,6 @@
 import {camelCase, get} from 'lodash';
 import config from 'react-global-configuration';
 import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
-import {parseAdvancedFilter} from '../legacy/containers/avail/service/RightsService';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
@@ -57,9 +56,9 @@ export const saveFulfillmentOrder = ({data}) => {
 };
 
 /**
- * Export a list of servicing orders as an excel spreadsheet. This endpoint
- * returns a data blob which can be converted to a .xls file.
- * @param {string[]} servicingOrders - Array of servicing order numbers (so_number)
+ * Export a list of servicing orders as a CSV file. This endpoint
+ * returns a data blob which can be converted to a .csv file.
+ * @param servicingOrders - Array of servicing order ids
  */
 export const exportServicingOrders = (servicingOrders) => {
     const url = `${baseServicingOrdersURL(config)}/so/export`;
@@ -73,5 +72,6 @@ export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,
     getFulfilmentOrdersForServiceOrder,
-    saveFulfillmentOrder
+    saveFulfillmentOrder,
+    exportServicingOrders
 };

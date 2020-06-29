@@ -3,11 +3,11 @@ import Select from '@atlaskit/select';
 import React, {useEffect, useState, useContext} from 'react';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL} from './constants';
-import {downloadFile} from '../../util/Common';
-import {readinessStatus} from './constants';
 import './ServicingOrdersView.scss';
 import {exportServicingOrders} from './servicingOrdersService';
-import { NexusModalContext } from '../../ui/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
+import {readinessStatus} from './constants';
+import {downloadFile} from '../../util/Common';
 
 const ServicingOrdersView = () => {
     const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);
@@ -70,8 +70,7 @@ const ServicingOrdersView = () => {
             .then(response => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
-            }
-        );
+        });
     };
 
     /**
@@ -121,7 +120,7 @@ const ServicingOrdersView = () => {
                 </Button>
                 <Button
                     isDisabled={!selectedServicingOrders.length}
-                    onClick={() => handleExportRequest()}
+                    onClick={handleExportRequest}
                     isLoading={isExporting}
                 >
                     Export
