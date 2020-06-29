@@ -57,8 +57,8 @@ export const saveFulfillmentOrder = ({data}) => {
 };
 
 /**
- * Export a list of servicing orders as an excel spreadsheet. This endpoint
- * returns a data blob which can be converted to a .xls file.
+ * Export a list of servicing orders as a CSV file. This endpoint
+ * returns a data blob which can be converted to a .csv file.
  * @param servicingOrders - Array of servicing order ids
  */
 export const exportServicingOrders = (servicingOrders) => {
