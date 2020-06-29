@@ -34,83 +34,109 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
             <Row>
                 <Col md={3}><b>Locale: </b> {locale || emptySpan()}</Col>
                 <Col md={3}><b>Language: </b> {language ? getLanguageByCode(language) : emptySpan()}</Col>
-                <Col md={3}><b>Format: </b> {format || emptySpan()}</Col>
-                <Col md={3}><b>Service: </b> {service || emptySpan()}</Col>
+                { format && <Col md={3}><b>Format: </b> {format}</Col> }
+                { service && <Col md={3}><b>Service: </b> {service}</Col> }
             </Row>
 
             {(titleContentType === EPISODE.apiName || titleContentType === SEASON.apiName) && (
                 <Row>
-                    <Col md={3}><b>Series Name: </b> {seriesName || emptySpan()}</Col>
-                    <Col md={3}><b>Season Number: </b> {seasonNumber || emptySpan()}</Col>
-                    {titleContentType === EPISODE.apiName &&
-                    <Col md={3}><b>Episode Number: </b> {episodeNumber || emptySpan()}</Col>}
+                    { seriesName && <Col md={3}><b>Series Name: </b> {seriesName}</Col> }
+                    { seasonNumber && <Col md={3}><b>Season Number: </b> {seasonNumber}</Col> }
+                    {titleContentType === EPISODE.apiName && episodeNumber &&
+                    <Col md={3}><b>Episode Number: </b> {episodeNumber}</Col>}
                 </Row>
               )}
-            <Row>
-                <Col>
-                    <b>Genres: </b> {genres && genres.length > 0 ?
-                        genres.map((code, i) => (
-                            genres.length === i + 1 ?
+            {genres && genres.length > 0 &&
+                <Row>
+                    <Col>
+                        <b>Genres: </b>
+                        {
+                            genres.map((code, i) => (
+                                genres.length === i + 1 ?
                                 <span key={i}>{code.genre}</span> : <span key={i}>{code.genre}, </span>
-                        )) :
-                        emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <b>Categories: </b> {category && category.length > 0 ?
-                    category.map((value, i) => (
-                        category.length === i + 1 ?
-                            <span key={i}>{value}</span> : <span key={i}>{value}, </span>
-                    )) :
-                    emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Display Title:</b> {title || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Auto-Decorate Title:</b> {shortTitleTemplate || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Brief Title:</b> {shortTitle || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Medium Title:</b> {mediumTitle || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Long Title:</b> {longTitle || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Sort Title:</b> {sortTitle || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Short Synopsis:</b> {description || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Med Synopsis:</b> {shortDescription || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Long Synopsis:</b> {longDescription || emptySpan()}
-                </Col>
-            </Row>
+                                )
+                            )
+                        }
+                    </Col>
+                </Row>
+            }
+            {category && category.length > 0 &&
+                <Row>
+                    <Col>
+                        <b>Categories: </b>
+                        {
+                            category.map((value, i) => (
+                                category.length === i + 1 ?
+                                <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                                )
+                            )
+                        }
+                    </Col>
+                </Row>
+            }
+            { title &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Display Title:</b> {title}
+                    </Col>
+                </Row>
+            }
+            {shortTitleTemplate &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Auto-Decorate Title:</b> {shortTitleTemplate}
+                    </Col>
+                </Row>
+            }
+            {shortTitle &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Brief Title:</b> {shortTitle}
+                    </Col>
+                </Row>
+            }
+            {mediumTitle &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Medium Title:</b> {mediumTitle}
+                    </Col>
+                </Row>
+            }
+            {longTitle &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Long Title:</b> {longTitle}
+                    </Col>
+                </Row>
+            }
+            {sortTitle &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Sort Title:</b> {sortTitle}
+                    </Col>
+                </Row>
+            }
+            {description &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Short Synopsis:</b> {description}
+                    </Col>
+                </Row>
+            }
+            {shortDescription &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Med Synopsis:</b> {shortDescription}
+                    </Col>
+                </Row>
+            }
+            {longDescription &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Long Synopsis:</b> {longDescription}
+                    </Col>
+                </Row>
+            }
             {
                     castCrew && castCrew.length > 0 &&
                         (
@@ -161,26 +187,34 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                         </Row>
 )
                 }
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Copyright:</b> {copyright || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Awards:</b> {awards || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Sasktel Inventory ID:</b> {sasktelInventoryId || emptySpan()}
-                </Col>
-            </Row>
-            <Row>
-                <Col className='wrap-value'>
-                    <b>Sasktel Lineup ID:</b> {sasktelLineupId || emptySpan()}
-                </Col>
-            </Row>
+            {copyright &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Copyright:</b> {copyright}
+                    </Col>
+                </Row>
+            }
+            {awards &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Awards:</b> {awards}
+                    </Col>
+                </Row>
+            }
+            {sasktelInventoryId &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Sasktel Inventory ID:</b> {sasktelInventoryId}
+                    </Col>
+                </Row>
+            }
+            {sasktelLineupId &&
+                <Row>
+                    <Col className='wrap-value'>
+                        <b>Sasktel Lineup ID:</b> {sasktelLineupId}
+                    </Col>
+                </Row>
+            }
         </div>
     );
 };
