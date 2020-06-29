@@ -34,14 +34,13 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
             <Row>
                 <Col md={3}><b>Locale: </b> {locale || emptySpan()}</Col>
                 <Col md={3}><b>Language: </b> {language ? getLanguageByCode(language) : emptySpan()}</Col>
-                { format && <Col md={3}><b>Format: </b> {format}</Col> }
-                { service && <Col md={3}><b>Service: </b> {service}</Col> }
+                {format && <Col md={3}><b>Format: </b> {format}</Col>}
+                {service && <Col md={3}><b>Service: </b> {service}</Col>}
             </Row>
-
             {(titleContentType === EPISODE.apiName || titleContentType === SEASON.apiName) && (
                 <Row>
-                    { seriesName && <Col md={3}><b>Series Name: </b> {seriesName}</Col> }
-                    { seasonNumber && <Col md={3}><b>Season Number: </b> {seasonNumber}</Col> }
+                    {seriesName && <Col md={3}><b>Series Name: </b> {seriesName}</Col>}
+                    {seasonNumber && <Col md={3}><b>Season Number: </b> {seasonNumber}</Col>}
                     {titleContentType === EPISODE.apiName && episodeNumber &&
                     <Col md={3}><b>Episode Number: </b> {episodeNumber}</Col>}
                 </Row>
@@ -50,8 +49,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                 <Row>
                     <Col>
                         <b>Genres: </b>
-                        {
-                            genres.map((code, i) => (
+                        {genres.map((code, i) => (
                                 genres.length === i + 1 ?
                                 <span key={i}>{code.genre}</span> : <span key={i}>{code.genre}, </span>
                                 )
@@ -64,8 +62,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                 <Row>
                     <Col>
                         <b>Categories: </b>
-                        {
-                            category.map((value, i) => (
+                        {category.map((value, i) => (
                                 category.length === i + 1 ?
                                 <span key={i}>{value}</span> : <span key={i}>{value}, </span>
                                 )
@@ -74,7 +71,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                     </Col>
                 </Row>
             }
-            { title &&
+            {title &&
                 <Row>
                     <Col className='wrap-value'>
                         <b>Display Title:</b> {title}
