@@ -446,6 +446,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
         },
       ]
     }
+    onGridEvent={[Function]}
     setTotalCount={[Function]}
   />
 </div>

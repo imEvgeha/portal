@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import BulkMatching from './BulkMatching';
+import {BulkMatching} from './BulkMatching';
 import Button from '@atlaskit/button';
 
 describe('BulkMatching', () => {
@@ -13,6 +13,7 @@ describe('BulkMatching', () => {
 
     beforeEach(() => {
         wrapper = shallow(<BulkMatching data={[]} headerTitle={headerTitle} />);
+
         titleMatchingRightsTable = wrapper.find('TitleMatchingRightsTable');
         sectionMessage = wrapper.find('SectionMessage');
     });

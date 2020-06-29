@@ -29,7 +29,7 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) => {
+export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [affectedRightIds, setAffectedRightIds] = useState([]);

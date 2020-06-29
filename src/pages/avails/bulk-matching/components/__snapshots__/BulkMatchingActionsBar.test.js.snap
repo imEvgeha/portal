@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkMatchingActionsBar should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-actions-bar"
+>
+  <ButtonGroup>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-bulk-actions-bar__btn"
+      onClick={[Function]}
+    >
+      Cancel
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      className="nexus-c-bulk-actions-bar__btn"
+      isDisabled={true}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Match
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      className="nexus-c-bulk-actions-bar__btn"
+      isDisabled={true}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Match & Create
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </ButtonGroup>
+</div>
+`;
