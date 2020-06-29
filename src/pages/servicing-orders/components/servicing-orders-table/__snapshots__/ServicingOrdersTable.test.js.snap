@@ -254,6 +254,15 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     onSelectionChanged={[Function]}
     rowDeselection={true}
     rowSelection="multiple"
+    setTotalCount={[Function]}
+  />
+  <ServicingOrdersTableStatusBar
+    statusBarInfo={
+      Object {
+        "selectedRows": 0,
+        "totalRows": 0,
+      }
+    }
   />
 </div>
 `;
