@@ -4,6 +4,8 @@ import React, {useEffect, useState} from 'react';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL} from './constants';
 import './ServicingOrdersView.scss';
+import {exportServicingOrders} from './servicingOrdersService';
+import {downloadFile} from '../../util/Common';
 
 const ServicingOrdersView = () => {
     const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);
@@ -13,6 +15,7 @@ const ServicingOrdersView = () => {
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
+    const [isExporting, setIsExporting] = useState(false);
 
     useEffect(
         () => {
@@ -32,6 +35,15 @@ const ServicingOrdersView = () => {
         },
         [customerFilter]
     );
+
+    const exportSelectedServicingOrders = () => {
+        setIsExporting(true);
+        exportServicingOrders(selectedServicingOrders)
+            .then(response => {
+                downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
+                setIsExporting(false);
+        });
+    };
 
     return (
         <div className="nexus-c-servicing-orders">
@@ -54,6 +66,13 @@ const ServicingOrdersView = () => {
                 </Button>
                 <Button isSelected={isHideCompleted} onClick={() => setIsHideCompleted(!isHideCompleted)}>
                     {HIDE_COMPLETED_BTN}
+                </Button>
+                <Button
+                    isDisabled={!selectedServicingOrders.length}
+                    onClick={exportSelectedServicingOrders}
+                    isLoading={isExporting}
+                >
+                    Export
                 </Button>
             </div>
             <ServicingOrdersTable
