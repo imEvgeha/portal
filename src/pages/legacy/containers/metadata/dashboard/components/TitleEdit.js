@@ -1172,7 +1172,7 @@ class TitleEdit extends Component {
                                                 </div>
                                             </Col>
                                       )
-    }
+                                }
                             </Col>
                         </Row>
                         {

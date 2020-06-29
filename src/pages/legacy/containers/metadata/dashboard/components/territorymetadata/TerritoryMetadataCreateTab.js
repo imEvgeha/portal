@@ -54,7 +54,7 @@ class TerritoryMetadataCreateTab extends Component {
                                 label="Box Office"
                                 id="territoryBoxOffice"
                                 name="boxOffice"
-                                errorMessage='Please enter a valid number!'
+                                errorMessage="Please enter a valid number!"
                                 placeholder="Enter Box Office"
                                 onChange={this.props.handleChange}
                                 validate={{
@@ -69,7 +69,7 @@ class TerritoryMetadataCreateTab extends Component {
                             <AvField
                                 label="Release Year"
                                 name="releaseYear"
-                                errorMessage='Please enter a valid year!'
+                                errorMessage="Please enter a valid year!"
                                 id="territoryReleaseYear"
                                 placeholder="Enter Release Year"
                                 onChange={this.props.handleChange}

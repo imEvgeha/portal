@@ -39,7 +39,7 @@ class TerritoryMetadataEditMode extends Component {
                                     label="Box Office"
                                     id="territoryBoxOffice"
                                     name="boxOffice"
-                                    errorMessage='Please enter a valid number!'
+                                    errorMessage="Please enter a valid number!"
                                     value={this.props.data.boxOffice}
                                     placeholder="Enter Box Office"
                                     onChange={(e) => this.props.handleChange(e, this.props.data)}
@@ -55,7 +55,7 @@ class TerritoryMetadataEditMode extends Component {
                                 <AvField
                                     label="Release Year"
                                     name="releaseYear"
-                                    errorMessage='Please enter a valid year!'
+                                    errorMessage="Please enter a valid year!"
                                     id="territoryReleaseYear"
                                     value={this.props.data.releaseYear}
                                     placeholder="Enter Release Year"
