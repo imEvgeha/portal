@@ -4,6 +4,7 @@ import {get, cloneDeep} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './TitleMatchingRightsTable.json';
+import './TitleMatchingRightsTable.scss';
 
 const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
@@ -37,7 +38,6 @@ const TitleMatchingRightsTable = ({data}) => {
                 mapping={mappings}
                 rowData={tableData}
                 rowSelection="single"
-                domLayout="autoHeight"
                 onSelectionChanged={handleRowSelectionChange}
             />
         </div>
