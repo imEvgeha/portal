@@ -155,7 +155,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
             addToast({
                 title: ERROR_TITLE,
-                description: message ? message : TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+                description: message || TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
                 icon: ERROR_ICON,
                 actions: [
                     {content: 'Ok', onClick: () => removeToast()},
