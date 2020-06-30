@@ -8,3 +8,5 @@ export const readinessStatus = {
   READY: 'READY',
   NEW: 'NEW'
 };
+
+export const EXPORT_WARNING_MESSAGE = 'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';

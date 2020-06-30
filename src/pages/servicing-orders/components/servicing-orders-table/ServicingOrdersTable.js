@@ -68,15 +68,11 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
      * @param params - the grid params object containing the api
      */
     const onSelectionChanged = ({api}) => {
-        // gets the selected row's nodes
-        const selectedRowNodes = api.getSelectedNodes();
-
-        // build an array of so_numbers using the row data (the unique ID of the servicing order)
-        const selectedRowIds = selectedRowNodes.map(node => node.data);
+        const selectedRowsData = api.getSelectedNodes().map(node => node.data);
 
         // set the new array to state
-        setSelectedServicingOrders(selectedRowIds);
-        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowIds.length});
+        setSelectedServicingOrders(selectedRowsData);
+        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowsData.length});
     };
 
     const setTotalCount = total => {
