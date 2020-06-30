@@ -11,6 +11,7 @@ import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
+import BulkMatchingReview from './components/BulkMatchingReview';
 import {TITLE_MATCHING_MSG} from './constants';
 import {getDomainName} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
@@ -41,7 +42,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const [totalCount, setTotalCount] = useState(0);
     const [matchIsLoading, setMatchIsLoading] = useState(false);
     const [matchAndCreateIsLoading, setMatchAndCreateIsLoading] = useState(false);
-    const [combinedTitle, setCombinedTitle] = useState({});
+    const [combinedTitle, setCombinedTitle] = useState([]);
     const [matchedTitles, setMatchedTitles] = useState([]);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
@@ -113,6 +114,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             });
             setMatchIsLoading(false);
             setMatchAndCreateIsLoading(false);
+            setLoadTitlesTable(false);
         }).catch(err => {
             const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
             addToast({
@@ -147,7 +149,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             idsToMerge: extractTitleIds,
             idsToHide: mergeRightIds([], duplicateList),
         }).then(res => {
-            setCombinedTitle(res);
+            setCombinedTitle([...combinedTitle, res]);
             const {id} = res || {};
             const url = `${getDomainName()}/metadata/detail/${id}`;
             bulkTitleMatch(id, url);
@@ -189,6 +191,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         closeDrawer();
     };
 
+    const isSummaryReady = () => {
+        return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
+    };
+
     return (
         <div className="nexus-c-bulk-matching">
             <h2>{headerTitle}</h2>
@@ -211,18 +217,22 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 >
                     Affected Rights ({affectedTableData.length})
                 </div>
-                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
-                    New Title
-                </Button>
+                {!isSummaryReady() && (
+                    <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
+                        New Title
+                    </Button>
+                )}
             </div>
             <TitleMatchingRightsTable
                 data={activeTab ? affectedTableData : selectedTableData}
             />
-            <SectionMessage>
-                {TITLE_MATCHING_MSG}
-                <Button spacing="none" appearance="link">New Title</Button>
-            </SectionMessage>
-            {loadTitlesTable ? (
+            {!isSummaryReady() && (
+                <SectionMessage>
+                    {TITLE_MATCHING_MSG}
+                    <Button spacing="none" appearance="link">New Title</Button>
+                </SectionMessage>
+            )}
+            {loadTitlesTable && (
                 <div
                     className={classNames(
                         'nexus-c-bulk-matching__titles-wrapper',
@@ -259,10 +269,14 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         matchAndCreateIsLoading={matchAndCreateIsLoading}
                     />
                 </div>
-            ) : (
+            )}
+            {!loadTitlesTable && !isSummaryReady() && (
                 <div className="nexus-c-bulk-matching__spinner">
                     <Spinner size="large" />
                 </div>
+            )}
+            {isSummaryReady() && (
+                <BulkMatchingReview combinedTitle={combinedTitle} matchedTitles={matchedTitles} />
             )}
         </div>
     );
