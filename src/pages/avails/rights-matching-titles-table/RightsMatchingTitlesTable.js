@@ -4,6 +4,7 @@ import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import {NexusGrid} from '../../../ui/elements';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -11,7 +12,6 @@ import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {titleServiceManager} from '../../legacy/containers/metadata/service/TitleServiceManager';
 import {getRepositoryName, getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -28,8 +28,16 @@ const TitlesTable = compose(
     withSorting(),
 )(NexusGrid);
 
-const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, contentType}) => {
-    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+const RightsMatchingTitlesTable = ({
+    restrictedCoreTitleIds,
+    setTotalCount,
+    contentType,
+    matchList,
+    handleMatchClick,
+    handleDuplicateClick,
+    duplicateList,
+    setTitlesTableIsReady
+}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
@@ -77,6 +85,15 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
         );
     };
 
+    const onGridReady = ({type, columnApi}) => {
+        if (type === GRID_EVENTS.READY) {
+            setTitlesTableIsReady(true);
+            const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
+            // +3 indicates pinned columns on the left side
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 3);
+        }
+    };
+
     const matchButton = {
         ...Constants.ADDITIONAL_COLUMN_DEF,
         colId: 'matchButton',
@@ -104,6 +121,7 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
                 className="nexus-c-rights-matching-titles-table"
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
+                onGridEvent={onGridReady}
                 initialFilter={{contentType: contentType}}
                 setTotalCount={setTotalCount}
             />
@@ -113,14 +131,24 @@ const RightsMatchingTitlesTable = ({restrictedCoreTitleIds, setTotalCount, conte
 
 RightsMatchingTitlesTable.propTypes = {
     restrictedCoreTitleIds: PropTypes.array,
+    handleMatchClick: PropTypes.func,
+    handleDuplicateClick: PropTypes.func,
+    matchList: PropTypes.object,
+    duplicateList: PropTypes.object,
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
+    setTitlesTableIsReady: PropTypes.func,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
     restrictedCoreTitleIds: [],
+    handleMatchClick: () => null,
+    handleDuplicateClick: () => null,
+    duplicateList: {},
+    matchList: {},
     setTotalCount: () => null,
     contentType: null,
+    setTitlesTableIsReady: () => null,
 };
 
 export default RightsMatchingTitlesTable;

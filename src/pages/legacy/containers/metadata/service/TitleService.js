@@ -174,7 +174,7 @@ export const titleService = {
         const url = `${api}?includeDeleted=false&titleId=${id}`;
         return nexusFetch(url);
     },
-    
+
     updateTerritoryMetadata: (editedTerritoryMetadata) => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/territorymetadata';
         return nexusFetch(url, {
@@ -206,6 +206,13 @@ export const titleService = {
 
     mergeTitles: (query) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?${query}`;
+        return nexusFetch(url, {
+            method: 'post',
+        });
+    },
+
+    bulkMergeTitles: ({idsToMerge, idsToHide}) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/legacyTitleMerge?idsToMerge=${idsToMerge}&idsToHide=${idsToHide}`;
         return nexusFetch(url, {
             method: 'post',
         });
