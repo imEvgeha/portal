@@ -36,7 +36,8 @@ const RightsMatchingTitlesTable = ({
     handleMatchClick,
     handleDuplicateClick,
     duplicateList,
-    setTitlesTableIsReady}) => {
+    setTitlesTableIsReady
+}) => {
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => (
             {
