@@ -272,7 +272,7 @@
   "queryParamName": "coreTitleId",
   "readOnly": true,
   "enableSearch": true,
-  "enableEdit": true,
+  "enableEdit": false,
   "required": false
 }, {
   "javaVariableName": "storeLanguage",

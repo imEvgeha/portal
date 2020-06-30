@@ -52,13 +52,14 @@ class TerritoryMetadataCreateTab extends Component {
                         <Col>
                             <AvField
                                 label="Box Office"
-                                type="number"
                                 id="territoryBoxOffice"
                                 name="boxOffice"
+                                errorMessage="Please enter a valid number!"
                                 placeholder="Enter Box Office"
                                 onChange={this.props.handleChange}
                                 validate={{
-                                    pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number!' },
+                                    pattern: { value: '^[0-9]+$' },
+                                    maxLength: { value: 10 }
                                 }}
                             />
                         </Col>
@@ -68,14 +69,14 @@ class TerritoryMetadataCreateTab extends Component {
                             <AvField
                                 label="Release Year"
                                 name="releaseYear"
-                                type="number"
                                 errorMessage="Please enter a valid year!"
+                                id="territoryReleaseYear"
                                 placeholder="Enter Release Year"
                                 onChange={this.props.handleChange}
                                 validate={{
-                                    date: { format: 'YYYY', errorMessage: 'Please enter a valid date!' },
-                                    pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a valid date!' },
-                                    maxLength: { value: 4 }, minLength: { value: 4 }
+                                    pattern: { value: '^[0-9]+$' },
+                                    minLength: { value: 4 },
+                                    maxLength: { value: 4 }
                                 }}
                             />
                         </Col>
