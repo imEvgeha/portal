@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
 import {getSyncLog} from '../../syncLogService';
@@ -19,6 +19,7 @@ const SyncLogGrid = compose(
 
 const SyncLogTable = () => {
     const [gridApi, setGridApi] = useState(null);
+    const [updatedAtFilterInstance, setTestFilterInstance] = useState(null);
 
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => ({
@@ -38,6 +39,33 @@ const SyncLogTable = () => {
         }
     };
 
+    useEffect(() => {
+        if (gridApi) {
+            gridApi.getFilterInstance('updatedAt', updatedAtFilterInstance => {
+                setTestFilterInstance(updatedAtFilterInstance);
+            });
+        }
+    }, [gridApi]);
+
+    const setDateFilter = ({dateFrom, dateTo}) => {
+        if (updatedAtFilterInstance) {
+            if (dateFrom) {
+                updatedAtFilterInstance.setModel({
+                    type: 'greaterThanOrEqual',
+                    filter: dateFrom,
+                });
+            }
+            if (dateTo) {
+                updatedAtFilterInstance.setModel({
+                    type: 'lessThanOrEqual',
+                    filter: dateTo,
+                });
+            }
+            updatedAtFilterInstance.applyModel();
+            gridApi.onFilterChanged();
+        }
+    };
+
     return (
         <div className="nexus-c-sync-log-table">
             <div className="nexus-c-sync-log-table__actions">
@@ -47,9 +75,7 @@ const SyncLogTable = () => {
                         <NexusDatePicker
                             id="dateFrom"
                             label="Date From"
-                            onChange={() => {
-                                gridApi.onFilterChanged();
-                            }}
+                            onChange={value => setDateFilter({dateFrom: value})}
                             isReturningTime={false}
                         />
                     </div>
@@ -57,7 +83,7 @@ const SyncLogTable = () => {
                         <NexusDatePicker
                             id="dateTo"
                             label="Date To"
-                            onChange={() => {}}
+                            onChange={value => setDateFilter({dateTo: value})}
                             isReturningTime={false}
                         />
                     </div>
