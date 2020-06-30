@@ -5,7 +5,7 @@ import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableE
 import SelectedButton from './components/SelectedButton';
 import {
     RIGHTS_SELECTED_TAB,
-    RIGHTS_TAB
+    RIGHTS_TAB,
 } from '../../../pages/avails/rights-repository/RightsRepository';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 
@@ -21,7 +21,7 @@ const NexusTableToolbar = ({
     rightColumnApi,
     selectedRightColumnApi,
     selectedRightGridApi,
-    selectedRepoRights
+    selectedRepoRights,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
@@ -59,13 +59,15 @@ const NexusTableToolbar = ({
 
 NexusTableToolbar.propTypes = {
     title: PropTypes.string,
-    totalRows: PropTypes.bool,
-    hasSelectedTab: PropTypes.bool,
+    totalRows: PropTypes.number,
     hasDownloadButton: PropTypes.bool,
+    activeTab: PropTypes.string.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
     selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightGridApi: PropTypes.object.isRequired,
+    selectedRightColumnApi: PropTypes.object.isRequired,
     selectedRightsCount: PropTypes.number,
     selectedRepoRights: PropTypes.array,
 };
@@ -73,10 +75,9 @@ NexusTableToolbar.propTypes = {
 NexusTableToolbar.defaultProps = {
     title: null,
     totalRows: 0,
-    hasSelectedTab: true,
     hasDownloadButton: true,
-    getAllColumns: () => [],
-    selectedRepoRights: []
+    selectedRepoRights: [],
+    selectedRightsCount: 0,
 };
 
 export default NexusTableToolbar;
