@@ -49,6 +49,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate,
         </div>
     );
 };
+
 BulkMatchingActionsBar.propTypes = {
     matchList: PropTypes.object,
     onCancel: PropTypes.func,
