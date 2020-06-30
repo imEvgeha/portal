@@ -1,7 +1,6 @@
 import {camelCase, get} from 'lodash';
 import config from 'react-global-configuration';
 import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
-import {parseAdvancedFilter} from '../legacy/containers/avail/service/RightsService';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
@@ -73,5 +72,6 @@ export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,
     getFulfilmentOrdersForServiceOrder,
-    saveFulfillmentOrder
+    saveFulfillmentOrder,
+    exportServicingOrders
 };
