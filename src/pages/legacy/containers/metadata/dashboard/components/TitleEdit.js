@@ -1141,94 +1141,96 @@ class TitleEdit extends Component {
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
-                {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
-                <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
-                    <Row>
-                        <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
-                            {
-                                this.state.isEditMode ? (
-                                    <>
-                                        <Button className="float-right" id="btnSave" isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary">Save</Button>
-                                        <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger">Cancel</Button>
-                                    </>
-                                  )
-                                    : (
-                                        <Col>
-                                            <div className='nexus-c-title-edit__sync-container'>
-                                                {getRepositoryName(id) === TitleSystems.NEXUS && (
-                                                    <>
-                                                        <PublishVzMovida
-                                                            coreTitle={titleForm}
-                                                            editorialMetadataList={editorialMetadata}
-                                                            territoryMetadataList={territory}
-                                                            onSyncPublishClick={this.onSyncPublishClick}
-                                                        />
-                                                        <Can I="update" a="Metadata">
-                                                            <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
-                                                        </Can>
-                                                    </>
-                                                )}
-                                            </div>
-                                        </Col>
-                                  )
-}
-                        </Col>
-                    </Row>
-                    {
-                        this.state.isEditMode ? this.editMode() : this.readOnly()
-                    }
-                    <EditorialMetadata
-                        handleAddEditorialCharacterName={this.handleAddEditorialCharacterName}
-                        handleAddEditorialCharacterNameEdit={this.handleAddEditorialCharacterNameEdit}
-                        areFieldsRequired={this.state.areEditorialMetadataFieldsRequired}
-                        validSubmit={this.handleOnSave}
-                        toggle={this.toggleEditorialMetadata}
-                        activeTab={this.state.editorialMetadataActiveTab}
-                        addEditorialMetadata={this.addEditorialMetadata}
-                        createEditorialTab={CREATE_TAB}
-                        handleSubmit={this.handleEditorialMetadataSubmit}
-                        editorialMetadata={editorialMetadata}
-                        handleChange={this.handleEditorialMetadataChange}
-                        handleAutoDecorateChange={this.handleEditorialMetadataAutoDecorateChange}
-                        handleGenreChange={this.handleEditorialMetadataGenreChange}
-                        handleTitleChange={this.handleTitleEditorialMetadataChange}
-                        handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
-                        handleEditChange={this.handleEditorialMetadataEditChange}
-                        handleGenreEditChange={this.handleEditorialMetadataGenreEditChange}
-                        isEditMode={this.state.isEditMode}
-                        handleEditorialCastCrew={this.handleEditorialCastCrew}
-                        handleEditorialCastCrewCreate={this.handleEditorialCastCrewCreate}
-                        titleContentType={titleForm.contentType}
-                        editorialMetadataForCreate={this.state.editorialMetadataForCreate}
-                        updatedEditorialMetadata={this.state.updatedEditorialMetadata}
-                        handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
-                        handleCategoryChange={this.handleEditorialMetadataCategoryChange}
-                        handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
-                        coreTitleData={this.state.titleForm}
-                        editorialTitleData={this.state.editorialMetadata}
-                        cleanField={this.cleanField}
-                        handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
-                        handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
-                    />
+                <>
+                    {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
+                    <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
+                        <Row>
+                            <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
+                                {
+                                    this.state.isEditMode ? (
+                                        <>
+                                            <Button className="float-right" id="btnSave" isLoading={this.state.isLoading} onClick={this.handleOnSave} appearance="primary">Save</Button>
+                                            <Button className="float-right" id="btnCancel" onClick={this.handleSwitchMode} appearance="danger">Cancel</Button>
+                                        </>
+                                      )
+                                        : (
+                                            <Col>
+                                                <div className='nexus-c-title-edit__sync-container'>
+                                                    {getRepositoryName(id) === TitleSystems.NEXUS && (
+                                                        <>
+                                                            <PublishVzMovida
+                                                                coreTitle={titleForm}
+                                                                editorialMetadataList={editorialMetadata}
+                                                                territoryMetadataList={territory}
+                                                                onSyncPublishClick={this.onSyncPublishClick}
+                                                            />
+                                                            <Can I="update" a="Metadata">
+                                                                <Button className="float-right" id="btnEdit" onClick={this.handleSwitchMode}>Edit</Button>
+                                                            </Can>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </Col>
+                                      )
+                                }
+                            </Col>
+                        </Row>
+                        {
+                            this.state.isEditMode ? this.editMode() : this.readOnly()
+                        }
+                        <EditorialMetadata
+                            handleAddEditorialCharacterName={this.handleAddEditorialCharacterName}
+                            handleAddEditorialCharacterNameEdit={this.handleAddEditorialCharacterNameEdit}
+                            areFieldsRequired={this.state.areEditorialMetadataFieldsRequired}
+                            validSubmit={this.handleOnSave}
+                            toggle={this.toggleEditorialMetadata}
+                            activeTab={this.state.editorialMetadataActiveTab}
+                            addEditorialMetadata={this.addEditorialMetadata}
+                            createEditorialTab={CREATE_TAB}
+                            handleSubmit={this.handleEditorialMetadataSubmit}
+                            editorialMetadata={editorialMetadata}
+                            handleChange={this.handleEditorialMetadataChange}
+                            handleAutoDecorateChange={this.handleEditorialMetadataAutoDecorateChange}
+                            handleGenreChange={this.handleEditorialMetadataGenreChange}
+                            handleTitleChange={this.handleTitleEditorialMetadataChange}
+                            handleSynopsisChange={this.handleSynopsisEditorialMetadataChange}
+                            handleEditChange={this.handleEditorialMetadataEditChange}
+                            handleGenreEditChange={this.handleEditorialMetadataGenreEditChange}
+                            isEditMode={this.state.isEditMode}
+                            handleEditorialCastCrew={this.handleEditorialCastCrew}
+                            handleEditorialCastCrewCreate={this.handleEditorialCastCrewCreate}
+                            titleContentType={titleForm.contentType}
+                            editorialMetadataForCreate={this.state.editorialMetadataForCreate}
+                            updatedEditorialMetadata={this.state.updatedEditorialMetadata}
+                            handleEpisodicChange={this.handleEpisodicEditorialMetadataChange}
+                            handleCategoryChange={this.handleEditorialMetadataCategoryChange}
+                            handleCategoryEditChange={this.handleEditorialMetadataCategoryEditChange}
+                            coreTitleData={this.state.titleForm}
+                            editorialTitleData={this.state.editorialMetadata}
+                            cleanField={this.cleanField}
+                            handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
+                            handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
+                        />
 
-                    <TerritoryMetadata
-                        isLocalRequired={this.state.areTerritoryMetadataFieldsRequired}
-                        validSubmit={this.handleOnSave}
-                        toggle={this.toggleTerritoryMetadata}
-                        activeTab={this.state.territoryMetadataActiveTab}
-                        addTerritoryMetadata={this.addTerritoryMetadata}
-                        createTerritoryTab={CREATE_TAB}
-                        handleSubmit={this.handleTerritoryMetadataSubmit}
-                        territory={territory}
-                        territories={this.state.territories}
-                        handleChange={this.handleTerritoryMetadataChange}
-                        handleChangeDate={this.handleTerritoryMetadataDateChange}
-                        handleEditChange={this.handleTerritoryMetadataEditChange}
-                        handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
-                        isEditMode={this.state.isEditMode}
-                        handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
-                    />
-                </AvForm>
+                        <TerritoryMetadata
+                            isLocalRequired={this.state.areTerritoryMetadataFieldsRequired}
+                            validSubmit={this.handleOnSave}
+                            toggle={this.toggleTerritoryMetadata}
+                            activeTab={this.state.territoryMetadataActiveTab}
+                            addTerritoryMetadata={this.addTerritoryMetadata}
+                            createTerritoryTab={CREATE_TAB}
+                            handleSubmit={this.handleTerritoryMetadataSubmit}
+                            territory={territory}
+                            territories={this.state.territories}
+                            handleChange={this.handleTerritoryMetadataChange}
+                            handleChangeDate={this.handleTerritoryMetadataDateChange}
+                            handleEditChange={this.handleTerritoryMetadataEditChange}
+                            handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
+                            isEditMode={this.state.isEditMode}
+                            handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
+                        />
+                    </AvForm>
+                </>
             </EditPage>
         );
     }
