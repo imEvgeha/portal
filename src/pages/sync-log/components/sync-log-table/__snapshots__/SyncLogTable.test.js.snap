@@ -4,12 +4,16 @@ exports[`EventManagementTable should match snapshot 1`] = `
 <div
   className="nexus-c-sync-log-table"
 >
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    className="nexus-c-sync-log-table__download-button"
-    onClick={[Function]}
+  <div
+    className="nexus-c-sync-log-table__actions"
   >
-    Download
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      isDisabled={true}
+      onClick={[Function]}
+    >
+      Download
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
   <Connect(ComposedComponent)
     className="nexus-c-sync-log-grid"
     columnDefs={
@@ -140,6 +144,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         },
       ]
     }
+    onGridEvent={[Function]}
     rowSelection="single"
   />
 </div>
