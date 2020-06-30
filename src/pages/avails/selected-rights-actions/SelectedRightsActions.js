@@ -2,18 +2,27 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {uniqBy} from 'lodash';
 import classNames from 'classnames';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import {setCoreTitleId} from '../availsService';
 import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import {BULK_MATCH, BULK_MATCH_DISABLED_TOOLTIP, BULK_UNMATCH, BULK_UNMATCH_DISABLED_TOOLTIP} from './constants';
+import {
+    BULK_MATCH,
+    BULK_MATCH_DISABLED_TOOLTIP,
+    BULK_UNMATCH,
+    BULK_UNMATCH_DISABLED_TOOLTIP,
+    BULK_UNMATCH_SUCCESS_TOAST,
+} from './constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 
-const SelectedRightsActions = ({selectedRights}) => {
+const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -67,18 +76,30 @@ const SelectedRightsActions = ({selectedRights}) => {
     const toggleDrawerState = () => setDrawerOpen(prevDrawerOpen => !prevDrawerOpen);
 
     const openBulkUnmatchModal = () => {
+        const rightIds = selectedRights.map(({id}) => id);
+
         setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
         setModalActions([
             {
                 text: BULK_UNMATCH_CANCEL_BTN,
                 onClick: () => {
                     close();
+                    removeToast();
                 },
                 appearance: 'default',
             },
             {
                 text: BULK_UNMATCH_CONFIRM_BTN,
-                onClick: () => { /* Call some sweet API */ },
+                onClick: () => setCoreTitleId({rightIds}).then(unmatchedRights => {
+                    close();
+                    addToast({
+                        title: BULK_UNMATCH_SUCCESS_TOAST,
+                        description: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                         Please validate title fields.`,
+                        icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
+                    });
+                }),
                 appearance: 'primary',
             },
         ]);
@@ -125,7 +146,7 @@ const SelectedRightsActions = ({selectedRights}) => {
                             isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="bulk-unmatch"
-                        onClick={isUnmatchable && openBulkUnmatchModal}
+                        onClick={isUnmatchable ? openBulkUnmatchModal : null}
                     >
                         <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
                             {BULK_UNMATCH}
@@ -150,10 +171,14 @@ const SelectedRightsActions = ({selectedRights}) => {
 
 SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
+    addToast: PropTypes.func,
+    removeToast: PropTypes.func,
 };
 
 SelectedRightsActions.defaultProps = {
     selectedRights: [],
+    addToast: () => null,
+    removeToast: () => null,
 };
 
-export default SelectedRightsActions;
+export default withToasts(SelectedRightsActions);
