@@ -15,7 +15,11 @@ const BulkMatchingReview = ({combinedTitle, matchedTitles}) => {
                 Combined Title
             </div>
             <TitleMatchingRightsTable data={combinedTitle} />
-            <Button className="nexus-c-bulk-matching-review__btn" onClick={() => null}>
+            <Button
+                className="nexus-c-bulk-matching-review__btn"
+                onClick={() => null}
+                appearance="primary"
+            >
                 Done
             </Button>
         </div>

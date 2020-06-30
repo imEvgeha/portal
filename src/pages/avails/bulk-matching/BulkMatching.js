@@ -12,7 +12,7 @@ import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchi
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
-import {TITLE_MATCHING_MSG} from './constants';
+import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
 import {getDomainName} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {
@@ -33,6 +33,7 @@ import './BulkMatching.scss';
 export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
+    const [headerText, setHeaderText] = useState(headerTitle);
     const [affectedRightIds, setAffectedRightIds] = useState([]);
     const [contentType, setContentType] = useState(null);
     const [restrictedCoreTitleIds, setRestrictedCoreTitleIds] = useState([]);
@@ -115,6 +116,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             setMatchIsLoading(false);
             setMatchAndCreateIsLoading(false);
             setLoadTitlesTable(false);
+            setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
         }).catch(err => {
             const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
             addToast({
@@ -197,7 +199,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
     return (
         <div className="nexus-c-bulk-matching">
-            <h2>{headerTitle}</h2>
+            <h2>{headerText}</h2>
             <div className="nexus-c-bulk-matching__header">
                 <div
                     className={classNames(
