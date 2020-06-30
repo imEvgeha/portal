@@ -6,7 +6,7 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestReport from '../ingest-report/IngestReport';
 import './Ingest.scss';
 
-const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId}) => {
+const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId, ingestType}) => {
     const [showReport, setShowReport] = useState(false);
     const { link, status, ingestReport } = attachment;
 
@@ -33,7 +33,7 @@ const Ingest = ({received, attachment, selected, ingestClick, inBundle, ingestId
                   )
 }
                 <div className={`nexus-c-avail-ingest__status nexus-c-avail-ingest__status--is-${ingestReport ? 'expandable' : 'not-expandable'}`}>
-                    <IngestStatus date={received} status={status} />
+                    <IngestStatus date={received} status={status} ingestType={ingestType} />
                 </div>
             </div>
             {
