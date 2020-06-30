@@ -152,7 +152,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             const url = `${getDomainName()}/metadata/detail/${id}`;
             bulkTitleMatch(id, url);
         }).catch(err => {
-            const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message ? err.message : {};
+            const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
             addToast({
                 title: ERROR_TITLE,
                 description: message ? message : TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
