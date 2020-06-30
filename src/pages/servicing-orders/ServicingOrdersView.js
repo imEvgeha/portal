@@ -18,6 +18,7 @@ const ServicingOrdersView = () => {
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
     const [isExporting, setIsExporting] = useState(false);
+    const [refreshData, setRefreshData] = useState(false);
     const ModalContent = (
         <>
             <p>
@@ -70,6 +71,7 @@ const ServicingOrdersView = () => {
             .then(response => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
+                setRefreshData(true);
         });
     };
 
@@ -94,6 +96,13 @@ const ServicingOrdersView = () => {
                 }
             }
         ]);
+    };
+
+    /**
+     * After refreshing data, set to false
+     */
+    const handleDataRefreshComplete = () => {
+        setRefreshData(false);
     };
 
     return (
@@ -130,6 +139,8 @@ const ServicingOrdersView = () => {
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 setSelectedServicingOrders={setSelectedServicingOrders}
+                refreshData={refreshData}
+                dataRefreshComplete={handleDataRefreshComplete}
             />
         </div>
     );

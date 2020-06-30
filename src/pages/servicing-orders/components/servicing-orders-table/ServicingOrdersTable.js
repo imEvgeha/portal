@@ -18,11 +18,12 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders}) => {
+const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0
     });
+    const [gridApi, setGridApi] = useState(null);
 
     const valueFormatter = ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
@@ -50,10 +51,15 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
         }));
     };
 
+    /**
+     * Callback when datatable is first rendered on the DOM
+     * @param {object} param
+     */
     const onFirstDataRendered = ({api}) => {
-        // Resizes the table to fit the current width.
+        // Resizes the table to fit the current width when first rendered.
         // Needs to be removed if more table rows are added to prevent overcrowding
         api.sizeColumnsToFit();
+        setGridApi(api);
     };
 
     /**
@@ -84,6 +90,22 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
             setColumns(updateColumnDefs(columnDefs));
         },
         [columnDefs]
+    );
+
+    useEffect(
+        () => {
+            if (refreshData) {
+                // Refresh data
+                gridApi.purgeInfiniteCache();
+
+                // Remove all selections
+                gridApi.deselectAll();
+                setSelectedServicingOrders([]);
+
+                dataRefreshComplete();
+            }
+        },
+        [refreshData]
     );
 
     return (
