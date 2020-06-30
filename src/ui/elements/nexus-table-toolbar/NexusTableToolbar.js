@@ -57,7 +57,7 @@ const NexusTableToolbar = ({
     );
 };
 
-NexusTableToolbar.propsTypes = {
+NexusTableToolbar.propTypes = {
     title: PropTypes.string,
     totalRows: PropTypes.bool,
     hasSelectedTab: PropTypes.bool,
