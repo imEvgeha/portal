@@ -114,7 +114,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             setMatchIsLoading(false);
             setMatchAndCreateIsLoading(false);
         }).catch(err => {
-            const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message ? err.message : {};
+            const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
             addToast({
                 title: ERROR_TITLE,
                 description: message ? message : TITLE_MATCH_ERROR_MESSAGE,
