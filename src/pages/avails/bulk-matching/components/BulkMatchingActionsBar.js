@@ -66,7 +66,6 @@ BulkMatchingActionsBar.defaultProps = {
     onMatchAndCreate: () => null,
     matchIsLoading: false,
     matchAndCreateIsLoading: false,
-
 };
 
 export default BulkMatchingActionsBar;
