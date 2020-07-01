@@ -1,15 +1,14 @@
 import React from 'react';
-import {get, isEqual, isEmpty, cloneDeep} from 'lodash';
+import {get, isEqual, cloneDeep} from 'lodash';
 import createValueFormatter from '../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import Constants from './title-matching/titleMatchingConstants';
 import TitleSystems from '../legacy/constants/metadata/systems';
-import {getDeepValue, isObject} from '../../util/Common';
-import loadingGif from '../../assets/img/loading.gif';
 
 export function createColumnDefs(payload) {
     return payload.filter(column => column.dataType && column.displayName).reduce((columnDefs, column) => {
         const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
+        const lockedColumns = ['id'].includes(javaVariableName);
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
@@ -17,6 +16,9 @@ export function createColumnDefs(payload) {
             cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
             width: (['businessDateTime', 'timestamp'].includes(dataType)) ? 235 : 150,
+            lockPosition: lockedColumns,
+            lockVisible: lockedColumns,
+            lockPinned: lockedColumns,
         };
         return [...columnDefs, columnDef];
     }, []);
@@ -85,14 +87,10 @@ export const createColumnSchema = (list, field) => {
 }; 
 
 export const createSchemaForColoring = (list, columnDefs) => {
-    const schema = cloneDeep(columnDefs).reduce((acc, {field}) => {
-        const fieldValue = createColumnSchema(list, field);
-        acc[field] = fieldValue;
-
+    return cloneDeep(columnDefs).reduce((acc, {field}) => {
+        acc[field] = createColumnSchema(list, field);
         return acc;
     }, {});
-
-    return schema;
 };
 
 export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--highlighted';
@@ -110,6 +108,6 @@ export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL
 
     if (Object.keys(fieldValues).length && !isMajorValue(mostCommonValue, JSON.stringify(value))) {
         return cellClass;
-    };
+    }
 };
 
