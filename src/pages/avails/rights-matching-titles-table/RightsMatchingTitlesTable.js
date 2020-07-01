@@ -36,9 +36,9 @@ const RightsMatchingTitlesTable = ({
     handleMatchClick,
     handleDuplicateClick,
     duplicateList,
-    setTitlesTableIsReady
+    setTitlesTableIsReady,
 }) => {
-    const updateColumnDefs = (columnDefs) => {
+    const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
                 ...columnDef,
@@ -54,7 +54,9 @@ const RightsMatchingTitlesTable = ({
         const repoName = getRepositoryName(id);
         let isRestricted = false;
         restrictedCoreTitleIds.forEach(title => {
-            if (title.includes(id)) isRestricted = true;
+            if (title.includes(id)) {
+                isRestricted = true;
+            }
         });
         return (
             <CustomActionsCellRenderer id={id}>
@@ -122,7 +124,7 @@ const RightsMatchingTitlesTable = ({
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 onGridEvent={onGridReady}
-                initialFilter={{contentType: contentType}}
+                initialFilter={{contentType}}
                 setTotalCount={setTotalCount}
             />
         </div>

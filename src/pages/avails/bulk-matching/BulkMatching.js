@@ -13,7 +13,6 @@ import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMat
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
 import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
-import {getDomainName} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {
     WARNING_TITLE,
@@ -27,7 +26,7 @@ import {
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    TITLE_MATCH_SUCCESS_MESSAGE,
+    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
@@ -87,51 +86,37 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         }
     }, [affectedTableData]);
 
-    const goToTitleDetailsPage = url => window.open(url, '_blank');
-
     const onMatch = () => {
         setMatchIsLoading(true);
-        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const coreTitleId = matchList[NEXUS].id;
-        bulkTitleMatch(coreTitleId, url);
+        bulkTitleMatch(coreTitleId);
     };
 
-    const bulkTitleMatch = (coreTitleId, url) => {
+    const bulkTitleMatch = coreTitleId => {
         setCoreTitleId({
             rightIds: mergeRightIds(affectedRightIds, duplicateList),
             coreTitleId,
-        }).then(res => {
-            if (Array.isArray(res) && res.length) {
-                //  handle matched titles
-                setMatchedTitles(res);
-            }
-            addToast({
-                title: SUCCESS_TITLE,
-                description: TITLE_MATCH_SUCCESS_MESSAGE,
-                icon: SUCCESS_ICON,
-                actions: [
-                    {content: 'View Title', onClick: () => goToTitleDetailsPage(url)},
-                ],
-                isWithOverlay: true,
-            });
-            setMatchIsLoading(false);
-            setMatchAndCreateIsLoading(false);
-            setLoadTitlesTable(false);
-            setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
         })
-            .catch(err => {
-                const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
-                addToast({
-                    title: ERROR_TITLE,
-                    description: message || TITLE_MATCH_ERROR_MESSAGE,
-                    icon: ERROR_ICON,
-                    actions: [
-                        {content: 'Ok', onClick: () => removeToast()},
-                    ],
-                    isWithOverlay: true,
-                });
+            .then(res => {
+                //  handle matched titles (ignore updated affected rights from response)
+                const matchedTitlesList = Object.values(matchList).reduce((acc, curr) => [...acc, curr], []);
+                setMatchedTitles(matchedTitlesList);
+
+                if (matchList[NEXUS]) {
+                    dispatchSuccessToast();
+                    return onCancel();
+                }
                 setMatchIsLoading(false);
                 setMatchAndCreateIsLoading(false);
+                setLoadTitlesTable(false);
+                setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+            })
+            .catch(err => {
+                const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
+                dispatchErrorToast(message, TITLE_MATCH_ERROR_MESSAGE);
+                setMatchIsLoading(false);
+                setMatchAndCreateIsLoading(false);
+                return onCancel();
             });
     };
 
@@ -152,24 +137,17 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         titleService.bulkMergeTitles({
             idsToMerge: extractTitleIds,
             idsToHide: mergeRightIds([], duplicateList),
-        }).then(res => {
-            setCombinedTitle([...combinedTitle, res]);
-            const {id} = res || {};
-            const url = `${getDomainName()}/metadata/detail/${id}`;
-            bulkTitleMatch(id, url);
         })
+            .then(res => {
+                setCombinedTitle([...combinedTitle, res]);
+                const {id} = res || {};
+                bulkTitleMatch(id);
+            })
             .catch(err => {
                 const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
-                addToast({
-                    title: ERROR_TITLE,
-                    description: message || TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-                    icon: ERROR_ICON,
-                    actions: [
-                        {content: 'Ok', onClick: () => removeToast()},
-                    ],
-                    isWithOverlay: true,
-                });
+                dispatchErrorToast(message, TITLE_MATCH_AND_CREATE_ERROR_MESSAGE);
                 setMatchAndCreateIsLoading(false);
+                return onCancel();
             });
     };
 
@@ -189,6 +167,34 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         } else {
             mergeTitles(matchList);
         }
+    };
+
+    const dispatchSuccessToast = () => {
+        addToast({
+            title: SUCCESS_TITLE,
+            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            isWithOverlay: true,
+        });
+    };
+
+    const dispatchErrorToast = (errMsg, defaultMsg) => {
+        addToast({
+            title: ERROR_TITLE,
+            description: errMsg || defaultMsg,
+            icon: ERROR_ICON,
+            isAutoDismiss: true,
+            actions: [
+                {content: 'Ok', onClick: () => removeToast()},
+            ],
+            isWithOverlay: true,
+        });
+    };
+
+    const onMatchAndCreateDone = () => {
+        dispatchSuccessToast();
+        closeDrawer();
     };
 
     const onCancel = () => {
@@ -251,7 +257,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => null}
                         >
-                            Selected(0)
+                            Selected (0)
                         </Button>
                     </div>
                     <RightsMatchingTitlesTable
@@ -280,7 +286,11 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 </div>
             )}
             {isSummaryReady() && (
-                <BulkMatchingReview combinedTitle={combinedTitle} matchedTitles={matchedTitles} />
+                <BulkMatchingReview
+                    combinedTitle={combinedTitle}
+                    matchedTitles={matchedTitles}
+                    onDone={onMatchAndCreateDone}
+                />
             )}
         </div>
     );
