@@ -11,7 +11,7 @@ const IngestStatus = ({date, status, ingestType}) => {
     return (
         <div className='ingest-status'>
             <div>
-                <span className='ingest-status__date'>{dateFormatted}</span>
+                <span className="ingest-status__date">{dateFormatted}</span>
                 {ingestType && (
                     <span className="ingest-status__type" title={`Ingest via ${ingestType}`}>
                         {ingestType === 'Upload' ? <UploadIcon size="small" /> : <EmailIcon size="small" />}
