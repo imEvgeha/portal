@@ -3,8 +3,9 @@ export const CREATE_NEW_RIGHT_SUCCESS_MESSAGE = 'You have successfully declared 
 export const CREATE_NEW_RIGHT_ERROR_MESSAGE = 'There is an error in declaring a new right.';
 export const SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE  = 'You have successfully saved combined right.';
 export const SAVE_COMBINED_RIGHT_ERROR_MESSAGE = 'There is an error in saving combined right! Please, try again later.';
-export const TITLE_MATCH_SUCCESS_MESSAGE = `You have successfully matched the right to a Nexus title. 
+export const TITLE_MATCH_SUCCESS_MESSAGE = `You have successfully matched the right to a Nexus title.
 Click 'Complete' below to continue.`;
+export const TITLE_MATCH_ERROR_MESSAGE = 'Provided Title Id does not exist in the system.';
 export const CREATE_NEW_TITLE_SUCCESS_MESSAGE = `You have created a new Nexus title from a incoming Right.
 Click 'Complete' below to continue`;
 export const TITLE_MATCH_AND_CREATE_WARNING_MESSAGE = 'You have only chosen matching titles from 1 repository. Are you sure?';

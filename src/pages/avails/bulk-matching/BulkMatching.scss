@@ -17,7 +17,7 @@
 
 .nexus-c-bulk-matching__btn {
     margin-left: auto;
-    min-width: 120px;
+    min-width: 100px;
     display: flex;
     justify-content: center;
 }
@@ -42,4 +42,36 @@
     &--active {
         color: map-get($colors, nexus-title-color);
     }
+}
+
+.nexus-c-bulk-matching__titles-wrapper {
+    display: none;
+
+    &--is-active {
+        display: block;
+    }
+}
+
+.nexus-c-bulk-matching__titles-table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.nexus-c-bulk-matching__titles-table-selected-btn {
+    margin-left: auto;
+    min-width: 100px;
+}
+
+.nexus-c-bulk-matching__titles-table-header-title {
+    font-size: 16px;
+    color: map-get($colors, nexus-title-color);
+}
+
+.nexus-c-bulk-matching__spinner {
+    height: calc(100vh - 500px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

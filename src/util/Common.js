@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 /**
  * Download File
- * @param data - Byte array format (application/octet-stream)
- * @param fileNamePrefix - Prefix for file naming
- * @param fileExtension - File extension
- * @param showTime - Show time in file name timestamp
+ * @param {octet-stream} data - Byte array format (application/octet-stream)
+ * @param {string} fileNamePrefix - Prefix for file naming
+ * @param {string} fileExtension - File extension
+ * @param {boolean} showTime - Show time in file name timestamp
  */
 function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true) {
     //header containing filename sugestion is not accesible by javascript by default, aditional changes on server required

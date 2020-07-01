@@ -1,10 +1,12 @@
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
-import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL} from './constants';
+import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL, EXPORT_WARNING_MESSAGE} from './constants';
 import './ServicingOrdersView.scss';
 import {exportServicingOrders} from './servicingOrdersService';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
+import {readinessStatus} from './constants';
 import {downloadFile} from '../../util/Common';
 
 const ServicingOrdersView = () => {
@@ -16,12 +18,26 @@ const ServicingOrdersView = () => {
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
     const [isExporting, setIsExporting] = useState(false);
+    const [refreshData, setRefreshData] = useState(false);
+    const ModalContent = (
+        <>
+            <p>
+                {EXPORT_WARNING_MESSAGE}
+            </p>
+            <p>Do you wish to continue?</p>
+        </>
+    );
+    const modalHeading = 'Warning';
+    const modalStyle = {
+        width: 'small'
+    };
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
     useEffect(
         () => {
             setFixedFilter({
                 status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
-                readiness: isHideReady ? ['NEW', 'ON_HOLD'] : undefined
+                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined
             });
         },
         [isHideReady, isHideCompleted]
@@ -36,13 +52,55 @@ const ServicingOrdersView = () => {
         [customerFilter]
     );
 
+    /**
+     * Handle export button onClick
+     */
+    const handleExportRequest = () => {
+        // Show warning modal if selected export contains a readiness of ON HOLD
+        selectedServicingOrders.filter(so => (
+            so.readiness === readinessStatus.ON_HOLD
+        )).length ? openWarningModal() : exportSelectedServicingOrders();
+    };
+
+    /**
+     * Download selected servicing orders as .csv file
+     */
     const exportSelectedServicingOrders = () => {
         setIsExporting(true);
-        exportServicingOrders(selectedServicingOrders)
+        exportServicingOrders(selectedServicingOrders.map(so => (so.so_number)))
             .then(response => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
+                setRefreshData(true);
         });
+    };
+
+    /**
+     * Open global modal with config
+     */
+    const openWarningModal = () => {
+        setModalContentAndTitle(ModalContent, modalHeading);
+        setModalStyle(modalStyle);
+        setModalActions([
+            {
+                text: 'Continue',
+                onClick: () => {
+                    exportSelectedServicingOrders();
+                    close();
+                }
+            },
+            {
+                text: 'Cancel',
+                onClick: close
+            }
+        ]);
+    };
+
+    /**
+     * After refreshing data, set to false
+     */
+    const handleDataRefreshComplete = () => {
+        setRefreshData(false);
     };
 
     return (
@@ -69,7 +127,7 @@ const ServicingOrdersView = () => {
                 </Button>
                 <Button
                     isDisabled={!selectedServicingOrders.length}
-                    onClick={exportSelectedServicingOrders}
+                    onClick={handleExportRequest}
                     isLoading={isExporting}
                 >
                     Export
@@ -79,6 +137,8 @@ const ServicingOrdersView = () => {
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 setSelectedServicingOrders={setSelectedServicingOrders}
+                refreshData={refreshData}
+                dataRefreshComplete={handleDataRefreshComplete}
             />
         </div>
     );

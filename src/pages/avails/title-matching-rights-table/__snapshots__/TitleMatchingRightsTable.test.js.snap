@@ -86,7 +86,6 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
         },
       ]
     }
-    domLayout="autoHeight"
     isGridHidden={false}
     mapping={
       Array [
