@@ -2,6 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import { debounce, throttle } from 'lodash';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
@@ -10,8 +13,6 @@ import {
     EDITORIAL_METADATA_TITLE
 } from '../../../../../constants/metadata/metadataComponent';
 import { configFields, searchPerson } from '../../../service/ConfigService';
-import { connect } from 'react-redux';
-import Select from 'react-select';
 import { EPISODE, SEASON } from '../../../../../constants/metadata/contentType';
 import Info from '@atlaskit/icon/glyph/info';
 
@@ -62,7 +63,19 @@ class EditorialMetadataEditMode extends Component {
             category,
             showCategoryError: false
         };
+        this.throttleHandleChange = debounce(this.throttleHandleChange.bind(this), 1000);
+        this.testChange = this.testChange.bind(this);
+
     }
+
+    throttleHandleChange(e) {
+        //console.log('Hello');
+        this.props.handleChange(e, this.props.data);
+        //debounce(()=>this.props.handleChange(e, data), 500)();
+    }
+
+    testChange(e) { return this.throttleHandleChange(e) };
+
 
     handleGenre = (e) => {
         if (e.length > 10) {
@@ -173,6 +186,7 @@ class EditorialMetadataEditMode extends Component {
         const castAndCrewList = [...castList, ...crewList];
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
     };
+
 
     render() {
         const { handleDelete, data: currentMetadata } = this.props;
@@ -488,7 +502,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialLongTitle"
                             name={this.getEditorialTitlePrefix('longTitle')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.testChange}
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
@@ -501,7 +515,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Sort Title</b>
+                        <b>Short Title</b>
                     </Col>
                     <Col>
                         <AvField

@@ -630,6 +630,7 @@ class TitleEdit extends Component {
      * Editorial Metadata document
      */
     handleEditorialMetadataEditChange = (e, data) => {
+        console.log('in TitleEdit.js - ', e.target.value);
         let targetName = e.target.name.replace(EDITORIAL_METADATA_PREFIX, '');
         const isSynopsis = targetName.startsWith(EDITORIAL_METADATA_SYNOPSIS);
         const isEditorialTitle = targetName.startsWith(EDITORIAL_METADATA_TITLE);
