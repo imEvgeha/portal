@@ -1,11 +1,14 @@
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {omit, isEqual} from 'lodash';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
 import {filterBy, sortBy} from '../utils';
 import {cleanObject} from '../../../../util/Common';
+import {getShouldGridRefresh} from '../../../grid/gridSelectors';
+import {toggleRefreshGridData} from '../../../grid/gridActions';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS, 
@@ -22,17 +25,15 @@ const withInfiniteScrolling = ({
         const [gridApi, setGridApi] = useState();
 
         const refresh = () => {
-            if (fetchData && gridApi) {
-                updateData(fetchData, gridApi);
-            }
         };
 
-        // handle force refresh
+        // Handle refreshing grid's data from outside
         useEffect(() => {
-            if (props.setForceRefresh) {
-                props.setForceRefresh(refresh);
+            if (props.shouldGridRefresh && (fetchData && gridApi)) {
+                updateData(fetchData, gridApi);
+                props.toggleRefreshGridData(false);
             }
-        }, [props.setForceRefresh]);
+        }, [props.shouldGridRefresh, fetchData, gridApi]);
 
         //  params
         useEffect(() => {
@@ -183,7 +184,6 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
         isDatasourceEnabled: PropTypes.bool,
-        setForceRefresh: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
@@ -194,10 +194,17 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: null,
         params: null,
         isDatasourceEnabled: true,
-        setForceRefresh: null,
     };
 
-    return ComposedComponent;
+    const mapStateToProps = state => ({
+        shouldGridRefresh: getShouldGridRefresh(state),
+    });
+
+    const mapDispatchToProps = dispatch => ({
+        toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    });
+
+    return connect(mapStateToProps, mapDispatchToProps)(ComposedComponent);
 };
 
 export default withInfiniteScrolling;

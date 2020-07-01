@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {uniqBy} from 'lodash';
 import classNames from 'classnames';
 import withToasts from '../../../ui/toast/hoc/withToasts';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import {setCoreTitleId} from '../availsService';
 import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
@@ -22,7 +24,12 @@ import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/consta
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 
-const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
+const SelectedRightsActions = ({
+    selectedRights,
+    addToast,
+    removeToast,
+    toggleRefreshGridData,
+}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -91,6 +98,7 @@ const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
             {
                 text: BULK_UNMATCH_CONFIRM_BTN,
                 onClick: () => setCoreTitleId({rightIds}).then(unmatchedRights => {
+                    toggleRefreshGridData(true);
                     close();
                     addToast({
                         title: BULK_UNMATCH_SUCCESS_TOAST,
@@ -173,6 +181,7 @@ SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -181,4 +190,8 @@ SelectedRightsActions.defaultProps = {
     removeToast: () => null,
 };
 
-export default withToasts(SelectedRightsActions);
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(withToasts(SelectedRightsActions));
