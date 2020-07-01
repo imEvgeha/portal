@@ -22,8 +22,9 @@ describe('SelectedRightsActions', () => {
     describe('SelectedRightsActions', () => {
         beforeEach(() => {
             wrapper = shallow(<SelectedRightsActions selectedRights={[]} store={store} />)
+                .dive() // Dive into connect(from SelectedRightsActions)
                 .dive() // Dive into withToast
-                .dive() // Dive into connect
+                .dive() // Dive into connect(from withToast)
                 .shallow(); // Shallow render unwrapped SelectedRightsAction component
         });
 
@@ -50,8 +51,9 @@ describe('SelectedRightsActions', () => {
                 mockStore = configureStore();
                 store = mockStore({ui: {toast: {list: []}}});
                 wrapper = shallow(<SelectedRightsActions selectedRights={selectedRights} store={store} />)
+                    // .dive() // Dive into connect(from SelectedRightsActions)
                     .dive() // Dive into withToast
-                    .dive() // Dive into connect
+                    .dive() // Dive into connect(from withToast)
                     .shallow(); // Shallow render unwrapped SelectedRightsAction component
                 bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
             });
@@ -127,8 +129,9 @@ describe('SelectedRightsActions', () => {
             store = mockStore({ui: {toast: {list: []}}});
             withHooks(() => {
                 wrapper = shallow(<SelectedRightsActions selectedRights={selectedRights} store={store} />)
+                    .dive() // Dive into connect(from SelectedRightsActions)
                     .dive() // Dive into withToast
-                    .dive() // Dive into connect
+                    .dive() // Dive into connect(from withToast)
                     .shallow(); // Shallow render unwrapped SelectedRightsAction component
                 bulkMatchOption = wrapper.find('[data-test-id="bulk-match"]');
             });

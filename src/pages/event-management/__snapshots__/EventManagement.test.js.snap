@@ -12,7 +12,7 @@ exports[`EventManagement should match snapshot 1`] = `
   <div
     className="nexus-c-event-management__table"
   >
-    <EventManagementTable
+    <Connect(EventManagementTable)
       onGridEvent={[Function]}
     />
   </div>

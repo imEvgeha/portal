@@ -324,7 +324,6 @@ exports[`EventManagementTable should match snapshot 1`] = `
     }
     onGridEvent={[MockFunction]}
     rowSelection="single"
-    setForceRefresh={[Function]}
   />
 </div>
 `;
