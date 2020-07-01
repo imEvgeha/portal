@@ -20,6 +20,7 @@ import {
     SUCCESS_TITLE,
     ERROR_TITLE,
     WARNING_ICON,
+    ERROR_ICON,
     SUCCESS_ICON,
     TITLE_MATCH_ERROR_MESSAGE,
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
@@ -98,10 +99,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const bulkTitleMatch = (coreTitleId, url) => {
         setCoreTitleId({
             rightIds: mergeRightIds(affectedRightIds, duplicateList),
-            coreTitleId
+            coreTitleId,
         }).then(res => {
             if (Array.isArray(res) && res.length) {
-                //handle matched titles
+                //  handle matched titles
                 setMatchedTitles(res);
             }
             addToast({
@@ -109,7 +110,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 description: TITLE_MATCH_SUCCESS_MESSAGE,
                 icon: SUCCESS_ICON,
                 actions: [
-                    {content: 'View Title', onClick: () => goToTitleDetailsPage(url)}
+                    {content: 'View Title', onClick: () => goToTitleDetailsPage(url)},
                 ],
                 isWithOverlay: true,
             });
@@ -117,20 +118,21 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             setMatchAndCreateIsLoading(false);
             setLoadTitlesTable(false);
             setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
-        }).catch(err => {
-            const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
-            addToast({
-                title: ERROR_TITLE,
-                description: message || TITLE_MATCH_ERROR_MESSAGE,
-                icon: ERROR_ICON,
-                actions: [
-                    {content: 'Ok', onClick: () => removeToast()},
-                ],
-                isWithOverlay: true,
+        })
+            .catch(err => {
+                const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
+                addToast({
+                    title: ERROR_TITLE,
+                    description: message || TITLE_MATCH_ERROR_MESSAGE,
+                    icon: ERROR_ICON,
+                    actions: [
+                        {content: 'Ok', onClick: () => removeToast()},
+                    ],
+                    isWithOverlay: true,
+                });
+                setMatchIsLoading(false);
+                setMatchAndCreateIsLoading(false);
             });
-            setMatchIsLoading(false);
-            setMatchAndCreateIsLoading(false);
-        });
     };
 
     const mergeRightIds = (affectedRightIds, duplicateList) => {
@@ -155,19 +157,20 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             const {id} = res || {};
             const url = `${getDomainName()}/metadata/detail/${id}`;
             bulkTitleMatch(id, url);
-        }).catch(err => {
-            const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
-            addToast({
-                title: ERROR_TITLE,
-                description: message || TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-                icon: ERROR_ICON,
-                actions: [
-                    {content: 'Ok', onClick: () => removeToast()},
-                ],
-                isWithOverlay: true,
+        })
+            .catch(err => {
+                const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
+                addToast({
+                    title: ERROR_TITLE,
+                    description: message || TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+                    icon: ERROR_ICON,
+                    actions: [
+                        {content: 'Ok', onClick: () => removeToast()},
+                    ],
+                    isWithOverlay: true,
+                });
+                setMatchAndCreateIsLoading(false);
             });
-            setMatchAndCreateIsLoading(false);
-        });
     };
 
     const onMatchAndCreate = () => {
@@ -179,12 +182,11 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 icon: WARNING_ICON,
                 actions: [
                     {content: 'Cancel', onClick: () => removeToast()},
-                    {content: 'Ok', onClick: mergeSingle}
+                    {content: 'Ok', onClick: mergeSingle},
                 ],
                 isWithOverlay: true,
             });
-        }
-        else {
+        } else {
             mergeTitles(matchList);
         }
     };

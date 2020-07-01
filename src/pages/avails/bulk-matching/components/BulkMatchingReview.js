@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import TitleMatchingRightsTable from '../../title-matching-rights-table/TitleMatchingRightsTable';
