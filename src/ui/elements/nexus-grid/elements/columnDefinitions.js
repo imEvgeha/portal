@@ -43,8 +43,15 @@ export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) =
     return columnDef;
 };
 
-export const defineActionButtonColumn = ({field, cellRendererFramework}) => {
-    return defineButtonColumn({headerName: 'Actions', cellRendererFramework});
+export const defineActionButtonColumn = ({cellRendererFramework}) => {
+    return defineButtonColumn({
+        headerName: 'Actions',
+        pinned: 'left',
+        lockPosition: true,
+        lockVisible: true,
+        lockPinned: true,
+        cellRendererFramework,
+    });
 };
 
 export const defineButtonColumn = ({headerName = '', cellRendererFramework, cellEditorFramework, editable = false, ...rest}) => {

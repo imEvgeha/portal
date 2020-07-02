@@ -7,6 +7,47 @@ exports[`EventManagementTable should match snapshot 1`] = `
   <div
     className="nexus-c-sync-log-table__actions"
   >
+    <div />
+    <div
+      className="nexus-c-sync-log-table__date-filter"
+    >
+      <div
+        className="nexus-c-sync-log-table__date-field"
+      >
+        <NexusDatePicker
+          allowClear={false}
+          error=""
+          hideLabel={false}
+          id="dateFrom"
+          isReadOnly={false}
+          isReturningTime={false}
+          isTimestamp={false}
+          isWithInlineEdit={false}
+          label="Date From"
+          onChange={[Function]}
+          onConfirm={[Function]}
+          value=""
+        />
+      </div>
+      <div
+        className="nexus-c-sync-log-table__date-field"
+      >
+        <NexusDatePicker
+          allowClear={false}
+          error=""
+          hideLabel={false}
+          id="dateTo"
+          isReadOnly={false}
+          isReturningTime={false}
+          isTimestamp={false}
+          isWithInlineEdit={false}
+          label="Date To"
+          onChange={[Function]}
+          onConfirm={[Function]}
+          value=""
+        />
+      </div>
+    </div>
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       isDisabled={true}
       onClick={[Function]}
