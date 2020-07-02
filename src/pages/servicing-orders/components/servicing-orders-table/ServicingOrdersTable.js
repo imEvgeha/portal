@@ -18,11 +18,12 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders}) => {
+const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0
     });
+    const [gridApi, setGridApi] = useState(null);
 
     const valueFormatter = ({dataType = '', field = '', isEmphasized = false}) => {
         switch (dataType) {
@@ -50,10 +51,15 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
         }));
     };
 
+    /**
+     * Callback when datatable is first rendered on the DOM
+     * @param {object} param
+     */
     const onFirstDataRendered = ({api}) => {
-        // Resizes the table to fit the current width.
+        // Resizes the table to fit the current width when first rendered.
         // Needs to be removed if more table rows are added to prevent overcrowding
         api.sizeColumnsToFit();
+        setGridApi(api);
     };
 
     /**
@@ -62,15 +68,11 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
      * @param params - the grid params object containing the api
      */
     const onSelectionChanged = ({api}) => {
-        // gets the selected row's nodes
-        const selectedRowNodes = api.getSelectedNodes();
-
-        // build an array of so_numbers using the row data (the unique ID of the servicing order)
-        const selectedRowIds = selectedRowNodes.map(node => node.data.so_number);
+        const selectedRowsData = api.getSelectedNodes().map(node => node.data);
 
         // set the new array to state
-        setSelectedServicingOrders(selectedRowIds);
-        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowIds.length});
+        setSelectedServicingOrders(selectedRowsData);
+        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowsData.length});
     };
 
     const setTotalCount = total => {
@@ -84,6 +86,22 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
             setColumns(updateColumnDefs(columnDefs));
         },
         [columnDefs]
+    );
+
+    useEffect(
+        () => {
+            if (refreshData) {
+                // Refresh data
+                gridApi.purgeInfiniteCache();
+
+                // Remove all selections
+                gridApi.deselectAll();
+                setSelectedServicingOrders([]);
+
+                dataRefreshComplete();
+            }
+        },
+        [refreshData]
     );
 
     return (

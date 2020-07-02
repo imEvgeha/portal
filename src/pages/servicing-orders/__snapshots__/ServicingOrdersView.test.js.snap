@@ -70,8 +70,10 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
   <ServicingOrdersTable
+    dataRefreshComplete={[Function]}
     externalFilter={Object {}}
     fixedFilter={Object {}}
+    refreshData={false}
     setSelectedServicingOrders={[Function]}
   />
 </div>

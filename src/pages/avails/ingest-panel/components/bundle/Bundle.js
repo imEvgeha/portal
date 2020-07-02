@@ -9,7 +9,6 @@ import './Bundle.scss';
 
 const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick}) => {
     const [showIngests, setShowIngests] = useState(false);
-
     const onBundleClick = () => setShowIngests(!showIngests);
 
     return (
@@ -23,7 +22,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
                     >
                         <Chevron />
                     </span>
-                    <IngestStatus date={received} />
+                    <IngestStatus date={received} ingestType={ingestType} />
                 </div>
             </div>
             {
