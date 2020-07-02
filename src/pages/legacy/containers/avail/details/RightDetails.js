@@ -640,7 +640,7 @@ class RightDetails extends React.Component {
                             name={name}
                             style={{...fieldProps.style, border: 'none', borderRadius: 0}}
                             autoFocus
-                            autoComplete="off"
+                            autoComplete={`new-${displayName.replace(' ', '-').toLowerCase()}`}
                             theme={(theme, props) => ({
                                 ...theme(props),
                                 input: {
