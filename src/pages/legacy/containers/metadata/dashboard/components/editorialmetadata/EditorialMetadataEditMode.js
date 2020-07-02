@@ -182,7 +182,6 @@ class EditorialMetadataEditMode extends Component {
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
     };
 
-
     render() {
         const { handleDelete, data: currentMetadata } = this.props;
         const isMaster = this.props.data['hasGeneratedChildren'] || false;
@@ -510,7 +509,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Title</b>
+                        <b>Sort Title</b>
                     </Col>
                     <Col>
                         <AvField
