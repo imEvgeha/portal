@@ -25,7 +25,10 @@ const NexusTableToolbar = ({
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            <SelectedRightsActions selectedRights={selectedRepoRights} />
+            <SelectedRightsActions
+                selectedRights={selectedRepoRights}
+                selectedRightGridApi={selectedRightGridApi}
+            />
             <div
                 className={`
                     nexus-c-table-toolbar__title 

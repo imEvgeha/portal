@@ -29,6 +29,7 @@ const SelectedRightsActions = ({
     addToast,
     removeToast,
     toggleRefreshGridData,
+    selectedRightGridApi,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -98,8 +99,18 @@ const SelectedRightsActions = ({
             {
                 text: BULK_UNMATCH_CONFIRM_BTN,
                 onClick: () => setCoreTitleId({rightIds}).then(unmatchedRights => {
+                    // Fetch fresh data from back-end
                     toggleRefreshGridData(true);
+
+                    // Response is returning updated rights, so we can feed that to SelectedRights table
+                    selectedRightGridApi.setRowData(unmatchedRights);
+                    // Refresh changes
+                    selectedRightGridApi.refreshCells();
+
+                    // Close modal
                     close();
+
+                    // Show success toast
                     addToast({
                         title: BULK_UNMATCH_SUCCESS_TOAST,
                         description: `You have successfully unmatched ${unmatchedRights.length} right(s).
@@ -182,6 +193,7 @@ SelectedRightsActions.propTypes = {
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     toggleRefreshGridData: PropTypes.func.isRequired,
+    selectedRightGridApi: PropTypes.object.isRequired,
 };
 
 SelectedRightsActions.defaultProps = {
