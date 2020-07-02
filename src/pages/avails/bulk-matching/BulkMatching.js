@@ -106,28 +106,20 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     dispatchSuccessToast();
                     return onCancel();
                 }
-                setMatchIsLoading(false);
-                setMatchAndCreateIsLoading(false);
+                disableLoadingState();
                 setLoadTitlesTable(false);
                 setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
             })
             .catch(err => {
                 const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
                 dispatchErrorToast(message, TITLE_MATCH_ERROR_MESSAGE);
-                setMatchIsLoading(false);
-                setMatchAndCreateIsLoading(false);
-                return onCancel();
+                disableLoadingState();
             });
     };
 
     const mergeRightIds = (affectedRightIds, duplicateList) => {
         const extractDuplicates = Object.keys(duplicateList).map(key => key);
         return [...affectedRightIds, ...extractDuplicates];
-    };
-
-    const mergeSingle = () => {
-        removeToast();
-        mergeTitles(matchList);
     };
 
     const mergeTitles = matchList => {
@@ -147,26 +139,21 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
                 dispatchErrorToast(message, TITLE_MATCH_AND_CREATE_ERROR_MESSAGE);
                 setMatchAndCreateIsLoading(false);
-                return onCancel();
             });
     };
 
     const onMatchAndCreate = () => {
         setMatchAndCreateIsLoading(true);
         if (Object.keys(matchList).length === 1) {
-            addToast({
-                title: WARNING_TITLE,
-                description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-                icon: WARNING_ICON,
-                actions: [
-                    {content: 'Cancel', onClick: () => removeToast()},
-                    {content: 'Ok', onClick: mergeSingle},
-                ],
-                isWithOverlay: true,
-            });
+            dispatchWarningToast();
         } else {
             mergeTitles(matchList);
         }
+    };
+
+    const disableLoadingState = () => {
+        setMatchIsLoading(false);
+        setMatchAndCreateIsLoading(false);
     };
 
     const dispatchSuccessToast = () => {
@@ -187,6 +174,25 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             isAutoDismiss: true,
             actions: [
                 {content: 'Ok', onClick: () => removeToast()},
+            ],
+            isWithOverlay: true,
+        });
+    };
+
+    const dispatchWarningToast = () => {
+        addToast({
+            title: WARNING_TITLE,
+            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            icon: WARNING_ICON,
+            actions: [
+                {content: 'Cancel', onClick: () => {
+                    removeToast();
+                    disableLoadingState();
+                }},
+                {content: 'Ok', onClick: () => {
+                    removeToast();
+                    mergeTitles(matchList);
+                }},
             ],
             isWithOverlay: true,
         });
@@ -228,7 +234,11 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     Affected Rights ({affectedTableData.length})
                 </div>
                 {!isSummaryReady() && (
-                    <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
+                    <Button
+                        className="nexus-c-bulk-matching__btn"
+                        onClick={() => null}
+                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                    >
                         New Title
                     </Button>
                 )}
@@ -239,7 +249,13 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             {!isSummaryReady() && (
                 <SectionMessage>
                     {TITLE_MATCHING_MSG}
-                    <Button spacing="none" appearance="link">New Title</Button>
+                    <Button
+                        spacing="none"
+                        appearance="link"
+                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                    >
+                        New Title
+                    </Button>
                 </SectionMessage>
             )}
             {loadTitlesTable && (
@@ -256,6 +272,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => null}
+                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
                         >
                             Selected (0)
                         </Button>
@@ -269,6 +286,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         handleDuplicateClick={handleDuplicateClick}
                         duplicateList={duplicateList}
                         setTitlesTableIsReady={setTitlesTableIsReady}
+                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
                     />
                     <BulkMatchingActionsBar
                         matchList={matchList}
@@ -285,13 +303,13 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     <Spinner size="large" />
                 </div>
             )}
-            {isSummaryReady() && (
+            {isSummaryReady() ? (
                 <BulkMatchingReview
                     combinedTitle={combinedTitle}
                     matchedTitles={matchedTitles}
                     onDone={onMatchAndCreateDone}
                 />
-            )}
+            ) : null}
         </div>
     );
 };

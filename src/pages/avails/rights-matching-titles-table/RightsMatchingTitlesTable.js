@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
+import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -37,6 +38,7 @@ const RightsMatchingTitlesTable = ({
     handleDuplicateClick,
     duplicateList,
     setTitlesTableIsReady,
+    isDisabled,
 }) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
@@ -118,7 +120,12 @@ const RightsMatchingTitlesTable = ({
     const repository = getRepositoryCell();
 
     return (
-        <div className="nexus-c-rights-matching-titles-table-wrapper">
+        <div
+            className={classNames(
+                'nexus-c-rights-matching-titles-table-wrapper',
+                isDisabled && 'nexus-c-rights-matching-titles-table-wrapper--is-disabled'
+            )}
+        >
             <TitlesTable
                 className="nexus-c-rights-matching-titles-table"
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
@@ -140,6 +147,7 @@ RightsMatchingTitlesTable.propTypes = {
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
+    isDisabled: PropTypes.bool,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
@@ -151,6 +159,7 @@ RightsMatchingTitlesTable.defaultProps = {
     setTotalCount: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,
+    isDisabled: false,
 };
 
 export default RightsMatchingTitlesTable;
