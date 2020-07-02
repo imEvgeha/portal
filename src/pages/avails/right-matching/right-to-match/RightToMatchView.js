@@ -136,7 +136,7 @@ const RightToMatchView = ({
     };
 
     const actionNewButtonColumnDef = defineActionButtonColumn({
-        field: 'buttons', cellRendererFramework: createNewButtonCellRenderer
+        cellRendererFramework: createNewButtonCellRenderer
     });
     const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
