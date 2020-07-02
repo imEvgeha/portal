@@ -270,7 +270,7 @@
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "coreTitleId",
-  "readOnly": true,
+  "readOnly": false,
   "enableSearch": true,
   "enableEdit": false,
   "required": false
@@ -833,11 +833,19 @@
   "enableEdit": true,
   "required": false
 }, {
+  "javaVariableName": "pricing",
+  "displayName": "Price",
+  "dataType": "priceType",
+  "searchDataType": "priceType",
+  "readOnly": false,
+  "enableSearch": false,
+  "enableEdit": true,
+  "required": false
+}, {
   "javaVariableName": "pricing.priceType",
   "displayName": "Price Type",
-  "dataType": "select",
   "searchDataType": "multiselect",
-  "options": ["Tier", "Category", "WSP"],
+  "configEndpoint": "/price-types",
   "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": true,
@@ -846,7 +854,6 @@
 }, {
   "javaVariableName": "pricing.priceValue",
   "displayName": "Price Value",
-  "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "priceValue",
   "readOnly": false,
@@ -856,7 +863,6 @@
 }, {
   "javaVariableName": "pricing.priceCurrency",
   "displayName": "Price Currency",
-  "dataType": "select",
   "searchDataType": "multiselect",
   "configEndpoint": "/currencies",
   "queryParamName": "priceCurrency",
