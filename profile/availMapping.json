@@ -270,7 +270,7 @@
   "dataType": "string",
   "searchDataType": "string",
   "queryParamName": "coreTitleId",
-  "readOnly": false,
+  "readOnly": true,
   "enableSearch": true,
   "enableEdit": false,
   "required": false
