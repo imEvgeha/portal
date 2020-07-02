@@ -615,20 +615,6 @@ class RightDetails extends React.Component {
                 highlighted,
                 null,
                 ref,
-                // <Editable
-                //     ref={ref}
-                //     title={name}
-                //     value={value}
-                //     disabled={readOnly}
-                //     dataType="text"
-                //     mode="inline"
-                //     placeholder={this.emptyValueText + ' ' + displayName}
-                //     handleSubmit={this.handleSubmit}
-                //     emptyValueText={displayFunc(readOnly ? '' : this.emptyValueText + ' ' + displayName)}
-                //     validate={() => this.validateTextField(ref.current, name)}
-                //     display={displayFunc}
-                //     autoComplete="new-off"
-                // />
                 <InlineEdit
                     placeholder={`${this.emptyValueText} ${displayName}`}
                     defaultValue={value}
