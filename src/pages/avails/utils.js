@@ -8,7 +8,7 @@ import TitleSystems from '../legacy/constants/metadata/systems';
 export function createColumnDefs(payload) {
     return payload.filter(column => column.dataType && column.displayName).reduce((columnDefs, column) => {
         const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
-        const lockedColumns = ['id'].includes(javaVariableName);
+        const isColumnLocked = ['id'].includes(javaVariableName);
         const columnDef = {
             field: javaVariableName,
             headerName: displayName,
@@ -16,9 +16,9 @@ export function createColumnDefs(payload) {
             cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
             width: (['businessDateTime', 'timestamp'].includes(dataType)) ? 235 : 150,
-            lockPosition: lockedColumns,
-            lockVisible: lockedColumns,
-            lockPinned: lockedColumns,
+            lockPosition: isColumnLocked,
+            lockVisible: isColumnLocked,
+            lockPinned: isColumnLocked,
         };
         return [...columnDefs, columnDef];
     }, []);

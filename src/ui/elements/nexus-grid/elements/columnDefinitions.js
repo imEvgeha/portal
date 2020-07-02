@@ -50,7 +50,7 @@ export const defineActionButtonColumn = ({cellRendererFramework}) => {
         lockPosition: true,
         lockVisible: true,
         lockPinned: true,
-        cellRendererFramework
+        cellRendererFramework,
     });
 };
 
