@@ -9,7 +9,7 @@ describe('EventManagement', () => {
 
     beforeEach(() => {
         wrapper = shallow(<EventManagement />);
-        eventManagementTableWrapper = wrapper.find('EventManagementTable');
+        eventManagementTableWrapper = wrapper.find('Connect(EventManagementTable)');
     });
 
     it('should match snapshot', () => {
@@ -26,13 +26,13 @@ describe('EventManagement', () => {
 
     describe('EventDrawer (gridApi)', () => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
-        const event = {eventId:'123'};
+        const event = {eventId: '123'};
 
         const deselectAllMock = jest.fn();
         const gridApiMock = {
             deselectAll: deselectAllMock,
             getSelectedRows: () => ([event]),
-            sizeColumnsToFit: () => {}
+            sizeColumnsToFit: () => {},
         };
 
         beforeEach(() => {
@@ -54,7 +54,8 @@ describe('EventManagement', () => {
         });
 
         it('should correct prop to close drawer in EventDrawer', () => {
-            wrapper.find('EventDrawer').props().onDrawerClose();
+            wrapper.find('EventDrawer').props()
+                .onDrawerClose();
             expect(deselectAllMock.mock.calls.length).toEqual(1);
         });
     });

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
+import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -36,9 +37,10 @@ const RightsMatchingTitlesTable = ({
     handleMatchClick,
     handleDuplicateClick,
     duplicateList,
-    setTitlesTableIsReady
+    setTitlesTableIsReady,
+    isDisabled,
 }) => {
-    const updateColumnDefs = (columnDefs) => {
+    const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
                 ...columnDef,
@@ -54,7 +56,9 @@ const RightsMatchingTitlesTable = ({
         const repoName = getRepositoryName(id);
         let isRestricted = false;
         restrictedCoreTitleIds.forEach(title => {
-            if (title.includes(id)) isRestricted = true;
+            if (title.includes(id)) {
+                isRestricted = true;
+            }
         });
         return (
             <CustomActionsCellRenderer id={id}>
@@ -116,13 +120,18 @@ const RightsMatchingTitlesTable = ({
     const repository = getRepositoryCell();
 
     return (
-        <div className="nexus-c-rights-matching-titles-table-wrapper">
+        <div
+            className={classNames(
+                'nexus-c-rights-matching-titles-table-wrapper',
+                isDisabled && 'nexus-c-rights-matching-titles-table-wrapper--is-disabled'
+            )}
+        >
             <TitlesTable
                 className="nexus-c-rights-matching-titles-table"
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 onGridEvent={onGridReady}
-                initialFilter={{contentType: contentType}}
+                initialFilter={{contentType}}
                 setTotalCount={setTotalCount}
             />
         </div>
@@ -138,6 +147,7 @@ RightsMatchingTitlesTable.propTypes = {
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
+    isDisabled: PropTypes.bool,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
@@ -149,6 +159,7 @@ RightsMatchingTitlesTable.defaultProps = {
     setTotalCount: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,
+    isDisabled: false,
 };
 
 export default RightsMatchingTitlesTable;

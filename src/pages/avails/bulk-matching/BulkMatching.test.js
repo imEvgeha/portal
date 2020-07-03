@@ -47,4 +47,8 @@ describe('BulkMatching', () => {
         const affectedTab = wrapper.find('.nexus-c-bulk-matching__affected');
         expect(affectedTab.hasClass(`${affectedClass}--active`)).toBe(false);
     });
+
+    it('should have a new title button and a new title link', () => {
+        expect(wrapper.find('.nexus-c-bulk-matching__btn').length).toEqual(1);
+    });
 });
