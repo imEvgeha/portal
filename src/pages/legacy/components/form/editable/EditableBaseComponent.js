@@ -148,7 +148,7 @@ class EditableBaseComponent extends Component {
                         return (
                             <NexusTag
                                 key={i}
-                                text={e.country || priceDisplayValue|| e.value || e.label}
+                                text={e.country || priceDisplayValue || e.value || e.label}
                                 value={e}
                             />
                         )
