@@ -28,6 +28,7 @@ exports[`BulkMatching should match snapshot 1`] = `
     </div>
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       className="nexus-c-bulk-matching__btn"
+      isDisabled={false}
       onClick={[Function]}
     >
       New Title
@@ -39,9 +40,10 @@ exports[`BulkMatching should match snapshot 1`] = `
   <SectionMessage
     appearance="info"
   >
-    Select titles from the repositories that match the incoming right or declare a 
+    Select titles from the repositories that match the incoming right or declare a
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       appearance="link"
+      isDisabled={false}
       className="nexus-c-bulk-matching__link"
       onClick={[Function]}
       spacing="none"

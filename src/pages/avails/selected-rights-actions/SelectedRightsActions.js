@@ -176,6 +176,7 @@ export const SelectedRightsActions = ({
             <NexusDrawer
                 onClose={toggleDrawerState}
                 isOpen={drawerOpen}
+                isClosedOnBlur={false}
                 width="wider"
             >
                 <BulkMatching
