@@ -833,10 +833,11 @@
   "enableEdit": true,
   "required": false
 }, {
-  "javaVariableName": "priceType",
+  "javaVariableName": "pricing",
   "displayName": "Price",
   "dataType": "priceType",
   "searchDataType": "priceType",
+  "queryParamName": "priceType",
   "readOnly": false,
   "enableSearch": false,
   "enableEdit": true,
