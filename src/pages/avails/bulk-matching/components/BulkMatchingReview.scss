@@ -1,0 +1,23 @@
+@import '../../../../styles/config';
+
+.nexus-c-bulk-matching-review {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 400px);
+}
+
+.nexus-c-bulk-matching-review__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-top: auto;
+    width: 100px;
+    min-width: 100px;
+}
+
+.nexus-c-bulk-matching-review__matched,
+.nexus-c-bulk-matching-review__combined {
+    font-size: 16px;
+    color: map-get($colors, nexus-title-color);
+}

@@ -16,7 +16,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate,
             match: matchList[NEXUS],
             matchAndCreate: matchList[MOVIDA] || matchList[VZ],
         });
-    }, [matchList]);
+    }, [MOVIDA, NEXUS, VZ, matchList]);
 
     return (
         <div className="nexus-c-bulk-actions-bar">
@@ -24,6 +24,7 @@ const BulkMatchingActionsBar = ({matchList, onCancel, onMatch, onMatchAndCreate,
                 <Button
                     onClick={onCancel}
                     className="nexus-c-bulk-actions-bar__btn"
+                    isDisabled={matchIsLoading || matchAndCreateIsLoading}
                 >
                     Cancel
                 </Button>

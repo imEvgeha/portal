@@ -52,12 +52,13 @@ OR Source Right IDs are all empty) AND all selected rights have Core Title IDs p
   </div>
   <NexusDrawer
     headerContent={null}
+    isClosedOnBlur={false}
     isOpen={false}
     onClose={[Function]}
     title=""
     width="wider"
   >
-    <Connect(ComposedComponent)
+    <Connect(Connect(ComposedComponent))
       closeDrawer={[Function]}
       data={Array []}
       headerTitle="Title Matching"

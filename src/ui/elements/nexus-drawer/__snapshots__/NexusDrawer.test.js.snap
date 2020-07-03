@@ -8,7 +8,7 @@ exports[`NexusDrawer should match snapshot 1`] = `
     onBlanketClicked={[Function]}
   />
   <div
-    className="nexus-c-drawer 
+    className="nexus-c-drawer
                     nexus-c-drawer--is-narrow-width
                     "
   >
