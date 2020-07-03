@@ -10,7 +10,8 @@ const NexusDrawer = ({
     isOpen,
     onClose,
     title,
-    headerContent
+    headerContent,
+    isClosedOnBlur,
 }) => {
     const [isOpenClass, setIsOpenClass] = useState('');
 
@@ -23,26 +24,25 @@ const NexusDrawer = ({
         <>
             {isOpen && (
                 <Blanket
-                    onBlanketClicked={onClose}
+                    onBlanketClicked={isClosedOnBlur ? onClose : null}
                     canClickThrough={false}
                     isTinted
                 />
             )}
             <div
                 className={
-                    `nexus-c-drawer 
+                    `nexus-c-drawer
                     nexus-c-drawer--is-${width}-width
                     ${isOpenClass}`
                 }
             >
-                <div className='nexus-c-drawer__header'>
-                    <div className='nexus-c-drawer__header--title'>{title}</div>
-                    <CloseIcon className='nexus-c-drawer__header--close-btn' onClick={onClose} />
-                    {headerContent &&
-                    (
+                <div className="nexus-c-drawer__header">
+                    <div className="nexus-c-drawer__header--title">{title}</div>
+                    <CloseIcon className="nexus-c-drawer__header--close-btn" onClick={onClose} />
+                    {!!headerContent && (
                         <>
-                            <div className='break' />
-                            <div className='nexus-c-drawer__header__bottom'>
+                            <div className="break" />
+                            <div className="nexus-c-drawer__header__bottom">
                                 {headerContent}
                             </div>
                         </>
@@ -59,13 +59,15 @@ NexusDrawer.propTypes = {
     width: PropTypes.string,
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    headerContent: PropTypes.element
+    headerContent: PropTypes.element,
+    isClosedOnBlur: PropTypes.bool,
 };
 
 NexusDrawer.defaultProps = {
     title: '',
     width: 'medium',
-    headerContent: null
+    headerContent: null,
+    isClosedOnBlur: true,
 };
 
 export default NexusDrawer;

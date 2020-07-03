@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkMatchingReview should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-matching-review"
+>
+  <div
+    className="nexus-c-bulk-matching-review__matched"
+  >
+    Matched Titles
+  </div>
+  <MatchedCombinedTitlesTable
+    data={Array []}
+  />
+  <div
+    className="nexus-c-bulk-matching-review__combined"
+  >
+    Combined Title
+  </div>
+  <MatchedCombinedTitlesTable
+    data={Array []}
+  />
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    appearance="primary"
+    className="nexus-c-bulk-matching-review__btn"
+    onClick={[Function]}
+  >
+    Done
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+</div>
+`;
