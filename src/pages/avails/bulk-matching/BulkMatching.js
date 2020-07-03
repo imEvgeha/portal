@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
@@ -7,6 +8,7 @@ import classNames from 'classnames';
 import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
@@ -26,7 +28,7 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) => {
+export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast, toggleRefreshGridData}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [headerText, setHeaderText] = useState(headerTitle);
@@ -100,6 +102,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
                 if (matchList[NEXUS]) {
                     dispatchSuccessToast();
+                    toggleRefreshGridData(true);
                     return onCancel();
                 }
                 disableLoadingState();
@@ -181,6 +184,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
     const onMatchAndCreateDone = () => {
         dispatchSuccessToast();
+        toggleRefreshGridData(true);
         closeDrawer();
     };
 
@@ -301,6 +305,7 @@ BulkMatching.propTypes = {
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     closeDrawer: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 BulkMatching.defaultProps = {
@@ -308,6 +313,11 @@ BulkMatching.defaultProps = {
     addToast: () => null,
     removeToast: () => null,
     closeDrawer: () => null,
+    toggleRefreshGridData: () => null,
 };
 
-export default withToasts(BulkMatching);
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(withToasts(BulkMatching));
