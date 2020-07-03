@@ -99,7 +99,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         })
             .then(res => {
                 //  handle matched titles (ignore updated affected rights from response)
-                const matchedTitlesList = Object.values(matchList).reduce((acc, curr) => [...acc, curr], []);
+                const matchedTitlesList = Object.values(matchList);
                 setMatchedTitles(matchedTitlesList);
 
                 if (matchList[NEXUS]) {

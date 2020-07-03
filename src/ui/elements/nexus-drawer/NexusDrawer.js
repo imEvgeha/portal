@@ -39,8 +39,7 @@ const NexusDrawer = ({
                 <div className="nexus-c-drawer__header">
                     <div className="nexus-c-drawer__header--title">{title}</div>
                     <CloseIcon className="nexus-c-drawer__header--close-btn" onClick={onClose} />
-                    {headerContent
-                    && (
+                    {!!headerContent && (
                         <>
                             <div className="break" />
                             <div className="nexus-c-drawer__header__bottom">
