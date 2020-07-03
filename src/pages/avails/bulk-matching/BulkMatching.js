@@ -193,6 +193,18 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         closeDrawer();
     };
 
+    const showModal = () => {
+        setModalContentAndTitle(
+            () =>
+                <CreateTitleForm
+                    close={close}
+                    bulkTitleMatch={bulkTitleMatch}
+                    affectedRightIds={affectedRightIds}
+                    focusedRight={{contentType}}
+                />,
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+    };
+
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     
     return (
@@ -219,15 +231,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 </div>
                 <Button
                     className="nexus-c-bulk-matching__btn"
-                    onClick={() => setModalContentAndTitle(
-                            () =>
-                                <CreateTitleForm
-                                    close={close}
-                                    bulkTitleMatch={bulkTitleMatch}
-                                    affectedRightIds={affectedRightIds}
-                                    focusedRight={{contentType}}
-                                />,
-                            NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
+                    onClick={showModal}
                 >
                     New Title
                 </Button>
@@ -241,6 +245,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     className="nexus-c-bulk-matching__link"
                     spacing="none"
                     appearance="link"
+                    onClick={showModal}
                 >
                     New Title
                 </Button>

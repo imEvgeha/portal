@@ -43,6 +43,7 @@ exports[`BulkMatching should match snapshot 1`] = `
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       appearance="link"
       className="nexus-c-bulk-matching__link"
+      onClick={[Function]}
       spacing="none"
     >
       New Title
