@@ -58,7 +58,7 @@ OR Source Right IDs are all empty) AND all selected rights have Core Title IDs p
     title=""
     width="wider"
   >
-    <Connect(ComposedComponent)
+    <Connect(Connect(ComposedComponent))
       closeDrawer={[Function]}
       data={Array []}
       headerTitle="Title Matching"
