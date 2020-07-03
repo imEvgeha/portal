@@ -434,7 +434,6 @@ class TitleEditMode extends Component {
                             <AvField
                                 name='usBoxOffice'
                                 id='titleBoxOffice'
-                                type='number'
                                 errorMessage="Please enter a valid number!"
                                 onChange={e => this.props.handleOnChangeEdit(e)}
                                 value={usBoxOffice ? usBoxOffice : ''}
