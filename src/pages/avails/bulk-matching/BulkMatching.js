@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
@@ -16,6 +16,9 @@ import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
 import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
 import TitleSystems from '../../legacy/constants/metadata/systems';
+import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
+import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
@@ -45,6 +48,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const [matchedTitles, setMatchedTitles] = useState([]);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
     const changeActiveTab = () => {
@@ -196,6 +200,19 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
     };
 
+    const showModal = () => {
+        setModalContentAndTitle(
+            () => (
+                <CreateTitleForm
+                    close={close}
+                    bulkTitleMatch={bulkTitleMatch}
+                    affectedRightIds={affectedRightIds}
+                    focusedRight={{contentType}}
+                />
+              ),
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+    };
+
     return (
         <div className="nexus-c-bulk-matching">
             <h2>{headerText}</h2>
@@ -221,7 +238,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 {!isSummaryReady() && (
                     <Button
                         className="nexus-c-bulk-matching__btn"
-                        onClick={() => null}
+                        onClick={showModal}
                         isDisabled={matchAndCreateIsLoading || matchIsLoading}
                     >
                         New Title
@@ -237,6 +254,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     <Button
                         spacing="none"
                         appearance="link"
+                        onClick={showModal}
                         isDisabled={matchAndCreateIsLoading || matchIsLoading}
                     >
                         New Title
