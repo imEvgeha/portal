@@ -854,6 +854,7 @@ class TitleEdit extends Component {
 
         // Calls the API to update decorated EMets based on the master
         titleService.updateEditorialMetadata(requestBody).then((response) => {
+            this.loadEditorialMetadata();
             const failed = get(response, ['data', '0', 'response', 'failed'], []);
             const {addToast} = this.props;
 
