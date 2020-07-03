@@ -28,7 +28,7 @@ const onViewTitleClick = (response) => {
     window.open(url, '_blank');
 };
 
-const CreateTitleForm = ({close, focusedRight, addToast}) => {
+const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affectedRightIds}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
     const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
@@ -96,8 +96,15 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
                     }
                 });
             } else {
-                const updatedRight = { coreTitleId: res.id };
-                rightsService.update(updatedRight, focusedId);
+                // if is bulk matching
+                if(bulkTitleMatch){
+                    const url = `${getDomainName()}/metadata/detail/${res.id}`;
+                    const coreTitleId = res.id;
+                    bulkTitleMatch(coreTitleId, url, affectedRightIds, {});
+                } else {
+                    const updatedRight = {coreTitleId: res.id};
+                    rightsService.update(updatedRight, focusedId);
+                }
             }
             close();
         }).catch((error) => {
@@ -143,10 +150,14 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
 CreateTitleForm.propTypes = {
     close: PropTypes.func.isRequired,
     focusedRight: PropTypes.object,
+    bulkTitleMatch: PropTypes.func,
+    affectedRightIds: PropTypes.array,
 };
 
 CreateTitleForm.defaultProps = {
     focusedRight: {},
+    bulkTitleMatch: null,
+    affectedRightIds: [],
 };
 
 export default withToasts(CreateTitleForm);
