@@ -24,7 +24,7 @@ import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/consta
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 
-const SelectedRightsActions = ({
+export const SelectedRightsActions = ({
     selectedRights,
     addToast,
     removeToast,
