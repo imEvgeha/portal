@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import './NexusTag.scss';
 
 
 const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
-
     const [defaultTooltipContent, setDefaultContent] = useState();
 
-    useEffect(()=> {
-        if(value) {
+    useEffect(() => {
+        if (value) {
             const defaultTooltipContent = Object.keys(value || {}).map((key, index) => {
                 return (
                     key !== 'state'
@@ -31,8 +30,8 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
         }
     }, [value]);
 
-    const getValidValue = (value) => {
-        if(typeof value !== 'undefined') {
+    const getValidValue = value => {
+        if (typeof value !== 'undefined') {
             return value.toString();
         }
         return '-';
@@ -51,7 +50,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
             <span className={`nexus-c-tag ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
-                    onClick={onClick ? onClick : () => null}
+                    onClick={onClick || null}
                 >
                     {text}
                 </div>
@@ -59,7 +58,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
                     <div className="nexus-c-tag__remove-button" onClick={onRemove}>
                         <EditorCloseIcon size="medium" />
                     </div>
-                  )}
+                )}
             </span>
         </NexusTooltip>
     );
@@ -76,6 +75,7 @@ NexusTag.propTypes = {
 NexusTag.defaultProps = {
     tagState: '',
     onRemove: () => null,
+    onClick: () => null,
 };
 
 export default NexusTag;
