@@ -44,4 +44,8 @@
       display:none;
     }
   }
+
+  form > div:first-of-type {
+    margin-top: 0 !important;
+  }
 }
