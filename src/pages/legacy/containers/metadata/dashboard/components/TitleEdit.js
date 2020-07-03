@@ -673,9 +673,7 @@ class TitleEdit extends Component {
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
         }
-
         edited.genres = genres;
-
         this.updateEditedEditorialMetadata(edited, data.id);
     };
 
@@ -684,9 +682,7 @@ class TitleEdit extends Component {
         if (!edited) {
             edited = JSON.parse(JSON.stringify(data));
         }
-
         edited.category = category.map(e => e.value);
-
         this.updateEditedEditorialMetadata(edited, data.id);
     };
 
@@ -729,7 +725,6 @@ class TitleEdit extends Component {
             ...this.state.editorialMetadataForCreate,
             genres: e.map(i => { return { id: i.id, genre: i.genre }; })
         };
-
         this.setState({
             editorialMetadataForCreate: newEditorialMetadataForCreate
         });
@@ -740,7 +735,6 @@ class TitleEdit extends Component {
             ...this.state.editorialMetadataForCreate,
             category: category.map(e => e.value)
         };
-
         this.setState({
             editorialMetadataForCreate: newEditorialMetadataForCreate
         });
