@@ -16,7 +16,7 @@ $sizes: full, narrow, extended, medium, wide, wider;
   right: 0;
   height: 100%;
   background-color: map-get($colors, nexus-white);
-  z-index: map-get($z-index, z-index-1000);
+  z-index: map-get($z-index, z-index-500);
   transition: width 500ms;
   width: 0;
   overflow: auto;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
@@ -14,6 +14,9 @@ import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import {TITLE_MATCHING_MSG} from './constants';
 import {getDomainName} from '../../../util/Common';
 import TitleSystems from '../../legacy/constants/metadata/systems';
+import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
+import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
@@ -22,6 +25,7 @@ import {
     SUCCESS_ICON,
     TITLE_MATCH_ERROR_MESSAGE,
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    ERROR_ICON,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -90,10 +94,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         setMatchIsLoading(true);
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const coreTitleId = matchList[NEXUS].id;
-        bulkTitleMatch(coreTitleId, url);
+        bulkTitleMatch(coreTitleId, url, affectedRightIds, duplicateList);
     };
 
-    const bulkTitleMatch = (coreTitleId, url) => {
+    const bulkTitleMatch = (coreTitleId, url, affectedRightIds, duplicateList) => {
         setCoreTitleId({
             rightIds: mergeRightIds(affectedRightIds, duplicateList),
             coreTitleId
@@ -150,7 +154,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             setCombinedTitle(res);
             const {id} = res || {};
             const url = `${getDomainName()}/metadata/detail/${id}`;
-            bulkTitleMatch(id, url);
+            bulkTitleMatch(id, url, affectedRightIds, duplicateList);
         }).catch(err => {
             const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
             addToast({
@@ -189,6 +193,20 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         closeDrawer();
     };
 
+    const showModal = () => {
+        setModalContentAndTitle(
+            () =>
+                <CreateTitleForm
+                    close={close}
+                    bulkTitleMatch={bulkTitleMatch}
+                    affectedRightIds={affectedRightIds}
+                    focusedRight={{contentType}}
+                />,
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+    };
+
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
+    
     return (
         <div className="nexus-c-bulk-matching">
             <h2>{headerTitle}</h2>
@@ -211,7 +229,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 >
                     Affected Rights ({affectedTableData.length})
                 </div>
-                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
+                <Button
+                    className="nexus-c-bulk-matching__btn"
+                    onClick={showModal}
+                >
                     New Title
                 </Button>
             </div>
@@ -220,7 +241,14 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             />
             <SectionMessage>
                 {TITLE_MATCHING_MSG}
-                <Button spacing="none" appearance="link">New Title</Button>
+                <Button
+                    className="nexus-c-bulk-matching__link"
+                    spacing="none"
+                    appearance="link"
+                    onClick={showModal}
+                >
+                    New Title
+                </Button>
             </SectionMessage>
             {loadTitlesTable ? (
                 <div
