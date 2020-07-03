@@ -237,7 +237,13 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             />
             <SectionMessage>
                 {TITLE_MATCHING_MSG}
-                <Button spacing="none" appearance="link">New Title</Button>
+                <Button
+                    className="nexus-c-bulk-matching__link"
+                    spacing="none"
+                    appearance="link"
+                >
+                    New Title
+                </Button>
             </SectionMessage>
             {loadTitlesTable ? (
                 <div

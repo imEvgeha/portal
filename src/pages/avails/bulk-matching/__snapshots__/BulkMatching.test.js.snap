@@ -42,6 +42,7 @@ exports[`BulkMatching should match snapshot 1`] = `
     Select titles from the repositories that match the incoming right or declare a 
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       appearance="link"
+      className="nexus-c-bulk-matching__link"
       spacing="none"
     >
       New Title
