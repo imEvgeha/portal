@@ -123,7 +123,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 }
             };
         default:
-            return null;
+            return ({value}) => value;
     }
 };
 

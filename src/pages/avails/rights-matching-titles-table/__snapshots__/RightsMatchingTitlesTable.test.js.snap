@@ -121,7 +121,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": false,
           "searchDataType": "year",
-          "valueFormatter": null,
+          "valueFormatter": [Function],
         },
         Object {
           "cellRenderer": "loadingCellRenderer",

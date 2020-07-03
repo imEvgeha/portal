@@ -19,12 +19,19 @@ const SyncLogGrid = compose(
 
 const SyncLogTable = () => {
     const [gridApi, setGridApi] = useState(null);
-    const [updatedAtFilterInstance, setTestFilterInstance] = useState(null);
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
 
     const updateColumnDefs = (columnDefs) => {
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: createValueFormatter(columnDef),
+            ...(columnDef.field === 'publishErrors' && {
+                valueGetter: ({data}) => data && data.publishErrors.map(e => e.description).join('; ')
+            }),
+            ...(columnDef.field === 'status' && {
+                valueGetter: ({data}) => data && data.publishErrors.length ? 'Error' : 'Success'
+            }),
             cellRenderer: 'loadingCellRenderer',
         }));
     };
@@ -39,33 +46,6 @@ const SyncLogTable = () => {
         }
     };
 
-    useEffect(() => {
-        if (gridApi) {
-            gridApi.getFilterInstance('updatedAt', updatedAtFilterInstance => {
-                setTestFilterInstance(updatedAtFilterInstance);
-            });
-        }
-    }, [gridApi]);
-
-    const setDateFilter = ({dateFrom, dateTo}) => {
-        if (updatedAtFilterInstance) {
-            if (dateFrom) {
-                updatedAtFilterInstance.setModel({
-                    type: 'greaterThanOrEqual',
-                    filter: dateFrom,
-                });
-            }
-            if (dateTo) {
-                updatedAtFilterInstance.setModel({
-                    type: 'lessThanOrEqual',
-                    filter: dateTo,
-                });
-            }
-            updatedAtFilterInstance.applyModel();
-            gridApi.onFilterChanged();
-        }
-    };
-
     return (
         <div className="nexus-c-sync-log-table">
             <div className="nexus-c-sync-log-table__actions">
@@ -75,15 +55,16 @@ const SyncLogTable = () => {
                         <NexusDatePicker
                             id="dateFrom"
                             label="Date From"
-                            onChange={value => setDateFilter({dateFrom: value})}
+                            onChange={setDateFrom}
                             isReturningTime={false}
+                            required
                         />
                     </div>
                     <div className="nexus-c-sync-log-table__date-field">
                         <NexusDatePicker
                             id="dateTo"
                             label="Date To"
-                            onChange={value => setDateFilter({dateTo: value})}
+                            onChange={setDateTo}
                             isReturningTime={false}
                         />
                     </div>
@@ -101,6 +82,10 @@ const SyncLogTable = () => {
                 mapping={columnMappings}
                 rowSelection="single"
                 onGridEvent={onGridEvent}
+                externalFilter={{
+                    dateFrom,
+                    dateTo
+                }}
             />
         </div>
     );
