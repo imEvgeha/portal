@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {uniqBy} from 'lodash';
 import classNames from 'classnames';
 import withToasts from '../../../ui/toast/hoc/withToasts';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import {setCoreTitleId} from '../availsService';
 import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
@@ -22,7 +24,13 @@ import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/consta
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 
-const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
+export const SelectedRightsActions = ({
+    selectedRights,
+    addToast,
+    removeToast,
+    toggleRefreshGridData,
+    selectedRightGridApi,
+}) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -91,7 +99,18 @@ const SelectedRightsActions = ({selectedRights, addToast, removeToast}) => {
             {
                 text: BULK_UNMATCH_CONFIRM_BTN,
                 onClick: () => setCoreTitleId({rightIds}).then(unmatchedRights => {
+                    // Fetch fresh data from back-end
+                    toggleRefreshGridData(true);
+
+                    // Response is returning updated rights, so we can feed that to SelectedRights table
+                    selectedRightGridApi.setRowData(unmatchedRights);
+                    // Refresh changes
+                    selectedRightGridApi.refreshCells();
+
+                    // Close modal
                     close();
+
+                    // Show success toast
                     addToast({
                         title: BULK_UNMATCH_SUCCESS_TOAST,
                         description: `You have successfully unmatched ${unmatchedRights.length} right(s).
@@ -174,6 +193,8 @@ SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func.isRequired,
+    selectedRightGridApi: PropTypes.object.isRequired,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -182,4 +203,8 @@ SelectedRightsActions.defaultProps = {
     removeToast: () => null,
 };
 
-export default withToasts(SelectedRightsActions);
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(withToasts(SelectedRightsActions));
