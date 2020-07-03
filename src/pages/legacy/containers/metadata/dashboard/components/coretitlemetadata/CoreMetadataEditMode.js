@@ -11,6 +11,7 @@ import {get} from 'lodash';
 import { AvField } from 'availity-reactstrap-validation';
 import { connect } from 'react-redux';
 import { configFields, searchPerson } from '../../../service/ConfigService';
+import {titleService} from '../../../service/TitleService';
 import {
     CAST,
     getFilteredCrewList, 
@@ -28,35 +29,51 @@ import {
     CREW_HTML_FOR,
     CAST_HEADER,
     CREW_HEADER,
+    MSV_ASSOCIATION_BTN
 } from '../../../../../constants/metadata/constant-variables';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
 import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
+import Button from "@atlaskit/button";
+import {getDomainName} from "../../../../../../../util/Common";
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE
+} from "../../../../../../../ui/elements/nexus-toast-notification/constants";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const mapStateToProps = state => {
     return {
         configRatings: state.titleReducer.configData.find(e => e.key === configFields.RATINGS),
+        configLicensors: state.titleReducer.configData.find(e => e.key === configFields.LICENSORS),
+        configLicensees: state.titleReducer.configData.find(e => e.key === configFields.LICENSEES),
     };
 };
 
-class CoreMetadataEditMode extends Component {
+const defaultMsvAssociationState = {
+    msvIsLoading: false,
+    msvLicensor: '',
+    msvLicensee: '',
+}
 
+class CoreMetadataEditMode extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ratings: [],
-            externalIDs: {},
+            msvAssociationIds: get(props, 'data.externalIDs.msvAssociationId') || ['abc123456', 'def123456'],
+            ...defaultMsvAssociationState
         };
     }
 
     handleRatingSystemValue = (e) => {
-    const rating = e.target.value;
-    const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
-    this.setState({
-        ratings: newRatings
-    });
-
-  };
+        const rating = e.target.value;
+        const newRatings = this.props.configRatings && this.props.configRatings.value.filter(e => e.ratingSystem === rating);
+        this.setState({
+            ratings: newRatings
+        });
+    };
 
     handleMovidaLegacyIds(e) {
         const movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
@@ -82,10 +99,58 @@ class CoreMetadataEditMode extends Component {
     };
 
     handleMSVIDs = data =>  {
-        /* TODO: modify to save data locally or in the consumer component to send saved data to put api */
-       this.setState({
-            externalIDs: { ...this.state.externalIDs, msvAssociationId: data}
+        console.log('handleMSVIDs', data);
+
+        this.setState({
+            msvAssociationIds: data
         });
+
+        this.props.handleOnMsvIds(data);
+    }
+
+    handleOnMsvLicensorChange(e) {
+        this.setState({
+            msvLicensor: e.target.value
+        });
+    }
+
+    handleOnMsvLicenseeChange(e) {
+        this.setState({
+            msvLicensee: e.target.value
+        });
+    }
+
+    handleOnGenerateMsv = () => {
+        const data = [`${this.state.msvLicensor}-${this.state.msvLicensee}`];
+        const msvAssociationIds = [...this.state.msvAssociationIds, ...data];
+
+        this.setState({
+            msvIsLoading: true
+        });
+
+        console.log('handleOnGenerateMsv', this.state.msvLicensor, this.state.msvLicensee);
+
+        /* doesn't exist yet */
+        titleService.addMsvAssociationIds(this.props.data.id, this.state.msvLicensor, this.state.msvLicensee)
+            .then(res => {
+                console.log('result', res);
+            })
+            .catch(err => {
+                console.log('error', err);
+            });
+
+        setTimeout(() => {
+            this.setState({
+                ...defaultMsvAssociationState,
+                msvAssociationIds: msvAssociationIds,
+            });
+
+            this.props.handleOnMsvIds(msvAssociationIds);
+        }, 2000);
+    }
+
+    isGenerateMsvBtnDisabled = () => {
+        return !(this.state.msvLicensor && this.state.msvLicensee);
     }
 
     render() {
@@ -425,30 +490,79 @@ class CoreMetadataEditMode extends Component {
                             />
                         </Col>
                     </Row>
-                    <Col md={1}>
-                        <Label for='vzId'>VZ Vendor ID</Label>
-                    </Col>
-                    <Col>
-                        <AvField
-                            type='text'
-                            onChange={e => this.handleVzLegacyIds(e)}
-                            name='vzId'
-                            id='vzId'
-                            value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzId : ''}
-                            placeholder='VZ ID'
-                            validate={{
-                                maxLength: { value: 200 }
-                            }}
-                        />
-                    </Col>
-                    <Col md={2}>
-                        <Label for='overrideMsvAssociationId'>
-                            MSV Association ID
-                        </Label>
-                    </Col>
-                    <Col>
-                        <NexusTagsContainer data={ get(this.props, 'data.externalIds.msvAssociationId') || [] } saveData={this.handleMSVIDs} />
-                    </Col>
+                    <Row style={{ marginTop: '10px' }}>
+                        <Col md={1}>
+                            <Label for='vzId'>VZ Vendor ID</Label>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type='text'
+                                onChange={e => this.handleVzLegacyIds(e)}
+                                name='vzId'
+                                id='vzId'
+                                value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzId : ''}
+                                placeholder='VZ ID'
+                                validate={{
+                                    maxLength: { value: 200 }
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    <Row style={{ marginTop: '10px' }}>
+                        <Col md={1}>
+                            <Label for='overrideMsvAssociationId'>
+                                MSV Association ID
+                            </Label>
+                        </Col>
+                        <Col md={5}>
+                            <NexusTagsContainer data={this.state.msvAssociationIds} saveData={this.handleMSVIDs} />
+                        </Col>
+                        <Col md={2}>
+                            <AvField
+                                type='select'
+                                name='msvLicensor'
+                                id='msvLicensor'
+                                value={this.state.msvLicensor}
+                                onChange={e => this.handleOnMsvLicensorChange(e)}
+                            >
+                                <option value=''>Select Licensor</option>
+                                {
+                                    this.props.configLicensors && this.props.configLicensors.value.map((e, index) => {
+                                        return <option key={e.value} value={e.value}>{e.value}</option>;
+                                    })
+                                }
+                            </AvField>
+                        </Col>
+                        <Col md={2}>
+                            <AvField
+                                type='select'
+                                name='msvLicensee'
+                                id='msvLicensee'
+                                value={this.state.msvLicensee}
+                                onChange={e => this.handleOnMsvLicenseeChange(e)}
+                            >
+                                <option value=''>Select Licensee</option>
+                                {
+                                    this.props.configLicensees && this.props.configLicensees.value.map((e, index) => {
+                                        return <option key={e.value} value={e.value}>{e.value}</option>;
+                                    })
+                                }
+                            </AvField>
+                        </Col>
+                        <Col md={2}>
+                            <Tooltip title={this.isGenerateMsvBtnDisabled() ? MSV_ASSOCIATION_BTN.disabledHover : MSV_ASSOCIATION_BTN.readyHover}>
+                                <Button
+                                    id="btnGenerateMsv"
+                                    isLoading={this.state.msvIsLoading}
+                                    isDisabled={this.isGenerateMsvBtnDisabled()}
+                                    onClick={this.handleOnGenerateMsv}
+                                    appearance="primary"
+                                >
+                                    {MSV_ASSOCIATION_BTN.title}
+                                </Button>
+                            </Tooltip>
+                        </Col>
+                    </Row>
                 </div>
             </>
         );
@@ -467,6 +581,7 @@ CoreMetadataEditMode.propTypes = {
     onChange: PropTypes.func,
     handleOnExternalIds: PropTypes.func,
     handleOnLegacyIds: PropTypes.func,
+    handleOnMsvIds: PropTypes.func,
     removeCastCrew: PropTypes.func,
     castCrew: PropTypes.array,
     addCastCrew: PropTypes.func,
