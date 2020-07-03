@@ -17,12 +17,8 @@ import TitleSystems from '../../legacy/constants/metadata/systems';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
-    ERROR_TITLE,
     WARNING_ICON,
-    ERROR_ICON,
     SUCCESS_ICON,
-    TITLE_MATCH_ERROR_MESSAGE,
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
@@ -111,14 +107,13 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
             })
             .catch(err => {
-                const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
-                dispatchErrorToast(message, TITLE_MATCH_ERROR_MESSAGE);
+                // nexusFetch handles error toast
                 disableLoadingState();
             });
     };
 
     const mergeRightIds = (affectedRightIds, duplicateList) => {
-        const extractDuplicates = Object.keys(duplicateList).map(key => key);
+        const extractDuplicates = Object.keys(duplicateList);
         return [...affectedRightIds, ...extractDuplicates];
     };
 
@@ -136,8 +131,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 bulkTitleMatch(id);
             })
             .catch(err => {
-                const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
-                dispatchErrorToast(message, TITLE_MATCH_AND_CREATE_ERROR_MESSAGE);
+                // nexusFetch handles error toast
                 setMatchAndCreateIsLoading(false);
             });
     };
@@ -162,19 +156,6 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
-            isWithOverlay: true,
-        });
-    };
-
-    const dispatchErrorToast = (errMsg, defaultMsg) => {
-        addToast({
-            title: ERROR_TITLE,
-            description: errMsg || defaultMsg,
-            icon: ERROR_ICON,
-            isAutoDismiss: true,
-            actions: [
-                {content: 'Ok', onClick: () => removeToast()},
-            ],
             isWithOverlay: true,
         });
     };
