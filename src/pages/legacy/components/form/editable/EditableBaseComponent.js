@@ -142,13 +142,18 @@ class EditableBaseComponent extends Component {
                     style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
                     className={this.props.disabled ? 'disabled' : ''}
                 >
-                    {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => (
-                        <NexusTag
-                            key={i}
-                            text={e.country || e.value || `${e.label}`}
-                            value={e}
-                        />
-                    )) : setSimpleArrayWithError(value) : '' : value}
+                    {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => {
+                        const priceDisplayValue = (e.priceType || e.priceValue || e.priceCurrency)
+                            && `${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`;
+
+                        return (
+                            <NexusTag
+                                key={i}
+                                text={e.country || priceDisplayValue || e.value || e.label}
+                                value={e}
+                            />
+                        )
+                    }) : setSimpleArrayWithError(value) : '' : value}
                 </span>
 );
         };
