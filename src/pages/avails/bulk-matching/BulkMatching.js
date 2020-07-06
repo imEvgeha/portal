@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
-import {uniq} from 'lodash';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
@@ -67,10 +66,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            setAffectedRightIds(uniq(rightIds));
+            setAffectedRightIds(rightIds);
             getAffectedRights(rightIds).then(res => {
                 if (Array.isArray(res) && res.length) {
-                    setAffectedTableData(uniq(res));
+                    setAffectedTableData(res);
                 }
             });
         }
@@ -97,7 +96,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
     const bulkTitleMatch = coreTitleId => {
         setCoreTitleId({
-            rightIds: mergeRightIds(affectedRightIds, duplicateList),
+            rightIds: affectedRightIds,
             coreTitleId,
         })
             .then(res => {
