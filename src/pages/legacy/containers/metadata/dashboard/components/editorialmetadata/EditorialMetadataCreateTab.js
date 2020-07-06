@@ -378,7 +378,7 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title</b>
+                        <b>Display Title {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
                     </Col>
                     <Col>
                         <AvField
@@ -389,6 +389,8 @@ class EditorialMetadataCreateTab extends Component {
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                             {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -399,7 +401,7 @@ class EditorialMetadataCreateTab extends Component {
                 {this.state.autoDecorate &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title</b>
+                            <b>Auto-Decorate Title <span style={{ color: 'red' }}>*</span></b>
                         </Col>
                         <Col>
                             <AvField
@@ -410,6 +412,8 @@ class EditorialMetadataCreateTab extends Component {
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
+                                required
+                                errorMessage="Field cannot be empty!"
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                                 {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
