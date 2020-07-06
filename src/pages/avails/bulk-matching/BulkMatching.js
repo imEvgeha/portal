@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
+import {uniq} from 'lodash';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
@@ -66,10 +67,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            setAffectedRightIds(rightIds);
+            setAffectedRightIds(uniq(rightIds));
             getAffectedRights(rightIds).then(res => {
                 if (Array.isArray(res) && res.length) {
-                    setAffectedTableData(res);
+                    setAffectedTableData(uniq(res));
                 }
             });
         }
@@ -208,6 +209,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     bulkTitleMatch={bulkTitleMatch}
                     affectedRightIds={affectedRightIds}
                     focusedRight={{contentType}}
+                    onSuccess={closeDrawer}
                 />
               ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE);
