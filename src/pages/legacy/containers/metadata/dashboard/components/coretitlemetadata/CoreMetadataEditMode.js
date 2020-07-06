@@ -62,7 +62,7 @@ class CoreMetadataEditMode extends Component {
         super(props);
         this.state = {
             ratings: [],
-            msvAssociationIds: get(props, 'data.externalIDs.msvAssociationId') || ['abc123456', 'def123456'],
+            msvAssociationIds: get(props, 'data.externalIDs.msvAssociationId') || [],
             ...defaultMsvAssociationState
         };
     }
@@ -99,8 +99,6 @@ class CoreMetadataEditMode extends Component {
     };
 
     handleMSVIDs = data =>  {
-        console.log('handleMSVIDs', data);
-
         this.setState({
             msvAssociationIds: data
         });
@@ -121,32 +119,31 @@ class CoreMetadataEditMode extends Component {
     }
 
     handleOnGenerateMsv = () => {
-        const data = [`${this.state.msvLicensor}-${this.state.msvLicensee}`];
-        const msvAssociationIds = [...this.state.msvAssociationIds, ...data];
-
         this.setState({
             msvIsLoading: true
         });
 
-        console.log('handleOnGenerateMsv', this.state.msvLicensor, this.state.msvLicensee);
-
         /* doesn't exist yet */
         titleService.addMsvAssociationIds(this.props.data.id, this.state.msvLicensor, this.state.msvLicensee)
             .then(res => {
-                console.log('result', res);
+                if (Array.isArray(res) && res.length) {
+                    const msvAssociationIds = [...this.state.msvAssociationIds, ...res];
+                    this.setState({
+                        ...defaultMsvAssociationState,
+                        msvAssociationIds: msvAssociationIds,
+                        msvIsLoading: false
+                    });
+
+                    this.props.handleOnMsvIds(msvAssociationIds);
+
+                }
             })
-            .catch(err => {
-                console.log('error', err);
+            .catch((err) => {
+                this.setState({
+                    msvIsLoading: false
+                });
+                console.error('Can not fetch data from addMsvAssociationIds api', err);
             });
-
-        setTimeout(() => {
-            this.setState({
-                ...defaultMsvAssociationState,
-                msvAssociationIds: msvAssociationIds,
-            });
-
-            this.props.handleOnMsvIds(msvAssociationIds);
-        }, 2000);
     }
 
     isGenerateMsvBtnDisabled = () => {
@@ -514,10 +511,10 @@ class CoreMetadataEditMode extends Component {
                                 MSV Association ID
                             </Label>
                         </Col>
-                        <Col md={5}>
+                        <Col md={3}>
                             <NexusTagsContainer data={this.state.msvAssociationIds} saveData={this.handleMSVIDs} />
                         </Col>
-                        <Col md={2}>
+                        <Col md={3}>
                             <AvField
                                 type='select'
                                 name='msvLicensor'
@@ -533,7 +530,7 @@ class CoreMetadataEditMode extends Component {
                                 }
                             </AvField>
                         </Col>
-                        <Col md={2}>
+                        <Col md={3}>
                             <AvField
                                 type='select'
                                 name='msvLicensee'

@@ -219,7 +219,9 @@ export const titleService = {
     },
 
     addMsvAssociationIds: (id, licensor, licensee) => {
-        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/msvIds?titleId=${id}&licensor=${licensor}&licensee=${licensee}`;
-        return nexusFetch(url);
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}`;
+        return nexusFetch(url, {
+            method: 'post',
+        });
     },
 };
