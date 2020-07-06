@@ -28,6 +28,7 @@ const NexusDatePicker = ({
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     isReturningTime,
     allowClear,
+    required,
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -69,7 +70,7 @@ const NexusDatePicker = ({
   return (
       <>
           {!hideLabel && label && (
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id} className={required && 'required'}>{label}</label>
               )}
           {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)

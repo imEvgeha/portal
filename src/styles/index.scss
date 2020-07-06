@@ -17,3 +17,8 @@ body,
     font-family: $nexus-font!important;
     overflow-x: hidden;
 }
+
+.required::after {
+    content: ' * ';
+    color: red;
+}
