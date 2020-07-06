@@ -28,7 +28,7 @@ const onViewTitleClick = (response) => {
     window.open(url, '_blank');
 };
 
-const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affectedRightIds}) => {
+const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affectedRightIds, onSuccess}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
     const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
@@ -106,6 +106,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
                     rightsService.update(updatedRight, focusedId);
                 }
             }
+            onSuccess && onSuccess();
             close();
         }).catch((error) => {
             const {message: {description, bindingResult} = {}} = error;
@@ -152,12 +153,14 @@ CreateTitleForm.propTypes = {
     focusedRight: PropTypes.object,
     bulkTitleMatch: PropTypes.func,
     affectedRightIds: PropTypes.array,
+    onSuccess: PropTypes.func,
 };
 
 CreateTitleForm.defaultProps = {
     focusedRight: {},
     bulkTitleMatch: null,
     affectedRightIds: [],
+    onSuccess: () => null,
 };
 
 export default withToasts(CreateTitleForm);

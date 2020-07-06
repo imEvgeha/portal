@@ -96,7 +96,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
     const bulkTitleMatch = coreTitleId => {
         setCoreTitleId({
-            rightIds: mergeRightIds(affectedRightIds, duplicateList),
+            rightIds: affectedRightIds,
             coreTitleId,
         })
             .then(res => {
@@ -208,6 +208,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     bulkTitleMatch={bulkTitleMatch}
                     affectedRightIds={affectedRightIds}
                     focusedRight={{contentType}}
+                    onSuccess={closeDrawer}
                 />
               ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE);
