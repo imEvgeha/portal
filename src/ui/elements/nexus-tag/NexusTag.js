@@ -50,7 +50,7 @@ const NexusTag = ({value, text, tagState, onClick, onRemove}) => {
             <span className={`nexus-c-tag ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
-                    onClick={onClick || null}
+                    onClick={onClick}
                 >
                     {text}
                 </div>
