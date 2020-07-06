@@ -240,8 +240,6 @@ class TitleEdit extends Component {
     };
 
     handleOnMsvIds = (data) => {
-        console.log('TitleEdit handleOnMsvIds', data);
-
         const newExternalIds = {
             ...this.state.editedForm.externalIds,
             msvAssociationId: data
