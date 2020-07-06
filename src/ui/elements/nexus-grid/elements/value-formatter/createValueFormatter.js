@@ -40,7 +40,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(`${e.priceType} ${e.priceValue}`)).join(', ');
+                        .map(e => String(`${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`)).join(', ');
                 }
             };
         case 'territoryType':
