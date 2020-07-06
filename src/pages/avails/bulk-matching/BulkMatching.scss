@@ -46,9 +46,11 @@
 
 .nexus-c-bulk-matching__titles-wrapper {
     display: none;
+    height: calc(100vh - 425px);
 
     &--is-active {
-        display: block;
+        display: flex;
+        flex-direction: column;
     }
 }
 

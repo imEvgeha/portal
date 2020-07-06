@@ -12,6 +12,7 @@ import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
+import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
 import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
@@ -46,6 +47,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const [matchAndCreateIsLoading, setMatchAndCreateIsLoading] = useState(false);
     const [combinedTitle, setCombinedTitle] = useState([]);
     const [matchedTitles, setMatchedTitles] = useState([]);
+    const [selectedActive, setSelectedActive] = useState(false);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
@@ -155,6 +157,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const disableLoadingState = () => {
         setMatchIsLoading(false);
         setMatchAndCreateIsLoading(false);
+    };
+
+    const getMatchAndDuplicateItems = () => {
+        return [...Object.values(matchList), ...Object.values(duplicateList)];
     };
 
     const dispatchSuccessToast = () => {
@@ -275,23 +281,35 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         </div>
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
-                            onClick={() => null}
+                            onClick={() => setSelectedActive(!selectedActive)}
+                            isSelected={selectedActive}
                             isDisabled={matchAndCreateIsLoading || matchIsLoading}
                         >
-                            Selected (0)
+                            Selected ({getMatchAndDuplicateItems().length})
                         </Button>
                     </div>
-                    <RightsMatchingTitlesTable
-                        restrictedCoreTitleIds={restrictedCoreTitleIds}
-                        setTotalCount={setTotalCount}
-                        contentType={contentType}
-                        matchList={matchList}
-                        handleMatchClick={handleMatchClick}
-                        handleDuplicateClick={handleDuplicateClick}
-                        duplicateList={duplicateList}
-                        setTitlesTableIsReady={setTitlesTableIsReady}
-                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
-                    />
+                    <div
+                        className="nexus-c-bulk-matching__titles-table"
+                        style={{'display': selectedActive ? 'none' : 'block'}}
+                    >
+                        <RightsMatchingTitlesTable
+                            restrictedCoreTitleIds={restrictedCoreTitleIds}
+                            setTotalCount={setTotalCount}
+                            contentType={contentType}
+                            matchList={matchList}
+                            handleMatchClick={handleMatchClick}
+                            handleDuplicateClick={handleDuplicateClick}
+                            duplicateList={duplicateList}
+                            setTitlesTableIsReady={setTitlesTableIsReady}
+                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                        />
+                    </div>
+                    <div
+                        className="nexus-c-bulk-matching__selected-table"
+                        style={{'display': selectedActive ? 'block' : 'none'}}
+                    >
+                        <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+                    </div>
                     <BulkMatchingActionsBar
                         matchList={matchList}
                         onMatch={onMatch}
