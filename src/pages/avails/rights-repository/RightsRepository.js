@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {cloneDeep, isEmpty, isEqual} from 'lodash';
-import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import './RightsRepository.scss';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
@@ -34,11 +33,8 @@ import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumns
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
-import CustomActionsCellRenderer
-    from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import usePrevious from '../../../util/hooks/usePrevious';
-import {calculateIndicatorType, INDICATOR_RED} from './util/indicator';
-import TooltipCellEditor from './components/tooltip/TooltipCellEditor';
+import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import constants from '../constants';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
@@ -184,24 +180,6 @@ const RightsRepository = ({
         return columnDef;
     });
 
-    const createMatchingButtonCellRenderer = ({data}) => { // eslint-disable-line
-        const {id} = data || {};
-        const indicator = calculateIndicatorType(data);
-        const notificationClass = indicator !== INDICATOR_RED ? '--success' : '--error';
-        return (
-            <CustomActionsCellRenderer id={id}>
-                <div>
-                    <EditorMediaWrapLeftIcon />
-                    <span className={`
-                        nexus-c-right-to-match-view__buttons_notification
-                        nexus-c-right-to-match-view__buttons_notification${notificationClass}
-                    `}
-                    />
-                </div>
-            </CustomActionsCellRenderer>
-        );
-    };
-
     const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
@@ -213,9 +191,7 @@ const RightsRepository = ({
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({
-        cellRendererFramework: createMatchingButtonCellRenderer,
-        cellEditorFramework: TooltipCellEditor,
-        editable: true
+        cellRendererFramework: TooltipCellRenderer,
     });
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
