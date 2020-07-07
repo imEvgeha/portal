@@ -383,7 +383,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
 
                 {
-                    isMaster &&
+                    shortTitleTemplate &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
                             <b>Auto-Decorate Title</b>
