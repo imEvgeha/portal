@@ -289,8 +289,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         </Button>
                     </div>
                     <div
-                        className="nexus-c-bulk-matching__titles-table"
-                        style={{'display': selectedActive ? 'none' : 'block'}}
+                        className={classNames(
+                            'nexus-c-bulk-matching__titles-table',
+                            !selectedActive && 'nexus-c-bulk-matching__titles-table--active'
+                        )}
                     >
                         <RightsMatchingTitlesTable
                             restrictedCoreTitleIds={restrictedCoreTitleIds}
@@ -305,8 +307,10 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         />
                     </div>
                     <div
-                        className="nexus-c-bulk-matching__selected-table"
-                        style={{'display': selectedActive ? 'block' : 'none'}}
+                        className={classNames(
+                            'nexus-c-bulk-matching__selected-table',
+                            selectedActive && 'nexus-c-bulk-matching__selected-table--active'
+                        )}
                     >
                         <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
                     </div>

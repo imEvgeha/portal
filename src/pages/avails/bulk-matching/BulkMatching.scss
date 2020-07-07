@@ -71,6 +71,15 @@
     color: map-get($colors, nexus-title-color);
 }
 
+.nexus-c-bulk-matching__titles-table,
+.nexus-c-bulk-matching__selected-table {
+    display: none;
+
+    &--active {
+        display: block;
+    }
+}
+
 .nexus-c-bulk-matching__spinner {
     height: calc(100vh - 500px);
     display: flex;
