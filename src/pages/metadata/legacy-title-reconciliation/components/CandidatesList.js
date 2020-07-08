@@ -20,6 +20,10 @@ import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
 import mappings from '../../../../../profile/titleMatchingMappings';
 import {getRepositoryName} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
+import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
+import classNames from 'classnames';
+import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
@@ -31,6 +35,7 @@ const NexusGridWithInfiniteScrolling = compose(
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
+    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const {
         matchList,
         handleMatchClick,
@@ -109,32 +114,58 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         }
     };
 
+    const getMatchAndDuplicateItems = () => {
+        return [...Object.values(matchList), ...Object.values(duplicateList)];
+    };
+
     return (
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
                 <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
-                <Button
-                    className="nexus-c-button"
-                    onClick={handleClearFilterClick}
-                    isDisabled={!gridApi}
-                >
-                    {CLEAR_FILTER}
-                </Button>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <Button
+                        className="nexus-c-button"
+                        onClick={handleClearFilterClick}
+                        isDisabled={!gridApi}
+                    >
+                        {CLEAR_FILTER}
+                    </Button>
+                    <SelectedButton
+                        selectedRightsCount={getMatchAndDuplicateItems().length}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
+                </div>
             </div>
-            {queryParams.title && (
-                <NexusGridWithInfiniteScrolling
-                    onGridEvent={handleGridEvent}
-                    columnDefs={[
-                        matchButton,
-                        duplicateButton,
-                        ...updatedColumnDefs,
-                    ]}
-                    rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
-                    setTotalCount={setTotalCount}
-                    initialFilter={queryParams}
-                    mapping={mappings}
-                />
-            )}
+            <div
+                className={classNames(
+                    'nexus-c-candidates-titles-table',
+                    activeTab === RIGHTS_TAB && 'nexus-c-candidates-titles-table--active'
+                )}
+            >
+                {queryParams.title &&  (
+                    <NexusGridWithInfiniteScrolling
+                        onGridEvent={handleGridEvent}
+                        columnDefs={[
+                            matchButton,
+                            duplicateButton,
+                            ...updatedColumnDefs,
+                        ]}
+                        rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
+                        setTotalCount={setTotalCount}
+                        initialFilter={queryParams}
+                        mapping={mappings}
+                    />
+                )}
+            </div>
+            <div
+                className={classNames(
+                    'nexus-c-candidates-selected-table',
+                    activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
+                )}
+            >
+                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+            </div>
         </div>
     );
 };

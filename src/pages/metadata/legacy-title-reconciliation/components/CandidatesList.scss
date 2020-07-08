@@ -21,6 +21,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 10px;
 
     .nexus-c-candidates-list__header & {
         width: 100px;
@@ -28,3 +29,11 @@
     }
 }
 
+.nexus-c-candidates-titles-table,
+.nexus-c-candidates-selected-table {
+    display: none;
+
+    &--active {
+        display: block;
+    }
+}

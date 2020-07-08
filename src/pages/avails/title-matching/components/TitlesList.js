@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
+import classNames from 'classnames';
 import {Checkbox} from '@atlaskit/checkbox';
 import { Radio } from '@atlaskit/radio';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
@@ -20,6 +21,11 @@ import Constants from '../titleMatchingConstants';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import mappings from '../../../../../profile/titleMatchingMappings';
+import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
+import MatchedCombinedTitlesTable from '../../matched-combined-titles-table/MatchedCombinedTitlesTable';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/RightsRepository';
+import './TitlesList.scss';
+
 
 const TitleRepositoriesTable = compose(
     withColumnsResizing(),
@@ -32,6 +38,7 @@ const TitleRepositoriesTable = compose(
 const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const [totalCount, setTotalCount] = useState(0);
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
 
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -86,6 +93,10 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         }
     };
 
+    const getMatchAndDuplicateItems = () => {
+        return [...Object.values(matchList), ...Object.values(duplicateList)];
+    };
+
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefs]);
     const repository = getRepositoryCell();
@@ -93,18 +104,42 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
     if(contentTypeIndex !== -1) 
         updatedColumnDefs[contentTypeIndex]['sortable'] = false;
-    
+
     return (
         <>
-            <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
-            <TitleRepositoriesTable
-                id='titleMatchigRepo'
-                onGridEvent={onGridReady}
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
-                setTotalCount={setTotalCount}
-                initialFilter={queryParams}
-                mapping={mappings}
-            />
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
+                <SelectedButton
+                    selectedRightsCount={getMatchAndDuplicateItems().length}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                />
+            </div>
+            <div
+                className={classNames(
+                    'nexus-c-single-matching__titles-table',
+                    activeTab === RIGHTS_TAB && 'nexus-c-single-matching__titles-table--active'
+                )}
+            >
+                <TitleRepositoriesTable
+                    id='titleMatchigRepo'
+                    onGridEvent={onGridReady}
+                    columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                    setTotalCount={setTotalCount}
+                    initialFilter={queryParams}
+                    mapping={mappings}
+                />
+            </div>
+            <div
+                className={classNames(
+                    'nexus-c-single-matching__selected-table',
+                    activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-single-matching__selected-table--active'
+                )}
+            >
+                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+            </div>
+
+
             <ActionsBar
                 rightId={rightId}
                 matchList={matchList}
