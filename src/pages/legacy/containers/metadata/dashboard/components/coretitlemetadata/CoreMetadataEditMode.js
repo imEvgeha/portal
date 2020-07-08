@@ -123,7 +123,6 @@ class CoreMetadataEditMode extends Component {
             msvIsLoading: true
         });
 
-        /* doesn't exist yet */
         titleService.addMsvAssociationIds(this.props.data.id, this.state.msvLicensor, this.state.msvLicensee)
             .then(res => {
                 if (Array.isArray(res) && res.length) {
@@ -512,9 +511,6 @@ class CoreMetadataEditMode extends Component {
                             </Label>
                         </Col>
                         <Col md={3}>
-                            <NexusTagsContainer data={this.state.msvAssociationIds} saveData={this.handleMSVIDs} />
-                        </Col>
-                        <Col md={3}>
                             <AvField
                                 type='select'
                                 name='msvLicensor'
@@ -558,6 +554,13 @@ class CoreMetadataEditMode extends Component {
                                     {MSV_ASSOCIATION_BTN.title}
                                 </Button>
                             </Tooltip>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md={1}>
+                        </Col>
+                        <Col md={8}>
+                            <NexusTagsContainer data={this.state.msvAssociationIds} saveData={this.handleMSVIDs} />
                         </Col>
                     </Row>
                 </div>
