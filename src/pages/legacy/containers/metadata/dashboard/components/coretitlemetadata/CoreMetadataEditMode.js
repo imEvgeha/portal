@@ -62,7 +62,7 @@ class CoreMetadataEditMode extends Component {
         super(props);
         this.state = {
             ratings: [],
-            msvAssociationIds: get(props, 'data.externalIDs.msvAssociationId') || [],
+            msvAssociationIds: get(props, 'data.externalIds.msvAssociationId') || [],
             ...defaultMsvAssociationState
         };
     }
