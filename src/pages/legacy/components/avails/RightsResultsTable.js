@@ -43,7 +43,7 @@ export default class RightsResultsTable extends React.Component {
                     return ({data = {}}) => {
                         if (data && Array.isArray(data[javaVariableName])) {
                             return data[javaVariableName]
-                                .map(e => String(`${e.priceType} ${e.priceValue}`))
+                                .map(e => `${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`)
                                 .join(', ');
                         }
                     }

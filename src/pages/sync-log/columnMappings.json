@@ -42,13 +42,13 @@
     "field": "publishedAt",
     "javaVariableName": "publishedAt",
     "dataType": "timestamp",
-    "headerName": "publishedAt",
+    "headerName": "Published At",
     "minWidth": 150
   },
   {
     "colId": "publishErrors",
     "field": "publishErrors",
-    "headerName": "publishErrors",
+    "headerName": "Publish Errors",
     "minWidth": 150
   }
 ]

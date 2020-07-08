@@ -64,15 +64,15 @@ NexusTableToolbar.propTypes = {
     title: PropTypes.string,
     totalRows: PropTypes.number,
     hasDownloadButton: PropTypes.bool,
+    selectedRightGridApi: PropTypes.object,
+    selectedRightColumnApi: PropTypes.object,
+    selectedRightsCount: PropTypes.number,
+    selectedRepoRights: PropTypes.array,
+    rightColumnApi: PropTypes.object,
     activeTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
     selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
-    rightColumnApi: PropTypes.object.isRequired,
-    selectedRightGridApi: PropTypes.object.isRequired,
-    selectedRightColumnApi: PropTypes.object.isRequired,
-    selectedRightsCount: PropTypes.number,
-    selectedRepoRights: PropTypes.array,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -81,6 +81,9 @@ NexusTableToolbar.defaultProps = {
     hasDownloadButton: true,
     selectedRepoRights: [],
     selectedRightsCount: 0,
+    selectedRightGridApi: {},
+    selectedRightColumnApi: {},
+    rightColumnApi: {},
 };
 
 export default NexusTableToolbar;

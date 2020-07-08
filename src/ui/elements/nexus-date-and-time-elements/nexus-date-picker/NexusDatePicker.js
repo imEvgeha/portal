@@ -28,6 +28,7 @@ const NexusDatePicker = ({
     hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
     isReturningTime,
     allowClear,
+    required,
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -53,8 +54,8 @@ const NexusDatePicker = ({
             // onConfirm will handle changes
             !isWithInlineEdit && onChange(
                 isTimestamp
-                    ? moment(date).utc(true).toISOString()
-                    : `${moment(date).utc(true).format(isSimulcast
+                    ? moment(date).utc(false).toISOString()
+                    : `${moment(date).utc(false).format(isSimulcast
                         ? SIMULCAST_DATE_FORMAT
                         : RELATIVE_FORMAT)
                     }`
@@ -69,7 +70,7 @@ const NexusDatePicker = ({
   return (
       <>
           {!hideLabel && label && (
-          <label htmlFor={id}>{label}</label>
+          <label htmlFor={id} className={required && 'required'}>{label}</label>
               )}
           {isReadOnly
                 ? parseSimulcast(value, dateFormat, false)

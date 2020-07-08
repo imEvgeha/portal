@@ -23,6 +23,7 @@ import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} f
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
+import {URL} from '../../../util/Common';
 
 export const SelectedRightsActions = ({
     selectedRights,
@@ -145,37 +146,46 @@ export const SelectedRightsActions = ({
                         {/* TODO: Rewrite like the rest of the options when old design gets removed */}
                         <RightViewHistory selectedAvails={selectedRights} />
                     </div>
-                    <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
-                        data-test-id="bulk-match"
-                        onClick={isMatchable ? toggleDrawerState : null}
-                    >
-                        <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
-                            <div>
-                                {BULK_MATCH}
+                    {
+                        URL.isLocalOrDevOrQA() && (
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="bulk-match"
+                                onClick={isMatchable ? toggleDrawerState : null}
+                            >
+                                <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
+                                    <div>
+                                        {BULK_MATCH}
+                                    </div>
+                                </NexusTooltip>
                             </div>
-                        </NexusTooltip>
-                    </div>
-                    <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
-                        data-test-id="bulk-unmatch"
-                        onClick={isUnmatchable ? openBulkUnmatchModal : null}
-                    >
-                        <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                            {BULK_UNMATCH}
-                        </NexusTooltip>
-                    </div>
+                        )
+                    }
+                    {
+                        URL.isLocalOrDevOrQA() && (
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="bulk-unmatch"
+                                onClick={isUnmatchable ? openBulkUnmatchModal : null}
+                            >
+                                <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
+                                    {BULK_UNMATCH}
+                                </NexusTooltip>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             <NexusDrawer
                 onClose={toggleDrawerState}
                 isOpen={drawerOpen}
+                isClosedOnBlur={false}
                 width="wider"
             >
                 <BulkMatching
@@ -192,14 +202,15 @@ SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
+    selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
-    selectedRightGridApi: PropTypes.object.isRequired,
 };
 
 SelectedRightsActions.defaultProps = {
     selectedRights: [],
     addToast: () => null,
     removeToast: () => null,
+    selectedRightGridApi: {},
 };
 
 const mapDispatchToProps = dispatch => ({

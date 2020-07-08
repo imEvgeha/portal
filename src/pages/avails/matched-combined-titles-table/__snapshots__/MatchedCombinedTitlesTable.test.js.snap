@@ -1,45 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
+exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
 <div
-  className="nexus-c-rights-matching-titles-table-wrapper"
+  className="nexus-c-matched-combined-titles-table-wrapper"
 >
-  <Connect(ComposedComponent)
-    className="nexus-c-rights-matching-titles-table"
+  <NexusGrid
+    className="nexus-c-matched-combined-titles-table"
     columnDefs={
       Array [
-        Object {
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {},
-          "colId": "matchButton",
-          "field": "matchButton",
-          "headerName": "Match",
-          "lockPinned": true,
-          "lockPosition": true,
-          "lockVisible": true,
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 100,
-        },
-        Object {
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {},
-          "colId": "duplicateButton",
-          "field": "duplicateButton",
-          "headerName": "Duplicate",
-          "lockPinned": true,
-          "lockPosition": true,
-          "lockVisible": true,
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 100,
-        },
         Object {
           "cellRendererFramework": [Function],
           "colId": "repository",
@@ -284,11 +252,8 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
         },
       ]
     }
-    initialFilter={
-      Object {
-        "contentType": null,
-      }
-    }
+    domLayout="autoHeight"
+    isGridHidden={false}
     mapping={
       Array [
         Object {
@@ -447,7 +412,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
-    setTotalCount={[Function]}
+    rowData={null}
+    rowSelection="single"
+    setRowData={null}
   />
 </div>
 `;
