@@ -398,7 +398,7 @@ class EditorialMetadataEditMode extends Component {
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={shortTitleTemplate}
-                                required={isMaster}
+                                required
                                 errorMessage="Field cannot be empty!"
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
