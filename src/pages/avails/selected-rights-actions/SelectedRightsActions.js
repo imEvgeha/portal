@@ -202,14 +202,15 @@ SelectedRightsActions.propTypes = {
     selectedRights: PropTypes.array,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
+    selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
-    selectedRightGridApi: PropTypes.object.isRequired,
 };
 
 SelectedRightsActions.defaultProps = {
     selectedRights: [],
     addToast: () => null,
     removeToast: () => null,
+    selectedRightGridApi: {},
 };
 
 const mapDispatchToProps = dispatch => ({
