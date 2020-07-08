@@ -105,6 +105,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
             setGridApi(api);
             const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
             columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
+            api.setDomLayout('autoHeight');
         }
     };
 
