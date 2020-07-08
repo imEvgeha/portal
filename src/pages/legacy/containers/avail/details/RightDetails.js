@@ -1369,7 +1369,7 @@ class RightDetails extends React.Component {
                 }
                 return mappedTerritory;
             });
-
+            const {sourceRightId} = this.state.right || {};
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -1396,14 +1396,16 @@ class RightDetails extends React.Component {
                         <TerritoryField
                             territory={territories}
                             name={name}
-                            onRemoveClick={territory => deleteTerritory(territory)}
+                            onRemoveClick={territory => !sourceRightId ? deleteTerritory(territory) : null}
                             onAddClick={this.toggleAddRightTerritoryForm}
                             onTagClick={i => this.toggleRightTerritoryForm(i)}
                             renderChildren={() => (
                                 <>
-                                    <div style={{position: 'absolute', right: '10px'}}>
+                                    {!sourceRightId && (
+                                        <div style={{position: 'absolute', right: '10px'}}>
                                         <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
                                     </div>
+                                    )}
                                     <RightTerritoryForm
                                         onSubmit={e => addTerritory(e)}
                                         isOpen={this.state.isRightTerritoryFormOpen}
