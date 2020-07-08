@@ -12,7 +12,6 @@ import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
 import './ServicingOrdersTable.scss';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
