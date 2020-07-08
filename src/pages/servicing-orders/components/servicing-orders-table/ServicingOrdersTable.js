@@ -16,8 +16,7 @@ import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders}),
-    withSorting({colId: 'so_number', sort: ''},{colId: 'external_id', sort: ''} )
+    withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
 const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
