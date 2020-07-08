@@ -18,7 +18,7 @@ const RightsRepositoryHeader = ({title}) => (
     </div>
 );
 
-RightsRepositoryHeader.propsTypes = {
+RightsRepositoryHeader.propTypes = {
     title: PropTypes.string,
 };
 

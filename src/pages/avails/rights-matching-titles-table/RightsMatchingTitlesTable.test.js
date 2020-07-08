@@ -3,12 +3,10 @@ import {shallow} from 'enzyme';
 import RightsMatchingTitlesTable from './RightsMatchingTitlesTable';
 
 describe('RightsMatchingTitlesTable', () => {
-    let wrapper; let
-        rightsMatchingTitlesTable;
+    let wrapper = null;
 
     beforeEach(() => {
         wrapper = shallow(<RightsMatchingTitlesTable />);
-        rightsMatchingTitlesTable = wrapper.find('.nexus-c-rights-matching-titles-table');
     });
 
     it('should match snapshot', () => {

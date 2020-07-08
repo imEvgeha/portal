@@ -5,7 +5,10 @@ import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cel
 import Constants from './title-matching/titleMatchingConstants';
 import TitleSystems from '../legacy/constants/metadata/systems';
 
-export function createColumnDefs(payload) {
+const COLUMN_WIDTH_WIDE = 235;
+const COLUMN_WIDTH_DEFAULT = 150;
+
+export const createColumnDefs = payload => {
     return payload.filter(column => column.dataType && column.displayName).reduce((columnDefs, column) => {
         const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
         const isColumnLocked = ['id'].includes(javaVariableName);
@@ -15,16 +18,16 @@ export function createColumnDefs(payload) {
             colId: sortParamName || queryParamName,
             cellRenderer: 'loadingCellRenderer',
             valueFormatter: createValueFormatter(column),
-            width: (['businessDateTime', 'timestamp'].includes(dataType)) ? 235 : 150,
+            width: (['businessDateTime', 'timestamp'].includes(dataType)) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
             lockPosition: isColumnLocked,
             lockVisible: isColumnLocked,
             lockPinned: isColumnLocked,
         };
         return [...columnDefs, columnDef];
     }, []);
-}
+};
 
-export function getRepositoryName(id) {
+export const getRepositoryName = id => {
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
     if (id && id.startsWith('movtitl_')) {
         return MOVIDA;
@@ -32,7 +35,7 @@ export function getRepositoryName(id) {
         return VZ;
     }
     return NEXUS;
-}
+};
 
 const repositoryCell = ({data}) => {// eslint-disable-line
     const {id} = data || {};
@@ -67,13 +70,15 @@ export const createColumnSchema = (list, field) => {
         return o;
     }, {});
 
-    const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
+    const sortedValuesEntries = Object.entries(occurence).sort(
+        (a, b) => b[1] - a[1]
+    );
 
     const getMostCommonValue = entries => {
         if (entries.length) {
             const mostCommonValue = entries
-                .filter(([key, value], i) => majorityRule(value, list.length))
-                .map(([key, value]) => key);
+                .filter(([, value]) => majorityRule(value, list.length))
+                .map(([key]) => key);
 
             return mostCommonValue[0];
         }
@@ -102,7 +107,7 @@ const isMajorValue = (majorityValue, value) => {
         || isEqual(majorityValue, value);
 };
 
-export const addCellClass = ({field, value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
+export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
     const fieldValues = get(schema, ['values'], {});
     const mostCommonValue = get(schema, ['mostCommonValue'], null);
 

@@ -28,10 +28,21 @@ const onViewTitleClick = response => {
     window.open(url, '_blank');
 };
 
-const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affectedRightIds, onSuccess}) => {
-    // eslint-disable-next-line no-unused-vars
+const CreateTitleForm = ({
+    close,
+    focusedRight,
+    addToast,
+    bulkTitleMatch,
+    affectedRightIds,
+    onSuccess,
+}) => {
     const [error, setError] = useState();
-    const {id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear} = focusedRight;
+    const {
+        id: focusedId,
+        title: focusedTitle,
+        contentType: focusedContentType,
+        releaseYear: focusedReleaseYear,
+    } = focusedRight;
     // TODO: metadata api expects 'AD'
     const parseContentType = contentType => {
         if (contentType) {
@@ -95,16 +106,13 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
                         titleId: res.id,
                     },
                 });
+            } else if (bulkTitleMatch) {
+                const url = `${getDomainName()}/metadata/detail/${res.id}`;
+                const coreTitleId = res.id;
+                bulkTitleMatch(coreTitleId, url, affectedRightIds, {});
             } else {
-                // if is bulk matching
-                if (bulkTitleMatch) {
-                    const url = `${getDomainName()}/metadata/detail/${res.id}`;
-                    const coreTitleId = res.id;
-                    bulkTitleMatch(coreTitleId, url, affectedRightIds, {});
-                } else {
-                    const updatedRight = {coreTitleId: res.id};
-                    rightsService.update(updatedRight, focusedId);
-                }
+                const updatedRight = {coreTitleId: res.id};
+                rightsService.update(updatedRight, focusedId);
             }
             onSuccess && onSuccess();
             close();
@@ -155,6 +163,7 @@ CreateTitleForm.propTypes = {
     bulkTitleMatch: PropTypes.func,
     affectedRightIds: PropTypes.array,
     onSuccess: PropTypes.func,
+    addToast: PropTypes.func,
 };
 
 CreateTitleForm.defaultProps = {
@@ -162,6 +171,7 @@ CreateTitleForm.defaultProps = {
     bulkTitleMatch: null,
     affectedRightIds: [],
     onSuccess: () => null,
+    addToast: () => null,
 };
 
 export default withToasts(CreateTitleForm);

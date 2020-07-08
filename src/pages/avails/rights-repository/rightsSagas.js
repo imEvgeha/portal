@@ -1,5 +1,4 @@
-import {call, put, all, takeEvery, select} from 'redux-saga/effects';
-import {push} from 'connected-react-router';
+import {put, all, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './rightsActionTypes';
 
 export function* storeRightsFilter({payload}) {

@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import moment from 'moment';
 import {Link} from 'react-router-dom';
-import {isEqual, isEmpty} from 'lodash';
+import {isEmpty, isEqual} from 'lodash';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import './MatchRightsView.scss';
 import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
@@ -16,31 +15,31 @@ import {
     fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {URL} from '../../../../util/Common';
 import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {
-    defineColumn,
     defineCheckboxSelectionColumn,
+    defineColumn,
     updateColumnDefs,
 } from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
-import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
+import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {
-    MATCH_RIGHT_TITLE,
-    MATCH_BUTTON,
-    RIGHT_MATCHING_DOP_STORAGE,
-    MATCHED_RIGHTS,
-    COMBINED_RIGHTS,
-    SAVE_BUTTON,
     CANCEL_BUTTON,
+    COMBINED_RIGHTS,
+    MATCH_RIGHT_TITLE,
+    MATCHED_RIGHTS,
+    RIGHT_MATCHING_DOP_STORAGE,
+    SAVE_BUTTON,
 } from '../rightMatchingConstants';
+import './MatchRightsView.scss';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];
 const MIN_SELECTED_ROWS = 2;
@@ -51,7 +50,6 @@ const CombinedRightNexusGrid = compose(
     withEditableColumns(),
 )(NexusGrid);
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
-
 
 const MatchRightView = ({
     history,
@@ -122,8 +120,6 @@ const MatchRightView = ({
     };
 
     const onSaveCombinedRight = () => {
-        const {params} = match || {};
-        const {rightId, matchedRightIds} = params || {};
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         const payload = {
             rightIds: selectedMatchedRightIds,
@@ -160,8 +156,7 @@ const MatchRightView = ({
     };
 
     const getSelectedRows = api => {
-        const selectedRows = api.getSelectedRows() || [];
-        return selectedRows;
+        return api.getSelectedRows() || [];
     };
 
     // rule for row (disable unselect, add strike through line)
@@ -213,7 +208,7 @@ const MatchRightView = ({
         ? updateColumnDefs(
             columnDefs,
             {
-                cellClass: ({colDef, value, context}) => {
+                cellClass: ({colDef, context}) => {
                     const {field} = colDef || {};
 
                     if (!FIELDS_WITHOUT_COLOURING.includes(field)) {
@@ -343,9 +338,11 @@ const createMapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
-    fetchCombinedRight: (focusedRightId, matchedRightIds, mapping) => dispatch(fetchCombinedRight(focusedRightId, matchedRightIds, mapping)),
+    fetchCombinedRight: (focusedRightId, matchedRightIds, mapping) => {
+        dispatch(fetchCombinedRight(focusedRightId, matchedRightIds, mapping));
+    },
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MatchRightView); // eslint-disable-line
+export default connect(createMapStateToProps, mapDispatchToProps)(MatchRightView);

@@ -33,7 +33,7 @@ const RightToMatchNavigation = ({
     useEffect(() => {
         if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1 : 0;
+            const pageNumber = pages.length ? parseInt(pages[pages.length - 1]) + 1 : 0;
             const updatedNavigationData = getNavigationDataIfExist();
             // TODO: refactor
             if (updatedNavigationData !== null) {
@@ -68,8 +68,18 @@ const RightToMatchNavigation = ({
             const items = rightMatchPageData.pages[pages[i]];
             for (let j = 0; j < items.length; j++) {
                 if (items[j] === focusedRightId) {
-                    const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
-                    const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
+                    const previousId = j > 0
+                        ? items[j - 1]
+                        : (i > 0
+                            ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1]
+                            : null
+                        );
+                    const nextId = j + 1 < items.length
+                        ? items[j + 1]
+                        : (i + 1 < pages.length
+                            ? rightMatchPageData.pages[pages[i + 1]][0]
+                            : null
+                        );
                     const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
                     navigationData = {previousId, currentPosition, focusedRightId, nextId};
                     break loop;

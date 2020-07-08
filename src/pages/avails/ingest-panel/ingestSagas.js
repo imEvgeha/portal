@@ -15,12 +15,15 @@ import {uploadService} from '../../legacy/containers/avail/service/UploadService
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
+const UPLOAD_DELAY = 6500;
 
 
 function* fetchIngests({payload}) {
     try {
         const filters = {};
-        Object.keys(URLFilterKeys).map(key => filters[URLFilterKeys[key]] = payload[key]);
+        Object.keys(URLFilterKeys).forEach(key => {
+            filters[URLFilterKeys[key]] = payload[key];
+        });
         filters.page = '';
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
@@ -110,11 +113,11 @@ function* selectIngest({payload}) {
         ingestId = params.get(Constants.AVAIL_HISTORY_ID);
     }
     if (ingestId) {
-        const selectedIngest = yield select(getIngestById, ingestId);
+        let selectedIngest = yield select(getIngestById, ingestId);
 
         try {
             if (!selectedIngest) {
-                const selectedIngest = yield call(historyService.getHistory, ingestId);
+                selectedIngest = yield call(historyService.getHistory, ingestId);
             }
             yield put({
                 type: actionTypes.UPDATE_SELECTED_INGEST,
@@ -156,6 +159,7 @@ function* deselectIngest() {
 
 function* uploadIngest({payload}) {
     const {file, closeModal, ...rest} = payload || {};
+
     try {
         yield put({
             type: actionTypes.UPLOAD_INGEST_REQUEST,
@@ -163,7 +167,7 @@ function* uploadIngest({payload}) {
         });
 
         const response = yield uploadService.uploadAvail({file, params: rest});
-        yield delay(6500);
+        yield delay(UPLOAD_DELAY);
         yield put({
             type: actionTypes.FETCH_INGESTS,
             payload: getFiltersToSend(),
@@ -191,13 +195,16 @@ function* uploadIngest({payload}) {
 }
 
 function* downloadIngestEmail({payload}) {
-    if (!payload.id) { return; }
+    if (!payload.id) {
+        return;
+    }
+
     try {
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.downloadUrl) {
             let filename = 'Unknown';
             if (payload.link) {
-                filename = payload.link.split(/(\\|\/)/g).pop();
+                filename = payload.link.split(/([\\/])/g).pop();
             }
             const link = document.createElement('a');
             link.href = response.downloadUrl;
@@ -212,12 +219,14 @@ function* downloadIngestEmail({payload}) {
 }
 
 function* downloadIngestFile({payload}) {
-    if (!payload.id) { return; }
+    if (!payload.id) {
+        return;
+    }
 
     let filename = 'Unknown';
     try {
         if (payload.link) {
-            filename = payload.link.split(/(\\|\/)/g).pop();
+            filename = payload.link.split(/([\\/])/g).pop();
         }
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.downloadUrl) {

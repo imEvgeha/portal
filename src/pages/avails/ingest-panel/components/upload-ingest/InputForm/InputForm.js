@@ -3,19 +3,33 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {get, isEmpty} from 'lodash';
 import Select from '@atlaskit/select';
+import {RadioGroup} from '@atlaskit/radio';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {getLicensors} from '../../../ingestSelectors';
 import {uploadIngest} from '../../../ingestActions';
+import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 import constants from '../../../constants';
 import './InputForm.scss';
-import {RadioGroup} from '@atlaskit/radio';
-import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 
-const {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL}} = constants;
+const {
+    ingestTypes: {EMAIL},
+    SERVICE_REGIONS,
+    TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
+} = constants;
 const US = 'US';
 
-const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
-    const isStudio = !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.licensor);
+const InputForm = ({
+    ingestData = {},
+    closeModal,
+    file,
+    browseClick,
+    licensors,
+    uploadIngest,
+    isUploading,
+}) => {
+    const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
+
+    const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
         {label: 'Use International Template',
@@ -24,8 +38,8 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
             testId: isStudio && 'disabled'},
         {label: 'Use US Template',
             value: USMASTER,
-            disabled: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US),
-            testId: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US) && 'disabled'},
+            disabled: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
+            testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled'},
         {label: 'Use Studio Template',
             value: STUDIO,
             disabled: !isEmpty(ingestData) && !isStudio,
@@ -35,9 +49,14 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
 
     const initialTemplate = templates.find(t => !t.disabled);
     const [template, setTemplate] = useState(initialTemplate.value);
-    const getLicensor = template === STUDIO && ingestData.licensor && {label: ingestData.licensor, value: {value: ingestData.licensor}};
+
+    const getLicensor = (template === STUDIO && ingestLicensor)
+        && {label: ingestLicensor, value: {value: ingestLicensor}};
     const [licensor, setLicensor] = useState(getLicensor);
-    const [serviceRegion, setServiceRegion] = useState(ingestData.serviceRegion && {label: ingestData.serviceRegion, value: ingestData.serviceRegion});
+
+    const [serviceRegion, setServiceRegion] = useState(
+        ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
+    );
 
 
     useEffect(() => {
@@ -116,7 +135,7 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                         onChange={setLicensor}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO || ingestData.licensor}
+                        isDisabled={template !== STUDIO || ingestLicensor}
                         placeholder={template !== STUDIO ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
@@ -128,7 +147,7 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={ingestData.serviceRegion || template === USMASTER || (template === STUDIO && !licensor)}
+                        isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
                         placeholder="Select"
                         {...selectProps}
                     />
@@ -141,7 +160,8 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                     className={uploadDisabled ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={uploadDisabled}
-                >Upload
+                >
+                    Upload
                 </Button>
             </div>
         </div>
@@ -155,6 +175,7 @@ InputForm.propTypes = {
     browseClick: PropTypes.func,
     file: PropTypes.object,
     isUploading: PropTypes.bool,
+    ingestData: PropTypes.object,
 };
 
 InputForm.defaultProps = {
@@ -163,6 +184,7 @@ InputForm.defaultProps = {
     browseClick: () => null,
     file: {},
     isUploading: false,
+    ingestData: {},
 };
 
 const mapStateToProps = state => {

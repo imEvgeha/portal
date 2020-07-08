@@ -1,4 +1,4 @@
-import {put, call, takeEvery} from '@redux-saga/core/effects';
+import {put, call, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './rightHistoryActionTypes';
 import {getRightsHistory} from './rightHistoryService';
 

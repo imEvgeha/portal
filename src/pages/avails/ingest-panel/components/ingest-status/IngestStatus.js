@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import UploadIcon from '@atlaskit/icon/glyph/upload';
 import EmailIcon from '@atlaskit/icon/glyph/email';
+import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import './IngestStatus.scss';
 
 const IngestStatus = ({date, status, ingestType}) => {
     const dateFormatted = date && moment(date).format('ddd, MMM D, YYYY | hh:mm:ss A');
+
     return (
         <div className="ingest-status">
             <div>

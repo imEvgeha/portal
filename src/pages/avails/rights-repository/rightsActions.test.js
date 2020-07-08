@@ -3,9 +3,7 @@ import * as actionTypes from './rightsActionTypes';
 
 describe('rights actions', () => {
     const payload = {};
-    // beforeAll(() => {
-    //     payload = {};
-    // });
+
     it('should create action to add selected rights to store', () => {
         const expectedAction = {
             type: actionTypes.SET_SELECTED_RIGHTS,

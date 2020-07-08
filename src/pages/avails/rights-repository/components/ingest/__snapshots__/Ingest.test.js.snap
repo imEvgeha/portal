@@ -50,7 +50,7 @@ exports[`Ingest should match snapshot 1`] = `
           "updated": 19999,
         }
       }
-      showErrorMessage={false}
+      isShowingError={false}
     />
     <div
       className="nexus-c-avails-ingest__email"

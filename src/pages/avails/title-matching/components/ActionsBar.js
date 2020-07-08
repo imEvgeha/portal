@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import DOP from '../../../../util/DOP';
@@ -126,6 +126,7 @@ ActionsBar.defaultProps = {
     matchList: {},
     addToast: () => null,
     removeToast: () => null,
+    mergeTitles: () => null,
 };
 
 export default withToasts(ActionsBar);

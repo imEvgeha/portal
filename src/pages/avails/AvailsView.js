@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './AvailsView.scss';
 import IngestPanel from './ingest-panel/IngestPanel';
 import RightsRepository from './rights-repository/RightsRepository';

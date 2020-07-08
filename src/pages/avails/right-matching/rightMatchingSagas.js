@@ -1,17 +1,26 @@
-import {call, put, all, select, fork, take, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
-import {getRightMatchingFieldSearchCriteria} from './rightMatchingService';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {URL} from '../../../util/Common';
-import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
+import {
+    createRightById,
+    getCombinedRight,
+    getRightMatchingFieldSearchCriteria,
+    getRightMatchingList,
+    putCombinedRight,
+} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
-import {SUCCESS_ICON, SUCCESS_TITLE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+} from '../../../ui/elements/nexus-toast-notification/constants';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
-import {NULL_TO_OBJECT, NULL_TO_ARRAY} from '../../legacy/containers/avail/service/Constants';
+import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/service/Constants';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -61,7 +70,7 @@ function* fetchAndStoreRightMatchingSearchCriteria() {
             payload,
         });
         if (!provider) {
-            throw {error};
+            throw new Error(error);
         }
         const data = yield call(getRightMatchingFieldSearchCriteria, payload);
         yield put({
@@ -149,8 +158,7 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
             payload: {},
         });
 
-        const response = yield call(requestMethod, rightIds);
-        const combinedRight = response;
+        const combinedRight = yield call(requestMethod, rightIds);
 
         // fix fields that are null but include subfields
         mapping.forEach(({javaVariableName}) => {
@@ -297,7 +305,10 @@ export function* rightMatchingWatcher() {
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
-        takeLatest(actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA, fetchAndStoreRightMatchingSearchCriteria),
+        takeLatest(
+            actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
+            fetchAndStoreRightMatchingSearchCriteria
+        ),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),

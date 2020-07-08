@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
+import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 import Add from '../../../../../../assets/action-add.svg';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
@@ -64,6 +65,14 @@ const UploadIngestButton = ({ingestData}) => {
                 : <Add onClick={inputClick} />}
         </div>
     );
+};
+
+UploadIngestButton.propTypes = {
+    ingestData: PropTypes.object,
+};
+
+UploadIngestButton.defaultProps = {
+    ingestData: {},
 };
 
 export default UploadIngestButton;

@@ -23,7 +23,8 @@ import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumns
 import mappings from '../../../../profile/titleMatchingRightMappings';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
 
-const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
+const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title 
+from the action menu.`;
 
 const IncomingRightTable = withColumnsResizing()(NexusGrid);
 
@@ -75,7 +76,7 @@ const TitleMatchView = ({
     }, [columnDefs]);
 
     const deepCloneRightColumnDefs = cloneDeep(rightColumns);
-    let updatedRightColumnDefs;
+    let updatedRightColumnDefs = [];
 
     if (focusedRight && focusedRight.contentType === 'Episode') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
@@ -112,8 +113,12 @@ const TitleMatchView = ({
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
                             mergeTitles={mergeTitles}
-                            // TODO: Capitalized first letter of contentType value to be checked inside drop down ag grid
-                            queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
+                            // TODO: Capitalize first letter of contentType value to be checked inside drop down ag grid
+                            queryParams={{
+                                contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
+                                title,
+                                releaseYear,
+                            }}
                         />
                     </>
                 )
@@ -136,6 +141,7 @@ TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
+    match: {},
 };
 
 const createMapStateToProps = () => {

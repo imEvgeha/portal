@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import File from '../../../../../assets/file.svg';
 import './IngestTitle.scss';
 
-const IngestTitle = ({link, className}) => {
+const IngestTitle = ({link, isHeader}) => {
     const fileName = link.split('/').pop();
     return (
-        <div className={className ? `nexus-c-ingest-title nexus-c-ingest-title--is-${className}` : 'nexus-c-ingest-title'}>
+        <div
+            className={classnames(
+                'nexus-c-ingest-title',
+                isHeader && 'nexus-c-ingest-title--is-header'
+            )}
+        >
             <div className="nexus-c-ingest-title__details">
                 <File className="nexus-c-ingest-title__type" />
                 <span title={fileName} className="nexus-c-ingest-title__filename">{fileName}</span>
@@ -17,10 +23,12 @@ const IngestTitle = ({link, className}) => {
 
 IngestTitle.propTypes = {
     link: PropTypes.string,
+    isHeader: PropTypes.bool,
 };
 
 IngestTitle.defaultProps = {
     link: '',
+    isHeader: false,
 };
 
 export default IngestTitle;

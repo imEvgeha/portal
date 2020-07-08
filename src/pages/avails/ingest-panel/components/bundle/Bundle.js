@@ -7,7 +7,15 @@ import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
 
-const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick}) => {
+const Bundle = ({
+    id,
+    ingestType,
+    received,
+    licensor,
+    attachments,
+    selectedAttachmentId,
+    ingestClick,
+}) => {
     const [showIngests, setShowIngests] = useState(false);
     const onBundleClick = () => setShowIngests(!showIngests);
 
@@ -36,10 +44,14 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
                                 received={received}
                                 licensor={licensor}
                                 ingestType={ingestType}
-                                ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId})}
-                                selected={selectedAttachmentId === attachment.id}
-                                inBundle
+                                ingestClick={() => ingestClick({
+                                    availHistoryId: id,
+                                    attachmentId: attachment.id,
+                                    selectedAttachmentId,
+                                })}
+                                isSelected={selectedAttachmentId === attachment.id}
                                 ingestId={id}
+                                isInBundle
                             />
                         ))
                     }
@@ -51,6 +63,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
 };
 
 Bundle.propTypes = {
+    id: PropTypes.string,
     ingestType: PropTypes.string,
     received: PropTypes.string,
     licensor: PropTypes.string,
@@ -60,11 +73,13 @@ Bundle.propTypes = {
 };
 
 Bundle.defaultProps = {
+    id: '',
     ingestType: '',
     received: '',
     licensor: '',
     attachments: [],
     selectedAttachmentId: '',
+    ingestClick: () => null,
 };
 
 export default Bundle;

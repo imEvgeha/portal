@@ -1,22 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Ingest.scss';
 import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
+import {NexusTooltip} from '../../../../../ui/elements';
 import DownloadIcon from '../../../../../assets/action-download.svg';
 import Email from '../../../../../assets/email.svg';
 import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import Constants from '../../../ingest-panel/constants';
-import {NexusTooltip} from '../../../../../ui/elements';
+import './Ingest.scss';
 
-const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
+const Ingest = ({
+    ingest,
+    filterByStatus,
+    attachment,
+    deselectIngest,
+    downloadIngestEmail,
+    downloadIngestFile,
+}) => {
     const {attachments = [{}], ingestType, received, id} = ingest;
     const {link, status, ingestReport = {}} = attachment;
     const {attachmentTypes: {EMAIL}} = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
 
-    return ingest ? (
+    return ingest && (
         <div className="nexus-c-avails-ingest">
             <div className="nexus-c-avails-ingest__cross-icon">
                 <CrossCircle className="nexus-c-avails-ingest__cross-circle" onClick={deselectIngest} />
@@ -25,7 +32,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 <IngestTitle
                     ingestType={ingestType}
                     link={link}
-                    className="header"
+                    isHeader
                 />
                 <IngestStatus
                     status={status}
@@ -37,7 +44,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
             <div className="nexus-c-avails-ingest__stats">
                 <IngestReport
                     report={ingestReport}
-                    showErrorMessage={false}
+                    isShowingError={false}
                     filterClick={filterByStatus}
                     ingestId={id}
                 />
@@ -55,11 +62,12 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                 </div>
             </div>
         </div>
-    ) : null;
+    );
 };
 
 Ingest.propTypes = {
     ingest: PropTypes.object,
+    attachment: PropTypes.object,
     filterByStatus: PropTypes.func,
     deselectIngest: PropTypes.func,
     downloadIngestEmail: PropTypes.func,
@@ -68,6 +76,7 @@ Ingest.propTypes = {
 
 Ingest.defaultProps = {
     ingest: {attachments: [{}]},
+    attachment: {ingestReport: {}},
     filterByStatus: () => null,
     deselectIngest: () => null,
     downloadIngestEmail: () => null,

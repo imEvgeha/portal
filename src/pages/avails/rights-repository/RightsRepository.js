@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {cloneDeep, isEmpty, isEqual} from 'lodash';
-import './RightsRepository.scss';
+import {cloneDeep, isEmpty, isEqual, get} from 'lodash';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import * as selectors from './rightsSelectors';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
@@ -36,6 +36,7 @@ import {filterBy} from '../../../ui/elements/nexus-grid/utils';
 import usePrevious from '../../../util/hooks/usePrevious';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import constants from '../constants';
+import './RightsRepository.scss';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
 export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
@@ -79,11 +80,10 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-    const previousExternalStatusFilter = usePrevious(rightsFilter && rightsFilter.external && rightsFilter.external.status);
+    const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
-    const previousActiveTab = usePrevious(activeTab);
     const [selectedFilter, setSelectedFilter] = useState({});
 
     useEffect(() => {
@@ -118,7 +118,7 @@ const RightsRepository = ({
         const {status} = external;
         if (!isEqual(previousExternalStatusFilter, status) && gridApi) {
             const filterInstance = gridApi.getFilterInstance('status');
-            let values;
+            let values = [];
             if (!status || status === 'Rights') {
                 const {options = []} = (Array.isArray(mapping)
                     && mapping.find(({javaVariableName}) => javaVariableName === 'status')
@@ -211,7 +211,7 @@ const RightsRepository = ({
                 setGridApi(api);
                 setColumnApi(columnApi);
                 break;
-            case SELECTION_CHANGED:
+            case SELECTION_CHANGED: {
                 const clonedSelectedRights = cloneDeep(selectedRights);
 
                 // Get selected rows from both tables
@@ -238,7 +238,9 @@ const RightsRepository = ({
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter(right => allSelectedRowsIds.includes(right.id));
+                    const updatedSelectedRights = clonedSelectedRights.filter(
+                        right => allSelectedRowsIds.includes(right.id)
+                    );
 
                     // Pack the new selected rights into a payload for the store update; converts array of objects
                     // to object of objects where the keys are object(right) ids.
@@ -270,7 +272,8 @@ const RightsRepository = ({
                 const payload = updatedSelectedRights.reduce((o, curr) => (o[curr.id] = curr, o), {});
                 setSelectedRights(payload);
                 break;
-            case FILTER_CHANGED:
+            }
+            case FILTER_CHANGED: {
                 const column = filterBy(api.getFilterModel());
                 if (Object.keys(column || {}).length === 0) {
                     const filter = {...rightsFilter};
@@ -279,6 +282,9 @@ const RightsRepository = ({
                     break;
                 }
                 setRightsFilter({...rightsFilter, column});
+                break;
+            }
+            default:
                 break;
         }
     };
@@ -290,7 +296,7 @@ const RightsRepository = ({
                 setSelectedGridApi(api);
                 setSelectedColumnApi(columnApi);
                 break;
-            case SELECTION_CHANGED:
+            case SELECTION_CHANGED: {
                 // Get IDs from all selected rights from selectedRights ag-grid table
                 const allSelectedRowsIds = api.getSelectedRows().map(({id}) => id);
                 // Get ID of a right to be deselected
@@ -299,7 +305,9 @@ const RightsRepository = ({
                     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = gridApi.getSelectedNodes().filter(({data = {}}) => toDeselectIds.includes(data.id));
+                const nodesToDeselect = gridApi.getSelectedNodes().filter(
+                    ({data = {}}) => toDeselectIds.includes(data.id)
+                );
 
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
@@ -310,11 +318,14 @@ const RightsRepository = ({
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
                 break;
+            }
             case ROW_DATA_CHANGED:
                 api.setFilterModel(selectedFilter);
                 break;
             case FILTER_CHANGED:
                 setSelectedFilter(api.getFilterModel());
+                break;
+            default:
                 break;
         }
     };
@@ -386,6 +397,32 @@ const RightsRepository = ({
             />
         </div>
     );
+};
+
+RightsRepository.propTypes = {
+    columnDefs: PropTypes.array.isRequired,
+    createRightMatchingColumnDefs: PropTypes.func.isRequired,
+    filterByStatus: PropTypes.func.isRequired,
+    ingestClick: PropTypes.func.isRequired,
+    setSelectedRights: PropTypes.func.isRequired,
+    setRightsFilter: PropTypes.func.isRequired,
+    downloadIngestEmail: PropTypes.func.isRequired,
+    downloadIngestFile: PropTypes.func.isRequired,
+    deselectIngest: PropTypes.func.isRequired,
+    location: PropTypes.object.isRequired,
+    mapping: PropTypes.array,
+    selectedIngest: PropTypes.object,
+    selectedAttachmentId: PropTypes.string,
+    selectedRights: PropTypes.array,
+    rightsFilter: PropTypes.object,
+};
+
+RightsRepository.defaultProps = {
+    mapping: [],
+    selectedIngest: {},
+    selectedAttachmentId: '',
+    selectedRights: [],
+    rightsFilter: {},
 };
 
 const mapStateToProps = () => {

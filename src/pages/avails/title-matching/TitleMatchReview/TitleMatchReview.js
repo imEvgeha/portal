@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
-import './TitleMatchReview.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import BackNavigationByUrl from '../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
@@ -11,6 +10,7 @@ import {createColumnDefs} from '../titleMatchingActions';
 import {getRepositoryCell} from '../../utils';
 import DOP from '../../../../util/DOP';
 import {URL} from '../../../../util/Common';
+import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
@@ -35,7 +35,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 });
             })
                 .catch(() => {
-                    reject('Unable to load Title Data');
+                    reject(new Error('Unable to load Title Data'));
                 });
         });
     };
@@ -123,7 +123,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const deepCloneCombinedTitleColumnDefs = cloneDeep(columnDefs);
 
     const renderEpisodeAndSeasonNumber = params => {
-        if (params.data.contentType === 'EPISODE') { return params.data.episodic.episodeNumber; } else if (params.data.contentType === 'SEASON') { return params.data.episodic.seasonNumber; }
+        if (params.data.contentType === 'EPISODE') {
+            return params.data.episodic.episodeNumber;
+        } else if (params.data.contentType === 'SEASON') {
+            return params.data.episodic.seasonNumber;
+        }
         return null;
     };
 
@@ -139,7 +143,8 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     const onGridReady = params => {
         const {columnApi} = params;
         const contentTypeIndex = deepCloneMatchedTitlesColumnDefs.findIndex(e => e.field === 'contentType');
-        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 2); // +1 indicates 1 column pinned on the left side
+        const PINNED_COLUMNS_NUMBER = 2;
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
     };
     return (
         <div className="nexus-c-title-to-match-review">
@@ -153,7 +158,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
-                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
+                            columnDefs={[
+                                getRepositoryCell(),
+                                numOfEpisodeAndSeasonField,
+                                ...deepCloneMatchedTitlesColumnDefs,
+                            ]}
                             rowData={titles}
                         />
                     </>
@@ -165,7 +174,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
-                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
+                            columnDefs={[
+                                getRepositoryCell(),
+                                numOfEpisodeAndSeasonField,
+                                ...deepCloneCombinedTitleColumnDefs,
+                            ]}
                             rowData={mergedTitles}
                         />
                     </>

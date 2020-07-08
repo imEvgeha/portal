@@ -1,10 +1,8 @@
 import config from 'react-global-configuration'; // config returns error for gateway
 import {identity, pickBy} from 'lodash';
 import {nexusFetch} from '../../../util/http-client/index';
-import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../../util/Common';
-import {
-    CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-} from '../../../ui/toast/constants';
+import {encodedSerialize, isObject, prepareSortMatrixParam, switchCase} from '../../../util/Common';
+import {CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../../ui/toast/constants';
 import {store} from '../../../index';
 import {setFoundFocusRightInRightsRepository} from './rightMatchingActions';
 
@@ -58,13 +56,11 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         const updatedData = getUpdatedData(response, id);
 
         const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
-        const updatedResponse = {
+        return {
             ...response,
             data: updatedData,
             total: foundFocusRightInRightsRepository ? response.total - 1 : response.total,
         };
-
-        return updatedResponse;
     });
 };
 
@@ -91,8 +87,7 @@ export const getRightMatchingFieldSearchCriteria = payload => {
                 LT: `${name}To`,
                 LTE: `${name}To`,
             };
-            const parsedFieldName = switchCase(fieldNames)(name)(criteria);
-            return parsedFieldName;
+            return switchCase(fieldNames)(name)(criteria);
         };
 
         const parseFieldValue = (criteria, value, subFieldName) => {
@@ -143,7 +138,7 @@ export const getRightMatchingFieldSearchCriteria = payload => {
         };
     })
         .catch(error => {
-            throw {error};
+            throw new Error(error);
         });
 };
 

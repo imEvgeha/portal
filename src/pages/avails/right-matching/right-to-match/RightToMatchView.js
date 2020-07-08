@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -6,7 +6,6 @@ import {Link} from 'react-router-dom';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import './RightToMatchView.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -51,8 +50,10 @@ import {
     MATCH_BUTTON,
 } from '../rightMatchingConstants';
 import constants from '../../constants';
+import './RightToMatchView.scss';
 
-const SECTION_MESSAGE = 'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
+const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right 
+from the action menu above.`;
 
 const RightRepositoryNexusGrid = compose(
     withColumnsResizing(),
