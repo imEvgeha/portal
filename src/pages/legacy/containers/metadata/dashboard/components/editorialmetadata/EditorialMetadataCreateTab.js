@@ -401,7 +401,7 @@ class EditorialMetadataCreateTab extends Component {
                 {this.state.autoDecorate &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b className="required">Auto-Decorate Title <span style={{ color: 'red' }}>*</span></b>
+                            <b className="required">Auto-Decorate Title</b>
                         </Col>
                         <Col>
                             <AvField
@@ -500,7 +500,7 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Short Synopsis</>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Short Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
