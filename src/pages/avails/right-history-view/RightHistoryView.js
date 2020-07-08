@@ -12,10 +12,9 @@ const SPINNER = (
     <div style={{textAlign: 'center'}}>
         <Spinner size="medium" />
     </div>
-  );
+);
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-
     const [opened, setOpened] = useState(false);
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -47,7 +46,7 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
             onClick: () => {
                 close();
                 setOpened(false);
-            }
+            },
         }]);
         setModalContentAndTitle(SPINNER, TITLE);
         setOpened(true);
@@ -65,19 +64,19 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
 RightHistoryView.propTypes = {
     selectedAvails: PropTypes.array.isRequired,
     fetchRightsHistory: PropTypes.func.isRequired,
-    rightsEventHistory: PropTypes.array.isRequired
+    rightsEventHistory: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = () => {
     const rightsEventHistorySelector = getRightsEventHistorySelector();
 
     return (state, props) => ({
-        rightsEventHistory: rightsEventHistorySelector(state, props)
+        rightsEventHistory: rightsEventHistorySelector(state, props),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload))
+const mapDispatchToProps = dispatch => ({
+    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightHistoryView);

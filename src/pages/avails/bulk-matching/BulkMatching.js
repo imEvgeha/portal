@@ -179,14 +179,16 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             icon: WARNING_ICON,
             actions: [
-                {content: 'Cancel', onClick: () => {
-                    removeToast();
-                    disableLoadingState();
-                }},
-                {content: 'Ok', onClick: () => {
-                    removeToast();
-                    mergeTitles(matchList);
-                }},
+                {content: 'Cancel',
+                    onClick: () => {
+                        removeToast();
+                        disableLoadingState();
+                    }},
+                {content: 'Ok',
+                    onClick: () => {
+                        removeToast();
+                        mergeTitles(matchList);
+                    }},
             ],
             isWithOverlay: true,
         });
@@ -216,8 +218,9 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     focusedRight={{contentType}}
                     onSuccess={closeDrawer}
                 />
-              ),
-            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+            ),
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE
+        );
     };
 
     return (

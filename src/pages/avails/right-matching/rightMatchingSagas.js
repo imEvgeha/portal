@@ -8,7 +8,7 @@ import {URL} from '../../../util/Common';
 import {getCombinedRight, getRightMatchingList, putCombinedRight, createRightById} from './rightMatchingService';
 import {createColumnDefs} from '../utils';
 import {SUCCESS_ICON, SUCCESS_TITLE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE} from '../../../ui/elements/nexus-toast-notification/constants';
-import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,} from '../../../ui/toast/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {NULL_TO_OBJECT, NULL_TO_ARRAY} from '../../legacy/containers/avail/service/Constants';
@@ -49,7 +49,7 @@ export function* createRightMatchingColumnDefs() {
 function* fetchAndStoreRightMatchingSearchCriteria() {
     // wait to store update with focused right
     // TODO: improve this
-    const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS); 
+    const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS);
     const {payload = {}} = focusedRightActionResult || {};
     const error = 'Provider is undefined';
     const {availSource = {}} = payload || {};
@@ -119,11 +119,11 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_MATCHED_RIGHT_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         const matchedRights = [];
-        for(const id of payload) {
+        for (const id of payload) {
             const response = yield call(requestMethod, id);
             matchedRights.push(response);
         }
@@ -132,7 +132,6 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
             type: actionTypes.FETCH_MATCHED_RIGHT_SUCCESS,
             payload: {matchedRights},
         });
-
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_MATCHED_RIGHT_ERROR,
@@ -147,22 +146,22 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         const response = yield call(requestMethod, rightIds);
-        let combinedRight = response;
+        const combinedRight = response;
 
         // fix fields that are null but include subfields
         mapping.forEach(({javaVariableName}) => {
-            let dotIndex = javaVariableName.indexOf('.');
+            const dotIndex = javaVariableName.indexOf('.');
             // has subfield
-            if(dotIndex >= 0) {
-                let field = javaVariableName.substring(0, dotIndex);
-                if(combinedRight[field] === null && NULL_TO_OBJECT.includes(field)){
+            if (dotIndex >= 0) {
+                const field = javaVariableName.substring(0, dotIndex);
+                if (combinedRight[field] === null && NULL_TO_OBJECT.includes(field)) {
                     combinedRight[field] = {};
                 }
-                if(combinedRight[field] === null && NULL_TO_ARRAY.includes(field)){
+                if (combinedRight[field] === null && NULL_TO_ARRAY.includes(field)) {
                     combinedRight[field] = [];
                 }
             }
@@ -171,7 +170,6 @@ export function* fetchCombinedRight(requestMethod, {payload}) {
             type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
             payload: {combinedRight},
         });
-
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
@@ -186,7 +184,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.SAVE_COMBINED_RIGHT_REQUEST,
-            payload: {}
+            payload: {},
         });
         const focusedRight = yield call(requestMethod, rightIds, combinedRight);
 
@@ -206,7 +204,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -236,7 +234,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
             pages[pageNumber] = ids;
             rightMatchPageData = {
                 pages: {...rightMatchPageData.pages, ...pages},
-                total: response.total
+                total: response.total,
             };
 
             if (isBoundaryValue || ids.length < pageSize) {
@@ -244,15 +242,13 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
             }
             isBoundaryValue = isIdFounded && (ids[ids.length - 1] === id);
 
-            pageNumber = pageNumber + 1;
+            pageNumber += 1;
         }
 
         yield put({
-                type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
-                payload: {rightMatchPageData}
-            }
-        );
-
+            type: actionTypes.STORE_RIGHT_MATCH_DATA_WITH_IDS,
+            payload: {rightMatchPageData},
+        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID_FAILED,
@@ -267,12 +263,12 @@ export function* createNewRight(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
-            payload: {}
+            payload: {},
         });
         yield call(requestMethod, rightId);
-        
+
         yield put({
-            type: actionTypes.CREATE_NEW_RIGHT_SUCCESS
+            type: actionTypes.CREATE_NEW_RIGHT_SUCCESS,
         });
 
         if (redirectPath) {
@@ -286,7 +282,7 @@ export function* createNewRight(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -306,7 +302,7 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
-        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById)
+        takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
     ]);
 }
 

@@ -12,12 +12,12 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
     const onBundleClick = () => setShowIngests(!showIngests);
 
     return (
-        <div className='nexus-c-avail-bundle'>
-            <div className='nexus-c-avail-bundle__cell' onClick={onBundleClick}>
+        <div className="nexus-c-avail-bundle">
+            <div className="nexus-c-avail-bundle__cell" onClick={onBundleClick}>
                 <BundleTitle licensor={licensor} totalAttachments={attachments.length} />
-                <div className='nexus-c-avail-bundle__details'>
+                <div className="nexus-c-avail-bundle__details">
                     <span
-                        className={`nexus-c-avail-bundle__chevron nexus-c-avail-bundle__chevron--is-${showIngests ? 'opened' : 'closed' }`}
+                        className={`nexus-c-avail-bundle__chevron nexus-c-avail-bundle__chevron--is-${showIngests ? 'opened' : 'closed'}`}
                         onClick={onBundleClick}
                     >
                         <Chevron />
@@ -27,24 +27,24 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
             </div>
             {
                 showIngests && (
-                <div className='nexus-c-avail-bundle__ingests'>
+                <div className="nexus-c-avail-bundle__ingests">
                     {
-                        attachments.map((attachment) => (
+                        attachments.map(attachment => (
                             <Ingest
                                 key={attachment.id}
                                 attachment={attachment}
                                 received={received}
                                 licensor={licensor}
                                 ingestType={ingestType}
-                                ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId: selectedAttachmentId})}
+                                ingestClick={() => ingestClick({availHistoryId: id, attachmentId: attachment.id, selectedAttachmentId})}
                                 selected={selectedAttachmentId === attachment.id}
                                 inBundle
                                 ingestId={id}
                             />
-                          ))
+                        ))
                     }
                 </div>
-)
+                )
             }
         </div>
     );
@@ -64,7 +64,7 @@ Bundle.defaultProps = {
     received: '',
     licensor: '',
     attachments: [],
-    selectedAttachmentId: ''
+    selectedAttachmentId: '',
 };
 
 export default Bundle;

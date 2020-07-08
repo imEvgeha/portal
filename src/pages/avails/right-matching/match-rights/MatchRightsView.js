@@ -16,7 +16,7 @@ import {
     fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {URL} from '../../../../util/Common';
 import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -25,7 +25,7 @@ import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {
     defineColumn,
     defineCheckboxSelectionColumn,
-    updateColumnDefs
+    updateColumnDefs,
 } from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {createSchemaForColoring, createColumnSchema, addCellClass, HIGHLIGHTED_CELL_CLASS} from '../../utils';
@@ -50,7 +50,7 @@ const CombinedRightNexusGrid = compose(
     withColumnsResizing(),
     withEditableColumns(),
 )(NexusGrid);
-const MatchedRightsNexusGrid =  withColumnsResizing()(NexusGrid);
+const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
 
 
 const MatchRightView = ({
@@ -63,8 +63,8 @@ const MatchRightView = ({
     fetchMatchedRight,
     fetchCombinedRight,
     saveCombinedRight,
-    createRightMatchingColumnDefs, 
-    columnDefs, 
+    createRightMatchingColumnDefs,
+    columnDefs,
     mapping,
     isMatching,
 }) => {
@@ -72,7 +72,7 @@ const MatchRightView = ({
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
-    const [cellColoringSchema, setCellColoringSchema] = useState(); 
+    const [cellColoringSchema, setCellColoringSchema] = useState();
     const previousMatchedRights = usePrevious(matchedRights);
     const previousSelectedMatchedRightIds = usePrevious(selectedMatchedRightIds);
     const [combinedGridApi, setCombinedGridApi] = useState();
@@ -127,7 +127,7 @@ const MatchRightView = ({
         const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
         const payload = {
             rightIds: selectedMatchedRightIds,
-            combinedRight: editedCombinedRight ? editedCombinedRight : combinedRight,
+            combinedRight: editedCombinedRight || combinedRight,
             redirectPath,
         };
         saveCombinedRight(payload);
@@ -199,19 +199,19 @@ const MatchRightView = ({
 
     // Sorted by start field. desc
     const matchedRightRowData = [focusedRight, ...matchedRights]
-        .sort((a,b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt)))
+        .sort((a, b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt)))
         || [];
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
 
     // TODO: refactor column defs
     const updatedMatchedRightColumnDefs = updateColumnDefs(columnDefs, {cellClass: applyColumnRule});
     const matchedRightColumnDefs = columnDefs.length && matchedRightRowData.length > 1
-        ? [checkboxSelectionColumnDef, ...updatedMatchedRightColumnDefs] 
+        ? [checkboxSelectionColumnDef, ...updatedMatchedRightColumnDefs]
         : columnDefs;
 
     const updatedCombinedColumnDefs = cellColoringSchema
         ? updateColumnDefs(
-            columnDefs, 
+            columnDefs,
             {
                 cellClass: ({colDef, value, context}) => {
                     const {field} = colDef || {};
@@ -222,8 +222,9 @@ const MatchRightView = ({
 
                         return isCellHighlighted && HIGHLIGHTED_CELL_CLASS;
                     }
-                }
-            }) 
+                },
+            }
+        )
         : columnDefs;
     const combinedRightColumnDefs = columnDefs.length
         ? [defineColumn({width: 70}), ...updatedCombinedColumnDefs]
@@ -233,7 +234,7 @@ const MatchRightView = ({
         <div className="nexus-c-match-right-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
-                    <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
+                    <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
                 </Link>
                 <span>{MATCH_RIGHT_TITLE}</span>
             </NexusTitle>
@@ -241,7 +242,7 @@ const MatchRightView = ({
                 <NexusTitle isSubTitle>{MATCHED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <MatchedRightsNexusGrid
-                        id='matchedRightsRepo'
+                        id="matchedRightsRepo"
                         columnDefs={matchedRightColumnDefs}
                         rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
                         domLayout="autoHeight"
@@ -256,7 +257,7 @@ const MatchRightView = ({
                 <NexusTitle isSubTitle>{COMBINED_RIGHTS}</NexusTitle>
                 {!!columnDefs && (
                     <CombinedRightNexusGrid
-                        id='combinedRightRepo'
+                        id="combinedRightRepo"
                         columnDefs={combinedRightColumnDefs}
                         rowData={
                             !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length
@@ -329,7 +330,7 @@ const createMapStateToProps = () => {
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
 
-    return (state) => ({
+    return state => ({
         focusedRight: focusedRightSelector(state),
         matchedRights: matchedRightsSelector(state),
         combinedRight: combinedRightSelector(state),
@@ -339,7 +340,7 @@ const createMapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
     fetchCombinedRight: (focusedRightId, matchedRightIds, mapping) => dispatch(fetchCombinedRight(focusedRightId, matchedRightIds, mapping)),

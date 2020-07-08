@@ -13,7 +13,7 @@ const initialState = {
 const filteringObject = (object, criteria) => {
     const filteredObject = Object.keys(object || {})
         .filter(criteria)
-        .reduce((o, key) => (o[key] = object[key]  , o), {});
+        .reduce((o, key) => (o[key] = object[key], o), {});
 
     return filteredObject;
 };
@@ -47,12 +47,12 @@ const rightsReducer = (state = initialState, action = {}) => {
 
             return {
                 ...state,
-                filter: updatedFilter
+                filter: updatedFilter,
             };
         case actionTypes.SET_RIGHTS_FILTER:
             return {
                 ...state,
-                filter: payload
+                filter: payload,
             };
         default:
             return state;

@@ -27,7 +27,7 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
         }
     }, [dopCount]);
 
-    const openDOPPopUp = (errorCount) => {
+    const openDOPPopUp = errorCount => {
         const handlePopUpClick = () => {
             DOP.sendInfoToDOP(errorCount, null);
             close();
@@ -35,10 +35,10 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
         setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
         setModalActions([
             {
-                text: 'OK', 
-                onClick: handlePopUpClick, 
-                appearance: 'primary', 
-            }
+                text: 'OK',
+                onClick: handlePopUpClick,
+                appearance: 'primary',
+            },
         ]);
     };
 

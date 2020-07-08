@@ -3,7 +3,8 @@ import {shallow} from 'enzyme';
 import RightsMatchingTitlesTable from './RightsMatchingTitlesTable';
 
 describe('RightsMatchingTitlesTable', () => {
-    let wrapper, rightsMatchingTitlesTable;
+    let wrapper; let
+        rightsMatchingTitlesTable;
 
     beforeEach(() => {
         wrapper = shallow(<RightsMatchingTitlesTable />);

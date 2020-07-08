@@ -35,7 +35,7 @@ export function getRepositoryName(id) {
 }
 
 const repositoryCell = ({data}) => {// eslint-disable-line
-    const { id } = data || {};
+    const {id} = data || {};
     return (
         <CustomActionsCellRenderer id={id}>
             <div className="nexus-c-custom-actions-cell-renderer">{getRepositoryName(id).toUpperCase()}</div>
@@ -50,12 +50,12 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
         field: 'repository',
         headerName,
         width: 150,
-        cellRendererFramework: repositoryCell
+        cellRendererFramework: repositoryCell,
     };
 };
 
 export const createColumnSchema = (list, field) => {
-    const majorityRule = (occurence, total) => occurence > (total / 2); 
+    const majorityRule = (occurence, total) => occurence > (total / 2);
     const destructedField = field.split('.');
     const values = list.map(el => {
         return get(el, destructedField, {});
@@ -69,11 +69,11 @@ export const createColumnSchema = (list, field) => {
 
     const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
 
-    const getMostCommonValue = (entries) => {
+    const getMostCommonValue = entries => {
         if (entries.length) {
             const mostCommonValue = entries
-            .filter(([key, value], i) => majorityRule(value, list.length))
-            .map(([key, value]) => key);
+                .filter(([key, value], i) => majorityRule(value, list.length))
+                .map(([key, value]) => key);
 
             return mostCommonValue[0];
         }
@@ -84,7 +84,7 @@ export const createColumnSchema = (list, field) => {
         values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
         mostCommonValue: getMostCommonValue(sortedValuesEntries),
     };
-}; 
+};
 
 export const createSchemaForColoring = (list, columnDefs) => {
     return cloneDeep(columnDefs).reduce((acc, {field}) => {

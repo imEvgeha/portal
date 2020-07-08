@@ -6,7 +6,7 @@ import {
     CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
 } from '../../../ui/toast/constants';
 import {store} from '../../../index';
-import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
+import {setFoundFocusRightInRightsRepository} from './rightMatchingActions';
 
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
@@ -17,7 +17,7 @@ export const getRightMatchingList = (searchCriteria = {}, page, size, sortedPara
     return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
-export const getCombinedRight = (rightIds) => {
+export const getCombinedRight = rightIds => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
     return nexusFetch(url);
 };
@@ -61,14 +61,14 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         const updatedResponse = {
             ...response,
             data: updatedData,
-            total:  foundFocusRightInRightsRepository ? response.total - 1 : response.total,
+            total: foundFocusRightInRightsRepository ? response.total - 1 : response.total,
         };
 
         return updatedResponse;
     });
 };
 
-export const getRightMatchingFieldSearchCriteria = (payload) => {
+export const getRightMatchingFieldSearchCriteria = payload => {
     const {availSource = {}, id} = payload || {};
     const {provider, templateName} = availSource || {};
     const params = {templateName};
@@ -97,7 +97,8 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
 
         const parseFieldValue = (criteria, value, subFieldName) => {
             const subsetValue = Array.isArray(value)
-                ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',')
+                ? value.map(el => (isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el)).filter(Boolean)
+                    .join(',')
                 : value;
             const fieldValues = {
                 EQ: value,
@@ -120,9 +121,9 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             'LicenseType',
             'PlatformCategory',
             'ReleaseYear',
-            'LicenseRightsDescription'
+            'LicenseRightsDescription',
         ];
-        let result = searchCriteria.filter(({fieldName}) => criteriaToBeApplied.includes(fieldName))
+        const result = searchCriteria.filter(({fieldName}) => criteriaToBeApplied.includes(fieldName))
             .reduce((query, field) => {
                 const {targetFieldName, fieldName, subFieldName, criteria} = field;
                 const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
@@ -138,16 +139,16 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             fieldSearchCriteria: {
                 id,
                 params: result,
-            }
+            },
         };
     })
-    .catch(error => {
-        throw {error};
-    });
+        .catch(error => {
+            throw {error};
+        });
 };
 
 
-export const createRightById = (id) => {
+export const createRightById = id => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`;
     const errorCodesToast = [{
         status: 400,

@@ -9,12 +9,12 @@ import './PanelHeader.scss';
 const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
     return (
         <>
-            <div className='ingest-header'>
-                <div className='ingest-header__title'>
+            <div className="ingest-header">
+                <div className="ingest-header__title">
                     <AvailsIcon />
                     <div>Avails</div>
                 </div>
-                <div className='ingest-header__actions'>
+                <div className="ingest-header__actions">
                     <div onClick={toggleFilters}>
                         {
                             showFilters ? <FilterSolidIcon /> : <FilterIcon />

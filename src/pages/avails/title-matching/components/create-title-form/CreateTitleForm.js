@@ -17,12 +17,12 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../ui/elements/nexus-toas
 const {
     NEW_TITLE_LABEL_CANCEL,
     NEW_TITLE_LABEL_SUBMIT,
-    getTitleFormSchema
+    getTitleFormSchema,
 } = constants;
 
 // Building a URL where user can check the newly created title
 // (Opens in new tab)
-const onViewTitleClick = (response) => {
+const onViewTitleClick = response => {
     const {id} = response || {};
     const url = `${getDomainName()}/metadata/detail/${id}`;
     window.open(url, '_blank');
@@ -31,7 +31,7 @@ const onViewTitleClick = (response) => {
 const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affectedRightIds, onSuccess}) => {
     // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState();
-    const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
+    const {id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear} = focusedRight;
     // TODO: metadata api expects 'AD'
     const parseContentType = contentType => {
         if (contentType) {
@@ -50,7 +50,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
     };
     const [titleValue, setTitleValue] = useState(initialState);
 
-    const submitTitle = (title) => {
+    const submitTitle = title => {
         // Delete empty properties before sending
         Object.keys(title).forEach(propKey => title[propKey] || delete title[propKey]);
         // Delete helper property
@@ -67,7 +67,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
                 title.episodic = {
                     seasonNumber,
                     episodeNumber,
-                    seriesTitleName
+                    seriesTitleName,
                 };
             } else {
                 title.episodic = null;
@@ -85,19 +85,19 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                actions: [{ content: 'View title', onClick: () => onViewTitleClick(res)}]
+                actions: [{content: 'View title', onClick: () => onViewTitleClick(res)}],
             });
             if (URL.isEmbedded()) {
                 DOP.setErrorsCount(0);
                 DOP.setData({
                     match: {
                         rightId: focusedId,
-                        titleId: res.id
-                    }
+                        titleId: res.id,
+                    },
                 });
             } else {
                 // if is bulk matching
-                if(bulkTitleMatch){
+                if (bulkTitleMatch) {
                     const url = `${getDomainName()}/metadata/detail/${res.id}`;
                     const coreTitleId = res.id;
                     bulkTitleMatch(coreTitleId, url, affectedRightIds, {});
@@ -108,11 +108,12 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
             }
             onSuccess && onSuccess();
             close();
-        }).catch((error) => {
-            const {message: {description, bindingResult} = {}} = error;
+        })
+            .catch(error => {
+                const {message: {description, bindingResult} = {}} = error;
 
-            setError(description || bindingResult);
-        });
+                setError(description || bindingResult);
+            });
     };
 
     return (
@@ -131,7 +132,7 @@ const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch, affecte
                         {error}
                     </ErrorMessage>
                 </div>
-              )}
+            )}
             <div className="nexus-c-create-title-form__action-buttons">
                 <Button onClick={close}>
                     {NEW_TITLE_LABEL_CANCEL}

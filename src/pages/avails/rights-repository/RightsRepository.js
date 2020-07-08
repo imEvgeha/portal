@@ -8,7 +8,7 @@ import * as selectors from './rightsSelectors';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import {
     createAvailsMappingSelector,
-    createRightMatchingColumnDefsSelector
+    createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import Ingest from './components/ingest/Ingest';
@@ -17,14 +17,14 @@ import {
     downloadEmailAttachment,
     downloadFileAttachment,
     filterRightsByStatus,
-    selectIngest
+    selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {
     defineButtonColumn,
-    defineCheckboxSelectionColumn
+    defineCheckboxSelectionColumn,
 } from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
@@ -145,8 +145,8 @@ const RightsRepository = ({
 
             // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows().forEach((row) => {
-                    if (selectedIds.includes(row.id)){
+                gridApi.getSelectedRows().forEach(row => {
+                    if (selectedIds.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
                 });
@@ -157,7 +157,7 @@ const RightsRepository = ({
         setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
     }, [search, selectedRights, selectedIngest, gridApi, isRepositoryDataLoading]);
 
-    useEffect(()=> {
+    useEffect(() => {
         if (selectedGridApi) {
             if (isRepositoryDataLoading) {
                 selectedGridApi.clearFocusedCell();
@@ -183,7 +183,7 @@ const RightsRepository = ({
     const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
-                link: '/avails/rights/'
+                link: '/avails/rights/',
             };
         }
         return columnDef;
@@ -232,7 +232,7 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-                if(!selectedIngest
+                if (!selectedIngest
                     && rightsTableSelectedRows.length === selectedTableSelectedRows.length
                     && clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
@@ -248,7 +248,7 @@ const RightsRepository = ({
                 }
 
                 // Select/deselect process
-                api.forEachNode((node) => {
+                api.forEachNode(node => {
                     const {data = {}} = node;
 
                     const wasSelected = clonedSelectedRights.find(right => right.id === data.id) !== undefined;
@@ -358,7 +358,7 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
             />
             <SelectedRightsRepositoryTable
-                id='selectedRightsRepo'
+                id="selectedRightsRepo"
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 singleClickEdit
                 rowSelection="multiple"
@@ -370,7 +370,7 @@ const RightsRepository = ({
                 notFilterableColumns={['action', 'buttons']}
             />
             <RightsRepositoryTable
-                id='rightsRepo'
+                id="rightsRepo"
                 columnDefs={updatedColumnDefs}
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
@@ -410,8 +410,8 @@ const mapDispatchToProps = dispatch => ({
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
-    downloadIngestEmail: payload  => dispatch(downloadEmailAttachment(payload)),
-    downloadIngestFile: payload  => dispatch(downloadFileAttachment(payload)),
+    downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
+    downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
 });
 

@@ -3,7 +3,7 @@ import {canRender} from '../../ability';
 // TODO: change it to dynamic imports when we remove legacy override style for ag grid
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
-import RightsCreateFromAttachment from  '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
+import RightsCreateFromAttachment from '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
 // use webpack prefetch for legacy routes
 const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
 const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
@@ -102,7 +102,7 @@ const routes = [
         component: canRender(RightToMatchView, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`, 
+        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`,
         component: canRender(MatchRightView, 'update', 'Avail'),
     },
     {

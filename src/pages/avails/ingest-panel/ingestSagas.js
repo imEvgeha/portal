@@ -57,7 +57,7 @@ function* fetchNextPage() {
 }
 
 function* filterRightsByStatus({payload}) {
-    const queryParam = payload === FilterConstants.REPORT.total.value ?  undefined : {status: payload};
+    const queryParam = payload === FilterConstants.REPORT.total.value ? undefined : {status: payload};
 
     if (queryParam) {
         yield put({
@@ -71,7 +71,7 @@ function* filterRightsByStatus({payload}) {
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: 'status',
-        }
+        },
     });
 }
 
@@ -85,7 +85,7 @@ function* selectIngest({payload}) {
         yield put(push(URL.keepEmbedded(url)));
         yield put({
             type: SET_RIGHTS_FILTER,
-            payload: {}
+            payload: {},
         });
         yield put({
             type: ADD_RIGHTS_FILTER,
@@ -97,7 +97,7 @@ function* selectIngest({payload}) {
                 type: REMOVE_RIGHTS_FILTER,
                 payload: {
                     filter: INGEST_HISTORY_ATTACHMENT_IDS,
-                }
+                },
             });
         } else {
             yield put({
@@ -110,22 +110,21 @@ function* selectIngest({payload}) {
         ingestId = params.get(Constants.AVAIL_HISTORY_ID);
     }
     if (ingestId) {
-        let selectedIngest = yield select(getIngestById, ingestId);
+        const selectedIngest = yield select(getIngestById, ingestId);
 
-            try {
-                if (!selectedIngest) {
-                    const selectedIngest = yield call(historyService.getHistory, ingestId);
-                }
-                yield put({
-                    type: actionTypes.UPDATE_SELECTED_INGEST,
-                    payload: selectedIngest,
-                });
-            } catch (error) {
-                yield  put( {
-                    type: 'DESELECT_INGEST'
-                });
+        try {
+            if (!selectedIngest) {
+                const selectedIngest = yield call(historyService.getHistory, ingestId);
             }
-
+            yield put({
+                type: actionTypes.UPDATE_SELECTED_INGEST,
+                payload: selectedIngest,
+            });
+        } catch (error) {
+            yield put({
+                type: 'DESELECT_INGEST',
+            });
+        }
     }
 }
 
@@ -134,7 +133,7 @@ function* deselectIngest() {
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: 'status',
-        }
+        },
     });
     const url = `${window.location.pathname}`;
     yield put(push(URL.keepEmbedded(url)));
@@ -142,18 +141,17 @@ function* deselectIngest() {
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: INGEST_HISTORY_ATTACHMENT_IDS,
-        }
+        },
     });
     yield put({
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: AVAIL_HISTORY_ID,
-        }
+        },
     });
     yield put({
-        type: actionTypes.CLEAR_SELECTED_INGEST
+        type: actionTypes.CLEAR_SELECTED_INGEST,
     });
-
 }
 
 function* uploadIngest({payload}) {
@@ -178,14 +176,13 @@ function* uploadIngest({payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
-            }
+            },
         });
         yield put({
             type: actionTypes.UPLOAD_INGEST_SUCCESS,
             payload: {},
         });
-    }
-    catch (e) {
+    } catch (e) {
         yield put({
             type: actionTypes.UPLOAD_INGEST_ERROR,
             payload: {},
@@ -194,7 +191,7 @@ function* uploadIngest({payload}) {
 }
 
 function* downloadIngestEmail({payload}) {
-    if (!payload.id) return;
+    if (!payload.id) { return; }
     try {
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.downloadUrl) {
@@ -215,7 +212,7 @@ function* downloadIngestEmail({payload}) {
 }
 
 function* downloadIngestFile({payload}) {
-    if (!payload.id) return;
+    if (!payload.id) { return; }
 
     let filename = 'Unknown';
     try {

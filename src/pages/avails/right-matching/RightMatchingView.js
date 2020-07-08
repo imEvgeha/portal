@@ -48,7 +48,7 @@ const RightMatchingView = ({
         }
     }, [columnDefs]);
 
-    const onFocusButtonClick = (rightId) => {
+    const onFocusButtonClick = rightId => {
         history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
@@ -113,7 +113,7 @@ const createMapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),

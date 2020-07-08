@@ -16,7 +16,7 @@ const Ingest = ({
     ingestType,
 }) => {
     const [showReport, setShowReport] = useState(false);
-    const { link, status, ingestReport } = attachment;
+    const {link, status, ingestReport} = attachment;
 
     const onChevronClick = e => {
         e.stopPropagation();
@@ -25,11 +25,11 @@ const Ingest = ({
 
     return (
         <div
-            className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''} ${inBundle? 'nexus-c-avail-ingest--is-in-bundle' : ''} `}
+            className={`nexus-c-avail-ingest ${selected ? 'nexus-c-avail-ingest--is-selected' : ''} ${inBundle ? 'nexus-c-avail-ingest--is-in-bundle' : ''} `}
             onClick={ingestClick}
         >
             <IngestTitle link={link} />
-            <div className='nexus-c-avail-ingest__details'>
+            <div className="nexus-c-avail-ingest__details">
                 {
                     ingestReport && (
                     <span
@@ -38,7 +38,7 @@ const Ingest = ({
                     >
                         <Chevron />
                     </span>
-                  )
+                    )
     }
                 <div className={`nexus-c-avail-ingest__status nexus-c-avail-ingest__status--is-${ingestReport ? 'expandable' : 'not-expandable'}`}>
                     <IngestStatus date={received} status={status} ingestType={ingestType} />
@@ -57,7 +57,7 @@ Ingest.propTypes = {
     selected: PropTypes.bool,
     ingestClick: PropTypes.func,
     inBundle: PropTypes.bool,
-    ingestId: PropTypes.string
+    ingestId: PropTypes.string,
 };
 
 Ingest.defaultProps = {
@@ -65,7 +65,7 @@ Ingest.defaultProps = {
     attachment: {},
     selected: false,
     inBundle: false,
-    ingestId: ''
+    ingestId: '',
 };
 
 export default Ingest;

@@ -3,8 +3,8 @@ import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
-import { Radio } from '@atlaskit/radio';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {Radio} from '@atlaskit/radio';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
@@ -91,14 +91,13 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const repository = getRepositoryCell();
 
     const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-    if(contentTypeIndex !== -1) 
-        updatedColumnDefs[contentTypeIndex]['sortable'] = false;
-    
+    if (contentTypeIndex !== -1) { updatedColumnDefs[contentTypeIndex]['sortable'] = false; }
+
     return (
         <>
             <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
             <TitleRepositoriesTable
-                id='titleMatchigRepo'
+                id="titleMatchigRepo"
                 onGridEvent={onGridReady}
                 columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 setTotalCount={setTotalCount}

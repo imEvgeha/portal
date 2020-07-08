@@ -6,8 +6,8 @@ import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './TitleMatchView.scss';
 import TitlesList from './components/TitlesList';
-import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
-import { createColumnDefs as getRightColumns } from '../utils';
+import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
+import {createColumnDefs as getRightColumns} from '../utils';
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import CreateTitleForm from './components/create-title-form/CreateTitleForm';
 import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
@@ -16,7 +16,7 @@ import DOP from '../../../util/DOP';
 import {
     NexusGrid,
     NexusTitle,
-} from '../../../ui/elements/';
+} from '../../../ui/elements';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -34,7 +34,7 @@ const TitleMatchView = ({
     mergeTitles,
     focusedRight,
     columnDefs,
-    searchCriteria
+    searchCriteria,
 }) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
@@ -45,7 +45,8 @@ const TitleMatchView = ({
                 <Button
                     onClick={() => setModalContentAndTitle(
                         () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
-                        NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
+                        NewTitleConstants.NEW_TITLE_MODAL_TITLE
+                    )}
                 >
                     New Title
                 </Button>
@@ -98,7 +99,7 @@ const TitleMatchView = ({
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <IncomingRightTable
-                                id='incomingRightTitleMatching'
+                                id="incomingRightTitleMatching"
                                 columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />
@@ -138,17 +139,17 @@ TitleMatchView.defaultProps = {
 };
 
 const createMapStateToProps = () => {
-    return (state) => ({
+    return state => ({
         focusedRight: getFocusedRight(state),
         columnDefs: getColumnDefs(state),
         searchCriteria: getSearchCriteria(state),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId}))
+    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId})),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

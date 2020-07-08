@@ -2,7 +2,7 @@ import * as actions from './rightsActions';
 import * as actionTypes from './rightsActionTypes';
 
 describe('rights actions', () => {
-    let payload = {};
+    const payload = {};
     // beforeAll(() => {
     //     payload = {};
     // });

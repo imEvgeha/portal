@@ -13,7 +13,7 @@ const UploadIngestButton = ({ingestData}) => {
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
     useEffect(() => {
-        if(file) {
+        if (file) {
             setModalStyle({width: 'small'});
             setModalActions([]);
             setModalContentAndTitle(buildForm(), TITLE);
@@ -28,17 +28,17 @@ const UploadIngestButton = ({ingestData}) => {
     };
 
     const buildForm = () => {
-  return (
-      <InputForm
-          ingestData={ingestData}
-          closeModal={closeModal}
-          file={file}
-          browseClick={browseClick}
-      />
-);
-};
+        return (
+            <InputForm
+                ingestData={ingestData}
+                closeModal={closeModal}
+                file={file}
+                browseClick={browseClick}
+            />
+        );
+    };
 
-    const handleUpload = (e) => {
+    const handleUpload = e => {
         const {files} = e.target;
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
@@ -46,15 +46,15 @@ const UploadIngestButton = ({ingestData}) => {
         }
     };
 
-    const closeModal = () =>{
+    const closeModal = () => {
         setFile(null);
         close();
     };
 
     return (
-        <div className='ingest-upload'>
+        <div className="ingest-upload">
             <input
-                className='ingest-upload__input'
+                className="ingest-upload__input"
                 type="file"
                 accept={config.get('avails.upload.extensions')}
                 ref={inputRef}

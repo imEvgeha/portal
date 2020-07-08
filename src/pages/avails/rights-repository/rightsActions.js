@@ -12,5 +12,5 @@ export const addRightsFilter = payload => ({
 
 export const setRightsFilter = payload => ({
     type: actionTypes.SET_RIGHTS_FILTER,
-    payload
+    payload,
 });
