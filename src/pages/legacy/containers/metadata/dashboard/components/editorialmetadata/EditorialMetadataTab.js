@@ -24,6 +24,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
     const {title, shortTitle, mediumTitle, longTitle, sortTitle} = data.title || {};
     const {seriesName, seasonNumber, episodeNumber} = episodic || {};
     const {description, shortDescription, longDescription } = synopsis || {};
+    const isMaster = data['hasGeneratedChildren'] || false;
 
     const emptySpan = () => {
         return <span className='metadata-empty-value'>Empty</span>;
@@ -78,7 +79,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
                     </Col>
                 </Row>
             }
-            {shortTitleTemplate &&
+            {isMaster &&
                 <Row>
                     <Col className='wrap-value'>
                         <b>Auto-Decorate Title:</b> {shortTitleTemplate}
