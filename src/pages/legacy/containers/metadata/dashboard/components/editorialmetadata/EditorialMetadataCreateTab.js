@@ -500,7 +500,7 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis</b>
+                        <b>Short Synopsis {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
                     </Col>
                     <Col>
                         <AvField
@@ -511,6 +511,8 @@ class EditorialMetadataCreateTab extends Component {
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -519,7 +521,7 @@ class EditorialMetadataCreateTab extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis</b>
+                        <b>Medium Synopsis {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
                     </Col>
                     <Col>
                         <AvField
@@ -533,6 +535,8 @@ class EditorialMetadataCreateTab extends Component {
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
