@@ -378,7 +378,7 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Display Title</b>
                     </Col>
                     <Col>
                         <AvField
@@ -401,7 +401,7 @@ class EditorialMetadataCreateTab extends Component {
                 {this.state.autoDecorate &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title <span style={{ color: 'red' }}>*</span></b>
+                            <b className="required">Auto-Decorate Title <span style={{ color: 'red' }}>*</span></b>
                         </Col>
                         <Col>
                             <AvField
@@ -500,7 +500,7 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Short Synopsis</>
                     </Col>
                     <Col>
                         <AvField
@@ -521,7 +521,7 @@ class EditorialMetadataCreateTab extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis {this.state.autoDecorate && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Medium Synopsis</b>
                     </Col>
                     <Col>
                         <AvField

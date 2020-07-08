@@ -386,7 +386,7 @@ class EditorialMetadataEditMode extends Component {
                     isMaster &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title {isMaster && <span style={{ color: 'red' }}>*</span>}</b>
+                            <b className="required">Auto-Decorate Title</b>
                         </Col>
                         <Col>
                             <AvField
@@ -430,7 +430,7 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title {isMaster && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Display Title</b>
                     </Col>
                     <Col>
                         <AvField
@@ -534,7 +534,7 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis {isMaster && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Short Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
@@ -556,7 +556,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis {isMaster && <span style={{ color: 'red' }}>*</span>}</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Medium Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
