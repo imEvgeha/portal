@@ -1244,7 +1244,8 @@ class RightDetails extends React.Component {
                         <PriceField
                             prices={pricesWithLabel}
                             name={name}
-                            onRemoveClick={price => deletePrice(price)}
+                            onRemoveClick={deletePrice}
+                            onTagClick={this.toggleRightPriceForm}
                             onAddClick={this.toggleAddRightPriceForm}
                             renderChildren={() => (
                                 <>
@@ -1252,7 +1253,7 @@ class RightDetails extends React.Component {
                                         <AddButton onClick={this.toggleAddRightPriceForm}>+</AddButton>
                                     </div>
                                     <RightPriceForm
-                                        onSubmit={e => addPrice(e)}
+                                        onSubmit={addPrice}
                                         isOpen={this.state.isRightPriceFormOpen}
                                         onClose={this.toggleRightPriceForm}
                                         existingPriceList={pricesWithLabel}

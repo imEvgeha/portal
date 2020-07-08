@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
@@ -7,31 +8,34 @@ import classNames from 'classnames';
 import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
+import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
-import {TITLE_MATCHING_MSG} from './constants';
-import {getDomainName} from '../../../util/Common';
+import BulkMatchingReview from './components/BulkMatchingReview';
+import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
 import TitleSystems from '../../legacy/constants/metadata/systems';
+import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
+import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
-    ERROR_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
-    TITLE_MATCH_ERROR_MESSAGE,
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    TITLE_MATCH_SUCCESS_MESSAGE,
+    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast}) => {
+export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast, toggleRefreshGridData}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
+    const [headerText, setHeaderText] = useState(headerTitle);
     const [affectedRightIds, setAffectedRightIds] = useState([]);
     const [contentType, setContentType] = useState(null);
     const [restrictedCoreTitleIds, setRestrictedCoreTitleIds] = useState([]);
@@ -41,10 +45,12 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const [totalCount, setTotalCount] = useState(0);
     const [matchIsLoading, setMatchIsLoading] = useState(false);
     const [matchAndCreateIsLoading, setMatchAndCreateIsLoading] = useState(false);
-    const [combinedTitle, setCombinedTitle] = useState({});
+    const [combinedTitle, setCombinedTitle] = useState([]);
     const [matchedTitles, setMatchedTitles] = useState([]);
+    const [selectedActive, setSelectedActive] = useState(false);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
     const changeActiveTab = () => {
@@ -84,59 +90,40 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         }
     }, [affectedTableData]);
 
-    const goToTitleDetailsPage = url => window.open(url, '_blank');
-
     const onMatch = () => {
         setMatchIsLoading(true);
-        const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
         const coreTitleId = matchList[NEXUS].id;
-        bulkTitleMatch(coreTitleId, url);
+        bulkTitleMatch(coreTitleId);
     };
 
-    const bulkTitleMatch = (coreTitleId, url) => {
+    const bulkTitleMatch = coreTitleId => {
         setCoreTitleId({
-            rightIds: mergeRightIds(affectedRightIds, duplicateList),
-            coreTitleId
-        }).then(res => {
-            if (Array.isArray(res) && res.length) {
-                //handle matched titles
-                setMatchedTitles(res);
-            }
-            addToast({
-                title: SUCCESS_TITLE,
-                description: TITLE_MATCH_SUCCESS_MESSAGE,
-                icon: SUCCESS_ICON,
-                actions: [
-                    {content: 'View Title', onClick: () => goToTitleDetailsPage(url)}
-                ],
-                isWithOverlay: true,
+            rightIds: affectedRightIds,
+            coreTitleId,
+        })
+            .then(res => {
+                //  handle matched titles (ignore updated affected rights from response)
+                const matchedTitlesList = Object.values(matchList);
+                setMatchedTitles(matchedTitlesList);
+
+                if (matchList[NEXUS]) {
+                    dispatchSuccessToast();
+                    toggleRefreshGridData(true);
+                    return onCancel();
+                }
+                disableLoadingState();
+                setLoadTitlesTable(false);
+                setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+            })
+            .catch(err => {
+                // nexusFetch handles error toast
+                disableLoadingState();
             });
-            setMatchIsLoading(false);
-            setMatchAndCreateIsLoading(false);
-        }).catch(err => {
-            const {message = TITLE_MATCH_ERROR_MESSAGE} = err.message || {};
-            addToast({
-                title: ERROR_TITLE,
-                description: message || TITLE_MATCH_ERROR_MESSAGE,
-                icon: ERROR_ICON,
-                actions: [
-                    {content: 'Ok', onClick: () => removeToast()},
-                ],
-                isWithOverlay: true,
-            });
-            setMatchIsLoading(false);
-            setMatchAndCreateIsLoading(false);
-        });
     };
 
     const mergeRightIds = (affectedRightIds, duplicateList) => {
-        const extractDuplicates = Object.keys(duplicateList).map(key => key);
+        const extractDuplicates = Object.keys(duplicateList);
         return [...affectedRightIds, ...extractDuplicates];
-    };
-
-    const mergeSingle = () => {
-        removeToast();
-        mergeTitles(matchList);
     };
 
     const mergeTitles = matchList => {
@@ -146,52 +133,96 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         titleService.bulkMergeTitles({
             idsToMerge: extractTitleIds,
             idsToHide: mergeRightIds([], duplicateList),
-        }).then(res => {
-            setCombinedTitle(res);
-            const {id} = res || {};
-            const url = `${getDomainName()}/metadata/detail/${id}`;
-            bulkTitleMatch(id, url);
-        }).catch(err => {
-            const {message = TITLE_MATCH_AND_CREATE_ERROR_MESSAGE} = err.message || {};
-            addToast({
-                title: ERROR_TITLE,
-                description: message || TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-                icon: ERROR_ICON,
-                actions: [
-                    {content: 'Ok', onClick: () => removeToast()},
-                ],
-                isWithOverlay: true,
+        })
+            .then(res => {
+                setCombinedTitle([...combinedTitle, res]);
+                const {id} = res || {};
+                bulkTitleMatch(id);
+            })
+            .catch(err => {
+                // nexusFetch handles error toast
+                setMatchAndCreateIsLoading(false);
             });
-            setMatchAndCreateIsLoading(false);
-        });
     };
 
     const onMatchAndCreate = () => {
         setMatchAndCreateIsLoading(true);
         if (Object.keys(matchList).length === 1) {
-            addToast({
-                title: WARNING_TITLE,
-                description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-                icon: WARNING_ICON,
-                actions: [
-                    {content: 'Cancel', onClick: () => removeToast()},
-                    {content: 'Ok', onClick: mergeSingle}
-                ],
-                isWithOverlay: true,
-            });
-        }
-        else {
+            dispatchWarningToast();
+        } else {
             mergeTitles(matchList);
         }
+    };
+
+    const disableLoadingState = () => {
+        setMatchIsLoading(false);
+        setMatchAndCreateIsLoading(false);
+    };
+
+    const getMatchAndDuplicateItems = () => {
+        return [...Object.values(matchList), ...Object.values(duplicateList)];
+    };
+
+    const dispatchSuccessToast = () => {
+        addToast({
+            title: SUCCESS_TITLE,
+            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            isWithOverlay: true,
+        });
+    };
+
+    const dispatchWarningToast = () => {
+        addToast({
+            title: WARNING_TITLE,
+            description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+            icon: WARNING_ICON,
+            actions: [
+                {content: 'Cancel', onClick: () => {
+                    removeToast();
+                    disableLoadingState();
+                }},
+                {content: 'Ok', onClick: () => {
+                    removeToast();
+                    mergeTitles(matchList);
+                }},
+            ],
+            isWithOverlay: true,
+        });
+    };
+
+    const onMatchAndCreateDone = () => {
+        dispatchSuccessToast();
+        toggleRefreshGridData(true);
+        closeDrawer();
     };
 
     const onCancel = () => {
         closeDrawer();
     };
 
+    const isSummaryReady = () => {
+        return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
+    };
+
+    const showModal = () => {
+        setModalContentAndTitle(
+            () => (
+                <CreateTitleForm
+                    close={close}
+                    bulkTitleMatch={bulkTitleMatch}
+                    affectedRightIds={affectedRightIds}
+                    focusedRight={{contentType}}
+                    onSuccess={closeDrawer}
+                />
+              ),
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+    };
+
     return (
         <div className="nexus-c-bulk-matching">
-            <h2>{headerTitle}</h2>
+            <h2>{headerText}</h2>
             <div className="nexus-c-bulk-matching__header">
                 <div
                     className={classNames(
@@ -211,18 +242,33 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 >
                     Affected Rights ({affectedTableData.length})
                 </div>
-                <Button className="nexus-c-bulk-matching__btn" onClick={() => null}>
-                    New Title
-                </Button>
+                {!isSummaryReady() && (
+                    <Button
+                        className="nexus-c-bulk-matching__btn"
+                        onClick={showModal}
+                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                    >
+                        New Title
+                    </Button>
+                )}
             </div>
             <TitleMatchingRightsTable
                 data={activeTab ? affectedTableData : selectedTableData}
             />
-            <SectionMessage>
-                {TITLE_MATCHING_MSG}
-                <Button spacing="none" appearance="link">New Title</Button>
-            </SectionMessage>
-            {loadTitlesTable ? (
+            {!isSummaryReady() && (
+                <SectionMessage>
+                    {TITLE_MATCHING_MSG}
+                    <Button
+                        spacing="none"
+                        appearance="link"
+                        onClick={showModal}
+                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                    >
+                        New Title
+                    </Button>
+                </SectionMessage>
+            )}
+            {loadTitlesTable && (
                 <div
                     className={classNames(
                         'nexus-c-bulk-matching__titles-wrapper',
@@ -235,21 +281,39 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         </div>
                         <Button
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
-                            onClick={() => null}
+                            onClick={() => setSelectedActive(!selectedActive)}
+                            isSelected={selectedActive}
+                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
                         >
-                            Selected(0)
+                            Selected ({getMatchAndDuplicateItems().length})
                         </Button>
                     </div>
-                    <RightsMatchingTitlesTable
-                        restrictedCoreTitleIds={restrictedCoreTitleIds}
-                        setTotalCount={setTotalCount}
-                        contentType={contentType}
-                        matchList={matchList}
-                        handleMatchClick={handleMatchClick}
-                        handleDuplicateClick={handleDuplicateClick}
-                        duplicateList={duplicateList}
-                        setTitlesTableIsReady={setTitlesTableIsReady}
-                    />
+                    <div
+                        className={classNames(
+                            'nexus-c-bulk-matching__titles-table',
+                            !selectedActive && 'nexus-c-bulk-matching__titles-table--active'
+                        )}
+                    >
+                        <RightsMatchingTitlesTable
+                            restrictedCoreTitleIds={restrictedCoreTitleIds}
+                            setTotalCount={setTotalCount}
+                            contentType={contentType}
+                            matchList={matchList}
+                            handleMatchClick={handleMatchClick}
+                            handleDuplicateClick={handleDuplicateClick}
+                            duplicateList={duplicateList}
+                            setTitlesTableIsReady={setTitlesTableIsReady}
+                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                        />
+                    </div>
+                    <div
+                        className={classNames(
+                            'nexus-c-bulk-matching__selected-table',
+                            selectedActive && 'nexus-c-bulk-matching__selected-table--active'
+                        )}
+                    >
+                        <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+                    </div>
                     <BulkMatchingActionsBar
                         matchList={matchList}
                         onMatch={onMatch}
@@ -259,11 +323,19 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                         matchAndCreateIsLoading={matchAndCreateIsLoading}
                     />
                 </div>
-            ) : (
+            )}
+            {!loadTitlesTable && !isSummaryReady() && (
                 <div className="nexus-c-bulk-matching__spinner">
                     <Spinner size="large" />
                 </div>
             )}
+            {isSummaryReady() ? (
+                <BulkMatchingReview
+                    combinedTitle={combinedTitle}
+                    matchedTitles={matchedTitles}
+                    onDone={onMatchAndCreateDone}
+                />
+            ) : null}
         </div>
     );
 };
@@ -274,6 +346,7 @@ BulkMatching.propTypes = {
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     closeDrawer: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 BulkMatching.defaultProps = {
@@ -281,6 +354,11 @@ BulkMatching.defaultProps = {
     addToast: () => null,
     removeToast: () => null,
     closeDrawer: () => null,
+    toggleRefreshGridData: () => null,
 };
 
-export default withToasts(BulkMatching);
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(withToasts(BulkMatching));

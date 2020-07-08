@@ -26,6 +26,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           label="Date From"
           onChange={[Function]}
           onConfirm={[Function]}
+          required={true}
           value=""
         />
       </div>
@@ -64,7 +65,8 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "status",
           "field": "status",
           "headerName": "Error/Success",
-          "valueFormatter": null,
+          "valueFormatter": [Function],
+          "valueGetter": [Function],
           "width": 120,
         },
         Object {
@@ -83,14 +85,14 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "field": "titleName",
           "headerName": "Title Name",
           "minWidth": 150,
-          "valueFormatter": null,
+          "valueFormatter": [Function],
         },
         Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "coreTitleId",
           "field": "coreTitleId",
           "headerName": "Title ID",
-          "valueFormatter": null,
+          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
@@ -98,7 +100,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "type",
           "field": "type",
           "headerName": "Document Type",
-          "valueFormatter": null,
+          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
@@ -106,7 +108,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "externalSystemId",
           "field": "externalSystemId",
           "headerName": "Legacy System",
-          "valueFormatter": null,
+          "valueFormatter": [Function],
           "width": 120,
         },
         Object {
@@ -114,7 +116,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "publishedAt",
           "dataType": "timestamp",
           "field": "publishedAt",
-          "headerName": "publishedAt",
+          "headerName": "Published At",
           "javaVariableName": "publishedAt",
           "minWidth": 150,
           "valueFormatter": [Function],
@@ -123,11 +125,18 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "cellRenderer": "loadingCellRenderer",
           "colId": "publishErrors",
           "field": "publishErrors",
-          "headerName": "publishErrors",
+          "headerName": "Publish Errors",
           "minWidth": 150,
-          "valueFormatter": null,
+          "valueFormatter": [Function],
+          "valueGetter": [Function],
         },
       ]
+    }
+    externalFilter={
+      Object {
+        "dateFrom": "",
+        "dateTo": "",
+      }
     }
     mapping={
       Array [
@@ -173,14 +182,14 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "publishedAt",
           "dataType": "timestamp",
           "field": "publishedAt",
-          "headerName": "publishedAt",
+          "headerName": "Published At",
           "javaVariableName": "publishedAt",
           "minWidth": 150,
         },
         Object {
           "colId": "publishErrors",
           "field": "publishErrors",
-          "headerName": "publishErrors",
+          "headerName": "Publish Errors",
           "minWidth": 150,
         },
       ]

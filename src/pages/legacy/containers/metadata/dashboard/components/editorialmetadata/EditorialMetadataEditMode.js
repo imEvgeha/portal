@@ -300,7 +300,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialSeriesName"
                             name={this.getNameWithPrefix('seriesName')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }}
@@ -316,7 +316,7 @@ class EditorialMetadataEditMode extends Component {
                             type="number"
                             id="editorialSeasonNumber"
                             name={this.getNameWithPrefix('seasonNumber')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -335,7 +335,7 @@ class EditorialMetadataEditMode extends Component {
                             type="number"
                             id="editorialEpisodeNumber"
                             name={this.getNameWithPrefix('episodeNumber')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                             maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -393,7 +393,7 @@ class EditorialMetadataEditMode extends Component {
                                 type="text"
                                 id="editorialAutoDecorateTitle"
                                 name={this.getNameWithPrefix('shortTitleTemplate')}
-                                onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                onChange={this.handleChange}
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
