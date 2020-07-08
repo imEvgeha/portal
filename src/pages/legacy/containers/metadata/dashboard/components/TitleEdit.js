@@ -239,6 +239,19 @@ class TitleEdit extends Component {
         });
     };
 
+    handleOnMsvIds = (data) => {
+        const newExternalIds = {
+            ...this.state.editedForm.externalIds,
+            msvAssociationId: data
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                externalIds: newExternalIds
+            }
+        });
+    };
+
     /**
      * Handle LegacyIds objects, where keys are movida, vz {movida: {}, vz:{}}
      * @param legacyId
@@ -371,6 +384,7 @@ class TitleEdit extends Component {
                 handleChangeEpisodic={this.handleChangeEpisodic}
                 handleOnExternalIds={this.handleOnExternalIds}
                 handleOnLegacyIds={this.handleOnLegacyIds}
+                handleOnMsvIds={this.handleOnMsvIds}
                 handleChangeSeries={this.handleChangeSeries}
 
                 keyPressed={this.handleKeyDown}

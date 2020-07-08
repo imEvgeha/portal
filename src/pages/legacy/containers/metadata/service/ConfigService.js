@@ -13,7 +13,9 @@ export const configFields = {
     ADVISORY_CODE: 'advisories',
     REGIONS: 'regions',
     GENRE: 'genres',
-    CATEGORY: 'categories'
+    CATEGORY: 'categories',
+    LICENSORS: 'licensors',
+    LICENSEES: 'licensees'
 };
 
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {

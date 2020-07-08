@@ -483,6 +483,7 @@ class TitleEditMode extends Component {
                 onChange={this.props.handleOnChangeEdit}
                 handleOnExternalIds={this.props.handleOnExternalIds}
                 handleOnLegacyIds={this.props.handleOnLegacyIds}
+                handleOnMsvIds={this.props.handleOnMsvIds}
                 removeCastCrew={this.props.removeCastCrew}
                 ratings={this.props.ratings}
                 ratingObjectForCreate={this.props.ratingObjectForCreate}
