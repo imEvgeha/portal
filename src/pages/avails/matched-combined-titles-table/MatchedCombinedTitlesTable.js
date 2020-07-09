@@ -7,7 +7,7 @@ import {getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
 
-const MatchedCombinedTitlesTable = ({data, height}) => {
+const MatchedCombinedTitlesTable = ({data, fullHeight}) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
@@ -33,15 +33,17 @@ const MatchedCombinedTitlesTable = ({data, height}) => {
     const repository = getRepositoryCell();
 
     return (
-        <div className="nexus-c-matched-combined-titles-table-wrapper"
-             style={{display: height === 'full'? 'contents' : 'block'}}>
+        <div
+            className="nexus-c-matched-combined-titles-table-wrapper"
+            style={{display: fullHeight ? 'contents' : 'block'}}
+        >
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"
                 columnDefs={[repository, ...updatedColumnDefs]}
                 rowData={data}
                 mapping={mappings}
                 rowSelection="single"
-                domLayout={height === 'full'?'normal':'autoHeight'}
+                domLayout={fullHeight ?'normal':'autoHeight'}
                 onGridEvent={onGridReady}
             />
         </div>
@@ -50,12 +52,12 @@ const MatchedCombinedTitlesTable = ({data, height}) => {
 
 MatchedCombinedTitlesTable.propTypes = {
     data: PropTypes.array,
-    height: PropTypes.string,
+    fullHeight: PropTypes.bool,
 };
 
 MatchedCombinedTitlesTable.defaultProps = {
     data: null,
-    height:null,
+    fullHeight:false,
 };
 
 export default MatchedCombinedTitlesTable;

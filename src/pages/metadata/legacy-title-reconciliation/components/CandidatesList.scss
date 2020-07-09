@@ -15,6 +15,11 @@
     font-weight: bold;
 }
 
+.nexus-c-candidates-toolbar {
+    display: flex;
+    flexDirection: row;
+}
+
 // add this to ui-elements
 .nexus-c-button {
     display: flex;

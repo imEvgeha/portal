@@ -122,7 +122,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
                 <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
-                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div className='nexus-c-candidates-toolbar'>
                     <Button
                         className="nexus-c-button"
                         onClick={handleClearFilterClick}
@@ -165,7 +165,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                     activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
                 )}
             >
-                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} height='full' />
+                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} fullHeight={true} />
             </div>
         </div>
     );
