@@ -58,6 +58,7 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
 };
 
 export const createColumnSchema = (list, field) => {
+    // eslint-disable-next-line no-magic-numbers
     const majorityRule = (occurence, total) => occurence > (total / 2);
     const destructedField = field.split('.');
     const values = list.map(el => {
@@ -86,7 +87,13 @@ export const createColumnSchema = (list, field) => {
 
     return {
         field,
-        values: sortedValuesEntries.reduce((o, [key, value], i) => (o[key] = value, o), {}),
+        values: sortedValuesEntries.reduce(
+            (o, [key, value]) => {
+                o[key] = value;
+                return o;
+            },
+            {}
+        ),
         mostCommonValue: getMostCommonValue(sortedValuesEntries),
     };
 };

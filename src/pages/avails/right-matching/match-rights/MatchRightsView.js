@@ -301,6 +301,8 @@ MatchRightView.propTypes = {
     saveCombinedRight: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
     isMatching: PropTypes.bool,
+    history: PropTypes.object,
+    match: PropTypes.object,
 };
 
 MatchRightView.defaultProps = {
@@ -315,6 +317,8 @@ MatchRightView.defaultProps = {
     saveCombinedRight: null,
     createRightMatchingColumnDefs: null,
     isMatching: false,
+    history: {push: () => null},
+    match: {},
 };
 
 const createMapStateToProps = () => {

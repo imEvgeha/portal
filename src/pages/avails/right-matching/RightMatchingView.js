@@ -30,6 +30,7 @@ const RightMatchingView = ({
     columnDefs,
     history,
     match,
+    location,
     storeRightMatchDataWithIds,
     cleanStoredRightMatchDataWithIds,
 }) => {
@@ -97,6 +98,9 @@ RightMatchingView.propTypes = {
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
+    history: PropTypes.object,
+    match: PropTypes.object,
+    location: PropTypes.object,
 };
 
 RightMatchingView.defaultProps = {
@@ -104,6 +108,9 @@ RightMatchingView.defaultProps = {
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
     createRightMatchingColumnDefs: null,
+    history: {push: () => null},
+    location: {},
+    match: {},
 };
 
 const createMapStateToProps = () => {

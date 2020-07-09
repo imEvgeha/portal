@@ -118,6 +118,7 @@ function* mergeAndStoreTitles({payload}) {
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
+        // eslint-disable-next-line no-restricted-globals
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.id}`)));
     } catch (e) {
         yield put({

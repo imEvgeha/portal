@@ -244,7 +244,13 @@ const RightsRepository = ({
 
                     // Pack the new selected rights into a payload for the store update; converts array of objects
                     // to object of objects where the keys are object(right) ids.
-                    const payload = updatedSelectedRights.reduce((o, curr) => (o[curr.id] = curr, o), {});
+                    const payload = updatedSelectedRights.reduce(
+                        (selectedRights, currentRight) => {
+                            selectedRights[currentRight.id] = currentRight;
+                            return selectedRights;
+                        },
+                        {}
+                    );
                     setSelectedRights(payload);
                     break;
                 }
@@ -269,7 +275,13 @@ const RightsRepository = ({
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
-                const payload = updatedSelectedRights.reduce((o, curr) => (o[curr.id] = curr, o), {});
+                const payload = updatedSelectedRights.reduce(
+                    (selectedRights, currentRight) => {
+                        selectedRights[currentRight.id] = currentRight;
+                        return selectedRights;
+                    },
+                    {}
+                );
                 setSelectedRights(payload);
                 break;
             }

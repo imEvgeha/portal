@@ -252,6 +252,9 @@ RightToMatchView.propTypes = {
     setFoundFocusRightInRightsRepo: PropTypes.func.isRequired,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
+    history: PropTypes.object,
+    match: PropTypes.object,
+    location: PropTypes.object,
 };
 
 RightToMatchView.defaultProps = {
@@ -264,6 +267,9 @@ RightToMatchView.defaultProps = {
     removeToast: () => null,
     columnDefs: [],
     mapping: [],
+    history: {push: () => null},
+    match: {},
+    location: {},
 };
 
 const createMapStateToProps = () => {
