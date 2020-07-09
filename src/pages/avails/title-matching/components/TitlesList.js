@@ -26,7 +26,6 @@ import MatchedCombinedTitlesTable from '../../matched-combined-titles-table/Matc
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/RightsRepository';
 import './TitlesList.scss';
 
-
 const TitleRepositoriesTable = compose(
     withColumnsResizing(),
     withSideBar(),

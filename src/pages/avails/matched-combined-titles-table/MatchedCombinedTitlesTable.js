@@ -33,7 +33,8 @@ const MatchedCombinedTitlesTable = ({data, height}) => {
     const repository = getRepositoryCell();
 
     return (
-        <div className="nexus-c-matched-combined-titles-table-wrapper" style={{display: 'contents'}}>
+        <div className="nexus-c-matched-combined-titles-table-wrapper"
+             style={{display: height === 'full'? 'contents' : 'block'}}>
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"
                 columnDefs={[repository, ...updatedColumnDefs]}
