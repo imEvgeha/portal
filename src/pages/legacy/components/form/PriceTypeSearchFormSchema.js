@@ -30,6 +30,14 @@ export default (priceTypes, currencies) => {
                     items: currencies
                 }
             ],
+            visibleWhen: [
+                {
+                    'field': 'priceType',
+                    'isNot': [
+                        'Tier'
+                    ]
+                }
+            ]
         },
     ]);
 }

@@ -1255,7 +1255,7 @@ class RightDetails extends React.Component {
                                     <RightPriceForm
                                         onSubmit={addPrice}
                                         isOpen={this.state.isRightPriceFormOpen}
-                                        onClose={this.toggleRightPriceForm}
+                                        onClose={() => this.toggleRightPriceForm(null)}
                                         existingPriceList={pricesWithLabel}
                                         priceIndex={this.state.priceIndex}
                                         isEdit={this.state.isEdit}

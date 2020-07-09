@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {ErrorMessage, Field} from '@atlaskit/form';
@@ -6,8 +6,15 @@ import Select from '@atlaskit/select/Select';
 import Textfield from '@atlaskit/textfield';
 
 const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptions, priceCurrencyOptions}) => {
-
+    const [priceTypeValue, setPriceTypeValue] = useState();
+    const [isCurrencyDisabled, setIsCurrencyDisabled] = useState();
     const currentPrice = Array.isArray(existingPriceList) && existingPriceList[priceIndex];
+
+    useEffect(() => {
+        setPriceTypeValue(priceTypeDefaultValue);
+        setIsCurrencyDisabled(currencyDisabledDefaultValue)
+    }, []);
+
     if (currentPrice) {
         priceTypeOptions.forEach(option => {
             if (option.value === priceTypeOptions.priceType) {
@@ -15,6 +22,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
             }
         });
     }
+
     const errors = (currentPrice && currentPrice.errors) || [];
 
     const getError = (field, value, errorList = errors) => {
@@ -45,10 +53,31 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
         return undefined;
     };
 
-
     const returnValidData = data => {
         return get(existingPriceList, [priceIndex, data]) !== null;
     };
+
+    const priceTypeDefaultValue = () => {
+        return isEdit
+            ? {
+                label: getError('priceType') ? getError('priceType').message : (returnValidData('priceType') && currentPrice['label']),
+                value: returnValidData('priceType') && currentPrice['label']
+            } : ''
+    }
+
+    const currencyDisabledDefaultValue = () => {
+        return shouldCurrencyBeDisabled(returnValidData('priceType') && get(currentPrice, 'priceType'));
+    }
+
+    const shouldCurrencyBeDisabled = value => {
+        return !value || value === 'Tier';
+    }
+
+    const onPriceTypeChange = selectedPriceType => {
+        setIsCurrencyDisabled(shouldCurrencyBeDisabled(selectedPriceType.value));
+
+        setPriceTypeValue(selectedPriceType);
+    }
 
     return (
         <>
@@ -57,13 +86,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
                 isRequired
                 name="priceType"
                 validate={validate}
-                defaultValue={
-                    isEdit
-                        ? {
-                            label: getError('priceType') ? getError('priceType').message : (returnValidData('priceType') && currentPrice['label']),
-                            value: returnValidData('priceType') && currentPrice['label']
-                        } : ''
-                }
+                defaultValue={priceTypeValue}
             >
                 {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
                     <>
@@ -77,6 +100,8 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
                                 },
                                 singleValue: base => getError('priceType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
+                            value={priceTypeValue}
+                            onChange={onPriceTypeChange}
                             isSearchable={true}
                             placeholder="Choose Type"
                             options={removeExistingOptions()}
@@ -107,6 +132,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
             <Field
                 label="Price Currency"
                 name="priceCurrency"
+                isDisabled={isCurrencyDisabled}
                 defaultValue={
                     isEdit
                         ? {
