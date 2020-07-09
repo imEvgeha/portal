@@ -1,18 +1,13 @@
 import Button from '@atlaskit/button';
-import styled from 'styled-components';
+import Drawer from '@atlaskit/drawer';
 import Select from '@atlaskit/select';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
-import Heading from '../../../../../ui/atlaskit/heading/Heading';
-import {gridSize} from '@atlaskit/theme';
 import {getValidDate} from '../../../../../util/utils';
+import Constants from '../fulfillment-order/constants';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
-import Constants from '../fulfillment-order/constants';
-import Drawer from '@atlaskit/drawer';
-import Page, {Grid, GridColumn} from '@atlaskit/page';
 import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({
