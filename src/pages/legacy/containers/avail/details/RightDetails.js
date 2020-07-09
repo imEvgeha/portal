@@ -100,6 +100,7 @@ class RightDetails extends React.Component {
             rightsService
                 .get(this.props.match.params.id)
                 .then(res => {
+                    res.licensed = true;
                     if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
