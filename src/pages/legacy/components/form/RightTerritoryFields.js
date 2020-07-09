@@ -147,22 +147,18 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     </>
                 )}
             </Field>
-            <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit
-                ? existingTerritoryList[territoryIndex]['vuContractId'] && existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
+            <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit && existingTerritoryList[territoryIndex]['vuContractId']
+                ? existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
                 : ''}>
-                {({fieldProps: {id, value, ...rest}}) => {
-                    console.log(rest);
-                    return (
-                        <Textfield
-                            name="vuContractId"
-                            isReadOnly={false}
-                            defaultValue={value}
-                            style={{'height': '40px'}}
-                            {...rest}
-                        />
-                    )
-                }}
-
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <Textfield
+                        name="vuContractId"
+                        isReadOnly={false}
+                        defaultValue={value}
+                        style={{'height': '40px'}}
+                        {...rest}
+                    />
+                )}
             </Field>
         </>
     );

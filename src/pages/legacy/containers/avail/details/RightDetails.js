@@ -604,7 +604,6 @@ class RightDetails extends React.Component {
 
                 this.update(name, newValue);
             };
-
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -624,6 +623,7 @@ class RightDetails extends React.Component {
                         <TextField
                             {...fieldProps}
                             name={name}
+                            isReadOnly={readOnly}
                             style={{...fieldProps.style, border: 'none', borderRadius: 0}}
                             autoFocus
                             autoComplete={`new-${displayName.replace(' ', '-').toLowerCase()}`}
