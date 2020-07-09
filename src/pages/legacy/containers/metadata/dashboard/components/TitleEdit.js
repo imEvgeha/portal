@@ -239,6 +239,19 @@ class TitleEdit extends Component {
         });
     };
 
+    handleOnMsvIds = (data) => {
+        const newExternalIds = {
+            ...this.state.editedForm.externalIds,
+            msvAssociationId: data
+        };
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                externalIds: newExternalIds
+            }
+        });
+    };
+
     /**
      * Handle LegacyIds objects, where keys are movida, vz {movida: {}, vz:{}}
      * @param legacyId
@@ -371,6 +384,7 @@ class TitleEdit extends Component {
                 handleChangeEpisodic={this.handleChangeEpisodic}
                 handleOnExternalIds={this.handleOnExternalIds}
                 handleOnLegacyIds={this.handleOnLegacyIds}
+                handleOnMsvIds={this.handleOnMsvIds}
                 handleChangeSeries={this.handleChangeSeries}
 
                 keyPressed={this.handleKeyDown}
@@ -882,6 +896,12 @@ class TitleEdit extends Component {
     }
 
     handleEditorialMetadataOnSave = () => {
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
+        {autoDecorate && this.props.addToast({
+            title: 'Creating Decorated Records',
+            icon: WARNING_ICON,
+            isWithOverlay: false,
+        })}
         const promises = [];
         this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
         promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
@@ -1132,12 +1152,10 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
-        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
                 <>
-                    {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
                     <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                         <Row>
                             <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
