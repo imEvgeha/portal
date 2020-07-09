@@ -184,8 +184,8 @@ class EditorialMetadataEditMode extends Component {
 
     render() {
         const { handleDelete, data: currentMetadata } = this.props;
-        const isMaster = this.props.data['hasGeneratedChildren'] || false;
-        const isDecorated = !!this.props.data['parentEmetId'] || false;
+        const isMaster = !!this.props.data.hasGeneratedChildren;
+        const isDecorated = !!this.props.data.parentEmetId;
 
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
@@ -386,7 +386,7 @@ class EditorialMetadataEditMode extends Component {
                     isMaster &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title</b>
+                            <b className="required">Auto-Decorate Title</b>
                         </Col>
                         <Col>
                             <AvField
@@ -398,6 +398,8 @@ class EditorialMetadataEditMode extends Component {
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={shortTitleTemplate}
+                                required
+                                errorMessage="Field cannot be empty!"
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                                     {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -428,7 +430,7 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Display Title</b>
                     </Col>
                     <Col>
                         <AvField
@@ -441,6 +443,8 @@ class EditorialMetadataEditMode extends Component {
                                         errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                             value={title.title}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                             {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -530,7 +534,7 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Short Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
@@ -542,6 +546,8 @@ class EditorialMetadataEditMode extends Component {
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                             value={synopsis.description}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -550,7 +556,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Medium Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
@@ -565,6 +571,8 @@ class EditorialMetadataEditMode extends Component {
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                             value={synopsis.shortDescription}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
