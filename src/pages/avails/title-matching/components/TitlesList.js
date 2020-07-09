@@ -136,7 +136,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                     activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-single-matching__selected-table--active'
                 )}
             >
-                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} height='full' />
             </div>
 
 

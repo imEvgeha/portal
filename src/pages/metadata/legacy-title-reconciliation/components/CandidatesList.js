@@ -105,7 +105,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
             setGridApi(api);
             const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
             columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
-            api.setDomLayout('autoHeight');
         }
     };
 
@@ -139,12 +138,13 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                 </div>
             </div>
             <div
+
                 className={classNames(
                     'nexus-c-candidates-titles-table',
                     activeTab === RIGHTS_TAB && 'nexus-c-candidates-titles-table--active'
                 )}
             >
-                {queryParams.title &&  (
+                {queryParams.title && (
                     <NexusGridWithInfiniteScrolling
                         onGridEvent={handleGridEvent}
                         columnDefs={[
@@ -165,7 +165,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                     activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
                 )}
             >
-                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} height='full' />
             </div>
         </div>
     );
