@@ -45,7 +45,25 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
 OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated"
           isDisabled={false}
         >
-          Bulk Unmatch Titles
+          <div>
+            Bulk Unmatch Titles
+          </div>
+        </NexusTooltip>
+      </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="bonus-rights"
+        onClick={null}
+      >
+        <NexusTooltip
+          content="This feature is enabled when rights are licensed,
+have the same Core Title IDs (not blank),
+empty Source Right IDs and Status is Ready/ReadyNew"
+          isDisabled={false}
+        >
+          <div>
+            Create Bonus Right
+          </div>
         </NexusTooltip>
       </div>
     </div>

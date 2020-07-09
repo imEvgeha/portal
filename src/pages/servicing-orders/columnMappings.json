@@ -13,7 +13,8 @@
       "newTab": false
     },
     "checkboxSelection": true,
-    "suppressSizeToFit":true
+    "suppressSizeToFit":true,
+    "sortable": true
   },
   {
     "colId": "description",
@@ -33,7 +34,8 @@
     "width": 200,
     "javaVariableName": "external_id",
     "enableSearch": true,
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "sortable": true
   },
   {
     "colId": "sr_due_date",
