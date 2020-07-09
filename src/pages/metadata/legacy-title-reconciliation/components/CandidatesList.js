@@ -118,6 +118,8 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         return [...Object.values(matchList), ...Object.values(duplicateList)];
     };
 
+    const selectedLength = getMatchAndDuplicateItems().length;
+
     return (
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
@@ -131,7 +133,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         {CLEAR_FILTER}
                     </Button>
                     <SelectedButton
-                        selectedRightsCount={getMatchAndDuplicateItems().length}
+                        selectedRightsCount={selectedLength}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
