@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Constants from '../../constants';
@@ -14,15 +14,16 @@ const IngestReport = ({
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
     const reportValues = report || {};
-    const onFilterClick = filterKey => {
+
+    const onFilterClick = useCallback(filterKey => {
         const key = activeFilter === filterKey ? 'total' : filterKey;
         filterClick(reportFields[key].value);
         setActiveFilter(key);
-    };
+    }, [activeFilter, filterClick, reportFields]);
 
     useEffect(() => {
         onFilterClick('total');
-    }, [report]);
+    }, [report, onFilterClick]);
 
     const FILTERABLE_KEYS = ['total', 'pending', 'errors'];
 

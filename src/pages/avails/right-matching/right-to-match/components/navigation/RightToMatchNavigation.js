@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
@@ -26,41 +26,7 @@ const RightToMatchNavigation = ({
     });
     const [isSpinnerRunning, setIsSpinnerRunning] = useState(true);
 
-    useEffect(() => {
-        setIsSpinnerRunning(true);
-    }, []);
-
-    useEffect(() => {
-        if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
-            const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-            const pageNumber = pages.length ? parseInt(pages[pages.length - 1]) + 1 : 0;
-            const updatedNavigationData = getNavigationDataIfExist();
-            // TODO: refactor
-            if (updatedNavigationData !== null) {
-                setNavigationData(updatedNavigationData);
-                setIsSpinnerRunning(false);
-            } else {
-                fetchRightMatchDataUntilFindId({
-                    id: focusedRightId,
-                    pageNumber,
-                    pageSize: RIGHT_PAGE_SIZE,
-                    searchParams,
-                });
-            }
-        }
-    }, [focusedRightId]);
-
-    useEffect(() => {
-        if (rightMatchPageData.pages) {
-            const navigationData = getNavigationDataIfExist();
-            if (navigationData) {
-                setNavigationData(navigationData);
-                setIsSpinnerRunning(false);
-            }
-        }
-    }, [rightMatchPageData]);
-
-    const getNavigationDataIfExist = () => {
+    const getNavigationDataIfExist = useCallback(() => {
         const pages = Object.keys(rightMatchPageData.pages || {}).sort();
         let navigationData = null;
         loop:
@@ -87,7 +53,48 @@ const RightToMatchNavigation = ({
             }
         }
         return navigationData;
-    };
+    }, [focusedRightId, rightMatchPageData.pages]);
+
+    useEffect(() => {
+        setIsSpinnerRunning(true);
+    }, []);
+
+    useEffect(() => {
+        if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
+            const pages = Object.keys(rightMatchPageData.pages || {}).sort();
+            const pageNumber = pages.length ? parseInt(pages[pages.length - 1]) + 1 : 0;
+            const updatedNavigationData = getNavigationDataIfExist();
+            // TODO: refactor
+            if (updatedNavigationData !== null) {
+                setNavigationData(updatedNavigationData);
+                setIsSpinnerRunning(false);
+            } else {
+                fetchRightMatchDataUntilFindId({
+                    id: focusedRightId,
+                    pageNumber,
+                    pageSize: RIGHT_PAGE_SIZE,
+                    searchParams,
+                });
+            }
+        }
+    }, [
+        fetchRightMatchDataUntilFindId,
+        focusedRightId,
+        getNavigationDataIfExist,
+        navigationData.focusedRightId,
+        rightMatchPageData.pages,
+        searchParams,
+    ]);
+
+    useEffect(() => {
+        if (rightMatchPageData.pages) {
+            const navigationData = getNavigationDataIfExist();
+            if (navigationData) {
+                setNavigationData(navigationData);
+                setIsSpinnerRunning(false);
+            }
+        }
+    }, [getNavigationDataIfExist, rightMatchPageData]);
 
     const url = `/avails/history/${availHistoryIds}/right-matching`;
 

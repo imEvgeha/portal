@@ -69,7 +69,7 @@ const InputForm = ({
                 setServiceRegion('');
             }
         }
-    }, [licensor]);
+    }, [ingestData, licensor, template]);
 
 
     const uploadHandler = () => {

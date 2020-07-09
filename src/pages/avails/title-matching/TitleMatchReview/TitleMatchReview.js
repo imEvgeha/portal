@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
@@ -40,7 +40,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         });
     };
 
-    const setCombinedTitleParents = merged => {
+    const setCombinedTitleParents = useCallback(merged => {
         const getTitles = [];
         if (merged.parentIds && merged.parentIds.length) {
             merged.parentIds.forEach(parent => {
@@ -50,9 +50,9 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 setMergedTitles([...values, merged]);
             });
         }
-    };
+    }, []);
 
-    const setParents = (list, merged) => {
+    const setParents = useCallback((list, merged) => {
         const titleList = [...list];
         const getTitles = [];
         let indexTrack = 0;
@@ -75,7 +75,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             });
         }
         setCombinedTitleParents(merged);
-    };
+    }, [setCombinedTitleParents]);
 
     useEffect(() => {
         const matchedTitlesValues = Object.values(matchedTitles);
@@ -97,13 +97,13 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         } else {
             setParents(matchedTitlesValues, combinedTitle);
         }
-    }, [matchedTitles]);
+    }, [combinedTitle, matchedTitles, setParents]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             getColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, getColumnDefs]);
 
     useEffect(() => {
         if (mergedTitles && mergedTitles[0] && mergedTitles[0].id) {
@@ -117,7 +117,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 },
             });
         }
-    }, [mergedTitles]);
+    }, [match, mergedTitles]);
 
     const deepCloneMatchedTitlesColumnDefs = cloneDeep(columnDefs);
     const deepCloneCombinedTitleColumnDefs = cloneDeep(columnDefs);

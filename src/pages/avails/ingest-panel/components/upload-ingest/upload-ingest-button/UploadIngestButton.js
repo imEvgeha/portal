@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 import Add from '../../../../../../assets/action-add.svg';
@@ -13,22 +13,17 @@ const UploadIngestButton = ({ingestData}) => {
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    useEffect(() => {
-        if (file) {
-            setModalStyle({width: 'small'});
-            setModalActions([]);
-            setModalContentAndTitle(buildForm(), TITLE);
-        }
-    }, [file]);
+    const closeModal = useCallback(() => {
+        setFile(null);
+        close();
+    }, [close]);
 
-    const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
-
-    const browseClick = () => {
+    const browseClick = useCallback(() => {
         closeModal();
         inputClick();
-    };
+    }, [closeModal]);
 
-    const buildForm = () => {
+    const buildForm = useCallback(() => {
         return (
             <InputForm
                 ingestData={ingestData}
@@ -37,7 +32,17 @@ const UploadIngestButton = ({ingestData}) => {
                 browseClick={browseClick}
             />
         );
-    };
+    }, [browseClick, closeModal, file, ingestData]);
+
+    useEffect(() => {
+        if (file) {
+            setModalStyle({width: 'small'});
+            setModalActions([]);
+            setModalContentAndTitle(buildForm(), TITLE);
+        }
+    }, [buildForm, file, setModalActions, setModalContentAndTitle, setModalStyle]);
+
+    const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
 
     const handleUpload = e => {
         const {files} = e.target;
@@ -45,11 +50,6 @@ const UploadIngestButton = ({ingestData}) => {
             setFile(Array.from(files)[0]);
             e.target.value = null;
         }
-    };
-
-    const closeModal = () => {
-        setFile(null);
-        close();
     };
 
     return (

@@ -67,13 +67,13 @@ const TitleMatchView = ({
             fetchFocusedRight(match.params.rightId);
             DOP.setErrorsCount(1);
         }
-    }, []);
+    }, [fetchFocusedRight, match]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
     const deepCloneRightColumnDefs = cloneDeep(rightColumns);
     let updatedRightColumnDefs = [];

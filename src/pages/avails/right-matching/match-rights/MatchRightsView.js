@@ -82,7 +82,7 @@ const MatchRightView = ({
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createRightMatchingColumnDefs]);
 
     useEffect(() => {
         if (rightId && matchedRightIds && columnDefs.length) {
@@ -91,7 +91,7 @@ const MatchRightView = ({
             }
             fetchMatchedRight(matchedRightIds.split(','));
         }
-    }, [matchedRightIds, rightId, columnDefs.length]);
+    }, [matchedRightIds, rightId, columnDefs.length, focusedRight, fetchMatchedRight, fetchFocusedRight]);
 
     // fetch combined rights
     useEffect(() => {
@@ -104,13 +104,22 @@ const MatchRightView = ({
             setCellColoringSchema(schemas);
             fetchCombinedRight(selectedMatchedRightIds, mapping);
         }
-    }, [matchedRights, selectedMatchedRightIds]);
+    }, [
+        columnDefs,
+        fetchCombinedRight,
+        focusedRight,
+        mapping,
+        matchedRights,
+        previousMatchedRights,
+        previousSelectedMatchedRightIds,
+        selectedMatchedRightIds,
+    ]);
 
     useEffect(() => {
         if (combinedGridApi) {
             combinedGridApi.redrawRows();
         }
-    }, [cellColoringSchema]);
+    }, [cellColoringSchema, combinedGridApi]);
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {

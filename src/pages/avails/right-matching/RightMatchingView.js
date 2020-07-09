@@ -41,13 +41,13 @@ const RightMatchingView = ({
     // TODO: refactor this
     useEffect(() => {
         cleanStoredRightMatchDataWithIds();
-    }, []);
+    }, [cleanStoredRightMatchDataWithIds]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createRightMatchingColumnDefs]);
 
     const onFocusButtonClick = rightId => {
         history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));

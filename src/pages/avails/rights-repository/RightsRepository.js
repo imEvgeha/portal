@@ -88,7 +88,7 @@ const RightsRepository = ({
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
-    }, [selectedIngest, selectedAttachmentId]);
+    }, [selectedIngest, selectedAttachmentId, gridApi]);
 
     // TODO: create column defs on app loading
     useEffect(() => {
@@ -100,7 +100,7 @@ const RightsRepository = ({
 
     useEffect(() => {
         ingestClick();
-    }, []);
+    }, [ingestClick]);
 
     useEffect(() => {
         if (selectedIngest && selectedAttachmentId) {
@@ -111,7 +111,7 @@ const RightsRepository = ({
                 deselectIngest();
             }
         }
-    }, [selectedIngest, selectedAttachmentId]);
+    }, [selectedIngest, selectedAttachmentId, deselectIngest]);
 
     useEffect(() => {
         const {external = {}} = rightsFilter || {};
@@ -134,7 +134,7 @@ const RightsRepository = ({
             });
             gridApi.onFilterChanged();
         }
-    }, [rightsFilter, mapping]);
+    }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
     useEffect(() => {
         let newSelectedRepoRights = cloneDeep(selectedRights);
@@ -166,7 +166,7 @@ const RightsRepository = ({
                 selectedGridApi.hideOverlay();
             }
         }
-    }, [isRepositoryDataLoading]);
+    }, [isRepositoryDataLoading, selectedGridApi]);
 
     useEffect(() => {
         if (selectedGridApi && selectedRepoRights.length > 0) {

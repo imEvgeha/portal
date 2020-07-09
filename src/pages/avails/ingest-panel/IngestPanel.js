@@ -24,7 +24,7 @@ const IngestPanel = ({
 
     useEffect(() => {
         onFiltersChange(getFiltersToSend());
-    }, []);
+    }, [onFiltersChange]);
 
     const panelRef = React.createRef();
 

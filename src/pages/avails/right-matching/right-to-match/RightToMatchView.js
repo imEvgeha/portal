@@ -103,7 +103,7 @@ const RightToMatchView = ({
         if (!fieldSearchCriteria || (rightId !== fieldSearchCriteria.id)) {
             fetchRightMatchingFieldSearchCriteria(availHistoryIds);
         }
-    }, [rightId]);
+    }, [availHistoryIds, fetchFocusedRight, fetchRightMatchingFieldSearchCriteria, fieldSearchCriteria, rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
