@@ -216,7 +216,10 @@
   "dataType": "businessDateTime",
   "searchDataType": "businessDateTime",
   "queryParamName": "start",
-  "readOnly": false,
+  "readOnlyBasedField":  [{
+    "field" : "licensed",
+    "fieldValue": false
+  }],
   "enableSearch": true,
   "enableEdit": true,
   "requiredBasedField": [{
@@ -229,7 +232,10 @@
   "dataType": "businessDateTime",
   "searchDataType": "businessDateTime",
   "queryParamName": "end",
-  "readOnly": false,
+  "readOnlyBasedField":  [{
+    "field" : "licensed",
+    "fieldValue": false
+  }],
   "enableSearch": true,
   "enableEdit": true,
   "requiredBasedField": [{

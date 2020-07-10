@@ -100,8 +100,6 @@ class RightDetails extends React.Component {
             rightsService
                 .get(this.props.match.params.id)
                 .then(res => {
-                    // TODO: REMOVE THIS WHEN BE IS READY - ONLY FOR TESTING
-                    res.licensed = false;
                     if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
@@ -1671,7 +1669,7 @@ class RightDetails extends React.Component {
                         });
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    const readOnly = cannotUpdate || mapping.readOnly;
+                    let readOnly = cannotUpdate || mapping.readOnly;
 
                     const {editedRight = {}, flatRight} = this.state;
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';
@@ -1861,6 +1859,11 @@ class RightDetails extends React.Component {
                             if(!required && mapping.requiredBasedField && Array.isArray(mapping.requiredBasedField)){
                                 if(mapping.requiredBasedField.some(x => right[x.field] === x.fieldValue)){
                                     required = true;
+                                }
+                            }
+                            if(!required && mapping.readOnlyBasedField && Array.isArray(mapping.readOnlyBasedField)){
+                                if(mapping.readOnlyBasedField.some(x => right[x.field] === x.fieldValue)){
+                                    readOnly = true;
                                 }
                             }
                             renderFields.push(
