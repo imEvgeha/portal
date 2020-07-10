@@ -57,7 +57,7 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        this.right = {};
+        this.right = {licensed: true};
 
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
