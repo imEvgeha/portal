@@ -430,17 +430,17 @@
     "@atlaskit/theme" "^7.0.1"
     "@babel/runtime" "^7.0.0"
 
-"@atlaskit/flag@^12.3.2":
-  version "12.3.5"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/flag/-/flag-12.3.5.tgz#e0231b358d863f0093f717241ecb704f2cf1a937"
-  integrity sha512-MsYBGXKk/aJXfwOQDpJ67w9f+/+fiCwtIz1zwjvljuN9E4kVF9bJXDDsDntl63/j2Ev/KRQI0lep4fSphaVfBA==
+"@atlaskit/flag@^13.0.0":
+  version "13.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm-proxy/@atlaskit/flag/-/flag-13.0.0.tgz#5fd6b18f8e0787b54c34538aa4b66e580a79aa84"
+  integrity sha512-KWekTHuVohfwfWxRflS0wHqEAvOQkXOdOPbRLo7+zEL0YH7/ogGNTCocLEb6o0rvkh8GA1kXZr8uRzCPpcjMCw==
   dependencies:
-    "@atlaskit/analytics-next" "^6.3.1"
-    "@atlaskit/button" "^13.3.5"
-    "@atlaskit/icon" "^19.1.0"
-    "@atlaskit/portal" "^3.1.4"
-    "@atlaskit/theme" "^9.5.0"
-    react-transition-group "^2.2.1"
+    "@atlaskit/analytics-next" "^7.0.0"
+    "@atlaskit/button" "^14.0.0"
+    "@atlaskit/icon" "^21.0.0"
+    "@atlaskit/portal" "^4.0.0"
+    "@atlaskit/theme" "^10.0.0"
+    react-transition-group "^4.4.1"
     tslib "^1.9.3"
     uuid "^3.1.0"
 
