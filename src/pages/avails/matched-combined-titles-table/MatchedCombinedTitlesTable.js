@@ -52,7 +52,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
 
 MatchedCombinedTitlesTable.propTypes = {
     data: PropTypes.array,
-    fullHeight: PropTypes.bool,
+    isFullHeight: PropTypes.bool,
 };
 
 MatchedCombinedTitlesTable.defaultProps = {
