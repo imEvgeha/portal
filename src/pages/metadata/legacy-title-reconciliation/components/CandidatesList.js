@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
 import Button from '@atlaskit/button';
+import classNames from 'classnames';
 import './CandidatesList.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
 import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
@@ -22,7 +23,6 @@ import {getRepositoryName} from '../../../avails/utils';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
 import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
-import classNames from 'classnames';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 
 const NexusGridWithInfiniteScrolling = compose(
