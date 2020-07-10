@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import {cloneDeep} from 'lodash';
 import classNames from 'classnames';
 import {Checkbox} from '@atlaskit/checkbox';
-import { Radio } from '@atlaskit/radio';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {Radio} from '@atlaskit/radio';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
@@ -15,7 +14,7 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
-import ActionsBar from './ActionsBar.js';
+import ActionsBar from './ActionsBar';
 import {getRepositoryName, getRepositoryCell} from '../../utils';
 import Constants from '../titleMatchingConstants';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
@@ -88,7 +87,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const onGridReady = ({type, columnApi}) => {
         if (GRID_EVENTS.READY === type) {
             const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 3); // +3 indicates pinned columns on the left side
+            const PINNED_COLUMNS_NUMBER = 3;
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
         }
     };
 
@@ -99,8 +99,9 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const repository = getRepositoryCell();
 
     const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-    if(contentTypeIndex !== -1) 
+    if (contentTypeIndex !== -1) {
         updatedColumnDefs[contentTypeIndex]['sortable'] = false;
+    }
 
     return (
         <>
@@ -119,7 +120,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                 )}
             >
                 <TitleRepositoriesTable
-                    id='titleMatchigRepo'
+                    id="titleMatchigRepo"
                     onGridEvent={onGridReady}
                     columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                     setTotalCount={setTotalCount}

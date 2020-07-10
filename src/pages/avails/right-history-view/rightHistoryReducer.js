@@ -2,17 +2,17 @@ import {FETCH_RIGHT_HISTORY_SUCCESS} from './rightHistoryActionTypes';
 
 const initState = {
     rightIds: [],
-    rightsEventHistory: []
+    rightsEventHistory: [],
 };
 
 const rightHistoryReducer = (state = initState, action) => {
     const {type, payload = {}} = action || {};
     const {rightsEventHistory, rightIds} = payload || [];
-    
+
     switch (type) {
         case FETCH_RIGHT_HISTORY_SUCCESS:
             return {
-                ...state, rightsEventHistory, rightIds
+                ...state, rightsEventHistory, rightIds,
             };
         default:
             return state;

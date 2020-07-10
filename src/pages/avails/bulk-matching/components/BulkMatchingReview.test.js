@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import BulkMatchingReview from './BulkMatchingReview';
 import Button from '@atlaskit/button';
+import BulkMatchingReview from './BulkMatchingReview';
 
 describe('BulkMatchingReview', () => {
     let wrapper = null;
@@ -29,6 +29,7 @@ describe('BulkMatchingReview', () => {
     });
 
     it('renders two MatchedCombinedTitlesTable elements', () => {
+        // eslint-disable-next-line no-magic-numbers
         expect(table).toHaveLength(2);
     });
 

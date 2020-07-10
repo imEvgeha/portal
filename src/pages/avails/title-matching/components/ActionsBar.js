@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import DOP from '../../../../util/DOP';
@@ -17,8 +17,9 @@ import {getDomainName, URL} from '../../../../util/Common';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 
+const {NEXUS, MOVIDA, VZ} = TitleSystems;
+
 const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) => {
-    const {NEXUS, MOVIDA, VZ} = TitleSystems;
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
         matchAndCreate: false,
@@ -32,23 +33,23 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
     }, [matchList]);
 
     const onCancel = () => {
-      //future implementation
+        // future implementation
     };
 
     const onMatch = () => {
         const url = `${getDomainName()}/metadata/detail/${matchList[NEXUS].id}`;
-        const onViewTitleClick = () => window.open(url,'_blank');
+        const onViewTitleClick = () => window.open(url, '_blank');
 
         if (URL.isEmbedded()) {
             DOP.setErrorsCount(0);
             DOP.setData({
                 match: {
                     rightId,
-                    titleId: matchList[NEXUS].id
-                }
+                    titleId: matchList[NEXUS].id,
+                },
             });
         } else {
-            const updatedRight = { 'coreTitleId': matchList[NEXUS].id };
+            const updatedRight = {'coreTitleId': matchList[NEXUS].id};
             rightsService.update(updatedRight, rightId);
         }
 
@@ -57,7 +58,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
             description: TITLE_MATCH_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
             actions: [
-                {content: 'View Title', onClick: onViewTitleClick}
+                {content: 'View Title', onClick: onViewTitleClick},
             ],
             isWithOverlay: true,
         });
@@ -69,19 +70,18 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
     };
 
     const onMatchAndCreate = () => {
-        if(Object.keys(matchList).length === 1){
+        if (Object.keys(matchList).length === 1) {
             addToast({
                 title: WARNING_TITLE,
                 description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
                 icon: WARNING_ICON,
                 actions: [
-                    {content:'Cancel', onClick: removeToast},
-                    {content: 'Ok', onClick: mergeSingle}
+                    {content: 'Cancel', onClick: removeToast},
+                    {content: 'Ok', onClick: mergeSingle},
                 ],
                 isWithOverlay: true,
             });
-        }
-        else{
+        } else {
             mergeTitles();
         }
     };
@@ -127,6 +127,7 @@ ActionsBar.defaultProps = {
     matchList: {},
     addToast: () => null,
     removeToast: () => null,
+    mergeTitles: () => null,
 };
 
 export default withToasts(ActionsBar);

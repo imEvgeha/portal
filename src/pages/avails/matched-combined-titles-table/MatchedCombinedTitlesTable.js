@@ -25,8 +25,8 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
     const onGridReady = ({type, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             const contentTypeIndex = updatedColumnDefs.findIndex(e => e.field === 'contentType');
-            // +3 indicates pinned columns on the left side
-            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 3);
+            const PINNED_COLUMNS_NUMBER = 3;
+            columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
         }
     };
 

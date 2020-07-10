@@ -16,8 +16,8 @@ exports[`Ingest should match snapshot 1`] = `
     className="nexus-c-avails-ingest__details"
   >
     <IngestTitle
-      className="header"
       ingestType="Upload"
+      isHeader={true}
       link="https: //vbq-cs-qa.s3.us-west-2.amazonaws.com/avails/archive/d8fa01e1-a9b6-454d-84f8-3d13ffce6e86/INT_avails_20k_(1).xlsx"
     />
     <IngestStatus
@@ -38,6 +38,7 @@ exports[`Ingest should match snapshot 1`] = `
     <IngestReport
       filterClick={[Function]}
       ingestId="avih_Tergd"
+      isShowingError={false}
       report={
         Object {
           "created": 2,
@@ -50,7 +51,6 @@ exports[`Ingest should match snapshot 1`] = `
           "updated": 19999,
         }
       }
-      showErrorMessage={false}
     />
     <div
       className="nexus-c-avails-ingest__email"

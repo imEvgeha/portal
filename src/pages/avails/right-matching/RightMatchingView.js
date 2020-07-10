@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import './RightMatchingView.scss';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -19,6 +18,7 @@ import {
 import {URL} from '../../../util/Common';
 import useDOPIntegration from './util/hooks/useDOPIntegration';
 import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './rightMatchingConstants';
+import './RightMatchingView.scss';
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
@@ -30,6 +30,7 @@ const RightMatchingView = ({
     columnDefs,
     history,
     match,
+    location,
     storeRightMatchDataWithIds,
     cleanStoredRightMatchDataWithIds,
 }) => {
@@ -40,15 +41,15 @@ const RightMatchingView = ({
     // TODO: refactor this
     useEffect(() => {
         cleanStoredRightMatchDataWithIds();
-    }, []);
+    }, [cleanStoredRightMatchDataWithIds]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createRightMatchingColumnDefs]);
 
-    const onFocusButtonClick = (rightId) => {
+    const onFocusButtonClick = rightId => {
         history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
@@ -97,6 +98,9 @@ RightMatchingView.propTypes = {
     storeRightMatchDataWithIds: PropTypes.func,
     cleanStoredRightMatchDataWithIds: PropTypes.func,
     createRightMatchingColumnDefs: PropTypes.func,
+    history: PropTypes.object,
+    match: PropTypes.object,
+    location: PropTypes.object,
 };
 
 RightMatchingView.defaultProps = {
@@ -104,6 +108,9 @@ RightMatchingView.defaultProps = {
     storeRightMatchDataWithIds: null,
     cleanStoredRightMatchDataWithIds: null,
     createRightMatchingColumnDefs: null,
+    history: {push: () => null},
+    location: {},
+    match: {},
 };
 
 const createMapStateToProps = () => {
@@ -113,7 +120,7 @@ const createMapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     storeRightMatchDataWithIds: payload => dispatch(storeRightMatchDataWithIds(payload)),
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),

@@ -11,12 +11,22 @@ import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';
 
-const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, selectedIngest, selectedAttachmentId, ingestClick}) => {
+const {attachmentTypes: {EXCEL}} = Constants;
+
+const IngestPanel = ({
+    onFiltersChange,
+    ingests,
+    totalIngests,
+    fetchNextPage,
+    selectedIngest,
+    selectedAttachmentId,
+    ingestClick,
+}) => {
     const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         onFiltersChange(getFiltersToSend());
-    }, []);
+    }, [onFiltersChange]);
 
     const panelRef = React.createRef();
 
@@ -30,56 +40,62 @@ const IngestPanel = ({onFiltersChange, ingests, totalIngests, fetchNextPage, sel
     };
 
     const filtersChange = filters => {
-        if(panelRef && panelRef.current){
+        if (panelRef && panelRef.current) {
             panelRef.current.scrollTop = 0;
         }
         onFiltersChange(filters);
     };
-    const {attachmentTypes: {EXCEL}} = Constants;
+
     return (
-        <div className='ingest-panel'>
+        <div className="ingest-panel">
             <PanelHeader
-                showFilters={showFilters}
+                isShowingFilters={showFilters}
                 toggleFilters={toggleFilters}
                 onFiltersChange={filtersChange}
             />
             <div
-                className='ingest-panel__list'
+                className="ingest-panel__list"
                 onScroll={onScroll}
                 ref={panelRef}
             >
                 {
                     ingests.map(({id, attachments, received, licensor, ingestType}) => {
-                        const excelAttachments = attachments.filter(a => a.attachmentType && a.attachmentType === EXCEL);
-                        return (excelAttachments.length > 1) ? (
-                            <Bundle
-                                key={id}
-                                id={id}
-                                attachments={excelAttachments}
-                                received={received}
-                                licensor={licensor}
-                                ingestType={ingestType}
-                                ingestClick={ingestClick}
-                                selectedAttachmentId={selectedAttachmentId}
-                            />
-                        )
-                        : ((excelAttachments.length === 1) &&
-                        (
-                            <Ingest
-                                key={id}
-                                attachment={excelAttachments[0]}
-                                received={received}
-                                licensor={licensor}
-                                ingestType={ingestType}
-                                ingestClick={() => ingestClick({
-                                         availHistoryId: id,
-                                         attachmentId: excelAttachments[0].id,
-                                         selectedAttachmentId: selectedAttachmentId
-                                     })}
-                                selected={selectedIngest && (selectedIngest.id === id)}
-                                ingestId={id}
-                            />
-                        ));
+                        const excelAttachments = attachments.filter(
+                            ({attachmentType}) => attachmentType && attachmentType === EXCEL
+                        );
+
+                        const handleIngestClick = () => ingestClick({
+                            availHistoryId: id,
+                            attachmentId: excelAttachments[0].id,
+                            selectedAttachmentId,
+                        });
+
+                        return (excelAttachments.length > 1)
+                            ? (
+                                <Bundle
+                                    key={id}
+                                    id={id}
+                                    attachments={excelAttachments}
+                                    received={received}
+                                    licensor={licensor}
+                                    ingestType={ingestType}
+                                    ingestClick={ingestClick}
+                                    selectedAttachmentId={selectedAttachmentId}
+                                />
+                            )
+                            : (excelAttachments.length === 1)
+                                && (
+                                    <Ingest
+                                        key={id}
+                                        attachment={excelAttachments[0]}
+                                        received={received}
+                                        licensor={licensor}
+                                        ingestType={ingestType}
+                                        ingestClick={handleIngestClick}
+                                        isSelected={selectedIngest && (selectedIngest.id === id)}
+                                        ingestId={id}
+                                    />
+                                );
                     })
                 }
             </div>
@@ -109,7 +125,7 @@ IngestPanel.defaultProps = {
 };
 
 const mapStateToProps = () => {
-    return (state) => ({
+    return state => ({
         ingests: getIngests(state),
         totalIngests: getTotalIngests(state),
         selectedIngest: getSelectedIngest(state),
@@ -117,10 +133,10 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     onFiltersChange: payload => dispatch(fetchIngests(payload)),
     fetchNextPage: () => dispatch(fetchNextPage()),
-    ingestClick: (payload) => dispatch(selectIngest(payload)),
+    ingestClick: payload => dispatch(selectIngest(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IngestPanel);

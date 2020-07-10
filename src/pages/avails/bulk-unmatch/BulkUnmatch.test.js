@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import BulkUnmatch from './BulkUnmatch';
 import configureStore from 'redux-mock-store';
+import BulkUnmatch from './BulkUnmatch';
 
 describe('BulkUnmatch', () => {
     let wrapper = null;

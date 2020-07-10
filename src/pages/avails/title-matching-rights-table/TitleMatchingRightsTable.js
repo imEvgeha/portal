@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {get, cloneDeep} from 'lodash';
+import {cloneDeep, get} from 'lodash';
 import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './TitleMatchingRightsTable.json';
@@ -10,16 +10,15 @@ const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
 
     const flattenData = data => {
-        const tableData = cloneDeep(data).filter(item => {
+        return cloneDeep(data).filter(item => {
             if (Array.isArray(item.territory)) {
                 item.territory = get(item.territory[0], 'country', '');
             }
             return item;
         });
-        return tableData;
     };
 
-    const handleRowSelectionChange = ({api}) => {
+    const handleRowSelectionChange = () => {
         // get selected row data with api.getSelectedRows()
     };
 

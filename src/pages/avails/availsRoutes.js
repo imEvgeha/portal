@@ -3,13 +3,11 @@ import {canRender} from '../../ability';
 // TODO: change it to dynamic imports when we remove legacy override style for ag grid
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override
-import RightsCreateFromAttachment from  '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
+import RightsCreateFromAttachment from '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment';
 // use webpack prefetch for legacy routes
 const RightDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'));
 const RightDetails = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'));
 const RightCreate = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate'));
-// const RightsCreateFromAttachment = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "RightCreateFromAttachment" */ '../legacy/containers/avail/create/ManualRightsEntry/RightsCreateFromAttachment'));
-const RightDetailsV2Import = import(/* webpackChunkName: "RightDetailsV2" */ '../legacy/containers/avail/details/RightDetailsV2');
 const RightDetailsV2 = React.lazy(() => RightCreateV2Import);
 const RightCreateV2Import = import(/* webpackChunkName: "RightCreateV2" */ '../legacy/containers/avail/create/RightCreateV2');
 const RightCreateV2 = React.lazy(() => RightCreateV2Import);
@@ -102,7 +100,7 @@ const routes = [
         component: canRender(RightToMatchView, 'update', 'Avail'),
     },
     {
-        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`, 
+        path: `${BASE_PATH}/history/:availHistoryIds/right-matching/:rightId/match/:matchedRightIds`,
         component: canRender(MatchRightView, 'update', 'Avail'),
     },
     {
