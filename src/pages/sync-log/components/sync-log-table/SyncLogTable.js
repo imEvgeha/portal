@@ -8,6 +8,7 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import columnMappings from '../../columnMappings.json';
 import {DOWNLOAD_BTN, EXCEL_EXPORT_FILE_NAME} from '../../syncLogConstants';
@@ -20,7 +21,7 @@ const SyncLogGrid = compose(
 
 const SyncLogTable = () => {
     const [gridApi, setGridApi] = useState(null);
-    const [dateFrom, setDateFrom] = useState(dateToISO(new Date(), 'regionalMidnight'));
+    const [dateFrom, setDateFrom] = useState(dateToISO(new Date(), DATETIME_FIELDS.REGIONAL_MIDNIGHT));
     const [dateTo, setDateTo] = useState('');
 
     const updateColumnDefs = (columnDefs) => {
