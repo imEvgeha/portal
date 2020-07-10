@@ -124,7 +124,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
                 <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
-                <div className='nexus-c-candidates-toolbar'>
+                <div className="nexus-c-candidates-toolbar">
                     <Button
                         className="nexus-c-button"
                         onClick={handleClearFilterClick}
