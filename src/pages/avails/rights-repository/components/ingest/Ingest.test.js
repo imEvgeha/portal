@@ -1,13 +1,14 @@
+/* eslint-disable no-magic-numbers */
 import React from 'react';
 import {shallow} from 'enzyme';
 import Ingest from './Ingest';
 
 describe('Ingest', () => {
-    let wrapper;
-    let deselectIngest;
-    let downloadIngestEmail;
-    let downloadIngestFile;
-    let attachments;
+    let wrapper = null;
+    let deselectIngest = null;
+    let downloadIngestEmail = null;
+    let downloadIngestFile = null;
+    let attachments = null;
 
     beforeEach(() => {
         deselectIngest = jest.fn();

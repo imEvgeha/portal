@@ -2,7 +2,6 @@
     flex: 2;
     display: flex;
     flex-direction: column;
-    min-height: 200px;
 }
 
 .nexus-c-candidates-list__header {
@@ -16,11 +15,17 @@
     font-weight: bold;
 }
 
+.nexus-c-candidates-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
 // add this to ui-elements
 .nexus-c-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-right: 10px;
 
     .nexus-c-candidates-list__header & {
         width: 100px;
@@ -28,3 +33,11 @@
     }
 }
 
+.nexus-c-candidates-titles-table,
+.nexus-c-candidates-selected-table {
+    display: none;
+
+    &--active {
+        display: contents;
+    }
+}

@@ -75,7 +75,7 @@ const columnDefinitions = [
         field: 'format',
         headerName: 'Format',
         width: 100,
-    }
+    },
 ];
 
 export default columnDefinitions;

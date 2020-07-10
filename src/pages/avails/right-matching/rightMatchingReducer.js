@@ -7,27 +7,27 @@ const initialState = {
     rightMatchPageData: {},
     matchedRights: [],
     combinedRight: {},
-    foundFocusRightInRightsRepository: false
+    foundFocusRightInRightsRepository: false,
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
     const {
-        columnDefs, 
-        fieldSearchCriteria, 
-        focusedRight, 
+        columnDefs,
+        fieldSearchCriteria,
+        focusedRight,
         rightMatchPageData,
         matchedRights,
         combinedRight,
-        foundFocusRightInRightsRepository
+        foundFocusRightInRightsRepository,
     } = payload || {};
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
             return {
-            ...state,
-            columnDefs,
-        };
+                ...state,
+                columnDefs,
+            };
         case actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_SUCCESS:
             return {
                 ...state,
@@ -55,8 +55,8 @@ const rightMatchingReducer = (state = initialState, action) => {
                 ...state,
                 rightMatchPageData: {
                     pages: {...state.rightMatchPageData.pages, ...rightMatchPageData.pages},
-                    total: rightMatchPageData.total
-                }
+                    total: rightMatchPageData.total,
+                },
             };
         case actionTypes.CLEAN_STORED_RIGHT_MATCH_DATA_WITH_IDS:
             return {
@@ -66,7 +66,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         case actionTypes.FOUND_FOCUS_RIGHT_IN_RIGHTS_REPOSITORY:
             return {
                 ...state,
-                foundFocusRightInRightsRepository
+                foundFocusRightInRightsRepository,
             };
         default:
             return state;

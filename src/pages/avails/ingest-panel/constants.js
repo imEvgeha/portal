@@ -1,47 +1,47 @@
 export default {
     STATUS_LIST: [
-        { value: '', label: 'ALL' },
-        { value: 'PENDING', label: 'PENDING' },
-        { value: 'MANUAL', label: 'MANUAL' },
-        { value: 'COMPLETED', label: 'COMPLETED' },
-        { value: 'FAILED', label: 'FAILED' },
+        {value: '', label: 'ALL'},
+        {value: 'PENDING', label: 'PENDING'},
+        {value: 'MANUAL', label: 'MANUAL'},
+        {value: 'COMPLETED', label: 'COMPLETED'},
+        {value: 'FAILED', label: 'FAILED'},
     ],
     DATEPICKER_LABELS: ['From', 'To'],
     REPORT: {
-        total: { label: 'Rights', value: '' },
-        created: { label: 'New', value: 'Created' },
-        updated: { label: 'Updated', value: 'Updated' },
-        fatal: { label: 'Fatals', value: 'Fatal' },
-        pending: { label: 'Pending', value: 'Pending' },
-        errors:  { label: 'Errors', value: 'Error' },
+        total: {label: 'Rights', value: ''},
+        created: {label: 'New', value: 'Created'},
+        updated: {label: 'Updated', value: 'Updated'},
+        fatal: {label: 'Fatals', value: 'Fatal'},
+        pending: {label: 'Pending', value: 'Pending'},
+        errors: {label: 'Errors', value: 'Error'},
     },
     ingestTypes: {
         EMAIL: 'Email',
-        UPLOAD: 'Upload'
+        UPLOAD: 'Upload',
     },
     attachmentTypes: {
         EXCEL: 'Excel',
-        EMAIL: 'Email'
+        EMAIL: 'Email',
     },
     filterKeys: {
         RECEIVED_FROM: 'receivedFrom',
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
-        LICENSOR: 'licensor'
+        LICENSOR: 'licensor',
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
         receivedTo: 'igReceivedTo',
         status: 'igStatus',
-        licensor: 'igLicensor'
+        licensor: 'igLicensor',
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},
-        {label: 'UK', value: 'UK'}
+        {label: 'UK', value: 'UK'},
     ],
     TEMPLATES: {
         STUDIO: 'Studio',
         USMASTER: 'US Master',
-        INTERNATIONAL: 'International'
-    }
+        INTERNATIONAL: 'International',
+    },
 };
