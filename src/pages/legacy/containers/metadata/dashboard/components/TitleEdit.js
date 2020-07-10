@@ -24,7 +24,6 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
-import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
 import withToasts from "../../../../../../ui/toast/hoc/withToasts";
 import {
     SUCCESS_ICON,

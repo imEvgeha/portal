@@ -5,3 +5,7 @@ export const BULK_UNMATCH_DISABLED_TOOLTIP = `This feature is enabled when:
 (All selected rights have Source Right ID populated and they are unique 
 OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated`;
 export const BULK_UNMATCH_SUCCESS_TOAST = 'Bulk Unmatch Successful!';
+export const CREATE_BONUS_RIGHT = 'Create Bonus Right';
+export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when rights are licensed,
+have the same Core Title IDs (not blank),
+empty Source Right IDs and Status is Ready/ReadyNew`;
