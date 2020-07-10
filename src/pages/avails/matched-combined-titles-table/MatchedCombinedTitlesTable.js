@@ -43,7 +43,7 @@ const MatchedCombinedTitlesTable = ({data, fullHeight}) => {
                 rowData={data}
                 mapping={mappings}
                 rowSelection="single"
-                domLayout={fullHeight ?'normal':'autoHeight'}
+                domLayout={fullHeight ? 'normal' : 'autoHeight'}
                 onGridEvent={onGridReady}
             />
         </div>
