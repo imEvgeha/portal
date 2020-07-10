@@ -54,14 +54,6 @@ const ServiceOrderFilter = ({
                 >
                     <PartnerRequest externalId={external_id} configuredPrId={configured_pr_id} />
                 </Drawer>
-                {/* <NexusDrawer
-                    isOpen={isDrawerOpen}
-                    onClose={() => setIsDrawerOpen(false)}
-                    width="extended"
-                    title="Partner Request"
-                >
-                    <PartnerRequest externalId={external_id} configuredPrId={configured_pr_id} />
-                </NexusDrawer> */}
             </div>
 
             <div className="so-panel-filter-detail__row">
