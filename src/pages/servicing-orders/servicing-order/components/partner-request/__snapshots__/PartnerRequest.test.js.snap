@@ -1,107 +1,151 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PartnerRequest should match snapshot 1`] = `
-<div
-  className="nexus-c-partner-request"
->
-  <div
-    className="nexus-c-partner-request__info"
+<styled.div>
+  <AkPage
+    bannerHeight={52}
+    isBannerOpen={false}
   >
-    <div
-      className="nexus-c-partner-request__info-field"
+    <WithTheme(AkGrid)
+      layout="fluid"
     >
-      Studio
-      : 
-    </div>
-    <div
-      className="nexus-c-partner-request__info-field"
-    >
-      MSS Order Details
-      : 
-      345
-    </div>
-    <div
-      className="nexus-c-partner-request__info-field"
-    >
-      Created Date
-      : 
-    </div>
-    <div
-      className="nexus-c-partner-request__info-field"
-    >
-      Created By
-      : 
-    </div>
-  </div>
-  <div
-    className="nexus-c-partner-request__table"
-  >
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="0"
-    >
-      TITLE
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="1"
-    >
-      VERSION
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="2"
-    >
-      DUE DATE
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="3"
-    >
-      PRIMARY VIDEO
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="4"
-    >
-      SECONDARY AUDIO
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="5"
-    >
-      SUB-TITLES FULL
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="6"
-    >
-      SUB-TITLES FORCED
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="7"
-    >
-      TRAILER
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="8"
-    >
-      METADATA
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="9"
-    >
-      ARTWORK
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="10"
-    >
-      NOTES
-    </div>
-  </div>
-</div>
+      <WithTheme(AkGridColumn)>
+        <styled.h1>
+          Partner Request
+        </styled.h1>
+        <WithTheme(AkGrid)
+          layout="fluid"
+          spacing="comfortable"
+        >
+          <WithTheme(AkGridColumn)
+            medium={2}
+          >
+            <styled.div>
+              <h6>
+                Studio
+              </h6>
+              <styled.p />
+            </styled.div>
+            <styled.div>
+              <h6>
+                MSS Order Details
+              </h6>
+              <styled.p>
+                345
+              </styled.p>
+            </styled.div>
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)>
+            <styled.div>
+              <h6>
+                Created Date
+              </h6>
+              <styled.p>
+                N/A
+              </styled.p>
+            </styled.div>
+            <styled.div>
+              <h6>
+                Created By
+              </h6>
+              <styled.p>
+                N/A
+              </styled.p>
+            </styled.div>
+          </WithTheme(AkGridColumn)>
+        </WithTheme(AkGrid)>
+        <styled.div>
+          <DynamicTable
+            defaultPage={1}
+            emptyView={
+              <h4>
+                There are no partner requests.
+              </h4>
+            }
+            head={
+              Object {
+                "cells": Array [
+                  Object {
+                    "content": "Title",
+                    "isSortable": false,
+                    "key": "productDesc",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Version",
+                    "isSortable": false,
+                    "key": "version",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Due Date",
+                    "isSortable": false,
+                    "key": "srdueDate",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Primary Video",
+                    "isSortable": false,
+                    "key": "primaryVideo",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Secondary Audio",
+                    "isSortable": false,
+                    "key": "secondaryAudio",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Sub-titles Full",
+                    "isSortable": false,
+                    "key": "subtitlesFull",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Sub-titles Forced",
+                    "isSortable": false,
+                    "key": "subtitlesForced",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Trailer",
+                    "isSortable": false,
+                    "key": "trailer",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Metadata",
+                    "isSortable": false,
+                    "key": "metaData",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Artwork",
+                    "isSortable": false,
+                    "key": "artWork",
+                    "width": 7,
+                  },
+                  Object {
+                    "content": "Notes",
+                    "isSortable": false,
+                    "key": "materialNotes",
+                    "width": 30,
+                  },
+                ],
+              }
+            }
+            isFixedSize={false}
+            isFixedWidth={true}
+            isLoading={true}
+            isRankable={false}
+            onSetPage={[Function]}
+            onSort={[Function]}
+            rows={Array []}
+            rowsPerPage={Infinity}
+          />
+        </styled.div>
+      </WithTheme(AkGridColumn)>
+    </WithTheme(AkGrid)>
+  </AkPage>
+</styled.div>
 `;
