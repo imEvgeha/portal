@@ -92,9 +92,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         }
     };
 
-    const getMatchAndDuplicateItems = () => {
-        return [...Object.values(matchList), ...Object.values(duplicateList)];
-    };
+    const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
 
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...columnDefs]);
@@ -106,10 +104,10 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
 
     return (
         <>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div className="nexus-c-single-title-match-toolbar">
                 <NexusTitle isSubTitle={true}>Title Repositories ({totalCount})</NexusTitle>
                 <SelectedButton
-                    selectedRightsCount={getMatchAndDuplicateItems().length}
+                    selectedRightsCount={selectedItems.length}
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                 />
@@ -135,7 +133,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
                     activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-single-matching__selected-table--active'
                 )}
             >
-                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} isFullHeight />
+                <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />
             </div>
 
 

@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
+import './MatchedCombinedTitlesTable.scss';
 
 const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
     const updateColumnDefs = columnDefs => {
@@ -34,8 +36,9 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
 
     return (
         <div
-            className="nexus-c-matched-combined-titles-table-wrapper"
-            style={{display: fullHeight ? 'contents' : 'block'}}
+            className={classNames(
+                isFullHeight && 'nexus-c-matched-full-view'
+            )}
         >
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"
@@ -43,7 +46,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
                 rowData={data}
                 mapping={mappings}
                 rowSelection="single"
-                domLayout={fullHeight ? 'normal' : 'autoHeight'}
+                domLayout={isFullHeight ? 'normal' : 'autoHeight'}
                 onGridEvent={onGridReady}
             />
         </div>

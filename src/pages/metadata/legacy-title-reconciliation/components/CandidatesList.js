@@ -114,11 +114,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         }
     };
 
-    const getMatchAndDuplicateItems = () => {
-        return [...Object.values(matchList), ...Object.values(duplicateList)];
-    };
-
-    const selectedLength = getMatchAndDuplicateItems().length;
+    const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
 
     return (
         <div className="nexus-c-candidates-list">
@@ -133,7 +129,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         {CLEAR_FILTER}
                     </Button>
                     <SelectedButton
-                        selectedRightsCount={selectedLength}
+                        selectedRightsCount={selectedItems.length}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                     />
@@ -167,7 +163,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                     activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
                 )}
             >
-                <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} isFullHeight />
+                <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />
             </div>
         </div>
     );
