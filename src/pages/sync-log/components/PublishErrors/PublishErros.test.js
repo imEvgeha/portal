@@ -19,8 +19,8 @@ describe('PublishErrors', () => {
     });
 
     it('should call setError prop function on click of cell', () => {
-        wrapper.find('.nexus-c-sync-log-table__error-cell').click();
-        expect(mockCallback.mock.calls.length).toEqual(1);
+        wrapper.find('.nexus-c-sync-log-table__error-cell').simulate('click');
+        expect(mockSetErrors.mock.calls.length).toEqual(1);
     });
 
     it('should not render cell when value length is 0', () => {
