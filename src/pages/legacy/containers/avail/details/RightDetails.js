@@ -100,7 +100,8 @@ class RightDetails extends React.Component {
             rightsService
                 .get(this.props.match.params.id)
                 .then(res => {
-                    res.licensed = true;
+                    // TODO: REMOVE THIS WHEN BE IS READY - ONLY FOR TESTING
+                    res.licensed = false;
                     if (res) {
                         const regForEror = /\[(.*?)\]/i;
                         const regForSubField = /.([A-Za-z]+)$/;
@@ -1676,7 +1677,7 @@ class RightDetails extends React.Component {
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';
                     const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
 
-                    const required = mapping.required;
+                    let required = mapping.required;
                     let highlighted = false;
                     if (this.state.right && this.state.right.highlightedFields) {
                         highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
@@ -1857,6 +1858,11 @@ class RightDetails extends React.Component {
                             );
                             break;
                         case DATETIME_FIELDS.BUSINESS_DATETIME:
+                            if(!required && mapping.requiredBasedField && Array.isArray(mapping.requiredBasedField)){
+                                if(mapping.requiredBasedField.some(x => right[x.field] === x.fieldValue)){
+                                    required = true;
+                                }
+                            }
                             renderFields.push(
                                 renderDatepickerField(
                                     true,

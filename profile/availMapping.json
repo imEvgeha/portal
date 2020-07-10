@@ -191,7 +191,11 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": false,
+  "requiredBasedField": [{
+    "field" : "licensed",
+    "fieldValue": false
+  }]
 }, {
   "javaVariableName": "availEnd",
   "displayName": "Avail End",
@@ -201,7 +205,11 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": false,
+  "requiredBasedField": [{
+    "field" : "licensed",
+    "fieldValue": false
+  }]
 }, {
   "javaVariableName": "start",
   "displayName": "Start",
@@ -211,7 +219,10 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "requiredBasedField": [{
+    "field" : "licensed",
+    "fieldValue": true
+  }]
 }, {
   "javaVariableName": "end",
   "displayName": "End",
@@ -221,7 +232,10 @@
   "readOnly": false,
   "enableSearch": true,
   "enableEdit": true,
-  "required": true
+  "requiredBasedField": [{
+    "field" : "licensed",
+    "fieldValue": true
+  }]
 }, {
   "javaVariableName": "startLag",
   "displayName": "Start Lag",
