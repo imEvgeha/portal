@@ -37,7 +37,8 @@
   "readOnly": true,
   "enableSearch": true,
   "enableEdit": true,
-  "required": false
+  "required": true,
+  "defaultValue": true
 },{
   "javaVariableName": "rightStatus",
   "displayName": "Right Status",
