@@ -57,7 +57,7 @@ MatchedCombinedTitlesTable.propTypes = {
 
 MatchedCombinedTitlesTable.defaultProps = {
     data: null,
-    fullHeight:false,
+    isFullHeight: false,
 };
 
 export default MatchedCombinedTitlesTable;
