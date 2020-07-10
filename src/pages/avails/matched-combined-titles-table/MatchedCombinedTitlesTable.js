@@ -36,7 +36,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
 
     return (
         <div
-            className={classNames(
+            className={classNames('nexus-c-matched-combined-titles-table-wrapper',
                 isFullHeight && 'nexus-c-matched-full-view'
             )}
         >
