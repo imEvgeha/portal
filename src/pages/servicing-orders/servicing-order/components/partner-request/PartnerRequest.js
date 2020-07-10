@@ -134,7 +134,7 @@ export default PartnerRequest;
 
 const WrapperWithMaxHeight = styled.div`
     max-height: ${props => props.maxHeight * gridSize()}px;
-    overflow-y: scroll;
+    overflow-y: auto;
 `;
 
 const PartnerRequestWrapper = styled.div`
