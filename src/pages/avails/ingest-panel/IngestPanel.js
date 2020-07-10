@@ -11,6 +11,8 @@ import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';
 
+const {attachmentTypes: {EXCEL}} = Constants;
+
 const IngestPanel = ({
     onFiltersChange,
     ingests,
@@ -43,7 +45,7 @@ const IngestPanel = ({
         }
         onFiltersChange(filters);
     };
-    const {attachmentTypes: {EXCEL}} = Constants;
+
     return (
         <div className="ingest-panel">
             <PanelHeader
@@ -62,7 +64,13 @@ const IngestPanel = ({
                             ({attachmentType}) => attachmentType && attachmentType === EXCEL
                         );
 
-                        return (excelAttachments.length)
+                        const handleIngestClick = () => ingestClick({
+                            availHistoryId: id,
+                            attachmentId: excelAttachments[0].id,
+                            selectedAttachmentId,
+                        });
+
+                        return (excelAttachments.length > 1)
                             ? (
                                 <Bundle
                                     key={id}
@@ -83,11 +91,7 @@ const IngestPanel = ({
                                         received={received}
                                         licensor={licensor}
                                         ingestType={ingestType}
-                                        ingestClick={() => ingestClick({
-                                            availHistoryId: id,
-                                            attachmentId: excelAttachments[0].id,
-                                            selectedAttachmentId,
-                                        })}
+                                        ingestClick={handleIngestClick}
                                         isSelected={selectedIngest && (selectedIngest.id === id)}
                                         ingestId={id}
                                     />

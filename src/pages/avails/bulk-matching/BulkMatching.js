@@ -283,7 +283,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                             Titles ({totalCount})
                         </div>
                         <Button
-                            className="nexus-c-bulk-matching__titles-table-isSelected-btn"
+                            className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => setSelectedActive(!selectedActive)}
                             isSelected={selectedActive}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}

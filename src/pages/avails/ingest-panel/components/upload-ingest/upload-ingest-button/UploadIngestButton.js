@@ -61,7 +61,8 @@ const UploadIngestButton = ({ingestData}) => {
                 ref={inputRef}
                 onInput={handleUpload}
             />
-            {ingestData ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
+            {ingestData
+                ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
                 : <Add onClick={inputClick} />}
         </div>
     );
@@ -72,7 +73,7 @@ UploadIngestButton.propTypes = {
 };
 
 UploadIngestButton.defaultProps = {
-    ingestData: {},
+    ingestData: null,
 };
 
 export default UploadIngestButton;
