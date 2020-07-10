@@ -6,12 +6,12 @@ const initialState = {
     size: 0,
     total: 0,
     selectedIngestId: null,
-    selectedAttachmentId: null
+    selectedAttachmentId: null,
 };
 
 const ingestReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
-    switch(type) {
+    switch (type) {
         case actionTypes.FETCH_INGESTS_SUCCESS:
             return {
                 ...state,
@@ -23,18 +23,18 @@ const ingestReducer = (state = initialState, action = {}) => {
                 ...state,
                 list: {
                     ...state.list,
-                    ...payload
-                }
+                    ...payload,
+                },
             };
         case actionTypes.UPDATE_SELECTED_INGEST:
             return {
-            ...state,
-            selectedIngestId: payload.id,
-        };
+                ...state,
+                selectedIngestId: payload.id,
+            };
         case actionTypes.UPDATE_SELECTED_ATTACHMENT_ID:
             return {
                 ...state,
-                selectedAttachmentId: payload
+                selectedAttachmentId: payload,
             };
         case actionTypes.CLEAR_SELECTED_INGEST:
             return {

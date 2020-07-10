@@ -18,7 +18,7 @@ const IngestFilters = ({onFiltersChange}) => {
         setIsApplyActive(true);
     };
 
-    const onDateChange = (dates) => {
+    const onDateChange = dates => {
         setFilters({...filters, ...dates});
         setIsApplyActive(true);
     };
@@ -28,7 +28,7 @@ const IngestFilters = ({onFiltersChange}) => {
             status: STATUS_LIST[0],
             licensor: '',
             startDate: '',
-            endDate: ''
+            endDate: '',
         });
         setIsApplyActive(false);
         onFiltersChange({});
@@ -39,18 +39,18 @@ const IngestFilters = ({onFiltersChange}) => {
     };
 
     return (
-        <div className='ingest-filters'>
-            <div className='ingest-filters__row1'>
-                <div className='ingest-filters__section'>
+        <div className="ingest-filters">
+            <div className="ingest-filters__row1">
+                <div className="ingest-filters__section">
                     Licensor
                     {' '}
                     <input
-                        placeholder='Enter Licensor'
+                        placeholder="Enter Licensor"
                         value={filters.licensor}
                         onChange={e => onFilterChange(LICENSOR, e.target.value)}
                     />
                 </div>
-                <div className='ingest-filters__section'>
+                <div className="ingest-filters__section">
                     Avail Status
                     <Select
                         options={Constants.STATUS_LIST}
@@ -59,21 +59,21 @@ const IngestFilters = ({onFiltersChange}) => {
                     />
                 </div>
             </div>
-            <div className='ingest-filters__row2'>
+            <div className="ingest-filters__row2">
                 <NexusDateTimeWindowPicker
                     isUsingTime={false}
                     isTimestamp={true}
                     startDateTimePickerProps={{
-                        id:'ingest-filters__start-date', placeholder: 'mm/dd/YYYY', value: filters.startDate
+                        id: 'ingest-filters__start-date', placeholder: 'mm/dd/YYYY', value: filters.startDate,
                     }}
                     endDateTimePickerProps={{
-                        id:'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate
+                        id: 'ingest-filters__end-date', placeholder: 'mm/dd/YYYY', value: filters.endDate,
                     }}
                     onChangeAny={onDateChange}
                     labels={Constants.DATEPICKER_LABELS}
                 />
             </div>
-            <div className='ingest-filters__actions'>
+            <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
                     className={`ingest-filters__actions--apply ${isApplyActive ? 'ingest-filters__actions--active' : ''}`}

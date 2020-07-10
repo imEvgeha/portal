@@ -13,7 +13,7 @@ import {
     RELATIVE_DATE_FORMAT_WITHOUT_TIME
 } from '../constants';
 import ClearButton from '../clear-button/ClearButton';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../util/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, parseSimulcast, isUtc} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDatePicker = ({
     id,
@@ -54,8 +54,8 @@ const NexusDatePicker = ({
             // onConfirm will handle changes
             !isWithInlineEdit && onChange(
                 isTimestamp
-                    ? moment(date).utc(false).toISOString()
-                    : `${moment(date).utc(false).format(isSimulcast
+                    ? moment(date).utc(!isUtc(date)).toISOString()
+                    : `${moment(date).utc(!isUtc(date)).format(isSimulcast
                         ? SIMULCAST_DATE_FORMAT
                         : RELATIVE_FORMAT)
                     }`

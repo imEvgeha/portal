@@ -17,7 +17,7 @@ export const getSelectedIngest = createSelector(
     ingest => ingest.list[ingest.selectedIngestId],
 );
 
-export const getSelectedAttachmentId= createSelector(
+export const getSelectedAttachmentId = createSelector(
     getIngestReducer,
     ingest => ingest.selectedAttachmentId,
 );
@@ -25,7 +25,7 @@ export const getSelectedAttachmentId= createSelector(
 export const getIngestById = createSelector(
     getIngests,
     (_, id) => id,
-    (ingests, id) =>ingests.find(ingest => ingest.id === id)
+    (ingests, id) => ingests.find(ingest => ingest.id === id)
 );
 
 const getRoot = state => state.root;

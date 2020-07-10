@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
@@ -11,20 +11,49 @@ import {URL, minTwoDigits} from '../../../../../../util/Common';
 import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 
 const RightToMatchNavigation = ({
-    searchParams, 
-    focusedRightId, 
-    fetchRightMatchDataUntilFindId, 
-    rightMatchPageData, 
-    availHistoryIds, 
-    history
+    searchParams,
+    focusedRightId,
+    fetchRightMatchDataUntilFindId,
+    rightMatchPageData,
+    availHistoryIds,
+    history,
 }) => {
     const [navigationData, setNavigationData] = useState({
         previousId: null,
         currentPosition: null,
         focusedRightId: null,
-        nextId: null
+        nextId: null,
     });
     const [isSpinnerRunning, setIsSpinnerRunning] = useState(true);
+
+    const getNavigationDataIfExist = useCallback(() => {
+        const pages = Object.keys(rightMatchPageData.pages || {}).sort();
+        let navigationData = null;
+        loop:
+        for (let i = 0; i < pages.length; i++) {
+            const items = rightMatchPageData.pages[pages[i]];
+            for (let j = 0; j < items.length; j++) {
+                if (items[j] === focusedRightId) {
+                    const previousId = j > 0
+                        ? items[j - 1]
+                        : (i > 0
+                            ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1]
+                            : null
+                        );
+                    const nextId = j + 1 < items.length
+                        ? items[j + 1]
+                        : (i + 1 < pages.length
+                            ? rightMatchPageData.pages[pages[i + 1]][0]
+                            : null
+                        );
+                    const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
+                    navigationData = {previousId, currentPosition, focusedRightId, nextId};
+                    break loop;
+                }
+            }
+        }
+        return navigationData;
+    }, [focusedRightId, rightMatchPageData.pages]);
 
     useEffect(() => {
         setIsSpinnerRunning(true);
@@ -33,10 +62,10 @@ const RightToMatchNavigation = ({
     useEffect(() => {
         if (focusedRightId && focusedRightId !== navigationData.focusedRightId) {
             const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-            const pageNumber = pages.length > 0 ? parseInt(pages[pages.length - 1]) + 1 : 0;
+            const pageNumber = pages.length ? parseInt(pages[pages.length - 1]) + 1 : 0;
             const updatedNavigationData = getNavigationDataIfExist();
             // TODO: refactor
-            if(updatedNavigationData !== null) {
+            if (updatedNavigationData !== null) {
                 setNavigationData(updatedNavigationData);
                 setIsSpinnerRunning(false);
             } else {
@@ -44,11 +73,18 @@ const RightToMatchNavigation = ({
                     id: focusedRightId,
                     pageNumber,
                     pageSize: RIGHT_PAGE_SIZE,
-                    searchParams
+                    searchParams,
                 });
             }
         }
-    }, [focusedRightId]);
+    }, [
+        fetchRightMatchDataUntilFindId,
+        focusedRightId,
+        getNavigationDataIfExist,
+        navigationData.focusedRightId,
+        rightMatchPageData.pages,
+        searchParams,
+    ]);
 
     useEffect(() => {
         if (rightMatchPageData.pages) {
@@ -58,26 +94,7 @@ const RightToMatchNavigation = ({
                 setIsSpinnerRunning(false);
             }
         }
-    }, [rightMatchPageData]);
-
-    const getNavigationDataIfExist = () => {
-        const pages = Object.keys(rightMatchPageData.pages || {}).sort();
-        let navigationData = null;
-        loop:
-            for (let i = 0; i < pages.length; i++) {
-                const items = rightMatchPageData.pages[pages[i]];
-                for (let j = 0; j < items.length; j++) {
-                    if (items[j] === focusedRightId) {
-                        const previousId = j > 0 ? items[j - 1] : (i > 0 ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1] : null);
-                        const nextId = j + 1 < items.length ? items[j + 1] : (i + 1 < pages.length ? rightMatchPageData.pages[pages[i + 1]][0] : null);
-                        const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
-                        navigationData = {previousId, currentPosition, focusedRightId, nextId};
-                        break loop;
-                    }
-                }
-            }
-        return navigationData;
-    };
+    }, [getNavigationDataIfExist, rightMatchPageData]);
 
     const url = `/avails/history/${availHistoryIds}/right-matching`;
 
@@ -97,20 +114,20 @@ const RightToMatchNavigation = ({
 
     return (
         navigationData && navigationData.currentPosition ? (
-            <div className='nexus-c-right-to-match-navigation'>
-                <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onPreviousRightClick}>
-                    <HipchatChevronUpIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
+            <div className="nexus-c-right-to-match-navigation">
+                <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onPreviousRightClick}>
+                    <HipchatChevronUpIcon size="large" className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
                 <span className="nexus-c-right-to-match-navigation__data">
-                    {isSpinnerRunning 
+                    {isSpinnerRunning
                         ? <Spinner size="small" />
                         : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`}
                 </span>
-                <div className='nexus-c-right-to-match-navigation__icon-button' onClick={onNextRightClick}>
-                    <HipchatChevronDownIcon size='large' className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
+                <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onNextRightClick}>
+                    <HipchatChevronDownIcon size="large" className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
                 </div>
             </div>
-        ) : null 
+        ) : null
     );
 };
 
@@ -135,12 +152,12 @@ RightToMatchNavigation.defaultProps = {
 const createMapStateToProps = () => {
     const rightMatchPageDataSelector = selectors.createRightMatchPageDataSelector();
     return (state, props) => ({
-        rightMatchPageData: rightMatchPageDataSelector(state, props)
+        rightMatchPageData: rightMatchPageDataSelector(state, props),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchRightMatchDataUntilFindId: payload => dispatch(fetchRightMatchDataUntilFindId(payload))
+const mapDispatchToProps = dispatch => ({
+    fetchRightMatchDataUntilFindId: payload => dispatch(fetchRightMatchDataUntilFindId(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchNavigation); // eslint-disable-line
