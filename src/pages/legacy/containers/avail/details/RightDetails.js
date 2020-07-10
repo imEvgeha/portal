@@ -518,6 +518,7 @@ class RightDetails extends React.Component {
     };
 
     render() {
+        const {sourceRightId} = this.state.right || {};
         const renderFieldTemplate = (
             name,
             displayName,
@@ -618,12 +619,13 @@ class RightDetails extends React.Component {
                 <InlineEdit
                     placeholder={`${this.emptyValueText} ${displayName}`}
                     defaultValue={value}
-                    hideActionButtons={readOnly}
+                    hideActionButtons={!!sourceRightId || readOnly}
                     readView={() => <p>{value || `${this.emptyValueText} ${displayName}`}</p>}
                     editView={fieldProps => (
                         <TextField
                             {...fieldProps}
                             name={name}
+                            isReadOnly={!!sourceRightId || readOnly}
                             style={{...fieldProps.style, border: 'none', borderRadius: 0}}
                             autoFocus
                             autoComplete={`new-${displayName.replace(' ', '-').toLowerCase()}`}
@@ -739,7 +741,7 @@ class RightDetails extends React.Component {
                     value={value}
                     priorityDisplay={priorityError}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
                     validate={validate}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, convert(value), cancel)}
@@ -749,6 +751,7 @@ class RightDetails extends React.Component {
                             <AvField
                                 value={value}
                                 name={name}
+                                isReadOnly={!!sourceRightId}
                                 placeholder={'Enter ' + displayName}
                                 onChange={e => {
                                     handleValueChange(e.target.value);
@@ -856,7 +859,7 @@ class RightDetails extends React.Component {
                     value={options.find(opt => opt.server === value).display}
                     priorityDisplay={priorityError}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
                     validate={() => {}}
                     onChange={(value, cancel) =>
@@ -867,6 +870,7 @@ class RightDetails extends React.Component {
                             name={name}
                             placeholderButtonLabel={'Select ' + displayName + ' ...'}
                             options={options}
+                            disabled={!!sourceRightId}
                             value={val}
                             onChange={handleOptionsChange}
                         />
@@ -950,7 +954,7 @@ class RightDetails extends React.Component {
                     value={value}
                     priorityDisplay={priorityError}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
                     validate={() => {}}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
@@ -959,6 +963,7 @@ class RightDetails extends React.Component {
                         <Select
                             name={name}
                             isSearchable
+                            disabled={!!sourceRightId}
                             placeholderButtonLabel={'Select ' + displayName + ' ...'}
                             options={options}
                             value={val}
@@ -1083,7 +1088,7 @@ class RightDetails extends React.Component {
                     value={value}
                     priorityDisplay={priorityError}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
                     validate={() => {}}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
@@ -1116,6 +1121,7 @@ class RightDetails extends React.Component {
                             }}
                             options={allOptions}
                             value={val}
+                            disabled={!!sourceRightId}
                             onChange={handleOptionsChange}
                         />
                     }
@@ -1233,7 +1239,7 @@ class RightDetails extends React.Component {
                     value={value}
                     originalFieldList={pricesWithLabel}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     isArrayOfObject={true}
                     validate={() => {}}
                     displayName={displayName}
@@ -1244,6 +1250,7 @@ class RightDetails extends React.Component {
                         <PriceField
                             prices={pricesWithLabel}
                             name={name}
+                            disabled={!!sourceRightId}
                             onRemoveClick={deletePrice}
                             onTagClick={this.toggleRightPriceForm}
                             onAddClick={this.toggleAddRightPriceForm}
@@ -1396,14 +1403,16 @@ class RightDetails extends React.Component {
                         <TerritoryField
                             territory={territories}
                             name={name}
-                            onRemoveClick={territory => deleteTerritory(territory)}
+                            onRemoveClick={territory => !sourceRightId ? deleteTerritory(territory) : null}
                             onAddClick={this.toggleAddRightTerritoryForm}
                             onTagClick={i => this.toggleRightTerritoryForm(i)}
                             renderChildren={() => (
                                 <>
-                                    <div style={{position: 'absolute', right: '10px'}}>
+                                    {!sourceRightId && (
+                                        <div style={{position: 'absolute', right: '10px'}}>
                                         <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
                                     </div>
+                                    )}
                                     <RightTerritoryForm
                                         onSubmit={e => addTerritory(e)}
                                         isOpen={this.state.isRightTerritoryFormOpen}
@@ -1531,7 +1540,7 @@ class RightDetails extends React.Component {
                     value={value}
                     originalFieldList={languagesWithLabel}
                     name={name}
-                    disabled={readOnly}
+                    disabled={!!sourceRightId || readOnly}
                     isArrayOfObject={true}
                     validate={() => {}}
                     displayName={displayName}
@@ -1542,6 +1551,7 @@ class RightDetails extends React.Component {
                         <AudioLanguageField
                             audioLanguages={languagesWithLabel}
                             name={name}
+                            disabled={!!sourceRightId}
                             onRemoveClick={language => deleteAudioLanguage(language)}
                             onAddClick={this.toggleAddRightAudioLanguageForm}
                             renderChildren={() => (
@@ -1606,6 +1616,7 @@ class RightDetails extends React.Component {
             const props = {
                 id: displayName,
                 label: displayName,
+
                 hideLabel: true, // TODO: Remove after RightDetails gets refactored/redesigned
                 onChange: date => {
                     // Keep a separate state for edited values
@@ -1619,7 +1630,7 @@ class RightDetails extends React.Component {
                 value: editedRight[name] !== undefined ? editedRight[name] : value,
                 error,
                 required,
-                isReadOnly,
+                isReadOnly: !!sourceRightId,
                 isTimestamp,
                 isWithInlineEdit: true,
                 allowClear: !required,
@@ -1683,6 +1694,7 @@ class RightDetails extends React.Component {
 
                     const {right = {}} = this.state;
                     const {validationErrors} = right || {};
+
 
                     switch (mapping.dataType) {
                         case 'string':

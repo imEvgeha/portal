@@ -24,7 +24,6 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
-import DecoratedRecordsModal from './editorialmetadata/DecoratedRecordsModal';
 import withToasts from "../../../../../../ui/toast/hoc/withToasts";
 import {
     SUCCESS_ICON,
@@ -896,6 +895,12 @@ class TitleEdit extends Component {
     }
 
     handleEditorialMetadataOnSave = () => {
+        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
+        {autoDecorate && this.props.addToast({
+            title: 'Creating Decorated Records',
+            icon: WARNING_ICON,
+            isWithOverlay: false,
+        })}
         const promises = [];
         this.state.updatedEditorialMetadata &&  this.state.updatedEditorialMetadata.length > 0 &&
         promises.push(titleService.updateEditorialMetadata(this.getUpdatedEditorialMetadata()).then((response) => {
@@ -1146,12 +1151,10 @@ class TitleEdit extends Component {
 
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
-        const autoDecorate = this.state.editorialMetadataForCreate && this.state.editorialMetadataForCreateAutoDecorate;
         const {id = ''} = titleForm || {};
         return (
             <EditPage>
                 <>
-                    {autoDecorate && <DecoratedRecordsModal isLoading={this.state.isLoading} />}
                     <AvForm id="titleDetail" onValidSubmit={this.handleOnSave} onKeyPress={this.onKeyPress}>
                         <Row>
                             <Col className="clearfix" style={{ marginRight: '20px', marginBottom: '10px' }}>
