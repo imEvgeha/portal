@@ -19,4 +19,8 @@ describe('EventManagementTable', () => {
     it('should have a Download button', () => {
         expect(wrapper.find(Button).length).toEqual(1);
     });
+
+    it('should render NexusDrawer', () => {
+        expect(wrapper.find('NexusDrawer').length).toEqual(1);
+    });
 });
