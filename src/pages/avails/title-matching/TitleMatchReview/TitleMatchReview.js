@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
-import './TitleMatchReview.scss';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import BackNavigationByUrl from '../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
@@ -11,6 +10,7 @@ import {createColumnDefs} from '../titleMatchingActions';
 import {getRepositoryCell} from '../../utils';
 import DOP from '../../../../util/DOP';
 import {URL} from '../../../../util/Common';
+import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {
     const [titles, setTitles] = useState(Object.values(matchedTitles));
@@ -24,24 +24,25 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     const getTitle = id => {
         return new Promise((resolve, reject) => {
-            return titleService.getTitleById(id).then((response) => {
+            return titleService.getTitleById(id).then(response => {
                 const title = response;
                 titleService.getEditorialMetadataByTitleId(id).then(data => {
-                    const founded = data.find(el => el.locale==='US' && (el.language ==='English' || el.language ==='en'));
-                    if(founded) {
+                    const founded = data.find(el => el.locale === 'US' && (el.language === 'English' || el.language === 'en'));
+                    if (founded) {
                         title['editorialGenres'] = founded.genres;
                     }
                     resolve(title);
                 });
-            }).catch(() => {
-                reject('Unable to load Title Data');
-            });
+            })
+                .catch(() => {
+                    reject(new Error('Unable to load Title Data'));
+                });
         });
     };
 
-    const setCombinedTitleParents = (merged) => {
+    const setCombinedTitleParents = useCallback(merged => {
         const getTitles = [];
-        if(merged.parentIds && merged.parentIds.length){
+        if (merged.parentIds && merged.parentIds.length) {
             merged.parentIds.forEach(parent => {
                 getTitles.push(getTitle(parent.id));
             });
@@ -49,15 +50,15 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 setMergedTitles([...values, merged]);
             });
         }
-    };
+    }, []);
 
-    const setParents = (list, merged) => {
+    const setParents = useCallback((list, merged) => {
         const titleList = [...list];
         const getTitles = [];
         let indexTrack = 0;
         const track = {};
         list.forEach(title => {
-            if(title.parentIds && title.parentIds.length){
+            if (title.parentIds && title.parentIds.length) {
                 title.parentIds.forEach((parent, i) => {
                     getTitles.push(getTitle(parent.id));
                     track[parent.id] = indexTrack + i;
@@ -65,7 +66,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 indexTrack = indexTrack + 1 + title.parentIds.length;
             }
         });
-        if(getTitles.length){
+        if (getTitles.length) {
             Promise.all(getTitles).then(values => {
                 values.forEach(parent => {
                     titleList.splice(track[parent.id], 0, parent);
@@ -74,7 +75,7 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
             });
         }
         setCombinedTitleParents(merged);
-    };
+    }, [setCombinedTitleParents]);
 
     useEffect(() => {
         const matchedTitlesValues = Object.values(matchedTitles);
@@ -93,39 +94,41 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                 setTitles(values);
                 setParents(values, merged);
             });
-        }
-        else{
+        } else {
             setParents(matchedTitlesValues, combinedTitle);
         }
-    }, [matchedTitles]);
+    }, [combinedTitle, matchedTitles, setParents]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             getColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, getColumnDefs]);
 
     useEffect(() => {
-        if(mergedTitles && mergedTitles[0] && mergedTitles[0].id){
+        if (mergedTitles && mergedTitles[0] && mergedTitles[0].id) {
             const {params} = match || {};
             const {rightId} = params || {};
             DOP.setErrorsCount(0);
             DOP.setData({
                 match: {
                     rightId,
-                    titleId: mergedTitles[0].id
-                }
+                    titleId: mergedTitles[0].id,
+                },
             });
         }
-    }, [mergedTitles]);
+    }, [match, mergedTitles]);
 
     const deepCloneMatchedTitlesColumnDefs = cloneDeep(columnDefs);
     const deepCloneCombinedTitleColumnDefs = cloneDeep(columnDefs);
 
     const renderEpisodeAndSeasonNumber = params => {
-        if(params.data.contentType === 'EPISODE') return params.data.episodic.episodeNumber;
-        else if(params.data.contentType === 'SEASON') return params.data.episodic.seasonNumber;
-        else return null;
+        if (params.data.contentType === 'EPISODE') {
+            return params.data.episodic.episodeNumber;
+        } else if (params.data.contentType === 'SEASON') {
+            return params.data.episodic.seasonNumber;
+        }
+        return null;
     };
 
     const numOfEpisodeAndSeasonField = {
@@ -133,14 +136,15 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         field: 'episodeAndSeasonNumber',
         headerName: '-',
         valueFormatter: renderEpisodeAndSeasonNumber,
-        width: 100
-        
+        width: 100,
+
     };
 
-    const onGridReady = (params) => {
+    const onGridReady = params => {
         const {columnApi} = params;
         const contentTypeIndex = deepCloneMatchedTitlesColumnDefs.findIndex(e => e.field === 'contentType');
-        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + 2); // +1 indicates 1 column pinned on the left side
+        const PINNED_COLUMNS_NUMBER = 2;
+        columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
     };
     return (
         <div className="nexus-c-title-to-match-review">
@@ -154,7 +158,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                         <NexusTitle isSubTitle>Matched Titles</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
-                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneMatchedTitlesColumnDefs]}
+                            columnDefs={[
+                                getRepositoryCell(),
+                                numOfEpisodeAndSeasonField,
+                                ...deepCloneMatchedTitlesColumnDefs,
+                            ]}
                             rowData={titles}
                         />
                     </>
@@ -166,7 +174,11 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
                         <NexusTitle isSubTitle>Combined Title</NexusTitle>
                         <NexusGrid
                             onGridEvent={onGridReady}
-                            columnDefs={[getRepositoryCell(), numOfEpisodeAndSeasonField, ...deepCloneCombinedTitleColumnDefs]}
+                            columnDefs={[
+                                getRepositoryCell(),
+                                numOfEpisodeAndSeasonField,
+                                ...deepCloneCombinedTitleColumnDefs,
+                            ]}
                             rowData={mergedTitles}
                         />
                     </>
@@ -194,15 +206,15 @@ TitleMatchReview.defaultProps = {
 };
 
 const createMapStateToProps = () => {
-    return (state) => ({
+    return state => ({
         columnDefs: getColumnDefs(state),
         matchedTitles: getTitles(state),
         combinedTitle: getCombinedTitle(state),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    getColumnDefs: () => dispatch(createColumnDefs())
+const mapDispatchToProps = dispatch => ({
+    getColumnDefs: () => dispatch(createColumnDefs()),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchReview); // eslint-disable-line

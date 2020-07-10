@@ -5,11 +5,6 @@ const getRightsReducer = state => {
     return avails.rights;
 };
 
-export const createRightsSelector = () => createSelector(
-    getRightsReducer,
-    rights => rights.list || {},
-);
-
 export const createSelectedRightsSelector = () => createSelector(
     getRightsReducer,
     rights => Object.values(rights.selected || {}),

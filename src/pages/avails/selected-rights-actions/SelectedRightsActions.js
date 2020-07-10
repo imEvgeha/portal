@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {uniqBy} from 'lodash';
+import {uniqBy, get} from 'lodash';
 import classNames from 'classnames';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -18,6 +18,8 @@ import {
     BULK_UNMATCH,
     BULK_UNMATCH_DISABLED_TOOLTIP,
     BULK_UNMATCH_SUCCESS_TOAST,
+    CREATE_BONUS_RIGHT_TOOLTIP,
+    CREATE_BONUS_RIGHT
 } from './constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
@@ -35,6 +37,7 @@ export const SelectedRightsActions = ({
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
+    const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const node = useRef();
 
@@ -58,6 +61,9 @@ export const SelectedRightsActions = ({
         const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
             ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
         );
+        const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
+        const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
+        const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
 
         // Bulk match criteria check
         setIsMatchable(
@@ -71,6 +77,15 @@ export const SelectedRightsActions = ({
             !!selectedRights.length
             && hasCoreTitleIds
             && ((hasNoEmptySourceRightId && hasUniqueSourceRightIds) || hasEmptySourceRightIds)
+        );
+
+        // Bonus rights create criteria
+        setIsBonusRightCreatable(
+            !!selectedRights.length
+            && hasSameCoreTitleIds
+            && hasEmptySourceRightIds
+            && hasLicensedRights
+            && hasReadyOrReadyNewStatus
         );
     }, [selectedRights]);
 
@@ -126,6 +141,10 @@ export const SelectedRightsActions = ({
         setModalStyle({width: '70%'});
     };
 
+    const createBonusRights = () => {
+      //placeholder for bonus rights handler
+    };
+
     return (
         <>
             <div className="nexus-c-selected-rights-actions" ref={node}>
@@ -175,7 +194,27 @@ export const SelectedRightsActions = ({
                                 onClick={isUnmatchable ? openBulkUnmatchModal : null}
                             >
                                 <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                                    {BULK_UNMATCH}
+                                    <div>
+                                        {BULK_UNMATCH}
+                                    </div>
+                                </NexusTooltip>
+                            </div>
+                        )
+                    }
+                    {
+                        URL.isLocalOrDevOrQA() && (
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    isBonusRightCreatable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="bonus-rights"
+                                onClick={isBonusRightCreatable ? createBonusRights : null}
+                            >
+                                <NexusTooltip content={CREATE_BONUS_RIGHT_TOOLTIP} isDisabled={isBonusRightCreatable}>
+                                    <div>
+                                        {CREATE_BONUS_RIGHT}
+                                    </div>
                                 </NexusTooltip>
                             </div>
                         )

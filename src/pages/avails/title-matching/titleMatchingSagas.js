@@ -2,13 +2,13 @@ import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
 import * as actionTypes from './titleMatchingActionTypes';
-import {createColumnDefs } from '../utils';
+import {createColumnDefs} from '../utils';
 import mappings from '../../../../profile/titleMatchingMappings';
 import Constants from './titleMatchingConstants';
 import {URL} from '../../../util/Common';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../legacy/constants/action-types';
+import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA, METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../legacy/constants/action-types';
 import {createAvailSelectValuesSelector} from '../../legacy/containers/avail/availSelectors';
 import {fetchAndStoreSelectItems} from '../../legacy/containers/avail/availSagas';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
@@ -27,7 +27,7 @@ function* fetchFocusedRight(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         const focusedRight = yield call(requestMethod, payload);
@@ -36,14 +36,14 @@ function* fetchFocusedRight(requestMethod, {payload}) {
             type: actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS,
             payload: focusedRight,
         });
-        const { title, releaseYear, contentType } = focusedRight;
+        const {title, releaseYear, contentType} = focusedRight;
         const {searchParameters: {TITLE, RELEASE_YEAR, CONTENT_TYPE}} = Constants;
         yield put({
             type: METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
             payload: {
                 [TITLE]: title,
                 [RELEASE_YEAR]: releaseYear,
-                [CONTENT_TYPE]: contentType.toString().toUpperCase()
+                [CONTENT_TYPE]: contentType.toString().toUpperCase(),
             },
         });
         yield put({
@@ -52,7 +52,6 @@ function* fetchFocusedRight(requestMethod, {payload}) {
                 [TITLE]: title,
             },
         });
-
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_FOCUSED_RIGHT_ERROR,
@@ -62,7 +61,7 @@ function* fetchFocusedRight(requestMethod, {payload}) {
     }
 }
 
-function* createTitleMatchingColumnDefs(){
+function* createTitleMatchingColumnDefs() {
     const selectItems = yield select(createAvailSelectValuesSelector());
     try {
         if (isEmpty(selectItems)) {
@@ -78,16 +77,16 @@ function* createTitleMatchingColumnDefs(){
     }
 }
 
-function* mergeAndStoreTitles({payload}){
+function* mergeAndStoreTitles({payload}) {
     const {matchList, duplicateList, rightId} = payload;
-    try{
+    try {
         let query = '';
         const matches = Object.keys(matchList);
-        if(matches.length){
+        if (matches.length) {
             query = query.concat('idsToMerge=');
             matches.forEach((key, index) => {
                 query = `${query}${matchList[key].id}`;
-                if(index < (matches.length -1 )){
+                if (index < (matches.length - 1)) {
                     query = query.concat(',');
                 }
             });
@@ -96,7 +95,7 @@ function* mergeAndStoreTitles({payload}){
         query = query.concat(`&idsToHide=${Object.keys(duplicateList).join(',')}`);
 
         const response = yield call(titleService.mergeTitles, query) || {data: {}};
-        if(!URL.isEmbedded()) {
+        if (!URL.isEmbedded()) {
             const updatedRight = {coreTitleId: response.id};
             yield call(rightsService.update, updatedRight, rightId);
         }
@@ -108,8 +107,8 @@ function* mergeAndStoreTitles({payload}){
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
-                actions: [{content:'View title', onClick: () => window.open(url, '_blank')}],
-            }
+                actions: [{content: 'View title', onClick: () => window.open(url, '_blank')}],
+            },
         });
         yield put({
             type: actionTypes.STORE_COMBINED_TITLE,
@@ -119,6 +118,7 @@ function* mergeAndStoreTitles({payload}){
             type: actionTypes.STORE_TITLES,
             payload: Object.values(matchList),
         });
+        // eslint-disable-next-line no-restricted-globals
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${mergeIds}&combinedTitle=${response.id}`)));
     } catch (e) {
         yield put({
@@ -128,15 +128,15 @@ function* mergeAndStoreTitles({payload}){
                 icon: ERROR_ICON,
                 isAutoDismiss: true,
                 description: TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-            }
+            },
         });
     }
 }
 
 export function* titleMatchingWatcher() {
     yield all([
-              takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
-              takeEvery(actionTypes.CREATE_COLUMN_DEFS, createTitleMatchingColumnDefs),
-              takeEvery(actionTypes.MERGE_TITLES, mergeAndStoreTitles)
+        takeEvery(actionTypes.FETCH_FOCUSED_RIGHT, fetchFocusedRight, rightsService.get),
+        takeEvery(actionTypes.CREATE_COLUMN_DEFS, createTitleMatchingColumnDefs),
+        takeEvery(actionTypes.MERGE_TITLES, mergeAndStoreTitles),
     ]);
 }

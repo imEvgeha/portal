@@ -3,40 +3,64 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {get, isEmpty} from 'lodash';
 import Select from '@atlaskit/select';
+import {RadioGroup} from '@atlaskit/radio';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {getLicensors} from '../../../ingestSelectors';
 import {uploadIngest} from '../../../ingestActions';
+import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 import constants from '../../../constants';
 import './InputForm.scss';
-import { RadioGroup } from '@atlaskit/radio';
-import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 
-const  {ingestTypes: {EMAIL, UPLOAD}, SERVICE_REGIONS, TEMPLATES: { USMASTER, STUDIO, INTERNATIONAL} } = constants;
+const {
+    ingestTypes: {EMAIL},
+    SERVICE_REGIONS,
+    TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
+} = constants;
 const US = 'US';
 
-const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, uploadIngest, isUploading}) => {
-    const isStudio = !isEmpty(ingestData) && (ingestData.ingestType === EMAIL || ingestData.licensor);
+const InputForm = ({
+    ingestData = {},
+    closeModal,
+    file,
+    browseClick,
+    licensors,
+    uploadIngest,
+    isUploading,
+}) => {
+    const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
+
+    const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
-        {label: 'Use International Template', value: INTERNATIONAL,
-            disabled: isStudio, testId: isStudio && 'disabled'},
-        {label: 'Use US Template', value: USMASTER,
-            disabled: !isEmpty(ingestData) && (isStudio || ingestData.serviceRegion !== US),
-            testId: !isEmpty(ingestData) && (isStudio|| ingestData.serviceRegion !== US) && 'disabled'},
-        {label: 'Use Studio Template', value: STUDIO,
-            disabled: !isEmpty(ingestData) && !isStudio, testId: !isEmpty(ingestData) && !isStudio && 'disabled'}
+        {label: 'Use International Template',
+            value: INTERNATIONAL,
+            disabled: isStudio,
+            testId: isStudio && 'disabled'},
+        {label: 'Use US Template',
+            value: USMASTER,
+            disabled: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
+            testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled'},
+        {label: 'Use Studio Template',
+            value: STUDIO,
+            disabled: !isEmpty(ingestData) && !isStudio,
+            testId: !isEmpty(ingestData) && !isStudio && 'disabled'},
     ];
 
 
     const initialTemplate = templates.find(t => !t.disabled);
     const [template, setTemplate] = useState(initialTemplate.value);
-    const getLicensor = template === STUDIO && ingestData.licensor && {label: ingestData.licensor , value:  {value: ingestData.licensor} };
+
+    const getLicensor = (template === STUDIO && ingestLicensor)
+        && {label: ingestLicensor, value: {value: ingestLicensor}};
     const [licensor, setLicensor] = useState(getLicensor);
-    const [serviceRegion, setServiceRegion] = useState( ingestData.serviceRegion && {label: ingestData.serviceRegion, value: ingestData.serviceRegion} );
+
+    const [serviceRegion, setServiceRegion] = useState(
+        ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
+    );
 
 
     useEffect(() => {
-        if(template === STUDIO && !ingestData) {
+        if (template === STUDIO && !ingestData) {
             const serviceRegions = get(licensor, 'value.servicingRegions', []);
             if (serviceRegions.length === 1) {
                 const name = serviceRegions[0].servicingRegionName;
@@ -45,23 +69,22 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                 setServiceRegion('');
             }
         }
-    }, [licensor]);
-
+    }, [ingestData, licensor, template]);
 
 
     const uploadHandler = () => {
         const params = {
             serviceRegion: serviceRegion.value,
             file,
-            closeModal
+            closeModal,
         };
-        if(ingestData.externalId) {
+        if (ingestData.externalId) {
             params.externalId = ingestData.externalId;
         }
-        if(template !== STUDIO) {
+        if (template !== STUDIO) {
             params.internal = true;
             params.internalTemplateType = template;
-        } else{
+        } else {
             params.internal = false;
             params.licensor = get(licensor, 'value.value', '');
         }
@@ -77,9 +100,9 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
                 zIndex: 9999,
             }),
         },
-        menuPortalTarget: document.body
+        menuPortalTarget: document.body,
     };
-    const onTemplateChange = (event) => {
+    const onTemplateChange = event => {
         const selectedTemplate = event.target.value;
         setTemplate(selectedTemplate);
         const serviceRegionValue = selectedTemplate === USMASTER && {label: US, value: US};
@@ -87,57 +110,58 @@ const InputForm = ({ingestData = {}, closeModal, file, browseClick, licensors, u
         selectedTemplate !== STUDIO && setLicensor('');
     };
 
-    const uploadDisabled = !(serviceRegion && (template === STUDIO? licensor : true));
+    const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor : true));
     return (
-        <div className='manual-ingest-config'>
-            <div className='manual-ingest-config__grid'>
-                <div className='manual-ingest-config--file-name'>
+        <div className="manual-ingest-config">
+            <div className="manual-ingest-config__grid">
+                <div className="manual-ingest-config--file-name">
                     <label>File</label>
                     <span>{file.name}</span>
                 </div>
-                <Button onClick={browseClick} className='manual-ingest-config__grid--browse'>Browse</Button>
+                <Button onClick={browseClick} className="manual-ingest-config__grid--browse">Browse</Button>
             </div>
-            <div className='manual-ingest-config__templates'>
+            <div className="manual-ingest-config__templates">
                 <RadioGroup
                     options={templates}
                     onChange={onTemplateChange}
                     defaultValue={initialTemplate.value}
                 />
             </div>
-            <div className='manual-ingest-config__grid'>
-                <div className='manual-ingest-config--licensor'>
+            <div className="manual-ingest-config__grid">
+                <div className="manual-ingest-config--licensor">
                     <label>Licensor</label>
                     <Select
-                        id='manual-upload-licensor'
+                        id="manual-upload-licensor"
                         onChange={setLicensor}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO || ingestData.licensor}
+                        isDisabled={template !== STUDIO || ingestLicensor}
                         placeholder={template !== STUDIO ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>
-                <div className='manual-ingest-config--service-region'>
+                <div className="manual-ingest-config--service-region">
                     <label>Service Region</label>
                     <Select
-                        id='manual-upload-service-region'
+                        id="manual-upload-service-region"
                         onChange={setServiceRegion}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={ingestData.serviceRegion || template === USMASTER || (template === STUDIO && !licensor)}
-                        placeholder='Select'
+                        isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
+                        placeholder="Select"
                         {...selectProps}
                     />
                 </div>
             </div>
-            <div className='manual-ingest-config__grid'>
+            <div className="manual-ingest-config__grid">
                 <Button isDisabled={isUploading} onClick={closeModal}>Cancel</Button>
                 <Button
                     onClick={uploadHandler}
                     className={uploadDisabled ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={uploadDisabled}
-                >Upload
+                >
+                    Upload
                 </Button>
             </div>
         </div>
@@ -151,6 +175,7 @@ InputForm.propTypes = {
     browseClick: PropTypes.func,
     file: PropTypes.object,
     isUploading: PropTypes.bool,
+    ingestData: PropTypes.object,
 };
 
 InputForm.defaultProps = {
@@ -158,7 +183,8 @@ InputForm.defaultProps = {
     uploadIngest: () => null,
     browseClick: () => null,
     file: {},
-    isUploading: false
+    isUploading: false,
+    ingestData: {},
 };
 
 const mapStateToProps = state => {

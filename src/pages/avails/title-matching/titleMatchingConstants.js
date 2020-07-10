@@ -8,11 +8,11 @@ export default {
         lockPosition: true,
         sortable: false,
         lockVisible: true,
-        lockPinned: true
+        lockPinned: true,
     },
     searchParameters: {
         TITLE: 'title',
         CONTENT_TYPE: 'contentType',
-        RELEASE_YEAR: 'releaseYear'
-    }
+        RELEASE_YEAR: 'releaseYear',
+    },
 };

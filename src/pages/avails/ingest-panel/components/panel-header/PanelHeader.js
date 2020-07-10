@@ -6,25 +6,21 @@ import FilterIcon from '../../../../../assets/filter.svg';
 import IngestFilters from '../ingest-filters/IngestFilters';
 import './PanelHeader.scss';
 
-const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
+const PanelHeader = ({toggleFilters, onFiltersChange, isShowingFilters}) => {
     return (
         <>
-            <div className='ingest-header'>
-                <div className='ingest-header__title'>
+            <div className="ingest-header">
+                <div className="ingest-header__title">
                     <AvailsIcon />
                     <div>Avails</div>
                 </div>
-                <div className='ingest-header__actions'>
+                <div className="ingest-header__actions">
                     <div onClick={toggleFilters}>
-                        {
-                            showFilters ? <FilterSolidIcon /> : <FilterIcon />
-                        }
+                        {isShowingFilters ? <FilterSolidIcon /> : <FilterIcon />}
                     </div>
                 </div>
             </div>
-            {
-                showFilters && (<IngestFilters onFiltersChange={onFiltersChange} />)
-            }
+            {isShowingFilters && (<IngestFilters onFiltersChange={onFiltersChange} />)}
         </>
     );
 };
@@ -32,13 +28,13 @@ const PanelHeader = ({toggleFilters, onFiltersChange, showFilters}) => {
 PanelHeader.propTypes = {
     toggleFilters: PropTypes.func,
     onFiltersChange: PropTypes.func,
-    showFilters: PropTypes.bool,
+    isShowingFilters: PropTypes.bool,
 };
 
 PanelHeader.defaultProps = {
     toggleFilters: () => null,
     onFiltersChange: () => null,
-    showFilters: false,
+    isShowingFilters: false,
 };
 
 export default PanelHeader;
