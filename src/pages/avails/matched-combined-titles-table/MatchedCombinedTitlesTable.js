@@ -7,7 +7,7 @@ import {getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
 
-const MatchedCombinedTitlesTable = ({data, fullHeight}) => {
+const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
