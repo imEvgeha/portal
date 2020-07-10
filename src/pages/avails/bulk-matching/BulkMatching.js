@@ -5,7 +5,7 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -15,7 +15,7 @@ import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMat
 import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
-import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER} from './constants';
+import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS} from './constants';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
 import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
@@ -32,15 +32,14 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeToast, toggleRefreshGridData}) => {
+export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, bonusRight, setHeaderText}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
-    const [headerText, setHeaderText] = useState(headerTitle);
-    const [affectedRightIds, setAffectedRightIds] = useState([]);
+    const [bonusRightsTableData, setBonusRightsTableData] = useState([]);
     const [contentType, setContentType] = useState(null);
     const [restrictedCoreTitleIds, setRestrictedCoreTitleIds] = useState([]);
     const [loadTitlesTable, setLoadTitlesTable] = useState(false);
-    const [activeTab, setActiveTab] = useState(false);
+    const [activeTab, setActiveTab] = useState(RIGHT_TABS.SELECTED);
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
     const [totalCount, setTotalCount] = useState(0);
     const [matchIsLoading, setMatchIsLoading] = useState(false);
@@ -53,9 +52,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
-    const changeActiveTab = () => {
-        setActiveTab(!activeTab);
-    };
+    const changeActiveTab = (tab) => setActiveTab(tab);
 
     useEffect(() => {
         if (data.length) {
@@ -68,19 +65,27 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            setAffectedRightIds(rightIds);
-            getAffectedRights(rightIds).then(res => {
-                if (Array.isArray(res) && res.length) {
-                    setAffectedTableData(res);
-                }
-            });
+            if(bonusRight){
+                getExistingBonusRights(rightIds).then(res => {
+                    if (Array.isArray(res) && res.length) {
+                        setBonusRightsTableData(res);
+                        setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
+                        setLoadTitlesTable(true);
+                    }
+                });
+            } else {
+                getAffectedRights(rightIds).then(res => {
+                    if (Array.isArray(res) && res.length) {
+                        setAffectedTableData(res);
+                    }
+                });
+            }
         }
     }, [selectedTableData]);
 
     useEffect(() => {
         if (affectedTableData.length) {
             const affectedRightIds = affectedTableData.map(right => right.id);
-
             getRestrictedTitles(affectedRightIds).then(res => {
                 if (Array.isArray(res) && res.length) {
                     setRestrictedCoreTitleIds(res);
@@ -93,12 +98,16 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
     const onMatch = () => {
         setMatchIsLoading(true);
         const coreTitleId = matchList[NEXUS].id;
-        bulkTitleMatch(coreTitleId);
+        if(bonusRight) {
+            //call create bonus rights api here
+        } else {
+            bulkTitleMatch(coreTitleId);
+        }
     };
 
     const bulkTitleMatch = coreTitleId => {
         setCoreTitleId({
-            rightIds: affectedRightIds,
+            rightIds: affectedTableData.map(right => right.id),
             coreTitleId,
         })
             .then(res => {
@@ -121,18 +130,13 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             });
     };
 
-    const mergeRightIds = (affectedRightIds, duplicateList) => {
-        const extractDuplicates = Object.keys(duplicateList);
-        return [...affectedRightIds, ...extractDuplicates];
-    };
-
     const mergeTitles = matchList => {
         const extractTitleIds = Object.values(matchList).reduce((acc, curr) => {
             return [...acc, curr.id];
         }, []);
         titleService.bulkMergeTitles({
             idsToMerge: extractTitleIds,
-            idsToHide: mergeRightIds([], duplicateList),
+            idsToHide: duplicateList,
         })
             .then(res => {
                 setCombinedTitle([...combinedTitle, res]);
@@ -212,7 +216,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                 <CreateTitleForm
                     close={close}
                     bulkTitleMatch={bulkTitleMatch}
-                    affectedRightIds={affectedRightIds}
+                    affectedRightIds={affectedTableData.map(right => right.id)}
                     focusedRight={{contentType}}
                     onSuccess={closeDrawer}
                 />
@@ -220,28 +224,55 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
             NewTitleConstants.NEW_TITLE_MODAL_TITLE);
     };
 
+    const getRightsTableData = () => {
+      switch(activeTab) {
+          case RIGHT_TABS.AFFECTED:
+              return affectedTableData;
+          case RIGHT_TABS.BONUS_RIGHTS:
+              return bonusRightsTableData;
+          default:
+              return selectedTableData;
+      }
+    };
+
     return (
         <div className="nexus-c-bulk-matching">
-            <h2>{headerText}</h2>
             <div className="nexus-c-bulk-matching__header">
                 <div
                     className={classNames(
-                        'nexus-c-bulk-matching__selected',
-                        !activeTab && 'nexus-c-bulk-matching__selected--active'
+                        'nexus-c-bulk-matching__rights-tab',
+                        (activeTab === RIGHT_TABS.SELECTED) && 'nexus-c-bulk-matching__rights-tab--active'
                     )}
-                    onClick={activeTab ? changeActiveTab : null}
+                    onClick={() => changeActiveTab(RIGHT_TABS.SELECTED)}
                 >
-                    Selected Rights ({selectedTableData.length})
+                    {RIGHT_TABS.SELECTED} ({selectedTableData.length})
                 </div>
-                <div
-                    className={classNames(
-                        'nexus-c-bulk-matching__affected',
-                        activeTab && 'nexus-c-bulk-matching__affected--active'
-                    )}
-                    onClick={!activeTab ? changeActiveTab : null}
-                >
-                    Affected Rights ({affectedTableData.length})
-                </div>
+                {
+                    !bonusRight && (
+                        <div
+                            className={classNames(
+                                'nexus-c-bulk-matching__rights-tab',
+                                (activeTab === RIGHT_TABS.AFFECTED) && 'nexus-c-bulk-matching__rights-tab--active'
+                            )}
+                            onClick={() => changeActiveTab(RIGHT_TABS.AFFECTED)}
+                        >
+                            {RIGHT_TABS.AFFECTED} ({affectedTableData.length})
+                        </div>
+                    )
+                }
+                {
+                    bonusRight && (
+                        <div
+                            className={classNames(
+                                'nexus-c-bulk-matching__rights-tab',
+                                (activeTab === RIGHT_TABS.BONUS_RIGHTS) && 'nexus-c-bulk-matching__rights-tab--active'
+                            )}
+                            onClick={() => changeActiveTab(RIGHT_TABS.BONUS_RIGHTS)}
+                        >
+                            {RIGHT_TABS.BONUS_RIGHTS} ({bonusRightsTableData.length})
+                        </div>
+                    )
+                }
                 {!isSummaryReady() && (
                     <Button
                         className="nexus-c-bulk-matching__btn"
@@ -252,9 +283,7 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
                     </Button>
                 )}
             </div>
-            <TitleMatchingRightsTable
-                data={activeTab ? affectedTableData : selectedTableData}
-            />
+            <TitleMatchingRightsTable data={getRightsTableData()} />
             {!isSummaryReady() && (
                 <SectionMessage>
                     {TITLE_MATCHING_MSG}
@@ -342,19 +371,21 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
 
 BulkMatching.propTypes = {
     data: PropTypes.array.isRequired,
-    headerTitle: PropTypes.string,
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     closeDrawer: PropTypes.func,
     toggleRefreshGridData: PropTypes.func,
+    setHeaderText: PropTypes.func,
+    bonusRight: PropTypes.bool,
 };
 
 BulkMatching.defaultProps = {
-    headerTitle: '',
     addToast: () => null,
     removeToast: () => null,
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
+    setHeaderText: () => null,
+    bonusRight: false
 };
 
 const mapDispatchToProps = dispatch => ({

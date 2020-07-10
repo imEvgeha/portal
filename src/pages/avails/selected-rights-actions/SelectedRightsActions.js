@@ -19,7 +19,7 @@ import {
     BULK_UNMATCH_DISABLED_TOOLTIP,
     BULK_UNMATCH_SUCCESS_TOAST,
     CREATE_BONUS_RIGHT_TOOLTIP,
-    CREATE_BONUS_RIGHT
+    CREATE_BONUS_RIGHT, HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE
 } from './constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
@@ -39,6 +39,8 @@ export const SelectedRightsActions = ({
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [bonusRightDrawer, setBonusRightDrawer] = useState(false);
+    const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -97,7 +99,14 @@ export const SelectedRightsActions = ({
         }
     };
 
-    const toggleDrawerState = () => setDrawerOpen(prevDrawerOpen => !prevDrawerOpen);
+    const openDrawer = () => {
+        setDrawerOpen(true);
+    };
+
+    const closeDrawer = () => {
+        setDrawerOpen(false);
+        setBonusRightDrawer(false);
+    };
 
     const openBulkUnmatchModal = () => {
         const rightIds = selectedRights.map(({id}) => id);
@@ -142,7 +151,9 @@ export const SelectedRightsActions = ({
     };
 
     const createBonusRights = () => {
-      //placeholder for bonus rights handler
+        setBonusRightDrawer(true);
+        setHeaderText(HEADER_TITLE_BONUS_RIGHT);
+        openDrawer();
     };
 
     return (
@@ -173,7 +184,7 @@ export const SelectedRightsActions = ({
                                     isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                                 )}
                                 data-test-id="bulk-match"
-                                onClick={isMatchable ? toggleDrawerState : null}
+                                onClick={openDrawer}
                             >
                                 <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
                                     <div>
@@ -222,15 +233,17 @@ export const SelectedRightsActions = ({
                 </div>
             </div>
             <NexusDrawer
-                onClose={toggleDrawerState}
+                onClose={closeDrawer}
                 isOpen={drawerOpen}
                 isClosedOnBlur={false}
                 width="wider"
+                title={headerText}
             >
                 <BulkMatching
                     data={selectedRights}
-                    headerTitle="Title Matching"
-                    closeDrawer={toggleDrawerState}
+                    closeDrawer={closeDrawer}
+                    bonusRight={bonusRightDrawer}
+                    setHeaderText={setHeaderText}
                 />
             </NexusDrawer>
         </>
