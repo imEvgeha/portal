@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {uid} from 'react-uid';
 import styled from 'styled-components';
-import Heading from '../../../../../ui/atlaskit/heading/Heading';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {getServiceRequest} from '../../../servicingOrdersService';
 import {
@@ -73,12 +72,6 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         })),
     }));
 
-    const emptyTableText = () => (
-        <Heading size="h400" as="h3">
-            There are no partner requests.
-        </Heading>
-    );
-
     return (
         <PartnerRequestWrapper>
             <Page>
@@ -111,13 +104,15 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                                 </InfoSection>
                             </GridColumn>
                         </Grid>
-                        <DynamicTable
-                            isLoading={loading}
-                            head={columnDefs}
-                            rows={rows}
-                            isFixedWidth
-                            emptyView={emptyTableText()}
-                        />
+                        <TableWrapper>
+                            <DynamicTable
+                                isLoading={loading}
+                                head={columnDefs}
+                                rows={rows}
+                                isFixedWidth
+                                emptyView={<h4>There are no partner requests.</h4>}
+                            />
+                        </TableWrapper>
                     </GridColumn>
                 </Grid>
             </Page>
@@ -152,9 +147,14 @@ const Title = styled.h1`
 `;
 
 const InfoSection = styled.div`
+    margin-top: ${gridSize() * 2}px;
     margin-bottom: ${gridSize() * 2}px;
 `;
 
 const InfoField = styled.p`
     margin-top: ${gridSize() / 2}px;
+`;
+
+const TableWrapper = styled.div`
+    margin-top: ${gridSize() * 2}px;
 `;
