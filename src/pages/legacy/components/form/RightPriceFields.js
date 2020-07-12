@@ -6,14 +6,7 @@ import Select from '@atlaskit/select/Select';
 import Textfield from '@atlaskit/textfield';
 
 const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptions, priceCurrencyOptions}) => {
-    const [priceTypeValue, setPriceTypeValue] = useState();
-    const [isCurrencyDisabled, setIsCurrencyDisabled] = useState();
     const currentPrice = Array.isArray(existingPriceList) && existingPriceList[priceIndex];
-
-    useEffect(() => {
-        setPriceTypeValue(priceTypeDefaultValue);
-        setIsCurrencyDisabled(currencyDisabledDefaultValue)
-    }, []);
 
     if (currentPrice) {
         priceTypeOptions.forEach(option => {
@@ -31,6 +24,26 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
             return error;
         }
     };
+
+    const returnValidData = data => {
+        return get(existingPriceList, [priceIndex, data]) !== null;
+    };
+
+    const shouldCurrencyBeDisabled = value => {
+        return !value || value === 'Tier';
+    }
+
+    const [isCurrencyDisabled, setIsCurrencyDisabled] = useState(
+        shouldCurrencyBeDisabled(returnValidData('priceType') && get(currentPrice, 'priceType'))
+    );
+
+    const [priceTypeValue, setPriceTypeValue] = useState(
+        isEdit
+            ? {
+                label: getError('priceType') ? getError('priceType').message : (returnValidData('priceType') && currentPrice['label']),
+                value: returnValidData('priceType') && currentPrice['label']
+            } : ''
+    );
 
     const removeExistingOptions = () => {
         return existingPriceList ? priceTypeOptions.filter(x => !existingPriceList.find(y => y.priceType === x.value)) : priceTypeOptions;
@@ -52,26 +65,6 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
         }
         return undefined;
     };
-
-    const returnValidData = data => {
-        return get(existingPriceList, [priceIndex, data]) !== null;
-    };
-
-    const priceTypeDefaultValue = () => {
-        return isEdit
-            ? {
-                label: getError('priceType') ? getError('priceType').message : (returnValidData('priceType') && currentPrice['label']),
-                value: returnValidData('priceType') && currentPrice['label']
-            } : ''
-    }
-
-    const currencyDisabledDefaultValue = () => {
-        return shouldCurrencyBeDisabled(returnValidData('priceType') && get(currentPrice, 'priceType'));
-    }
-
-    const shouldCurrencyBeDisabled = value => {
-        return !value || value === 'Tier';
-    }
 
     const onPriceTypeChange = selectedPriceType => {
         setIsCurrencyDisabled(shouldCurrencyBeDisabled(selectedPriceType.value));
