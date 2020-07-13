@@ -208,11 +208,16 @@ export const BulkMatching = ({data, headerTitle, closeDrawer, addToast, removeTo
         return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
     };
 
+    const closeModal = () => {
+        close();
+        toggleRefreshGridData(true);
+    };
+
     const showModal = () => {
         setModalContentAndTitle(
             () => (
                 <CreateTitleForm
-                    close={close}
+                    close={closeModal}
                     bulkTitleMatch={bulkTitleMatch}
                     affectedRightIds={affectedRightIds}
                     focusedRight={{contentType}}
