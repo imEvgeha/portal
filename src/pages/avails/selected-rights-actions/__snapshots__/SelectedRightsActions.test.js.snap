@@ -23,7 +23,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"
-        onClick={null}
+        onClick={[Function]}
       >
         <NexusTooltip
           content="Rights selected must be the same criteria to make the feature available"
@@ -41,8 +41,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       >
         <NexusTooltip
           content="This feature is enabled when: 
-(All selected rights have Source Right ID populated and they are unique 
-OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated"
+All selected rights have Core Title IDs populated"
           isDisabled={false}
         >
           <div>
@@ -73,13 +72,14 @@ empty Source Right IDs and Status is Ready/ReadyNew"
     isClosedOnBlur={false}
     isOpen={false}
     onClose={[Function]}
-    title=""
+    title="Title Matching"
     width="wider"
   >
     <Connect(Connect(ComposedComponent))
       closeDrawer={[Function]}
       data={Array []}
-      headerTitle="Title Matching"
+      isBonusRight={false}
+      setHeaderText={[Function]}
     />
   </NexusDrawer>
 </Fragment>

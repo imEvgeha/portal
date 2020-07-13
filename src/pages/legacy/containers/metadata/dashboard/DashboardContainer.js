@@ -129,7 +129,7 @@ class DashboardContainer extends React.Component {
                             {
                                 URL.isLocalOrDevOrQA() && (
                                     <ButtonGroup>
-                                        <Button onClick={() => this.props.history.push(URL.keepEmbedded('/sync-log'))}>
+                                        <Button onClick={() => this.props.history.push(URL.keepEmbedded('/metadata/sync-log'))}>
                                             Sync Log
                                         </Button>
                                     </ButtonGroup>

@@ -89,7 +89,7 @@ describe('SelectedRightsActions', () => {
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be disabled when sourceRightIds are not unique', () => {
+        it('should be enabled when sourceRightIds are not unique', () => {
             init([
                 {
                     coreTitleId: '1',
@@ -100,10 +100,10 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '1',
                 },
             ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be disabled when sourceRightIds are not all populated', () => {
+        it('should be enabled when sourceRightIds are not all populated', () => {
             init([
                 {
                     coreTitleId: '1',
@@ -114,7 +114,7 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                 },
             ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
         it('should be disabled when coreTitleIds are not all populated', () => {
@@ -172,7 +172,7 @@ describe('SelectedRightsActions', () => {
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be disabled when sourceRightIds are not unique', () => {
+        it('should be enabled when sourceRightIds are not unique', () => {
             init([
                 {
                     coreTitleId: '',
@@ -185,7 +185,7 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '1',
                 },
             ]);
-            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
         it('should be disabled when sourceRightIds are not all populated', () => {

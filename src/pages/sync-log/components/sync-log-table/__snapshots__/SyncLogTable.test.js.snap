@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EventManagementTable should match snapshot 1`] = `
+exports[`SyncLogTable should match snapshot 1`] = `
 <div
   className="nexus-c-sync-log-table"
 >
@@ -27,7 +27,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           onChange={[Function]}
           onConfirm={[Function]}
           required={true}
-          value=""
+          value="2020-07-11"
         />
       </div>
       <div
@@ -61,81 +61,94 @@ exports[`EventManagementTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "status",
           "field": "status",
           "headerName": "Error/Success",
           "valueFormatter": [Function],
-          "valueGetter": [Function],
           "width": 120,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "updatedAt",
           "dataType": "timestamp",
           "field": "updatedAt",
           "headerName": "UpdatedAt",
           "javaVariableName": "updatedAt",
           "minWidth": 150,
-          "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "titleName",
           "field": "titleName",
           "headerName": "Title Name",
           "minWidth": 150,
-          "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "coreTitleId",
           "field": "coreTitleId",
           "headerName": "Title ID",
-          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "type",
           "field": "type",
           "headerName": "Document Type",
-          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "externalSystemId",
           "field": "externalSystemId",
           "headerName": "Legacy System",
-          "valueFormatter": [Function],
           "width": 120,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "publishedAt",
           "dataType": "timestamp",
           "field": "publishedAt",
           "headerName": "Published At",
           "javaVariableName": "publishedAt",
           "minWidth": 150,
-          "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "publishErrors",
+          "cellRendererParams": Object {
+            "setErrors": [Function],
+          },
           "colId": "publishErrors",
           "field": "publishErrors",
           "headerName": "Publish Errors",
           "minWidth": 150,
-          "valueFormatter": [Function],
-          "valueGetter": [Function],
         },
       ]
     }
     externalFilter={
       Object {
-        "dateFrom": "",
+        "dateFrom": "2020-07-11",
         "dateTo": "",
+      }
+    }
+    frameworkComponents={
+      Object {
+        "publishErrors": [Function],
       }
     }
     mapping={
@@ -144,6 +157,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "colId": "status",
           "field": "status",
           "headerName": "Error/Success",
+          "valueFormatter": [Function],
           "width": 120,
         },
         Object {
@@ -187,6 +201,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
+          "cellRenderer": "publishErrors",
           "colId": "publishErrors",
           "field": "publishErrors",
           "headerName": "Publish Errors",
@@ -197,5 +212,30 @@ exports[`EventManagementTable should match snapshot 1`] = `
     onGridEvent={[Function]}
     rowSelection="single"
   />
+  <NexusDrawer
+    headerContent={null}
+    isClosedOnBlur={true}
+    isOpen={false}
+    onClose={[Function]}
+    title="Publish Errors"
+    width="wider"
+  >
+    <div
+      className="nexus-c-sync-log-table__errors-table"
+    >
+      <div
+        className="nexus-c-sync-log-table__errors-table--header-cell"
+        key="type"
+      >
+        TYPE
+      </div>
+      <div
+        className="nexus-c-sync-log-table__errors-table--header-cell"
+        key="description"
+      >
+        DESCRIPTION
+      </div>
+    </div>
+  </NexusDrawer>
 </div>
 `;
