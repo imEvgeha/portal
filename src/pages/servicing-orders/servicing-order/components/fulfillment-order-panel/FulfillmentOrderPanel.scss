@@ -63,4 +63,9 @@
     font-size: 11px;
     color: #737e91;
   }
+
+  &__status {
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
 }

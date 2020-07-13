@@ -41,7 +41,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 const flattenedObject = services[providerServices].map((service, index) => ({
                     componentId: service.externalServices.externalId,
                     spec: service.externalServices.formatType,
-                    doNotStartBefore: service.overrideDueDate,
+                    doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
                     deliverToVu: service.deteTasks.deteDeliveries.externalDelivery.deliverToId.toLowerCase() === 'vu',
                     operationalStatus: service.status,
@@ -86,7 +86,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             // Re-mapping the data
             currentService.externalServices.externalId = data.componentId;
             currentService.externalServices.formatType = data.spec;
-            currentService.overrideDueDate = data.doNotStartBefore;
+            currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
             currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId = setDeliverToId(data.deliverToVu, rowIndex);
             currentService.status = data.operationalStatus;
