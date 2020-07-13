@@ -61,7 +61,6 @@ export const SelectedRightsActions = ({
         const hasCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId);
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
         const hasNoEmptySourceRightId = selectedRights.every(({sourceRightId}) => !!sourceRightId);
-        const hasUniqueSourceRightIds = selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
             ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
         );
@@ -73,14 +72,13 @@ export const SelectedRightsActions = ({
         setIsMatchable(
             !!selectedRights.length
             && hasEmptyCoreTitleIdsAndSameContentType
-            && (hasEmptySourceRightIds || (hasNoEmptySourceRightId && hasUniqueSourceRightIds))
+            && (hasEmptySourceRightIds || hasNoEmptySourceRightId)
         );
 
         // Bulk unmatch criteria check
         setIsUnmatchable(
             !!selectedRights.length
             && hasCoreTitleIds
-            && ((hasNoEmptySourceRightId && hasUniqueSourceRightIds) || hasEmptySourceRightIds)
         );
 
         // Bonus rights create criteria
