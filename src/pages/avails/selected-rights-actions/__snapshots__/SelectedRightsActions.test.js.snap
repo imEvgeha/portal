@@ -41,8 +41,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       >
         <NexusTooltip
           content="This feature is enabled when: 
-(All selected rights have Source Right ID populated and they are unique 
-OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated"
+All selected rights have Core Title IDs populated"
           isDisabled={false}
         >
           <div>

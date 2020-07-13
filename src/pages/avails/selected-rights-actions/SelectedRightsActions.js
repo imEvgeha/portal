@@ -69,14 +69,13 @@ export const SelectedRightsActions = ({
         setIsMatchable(
             !!selectedRights.length
             && hasEmptyCoreTitleIdsAndSameContentType
-            && (hasEmptySourceRightIds || (hasNoEmptySourceRightId && hasUniqueSourceRightIds))
+            && (hasEmptySourceRightIds || hasNoEmptySourceRightId)
         );
 
         // Bulk unmatch criteria check
         setIsUnmatchable(
             !!selectedRights.length
             && hasCoreTitleIds
-            && ((hasNoEmptySourceRightId && hasUniqueSourceRightIds) || hasEmptySourceRightIds)
         );
 
         // Bonus rights create criteria
