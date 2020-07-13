@@ -9,6 +9,7 @@ export const COLUMNS = [
     'Title',
     'Version',
     'Due Date',
+    'Notes',
     'Primary Video',
     'Secondary Audio',
     'Sub-titles Full',
@@ -16,13 +17,13 @@ export const COLUMNS = [
     'Trailer',
     'Metadata',
     'Artwork',
-    'Notes'
 ];
 
 export const COLUMN_KEYS = [
     'productDesc',
     'version',
     'srdueDate',
+    'materialNotes',
     'primaryVideo',
     'secondaryAudio',
     'subtitlesFull',
@@ -30,7 +31,6 @@ export const COLUMN_KEYS = [
     'trailer',
     'metaData',
     'artWork',
-    'materialNotes'
 ];
 
 export const SORT_DIRECTION = [

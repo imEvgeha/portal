@@ -1,5 +1,7 @@
 import DynamicTable from '@atlaskit/dynamic-table';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
+import Tag from '@atlaskit/tag';
+import TagGroup from '@atlaskit/tag-group';
 import {gridSize} from '@atlaskit/theme';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
@@ -20,6 +22,7 @@ import {
 const PartnerRequest = ({externalId, configuredPrId}) => {
     const [data, setData] = useState({list: []});
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         getServiceRequest(externalId).then(res => {
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
@@ -40,15 +43,44 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 key: COLUMN_KEYS[index],
                 content: col,
                 isSortable: false,
-                width: 7,
             };
-
-            if (col === 'Notes') {
-                return {...baseColumnDef, width: 30};
-            }
 
             return baseColumnDef;
         }),
+    };
+
+    const isLanguageColumn = key => {
+        return [
+            'secondaryAudio',
+            'subtitlesFull',
+            'subtitlesForced',
+            'trailer',
+            'metaData',
+            'artWork',
+        ].includes(key);
+    };
+
+    const splitTrimSortLanguages = languages => {
+        if (!languages) {
+            return;
+        }
+
+        return languages
+            .split(',')
+            .map(language => language.trim())
+            .sort();
+    };
+
+    const renderLanguagesToTagGroup = languages => {
+        return (
+            !!languages && (
+                <TagGroup>
+                    {splitTrimSortLanguages(languages).map(language => (
+                        <Tag key={language} text={language} />
+                    ))}
+                </TagGroup>
+            )
+        );
     };
 
     const rows = data.list.map(order => ({
@@ -61,21 +93,26 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
             key: uid(key, index),
 
             // the content for each cell
-            content:
-                key === 'materialNotes' ? (
-                    <WrapperWithMaxHeight maxHeight="14">
+            content: (
+                <WrapperWithMaxHeight
+                    maxHeight="14"
+                    isNotesColumn={!!order[key] && key === 'materialNotes'}
+                    isLanguageColumn={isLanguageColumn(key)}
+                >
+                    {isLanguageColumn(key) ? (
+                        renderLanguagesToTagGroup(order[key])
+                    ) : (
                         <p>{order[key]}</p>
-                    </WrapperWithMaxHeight>
-                ) : (
-                    order[key]
-                ),
+                    )}
+                </WrapperWithMaxHeight>
+            ),
         })),
     }));
 
     return (
         <PartnerRequestWrapper>
             <Page>
-                <Grid layout="fluid">
+                <Grid>
                     <GridColumn>
                         <Title>Partner Request</Title>
                         <Grid layout="fluid" spacing="comfortable">
@@ -106,10 +143,9 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                         </Grid>
                         <TableWrapper>
                             <DynamicTable
-                                isLoading={loading}
                                 head={columnDefs}
                                 rows={rows}
-                                isFixedWidth
+                                isLoading={loading}
                                 emptyView={<h4>There are no partner requests.</h4>}
                             />
                         </TableWrapper>
@@ -135,6 +171,8 @@ export default PartnerRequest;
 const WrapperWithMaxHeight = styled.div`
     max-height: ${props => props.maxHeight * gridSize()}px;
     overflow-y: auto;
+    width: ${props => props.isNotesColumn && gridSize() * 30 + 'px'};
+    max-width: ${props => props.isLanguageColumn && gridSize() * 20 + 'px'};
 `;
 
 const PartnerRequestWrapper = styled.div`
@@ -157,4 +195,5 @@ const InfoField = styled.p`
 
 const TableWrapper = styled.div`
     margin-top: ${gridSize() * 2}px;
+    overflow-x: auto;
 `;
