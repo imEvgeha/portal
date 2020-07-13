@@ -1,15 +1,25 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import SyncLogTable from './SyncLogTable';
 import Button from '@atlaskit/button';
 
-describe('EventManagementTable', () => {
+describe('SyncLogTable', () => {
     let wrapper;
-    let syncLogGrid;
+    let spy;
+
+    beforeAll(() => {
+        const mockDate = new Date('2020-07-11');
+        spy = jest
+            .spyOn(global, 'Date')
+            .mockImplementation(() => mockDate);
+    });
+
+    afterAll(() => {
+        spy.mockRestore();
+    });
 
     beforeEach(() => {
         wrapper = shallow(<SyncLogTable />);
-        syncLogGrid = wrapper.find('.nexus-c-sync-log-grid');
     });
 
     it('should match snapshot', () => {
