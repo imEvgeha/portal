@@ -2,7 +2,7 @@
 
 exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
 <div
-  className=""
+  className="nexus-c-matched-combined-titles-table-wrapper"
 >
   <NexusGrid
     className="nexus-c-matched-combined-titles-table"

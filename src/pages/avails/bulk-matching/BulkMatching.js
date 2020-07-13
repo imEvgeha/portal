@@ -251,20 +251,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     {RIGHT_TABS.SELECTED} ({selectedTableData.length})
                 </div>
                 {
-                    !isBonusRight && (
-                        <div
-                            className={classNames(
-                                'nexus-c-bulk-matching__rights-tab',
-                                (activeTab === RIGHT_TABS.AFFECTED) && 'nexus-c-bulk-matching__rights-tab--active'
-                            )}
-                            onClick={() => changeActiveTab(RIGHT_TABS.AFFECTED)}
-                        >
-                            {RIGHT_TABS.AFFECTED} ({affectedTableData.length})
-                        </div>
-                    )
-                }
-                {
-                    isBonusRight && (
+                    isBonusRight ? (
                         <div
                             className={classNames(
                                 'nexus-c-bulk-matching__rights-tab',
@@ -273,6 +260,16 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                             onClick={() => changeActiveTab(RIGHT_TABS.BONUS_RIGHTS)}
                         >
                             {RIGHT_TABS.BONUS_RIGHTS} ({bonusRightsTableData.length})
+                        </div>
+                    ) : (
+                        <div
+                            className={classNames(
+                                'nexus-c-bulk-matching__rights-tab',
+                                (activeTab === RIGHT_TABS.AFFECTED) && 'nexus-c-bulk-matching__rights-tab--active'
+                            )}
+                            onClick={() => changeActiveTab(RIGHT_TABS.AFFECTED)}
+                        >
+                            {RIGHT_TABS.AFFECTED} ({affectedTableData.length})
                         </div>
                     )
                 }
