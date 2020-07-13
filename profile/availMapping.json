@@ -222,6 +222,7 @@
   }],
   "enableSearch": true,
   "enableEdit": true,
+  "required": true,
   "requiredBasedField": [{
     "field" : "licensed",
     "fieldValue": true
@@ -238,6 +239,7 @@
   }],
   "enableSearch": true,
   "enableEdit": true,
+  "required": true,
   "requiredBasedField": [{
     "field" : "licensed",
     "fieldValue": true
