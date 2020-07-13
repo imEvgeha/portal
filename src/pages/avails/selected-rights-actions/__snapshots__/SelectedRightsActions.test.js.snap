@@ -77,9 +77,9 @@ empty Source Right IDs and Status is Ready/ReadyNew"
     width="wider"
   >
     <Connect(Connect(ComposedComponent))
-      bonusRight={false}
       closeDrawer={[Function]}
       data={Array []}
+      isBonusRight={false}
       setHeaderText={[Function]}
     />
   </NexusDrawer>

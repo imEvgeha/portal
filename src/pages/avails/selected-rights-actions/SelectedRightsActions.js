@@ -19,7 +19,9 @@ import {
     BULK_UNMATCH_DISABLED_TOOLTIP,
     BULK_UNMATCH_SUCCESS_TOAST,
     CREATE_BONUS_RIGHT_TOOLTIP,
-    CREATE_BONUS_RIGHT, HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE
+    CREATE_BONUS_RIGHT,
+    HEADER_TITLE_BONUS_RIGHT,
+    HEADER_TITLE
 } from './constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
@@ -39,7 +41,7 @@ export const SelectedRightsActions = ({
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [bonusRightDrawer, setBonusRightDrawer] = useState(false);
+    const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
@@ -105,7 +107,7 @@ export const SelectedRightsActions = ({
 
     const closeDrawer = () => {
         setDrawerOpen(false);
-        setBonusRightDrawer(false);
+        setIsBonusRight(false);
     };
 
     const openBulkUnmatchModal = () => {
@@ -151,7 +153,7 @@ export const SelectedRightsActions = ({
     };
 
     const createBonusRights = () => {
-        setBonusRightDrawer(true);
+        setIsBonusRight(true);
         setHeaderText(HEADER_TITLE_BONUS_RIGHT);
         openDrawer();
     };
@@ -242,7 +244,7 @@ export const SelectedRightsActions = ({
                 <BulkMatching
                     data={selectedRights}
                     closeDrawer={closeDrawer}
-                    bonusRight={bonusRightDrawer}
+                    isBonusRight={isBonusRight}
                     setHeaderText={setHeaderText}
                 />
             </NexusDrawer>

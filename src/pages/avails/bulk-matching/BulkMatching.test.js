@@ -56,12 +56,12 @@ describe('BulkMatching', () => {
     });
 
     it('should not display affected tab when bonus right', () => {
-        wrapper.setProps({bonusRight: true});
+        wrapper.setProps({isBonusRight: true});
         expect(wrapper.find('.nexus-c-bulk-matching__rights-tab').length).toEqual(2);
     });
 
     it('should display bonus rights tab on click', () => {
-        wrapper.setProps({bonusRight: true});
+        wrapper.setProps({isBonusRight: true});
         wrapper.find('.nexus-c-bulk-matching__rights-tab').at(1).props().onClick();
         expect(wrapper.find('.nexus-c-bulk-matching__rights-tab--active').text().includes(RIGHT_TABS.BONUS_RIGHTS)).toBe(true);
     });

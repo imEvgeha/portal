@@ -11,6 +11,7 @@ exports[`BulkMatchingReview should match snapshot 1`] = `
   </div>
   <MatchedCombinedTitlesTable
     data={Array []}
+    isFullHeight={false}
   />
   <div
     className="nexus-c-bulk-matching-review__combined"
@@ -19,6 +20,7 @@ exports[`BulkMatchingReview should match snapshot 1`] = `
   </div>
   <MatchedCombinedTitlesTable
     data={Array []}
+    isFullHeight={false}
   />
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     appearance="primary"

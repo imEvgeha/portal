@@ -32,7 +32,7 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, bonusRight, setHeaderText}) => {
+export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, isBonusRight, setHeaderText}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [bonusRightsTableData, setBonusRightsTableData] = useState([]);
@@ -52,7 +52,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
-    const changeActiveTab = (tab) => setActiveTab(tab);
+    const changeActiveTab = tab => (tab !== activeTab) && setActiveTab(tab);
 
     useEffect(() => {
         if (data.length) {
@@ -65,7 +65,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            if(bonusRight){
+            if(isBonusRight){
                 getExistingBonusRights(rightIds).then(res => {
                     if (Array.isArray(res) && res.length) {
                         setBonusRightsTableData(res);
@@ -98,7 +98,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const onMatch = () => {
         setMatchIsLoading(true);
         const coreTitleId = matchList[NEXUS].id;
-        if(bonusRight) {
+        if(isBonusRight) {
             //call create bonus rights api here
         } else {
             bulkTitleMatch(coreTitleId);
@@ -136,7 +136,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
         }, []);
         titleService.bulkMergeTitles({
             idsToMerge: extractTitleIds,
-            idsToHide: duplicateList,
+            idsToHide: Object.values(duplicateList).map(title => title.id),
         })
             .then(res => {
                 setCombinedTitle([...combinedTitle, res]);
@@ -248,7 +248,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     {RIGHT_TABS.SELECTED} ({selectedTableData.length})
                 </div>
                 {
-                    !bonusRight && (
+                    !isBonusRight && (
                         <div
                             className={classNames(
                                 'nexus-c-bulk-matching__rights-tab',
@@ -261,7 +261,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     )
                 }
                 {
-                    bonusRight && (
+                    isBonusRight && (
                         <div
                             className={classNames(
                                 'nexus-c-bulk-matching__rights-tab',
@@ -376,7 +376,7 @@ BulkMatching.propTypes = {
     closeDrawer: PropTypes.func,
     toggleRefreshGridData: PropTypes.func,
     setHeaderText: PropTypes.func,
-    bonusRight: PropTypes.bool,
+    isBonusRight: PropTypes.bool,
 };
 
 BulkMatching.defaultProps = {
@@ -385,7 +385,7 @@ BulkMatching.defaultProps = {
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
     setHeaderText: () => null,
-    bonusRight: false
+    isBonusRight: false
 };
 
 const mapDispatchToProps = dispatch => ({
