@@ -27,7 +27,7 @@ const PriceField = ({
             return (
                 <NexusTag
                     key={uid(price)}
-                    text={`${type} ${value} ${currency}`}
+                    text={`${type} ${value || ''} ${currency || ''}`}
                     value={price}
                     removeButtonText="Remove"
                     onRemove={() => onRemoveClick(price)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {BulkMatching} from './BulkMatching';
 import Button from '@atlaskit/button';
+import {BulkMatching} from './BulkMatching';
 import {RIGHT_TABS} from './constants';
 
 describe('BulkMatching', () => {
@@ -32,6 +32,7 @@ describe('BulkMatching', () => {
     });
 
     it('should have a New Title button', () => {
+        // eslint-disable-next-line no-magic-numbers
         expect(wrapper.find(Button).length).toEqual(2);
     });
 

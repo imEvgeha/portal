@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
+import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 import Add from '../../../../../../assets/action-add.svg';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
@@ -12,33 +13,38 @@ const UploadIngestButton = ({ingestData}) => {
     const [file, setFile] = useState(null);
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
+    const closeModal = useCallback(() => {
+        setFile(null);
+        close();
+    }, [close]);
+
+    const browseClick = useCallback(() => {
+        closeModal();
+        inputClick();
+    }, [closeModal]);
+
+    const buildForm = useCallback(() => {
+        return (
+            <InputForm
+                ingestData={ingestData}
+                closeModal={closeModal}
+                file={file}
+                browseClick={browseClick}
+            />
+        );
+    }, [browseClick, closeModal, file, ingestData]);
+
     useEffect(() => {
-        if(file) {
+        if (file) {
             setModalStyle({width: 'small'});
             setModalActions([]);
             setModalContentAndTitle(buildForm(), TITLE);
         }
-    }, [file]);
+    }, [buildForm, file, setModalActions, setModalContentAndTitle, setModalStyle]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
 
-    const browseClick = () => {
-        closeModal();
-        inputClick();
-    };
-
-    const buildForm = () => {
-  return (
-      <InputForm
-          ingestData={ingestData}
-          closeModal={closeModal}
-          file={file}
-          browseClick={browseClick}
-      />
-);
-};
-
-    const handleUpload = (e) => {
+    const handleUpload = e => {
         const {files} = e.target;
         if (files && files.length > 0) {
             setFile(Array.from(files)[0]);
@@ -46,24 +52,28 @@ const UploadIngestButton = ({ingestData}) => {
         }
     };
 
-    const closeModal = () =>{
-        setFile(null);
-        close();
-    };
-
     return (
-        <div className='ingest-upload'>
+        <div className="ingest-upload">
             <input
-                className='ingest-upload__input'
+                className="ingest-upload__input"
                 type="file"
                 accept={config.get('avails.upload.extensions')}
                 ref={inputRef}
                 onInput={handleUpload}
             />
-            {ingestData ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
+            {ingestData
+                ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
                 : <Add onClick={inputClick} />}
         </div>
     );
+};
+
+UploadIngestButton.propTypes = {
+    ingestData: PropTypes.object,
+};
+
+UploadIngestButton.defaultProps = {
+    ingestData: null,
 };
 
 export default UploadIngestButton;

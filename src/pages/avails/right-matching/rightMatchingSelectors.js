@@ -2,38 +2,38 @@ import {createSelector} from 'reselect';
 
 const getRightMatching = state => state.avails.rightMatching || {};
 
-const getColumnDefs = (state) => {
+const getColumnDefs = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.columnDefs;
 };
 
 // move this to availMapping selector
-const getAvailsMapping = (state) => {
+const getAvailsMapping = state => {
     const {root} = state;
     return root && root.availsMapping;
 };
 
-const getFieldSearchCriteria = (state) => {
+const getFieldSearchCriteria = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.fieldSearchCriteria;
 };
 
-const getFocusedRight = (state) => {
+const getFocusedRight = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.focusedRight;
 };
 
-const getMatchedRights = (state) => {
+const getMatchedRights = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.matchedRights;
 };
 
-const getCombinedRight = (state) => {
+const getCombinedRight = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching && rightMatching.combinedRight;
 };
 
-const getRightMatchPageData = (state) => {
+const getRightMatchPageData = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching && rightMatching.rightMatchPageData;
 };

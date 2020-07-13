@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
-import classNames from 'classnames';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -42,15 +42,15 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const [activeTab, setActiveTab] = useState(RIGHT_TABS.SELECTED);
     const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
     const [totalCount, setTotalCount] = useState(0);
-    const [matchIsLoading, setMatchIsLoading] = useState(false);
-    const [matchAndCreateIsLoading, setMatchAndCreateIsLoading] = useState(false);
+    const [isMatchLoading, setMatchIsLoading] = useState(false);
+    const [isMatchAndCreateLoading, setMatchAndCreateIsLoading] = useState(false);
     const [combinedTitle, setCombinedTitle] = useState([]);
     const [matchedTitles, setMatchedTitles] = useState([]);
     const [selectedActive, setSelectedActive] = useState(false);
 
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
-    const {NEXUS, MOVIDA, VZ} = TitleSystems;
+    const {NEXUS} = TitleSystems;
 
     const changeActiveTab = tab => (tab !== activeTab) && setActiveTab(tab);
 
@@ -110,7 +110,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
             rightIds: affectedTableData.map(right => right.id),
             coreTitleId,
         })
-            .then(res => {
+            .then(() => {
                 //  handle matched titles (ignore updated affected rights from response)
                 const matchedTitlesList = Object.values(matchList);
                 setMatchedTitles(matchedTitlesList);
@@ -124,7 +124,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 setLoadTitlesTable(false);
                 setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
             })
-            .catch(err => {
+            .catch(() => {
                 // nexusFetch handles error toast
                 disableLoadingState();
             });
@@ -143,7 +143,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 const {id} = res || {};
                 bulkTitleMatch(id);
             })
-            .catch(err => {
+            .catch(() => {
                 // nexusFetch handles error toast
                 setMatchAndCreateIsLoading(false);
             });
@@ -183,14 +183,16 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
             description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             icon: WARNING_ICON,
             actions: [
-                {content: 'Cancel', onClick: () => {
-                    removeToast();
-                    disableLoadingState();
-                }},
-                {content: 'Ok', onClick: () => {
-                    removeToast();
-                    mergeTitles(matchList);
-                }},
+                {content: 'Cancel',
+                    onClick: () => {
+                        removeToast();
+                        disableLoadingState();
+                    }},
+                {content: 'Ok',
+                    onClick: () => {
+                        removeToast();
+                        mergeTitles(matchList);
+                    }},
             ],
             isWithOverlay: true,
         });
@@ -220,8 +222,9 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     focusedRight={{contentType}}
                     onSuccess={closeDrawer}
                 />
-              ),
-            NewTitleConstants.NEW_TITLE_MODAL_TITLE);
+            ),
+            NewTitleConstants.NEW_TITLE_MODAL_TITLE
+        );
     };
 
     const getRightsTableData = () => {
@@ -277,7 +280,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     <Button
                         className="nexus-c-bulk-matching__btn"
                         onClick={showModal}
-                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                        isDisabled={isMatchAndCreateLoading || isMatchLoading}
                     >
                         New Title
                     </Button>
@@ -291,7 +294,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                         spacing="none"
                         appearance="link"
                         onClick={showModal}
-                        isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                        isDisabled={isMatchAndCreateLoading || isMatchLoading}
                     >
                         New Title
                     </Button>
@@ -312,7 +315,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                             className="nexus-c-bulk-matching__titles-table-selected-btn"
                             onClick={() => setSelectedActive(!selectedActive)}
                             isSelected={selectedActive}
-                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                            isDisabled={isMatchAndCreateLoading || isMatchLoading}
                         >
                             Selected ({getMatchAndDuplicateItems().length})
                         </Button>
@@ -332,7 +335,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                             handleDuplicateClick={handleDuplicateClick}
                             duplicateList={duplicateList}
                             setTitlesTableIsReady={setTitlesTableIsReady}
-                            isDisabled={matchAndCreateIsLoading || matchIsLoading}
+                            isDisabled={isMatchAndCreateLoading || isMatchLoading}
                         />
                     </div>
                     <div
@@ -348,8 +351,8 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                         onMatch={onMatch}
                         onMatchAndCreate={onMatchAndCreate}
                         onCancel={onCancel}
-                        matchIsLoading={matchIsLoading}
-                        matchAndCreateIsLoading={matchAndCreateIsLoading}
+                        isMatchLoading={isMatchLoading}
+                        isMatchAndCreateLoading={isMatchAndCreateLoading}
                     />
                 </div>
             )}
