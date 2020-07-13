@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EventManagementTable should match snapshot 1`] = `
+exports[`SyncLogTable should match snapshot 1`] = `
 <div
   className="nexus-c-sync-log-table"
 >
@@ -27,7 +27,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           onChange={[Function]}
           onConfirm={[Function]}
           required={true}
-          value="2020-07-13"
+          value="2020-07-11"
         />
       </div>
       <div
@@ -142,7 +142,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
     }
     externalFilter={
       Object {
-        "dateFrom": "2020-07-13",
+        "dateFrom": "2020-07-11",
         "dateTo": "",
       }
     }
