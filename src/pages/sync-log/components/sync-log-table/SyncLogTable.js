@@ -100,7 +100,7 @@ const SyncLogTable = () => {
                 onClose={closeDrawer}
                 isOpen={showDrawer}
                 title={ERROR_TABLE_TITLE}
-                width='wider'
+                width="wider"
             >
                 <div className="nexus-c-sync-log-table__errors-table">
                     {
