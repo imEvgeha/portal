@@ -28,6 +28,7 @@ $sizes: full, narrow, extended, medium, wide, wider;
     display: none;
     &--title {
       font-size: 29px;
+      color: map-get($colors, nexus-text);
     }
     svg {
       cursor: pointer;

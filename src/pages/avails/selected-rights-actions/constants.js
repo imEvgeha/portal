@@ -9,3 +9,5 @@ export const CREATE_BONUS_RIGHT = 'Create Bonus Right';
 export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when rights are licensed,
 have the same Core Title IDs (not blank),
 empty Source Right IDs and Status is Ready/ReadyNew`;
+export const HEADER_TITLE = 'Title Matching';
+export const HEADER_TITLE_BONUS_RIGHT = 'Title Matching for Creating Bonus Rights';
