@@ -6,9 +6,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
     bannerHeight={52}
     isBannerOpen={false}
   >
-    <WithTheme(AkGrid)
-      layout="fluid"
-    >
+    <WithTheme(AkGrid)>
       <WithTheme(AkGridColumn)>
         <styled.h1>
           Partner Request
@@ -69,73 +67,61 @@ exports[`PartnerRequest should match snapshot 1`] = `
                     "content": "Title",
                     "isSortable": false,
                     "key": "productDesc",
-                    "width": 7,
                   },
                   Object {
                     "content": "Version",
                     "isSortable": false,
                     "key": "version",
-                    "width": 7,
                   },
                   Object {
                     "content": "Due Date",
                     "isSortable": false,
                     "key": "srdueDate",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Primary Video",
-                    "isSortable": false,
-                    "key": "primaryVideo",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Secondary Audio",
-                    "isSortable": false,
-                    "key": "secondaryAudio",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Sub-titles Full",
-                    "isSortable": false,
-                    "key": "subtitlesFull",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Sub-titles Forced",
-                    "isSortable": false,
-                    "key": "subtitlesForced",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Trailer",
-                    "isSortable": false,
-                    "key": "trailer",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Metadata",
-                    "isSortable": false,
-                    "key": "metaData",
-                    "width": 7,
-                  },
-                  Object {
-                    "content": "Artwork",
-                    "isSortable": false,
-                    "key": "artWork",
-                    "width": 7,
                   },
                   Object {
                     "content": "Notes",
                     "isSortable": false,
                     "key": "materialNotes",
-                    "width": 30,
+                  },
+                  Object {
+                    "content": "Primary Video",
+                    "isSortable": false,
+                    "key": "primaryVideo",
+                  },
+                  Object {
+                    "content": "Secondary Audio",
+                    "isSortable": false,
+                    "key": "secondaryAudio",
+                  },
+                  Object {
+                    "content": "Sub-titles Full",
+                    "isSortable": false,
+                    "key": "subtitlesFull",
+                  },
+                  Object {
+                    "content": "Sub-titles Forced",
+                    "isSortable": false,
+                    "key": "subtitlesForced",
+                  },
+                  Object {
+                    "content": "Trailer",
+                    "isSortable": false,
+                    "key": "trailer",
+                  },
+                  Object {
+                    "content": "Metadata",
+                    "isSortable": false,
+                    "key": "metaData",
+                  },
+                  Object {
+                    "content": "Artwork",
+                    "isSortable": false,
+                    "key": "artWork",
                   },
                 ],
               }
             }
             isFixedSize={false}
-            isFixedWidth={true}
             isLoading={true}
             isRankable={false}
             onSetPage={[Function]}
