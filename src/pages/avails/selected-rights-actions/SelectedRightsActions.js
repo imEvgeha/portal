@@ -61,7 +61,6 @@ export const SelectedRightsActions = ({
         const hasCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId);
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
         const hasNoEmptySourceRightId = selectedRights.every(({sourceRightId}) => !!sourceRightId);
-        const hasUniqueSourceRightIds = selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
             ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
         );
