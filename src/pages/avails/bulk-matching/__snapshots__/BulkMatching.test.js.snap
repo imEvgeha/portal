@@ -4,25 +4,24 @@ exports[`BulkMatching should match snapshot 1`] = `
 <div
   className="nexus-c-bulk-matching"
 >
-  <h2>
-    Title Matching
-  </h2>
   <div
     className="nexus-c-bulk-matching__header"
   >
     <div
-      className="nexus-c-bulk-matching__selected nexus-c-bulk-matching__selected--active"
-      onClick={null}
+      className="nexus-c-bulk-matching__rights-tab nexus-c-bulk-matching__rights-tab--active"
+      onClick={[Function]}
     >
-      Selected Rights (
+      Selected Rights
+       (
       0
       )
     </div>
     <div
-      className="nexus-c-bulk-matching__affected"
+      className="nexus-c-bulk-matching__rights-tab"
       onClick={[Function]}
     >
-      Affected Rights (
+      Affected Rights
+       (
       0
       )
     </div>

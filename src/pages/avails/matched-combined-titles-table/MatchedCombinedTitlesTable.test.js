@@ -8,7 +8,7 @@ describe('MatchedCombinedTitlesTable', () => {
 
     beforeEach(() => {
         wrapper = shallow(<MatchedCombinedTitlesTable />);
-        tableWrapper = wrapper.find('.nexus-c-matched-combined-titles-table-wrapper');
+        tableWrapper = wrapper.find('.nexus-c-matched-combined-titles-table');
     });
 
     it('should match snapshot', () => {
