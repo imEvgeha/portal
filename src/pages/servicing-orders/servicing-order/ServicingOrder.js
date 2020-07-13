@@ -34,9 +34,8 @@ const ServicingOrder = ({match}) => {
                 );
 
                 const parsedFulfillmentOrders = fulfillmentOrders.map(fo => {
-                    let {definition} = fo || {};
-                    const parsedDefinition = definition ? JSON.parse(definition) : {};
-                    return {...fo, definition: parsedDefinition};
+                    const {definition} = fo || {};
+                    return {...fo, definition};
                 });
 
                 setServiceOrder({
