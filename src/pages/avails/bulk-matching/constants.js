@@ -3,5 +3,5 @@ export const TITLE_MATCHING_REVIEW_HEADER = 'Title Matching Review';
 export const RIGHT_TABS = {
     SELECTED: 'Selected Rights',
     AFFECTED: 'Affected Rights',
-    BONUS_RIGHTS: 'Existing Bonus Rights'
+    BONUS_RIGHTS: 'Existing Bonus Rights',
 };

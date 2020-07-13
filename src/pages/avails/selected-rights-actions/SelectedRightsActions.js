@@ -21,7 +21,7 @@ import {
     CREATE_BONUS_RIGHT_TOOLTIP,
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
-    HEADER_TITLE
+    HEADER_TITLE,
 } from './constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
