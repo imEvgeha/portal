@@ -49,6 +49,10 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         }),
     };
 
+    /**
+     * Checks if a given key is for a column that contains languages
+     * @param {string} key the key to check
+     */
     const isLanguageColumn = key => {
         return [
             'secondaryAudio',
@@ -60,6 +64,10 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         ].includes(key);
     };
 
+    /**
+     * Returns a sorted array of languages given a comma-delimited list of languages
+     * @param {string} languages a comma-delimited list of languages
+     */
     const splitTrimSortLanguages = languages => {
         if (!languages) {
             return;
@@ -71,6 +79,10 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
             .sort();
     };
 
+    /**
+     * Renders an array of languages into a TagGroup
+     * @param {string[]} languages an array of languages
+     */
     const renderLanguagesToTagGroup = languages => {
         return (
             !!languages && (
