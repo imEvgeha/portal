@@ -114,7 +114,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
                             id={`text-${id}`}
                             {...rest}
                             defaultValue={
-                                isEdit ? returnValidData('priceValue') && currentPrice['priceValue'] : ''
+                                isEdit && returnValidData('priceValue') ? get(currentPrice, 'priceValue') : ''
                             }
                             placeholder="Value"
                         />
