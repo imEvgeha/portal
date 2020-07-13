@@ -119,11 +119,11 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                             <GridColumn medium={2}>
                                 <InfoSection>
                                     <h6>{STUDIO}</h6>
-                                    <InfoField>{data.tenant}</InfoField>
+                                    <InfoField>{data.tenant || 'N/A'}</InfoField>
                                 </InfoSection>
                                 <InfoSection>
                                     <h6>{MSS_ORDER_DETAILS}</h6>
-                                    <InfoField>{externalId}</InfoField>
+                                    <InfoField>{externalId || 'N/A'}</InfoField>
                                 </InfoSection>
                             </GridColumn>
                             <GridColumn>
