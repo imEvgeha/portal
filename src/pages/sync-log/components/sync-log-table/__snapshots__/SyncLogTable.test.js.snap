@@ -27,7 +27,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
           onChange={[Function]}
           onConfirm={[Function]}
           required={true}
-          value=""
+          value="2020-07-13"
         />
       </div>
       <div
@@ -142,7 +142,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
     }
     externalFilter={
       Object {
-        "dateFrom": "",
+        "dateFrom": "2020-07-13",
         "dateTo": "",
       }
     }
