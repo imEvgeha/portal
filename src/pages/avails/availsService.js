@@ -7,6 +7,11 @@ export const getAffectedRights = params => {
     const url = `${baseUrl}/rights/impacted?rightIds=${params}`;
     return nexusFetch(url);
 };
+export const getExistingBonusRights = params => {
+    //TODO: change the API to correct path
+    const url = `${baseUrl}/rights/impacted?rightIds=${params}`;
+    return nexusFetch(url);
+};
 
 export const getRestrictedTitles = params => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/restrictedCoreTitleIds?rightIds=${params}`;
