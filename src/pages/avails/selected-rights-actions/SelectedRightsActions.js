@@ -109,7 +109,7 @@ export const SelectedRightsActions = ({
         setModalContentAndTitle(
             (
                 <BulkUnmatch
-                    selectedRights={selectedRights}
+                    selectedRights={selectedRights.map(({id}) => id)}
                     removeToast={removeToast}
                     addToast={addToast}
                     selectedRightGridApi={selectedRightGridApi}

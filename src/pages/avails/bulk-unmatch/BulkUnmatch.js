@@ -24,7 +24,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
             toggleRefreshGridData(true);
 
             // Response is returning updated rights, so we can feed that to SelectedRights table
-            selectedRightGridApi.setRowData(unmatchedRights);
+            selectedRightGridApi.setRowData(unmatchedRights.filter(right => selectedRights.includes(right.id)));
             // Refresh changes
             selectedRightGridApi.refreshCells();
 
@@ -45,8 +45,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
     useEffect(
         () => {
             setModalStyle({width: '70%'});
-            const selectedRightsIds = selectedRights.map(({id}) => id);
-            getAffectedRights(selectedRightsIds).then(rights => {
+            getAffectedRights(selectedRights).then(rights => {
                 setModalActions([
                     {
                         text: BULK_UNMATCH_CANCEL_BTN,
