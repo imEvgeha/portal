@@ -1388,11 +1388,11 @@
       "required": false
     },
     {
-      "javaVariableName": "dmaId",
-      "displayName": "DMA ID",
+      "javaVariableName": "maId",
+      "displayName": "MA ID",
       "dataType": "string",
       "searchDataType": "string",
-      "queryParamName": "dmaId",
+      "queryParamName": "maId",
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
