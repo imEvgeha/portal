@@ -31,7 +31,7 @@ const FulfillmentOrderPanel = ({
             </div>
             <div className="nexus-c-fulfillment-order-panel__description-and-status">
                 <span className="nexus-c-fulfillment-order-panel__description">{productDescription}</span>
-                <span>{Constants.STATUS[status]}</span>
+                <span className="nexus-c-fulfillment-order-panel__status">{Constants.STATUS[status]}</span>
             </div>
         </div>
     );
