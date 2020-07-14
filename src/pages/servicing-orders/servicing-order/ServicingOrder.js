@@ -33,16 +33,11 @@ const ServicingOrder = ({match}) => {
                     servicingOrder.so_number
                 );
 
-                const parsedFulfillmentOrders = fulfillmentOrders.map(fo => {
-                    const {definition} = fo || {};
-                    return {...fo, definition};
-                });
-
                 setServiceOrder({
                     ...servicingOrder,
-                    fulfillmentOrders: parsedFulfillmentOrders
+                    fulfillmentOrders
                 });
-                setSelectedFulfillmentOrderID(get(parsedFulfillmentOrders, '[0].id', ''));
+                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
             } catch (e) {
                 setServiceOrder(servicingOrder);
             }
