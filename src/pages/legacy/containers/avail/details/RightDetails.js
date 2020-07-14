@@ -1632,7 +1632,7 @@ class RightDetails extends React.Component {
                 value: editedRight[name] !== undefined ? editedRight[name] : value,
                 error,
                 required,
-                isReadOnly: !!sourceRightId,
+                isReadOnly: !!sourceRightId || isReadOnly,
                 isTimestamp,
                 isWithInlineEdit: true,
                 allowClear: !required,
