@@ -5,7 +5,8 @@
   &__left {
     display: flex;
     flex-direction: column;
-    min-width: 345px;
+    min-width: 390px;
+    max-width: 400px;
     border-right: 1px solid #DCDCDC;
     padding: 24px 0 0;
   }
