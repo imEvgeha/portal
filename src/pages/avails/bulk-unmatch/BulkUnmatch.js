@@ -93,7 +93,7 @@ BulkUnmatch.propTypes = {
     columnDefs: PropTypes.array.isRequired,
     removeToast: PropTypes.func.isRequired,
     addToast: PropTypes.func.isRequired,
-    selectedRightGridApi: PropTypes.func.isRequired,
+    selectedRightGridApi: PropTypes.object.isRequired,
     toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
