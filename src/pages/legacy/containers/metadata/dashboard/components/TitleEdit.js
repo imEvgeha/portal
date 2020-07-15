@@ -831,6 +831,9 @@ class TitleEdit extends Component {
     };
 
     getNewCreatedEditorialMetadata = (newEditorialMetadata) => {
+        if(newEditorialMetadata.category) {
+            newEditorialMetadata.category = this.getCategoryField(newEditorialMetadata.category);
+        }
         return [
             {
                 "itemIndex": "1",
@@ -844,9 +847,13 @@ class TitleEdit extends Component {
 
     getUpdatedEditorialMetadata = () => {
         return this.state.updatedEditorialMetadata.map(e => {
+            const body = e;
+            if(body.category) {
+                body["category"] = this.getCategoryField(body.category);
+            }
             return {
                 "itemIndex": null,
-                "body": e
+                body
             }
         });
     };
