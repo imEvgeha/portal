@@ -849,7 +849,7 @@ class TitleEdit extends Component {
         return this.state.updatedEditorialMetadata.map(e => {
             const body = e;
             if(body.category) {
-                body["category"] = this.getCategoryField(body.category);
+                body.category = this.getCategoryField(body.category);
             }
             return {
                 "itemIndex": null,
