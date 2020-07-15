@@ -212,8 +212,8 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
         return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
     };
 
-    const closeModal = () => {
-        close();
+    const onModalSuccess = () => {
+        closeDrawer();
         toggleRefreshGridData(true);
     };
 
@@ -221,11 +221,11 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
         setModalContentAndTitle(
             () => (
                 <CreateTitleForm
-                    close={closeModal}
+                    close={close}
                     bulkTitleMatch={bulkTitleMatch}
                     affectedRightIds={affectedTableData.map(right => right.id)}
                     focusedRight={{contentType}}
-                    onSuccess={closeDrawer}
+                    onSuccess={onModalSuccess}
                 />
             ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE

@@ -202,10 +202,10 @@ export default class CreateEditConfigForm extends React.Component {
 
     render() {
         return (
-            <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px'}}>
+            <Modal isOpen={!!this.props.value} toggle={this.props.onCancel} style={{paddingLeft: '30px', maxWidth: '650px'}}>
                 <ModalBody>
-                    <p><b style={{color: '#999', fontSize: '13px'}}>{this.props.displayName}</b></p>
-                    <p style={{marginTop: '-20px'}}><b>{this.props.value && this.props.label ? this.props.label : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
+                    <p><b style={{color: '#999', fontSize: '11px', textTransform: 'uppercase'}}>{this.props.displayName}</b></p>
+                    <p style={{marginTop: '-4px'}}><b>{this.props.value && this.props.label ? this.props.label : <i style={{fontSize: '20px', color: '#666'}}>New {this.props.displayName}</i>}</b></p>
                     <Can I="delete" a="ConfigUI">
                         {Object.entries(this.props.value).length !== 0 && (
                             <div style={{position: 'absolute', top: '20px', right: '20px', cursor: 'pointer'}}>

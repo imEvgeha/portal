@@ -57,7 +57,7 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        this.right = {};
+        this.right = {licensed: true};
 
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
@@ -652,15 +652,16 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderBooleanField = (name, displayName, required, value) => {
+        const renderBooleanField = (name, displayName, required, value, defaultValue) => {
             return renderFieldTemplate(name, displayName, required, null, (
                 <select
                     className="form-control"
                     name={name}
                     id={'right-create-' + name + '-select'}
                     placeholder={'Enter ' + displayName}
-                    value={value}
+                    value={defaultValue || value}
                     onChange={this.handleBooleanChange}
+                    disabled={!!defaultValue}
                 >
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
@@ -833,7 +834,7 @@ class RightCreate extends React.Component {
 
         if(this.props.availsMapping) {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
-                if(mapping.enableEdit && !mapping.readOnly){
+                if(mapping.enableEdit && (!mapping.readOnly || mapping.defaultValue)){
                     const required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';
                     const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
@@ -865,7 +866,7 @@ class RightCreate extends React.Component {
                              break;
                         case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
                             break;
-                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value, mapping.defaultValue));
                              break;
                         case 'priceType': renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
