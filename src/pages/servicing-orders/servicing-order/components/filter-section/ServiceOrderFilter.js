@@ -1,5 +1,4 @@
 import Button from '@atlaskit/button';
-import Drawer from '@atlaskit/drawer';
 import Select from '@atlaskit/select';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
@@ -8,6 +7,7 @@ import {getValidDate} from '../../../../../util/utils';
 import Constants from '../fulfillment-order/constants';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
+import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({
@@ -47,13 +47,14 @@ const ServiceOrderFilter = ({
             )}
             <div className="so-panel-filter-detail__row">
                 <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
-                <Drawer
+                <NexusDrawer
                     isOpen={isDrawerOpen}
                     onClose={() => setIsDrawerOpen(false)}
                     width="extended"
+                    title="Partner Request"
                 >
                     <PartnerRequest externalId={external_id} configuredPrId={configured_pr_id} />
-                </Drawer>
+                </NexusDrawer>
             </div>
 
             <div className="so-panel-filter-detail__row">
