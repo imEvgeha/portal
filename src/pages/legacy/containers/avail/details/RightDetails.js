@@ -15,7 +15,8 @@ import {Label} from 'reactstrap';
 import {cannot} from '../../../../../ability';
 import {store} from '../../../../../index';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker
+    from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import BackNavigationByUrl from '../../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
 import {equalOrIncluded, getDeepValue, safeTrim, URL} from '../../../../../util/Common';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
@@ -88,7 +89,7 @@ class RightDetails extends React.Component {
         const prevPage = window.location.href;
         history.back();
 
-        setTimeout(function() {
+        setTimeout(function () {
             if (window.location.href == prevPage) {
                 window.location.href = URL.keepEmbedded(AVAILS_PATH);
             }
@@ -134,7 +135,7 @@ class RightDetails extends React.Component {
                                     const error = priceErrors.find(error => error.index === index);
                                     if (error) {
                                         el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        error.sourceDetails.originalValue}`;
                                         el.isValid = false;
                                         el.errors = priceErrors.filter(error => error.index === index);
                                     } else {
@@ -172,7 +173,7 @@ class RightDetails extends React.Component {
                                     const error = territoryErrors.find(error => error.index === index);
                                     if (error) {
                                         el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        error.sourceDetails.originalValue}`;
                                         el.isValid = false;
                                         el.errors = territoryErrors.filter(error => error.index === index);
                                     } else {
@@ -205,7 +206,7 @@ class RightDetails extends React.Component {
                                     const error = audioLanguageErrors.find(error => error.index === index);
                                     if (error) {
                                         el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        error.sourceDetails.originalValue}`;
                                         el.isValid = false;
                                         el.errors = audioLanguageErrors.filter(error => error.index === index);
                                     } else {
@@ -288,7 +289,7 @@ class RightDetails extends React.Component {
                             ...affiliateExcludeErrors.map((error, index) => {
                                 const obj = {};
                                 obj.value = `${error.message} ${error.sourceDetails &&
-                                    error.sourceDetails.originalValue}`;
+                                error.sourceDetails.originalValue}`;
                                 obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
                                 obj.id = error.index;
@@ -360,7 +361,8 @@ class RightDetails extends React.Component {
         return rightCopy;
     }
 
-    update(name, value, onError = () => {}) {
+    update(name, value, onError = () => {
+    }) {
         if (this.state.flatRight[name] === value) {
             onError();
             return;
@@ -461,7 +463,8 @@ class RightDetails extends React.Component {
                 if (component.state && !component.state.editable) {
                     confirmModal.open(
                         'Confirm edit',
-                        () => {},
+                        () => {
+                        },
                         () => {
                             component.setEditable(false);
                         },
@@ -556,7 +559,7 @@ class RightDetails extends React.Component {
                                     style={{color: 'grey'}}
                                 >
                                     &nbsp;&nbsp;
-                                    <i className="far fa-question-circle" />
+                                    <i className="far fa-question-circle"/>
                                 </span>
                             ) : (
                                 ''
@@ -564,7 +567,7 @@ class RightDetails extends React.Component {
                             {tooltip ? (
                                 <span title={tooltip} style={{color: 'grey'}}>
                                     &nbsp;&nbsp;
-                                    <i className="far fa-question-circle" />
+                                    <i className="far fa-question-circle"/>
                                 </span>
                             ) : (
                                 ''
@@ -582,7 +585,7 @@ class RightDetails extends React.Component {
                                 {content}
                             </div>
                             <span className="edit-icon" style={{color: 'gray'}}>
-                                <i className="fas fa-pen" />
+                                <i className="fas fa-pen"/>
                             </span>
                         </div>
                     </div>
@@ -861,7 +864,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     onChange={(value, cancel) =>
                         this.handleEditableSubmit(name, options.find(({display}) => display == value).server, cancel)
                     }
@@ -956,7 +960,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
                     helperComponent={
@@ -1009,8 +1014,8 @@ class RightDetails extends React.Component {
                 .map(key => {
                     if (this.state.flatRight[key] && this.props.selectValues[key]) {
                         const filt = (Array.isArray(this.state.flatRight[key])
-                            ? this.state.flatRight[key]
-                            : [this.state.flatRight[key]]
+                                ? this.state.flatRight[key]
+                                : [this.state.flatRight[key]]
                         )
                             .map(val => {
                                 const candidates = this.props.selectValues[key].filter(opt => opt.value === val);
@@ -1090,7 +1095,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={!!sourceRightId || readOnly}
                     displayName={displayName}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
                     helperComponent={
@@ -1241,7 +1247,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={!!sourceRightId || readOnly}
                     isArrayOfObject={true}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     displayName={displayName}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
@@ -1394,7 +1401,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     displayName={displayName}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
@@ -1410,8 +1418,8 @@ class RightDetails extends React.Component {
                                 <>
                                     {!sourceRightId && (
                                         <div style={{position: 'absolute', right: '10px'}}>
-                                        <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
-                                    </div>
+                                            <AddButton onClick={this.toggleAddRightTerritoryForm}>+</AddButton>
+                                        </div>
                                     )}
                                     <RightTerritoryForm
                                         onSubmit={e => addTerritory(e)}
@@ -1542,7 +1550,8 @@ class RightDetails extends React.Component {
                     name={name}
                     disabled={!!sourceRightId || readOnly}
                     isArrayOfObject={true}
-                    validate={() => {}}
+                    validate={() => {
+                    }}
                     displayName={displayName}
                     onChange={(value, cancel) => this.handleEditableSubmit(name, value, cancel)}
                     onCancel={onCancel}
@@ -1630,7 +1639,7 @@ class RightDetails extends React.Component {
                 value: editedRight[name] !== undefined ? editedRight[name] : value,
                 error,
                 required,
-                isReadOnly: !!sourceRightId,
+                isReadOnly: !!sourceRightId || isReadOnly,
                 isTimestamp,
                 isWithInlineEdit: true,
                 allowClear: !required,
@@ -1680,13 +1689,23 @@ class RightDetails extends React.Component {
                         });
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    const readOnly = cannotUpdate || mapping.readOnly;
+                    let readOnly = cannotUpdate || mapping.readOnly;
 
                     const {editedRight = {}, flatRight} = this.state;
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';
                     const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
 
-                    const required = mapping.required;
+                    let required = mapping.required && !mapping.requiredBasedField;
+                    if (mapping.requiredBasedField && Array.isArray(mapping.requiredBasedField)) {
+                        if (mapping.requiredBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
+                            required = true;
+                        }
+                    }
+                    if (mapping.readOnlyBasedField && Array.isArray(mapping.readOnlyBasedField)) {
+                        if (mapping.readOnlyBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
+                            readOnly = true;
+                        }
+                    }
                     let highlighted = false;
                     if (this.state.right && this.state.right.highlightedFields) {
                         highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
@@ -1770,12 +1789,12 @@ class RightDetails extends React.Component {
                                         mapping.displayName,
                                         this.state.affiliates,
                                         Array.isArray(validationErrors) &&
-                                            validationErrors.filter(
-                                                el =>
-                                                    el.fieldName &&
-                                                    el.fieldName.includes('affiliate') &&
-                                                    !el.fieldName.includes('affiliateExclude')
-                                            ),
+                                        validationErrors.filter(
+                                            el =>
+                                                el.fieldName &&
+                                                el.fieldName.includes('affiliate') &&
+                                                !el.fieldName.includes('affiliateExclude')
+                                        ),
                                         readOnly,
                                         required,
                                         highlighted
@@ -1789,9 +1808,9 @@ class RightDetails extends React.Component {
                                         mapping.displayName,
                                         this.state.affiliatesExclude,
                                         Array.isArray(validationErrors) &&
-                                            validationErrors.filter(
-                                                el => el.fieldName && el.fieldName.includes('affiliateExclude')
-                                            ),
+                                        validationErrors.filter(
+                                            el => el.fieldName && el.fieldName.includes('affiliateExclude')
+                                        ),
                                         readOnly,
                                         required,
                                         highlighted
@@ -1902,7 +1921,7 @@ class RightDetails extends React.Component {
                                     mapping.displayName,
                                     this.state.pricing,
                                     Array.isArray(validationErrors) &&
-                                        validationErrors.filter(el => el.fieldName && el.fieldName.includes('pricing')),
+                                    validationErrors.filter(el => el.fieldName && el.fieldName.includes('pricing')),
                                     readOnly,
                                     required,
                                     highlighted
@@ -1916,9 +1935,9 @@ class RightDetails extends React.Component {
                                     mapping.displayName,
                                     this.state.territory,
                                     Array.isArray(validationErrors) &&
-                                        validationErrors.filter(
-                                            el => el.fieldName && el.fieldName.includes('territory')
-                                        ),
+                                    validationErrors.filter(
+                                        el => el.fieldName && el.fieldName.includes('territory')
+                                    ),
                                     readOnly,
                                     required,
                                     highlighted
@@ -1932,9 +1951,9 @@ class RightDetails extends React.Component {
                                     mapping.displayName,
                                     this.state.audioLanguage,
                                     Array.isArray(validationErrors) &&
-                                        validationErrors.filter(
-                                            el => el.fieldName && el.fieldName.includes('languageAudioTypes')
-                                        ),
+                                    validationErrors.filter(
+                                        el => el.fieldName && el.fieldName.includes('languageAudioTypes')
+                                    ),
                                     readOnly,
                                     required,
                                     highlighted
@@ -1952,7 +1971,7 @@ class RightDetails extends React.Component {
 
         return (
             <div style={{position: 'relative'}}>
-                <ManualRightsEntryDOPConnector />
+                <ManualRightsEntryDOPConnector/>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {this.state.errorMessage && (
                         <div
@@ -1974,7 +1993,7 @@ class RightDetails extends React.Component {
                     </div>
                 </BlockUi>
                 {/* Provide clashingRights for modal open*/}
-                <RightsClashingModal />
+                <RightsClashingModal/>
             </div>
         );
     }

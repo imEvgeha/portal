@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {uniqBy, get} from 'lodash';
+import {get} from 'lodash';
 import classNames from 'classnames';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import {setCoreTitleId} from '../availsService';
 import RightViewHistory from '../right-history-view/RightHistoryView';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
@@ -17,14 +16,12 @@ import {
     BULK_MATCH_DISABLED_TOOLTIP,
     BULK_UNMATCH,
     BULK_UNMATCH_DISABLED_TOOLTIP,
-    BULK_UNMATCH_SUCCESS_TOAST,
     CREATE_BONUS_RIGHT_TOOLTIP,
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
 } from './constants';
-import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
+import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
 import {URL} from '../../../util/Common';
@@ -109,45 +106,17 @@ export const SelectedRightsActions = ({
     };
 
     const openBulkUnmatchModal = () => {
-        const rightIds = selectedRights.map(({id}) => id);
-
-        setModalContentAndTitle(<BulkUnmatch selectedRights={selectedRights} />, BULK_UNMATCH_TITLE);
-        setModalActions([
-            {
-                text: BULK_UNMATCH_CANCEL_BTN,
-                onClick: () => {
-                    close();
-                    removeToast();
-                },
-                appearance: 'default',
-            },
-            {
-                text: BULK_UNMATCH_CONFIRM_BTN,
-                onClick: () => setCoreTitleId({rightIds}).then(unmatchedRights => {
-                    // Fetch fresh data from back-end
-                    toggleRefreshGridData(true);
-
-                    // Response is returning updated rights, so we can feed that to SelectedRights table
-                    selectedRightGridApi.setRowData(unmatchedRights);
-                    // Refresh changes
-                    selectedRightGridApi.refreshCells();
-
-                    // Close modal
-                    close();
-
-                    // Show success toast
-                    addToast({
-                        title: BULK_UNMATCH_SUCCESS_TOAST,
-                        description: `You have successfully unmatched ${unmatchedRights.length} right(s).
-                         Please validate title fields.`,
-                        icon: SUCCESS_ICON,
-                        isAutoDismiss: true,
-                    });
-                }),
-                appearance: 'primary',
-            },
-        ]);
-        setModalStyle({width: '70%'});
+        setModalContentAndTitle(
+            (
+                <BulkUnmatch
+                    selectedRights={selectedRights.map(({id}) => id)}
+                    removeToast={removeToast}
+                    addToast={addToast}
+                    selectedRightGridApi={selectedRightGridApi}
+                    toggleRefreshGridData={toggleRefreshGridData}
+                />
+            ), BULK_UNMATCH_TITLE
+        );
     };
 
     const createBonusRights = () => {
