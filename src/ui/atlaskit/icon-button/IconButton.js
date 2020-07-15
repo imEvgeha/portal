@@ -30,8 +30,9 @@ const IconButton = ({icon, onClick, label}) => {
 };
 
 IconButton.propTypes = {
-    icon: PropTypes.node.isRequired,
+    icon: PropTypes.func.isRequired,
     onClick: PropTypes.func,
+    label: PropTypes.string.isRequired
 };
 
 IconButton.defaultProps = {

@@ -6,14 +6,12 @@ exports[`PartnerRequest should match snapshot 1`] = `
     bannerHeight={52}
     isBannerOpen={false}
   >
-    <WithTheme(AkGrid)>
+    <WithTheme(AkGrid)
+      layout="fluid"
+    >
       <WithTheme(AkGridColumn)>
-        <styled.h1>
-          Partner Request
-        </styled.h1>
         <WithTheme(AkGrid)
           layout="fluid"
-          spacing="comfortable"
         >
           <WithTheme(AkGridColumn)
             medium={2}
@@ -22,7 +20,9 @@ exports[`PartnerRequest should match snapshot 1`] = `
               <h6>
                 Studio
               </h6>
-              <styled.p />
+              <styled.p>
+                N/A
+              </styled.p>
             </styled.div>
             <styled.div>
               <h6>
@@ -52,7 +52,9 @@ exports[`PartnerRequest should match snapshot 1`] = `
             </styled.div>
           </WithTheme(AkGridColumn)>
         </WithTheme(AkGrid)>
-        <styled.div>
+        <styled.div
+          name="hello"
+        >
           <DynamicTable
             defaultPage={1}
             emptyView={
@@ -94,12 +96,12 @@ exports[`PartnerRequest should match snapshot 1`] = `
                     "key": "secondaryAudio",
                   },
                   Object {
-                    "content": "Sub-titles Full",
+                    "content": "Subtitles Full",
                     "isSortable": false,
                     "key": "subtitlesFull",
                   },
                   Object {
-                    "content": "Sub-titles Forced",
+                    "content": "Subtitles Forced",
                     "isSortable": false,
                     "key": "subtitlesForced",
                   },

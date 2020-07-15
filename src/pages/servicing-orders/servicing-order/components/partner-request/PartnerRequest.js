@@ -153,7 +153,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                                 </InfoSection>
                             </GridColumn>
                         </Grid>
-                        <TableWrapper name="hello">
+                        <TableWrapper>
                             <DynamicTable
                                 head={columnDefs}
                                 rows={rows}

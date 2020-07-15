@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconButton should match snapshot 1`] = `
+<WithAnalyticsContext(WithAnalyticsEvents(Button))
+  appearance="subtle"
+  iconBefore={
+    <CrossIcon
+      label="Icon Button Label"
+    />
+  }
+  onClick={[Function]}
+  theme={[Function]}
+/>
+`;

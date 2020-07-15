@@ -68,6 +68,7 @@ empty Source Right IDs and Status is Ready/ReadyNew"
     </div>
   </div>
   <NexusDrawer
+    direction="fromRight"
     headerContent={null}
     isClosedOnBlur={false}
     isOpen={false}
