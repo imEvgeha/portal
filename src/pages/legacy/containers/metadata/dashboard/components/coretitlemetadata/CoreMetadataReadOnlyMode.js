@@ -9,6 +9,7 @@ import {
     CardHeader,
     CardBody,
 } from 'reactstrap';
+import { get } from 'lodash';
 import './CoreMetadata.scss';
 import PropTypes from 'prop-types';
 import {
@@ -307,7 +308,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                 </Row>
                             )}
                             <Row>
-                                {Array.isArray(externalIds.msvAssociationId) && externalIds.msvAssociationId.length > 0 ? (
+                                {get(externalIds, 'msvAssociationId.length', 0) > 0 ? (
                                     <Col>
                                         <Alert color='light'>
                                             <b style={{color: '#000'}}>
