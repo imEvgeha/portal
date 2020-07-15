@@ -1,15 +1,11 @@
-import classnames from 'classnames';
-import React, {useEffect, useState} from 'react';
-import Button from '@atlaskit/button';
-import styled from 'styled-components';
-import {gridSize} from '@atlaskit/theme';
-import PropTypes from 'prop-types';
 import Blanket from '@atlaskit/blanket';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
+import {colors, gridSize, layers} from '@atlaskit/theme';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
 import IconButton from '../../atlaskit/icon-button/IconButton';
-// import CloseIcon from '../../../assets/action-cross.svg';
-import './NexusDrawer.scss';
 
 const NexusDrawer = ({
     children,
@@ -21,11 +17,14 @@ const NexusDrawer = ({
     isClosedOnBlur,
     direction,
 }) => {
-    const drawerClassNames = classnames('nexus-c-drawer', `nexus-c-drawer--is-${width}-width`, {
-        'nexus-c-drawer--is-open': isOpen,
-        'nexus-c-drawer--from-left': direction === 'fromLeft',
-        'nexus-c-drawer--from-right': direction === 'fromRight',
-    });
+    const drawerWidths = {
+        extended: '95vw',
+        full: '100vw',
+        medium: '480px',
+        narrow: '360px',
+        wide: '800px',
+        wider: '60vw',
+    };
 
     return (
         <>
@@ -36,7 +35,7 @@ const NexusDrawer = ({
                     isTinted
                 />
             )}
-            <div className={drawerClassNames}>
+            <Drawer width={drawerWidths[width]} direction={direction} isOpen={isOpen}>
                 <Page>
                     <Grid layout="fluid">
                         <GridColumn>
@@ -50,13 +49,17 @@ const NexusDrawer = ({
                                         </>
                                     )}
                                 </TitleContainer>
-                                <IconButton icon={<CrossIcon />} onClick={onClose} />
+                                <IconButton
+                                    icon={CrossIcon}
+                                    label="Close Drawer"
+                                    onClick={onClose}
+                                />
                             </Header>
                         </GridColumn>
                     </Grid>
                     {isOpen && children}
                 </Page>
-            </div>
+            </Drawer>
         </>
     );
 };
@@ -81,6 +84,20 @@ NexusDrawer.defaultProps = {
 
 export default NexusDrawer;
 
+// Styled Components
+const Drawer = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: ${props => props.direction === 'fromLeft' && '0'};
+    right: ${props => props.direction === 'fromRight' && '0'};
+    background-color: ${colors.N0};
+    z-index: ${layers.blanket()};
+    transition: width 220ms cubic-bezier(0.2, 0, 0, 1) 0s;
+    width: ${props => (props.isOpen ? props.width : 0)};
+    overflow: auto;
+`;
+
 const Title = styled.h1`
     margin-left: 0 !important;
 `;
@@ -90,8 +107,8 @@ const TitleContainer = styled.div`
 `;
 
 const Header = styled.div`
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: ${gridSize() * 2}px;
+    margin-bottom: ${gridSize() * 2}px;
     justify-content: ${props => (props.direction === 'fromRight' ? 'space-between' : 'flex-end')};
     align-items: flex-start;
     flex-direction: ${props => props.direction === 'fromLeft' && 'row-reverse'};
