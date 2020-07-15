@@ -33,6 +33,18 @@
       "required": true
     },
     {
+      "javaVariableName": "licensed",
+      "displayName": "Licensed",
+      "dataType": "boolean",
+      "searchDataType": "boolean",
+      "queryParamName": "licensed",
+      "readOnly": true,
+      "enableSearch": true,
+      "enableEdit": true,
+      "required": true,
+      "defaultValue": "true"
+    },
+    {
       "javaVariableName": "rightStatus",
       "displayName": "Right Status",
       "dataType": "select",
@@ -214,7 +226,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": false
+      "required": false,
+      "requiredBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": false
+        }
+      ]
     },
     {
       "javaVariableName": "availEnd",
@@ -225,7 +243,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": false
+      "required": false,
+      "requiredBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": false
+        }
+      ]
     },
     {
       "javaVariableName": "start",
@@ -233,10 +257,21 @@
       "dataType": "businessDateTime",
       "searchDataType": "businessDateTime",
       "queryParamName": "start",
-      "readOnly": false,
+      "readOnlyBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": false
+        }
+      ],
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "requiredBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "end",
@@ -244,10 +279,21 @@
       "dataType": "businessDateTime",
       "searchDataType": "businessDateTime",
       "queryParamName": "end",
-      "readOnly": false,
+      "readOnlyBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": false
+        }
+      ],
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "requiredBasedField": [
+        {
+          "field": "licensed",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "startLag",
@@ -1703,7 +1749,7 @@
       "dataType": "string",
       "searchDataType": "string",
       "queryParamName": "sourceRightId",
-      "readOnly": true,
+      "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
