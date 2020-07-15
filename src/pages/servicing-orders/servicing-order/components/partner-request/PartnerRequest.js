@@ -2,7 +2,7 @@ import DynamicTable from '@atlaskit/dynamic-table';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
-import {gridSize} from '@atlaskit/theme';
+import {gridSize, colors} from '@atlaskit/theme';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {uid} from 'react-uid';
@@ -95,31 +95,33 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         );
     };
 
-    const rows = data.list.map(order => ({
-        // the key for each row
-        key: order.id,
+    const rows = data.list
+        .reduce((res, current) => [...res, current, current, current, current, current], [])
+        .map(order => ({
+            // the key for each row
+            key: order.id,
 
-        // the cells in each row
-        cells: COLUMN_KEYS.map((key, index) => ({
-            // the key for each cell
-            key: uid(key, index),
+            // the cells in each row
+            cells: COLUMN_KEYS.map((key, index) => ({
+                // the key for each cell
+                key: uid(key, index),
 
-            // the content for each cell
-            content: (
-                <WrapperWithMaxHeight
-                    maxHeight="14"
-                    isNotesColumn={!!order[key] && key === 'materialNotes'}
-                    isLanguageColumn={isLanguageColumn(key)}
-                >
-                    {isLanguageColumn(key) ? (
-                        renderLanguagesToTagGroup(order[key])
-                    ) : (
-                        <p>{order[key]}</p>
-                    )}
-                </WrapperWithMaxHeight>
-            ),
-        })),
-    }));
+                // the content for each cell
+                content: (
+                    <WrapperWithMaxHeight
+                        maxHeight="14"
+                        isNotesColumn={!!order[key] && key === 'materialNotes'}
+                        isLanguageColumn={isLanguageColumn(key)}
+                    >
+                        {isLanguageColumn(key) ? (
+                            renderLanguagesToTagGroup(order[key])
+                        ) : (
+                            <p>{order[key]}</p>
+                        )}
+                    </WrapperWithMaxHeight>
+                ),
+            })),
+        }));
 
     return (
         <PartnerRequestWrapper>
@@ -153,7 +155,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                                 </InfoSection>
                             </GridColumn>
                         </Grid>
-                        <TableWrapper>
+                        <TableWrapper name="hello">
                             <DynamicTable
                                 head={columnDefs}
                                 rows={rows}
@@ -208,4 +210,14 @@ const InfoField = styled.p`
 const TableWrapper = styled.div`
     margin-top: ${gridSize() * 2}px;
     overflow-x: auto;
+
+    table tbody {
+        tr:nth-child(even) {
+            background-color: ${colors.N10};
+        }
+
+        tr:hover {
+            background-color: ${colors.N30};
+        }
+    }
 `;
