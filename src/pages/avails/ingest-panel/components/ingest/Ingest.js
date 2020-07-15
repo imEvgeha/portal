@@ -28,7 +28,7 @@ const Ingest = ({
         <div
             className={classnames(
                 'nexus-c-avail-ingest',
-                isSelected && 'nexus-c-avail-ingest--is-isSelected',
+                isSelected && 'nexus-c-avail-ingest--is-selected',
                 isInBundle && 'nexus-c-avail-ingest--is-in-bundle'
             )}
             onClick={ingestClick}
