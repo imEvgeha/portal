@@ -1017,6 +1017,15 @@ class TitleEdit extends Component {
         return doAddSubObject ? subObject : null;
     }
 
+    getCategoryField(categories) {
+        return categories.map((x, index) => {
+            return {
+                "name": x,
+                "order": index
+            }
+        })
+    }
+
     getAdditionalFieldsWithoutEmptyField() {
         const additionalFields = {};
         for (const fields in this.state.editedForm) {
@@ -1025,6 +1034,8 @@ class TitleEdit extends Component {
             }
             else if (fields === 'advisories') {
                 additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
+            } else if (fields === 'category') {
+                additionalFields[fields] =  this.getCategoryField(this.state.editedForm[fields]);
             }
             else if (this.state.editedForm[fields]) {
                 additionalFields[fields] = this.state.editedForm[fields];
