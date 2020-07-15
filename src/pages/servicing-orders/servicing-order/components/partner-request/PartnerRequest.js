@@ -2,7 +2,7 @@ import DynamicTable from '@atlaskit/dynamic-table';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
-import {gridSize, colors} from '@atlaskit/theme';
+import {colors, gridSize} from '@atlaskit/theme';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {uid} from 'react-uid';
@@ -126,10 +126,9 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
     return (
         <PartnerRequestWrapper>
             <Page>
-                <Grid>
+                <Grid layout="fluid">
                     <GridColumn>
-                        <Title>Partner Request</Title>
-                        <Grid layout="fluid" spacing="comfortable">
+                        <Grid layout="fluid">
                             <GridColumn medium={2}>
                                 <InfoSection>
                                     <h6>{STUDIO}</h6>
@@ -192,10 +191,6 @@ const WrapperWithMaxHeight = styled.div`
 const PartnerRequestWrapper = styled.div`
     padding-left: ${gridSize() * 2}px;
     padding-right: ${gridSize() * 2}px;
-`;
-
-const Title = styled.h1`
-    margin-bottom: ${gridSize() * 2}px;
 `;
 
 const InfoSection = styled.div`
