@@ -96,7 +96,6 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
     };
 
     const rows = data.list
-        .reduce((res, current) => [...res, current, current, current, current, current], [])
         .map(order => ({
             // the key for each row
             key: order.id,
