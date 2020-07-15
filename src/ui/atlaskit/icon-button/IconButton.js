@@ -1,14 +1,15 @@
-import React from 'react';
 import Button from '@atlaskit/button';
-import PropTypes from 'prop-types';
 import {gridSize} from '@atlaskit/theme';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-const IconButton = ({icon, onClick}) => {
+const IconButton = ({icon, onClick, label}) => {
+    const Icon = icon;
     return (
         <Button
             appearance="subtle"
             onClick={onClick}
-            iconBefore={icon}
+            iconBefore={<Icon label={label} />}
             theme={(currentTheme, themeProps) => {
                 const {buttonStyles, ...rest} = currentTheme(themeProps);
                 return {
