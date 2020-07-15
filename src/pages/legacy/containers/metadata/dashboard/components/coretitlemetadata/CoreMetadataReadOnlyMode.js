@@ -307,7 +307,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                 </Row>
                             )}
                             <Row>
-                                {externalIds && externalIds.msvAssociationId ? (
+                                {Array.isArray(externalIds.msvAssociationId) && externalIds.msvAssociationId.length > 0 ? (
                                     <Col>
                                         <Alert color='light'>
                                             <b style={{color: '#000'}}>
