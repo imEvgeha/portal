@@ -26,7 +26,11 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
         onClick={[Function]}
       >
         <NexusTooltip
-          content="Rights selected must be the same criteria to make the feature available"
+          content="This feature is enabled when:
+All selected rights have same content type,
+have Core Title IDs un-populated,
+either all are bonus rights or none
+and are not expired"
           isDisabled={false}
         >
           <div>
@@ -41,7 +45,8 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       >
         <NexusTooltip
           content="This feature is enabled when: 
-All selected rights have Core Title IDs populated"
+All selected rights have Core Title IDs populated
+and are not expired"
           isDisabled={false}
         >
           <div>
