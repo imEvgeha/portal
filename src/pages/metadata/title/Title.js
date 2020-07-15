@@ -17,8 +17,8 @@ import {
 import './Title.scss';
 
 const Title = ({
-   coreTitleData,
-   editorialTitleData
+    coreTitleData,
+    editorialTitleData,
 }) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = coreTitleData || {};
@@ -61,7 +61,7 @@ const Title = ({
                 {METADATA_TITLE_SECTIONS.map((section, index) => (
                     <div
                         className={`
-                            nexus-c-metadata-title__section-tab 
+                            nexus-c-metadata-title__section-tab
                             ${section === currentSection ? 'nexus-c-metadata-title__section-tab--is-active' : ''}
                         `}
                         key={index}

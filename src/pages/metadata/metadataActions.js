@@ -17,7 +17,7 @@ export const getReconciliationTitles = payload => ({
 
 export const storeTitle = title => ({
     type: actionTypes.STORE_TITLE,
-    payload: {[title.id]: title}
+    payload: {[title.id]: title},
 });
 
 export const reconcileTitles = payload => ({

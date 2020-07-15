@@ -4,7 +4,7 @@ import {shallow} from 'enzyme';
 import TitleHeader from './TitleHeader';
 
 describe('TitleHeader', () => {
-    let wrapper;
+    let wrapper = null;
     it('should match snapshot', () => {
         wrapper = shallow(
             <TitleHeader

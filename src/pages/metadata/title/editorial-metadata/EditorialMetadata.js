@@ -6,12 +6,11 @@ import {getFilteredCastList, getFilteredCrewList} from '../../../legacy/constant
 
 
 const EditorialMetadata = ({
-       data
+    data,
 }) => {
-
-    //temporary integration of NexusPersonsList here as PoC
-    //will be moved after folder structure is implemented
-    //no onChange integration done, should be simple
+    // temporary integration of NexusPersonsList here as PoC
+    // will be moved after folder structure is implemented
+    // no onChange integration done, should be simple
     return (
         <>
             <div>Editorial Metadata</div>
@@ -50,7 +49,7 @@ EditorialMetadata.propTypes = {
 };
 
 EditorialMetadata.defaultProps = {
-    data: []
+    data: [],
 };
 
 export default EditorialMetadata;

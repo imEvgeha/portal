@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
-import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../ui/elements';
 import {
     TITLE,
     SECTION_MESSAGE,
@@ -32,7 +32,6 @@ const LegacyTitleReconciliationView = ({
 }) => {
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
-    const [gridApi, setGridApi] = useState();
     const {params = {}} = match;
     const {title, contentType = '', releaseYear} = titleMetadata || {};
 
@@ -41,16 +40,20 @@ const LegacyTitleReconciliationView = ({
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
     useEffect(() => {
         const {id} = params || {};
         fetchTitle({id});
-    }, []);
+    }, [fetchTitle, params]);
 
     const handleDoneClick = () => {
         onDone(selectedList);
     };
+
+    const handleCandidatesChangeCallback = useCallback((matchList, duplicateList) => {
+        handleCandidatesChange({matchList, duplicateList});
+    }, []);
 
     const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
         const hasItem = Object.keys(matchList).length;
@@ -60,7 +63,6 @@ const LegacyTitleReconciliationView = ({
 
     const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
-            setGridApi(api);
             const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
             columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
@@ -70,7 +72,7 @@ const LegacyTitleReconciliationView = ({
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
         ...columnDefs,
-        episodeAndSeasonNumberColumnDef
+        episodeAndSeasonNumberColumnDef,
     ];
 
     return (
@@ -78,21 +80,21 @@ const LegacyTitleReconciliationView = ({
             <NexusTitle>{TITLE}</NexusTitle>
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
-                <NexusGrid 
+                <NexusGrid
                     columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
                     onGridEvent={handleGridEvent}
                     domLayout="autoHeight"
                 />
             </div>
-            <SectionMessage appearance='info'>
+            <SectionMessage appearance="info">
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <CandidatesList
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
                 queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
-                onCandidatesChange={handleCandidatesChange}
+                onCandidatesChange={handleCandidatesChangeCallback}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
                 <Button
@@ -109,11 +111,12 @@ const LegacyTitleReconciliationView = ({
     );
 };
 
-LegacyTitleReconciliationView.propsTypes = {
+LegacyTitleReconciliationView.propTypes = {
     titleMetadata: PropTypes.object,
     createColumnDefs: PropTypes.func.isRequired,
     fetchTitle: PropTypes.func.isRequired,
     onDone: PropTypes.func.isRequired,
+    match: PropTypes.object,
     columnDefs: PropTypes.array,
     isMerging: PropTypes.bool,
 };
@@ -121,6 +124,8 @@ LegacyTitleReconciliationView.propsTypes = {
 LegacyTitleReconciliationView.defaultProps = {
     titleMetadata: null,
     isMerging: false,
+    columnDefs: null,
+    match: {},
 };
 
 const createMapStateToProps = () => {
@@ -140,4 +145,4 @@ const mapDispatchToProps = dispatch => ({
     onDone: payload => dispatch(reconcileTitles(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationView); // eslint-disable-line
+export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationView);

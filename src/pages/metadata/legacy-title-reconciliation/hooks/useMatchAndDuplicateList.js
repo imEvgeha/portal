@@ -10,12 +10,12 @@ export default function useMatchAndDuplicateList() {
         if (checked) {
             const {NEXUS, VZ, MOVIDA} = TitleSystems;
             const newMatchList = {...matchList};
-            if (duplicateList[id]){
+            if (duplicateList[id]) {
                 const list = {...duplicateList};
                 delete list[id];
                 setDuplicateList(list);
             }
-            if (repo === NEXUS){
+            if (repo === NEXUS) {
                 delete newMatchList[VZ];
                 delete newMatchList[MOVIDA];
             } else {
@@ -37,7 +37,7 @@ export default function useMatchAndDuplicateList() {
 
             setDuplicateList({
                 ...duplicateList,
-                [id]: data
+                [id]: data,
             });
             return;
         }
