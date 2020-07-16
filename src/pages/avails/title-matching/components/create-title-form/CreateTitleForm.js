@@ -7,7 +7,7 @@ import Button from '@atlaskit/button';
 import './CreateTitleForm.scss';
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
 import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
-import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../legacy/constants/metadata/contentType';
+import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
 import DOP from '../../../../../util/DOP';
 import {URL, getDomainName} from '../../../../../util/Common';
@@ -22,10 +22,8 @@ const {
 
 // Building a URL where user can check the newly created title
 // (Opens in new tab)
-const onViewTitleClick = response => {
-    const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
-    window.open(url, '_blank');
+const onViewTitleClick = id => {
+    window.open(`${getDomainName()}/metadata/detail/${id}`, '_blank');
 };
 
 const CreateTitleForm = ({
@@ -33,8 +31,6 @@ const CreateTitleForm = ({
     focusedRight,
     addToast,
     bulkTitleMatch,
-    affectedRightIds,
-    onSuccess,
 }) => {
     const [error, setError] = useState();
     const {
@@ -70,7 +66,7 @@ const CreateTitleForm = ({
         // If a title is of the episodic type group, put together episodic properties in
         // a single prop called 'episodic'. Then delete the leftovers
         const {contentType} = title || {};
-        const episodicTypes = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName];
+        const episodicTypes = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName, SPECIAL.apiName];
 
         if (episodicTypes.includes(contentType)) {
             const {seasonNumber, episodeNumber, seriesTitleName} = title || {};
@@ -91,12 +87,13 @@ const CreateTitleForm = ({
 
         // Submit the title to back-end
         titleService.createTitleWithoutErrorModal(title).then(res => {
+            const titleId = res.id;
             addToast({
                 title: SUCCESS_TITLE,
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                actions: [{content: 'View title', onClick: () => onViewTitleClick(res)}],
+                actions: [{content: 'View title', onClick: () => onViewTitleClick(titleId)}],
             });
             if (URL.isEmbedded()) {
                 DOP.setErrorsCount(0);
@@ -107,14 +104,11 @@ const CreateTitleForm = ({
                     },
                 });
             } else if (bulkTitleMatch) {
-                const url = `${getDomainName()}/metadata/detail/${res.id}`;
-                const coreTitleId = res.id;
-                bulkTitleMatch(coreTitleId, url, affectedRightIds, {});
+                bulkTitleMatch(titleId, true);
             } else {
                 const updatedRight = {coreTitleId: res.id};
                 rightsService.update(updatedRight, focusedId);
             }
-            onSuccess && onSuccess();
             close();
         })
             .catch(error => {
@@ -161,16 +155,12 @@ CreateTitleForm.propTypes = {
     close: PropTypes.func.isRequired,
     focusedRight: PropTypes.object,
     bulkTitleMatch: PropTypes.func,
-    affectedRightIds: PropTypes.array,
-    onSuccess: PropTypes.func,
     addToast: PropTypes.func,
 };
 
 CreateTitleForm.defaultProps = {
     focusedRight: {},
     bulkTitleMatch: null,
-    affectedRightIds: [],
-    onSuccess: () => null,
     addToast: () => null,
 };
 
