@@ -9,7 +9,8 @@ import {
     CardHeader,
     CardBody,
 } from 'reactstrap';
-import './CoreMetadata.scss';
+import { get } from 'lodash';
+import Tag from '@atlaskit/tag'
 import PropTypes from 'prop-types';
 import {
     getFilteredCastList,
@@ -18,6 +19,7 @@ import {
 import Rating from './rating/Rating';
 import PersonListReadOnly from './PersonListReadOnly';
 import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
+import './CoreMetadata.scss';
 
 class CoreMetadataReadOnlyMode extends Component {
 
@@ -307,12 +309,12 @@ class CoreMetadataReadOnlyMode extends Component {
                                 </Row>
                             )}
                             <Row>
-                                {externalIds && externalIds.msvAssociationId ? (
+                                {get(externalIds, 'msvAssociationId.length', 0) > 0 ? (
                                     <Col>
                                         <Alert color='light'>
                                             <b style={{color: '#000'}}>
                                                 MSV Association ID:
-                                            </b> {externalIds.msvAssociationId.join(',')}
+                                            </b> {externalIds.msvAssociationId.map(item => <span title={item}><Tag text={item}/></span>)}
                                         </Alert>
                                     </Col>
                                 ) : null }

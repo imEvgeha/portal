@@ -23,6 +23,10 @@ export const NexusModalProvider = ({children}) => {
 
     const close = () => {
         setIsOpened(false);
+        setActions([]);
+        setContent(null);
+        setTitle('');
+        setStyle({});
     };
 
     const context = {
