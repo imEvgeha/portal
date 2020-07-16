@@ -51,7 +51,7 @@ const LegacyTitleReconciliationView = ({
         onDone(selectedList);
     };
 
-    const handleCandidatesChangeCallback = useCallback((matchList, duplicateList) => {
+    const handleCandidatesChangeCallback = useCallback(({matchList, duplicateList}) => {
         handleCandidatesChange({matchList, duplicateList});
     }, []);
 
