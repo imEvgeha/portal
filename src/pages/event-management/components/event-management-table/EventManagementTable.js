@@ -37,12 +37,11 @@ const EventManagementTable = ({onGridEvent, toggleRefreshGridData}) => {
 
     return (
         <div className="nexus-c-event-management-table">
-            <Button
-                className="nexus-c-event-management-table__refresh-button"
-                onClick={() => toggleRefreshGridData(true)}
-            >
-                {REFRESH_BTN}
-            </Button>
+            <div className="nexus-c-event-management-table__refresh-button">
+                <Button onClick={() => toggleRefreshGridData(true)}>
+                    {REFRESH_BTN}
+                </Button>
+            </div>
             <EventManagementGrid
                 className="nexus-c-event-management-grid"
                 columnDefs={updateColumnDefs(columnDefs)}
