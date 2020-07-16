@@ -10,11 +10,11 @@ describe('FulfillmentOrderPanel', () => {
         handleFulfillmentOrderChange = jest.fn();
 
         const props = {
-            handleFulfillmentOrderChange: handleFulfillmentOrderChange,
+            handleFulfillmentOrderChange,
             id: 'VU000134567-001',
             dueDate: '10/05/2021',
             status: 'COMPLETED',
-            selected: false
+            selected: false,
         };
         wrapper = shallow(<FulfillmentOrderPanel {...props} />);
     });
@@ -29,7 +29,5 @@ describe('FulfillmentOrderPanel', () => {
         fulfillmentOrderPanel.simulate('click');
         expect(handleFulfillmentOrderChange).toHaveBeenCalled();
     });
-
-
 });
 

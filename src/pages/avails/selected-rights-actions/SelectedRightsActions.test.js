@@ -301,13 +301,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'ReadyNew'
+                    status: 'ReadyNew',
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
@@ -319,13 +319,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '1',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -355,13 +355,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -373,13 +373,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -391,13 +391,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: false,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);

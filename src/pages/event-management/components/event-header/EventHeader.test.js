@@ -23,7 +23,8 @@ describe('EventHeader', () => {
                     eventClassName: 'string',
                     summary: 'string',
                 }}
-            />);
+            />
+        );
     });
 
     it('should match snapshot', () => {

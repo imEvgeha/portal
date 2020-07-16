@@ -15,14 +15,14 @@ const ServiceOrderFilter = ({
     filter,
     setFilter,
     dueDateSortDirection,
-    setDueDateSortDirection
+    setDueDateSortDirection,
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const { tenant, external_id, description, configured_pr_id, sr_due_date } = orderDetails || {};
-    let FilterList = [{ value: 'All', label: 'All' }];
+    const {tenant, external_id, description, configured_pr_id, sr_due_date} = orderDetails || {};
+    let FilterList = [{value: 'All', label: 'All'}];
     FilterList = FilterList.concat(Object.keys(Constants.STATUS).map(key => ({
         label: Constants.STATUS[key],
-        value: key
+        value: key,
     })));
     return (
         <div className="so-panel-filter-detail">
@@ -95,7 +95,7 @@ const ServiceOrderFilter = ({
 };
 
 ServiceOrderFilter.propTypes = {
-    orderDetails: PropTypes.object.isRequired
+    orderDetails: PropTypes.object.isRequired,
 };
 
 export default ServiceOrderFilter;

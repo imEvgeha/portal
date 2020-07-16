@@ -18,7 +18,7 @@ export function* fetchTitle(action) {
     try {
         yield put({
             type: actionTypes.FETCH_TITLE_REQUEST,
-            payload: {}
+            payload: {},
         });
         const response = yield call(requestMethod, payload.id);
         yield put({
@@ -41,7 +41,7 @@ export function* fetchTitles(action) {
         const {params, page, size} = payload || {};
         yield put({
             type: actionTypes.FETCH_TITLES_REQUEST,
-            payload: {}
+            payload: {},
         });
         const response = yield call(requestMethod, params, page, size);
         const {data} = response;
@@ -89,7 +89,7 @@ export function* fetchReconciliationTitles(action) {
     try {
         yield put({
             type: actionTypes.FETCH_RECONCILIATION_TITLES_REQUEST,
-            payload: {}
+            payload: {},
         });
         const {ids = []} = action.payload || {};
         const body = ids.map(el => {
@@ -115,13 +115,13 @@ export function* getReconciliationTitles(action) {
 
     if (!titleIdsToFetch) {
         return;
-    };
+    }
 
     const newAction = {
         type: action.type,
         payload: {
             ids: titleIdsToFetch,
-        }
+        },
     };
 
     yield fork(fetchReconciliationTitles, newAction);
@@ -142,7 +142,7 @@ export function* getReconciliationTitles(action) {
                     data,
                     page,
                     size,
-                }
+                },
             });
 
             break;
@@ -160,8 +160,8 @@ export function* fetchAndStoreTitles(action) {
 
     while (true) {
         const {type, payload} = yield take([
-           actionTypes.FETCH_TITLES_SUCCESS,
-           actionTypes.FETCH_TITLES_ERROR,
+            actionTypes.FETCH_TITLES_SUCCESS,
+            actionTypes.FETCH_TITLES_ERROR,
         ]);
 
         if (type === actionTypes.FETCH_TITLES_SUCCESS) {
@@ -183,7 +183,7 @@ export function* reconcileTitles({payload}) {
         const masterIds = [];
         const masters = {};
         Object.keys(matchList || {}).map(key => {
-            const id = matchList[key].id;
+            const {id} = matchList[key];
             masterIds.push(id);
             masters[id] = matchList[key];
         });
@@ -196,7 +196,7 @@ export function* reconcileTitles({payload}) {
             payload: {
                 ...masters,
                 ...duplicateList,
-                [newTitleId]: response
+                [newTitleId]: response,
             },
         });
         const mLength = masterIds.length;
@@ -209,12 +209,12 @@ export function* reconcileTitles({payload}) {
                 isAutoDismiss: true,
                 description: `You have successfully ${mLength ? 'created a new Nexus title' : ''}
                 ${mLength && dLength && ' and ' || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`,
-            }
+            },
         });
         query = `duplicateIds=${duplicateIds.join(',')}&masterIds=${masterIds.join(',')}&mergedId=${newTitleId}`;
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${query}`)));
     } catch (e) {
-        //error handling
+        // error handling
         yield put({
             type: actionTypes.TITLES_RECONCILE_ERROR,
         });
@@ -226,6 +226,6 @@ export function* metadataWatcher() {
         takeEvery(actionTypes.FETCH_AND_STORE_TITLE, fetchAndStoreTitle),
         takeEvery(actionTypes.FETCH_AND_STORE_TITLES, fetchAndStoreTitles),
         takeEvery(actionTypes.FETCH_AND_STORE_RECONCILIATION_TITLES, getReconciliationTitles),
-        takeEvery(actionTypes.TITLES_RECONCILE, reconcileTitles)
+        takeEvery(actionTypes.TITLES_RECONCILE, reconcileTitles),
     ]);
 }

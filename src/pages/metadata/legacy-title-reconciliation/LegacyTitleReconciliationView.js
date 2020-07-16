@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
 import './LegacyTitleReconciliationView.scss';
-import {NexusTitle, NexusGrid} from '../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../ui/elements';
 import {
     TITLE,
     SECTION_MESSAGE,
@@ -70,7 +70,7 @@ const LegacyTitleReconciliationView = ({
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
         ...columnDefs,
-        episodeAndSeasonNumberColumnDef
+        episodeAndSeasonNumberColumnDef,
     ];
 
     return (
@@ -78,14 +78,14 @@ const LegacyTitleReconciliationView = ({
             <NexusTitle>{TITLE}</NexusTitle>
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
-                <NexusGrid 
+                <NexusGrid
                     columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
                     onGridEvent={handleGridEvent}
                     domLayout="autoHeight"
                 />
             </div>
-            <SectionMessage appearance='info'>
+            <SectionMessage appearance="info">
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <CandidatesList

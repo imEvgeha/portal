@@ -66,13 +66,13 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
 export const replayEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replay/${docId}`;
     return nexusFetch(url, {
-        method: 'post'
+        method: 'post',
     });
 };
 
 export const replicateEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replicate/${docId}`;
     return nexusFetch(url, {
-        method: 'post'
+        method: 'post',
     });
 };

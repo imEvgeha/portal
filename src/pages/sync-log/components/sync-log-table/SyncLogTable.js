@@ -36,8 +36,8 @@ const SyncLogTable = () => {
         return columnMappings.map(col => ({
             ...col,
             cellRendererParams: {
-                setErrors
-            }
+                setErrors,
+            },
         }));
     };
 
@@ -93,10 +93,10 @@ const SyncLogTable = () => {
                 onGridEvent={onGridEvent}
                 externalFilter={{
                     dateFrom,
-                    dateTo
+                    dateTo,
                 }}
                 frameworkComponents={{
-                    publishErrors: PublishErrors
+                    publishErrors: PublishErrors,
                 }}
             />
 
@@ -117,7 +117,7 @@ const SyncLogTable = () => {
                     {
                         errorsData.map((error, i) => (
                             ERROR_TABLE_COLUMNS.map(key => (
-                                <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i-key}`}>
+                                <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
                                     {error[key]}
                                 </div>
                             ))

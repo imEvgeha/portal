@@ -12,12 +12,12 @@ const baseServicingOrdersURL = config => {
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
     let queryParams = {};
-    Object.keys(searchCriteria).forEach((key) => {
-        let value = searchCriteria[key];
-        if(value instanceof Object) {
+    Object.keys(searchCriteria).forEach(key => {
+        const value = searchCriteria[key];
+        if (value instanceof Object) {
             queryParams = {
                 ...queryParams,
-                ...value
+                ...value,
             };
         } else {
             queryParams[key] = value;
@@ -43,7 +43,7 @@ export const getFulfilmentOrdersForServiceOrder = id => {
 export const getServiceRequest = externalId => {
     const url = `${baseServicingOrdersURL(config)}/so/${externalId}/pr`;
     return nexusFetch(url, {
-        method: 'get'
+        method: 'get',
     });
 };
 
@@ -51,7 +51,7 @@ export const saveFulfillmentOrder = ({data}) => {
     const url = `${baseServicingOrdersURL(config)}/fo`;
     return nexusFetch(url, {
         method: 'put',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     });
 };
 
@@ -60,11 +60,11 @@ export const saveFulfillmentOrder = ({data}) => {
  * returns a data blob which can be converted to a .csv file.
  * @param servicingOrders - Array of servicing order ids
  */
-export const exportServicingOrders = (servicingOrders) => {
+export const exportServicingOrders = servicingOrders => {
     const url = `${baseServicingOrdersURL(config)}/so/export`;
     return nexusFetch(url, {
         method: 'post',
-        body: JSON.stringify(servicingOrders)
+        body: JSON.stringify(servicingOrders),
     });
 };
 
@@ -73,5 +73,5 @@ export const servicingOrdersService = {
     getServicingOrderById,
     getFulfilmentOrdersForServiceOrder,
     saveFulfillmentOrder,
-    exportServicingOrders
+    exportServicingOrders,
 };

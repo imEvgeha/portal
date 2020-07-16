@@ -11,7 +11,7 @@ describe('SOFilter', () => {
             soID: '12345',
             customer: 'Paramount',
             creationDate: '10/09/2020',
-            createdBy: 'John Wick'
+            createdBy: 'John Wick',
         };
         wrapper = shallow(<ServiceOrderFilter orderDetails={props} />);
     });

@@ -6,7 +6,7 @@ describe('PartnerRequest', () => {
     let wrapper;
 
     beforeEach(() => {
-        wrapper = shallow(<PartnerRequest configuredPrId='123' externalId='345' />);
+        wrapper = shallow(<PartnerRequest configuredPrId="123" externalId="345" />);
     });
 
     it('should render without crashing', () => {

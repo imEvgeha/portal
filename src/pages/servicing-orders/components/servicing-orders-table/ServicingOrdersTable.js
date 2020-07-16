@@ -12,6 +12,7 @@ import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
 import './ServicingOrdersTable.scss';
+
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
@@ -21,7 +22,7 @@ const ServicingOrderGrid = compose(
 const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
-        selectedRows: 0
+        selectedRows: 0,
     });
     const [gridApi, setGridApi] = useState(null);
 
@@ -47,7 +48,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: valueFormatter(columnDef),
-            cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer'
+            cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer',
         }));
     };
 
@@ -110,7 +111,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                 columnDefs={columns}
                 mapping={columnDefs}
                 frameworkComponents={{
-                    emphasizedStringCellRenderer: EmphasizedCellRenderer
+                    emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}

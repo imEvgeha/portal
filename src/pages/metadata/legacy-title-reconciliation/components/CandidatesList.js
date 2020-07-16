@@ -6,7 +6,7 @@ import {Radio} from '@atlaskit/radio';
 import Button from '@atlaskit/button';
 import classNames from 'classnames';
 import './CandidatesList.scss';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -150,7 +150,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                             duplicateButton,
                             ...updatedColumnDefs,
                         ]}
-                        rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
+                        rowClassRules={{'nexus-c-candidates-list__row': params => params.node.id === titleId}}
                         setTotalCount={setTotalCount}
                         initialFilter={queryParams}
                         mapping={mappings}

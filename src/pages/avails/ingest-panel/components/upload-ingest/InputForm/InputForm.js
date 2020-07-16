@@ -78,7 +78,7 @@ const InputForm = ({
             file,
             closeModal,
         };
-        if (get(ingestData,'externalId', '')) {
+        if (get(ingestData, 'externalId', '')) {
             params.externalId = ingestData.externalId;
         }
         if (template !== STUDIO) {
@@ -106,7 +106,7 @@ const InputForm = ({
         const selectedTemplate = event.target.value;
         setTemplate(selectedTemplate);
         const serviceRegionValue = (selectedTemplate === USMASTER) && {label: US, value: US};
-        !get(ingestData,'externalId', '') && setServiceRegion(serviceRegionValue);
+        !get(ingestData, 'externalId', '') && setServiceRegion(serviceRegionValue);
         (selectedTemplate !== STUDIO) && setLicensor('');
     };
 

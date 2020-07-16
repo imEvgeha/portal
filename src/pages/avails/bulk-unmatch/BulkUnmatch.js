@@ -14,7 +14,7 @@ import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/consta
 import './BulkUnmatch.scss';
 
 const BulkUnmatch = ({selectedRights = [], columnDefs = [],
-                         removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
+    removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
     const [affectedRights, setAffectedRights] = useState([]);
     const {setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 

@@ -25,7 +25,7 @@ export const FulfillmentOrder = ({
     serviceOrder,
     updatedServices,
     children,
-    cancelEditing
+    cancelEditing,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -49,7 +49,7 @@ export const FulfillmentOrder = ({
     );
     const modalHeading = 'Warning';
     const modalStyle = {
-        width: 'small'
+        width: 'small',
     };
 
     // runs when a fulfillment order has been successfully edited and saved
@@ -65,7 +65,7 @@ export const FulfillmentOrder = ({
                     setSelectedFulfillmentOrderID(get(fulfillmentOrder, 'id', ''));
                     dispatch({
                         type: SAVE_FULFILLMENT_ORDER_SUCCESS,
-                        payload: 'ALREADY_SET'
+                        payload: 'ALREADY_SET',
                     });
                 });
             }
@@ -125,14 +125,14 @@ export const FulfillmentOrder = ({
                 onClick: () => {
                     close();
                     setFulfillmentOrder(fo);
-                }
+                },
             },
             {
                 text: 'Cancel',
                 onClick: () => {
                     close();
-                }
-            }
+                },
+            },
         ]);
     };
 
@@ -159,7 +159,7 @@ export const FulfillmentOrder = ({
                     <div className="fulfillment-order">
                         <div className="fulfillment-order__row fulfillment-order__header">
                             <div className="fulfillment-order__title">
-                                <div className='fulfillment-order__title--text'>Fulfillment Order</div>
+                                <div className="fulfillment-order__title--text">Fulfillment Order</div>
                                 <div>Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
                             </div>
                             <div className="fulfillment-order__save-buttons">
@@ -231,7 +231,7 @@ export const FulfillmentOrder = ({
                                         options={Constants.READINESS_STATUS}
                                         value={{
                                             value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
-                                            label: readinessOption && readinessOption.label
+                                            label: readinessOption && readinessOption.label,
                                         }}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
                                         isDisabled={isFormDisabled}
@@ -266,7 +266,7 @@ FulfillmentOrder.propTypes = {
     serviceOrder: PropTypes.object,
     updatedServices: PropTypes.object,
     children: PropTypes.any,
-    cancelEditing: PropTypes.func
+    cancelEditing: PropTypes.func,
 };
 
 FulfillmentOrder.defaultProps = {
@@ -277,7 +277,7 @@ FulfillmentOrder.defaultProps = {
     serviceOrder: {},
     updatedServices: {},
     children: null,
-    cancelEditing: () => {}
+    cancelEditing: () => {},
 };
 
 export default FulfillmentOrder;
@@ -285,6 +285,6 @@ export default FulfillmentOrder;
 export function transformClientToServerFulfillmentOrder(clientFulfillmentOrder) {
     return {
         ...clientFulfillmentOrder,
-        definition: JSON.stringify(clientFulfillmentOrder.definition)
+        definition: JSON.stringify(clientFulfillmentOrder.definition),
     };
 }

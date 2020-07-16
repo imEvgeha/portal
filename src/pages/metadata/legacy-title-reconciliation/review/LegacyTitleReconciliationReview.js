@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {isEqual} from 'lodash';
 import './LegacyTitleReconciliationReview.scss';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {
@@ -19,9 +19,9 @@ import {
 import * as selectors from '../../metadataSelectors';
 import {getReconciliationTitles} from '../../metadataActions';
 import {URL} from '../../../../util/Common';
-import {createColumnDefs} from '../../../../pages/avails/title-matching/titleMatchingActions';
-import {getColumnDefs} from '../../../../pages/avails/title-matching/titleMatchingSelectors';
-import {getRepositoryCell} from '../../../../pages/avails/utils';
+import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
+import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
+import {getRepositoryCell} from '../../../avails/utils';
 
 const LegacyTitleReconciliationReview = ({
     createColumnDefs,
@@ -36,8 +36,10 @@ const LegacyTitleReconciliationReview = ({
         }
     }, [columnDefs]);
 
-    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',').filter(Boolean);
-    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',').filter(Boolean);
+    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',')
+        .filter(Boolean);
+    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',')
+        .filter(Boolean);
     const newTitleId = URL.getParamIfExists(MERGED_ID);
 
     useEffect(() => {
@@ -45,7 +47,7 @@ const LegacyTitleReconciliationReview = ({
         const {id} = params || {};
         const ids = [...duplicateIds, ...masterIds, newTitleId].filter(Boolean);
         getReconciliationTitles({ids});
-    },[]);
+    }, []);
 
     const handleGridEvent = ({type, columnApi}) => {
         if (GRID_EVENTS.READY === type) {
@@ -58,7 +60,7 @@ const LegacyTitleReconciliationReview = ({
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
         episodeAndSeasonNumberColumnDef,
-        ...columnDefs
+        ...columnDefs,
     ];
 
     const duplicateRowData = titles.filter(({id}) => duplicateIds.includes(id));
@@ -130,7 +132,7 @@ const createMapStateToProps = () => {
     const titlesSelector = selectors.createTitlesSelector();
     return (state, props) => ({
         columnDefs: getColumnDefs(state),
-        titles: titlesSelector(state, props), 
+        titles: titlesSelector(state, props),
     });
 };
 

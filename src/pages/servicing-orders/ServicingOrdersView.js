@@ -29,7 +29,7 @@ const ServicingOrdersView = () => {
     );
     const modalHeading = 'Warning';
     const modalStyle = {
-        width: 'small'
+        width: 'small',
     };
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
@@ -37,7 +37,7 @@ const ServicingOrdersView = () => {
         () => {
             setFixedFilter({
                 status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
-                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined
+                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined,
             });
         },
         [isHideReady, isHideCompleted]
@@ -46,7 +46,7 @@ const ServicingOrdersView = () => {
     useEffect(
         () => {
             setExternalFilter({
-                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value})
+                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
             });
         },
         [customerFilter]
@@ -72,7 +72,7 @@ const ServicingOrdersView = () => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
                 setRefreshData(true);
-        });
+            });
     };
 
     /**
@@ -87,12 +87,12 @@ const ServicingOrdersView = () => {
                 onClick: () => {
                     exportSelectedServicingOrders();
                     close();
-                }
+                },
             },
             {
                 text: 'Cancel',
-                onClick: close
-            }
+                onClick: close,
+            },
         ]);
     };
 

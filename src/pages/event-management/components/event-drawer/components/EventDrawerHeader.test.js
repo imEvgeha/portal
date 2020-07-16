@@ -15,15 +15,16 @@ describe('EventDrawerHeader', () => {
         onReplayEventMock = jest.fn();
         onReplicateEventMock = jest.fn();
         const props = {
-            store:store,
-            event:{eventId: '123'},
-            onReplay:onReplayEventMock,
-            onReplicate:onReplicateEventMock
+            store,
+            event: {eventId: '123'},
+            onReplay: onReplayEventMock,
+            onReplicate: onReplicateEventMock,
         };
         wrapper = shallow(
             <EventDrawerH
                 {...props}
-            />);
+            />
+        );
     });
 
     it('should render the component', () => {

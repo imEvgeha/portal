@@ -7,7 +7,7 @@ const TitleHeader = ({
     title,
     releaseYear,
     type,
-    artwork
+    artwork,
 }) => {
     return (
         <div className="nexus-c-title-header">

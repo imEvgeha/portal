@@ -17,8 +17,8 @@ import {
 import './Title.scss';
 
 const Title = ({
-   coreTitleData,
-   editorialTitleData
+    coreTitleData,
+    editorialTitleData,
 }) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = coreTitleData || {};

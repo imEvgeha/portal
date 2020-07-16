@@ -51,12 +51,11 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     };
 
     // determines whether to sort the fulfillment order panels or not
-    const getSortedFilteredList = () =>
-        dueDateSortDirection !== SORT_DIRECTION[0]
-            ? getFilteredList()
-                  .slice() // creates a copy of the list so that the sort doesn't mutate the original array
-                  .sort(sortByDueDate)
-            : getFilteredList();
+    const getSortedFilteredList = () => (dueDateSortDirection !== SORT_DIRECTION[0]
+        ? getFilteredList()
+            .slice() // creates a copy of the list so that the sort doesn't mutate the original array
+            .sort(sortByDueDate)
+        : getFilteredList());
 
     return (
         <div className="panel-header">
@@ -103,11 +102,11 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
 HeaderSection.propTypes = {
     orderDetails: PropTypes.object.isRequired,
     handleFulfillmentOrderChange: PropTypes.func,
-    selectedFulfillmentOrder: PropTypes.string
+    selectedFulfillmentOrder: PropTypes.string,
 };
 
 HeaderSection.defaultProps = {
     handleFulfillmentOrderChange: () => null,
-    selectedFulfillmentOrder: ''
+    selectedFulfillmentOrder: '',
 };
 export default HeaderSection;

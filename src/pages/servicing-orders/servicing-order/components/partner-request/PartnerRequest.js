@@ -10,12 +10,12 @@ import {
     CREATED_DATE,
     DATE_FORMAT,
     MSS_ORDER_DETAILS,
-    STUDIO
+    STUDIO,
 } from '../filter-section/constants';
 import './PartnerRequest.scss';
 
 const PartnerRequest = ({externalId, configuredPrId}) => {
-    const [data, setData] = useState({list:[]});
+    const [data, setData] = useState({list: []});
 
     useEffect(() => {
         getServiceRequest(externalId).then(res => {
@@ -40,7 +40,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                     {MSS_ORDER_DETAILS}: {externalId}
                 </div>
                 <div className="nexus-c-partner-request__info-field">
-                    {CREATED_DATE}: {data.createdAt ? parseSimulcast(data.createdAt, DATE_FORMAT): ''}
+                    {CREATED_DATE}: {data.createdAt ? parseSimulcast(data.createdAt, DATE_FORMAT) : ''}
                 </div>
                 <div className="nexus-c-partner-request__info-field">
                     {CREATED_BY}: {(data.createdBy || '')}
@@ -52,7 +52,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                         {columnHeader.toUpperCase()}
                     </div>
                 ))}
-                {data.list.map((order) => (
+                {data.list.map(order => (
                     COLUMN_KEYS.map((key, index) => (
                         <div
                             key={uid(key, index)}
@@ -74,7 +74,7 @@ PartnerRequest.propTypes = {
 
 PartnerRequest.defaultProps = {
     externalId: '',
-    configuredPrId: ''
+    configuredPrId: '',
 };
 
 export default PartnerRequest;

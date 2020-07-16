@@ -11,7 +11,7 @@ const FulfillmentOrderPanel = ({
     dueDate,
     selected,
     handleFulfillmentOrderChange,
-    productDescription
+    productDescription,
 }) => {
     return (
         <div
@@ -44,7 +44,7 @@ FulfillmentOrderPanel.propTypes = {
     dueDate: PropTypes.string,
     selected: PropTypes.bool,
     productDescription: PropTypes.string,
-    externalId: PropTypes.string
+    externalId: PropTypes.string,
 };
 
 FulfillmentOrderPanel.defaultProps = {
@@ -54,7 +54,7 @@ FulfillmentOrderPanel.defaultProps = {
     dueDate: '',
     selected: false,
     productDescription: '',
-    externalId: ''
+    externalId: '',
 };
 
 export default FulfillmentOrderPanel;

@@ -35,7 +35,7 @@ const ServicingOrder = ({match}) => {
 
                 setServiceOrder({
                     ...servicingOrder,
-                    fulfillmentOrders
+                    fulfillmentOrders,
                 });
                 setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
             } catch (e) {
