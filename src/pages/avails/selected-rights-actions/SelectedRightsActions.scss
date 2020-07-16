@@ -25,7 +25,6 @@
     color: map-get($colors, nexus-primary-color);
     white-space: nowrap; // Keep each option in one line
     padding-bottom: 10px;
-    pointer-events: none;
 
     &:last-child {
       padding-bottom: 0;
@@ -34,7 +33,6 @@
     &--is-active {
       color: map-get($colors, nexus-secondary-color);
       cursor: pointer;
-      pointer-events: all;
     }
   }
 }

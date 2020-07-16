@@ -157,7 +157,7 @@ export const SelectedRightsActions = ({
                                     isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                                 )}
                                 data-test-id="bulk-match"
-                                onClick={openDrawer}
+                                onClick={isMatchable ? openDrawer : null}
                             >
                                 <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
                                     <div>
