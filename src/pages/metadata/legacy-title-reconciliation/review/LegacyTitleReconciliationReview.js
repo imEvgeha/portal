@@ -32,8 +32,7 @@ const LegacyTitleReconciliationReview = ({
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
     const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',')
         .filter(Boolean);
