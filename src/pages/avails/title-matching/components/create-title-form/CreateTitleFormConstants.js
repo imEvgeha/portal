@@ -1,4 +1,4 @@
-import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../legacy/constants/metadata/contentType';
+import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
 import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
 
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
@@ -46,6 +46,7 @@ const getTitleFormSchema = currentValue => ([
                     {label: EVENT.name, value: EVENT.apiName},
                     {label: SPORTS.name, value: SPORTS.apiName},
                     {label: ADVERTISEMENT.name, value: ADVERTISEMENT.apiName},
+                    {label: SPECIAL.name, value: SPECIAL.apiName},
                 ],
             },
         ],
@@ -88,6 +89,7 @@ const getTitleFormSchema = currentValue => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
+                    SPECIAL.apiName,
                 ],
             },
         ],
@@ -130,6 +132,7 @@ const getTitleFormSchema = currentValue => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
+                    SPECIAL.apiName,
                 ],
             },
         ],
@@ -180,6 +183,7 @@ const getTitleFormSchema = currentValue => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
+                    SPECIAL.apiName,
                 ],
             },
         ],

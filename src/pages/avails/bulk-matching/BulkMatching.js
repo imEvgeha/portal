@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -105,7 +105,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
         }
     };
 
-    const bulkTitleMatch = coreTitleId => {
+    const bulkTitleMatch = (coreTitleId, isNewTitle = false) => {
         setCoreTitleId({
             rightIds: affectedTableData.map(right => right.id),
             coreTitleId,
@@ -114,14 +114,13 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 //  handle matched titles (ignore updated affected rights from response)
                 const matchedTitlesList = Object.values(matchList);
                 setMatchedTitles(matchedTitlesList);
-
-                if (matchList[NEXUS]) {
+                setLoadTitlesTable(false);
+                if (isNewTitle || matchList[NEXUS]) {
                     dispatchSuccessToast();
                     toggleRefreshGridData(true);
-                    return onCancel();
+                    return closeDrawer();
                 }
                 disableLoadingState();
-                setLoadTitlesTable(false);
                 setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
             })
             .catch(() => {
@@ -173,7 +172,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
             description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
-            isWithOverlay: true,
+            isWithOverlay: false,
         });
     };
 
@@ -204,17 +203,8 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
         closeDrawer();
     };
 
-    const onCancel = () => {
-        closeDrawer();
-    };
-
     const isSummaryReady = () => {
         return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
-    };
-
-    const onModalSuccess = () => {
-        closeDrawer();
-        toggleRefreshGridData(true);
     };
 
     const showModal = () => {
@@ -223,9 +213,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 <CreateTitleForm
                     close={close}
                     bulkTitleMatch={bulkTitleMatch}
-                    affectedRightIds={affectedTableData.map(right => right.id)}
                     focusedRight={{contentType}}
-                    onSuccess={onModalSuccess}
                 />
             ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE
@@ -352,7 +340,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                         matchList={matchList}
                         onMatch={onMatch}
                         onMatchAndCreate={onMatchAndCreate}
-                        onCancel={onCancel}
+                        onCancel={closeDrawer}
                         isMatchLoading={isMatchLoading}
                         isMatchAndCreateLoading={isMatchAndCreateLoading}
                     />
