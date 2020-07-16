@@ -51,15 +51,11 @@ const LegacyTitleReconciliationView = ({
         onDone(selectedList);
     };
 
-    const handleCandidatesChangeCallback = useCallback(({matchList, duplicateList}) => {
-        handleCandidatesChange({matchList, duplicateList});
-    }, []);
-
-    const handleCandidatesChange = ({matchList = {}, duplicateList = {}}) => {
+    const handleCandidatesChange = useCallback(({matchList, duplicateList}) => {
         const hasItem = Object.keys(matchList).length;
         setIsDoneButtonDisabled(!hasItem);
         setSelectedList({matchList, duplicateList});
-    };
+    }, []);
 
     const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
@@ -94,7 +90,7 @@ const LegacyTitleReconciliationView = ({
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
                 queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
-                onCandidatesChange={handleCandidatesChangeCallback}
+                onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">
                 <Button
