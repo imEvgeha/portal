@@ -365,9 +365,9 @@
       "dataType": "string",
       "searchDataType": "string",
       "queryParamName": "coreTitleId",
-      "readOnly": true,
+      "readOnly": false,
       "enableSearch": true,
-      "enableEdit": false,
+      "enableEdit": true,
       "required": false
     },
     {
