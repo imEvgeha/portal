@@ -1025,12 +1025,12 @@ class TitleEdit extends Component {
     }
 
     getCategoryField(categories) {
-        return categories.map((x, index) => {
+        return categories ? categories.map((x, index) => {
             return {
                 "name": x,
                 "order": index
             }
-        })
+        }) : []
     }
 
     getAdditionalFieldsWithoutEmptyField() {
