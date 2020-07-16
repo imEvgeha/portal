@@ -224,7 +224,7 @@ class TitleReadOnlyMode extends Component {
                                         <b>Categories: </b>
                                         {category.map((value, i) => (
                                             category.length === i + 1 ?
-                                                <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                                                <span key={i}>{value.name}</span> : <span key={i}>{value.name}, </span>
                                         ))}
                                     </Alert>
                                 </Col>
