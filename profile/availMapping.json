@@ -367,7 +367,7 @@
       "queryParamName": "coreTitleId",
       "readOnly": true,
       "enableSearch": true,
-      "enableEdit": false,
+      "enableEdit": true,
       "required": false
     },
     {
