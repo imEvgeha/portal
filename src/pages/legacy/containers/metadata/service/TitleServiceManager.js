@@ -36,7 +36,7 @@ export const titleServiceManager = {
         if (searchCriteria.contentType && searchCriteria.contentType.toLowerCase() === 'advertisement') {
             searchCriteria.contentType = 'Ad';
         }
-        return titleService.freeTextSearchWithGenres(searchCriteria, page, pageSize, sortedParams);
+        return titleService.freeTextSearch(searchCriteria, page, pageSize, sortedParams);
     },
 
     //the actual call to the service (and further to server), generic interpretation of result and forward for detailed interpretation (by the table)
