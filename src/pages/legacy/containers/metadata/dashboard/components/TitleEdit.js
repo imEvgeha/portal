@@ -831,6 +831,9 @@ class TitleEdit extends Component {
     };
 
     getNewCreatedEditorialMetadata = (newEditorialMetadata) => {
+        if(newEditorialMetadata.category) {
+            newEditorialMetadata.category = this.getCategoryField(newEditorialMetadata.category);
+        }
         return [
             {
                 "itemIndex": "1",
@@ -844,9 +847,13 @@ class TitleEdit extends Component {
 
     getUpdatedEditorialMetadata = () => {
         return this.state.updatedEditorialMetadata.map(e => {
+            const body = e;
+            if(body.category) {
+                body.category = this.getCategoryField(body.category);
+            }
             return {
                 "itemIndex": null,
-                "body": e
+                body
             }
         });
     };
@@ -1017,6 +1024,15 @@ class TitleEdit extends Component {
         return doAddSubObject ? subObject : null;
     }
 
+    getCategoryField(categories) {
+        return categories.map((x, index) => {
+            return {
+                "name": x,
+                "order": index
+            }
+        })
+    }
+
     getAdditionalFieldsWithoutEmptyField() {
         const additionalFields = {};
         for (const fields in this.state.editedForm) {
@@ -1025,6 +1041,8 @@ class TitleEdit extends Component {
             }
             else if (fields === 'advisories') {
                 additionalFields[fields] = this.getAdditionalFieldsWithoutEmptyFields(fields);
+            } else if (fields === 'category') {
+                additionalFields[fields] =  this.getCategoryField(this.state.editedForm[fields]);
             }
             else if (this.state.editedForm[fields]) {
                 additionalFields[fields] = this.state.editedForm[fields];

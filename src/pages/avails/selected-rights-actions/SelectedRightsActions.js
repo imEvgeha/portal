@@ -21,6 +21,7 @@ import {
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
 } from './constants';
+import moment from 'moment';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
@@ -64,18 +65,21 @@ export const SelectedRightsActions = ({
         const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
         const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
         const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
+        const hasNoExpiredRights = selectedRights.every(({end}) => moment().isBefore(end));
 
         // Bulk match criteria check
         setIsMatchable(
             !!selectedRights.length
             && hasEmptyCoreTitleIdsAndSameContentType
             && (hasEmptySourceRightIds || hasNoEmptySourceRightId)
+            && hasNoExpiredRights
         );
 
         // Bulk unmatch criteria check
         setIsUnmatchable(
             !!selectedRights.length
             && hasCoreTitleIds
+            && hasNoExpiredRights
         );
 
         // Bonus rights create criteria

@@ -54,7 +54,7 @@ class EditorialMetadataEditMode extends Component {
         const propsCategory = (data || {}).category ||  [];
 
         const category = propsCategory.map(e => {
-            return { value: e, label: e };
+            return { value: e.name, label: e.name };
         });
 
         this.state = {
