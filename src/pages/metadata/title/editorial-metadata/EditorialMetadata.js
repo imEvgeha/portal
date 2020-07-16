@@ -8,7 +8,7 @@ import {getFilteredCastList, getFilteredCrewList} from '../../../legacy/constant
 const EditorialMetadata = ({
     data,
 }) => {
-    // temporary integration of NexusPersonsList here as PoC
+    // TODO: temporary integration of NexusPersonsList here as PoC
     // will be moved after folder structure is implemented
     // no onChange integration done, should be simple
     return (
