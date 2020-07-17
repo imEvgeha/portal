@@ -27,7 +27,6 @@
     "@atlaskit/css-reset": "^5.0.12",
     "@atlaskit/datetime-picker": "^9.0.1",
     "@atlaskit/dropdown-menu": "^8.1.1",
-    "@atlaskit/dynamic-table": "^14.0.0",
     "@atlaskit/field-base": "^13.0.6",
     "@atlaskit/flag": "^12.3.2",
     "@atlaskit/form": "^6.1.4",

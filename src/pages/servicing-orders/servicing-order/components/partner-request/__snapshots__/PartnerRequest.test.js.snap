@@ -52,88 +52,105 @@ exports[`PartnerRequest should match snapshot 1`] = `
             </styled.div>
           </WithTheme(AkGridColumn)>
         </WithTheme(AkGrid)>
-        <styled.div
-          name="hello"
-        >
-          <DynamicTable
-            defaultPage={1}
-            emptyView={
-              <h4>
-                There are no partner requests.
-              </h4>
-            }
-            head={
-              Object {
-                "cells": Array [
-                  Object {
-                    "content": "Title",
-                    "isSortable": false,
-                    "key": "productDesc",
-                  },
-                  Object {
-                    "content": "Version",
-                    "isSortable": false,
-                    "key": "version",
-                  },
-                  Object {
-                    "content": "Due Date",
-                    "isSortable": false,
-                    "key": "srdueDate",
-                  },
-                  Object {
-                    "content": "Notes",
-                    "isSortable": false,
-                    "key": "materialNotes",
-                  },
-                  Object {
-                    "content": "Primary Video",
-                    "isSortable": false,
-                    "key": "primaryVideo",
-                  },
-                  Object {
-                    "content": "Secondary Audio",
-                    "isSortable": false,
-                    "key": "secondaryAudio",
-                  },
-                  Object {
-                    "content": "Subtitles Full",
-                    "isSortable": false,
-                    "key": "subtitlesFull",
-                  },
-                  Object {
-                    "content": "Subtitles Forced",
-                    "isSortable": false,
-                    "key": "subtitlesForced",
-                  },
-                  Object {
-                    "content": "Trailer",
-                    "isSortable": false,
-                    "key": "trailer",
-                  },
-                  Object {
-                    "content": "Metadata",
-                    "isSortable": false,
-                    "key": "metaData",
-                  },
-                  Object {
-                    "content": "Artwork",
-                    "isSortable": false,
-                    "key": "artWork",
-                  },
-                ],
-              }
-            }
-            isFixedSize={false}
-            isLoading={true}
-            isRankable={false}
-            onSetPage={[Function]}
-            onSort={[Function]}
-            rows={Array []}
-            rowsPerPage={Infinity}
-          />
-        </styled.div>
       </WithTheme(AkGridColumn)>
     </WithTheme(AkGrid)>
+    <styled.div>
+      <NexusGrid
+        columnDefs={
+          Array [
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "productDesc",
+              "field": "productDesc",
+              "headerName": "Title",
+              "maxWidth": 150,
+              "minWidth": 80,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "version",
+              "field": "version",
+              "headerName": "Version",
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "srdueDate",
+              "field": "srdueDate",
+              "headerName": "Due Date",
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "materialNotes",
+              "field": "materialNotes",
+              "headerName": "Notes",
+              "maxWidth": 500,
+              "minWidth": 80,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "primaryVideo",
+              "field": "primaryVideo",
+              "headerName": "Primary Video",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "secondaryAudio",
+              "field": "secondaryAudio",
+              "headerName": "Secondary Audio",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "subtitlesFull",
+              "field": "subtitlesFull",
+              "headerName": "Subtitles Full",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "subtitlesForced",
+              "field": "subtitlesForced",
+              "headerName": "Subtitles Forced",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "trailer",
+              "field": "trailer",
+              "headerName": "Trailer",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "metaData",
+              "field": "metaData",
+              "headerName": "Metadata",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "artWork",
+              "field": "artWork",
+              "headerName": "Artwork",
+              "suppressSizeToFit": true,
+            },
+          ]
+        }
+        defaultColDef={
+          Object {
+            "autoHeight": true,
+            "cellClass": "cell",
+            "resizable": true,
+          }
+        }
+        isGridHidden={false}
+        onFirstDataRendered={[Function]}
+        onGridEvent={null}
+        rowData={Array []}
+        setRowData={null}
+      />
+    </styled.div>
   </AkPage>
 </styled.div>
 `;

@@ -167,18 +167,6 @@
     memoize-one "^5.1.0"
     tslib "^1.9.3"
 
-"@atlaskit/button@^14.0.0":
-  version "14.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-14.0.0.tgz#0337e6b507685efabe51becafa36b8a116064a7a"
-  integrity sha512-uB+qylcOnXwI5Niq/GGprnGOGL9BsGH6huc0vCk23HX/vXB3CZ7ZKtcxI8ZpmMmgJzZeSrZG0BtuTxCLVixxUA==
-  dependencies:
-    "@atlaskit/analytics-next" "^7.0.0"
-    "@atlaskit/spinner" "^15.0.0"
-    "@atlaskit/theme" "^10.0.0"
-    "@emotion/core" "^10.0.9"
-    memoize-one "^5.1.0"
-    tslib "^1.9.3"
-
 "@atlaskit/calendar@^7.0.17":
   version "7.0.22"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/calendar/-/calendar-7.0.22.tgz#b5e61fd0329d0520a61d3fad4dbc7e609da9a9a9"
@@ -332,18 +320,6 @@
     "@atlaskit/tooltip" "^15.2.7"
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
-
-"@atlaskit/dynamic-table@^14.0.0":
-  version "14.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/dynamic-table/-/dynamic-table-14.0.0.tgz#2eaf30a1477dc9be5fe2ef026c273417b67df0a7"
-  integrity sha512-9F4Ru62q+O7TMYOsJNxvJQUDMGRPycu42vOLxRsCcq0NPl6z5cUrOmmRpNsHnYxmYRK4cFYv227+EsZYTvXw+A==
-  dependencies:
-    "@atlaskit/analytics-next" "^7.0.0"
-    "@atlaskit/pagination" "^13.0.0"
-    "@atlaskit/spinner" "^15.0.0"
-    "@atlaskit/theme" "^10.0.0"
-    react-beautiful-dnd "^12.1.1"
-    tslib "^1.9.3"
 
 "@atlaskit/field-base@^11.0.13", "@atlaskit/field-base@^11.0.14", "@atlaskit/field-base@^11.0.2":
   version "11.0.15"
@@ -737,17 +713,6 @@
     "@atlaskit/button" "^13.3.7"
     "@atlaskit/icon" "^20.1.2"
     "@atlaskit/theme" "^9.5.1"
-    tslib "^1.9.3"
-
-"@atlaskit/pagination@^13.0.0":
-  version "13.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/pagination/-/pagination-13.0.0.tgz#c34b9145710dbb85bd0b9f84806efd627d64050b"
-  integrity sha512-kcwwtUlEIOlHYdm28ekybGWjE6W3SR47uN1+MVdU6vaswaKhhZ8JL5u2Z9yFPBOYfQKzDwtCh/wFd8BgXjiy8Q==
-  dependencies:
-    "@atlaskit/analytics-next" "^7.0.0"
-    "@atlaskit/button" "^14.0.0"
-    "@atlaskit/icon" "^21.0.0"
-    "@atlaskit/theme" "^10.0.0"
     tslib "^1.9.3"
 
 "@atlaskit/polyfills@^4.0.5":
