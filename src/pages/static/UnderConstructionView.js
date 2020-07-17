@@ -10,4 +10,11 @@ const UnderConstructionView = ({match}) => {
     );
 };
 
+UnderConstructionView.propTypes = {
+    match: PropTypes.object,
+};
+
+UnderConstructionView.defaultProps = {
+    match: {},
+};
 export default UnderConstructionView;

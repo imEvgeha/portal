@@ -1,4 +1,3 @@
-import {camelCase, get} from 'lodash';
 import config from 'react-global-configuration';
 import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';

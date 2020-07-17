@@ -48,6 +48,8 @@ const SyncLogTable = () => {
                 api.sizeColumnsToFit();
                 setGridApi(api);
                 break;
+            default:
+                break;
         }
     };
 

@@ -42,6 +42,7 @@ FulfillmentOrderPanel.propTypes = {
     handleFulfillmentOrderChange: PropTypes.func,
     status: PropTypes.string,
     dueDate: PropTypes.string,
+    // eslint-disable-next-line react/boolean-prop-naming
     selected: PropTypes.bool,
     productDescription: PropTypes.string,
     externalId: PropTypes.string,

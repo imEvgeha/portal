@@ -20,12 +20,15 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({
-    fixedFilter,
-    externalFilter,
-    setSelectedServicingOrders,
-    refreshData,
-    dataRefreshComplete}) => {
+const ServicingOrdersTable = (
+    {
+        fixedFilter,
+        externalFilter,
+        setSelectedServicingOrders,
+        refreshData,
+        dataRefreshComplete,
+    }
+) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0,

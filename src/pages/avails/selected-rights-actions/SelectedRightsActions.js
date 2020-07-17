@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {get} from 'lodash';
 import classNames from 'classnames';
+import moment from 'moment';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import RightViewHistory from '../right-history-view/RightHistoryView';
@@ -21,7 +22,6 @@ import {
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
 } from './constants';
-import moment from 'moment';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
@@ -65,8 +65,8 @@ export const SelectedRightsActions = ({
         const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
         const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
         const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) =>
-            licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd)));
+        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) => (licensed
+            ? (moment().isBefore(end)) : (moment().isBefore(availEnd))));
 
         // Bulk match criteria check
         setIsMatchable(

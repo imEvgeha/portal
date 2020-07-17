@@ -10,8 +10,6 @@ describe('BulkMatching', () => {
     let wrapper = null;
     let titleMatchingRightsTable = null;
     let sectionMessage = null;
-    const selectedClass = 'nexus-c-bulk-matching__selected';
-    const affectedClass = 'nexus-c-bulk-matching__affected';
     const headerTitle = 'Title Matching';
 
     beforeEach(() => {

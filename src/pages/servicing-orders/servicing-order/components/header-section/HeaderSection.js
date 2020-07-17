@@ -1,3 +1,5 @@
+/* eslint camelcase: ["warn", {"properties": "never", ignoreDestructuring: true}] */
+
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {get} from 'lodash';
 import moment from 'moment';
@@ -44,9 +46,10 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
         switch (dueDateSortDirection.value) {
             case 'ASCENDING':
                 return diff;
-
             case 'DESCENDING':
                 return -diff;
+            default:
+                break;
         }
     };
 
@@ -81,16 +84,21 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             )}
             <div className="panel-header__list">
                 {getSortedFilteredList().map(
-                    ({id, external_id, status, definition: {dueDate} = {}, product_description}, index) => (
+                    ({
+                        id,
+                        external_id: extId,
+                        status, definition: {dueDate} = {},
+                        product_description: prodDesc,
+                    }, index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={id}
-                            externalId={external_id}
+                            externalId={extId}
                             status={status}
                             dueDate={getValidDate(dueDate)}
                             selected={selectedFulfillmentOrder === id}
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
-                            productDescription={product_description}
+                            productDescription={prodDesc}
                         />
                     )
                 )}

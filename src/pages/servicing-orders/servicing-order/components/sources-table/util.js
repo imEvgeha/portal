@@ -3,7 +3,9 @@ import {get} from 'lodash';
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
 
-    if (!fs) { return []; }
+    if (!fs) {
+        return [];
+    }
 
     const preparedSources = {};
 

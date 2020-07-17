@@ -41,6 +41,7 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
 
                         return `${paramString}&${filterParamKey}=${complexFilter[key]}`;
                     }
+                    return '';
                 }, paramString);
 
                 return paramString;

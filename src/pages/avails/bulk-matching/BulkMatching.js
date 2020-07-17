@@ -32,14 +32,17 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({
-    data,
-    closeDrawer,
-    addToast,
-    removeToast,
-    toggleRefreshGridData,
-    isBonusRight,
-    setHeaderText}) => {
+export const BulkMatching = (
+    {
+        data,
+        closeDrawer,
+        addToast,
+        removeToast,
+        toggleRefreshGridData,
+        isBonusRight,
+        setHeaderText,
+    }
+) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [bonusRightsTableData, setBonusRightsTableData] = useState([]);

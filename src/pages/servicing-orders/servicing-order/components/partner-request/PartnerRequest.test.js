@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import PartnerRequest from './PartnerRequest';
 
 describe('PartnerRequest', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         wrapper = shallow(<PartnerRequest configuredPrId="123" externalId="345" />);

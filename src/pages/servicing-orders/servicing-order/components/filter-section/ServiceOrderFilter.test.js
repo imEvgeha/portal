@@ -5,7 +5,7 @@ import ServiceOrderFilter from './ServiceOrderFilter';
 import PartnerRequest from '../partner-request/PartnerRequest';
 
 describe('SOFilter', () => {
-    let wrapper;
+    let wrapper = null;
     beforeAll(() => {
         const props = {
             soID: '12345',

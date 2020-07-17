@@ -3,8 +3,8 @@ import {shallow} from 'enzyme';
 import FulfillmentOrderPanel from './FulfillmentOrderPanel';
 
 describe('FulfillmentOrderPanel', () => {
-    let wrapper;
-    let handleFulfillmentOrderChange;
+    let wrapper = null;
+    let handleFulfillmentOrderChange = null;
 
     beforeEach(() => {
         handleFulfillmentOrderChange = jest.fn();

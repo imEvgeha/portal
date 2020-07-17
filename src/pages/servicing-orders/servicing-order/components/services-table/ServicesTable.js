@@ -3,10 +3,10 @@ import {cloneDeep, get, isEmpty} from 'lodash';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
+import {Checkbox} from '@atlaskit/checkbox';
 import mappings from '../../../../../../profile/servicesTableMappings';
 import Add from '../../../../../assets/action-add.svg';
 import {NexusGrid} from '../../../../../ui/elements';
-import {Checkbox} from '@atlaskit/checkbox';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
@@ -15,6 +15,8 @@ import constants from '../fulfillment-order/constants';
 import columnDefinitions from './columnDefinitions';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import './ServicesTable.scss';
+
+const OP_STATUS_COL_INDEX = 4;
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
@@ -61,6 +63,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         setUpdatedServices(newServices);
     };
 
+    // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
             <CustomActionsCellRenderer id={1} classname="nexus-c-services__close-icon">
@@ -88,6 +91,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             currentService.externalServices.formatType = data.spec;
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
+            // eslint-disable-next-line max-len
             currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId = setDeliverToId(data.deliverToVu, rowIndex);
             currentService.status = data.operationalStatus;
 
@@ -184,9 +188,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 columnDefs={[
                     orderingColumn,
                     closeButtonColumn,
-                    ...columnDefinitions.slice(0, 4),
+                    // slice column defs to put checkbox before operations status columns
+                    ...columnDefinitions.slice(0, OP_STATUS_COL_INDEX),
                     checkboxColumn,
-                    columnDefinitions[4],
+                    columnDefinitions[OP_STATUS_COL_INDEX],
                 ]}
                 rowData={tableData}
                 domLayout="autoHeight"

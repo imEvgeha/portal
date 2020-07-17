@@ -54,7 +54,7 @@ export const FulfillmentOrder = ({
 
     // runs when a fulfillment order has been successfully edited and saved
     // 1. re-fetches all the fulfillment orders
-    // 2. dispatches a success action with a value different than 'SUCCESS' so that this effect only runs once on a successful edit
+    // 2. dispatches action with a value other than 'SUCCESS' so that this effect only runs once on a successful edit
     useEffect(
         () => {
             if (isSuccess && isSuccess !== 'ALREADY_SET') {
@@ -271,13 +271,13 @@ FulfillmentOrder.propTypes = {
 
 FulfillmentOrder.defaultProps = {
     selectedFulfillmentOrder: {},
-    setSelectedOrder: () => {},
-    setSelectedFulfillmentOrderID: () => {},
-    fetchFulfillmentOrders: () => {},
-    serviceOrder: {},
-    updatedServices: {},
+    setSelectedOrder: null,
+    setSelectedFulfillmentOrderID: null,
+    fetchFulfillmentOrders: null,
+    serviceOrder: null,
+    updatedServices: null,
     children: null,
-    cancelEditing: () => {},
+    cancelEditing: null,
 };
 
 export default FulfillmentOrder;

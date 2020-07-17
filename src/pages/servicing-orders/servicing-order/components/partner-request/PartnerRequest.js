@@ -19,6 +19,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
 
     useEffect(() => {
         getServiceRequest(externalId).then(res => {
+            // eslint-disable-next-line prefer-destructuring
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
             setData({

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import ServicesTable from './ServicesTable';
 
 describe('ServicesTable', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         const data = {

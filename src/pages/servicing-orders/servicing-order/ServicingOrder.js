@@ -1,5 +1,6 @@
 import {get} from 'lodash';
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -111,8 +112,12 @@ const ServicingOrder = ({match}) => {
     );
 };
 
-ServicingOrder.propTypes = {};
+ServicingOrder.propTypes = {
+    match: PropTypes.object,
+};
 
-ServicingOrder.defaultProps = {};
+ServicingOrder.defaultProps = {
+    match: {},
+};
 
 export default ServicingOrder;
