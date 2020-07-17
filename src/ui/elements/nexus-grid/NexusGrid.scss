@@ -7,10 +7,10 @@
     &--auto-height {
         flex: none;
     }
-    
+
     &--overflow {
-        .ag-cell { 
-            overflow:visible; 
+        .ag-cell {
+            overflow:visible;
         }
 
         .ag-row {
@@ -23,6 +23,10 @@
 
         .ag-root-wrapper {
             overflow: visible;
+        }
+
+        .ag-tabs-body {
+            background-color: #fff;
         }
     }
 
