@@ -46,7 +46,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
     // inform parent component about match, duplicate list change
     useEffect(() => {
         onCandidatesChange({matchList, duplicateList});
-    }, [matchList, duplicateList]);
+    }, [matchList, duplicateList, onCandidatesChange]);
 
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};

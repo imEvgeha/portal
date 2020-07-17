@@ -88,19 +88,6 @@
     "required": false
   },
   {
-    "colId": "editorialGenres",
-    "javaVariableName": "editorialGenres",
-    "field": "editorialGenres",
-    "displayName": "Genres",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "genres",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
     "colId": "ratings",
     "javaVariableName": "ratings",
     "field": "ratings",

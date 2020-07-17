@@ -4,13 +4,12 @@ import {push} from 'connected-react-router';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
-import {normalizeDataForStore} from '../../util/Common';
+import {normalizeDataForStore, URL} from '../../util/Common';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
 } from '../../ui/elements/nexus-toast-notification/constants';
-import {URL} from '../../util/Common';
 
 export function* fetchTitle(action) {
     const {payload} = action || {};
@@ -109,7 +108,7 @@ export function* fetchReconciliationTitles(action) {
 }
 
 export function* getReconciliationTitles(action) {
-    const {list, page, size} = yield select(selectors.createTitlesInfoSelector());
+    const {list} = yield select(selectors.createTitlesInfoSelector());
     const {ids = []} = action.payload || {};
     const titleIdsToFetch = ids.filter(id => !(Object.keys(list || {}).includes(id))) || [];
 
@@ -186,6 +185,7 @@ export function* reconcileTitles({payload}) {
             const {id} = matchList[key];
             masterIds.push(id);
             masters[id] = matchList[key];
+            return;
         });
         const duplicateIds = Object.keys(duplicateList || {});
         let query = `idsToMerge=${masterIds.join(',')}&idsToHide=${duplicateIds.join(',')}`;
@@ -208,10 +208,11 @@ export function* reconcileTitles({payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: `You have successfully ${mLength ? 'created a new Nexus title' : ''}
-                ${mLength && dLength && ' and ' || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`,
+                ${(mLength && dLength && ' and ') || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`,
             },
         });
         query = `duplicateIds=${duplicateIds.join(',')}&masterIds=${masterIds.join(',')}&mergedId=${newTitleId}`;
+        // eslint-disable-next-line no-restricted-globals
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${query}`)));
     } catch (e) {
         // error handling

@@ -112,7 +112,7 @@ export const BulkMatching = ({
         }
     };
 
-    const bulkTitleMatch = coreTitleId => {
+    const bulkTitleMatch = (coreTitleId, isNewTitle = false) => {
         setCoreTitleId({
             rightIds: affectedTableData.map(right => right.id),
             coreTitleId,
@@ -121,14 +121,13 @@ export const BulkMatching = ({
                 //  handle matched titles (ignore updated affected rights from response)
                 const matchedTitlesList = Object.values(matchList);
                 setMatchedTitles(matchedTitlesList);
-
-                if (matchList[NEXUS]) {
+                setLoadTitlesTable(false);
+                if (isNewTitle || matchList[NEXUS]) {
                     dispatchSuccessToast();
                     toggleRefreshGridData(true);
-                    return onCancel();
+                    return closeDrawer();
                 }
                 disableLoadingState();
-                setLoadTitlesTable(false);
                 setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
             })
             .catch(() => {
@@ -180,7 +179,7 @@ export const BulkMatching = ({
             description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
-            isWithOverlay: true,
+            isWithOverlay: false,
         });
     };
 
@@ -211,17 +210,8 @@ export const BulkMatching = ({
         closeDrawer();
     };
 
-    const onCancel = () => {
-        closeDrawer();
-    };
-
     const isSummaryReady = () => {
         return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
-    };
-
-    const onModalSuccess = () => {
-        closeDrawer();
-        toggleRefreshGridData(true);
     };
 
     const showModal = () => {
@@ -230,9 +220,7 @@ export const BulkMatching = ({
                 <CreateTitleForm
                     close={close}
                     bulkTitleMatch={bulkTitleMatch}
-                    affectedRightIds={affectedTableData.map(right => right.id)}
                     focusedRight={{contentType}}
-                    onSuccess={onModalSuccess}
                 />
             ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE
@@ -359,7 +347,7 @@ export const BulkMatching = ({
                         matchList={matchList}
                         onMatch={onMatch}
                         onMatchAndCreate={onMatchAndCreate}
-                        onCancel={onCancel}
+                        onCancel={closeDrawer}
                         isMatchLoading={isMatchLoading}
                         isMatchAndCreateLoading={isMatchAndCreateLoading}
                     />

@@ -1,7 +1,6 @@
-import React, {useEffect, Fragment} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {isEqual} from 'lodash';
 import './LegacyTitleReconciliationReview.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -23,18 +22,15 @@ import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActi
 import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
 import {getRepositoryCell} from '../../../avails/utils';
 
-const LegacyTitleReconciliationReview = ({
-    createColumnDefs,
+const LegacyTitleReconciliationReview = ({createColumnDefs,
     columnDefs,
     titles,
-    match,
-    getReconciliationTitles,
-}) => {
+    getReconciliationTitles}) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
     const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',')
         .filter(Boolean);
@@ -43,10 +39,9 @@ const LegacyTitleReconciliationReview = ({
     const newTitleId = URL.getParamIfExists(MERGED_ID);
 
     useEffect(() => {
-        const {params} = match;
-        const {id} = params || {};
         const ids = [...duplicateIds, ...masterIds, newTitleId].filter(Boolean);
         getReconciliationTitles({ids});
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleGridEvent = ({type, columnApi}) => {
@@ -115,7 +110,7 @@ const LegacyTitleReconciliationReview = ({
     );
 };
 
-LegacyTitleReconciliationReview.propsTypes = {
+LegacyTitleReconciliationReview.propTypes = {
     createColumnDefs: PropTypes.func.isRequired,
     getReconciliationTitles: PropTypes.func,
     columnDefs: PropTypes.array,
@@ -141,4 +136,4 @@ const mapDispatchToProps = dispatch => ({
     getReconciliationTitles: payload => dispatch(getReconciliationTitles(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationReview); // eslint-disable-line
+export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationReview);

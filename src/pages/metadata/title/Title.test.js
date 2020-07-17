@@ -1,16 +1,19 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 
 import Title from './Title';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
 import {
     METADATA_TITLE_SECTIONS,
+<<<<<<< HEAD
     METADATA_TITLE_TITLE_SECTION,
+=======
+>>>>>>> a3bbc79c4929ec53116d0110b3433600821b33c2
     METADATA_TITLE_EDITORIAL_SECTION,
 } from './constants';
 
 describe('Title', () => {
-    let wrapper;
+    let wrapper = null;
     const sectionTabClass = '.nexus-c-metadata-title__section-tab';
 
     beforeEach(() => {

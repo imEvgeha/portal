@@ -15,6 +15,7 @@ const TitleHeader = ({
                 <img
                     className="nexus-c-title-header__artwork"
                     src={artwork}
+                    alt="title header artwork"
                 />
             </div>
             <div className="nexus-c-title-header__info-container">
