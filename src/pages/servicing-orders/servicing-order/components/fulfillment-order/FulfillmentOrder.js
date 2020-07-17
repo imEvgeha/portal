@@ -70,7 +70,15 @@ export const FulfillmentOrder = ({
                 });
             }
         },
-        [isSuccess]
+        [
+            isSuccess,
+            dispatch,
+            fetchFulfillmentOrders,
+            fulfillmentOrder,
+            serviceOrder,
+            setSelectedFulfillmentOrderID,
+            setSelectedOrder,
+        ]
     );
 
     useEffect(
@@ -84,7 +92,7 @@ export const FulfillmentOrder = ({
                     : setIsFormDisabled(false);
             }
         },
-        [selectedFulfillmentOrder, savedFulfillmentOrder]
+        [selectedFulfillmentOrder, savedFulfillmentOrder, fieldKeys.READINESS]
     );
 
     // effect runs when the services table is updated
@@ -96,14 +104,14 @@ export const FulfillmentOrder = ({
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
         },
-        [updatedServices]
+        [updatedServices, fulfillmentOrder]
     );
 
     useEffect(
         () => {
             setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
         },
-        [fulfillmentOrder]
+        [fulfillmentOrder, savedFulfillmentOrder, selectedFulfillmentOrder]
     );
 
     const onFieldChange = (path, value) => {

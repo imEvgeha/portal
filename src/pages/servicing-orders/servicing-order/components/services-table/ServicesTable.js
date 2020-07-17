@@ -52,7 +52,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 setTableData(flattenedObject);
             }
         },
-        [services]
+        [services, providerServices]
     );
 
     const handleServiceRemoval = index => {

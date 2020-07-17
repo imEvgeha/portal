@@ -1,5 +1,5 @@
 import {camelCase, startCase} from 'lodash';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import EmphasizedCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
@@ -55,13 +55,13 @@ const ServicingOrdersTable = (
         }
     };
 
-    const updateColumnDefs = columnDefs => {
+    const updateColumnDefs = useCallback(columnDefs => {
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: valueFormatter(columnDef),
             cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer',
         }));
-    };
+    }, []);
 
     /**
      * Callback when datatable is first rendered on the DOM
@@ -97,7 +97,7 @@ const ServicingOrdersTable = (
         () => {
             setColumns(updateColumnDefs(columnDefs));
         },
-        [columnDefs]
+        [setColumns, updateColumnDefs]
     );
 
     useEffect(
@@ -113,7 +113,7 @@ const ServicingOrdersTable = (
                 dataRefreshComplete();
             }
         },
-        [refreshData]
+        [refreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]
     );
 
     return (

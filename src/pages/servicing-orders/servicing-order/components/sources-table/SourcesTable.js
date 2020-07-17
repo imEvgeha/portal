@@ -33,7 +33,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             }
             setSources(data);
         },
-        [data]
+        [data, previousData]
     );
 
     useEffect(
@@ -49,7 +49,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         () => {
             onSelectedSourceChange(selectedSource);
         },
-        [selectedSource]
+        [selectedSource, onSelectedSourceChange]
     );
 
     const serviceButtonCell = ({data, selectedItem = {}}) => { // eslint-disable-line

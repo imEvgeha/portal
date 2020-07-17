@@ -29,7 +29,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 createdAt,
             });
         });
-    }, []);
+    }, [externalId, configuredPrId]);
 
     return (
         <div className="nexus-c-partner-request">

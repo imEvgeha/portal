@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
@@ -18,7 +18,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
     const [affectedRights, setAffectedRights] = useState([]);
     const {setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    const unMatchHandler = rightIds => {
+    const unMatchHandler = useCallback(rightIds => {
         setCoreTitleId({rightIds}).then(unmatchedRights => {
             // Fetch fresh data from back-end
             toggleRefreshGridData(true);
@@ -40,7 +40,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 isAutoDismiss: true,
             });
         });
-    };
+    }, [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]);
 
     useEffect(
         () => {
@@ -64,7 +64,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 setAffectedRights(rights);
             });
         },
-        [selectedRights]
+        [selectedRights, close, removeToast, setModalActions, setModalStyle, unMatchHandler]
     );
 
     return (

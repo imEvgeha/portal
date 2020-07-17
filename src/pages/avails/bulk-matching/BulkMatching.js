@@ -91,7 +91,7 @@ export const BulkMatching = (
                 });
             }
         }
-    }, [selectedTableData]);
+    }, [selectedTableData, isBonusRight]);
 
     useEffect(() => {
         if (affectedTableData.length) {

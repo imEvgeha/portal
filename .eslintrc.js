@@ -8,7 +8,6 @@ module.exports = {
     "rules": {
         "no-magic-numbers": ["warn", {ignore: [0, 1, -1]}],
         "func-style": ["warn", "declaration", {"allowArrowFunctions": true}],
-        "react-hooks/exhaustive-deps": "off",
     },
     "overrides" : {
         "files": "*.test.js",
