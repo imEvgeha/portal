@@ -8,6 +8,7 @@ exports[`TitleHeader should match snapshot 1`] = `
     className="nexus-c-title-header__artwork-container"
   >
     <img
+      alt="title header artwork"
       className="nexus-c-title-header__artwork"
       src=""
     />

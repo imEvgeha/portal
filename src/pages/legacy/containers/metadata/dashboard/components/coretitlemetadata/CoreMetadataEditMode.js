@@ -129,19 +129,20 @@ class CoreMetadataEditMode extends Component {
                     const msvAssociationIds = [...this.state.msvAssociationIds, ...res];
                     this.setState({
                         ...defaultMsvAssociationState,
-                        msvAssociationIds: msvAssociationIds,
-                        msvIsLoading: false
+                        msvAssociationIds,
                     });
 
                     this.props.handleOnMsvIds(msvAssociationIds);
-
+                } else {
+                    this.setState({
+                        ...defaultMsvAssociationState,
+                    });
                 }
             })
             .catch((err) => {
                 this.setState({
                     msvIsLoading: false
                 });
-                console.error('Can not fetch data from addMsvAssociationIds api', err);
             });
     }
 

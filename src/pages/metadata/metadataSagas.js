@@ -4,13 +4,12 @@ import {push} from 'connected-react-router';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';
-import {normalizeDataForStore} from '../../util/Common';
+import {normalizeDataForStore, URL} from '../../util/Common';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
 } from '../../ui/elements/nexus-toast-notification/constants';
-import {URL} from '../../util/Common';
 
 export function* fetchTitle(action) {
     const {payload} = action || {};
@@ -18,7 +17,7 @@ export function* fetchTitle(action) {
     try {
         yield put({
             type: actionTypes.FETCH_TITLE_REQUEST,
-            payload: {}
+            payload: {},
         });
         const response = yield call(requestMethod, payload.id);
         yield put({
@@ -41,7 +40,7 @@ export function* fetchTitles(action) {
         const {params, page, size} = payload || {};
         yield put({
             type: actionTypes.FETCH_TITLES_REQUEST,
-            payload: {}
+            payload: {},
         });
         const response = yield call(requestMethod, params, page, size);
         const {data} = response;
@@ -89,7 +88,7 @@ export function* fetchReconciliationTitles(action) {
     try {
         yield put({
             type: actionTypes.FETCH_RECONCILIATION_TITLES_REQUEST,
-            payload: {}
+            payload: {},
         });
         const {ids = []} = action.payload || {};
         const body = ids.map(el => {
@@ -109,19 +108,19 @@ export function* fetchReconciliationTitles(action) {
 }
 
 export function* getReconciliationTitles(action) {
-    const {list, page, size} = yield select(selectors.createTitlesInfoSelector());
+    const {list} = yield select(selectors.createTitlesInfoSelector());
     const {ids = []} = action.payload || {};
     const titleIdsToFetch = ids.filter(id => !(Object.keys(list || {}).includes(id))) || [];
 
     if (!titleIdsToFetch) {
         return;
-    };
+    }
 
     const newAction = {
         type: action.type,
         payload: {
             ids: titleIdsToFetch,
-        }
+        },
     };
 
     yield fork(fetchReconciliationTitles, newAction);
@@ -142,7 +141,7 @@ export function* getReconciliationTitles(action) {
                     data,
                     page,
                     size,
-                }
+                },
             });
 
             break;
@@ -160,8 +159,8 @@ export function* fetchAndStoreTitles(action) {
 
     while (true) {
         const {type, payload} = yield take([
-           actionTypes.FETCH_TITLES_SUCCESS,
-           actionTypes.FETCH_TITLES_ERROR,
+            actionTypes.FETCH_TITLES_SUCCESS,
+            actionTypes.FETCH_TITLES_ERROR,
         ]);
 
         if (type === actionTypes.FETCH_TITLES_SUCCESS) {
@@ -183,9 +182,10 @@ export function* reconcileTitles({payload}) {
         const masterIds = [];
         const masters = {};
         Object.keys(matchList || {}).map(key => {
-            const id = matchList[key].id;
+            const {id} = matchList[key];
             masterIds.push(id);
             masters[id] = matchList[key];
+            return;
         });
         const duplicateIds = Object.keys(duplicateList || {});
         let query = `idsToMerge=${masterIds.join(',')}&idsToHide=${duplicateIds.join(',')}`;
@@ -196,7 +196,7 @@ export function* reconcileTitles({payload}) {
             payload: {
                 ...masters,
                 ...duplicateList,
-                [newTitleId]: response
+                [newTitleId]: response,
             },
         });
         const mLength = masterIds.length;
@@ -208,13 +208,14 @@ export function* reconcileTitles({payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: `You have successfully ${mLength ? 'created a new Nexus title' : ''}
-                ${mLength && dLength && ' and ' || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`,
-            }
+                ${(mLength && dLength && ' and ') || ''}${dLength ? `marked ${dLength} titles as duplicates.` : ''}`,
+            },
         });
         query = `duplicateIds=${duplicateIds.join(',')}&masterIds=${masterIds.join(',')}&mergedId=${newTitleId}`;
+        // eslint-disable-next-line no-restricted-globals
         yield put(push(URL.keepEmbedded(`${location.pathname}/review?${query}`)));
     } catch (e) {
-        //error handling
+        // error handling
         yield put({
             type: actionTypes.TITLES_RECONCILE_ERROR,
         });
@@ -226,6 +227,6 @@ export function* metadataWatcher() {
         takeEvery(actionTypes.FETCH_AND_STORE_TITLE, fetchAndStoreTitle),
         takeEvery(actionTypes.FETCH_AND_STORE_TITLES, fetchAndStoreTitles),
         takeEvery(actionTypes.FETCH_AND_STORE_RECONCILIATION_TITLES, getReconciliationTitles),
-        takeEvery(actionTypes.TITLES_RECONCILE, reconcileTitles)
+        takeEvery(actionTypes.TITLES_RECONCILE, reconcileTitles),
     ]);
 }
