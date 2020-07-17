@@ -14,80 +14,56 @@ exports[`Title should match snapshot 1`] = `
     className="nexus-c-metadata-title__sections-menu"
   >
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="0"
       onClick={[Function]}
     >
       Title
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="1"
       onClick={[Function]}
     >
       Cast & Crew
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="2"
       onClick={[Function]}
     >
       Ratings
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="3"
       onClick={[Function]}
     >
       External IDs
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            nexus-c-metadata-title__section-tab--is-active
-                        "
+      className="nexus-c-metadata-title__section-tab nexus-c-metadata-title__section-tab--is-active"
       key="4"
       onClick={[Function]}
     >
       Editorial
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="5"
       onClick={[Function]}
     >
       Territorial
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="6"
       onClick={[Function]}
     >
       Rights
     </div>
     <div
-      className="
-                            nexus-c-metadata-title__section-tab 
-                            
-                        "
+      className="nexus-c-metadata-title__section-tab"
       key="7"
       onClick={[Function]}
     >

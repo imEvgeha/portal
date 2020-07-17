@@ -1,5 +1,6 @@
 import React from 'react';
 import {canRender} from '../../ability';
+
 const MetadataDashboardContainer = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "MetadataDashboardContainer" */ '../legacy/containers/metadata/dashboard/DashboardContainer'));
 const TitleEdit = React.lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "TitleEdit" */ '../legacy/containers/metadata/dashboard/components/TitleEdit'));
 const LegacyTitleReconciliationViewImport = import(/* webpackChunkName: "LegacyTitleReconciliationView" */ './legacy-title-reconciliation/LegacyTitleReconciliationView');
@@ -25,7 +26,7 @@ const routes = [
     {
         path: `${BASE_PATH}/detail/:id/legacy-title-reconciliation/review`,
         component: canRender(LegacyTitleReconciliationReview, 'update', 'Metadata'),
-    }
+    },
 ];
 
 export default routes;

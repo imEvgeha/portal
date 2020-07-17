@@ -1,9 +1,8 @@
-import React, {useEffect, Fragment} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {isEqual} from 'lodash';
 import './LegacyTitleReconciliationReview.scss';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import {
@@ -19,33 +18,33 @@ import {
 import * as selectors from '../../metadataSelectors';
 import {getReconciliationTitles} from '../../metadataActions';
 import {URL} from '../../../../util/Common';
-import {createColumnDefs} from '../../../../pages/avails/title-matching/titleMatchingActions';
-import {getColumnDefs} from '../../../../pages/avails/title-matching/titleMatchingSelectors';
-import {getRepositoryCell} from '../../../../pages/avails/utils';
+import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
+import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
+import {getRepositoryCell} from '../../../avails/utils';
 
 const LegacyTitleReconciliationReview = ({
     createColumnDefs,
     columnDefs,
     titles,
-    match,
     getReconciliationTitles,
 }) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
-    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',').filter(Boolean);
-    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',').filter(Boolean);
+    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',')
+        .filter(Boolean);
+    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',')
+        .filter(Boolean);
     const newTitleId = URL.getParamIfExists(MERGED_ID);
 
     useEffect(() => {
-        const {params} = match;
-        const {id} = params || {};
         const ids = [...duplicateIds, ...masterIds, newTitleId].filter(Boolean);
         getReconciliationTitles({ids});
-    },[]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleGridEvent = ({type, columnApi}) => {
         if (GRID_EVENTS.READY === type) {
@@ -58,7 +57,7 @@ const LegacyTitleReconciliationReview = ({
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
         episodeAndSeasonNumberColumnDef,
-        ...columnDefs
+        ...columnDefs,
     ];
 
     const duplicateRowData = titles.filter(({id}) => duplicateIds.includes(id));
@@ -113,7 +112,7 @@ const LegacyTitleReconciliationReview = ({
     );
 };
 
-LegacyTitleReconciliationReview.propsTypes = {
+LegacyTitleReconciliationReview.propTypes = {
     createColumnDefs: PropTypes.func.isRequired,
     getReconciliationTitles: PropTypes.func,
     columnDefs: PropTypes.array,
@@ -130,7 +129,7 @@ const createMapStateToProps = () => {
     const titlesSelector = selectors.createTitlesSelector();
     return (state, props) => ({
         columnDefs: getColumnDefs(state),
-        titles: titlesSelector(state, props), 
+        titles: titlesSelector(state, props),
     });
 };
 
@@ -139,4 +138,4 @@ const mapDispatchToProps = dispatch => ({
     getReconciliationTitles: payload => dispatch(getReconciliationTitles(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationReview); // eslint-disable-line
+export default connect(createMapStateToProps, mapDispatchToProps)(LegacyTitleReconciliationReview);
