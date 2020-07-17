@@ -1,4 +1,4 @@
-import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import * as actionTypes from './eventManagementActionTypes';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';

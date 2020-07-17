@@ -34,7 +34,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
         if (!data && mimeType === JSON_MIME_TYPE) {
             return '{}';
         }
-        let decode;
+        let decode = '';
         try {
             decode = atob(data);
         } catch (e) {
@@ -46,7 +46,9 @@ const EventDrawer = ({event, onDrawerClose}) => {
     };
 
     const parseJSON = str => {
-        if (!str) { return {}; }
+        if (!str) {
+            return {};
+        }
         let parsedString = '';
         try {
             parsedString = JSON.parse(str);

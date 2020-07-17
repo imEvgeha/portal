@@ -25,6 +25,8 @@ const EventManagement = () => {
             case SELECTION_CHANGED:
                 setSelectedEvent(get(api.getSelectedRows(), '[0]', null));
                 break;
+            default:
+                break;
         }
     };
 

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId} from '../availsService';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -32,7 +32,14 @@ import {
 } from '../../../ui/toast/constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, isBonusRight, setHeaderText}) => {
+export const BulkMatching = ({
+    data,
+    closeDrawer,
+    addToast,
+    removeToast,
+    toggleRefreshGridData,
+    isBonusRight,
+    setHeaderText}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [bonusRightsTableData, setBonusRightsTableData] = useState([]);

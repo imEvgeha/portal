@@ -1,14 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import EventDrawerHeader, {EventDrawerH} from './EventDrawerHeader';
+import {EventDrawerH} from './EventDrawerHeader';
 
 describe('EventDrawerHeader', () => {
-    let mockStore;
-    let store;
-    let onReplayEventMock;
-    let onReplicateEventMock;
-    let wrapper;
+    let mockStore = null;
+    let store = {};
+    let onReplayEventMock = null;
+    let onReplicateEventMock = null;
+    let wrapper = null;
     beforeEach(() => {
         mockStore = configureStore();
         store = mockStore({});

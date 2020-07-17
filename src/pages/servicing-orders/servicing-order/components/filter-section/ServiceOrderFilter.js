@@ -1,3 +1,5 @@
+/* eslint camelcase: ["warn", {"properties": "never", ignoreDestructuring: true}] */
+
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import PropTypes from 'prop-types';
@@ -18,7 +20,7 @@ const ServiceOrderFilter = ({
     setDueDateSortDirection,
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const {tenant, external_id, description, configured_pr_id, sr_due_date} = orderDetails || {};
+    const {tenant, external_id: extId, description, configured_pr_id: configPRID, sr_due_date} = orderDetails || {};
     let FilterList = [{value: 'All', label: 'All'}];
     FilterList = FilterList.concat(Object.keys(Constants.STATUS).map(key => ({
         label: Constants.STATUS[key],
@@ -32,7 +34,7 @@ const ServiceOrderFilter = ({
                 </div>
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Order ID: {external_id}
+                    Order ID: {extId}
                 </div>
             </div>
 
@@ -52,8 +54,8 @@ const ServiceOrderFilter = ({
                     title="Partner Request"
                 >
                     <PartnerRequest
-                        externalId={external_id}
-                        configuredPrId={configured_pr_id}
+                        externalId={extId}
+                        configuredPrId={configPRID}
                     />
                 </NexusDrawer>
             </div>
@@ -65,7 +67,7 @@ const ServiceOrderFilter = ({
                     value={getValidDate(sr_due_date)}
                     isDisabled
                     isReturningTime={false}
-                    onChange={() => {}}
+                    onChange={null}
                 />
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
@@ -96,6 +98,17 @@ const ServiceOrderFilter = ({
 
 ServiceOrderFilter.propTypes = {
     orderDetails: PropTypes.object.isRequired,
+    filter: PropTypes.string,
+    setFilter: PropTypes.func,
+    dueDateSortDirection: PropTypes.func,
+    setDueDateSortDirection: PropTypes.func,
+};
+
+ServiceOrderFilter.defaultProps = {
+    filter: '',
+    setFilter: null,
+    dueDateSortDirection: null,
+    setDueDateSortDirection: null,
 };
 
 export default ServiceOrderFilter;

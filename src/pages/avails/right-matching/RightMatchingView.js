@@ -66,7 +66,9 @@ const RightMatchingView = ({
     const storeData = (page, data) => {
         if (storeRightMatchDataWithIds) {
             const pages = {};
+            // eslint-disable-next-line react/prop-types
             pages[page] = data.data.map(e => e.id);
+            // eslint-disable-next-line react/prop-types
             const rightMatchPageData = {pages, total: data.total};
             storeRightMatchDataWithIds({rightMatchPageData});
         }

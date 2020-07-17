@@ -43,7 +43,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);

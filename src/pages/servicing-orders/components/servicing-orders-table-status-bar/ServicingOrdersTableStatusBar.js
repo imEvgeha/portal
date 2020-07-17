@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './ServicingOrdersTableStatusBar.scss';
+
 
 const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
     const baseClassName = 'nexus-c-servicing-orders-table-status-bar';
@@ -18,6 +20,14 @@ const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
             )}
         </div>
     );
+};
+
+ServicingOrdersTableStatusBar.propTypes = {
+    statusBarInfo: PropTypes.string,
+};
+
+ServicingOrdersTableStatusBar.defaultProps = {
+    statusBarInfo: '',
 };
 
 export default ServicingOrdersTableStatusBar;

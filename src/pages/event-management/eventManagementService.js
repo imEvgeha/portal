@@ -2,7 +2,9 @@ import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
-export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) => {
+const FETCH_PAGE_SIZE = 100;
+
+export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
     let paramString = '';
 
     // Build sortParams string if sortParams are provided
@@ -24,13 +26,16 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
 
                 // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
                 // and packs them into a param string
+                // eslint-disable-next-line no-param-reassign
                 paramString = Object.keys(complexFilter).reduce((paramString, key) => {
                     if (complexFilter[key]) {
                         let filterParamKey = key;
 
                         if (key.endsWith('From')) {
+                            // eslint-disable-next-line no-magic-numbers
                             filterParamKey = `${key.slice(0, -4)}Start`;
                         } else if (key.endsWith('To')) {
+                            // eslint-disable-next-line no-magic-numbers
                             filterParamKey = `${key.slice(0, -2)}End`;
                         }
 

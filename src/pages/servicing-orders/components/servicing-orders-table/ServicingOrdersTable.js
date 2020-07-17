@@ -1,6 +1,7 @@
 import {camelCase, startCase} from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
+import PropTypes from 'prop-types';
 import EmphasizedCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -19,7 +20,12 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
+const ServicingOrdersTable = ({
+    fixedFilter,
+    externalFilter,
+    setSelectedServicingOrders,
+    refreshData,
+    dataRefreshComplete}) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0,
@@ -41,6 +47,8 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                     const {[field]: date = ''} = data || {};
                     return ISODateToView(date, dataType);
                 };
+            default:
+                break;
         }
     };
 
@@ -126,6 +134,22 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
         </div>
     );
+};
+
+ServicingOrdersTable.propTypes = {
+    fixedFilter: PropTypes.string,
+    externalFilter: PropTypes.string,
+    setSelectedServicingOrders: PropTypes.func,
+    refreshData: PropTypes.func,
+    dataRefreshComplete: PropTypes.func,
+};
+
+ServicingOrdersTable.defaultProps = {
+    fixedFilter: '',
+    externalFilter: '',
+    setSelectedServicingOrders: null,
+    refreshData: null,
+    dataRefreshComplete: null,
 };
 
 export default ServicingOrdersTable;
