@@ -105,7 +105,9 @@ const RightsRepository = ({
     useEffect(() => {
         if (selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
-            const attachment = attachments.find(a => a.id === selectedAttachmentId);
+            const attachment = Array.isArray(attachments)
+                ? attachments.find(a => a.id === selectedAttachmentId)
+                : undefined;
             setAttachment(attachment);
             if (!attachment) {
                 deselectIngest();

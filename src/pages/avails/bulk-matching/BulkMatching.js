@@ -169,7 +169,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const dispatchSuccessToast = () => {
         addToast({
             title: SUCCESS_TITLE,
-            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length),
+            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length + affectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
             isWithOverlay: false,
