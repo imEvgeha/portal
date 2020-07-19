@@ -6,7 +6,6 @@ import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMu
 import './MultiInstanceCellEditor.scss';
 
 class PriceTypeCellEditor extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -16,11 +15,12 @@ class PriceTypeCellEditor extends Component {
 
     isPopup = () => true;
 
+    // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value;
 
-    handleChange = (value) => {
+    handleChange = value => {
         const addedPriceTypes = value
-            .map((price) => price.pricing || price)
+            .map(price => price.pricing || price)
             .filter(Boolean);
         this.setState({value: addedPriceTypes});
     };
@@ -63,7 +63,7 @@ PriceTypeCellEditor.defaultProps = {
         priceTypes: [],
         currencies: [],
     },
-    value: null
+    value: null,
 };
 
 PriceTypeCellEditor.contextType = NexusModalContext;

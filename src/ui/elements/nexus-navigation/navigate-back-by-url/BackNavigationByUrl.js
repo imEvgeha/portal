@@ -6,19 +6,19 @@ import {backArrowColor} from '../../../../pages/legacy/constants/avails/constant
 import NexusTitle from '../../nexus-title/NexusTitle';
 
 const BackNavigationByUrl = ({title, onNavigationClick}) => {
-  return (
-      <NexusTitle>
-          <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>
-              <ArrowLeftIcon size='large' primaryColor={backArrowColor} />
-          </span>
-          <span>{title}</span>
-      </NexusTitle>
-);
+    return (
+        <NexusTitle>
+            <span className="nexus-c-right-to-match-view__link" onClick={onNavigationClick}>
+                <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
+            </span>
+            <span>{title}</span>
+        </NexusTitle>
+    );
 };
 
 BackNavigationByUrl.propTypes = {
     title: PropTypes.string,
-    onNavigationClick: PropTypes.func
+    onNavigationClick: PropTypes.func,
 };
 
 BackNavigationByUrl.defaultProps = {

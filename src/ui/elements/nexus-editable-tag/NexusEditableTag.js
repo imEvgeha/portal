@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import './NexusEditableTag.scss';
@@ -12,31 +12,31 @@ const NexusEditableTag = ({text, remove, save, index, inputWidth}) => {
     const handleKeyDown = e => {
         if (e.keyCode === ENTER_KEY_CODE) {
             setEditing(false);
-            typeof save === 'function' && index !== null && save(index,e.target.value);
+            typeof save === 'function' && index !== null && save(index, e.target.value);
         }
     };
 
     return (
-        isEditing? (
+        isEditing ? (
             <input
-                className='nexus-edit-tag-input'
+                className="nexus-edit-tag-input"
                 style={{width: inputWidth}}
                 value={value}
                 onChange={e => setValue(e.target.value)}
-                onBlur={()=>setEditing(prev => !prev)}
+                onBlur={() => setEditing(prev => !prev)}
                 onKeyDown={handleKeyDown}
                 autoFocus
             />
-          )
+        )
             : (
-                <span className='nexus-edit-tag'>
-                    <span onClick={()=>setEditing(prev => !prev)} className='nexus-edit-tag__label'>
+                <span className="nexus-edit-tag">
+                    <span onClick={() => setEditing(prev => !prev)} className="nexus-edit-tag__label">
                         {value}
-                        <span className='nexus-edit-tag__remove-button' onClick={remove}> <EditorCloseIcon size='small' /></span>
+                        <span className="nexus-edit-tag__remove-button" onClick={remove}> <EditorCloseIcon size="small" /></span>
                     </span>
                 </span>
-          )
-        );
+            )
+    );
 };
 
 NexusEditableTag.propTypes = {
@@ -50,7 +50,7 @@ NexusEditableTag.propTypes = {
 NexusEditableTag.defaultProps = {
     index: null,
     inputWidth: '220px',
-    save: null
+    save: null,
 };
 
 export default NexusEditableTag;

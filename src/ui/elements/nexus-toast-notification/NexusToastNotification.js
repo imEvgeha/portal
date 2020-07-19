@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, isValidElement} from 'react';
+import React, {isValidElement} from 'react';
 import PropTypes from 'prop-types';
 import Flag, {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
 import Tick from '@atlaskit/icon/glyph/check-circle';
@@ -21,13 +21,13 @@ const icons = {
     [ERROR_ICON]: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
 };
 
-const NexusToastNotification = ({toasts, addToast, removeToast}) => (
+const NexusToastNotification = ({toasts, removeToast}) => (
     <FlagGroup onDismissed={removeToast}>
         {toasts.map((toast, index) => {
             const updatedToast = {
                 ...toast,
-                ...(toast.icon 
-                    && !isValidElement(toast.icon) 
+                ...(toast.icon
+                    && !isValidElement(toast.icon)
                     && {icon: switchCase(icons)(icons[INFO_ICON])(toast.icon)}
                 ),
             };
@@ -42,13 +42,11 @@ const NexusToastNotification = ({toasts, addToast, removeToast}) => (
 
 NexusToastNotification.propTypes = {
     toasts: PropTypes.array,
-    addToast: PropTypes.func,
     removeToast: PropTypes.func,
 };
 
 NexusToastNotification.defaultProps = {
     toasts: [],
-    addToast: () => null,
     removeToast: () => null,
 };
 

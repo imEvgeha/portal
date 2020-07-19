@@ -4,22 +4,22 @@ import loadingGif from '../../../../../assets/img/loading.gif';
 import {getDeepValue, isObject} from '../../../../../util/Common';
 import './LoadingCellRenderer.scss';
 
-const LoadingCellRenderer = (params) => {
+const LoadingCellRenderer = params => {
     const {data, colDef, colDef: {field, colId},
         valueFormatted, link = null, newTab = true} = params;
     if (!data && colDef !== 'actions') {
-        return (<img src={loadingGif} alt='loadingSpinner' />);
+        return (<img src={loadingGif} alt="loadingSpinner" />);
     }
     const linkTo = link && `${link}${data.id || data[colId]}`;
     let value = getDeepValue(data, field);
     if (isObject(value)) {
         value = JSON.stringify(value);
     }
-    if (Array.isArray(value) && value.length > 1){
+    if (Array.isArray(value) && value.length > 1) {
         value = value.join(', ');
     }
     const content = valueFormatted || value;
-    if (content !== undefined && content !== null || content === false) {
+    if ((content !== undefined && content !== null) || content === false) {
         let highlighted = false;
         if (data && data.highlightedFields) {
             highlighted = data.highlightedFields.indexOf(field) > -1;
@@ -32,7 +32,7 @@ const LoadingCellRenderer = (params) => {
                 {
                     highlighted ? (
                         <span
-                            title='* fields in bold are original values provided by the studios'
+                            title="* fields in bold are original values provided by the studios"
                             className="nexus-c-loading-cell-renderer__highlighted"
                         >
                             <i className="far fa-question-circle nexus-c-loading-cell-renderer__icon" />
@@ -43,9 +43,9 @@ const LoadingCellRenderer = (params) => {
         );
 
         return (
-            link ? (newTab ?
-                    (<a href={linkTo} target="_blank">{displayValue}</a>)
-                    : (<Link to={linkTo}>{displayValue}</Link>))
+            link ? (newTab
+                ? (<a href={linkTo} target="_blank">{displayValue}</a>)
+                : (<Link to={linkTo}>{displayValue}</Link>))
                 : (displayValue)
         );
     }

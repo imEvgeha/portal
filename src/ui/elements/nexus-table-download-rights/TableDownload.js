@@ -10,7 +10,6 @@ import {exportService} from '../../../pages/legacy/containers/avail/service/Expo
 import {downloadFile} from '../../../util/Common';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
-
     const [filteredColumns, setFilteredColumns] = useState([]);
 
     useEffect(() => {
@@ -21,8 +20,11 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
     }, [getColumns()]);
 
     const noAvailSelectedAlert = () => {
-        alertModal.open('Action required', () => {
-        }, {description: 'Please select at least one right'});
+        alertModal.open(
+            'Action required',
+            () => null,
+            {description: 'Please select at least one right'}
+        );
     };
 
     const prettyTabName = () => {
@@ -36,7 +38,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
                     confirmModal.open('Confirm download',
                         exportAvailsCriteria,
                         () => {
-                            //Empty because of design confirmModal. The modal will just close on cancel button press.
+                            // Empty because of design confirmModal. The modal will just close on cancel button press.
                         },
                         {description: `You have select ${prettyTabName()} tab for download.`});
                 } else {
@@ -46,7 +48,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
                 confirmModal.open('Confirm download',
                     exportAvailsByIds,
                     () => {
-                        //Empty because of design confirmModal. The modal will just close on cancel button press.
+                        // Empty because of design confirmModal. The modal will just close on cancel button press.
                     },
                     {description: `You have selected ${getSelected().length} avails for download.`});
             }
@@ -55,20 +57,20 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
 
     const exportAvailsByIds = () => {
         exportService.exportAvails(getSelected().map(({id}) => id), filteredColumns)
-            .then(function (response) {
+            .then(response => {
                 downloadFile(response);
             });
     };
 
     const exportAvailsCriteria = () => {
         exportService.bulkExportAvails(exportCriteria, filteredColumns)
-            .then(function (response) {
+            .then(response => {
                 downloadFile(response);
             });
     };
 
     return (
-        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large' /></div>
+        <div className="nexus-download__icon-button" onClick={exportAvails}><DownloadIcon size="large" /></div>
     );
 };
 
@@ -86,5 +88,6 @@ TableDownloadRights.defaultProps = {
     allowDownloadFullTab: false,
     selectedTab: 'None',
     getSelected: () => [],
-    exportCriteria: {}
+    getColumns: () => [],
+    exportCriteria: {},
 };

@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './EmphasizedCellRenderer.scss';
 
-const EmphasizedCellRenderer = (props) => {
-    const getStatusOrReadinessColor= (value = '') => {
+const EmphasizedCellRenderer = ({value}) => {
+    const getStatusOrReadinessColor = (value = '') => {
         switch (value.toLowerCase()) {
             case 'not configured':
             case 'canceled':
@@ -20,17 +21,24 @@ const EmphasizedCellRenderer = (props) => {
         }
     };
 
-
     return (
         <span
             className={`
                 nexus-c-emphasized-cell-renderer 
-                nexus-c-emphasized-cell-renderer--is-${getStatusOrReadinessColor(props.value)}
+                nexus-c-emphasized-cell-renderer--is-${getStatusOrReadinessColor(value)}
             `}
         >
-            {props.value || ''}
+            {value || ''}
         </span>
     );
+};
+
+EmphasizedCellRenderer.propTypes = {
+    value: PropTypes.string,
+};
+
+EmphasizedCellRenderer.defaultProps = {
+    value: '',
 };
 
 export default EmphasizedCellRenderer;

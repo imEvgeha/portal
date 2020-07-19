@@ -16,36 +16,36 @@ describe('withColumnsResizing', () => {
                     field: 'title',
                     headerName: 'Title',
                     colId: 'title',
-                    width: 150
+                    width: 150,
                 },
                 {
                     field: 'releaseYear',
                     headerName: 'Release Year',
                     colId: 'releaseYear',
                     valueFormatter: null,
-                    width: 150
+                    width: 150,
                 },
                 {
                     field: 'licensor',
                     headerName: 'Licensor',
                     colId: 'licensor',
-                    width: 150
-                }
+                    width: 150,
+                },
             ],
-            updateGridColumnsSize: () => null
+            updateGridColumnsSize: () => null,
         };
-        WithLoadingComponent =  withColumnsResizing()(Component);
+        WithLoadingComponent = withColumnsResizing()(Component);
 
 
         const mockStore = configureStore();
-        let store = mockStore({
+        const store = mockStore({
             root: {
                 columnsSize: {
                     rightsRepo: {
                         title: 368,
-                        licensor: 225
-                    }
-                }
+                        licensor: 225,
+                    },
+                },
             },
         });
         wrapper = shallow(<WithLoadingComponent store={store} {...props} />);
@@ -58,6 +58,5 @@ describe('withColumnsResizing', () => {
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
     });
-
 });
 

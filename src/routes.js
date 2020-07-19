@@ -29,8 +29,8 @@ const restRoutes = [
     },
     {
         path: '/settings',
-        component: Settings
-    }
+        component: Settings,
+    },
 ];
 
 export const routes = [

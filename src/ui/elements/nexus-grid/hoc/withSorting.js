@@ -4,7 +4,7 @@ import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
 const withSorting = (
     initialSort = null,
 ) => WrappedComponent => {
-    return (props) => {
+    return props => {
         const onColumnVisible = ({column = {}}) => {
             const {gridApi, colId} = column || {};
             const sortModel = gridApi && gridApi.getSortModel ? gridApi.getSortModel() : [];

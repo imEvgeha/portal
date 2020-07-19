@@ -6,7 +6,7 @@ import NexusDownload from './NexusDownload';
 describe('NexusDownload', () => {
     let wrapper;
     const props = {
-        data: { test: 'awesome string'},
+        data: {test: 'awesome string'},
         filename: 'event_filename',
         mimeType: 'application/json',
     };
@@ -37,8 +37,8 @@ describe('NexusDownload', () => {
         expect(spy).toHaveBeenCalledWith({
             content: [JSON.stringify(props.data, null, 2)],
             options: {
-                type: props.mimeType
-            }
+                type: props.mimeType,
+            },
         }, props.filename);
 
         spy.mockRestore();

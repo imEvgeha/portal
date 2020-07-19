@@ -11,21 +11,18 @@ import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
 
 const withInfiniteScrolling = ({
-    hocProps = DEFAULT_HOC_PROPS, 
-    fetchData, 
+    hocProps = DEFAULT_HOC_PROPS,
+    fetchData,
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
     maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
     maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
 } = {}) => WrappedComponent => {
-    const ComposedComponent = (props) => {
+    const ComposedComponent = props => {
         const hasBeenCalledRef = useRef();
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
-
-        const refresh = () => {
-        };
 
         // Handle refreshing grid's data from outside
         useEffect(() => {
@@ -38,11 +35,11 @@ const withInfiniteScrolling = ({
         //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
-            if ((!isEqual(params, previousParams) && params) 
-                && gridApi 
+            if ((!isEqual(params, previousParams) && params)
+                && gridApi
                 && !hasBeenCalledRef.current
                 && isDatasourceEnabled
-               ) {
+            ) {
                 updateData(fetchData, gridApi);
             }
         }, [props.params]);
@@ -84,11 +81,11 @@ const withInfiniteScrolling = ({
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
-                    if (typeof props.setTotalCount === 'function') { 
+                    if (typeof props.setTotalCount === 'function') {
                         props.setTotalCount(total);
                     }
 
-                    if (total > 0){
+                    if (total > 0) {
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
                             lastRow = total;
@@ -103,7 +100,7 @@ const withInfiniteScrolling = ({
                                     rowNode.setSelected(true);
                                 }
                             });
-                        }  
+                        }
 
                         if (typeof props.successDataFetchCallback === 'function') {
                             const preparedData = {page, size, total, data};
@@ -112,7 +109,7 @@ const withInfiniteScrolling = ({
 
                         gridApi.hideOverlay();
                         return;
-                    } 
+                    }
 
                     gridApi.showNoRowsOverlay();
                 })

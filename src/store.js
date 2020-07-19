@@ -1,23 +1,22 @@
-import {createStore, applyMiddleware} from 'redux';
-import createSagaMiddleware, {END} from 'redux-saga';
-import {createLogger} from 'redux-logger';
-import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
-import createRootReducer from './reducer';
-// import {createPersistReducer, persistConfig} from './store-persist-config';
-import {LOGOUT} from './auth/authActionTypes';
+import {createStore, applyMiddleware} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+import {createLogger} from 'redux-logger';
 import storage from 'redux-persist/lib/storage';
+import createSagaMiddleware, {END} from 'redux-saga';
+import {LOGOUT} from './auth/authActionTypes';
 import {keycloak} from './auth/keycloak';
+import createRootReducer from './reducer';
 
 // configure store
-const configureStore = (initialState = {}, history) => {
+const configureStore = history => {
     const sagaMiddleware = createSagaMiddleware();
     let middleware = [
         routerMiddleware(history),
         sagaMiddleware,
     ];
-    
-    // log redux actions 
+
+    // log redux actions
     if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
         middleware = [...middleware, createLogger()];
     }

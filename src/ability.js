@@ -1,5 +1,6 @@
 import React from 'react';
-import { AbilityBuilder, Ability } from '@casl/ability';
+import PropTypes from 'prop-types';
+import {AbilityBuilder, Ability} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
 import {AVAILS, MEDIA, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT} from './ui/elements/nexus-navigation/constants';
@@ -9,21 +10,21 @@ const idToAbilityNameMap = {
     [METADATA]: 'Metadata',
     [MEDIA]: 'AssetManagement',
     [SERVICING_ORDERS]: 'ServicingOrders',
-    [EVENT_MANAGEMENT]: 'EventManagement'
+    [EVENT_MANAGEMENT]: 'EventManagement',
 };
 
 const ability = new Ability([]);
 
 /**
  *  const DEFAULT_ALIASES = 'create', 'read', 'update', 'delete';
- * @param keycloak
+ * @param roles
  */
 
 const updateAbility = (roles = []) => {
-    const { can, rules, cannot } = AbilityBuilder.extract();
+    const {can, rules, cannot} = AbilityBuilder.extract();
 
     // ******** Avail *************
-    const edit_only_admin = ['lastUpdateReceivedAt', 'originallyReceivedAt'];
+    const editOnlyAdmin = ['lastUpdateReceivedAt', 'originallyReceivedAt'];
     if (roles && roles.includes('avails_viewer')) {
         can('read', 'Avail');
     }
@@ -32,9 +33,9 @@ const updateAbility = (roles = []) => {
     }
     if (roles && roles.includes('avails_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Avail');
-        cannot('create', 'Avail', edit_only_admin);
-    }else{
-        cannot(['create', 'update', 'delete'], 'Avail', edit_only_admin);
+        cannot('create', 'Avail', editOnlyAdmin);
+    } else {
+        cannot(['create', 'update', 'delete'], 'Avail', editOnlyAdmin);
     }
 
     // ******** Asset Management *************
@@ -92,20 +93,22 @@ const cannot = (action, subject, field = undefined) => {
 };
 
 const canRender = (Component, action, subject, field = undefined) => {
-
     class AuthenticatedComponent extends React.Component {
-
         componentDidMount() {
             if (cannot(action, subject, field)) {
-                this.props.history.push('/');
+                const {history} = this.props;
+                history.push('/');
             }
         }
 
         render() {
             return can(action, subject, field) ? <Component {...this.props} /> : <div>Invalid application state</div>;
         }
-
     }
+
+    AuthenticatedComponent.propTypes = {
+        history: PropTypes.object.isRequired,
+    };
 
     return withRouter(AuthenticatedComponent);
 };

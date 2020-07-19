@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Label} from '@atlaskit/field-base';

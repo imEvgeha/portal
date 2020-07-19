@@ -11,7 +11,7 @@ const CustomIntlProvider = ({children, getLocale}) => (
 
 CustomIntlProvider.propTypes = {
     children: PropTypes.node.isRequired,
-    getLocale: PropTypes.object    
+    getLocale: PropTypes.object,
 };
 
 CustomIntlProvider.defaultProps = {
@@ -19,8 +19,7 @@ CustomIntlProvider.defaultProps = {
 };
 
 const mapStateToProps = state => {
-    return { getLocale: state.locale };
+    return {getLocale: state.locale};
 };
 
 export default connect(mapStateToProps)(CustomIntlProvider);
-

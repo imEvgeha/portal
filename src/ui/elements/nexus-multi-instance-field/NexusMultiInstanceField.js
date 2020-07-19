@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
@@ -23,14 +22,14 @@ const NexusMultiInstanceField = ({
     onSubmit,
     onConfirm,
     isUsingModal,
-    specialCreate
+    specialCreate,
 }) => {
     const [items, setItems] = useState(existingItems);
     const [editIndex, setEditIndex] = useState(-1);
     const [formValue, setFormValue] = useState({});
     const [inlineEdit, setInlineEdit] = useState(null);
     const [formKey, setFormKey] = useState(Math.random());
-    const {setModalContent, setModalActions, close}= useContext(NexusModalContext);
+    const {setModalContent, setModalActions, close} = useContext(NexusModalContext);
 
     useEffect(() => setItems(existingItems), [existingItems]);
     useEffect(() => setFormKey(Math.random()), [editIndex]);
@@ -44,47 +43,51 @@ const NexusMultiInstanceField = ({
     const addOrEditItem = (value, callback, isNew = false) => {
         let OKLabel = 'Save';
         value && setFormValue(value);
-        if(specialCreate && isNew){
+
+        let clonedValue = value;
+
+        if (specialCreate && isNew) {
             OKLabel = 'Create';
-            value = {...value, create:true};
+            clonedValue = {...value, create: true};
         }
         const content = (
             <Form
                 key={formKey}
                 renderer={renderer}
                 defaultFields={schema}
-                value={value}
+                value={clonedValue}
                 onSubmit={callback}
-                onChange={value => setFormValue(value)}
+                onChange={setFormValue}
             >
                 {!isUsingModal && (
-                <div className='nexus-c-multi-instance-field__action-buttons'>
+                <div className="nexus-c-multi-instance-field__action-buttons">
                     <Button onClick={() => {
-                                            setEditIndex(-1);
-                                            setFormValue({});
-                                            setInlineEdit(null);
-                                        }}
+                        setEditIndex(-1);
+                        setFormValue({});
+                        setInlineEdit(null);
+                    }}
                     >Cancel
                     </Button>
                     <FormButton label={OKLabel} onClick={callback} />
                 </div>
-                                  )}
+                )}
             </Form>
         );
 
-        if(isUsingModal) {
+        if (isUsingModal) {
             setModalActions([
                 {
-                    text: 'Cancel', onClick: () => {
+                    text: 'Cancel',
+                    onClick: () => {
                         setEditIndex(-1);
                         setFormValue({});
                         close();
-                    }
+                    },
                 },
-                {text: 'Submit', onClick: callback}
+                {text: 'Submit', onClick: callback},
             ]);
             setModalContent(content);
-        }else{
+        } else {
             setInlineEdit(content);
         }
     };
@@ -106,7 +109,7 @@ const NexusMultiInstanceField = ({
     };
 
     // Handler for removing an item form the list via NexusTag's remove button
-    const onRemoveItem = (index) => {
+    const onRemoveItem = index => {
         const newItems = getFilteredItems(items, index);
         onSubmit(newItems);
         setItems(newItems);
@@ -125,9 +128,9 @@ const NexusMultiInstanceField = ({
         setEditIndex(-1);
         setFormValue({});
 
-        if(isUsingModal){
+        if (isUsingModal) {
             close();
-        }else{
+        } else {
             setInlineEdit(null);
         }
     };
@@ -142,58 +145,58 @@ const NexusMultiInstanceField = ({
 
         setItems(combinedItems);
         setFormValue({});
-        if(isUsingModal){
+        if (isUsingModal) {
             close();
-        }else{
+        } else {
             setInlineEdit(null);
         }
     };
 
-    const MultiInstanceField = (isReadOnly) => {
+    const MultiInstanceField = isReadOnly => {
         return (
             <> {isReadOnly
-                    ? (
-                        <div className="nexus-c-multi-instance-field__tag-group">
-                            {items.map((item) => (
-                                <NexusTag
-                                    key={uid(item)}
-                                    text={item[keyForTagLabel]}
-                                    value={item}
-                                    tagState={item.state}
-                                />
+                ? (
+                    <div className="nexus-c-multi-instance-field__tag-group">
+                        {items.map(item => (
+                            <NexusTag
+                                key={uid(item)}
+                                text={item[keyForTagLabel]}
+                                value={item}
+                                tagState={item.state}
+                            />
+                        ))}
+                    </div>
+                )
+                : (
+                    <div className="nexus-c-multi-instance-field">
+                        <div className="nexus-c-multi-instance-field__content">
+                            <div
+                                className="nexus-c-multi-instance-field__clickable-text"
+                                onClick={onAddItem}
+                            >
+                                {!items.length && PLACEHOLDER}
+                            </div>
+                            <div className="nexus-c-multi-instance-field__tag-group">
+                                {items.map((item, index) => (
+                                    <NexusTag
+                                        key={uid(item)}
+                                        text={item[keyForTagLabel]}
+                                        value={item}
+                                        tagState={item.state}
+                                        removeButtonText="Remove"
+                                        onClick={() => onEditItem(item, index)}
+                                        onRemove={() => onRemoveItem(index)}
+                                    />
                                 ))}
-                        </div>
-                    )
-                    : (
-                        <div className="nexus-c-multi-instance-field">
-                            <div className="nexus-c-multi-instance-field__content">
-                                <div
-                                    className="nexus-c-multi-instance-field__clickable-text"
-                                    onClick={onAddItem}
-                                >
-                                    {!items.length && PLACEHOLDER}
-                                </div>
-                                <div className="nexus-c-multi-instance-field__tag-group">
-                                    {items.map((item, index) => (
-                                        <NexusTag
-                                            key={uid(item)}
-                                            text={item[keyForTagLabel]}
-                                            value={item}
-                                            tagState={item.state}
-                                            removeButtonText="Remove"
-                                            onClick={() => onEditItem(item, index)}
-                                            onRemove={() => onRemoveItem(index)}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="nexus-c-multi-instance-field__controls">
-                                <Button onClick={onAddItem} className="button-fix">
-                                    <AddIcon />
-                                </Button>
                             </div>
                         </div>
-                    )}
+                        <div className="nexus-c-multi-instance-field__controls">
+                            <Button onClick={onAddItem} className="button-fix">
+                                <AddIcon />
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </>
         );
     };
@@ -207,20 +210,20 @@ const NexusMultiInstanceField = ({
                         editView={() => MultiInstanceField(false)}
                         readView={() => (
                             <div className="nexus-c-multi-instance-field__tag-group">
-                                {existingItems && existingItems.map((item) => {
-                                return (
-                                    <Fragment key={uid(item)}>
-                                        {item.state !== 'new' && (
+                                {existingItems && existingItems.map(item => {
+                                    return (
+                                        <Fragment key={uid(item)}>
+                                            {item.state !== 'new' && (
                                             <NexusTag
                                                 text={item[keyForTagLabel]}
                                                 value={item}
                                             />
-                                          )}
-                                    </Fragment>
-                                );
-                            })}
+                                            )}
+                                        </Fragment>
+                                    );
+                                })}
                             </div>
-                    )}
+                        )}
                         readViewFitContainerWidth
                         defaultValue={[]}
                     />
@@ -240,7 +243,7 @@ NexusMultiInstanceField.propTypes = {
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
     isUsingModal: PropTypes.bool,
-    specialCreate: PropTypes.bool
+    specialCreate: PropTypes.bool,
 };
 
 NexusMultiInstanceField.defaultProps = {
@@ -249,7 +252,7 @@ NexusMultiInstanceField.defaultProps = {
     isReadOnly: false,
     onConfirm: () => null,
     isUsingModal: true,
-    specialCreate: false
+    specialCreate: false,
 };
 
 export default NexusMultiInstanceField;

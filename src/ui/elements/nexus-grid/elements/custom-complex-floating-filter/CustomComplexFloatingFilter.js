@@ -5,35 +5,35 @@ import './CustomComplexFloatingFilter.scss';
 class CustomComplexFloatingFilter extends React.Component {
     constructor(props) {
         super(props);
-        const { column: { colDef: {field}}, currentParentModel} = props;
+        const {column: {colDef: {field}}, currentParentModel} = props;
         const {filter = {}} = currentParentModel() || {};
         this.state = {
-            value: filter
+            value: filter,
         };
     }
 
-    onParentModelChanged = (model) => {
-        const {filter={}} = model || {};
+    onParentModelChanged = model => {
+        const {filter = {}} = model || {};
         this.setState({value: filter});
     };
 
     render() {
         const {value = {}} = this.state;
-        let arrayContent = [];
-        let keyContent;
-        isObject(value) && Object.keys(value).forEach((key) => {
+        const arrayContent = [];
+        let keyContent = '';
+        isObject(value) && Object.keys(value).forEach(key => {
             keyContent = '';
-            if(value[key]) {
-                if(Array.isArray(value[key])){
-                    if(value[key].length > 0) {
+            if (value[key]) {
+                if (Array.isArray(value[key])) {
+                    if (value[key].length > 0) {
                         keyContent = value[key].join(', ');
                     }
-                }else{
+                } else {
                     keyContent = value[key];
                 }
 
-                if(keyContent) {
-                    arrayContent.push(key + ': ' + keyContent);
+                if (keyContent) {
+                    arrayContent.push(`${key}: ${keyContent}`);
                 }
             }
         });
@@ -41,7 +41,7 @@ class CustomComplexFloatingFilter extends React.Component {
         const content = arrayContent.join(' ');
 
         return (
-            <div className='nexus-c-complex-floating-filter'>
+            <div className="nexus-c-complex-floating-filter">
                 <span title={content}>{content}</span>
             </div>
         );

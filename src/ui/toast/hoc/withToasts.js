@@ -27,7 +27,7 @@ const withToasts = WrappedComponent => {
         toasts: selectors.getToasts(state),
     });
 
-    const mapDispatchToProps = (dispatch) => ({
+    const mapDispatchToProps = dispatch => ({
         addToast: payload => dispatch(addToast(payload)),
         removeToast: payload => dispatch(removeToast(payload)),
     });

@@ -5,7 +5,7 @@ import './NexusXMLView.scss';
 
 const customTheme = {
     'attributeKeyColor': '#CB4B16',
-    'attributeValueColor': '#000FF'
+    'attributeValueColor': '#000FF',
 };
 
 const NexusXMLView = props => (

@@ -21,21 +21,22 @@ const customThemeMode = modeGenerator({
     },
 });
 
+// eslint-disable-next-line react/prop-types
 const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     const {id} = itemProps;
     const abilityLocationName = idToAbilityNameMap[id];
 
     if (DropdownItems) {
         const ItemWithDropdown = () => {
-        return (
-            <GlobalItemWithDropdown
-                trigger={({isOpen}) => (
-                    <GlobalItem isSelected={isOpen} {...itemProps} />
-                )}
-                items={<DropdownItems />}
-            />
-        );
-};
+            return (
+                <GlobalItemWithDropdown
+                    trigger={({isOpen}) => (
+                        <GlobalItem isSelected={isOpen} {...itemProps} />
+                    )}
+                    items={<DropdownItems />}
+                />
+            );
+        };
         return (
             abilityLocationName
                 ? (
@@ -62,7 +63,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
 
     useEffect(() => setSelectedItem(location.pathname.split('/')[1]), []);
 
-    const handleClick = (destination) => {
+    const handleClick = destination => {
         history.push(`/${destination.toLowerCase()}`);
         setSelectedItem(destination);
     };
@@ -80,7 +81,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
     return (
         <ThemeProvider theme={theme => ({
             ...theme,
-            mode: customThemeMode
+            mode: customThemeMode,
         })}
         >
             <GlobalNav
@@ -119,19 +120,21 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
 NexusNavigation.propTypes = {
     profileInfo: PropTypes.object,
     history: PropTypes.object,
+    location: PropTypes.object,
     logout: PropTypes.func,
 };
 
 NexusNavigation.defaultProps = {
     profileInfo: {},
     history: {location: {pathname: ''}},
+    location: {pathname: ''},
     logout: () => null,
 };
 
 const mapStateToProps = ({auth}) => {
     const {userAccount} = auth || {};
     return {
-        profileInfo: userAccount
+        profileInfo: userAccount,
     };
 };
 

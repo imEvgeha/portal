@@ -19,7 +19,6 @@ const NexusGrid = ({
     frameworkComponents,
     ...restProps
 }) => {
-
     const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
@@ -56,10 +55,10 @@ const NexusGrid = ({
                 {...restProps}
                 frameworkComponents={{
                     ...frameworkComponents,
-                    loadingCellRenderer: LoadingCellRenderer
+                    loadingCellRenderer: LoadingCellRenderer,
                 }}
-            /> 
-        </div> 
+            />
+        </div>
     );
 };
 

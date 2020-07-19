@@ -1626,7 +1626,7 @@ class RightDetails extends React.Component {
                 id: displayName,
                 label: displayName,
 
-                hideLabel: true, // TODO: Remove after RightDetails gets refactored/redesigned
+                isLabelHidden: true, // TODO: Remove after RightDetails gets refactored/redesigned
                 onChange: date => {
                     // Keep a separate state for edited values
                     this.setState(prevState => ({

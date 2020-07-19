@@ -19,34 +19,34 @@ export const defaultConfiguration = {
             assetManagement: '/api/asset-management/v1',
             eventApi: '/api/event-api/v1',
             eventApiV2: '/api/event-api/v2',
-            servicingOrder: ''
+            servicingOrder: '',
         },
     },
     avails: {
         upload: {
             http: {
-                timeout: 600000
+                timeout: 600000,
             },
-            extensions: '.xls, .xlsx'
+            extensions: '.xls, .xlsx',
         },
         export: {
             http: {
-                timeout: 120000
+                timeout: 120000,
             },
         },
         page: {
-            size: 100
+            size: 100,
         },
-        edit:{
+        edit: {
             refresh: {
-                interval: 60000
-            }
-        }
+                interval: 60000,
+            },
+        },
     },
     title: {
         page: {
-            size: 100
-        }
+            size: 100,
+        },
     },
     keycloak: {
         'clientId': 'temportalapp-dev',
@@ -54,16 +54,16 @@ export const defaultConfiguration = {
         'url': 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
-        'confidential-port': 0
+        'confidential-port': 0,
     },
     googleAnalytics: {
-        'propertyId': 'UA-165264495-2'
-    }
+        'propertyId': 'UA-165264495-2',
+    },
 };
 
 // temporary solution - replace it with env variables
-export async function setEnvConfiguration (env) {
-    const getConfigFile = (env) => {
+export async function setEnvConfiguration(env) {
+    const getConfigFile = env => {
         switch (env) {
             case 'dev':
                 return '/config.json';
@@ -76,13 +76,14 @@ export async function setEnvConfiguration (env) {
     try {
         config.set(defaultConfiguration, {freeze: false});
         const configFile = getConfigFile(env);
+        // TODO: Remove axios
         const {data} = await axios.get(configFile);
         if (isObject(data)) {
             config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: false});
             return true;
         }
         return JSON.parse(data);
-    } catch(error) {
+    } catch (error) {
         throw error;
     }
 }

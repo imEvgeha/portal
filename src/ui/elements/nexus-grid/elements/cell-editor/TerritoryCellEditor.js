@@ -6,7 +6,6 @@ import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 
 class TerritoryCellEditor extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -16,22 +15,23 @@ class TerritoryCellEditor extends Component {
 
     isPopup = () => true;
 
+    // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value;
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({value});
     };
 
     getOptions = () => {
         let {options} = this.props;
-        options = options.filter((rec) => (rec.countryCode)).map(rec => {
+        options = options.filter(rec => (rec.countryCode)).map(rec => {
             return {
-                    label: rec.countryName,
-                    value: rec.countryCode
+                label: rec.countryName,
+                value: rec.countryCode,
             };
         });
         return options;
-};
+    };
 
     render() {
         const {value} = this.state;
@@ -58,7 +58,7 @@ TerritoryCellEditor.propTypes = {
 
 TerritoryCellEditor.defaultProps = {
     options: [],
-    value: null
+    value: null,
 };
 
 TerritoryCellEditor.contextType = NexusModalContext;
