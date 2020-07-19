@@ -1,19 +1,19 @@
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {cloneDeep, get, isEmpty} from 'lodash';
-import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings';
 import Add from '../../../../../assets/action-add.svg';
 import {NexusGrid} from '../../../../../ui/elements';
-import {Checkbox} from '@atlaskit/checkbox';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import constants from '../fulfillment-order/constants';
-import columnDefinitions from './columnDefinitions';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
+import columnDefinitions from './columnDefinitions';
 import './ServicesTable.scss';
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);

@@ -1,16 +1,20 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {get} from 'lodash';
 import classNames from 'classnames';
-import withToasts from '../../../ui/toast/hoc/withToasts';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import RightViewHistory from '../right-history-view/RightHistoryView';
-import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {get} from 'lodash';
+import moment from 'moment';
+import {connect} from 'react-redux';
+import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import {URL} from '../../../util/Common';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import RightViewHistory from '../right-history-view/RightHistoryView';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -21,11 +25,7 @@ import {
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
 } from './constants';
-import moment from 'moment';
-import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
-import {URL} from '../../../util/Common';
 
 export const SelectedRightsActions = ({
     selectedRights,

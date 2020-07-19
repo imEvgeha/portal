@@ -1,7 +1,7 @@
 import React from 'react';
+import Button from '@atlaskit/button';
 import { shallow } from 'enzyme';
 import SyncLogTable from './SyncLogTable';
-import Button from '@atlaskit/button';
 
 describe('SyncLogTable', () => {
     let wrapper;

@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
 import Constants from '../../constants';
 import './IngestReport.scss';
-import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
 
 const IngestReport = ({
     report,

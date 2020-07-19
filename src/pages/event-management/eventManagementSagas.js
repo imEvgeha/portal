@@ -1,8 +1,8 @@
 import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
-import * as actionTypes from './eventManagementActionTypes';
-import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 import {REPLAY_EVENT_SUCCESS_MESSAGE, REPLICATE_EVENT_SUCCESS_MESSAGE} from '../../ui/toast/constants';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import * as actionTypes from './eventManagementActionTypes';
 import {replayEvent as replayEventAPI, replicateEvent as replicateEventAPI} from './eventManagementService';
 
 export function* replayEvent(requestMethod, {payload}) {

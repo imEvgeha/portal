@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
+import {ErrorMessage} from '@atlaskit/form';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import {
     CustomInput,

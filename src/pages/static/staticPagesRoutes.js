@@ -1,5 +1,5 @@
-import Welcome from './Welcome';
 import NotFound from './NotFound';
+import Welcome from './Welcome';
 
 const routes = [
     {

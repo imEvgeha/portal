@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-
 import Title from './Title';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
 import {

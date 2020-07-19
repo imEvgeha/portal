@@ -1,8 +1,8 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import SourcesTable from './SourcesTable';
 import {get} from 'lodash';
 import * as data  from '../../../servicingOrderMockData.json';
+import SourcesTable from './SourcesTable';
 import {prepareRowData} from './util';
 
 describe('SourcesTable without rows', () => {

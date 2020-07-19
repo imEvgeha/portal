@@ -1,13 +1,19 @@
+import React, {useEffect, useState, useContext} from 'react';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import React, {useEffect, useState, useContext} from 'react';
-import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
-import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL, EXPORT_WARNING_MESSAGE} from './constants';
 import './ServicingOrdersView.scss';
-import {exportServicingOrders} from './servicingOrdersService';
 import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
-import {readinessStatus} from './constants';
 import {downloadFile} from '../../util/Common';
+import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
+import {exportServicingOrders} from './servicingOrdersService';
+import {
+    CUSTOMER_LBL,
+    HIDE_COMPLETED_BTN,
+    HIDE_READY_BTN,
+    SERVICING_ORDERS_TTL,
+    EXPORT_WARNING_MESSAGE,
+    readinessStatus
+} from './constants';
 
 const ServicingOrdersView = () => {
     const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);

@@ -1,13 +1,13 @@
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '../../../../../util/utils';
+import Constants from '../fulfillment-order/constants';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
-import Constants from '../fulfillment-order/constants';
 import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({

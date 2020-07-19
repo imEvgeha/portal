@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {renderer} from 'react-forms-processor-atlaskit';
-import {Form} from 'react-forms-processor';
 import {isEmpty} from 'lodash';
+import {Form} from 'react-forms-processor';
+import {renderer} from 'react-forms-processor-atlaskit';
 import './CustomComplexFilter.scss';
 
 export class CustomComplexFilter extends React.Component {

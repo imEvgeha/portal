@@ -1,16 +1,16 @@
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {get} from 'lodash';
 import moment from 'moment';
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../assets/filter.svg';
 import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import {getValidDate} from '../../../../../util/utils';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';
-import {SORT_DIRECTION} from '../filter-section/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
+import {SORT_DIRECTION} from '../filter-section/constants';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import './HeaderSection.scss';
 

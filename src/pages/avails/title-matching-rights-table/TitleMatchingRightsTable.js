@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep, get} from 'lodash';
-import columnDefinitions from './columnDefinitions';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './TitleMatchingRightsTable.json';
+import columnDefinitions from './columnDefinitions';
 import './TitleMatchingRightsTable.scss';
 
 const TitleMatchingRightsTable = ({data}) => {
