@@ -39,13 +39,13 @@ $widths: (
     margin-left: 0;
 
     &--from-left {
-      margin-left: 16px;
+      margin-left: 1rem;
     }
   }
 
   &__header {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     display: none;
 
     &--is-open {
