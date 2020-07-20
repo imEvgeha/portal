@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './ServicingOrdersTableStatusBar.scss';
 
-
 const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
     const baseClassName = 'nexus-c-servicing-orders-table-status-bar';
 
