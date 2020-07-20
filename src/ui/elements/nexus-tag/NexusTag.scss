@@ -22,6 +22,10 @@
         background-color: map-get($colors, nexus-tag-green);
     }
 
+    &--error {
+        background-color: map-get($colors, nexus-error);
+    }
+
     &--is-modified{
         background-color: map-get($colors, nexus-tag-yellow);
     }
