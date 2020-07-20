@@ -22,7 +22,8 @@ import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActi
 import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
 import {getRepositoryCell} from '../../../avails/utils';
 
-const LegacyTitleReconciliationReview = ({createColumnDefs,
+const LegacyTitleReconciliationReview = ({
+    createColumnDefs,
     columnDefs,
     titles,
     getReconciliationTitles}) => {
