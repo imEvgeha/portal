@@ -17,15 +17,6 @@ const NexusDrawer = ({
     isClosedOnBlur,
     direction,
 }) => {
-    const drawerWidths = {
-        extended: '95vw',
-        full: '100vw',
-        medium: '480px',
-        narrow: '360px',
-        wide: '800px',
-        wider: '60vw',
-    };
-
     const drawerClassNames = classnames('nexus-c-drawer', {
         'nexus-c-drawer--from-left': direction === 'fromLeft',
         'nexus-c-drawer--from-right': direction === 'fromRight',
