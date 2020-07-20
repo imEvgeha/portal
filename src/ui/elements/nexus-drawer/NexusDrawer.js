@@ -86,7 +86,7 @@ NexusDrawer.defaultProps = {
     width: 'medium',
     headerContent: null,
     isClosedOnBlur: true,
-    direction: 'fromLeft',
+    direction: 'fromRight',
 };
 
 export default NexusDrawer;
