@@ -29,7 +29,9 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 createdAt,
             });
         });
-    }, [externalId, configuredPrId]);
+    },// disabling eslint here as it couldn;t be tested since no scenario was found as of now
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []);
 
     return (
         <div className="nexus-c-partner-request">

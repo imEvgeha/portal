@@ -52,7 +52,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 setTableData(flattenedObject);
             }
         },
-        [services, providerServices]
+        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [services]
     );
 
     const handleServiceRemoval = index => {

@@ -33,7 +33,9 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             }
             setSources(data);
         },
-        [data, previousData]
+        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [data]
     );
 
     useEffect(
