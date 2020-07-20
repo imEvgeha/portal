@@ -55,7 +55,7 @@ const ServicingOrder = ({match}) => {
                 setServiceOrder({});
             }
         });
-    }, [match.params.id]);
+    }, [match]);
 
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE

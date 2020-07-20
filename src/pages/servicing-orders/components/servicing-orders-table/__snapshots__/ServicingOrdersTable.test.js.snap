@@ -138,6 +138,8 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         "End",
       ]
     }
+    externalFilter=""
+    fixedFilter=""
     frameworkComponents={
       Object {
         "emphasizedStringCellRenderer": [Function],
