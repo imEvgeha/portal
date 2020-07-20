@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {get} from 'lodash';
+import {get, uniqBy} from 'lodash';
 import classNames from 'classnames';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
@@ -53,44 +53,60 @@ export const SelectedRightsActions = ({
         };
     }, []);
 
+    const checkNoExpiredRights= (end, availEnd, licensed) => {
+        return licensed ? moment().isBefore(end) : moment().isBefore(availEnd);
+    };
+
+    // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
+    const checkSourceRightIds = () => {
+        const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
+        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '') && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
+        return hasEmptySourceRightIds || hasUniqueSourceRightIds;
+    };
+
+    // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
+    const checkBonusRightCreateCriteria = () => {
+            return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
+            && !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', '')
+            && !sourceRightId
+            && ['ReadyNew', 'Ready'].includes(status)
+        );
+    };
+
+    // All the rights have Empty CoreTitleIds and SameContentType and NoExpiredRights
+    const haveEmptyCoreTitleIdsSameContentTypeNoExpiredRights = () => {
+        return selectedRights.every(
+            ({coreTitleId, contentType, end, availEnd, licensed}) => !coreTitleId && contentType === selectedRights[0].contentType
+            && checkNoExpiredRights(end, availEnd, licensed)
+        );
+    };
+
+    // All the rights have CoreTitleIds and No ExpiredRights
+    const haveCoreTitleIdsNoExpiredRights = () => {
+        return  selectedRights.every(({coreTitleId, end, availEnd, licensed}) => checkNoExpiredRights(end, availEnd, licensed) && !!coreTitleId);
+    };
+
     // Check the criteria for enabling specific actions
     useEffect(() => {
-        // Criteria
-        const hasCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId);
-        const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
-        const hasNoEmptySourceRightId = selectedRights.every(({sourceRightId}) => !!sourceRightId);
-        const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
-            ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
-        );
-        const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
-        const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
-        const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) =>
-            licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd)));
+        if(!!selectedRights.length) {
 
-        // Bulk match criteria check
-        setIsMatchable(
-            !!selectedRights.length
-            && hasEmptyCoreTitleIdsAndSameContentType
-            && (hasEmptySourceRightIds || hasNoEmptySourceRightId)
-            && hasNoExpiredRights
-        );
+            // Bulk match criteria check
+            setIsMatchable(
+                haveEmptyCoreTitleIdsSameContentTypeNoExpiredRights()
+                && checkSourceRightIds()
+            );
 
-        // Bulk unmatch criteria check
-        setIsUnmatchable(
-            !!selectedRights.length
-            && hasCoreTitleIds
-            && hasNoExpiredRights
-        );
+            // Bulk unmatch criteria check
+            setIsUnmatchable(
+                haveCoreTitleIdsNoExpiredRights()
+                && checkSourceRightIds()
+            );
 
-        // Bonus rights create criteria
-        setIsBonusRightCreatable(
-            !!selectedRights.length
-            && hasSameCoreTitleIds
-            && hasEmptySourceRightIds
-            && hasLicensedRights
-            && hasReadyOrReadyNewStatus
-        );
+            // Bonus rights create criteria
+            setIsBonusRightCreatable(
+                checkBonusRightCreateCriteria()
+            );
+        }
     }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);
