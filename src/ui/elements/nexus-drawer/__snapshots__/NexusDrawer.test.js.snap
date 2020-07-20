@@ -7,10 +7,8 @@ exports[`NexusDrawer should match snapshot 1`] = `
     isTinted={true}
     onBlanketClicked={[Function]}
   />
-  <styled.div
-    direction="fromRight"
-    isOpen={true}
-    width="360px"
+  <div
+    className="nexus-c-drawer nexus-c-drawer--from-right nexus-c-drawer--is-narrow-open"
   >
     <AkPage
       bannerHeight={52}
@@ -20,24 +18,25 @@ exports[`NexusDrawer should match snapshot 1`] = `
         layout="fluid"
       >
         <WithTheme(AkGridColumn)>
-          <styled.div
-            direction="fromRight"
-            isOpen={true}
+          <div
+            className="nexus-c-drawer__header nexus-c-drawer__header--from-right nexus-c-drawer__header--is-open"
           >
-            <styled.div
-              direction="fromRight"
+            <div
+              className="nexus-c-drawer__title-container"
             >
-              <styled.h1 />
-            </styled.div>
+              <h1
+                className="nexus-c-drawer__title"
+              />
+            </div>
             <IconButton
               icon={[Function]}
               label="Close Drawer"
               onClick={[Function]}
             />
-          </styled.div>
+          </div>
         </WithTheme(AkGridColumn)>
       </WithTheme(AkGrid)>
     </AkPage>
-  </styled.div>
+  </div>
 </Fragment>
 `;

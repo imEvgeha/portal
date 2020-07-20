@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PartnerRequest should match snapshot 1`] = `
-<styled.div>
+<div
+  className="nexus-c-partner-request"
+>
   <AkPage
     bannerHeight={52}
     isBannerOpen={false}
@@ -16,45 +18,63 @@ exports[`PartnerRequest should match snapshot 1`] = `
           <WithTheme(AkGridColumn)
             medium={2}
           >
-            <styled.div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
               <h6>
                 Studio
               </h6>
-              <styled.p>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
                 N/A
-              </styled.p>
-            </styled.div>
-            <styled.div>
+              </p>
+            </div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
               <h6>
                 MSS Order Details
               </h6>
-              <styled.p>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
                 345
-              </styled.p>
-            </styled.div>
+              </p>
+            </div>
           </WithTheme(AkGridColumn)>
           <WithTheme(AkGridColumn)>
-            <styled.div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
               <h6>
                 Created Date
               </h6>
-              <styled.p>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
                 N/A
-              </styled.p>
-            </styled.div>
-            <styled.div>
+              </p>
+            </div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
               <h6>
                 Created By
               </h6>
-              <styled.p>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
                 N/A
-              </styled.p>
-            </styled.div>
+              </p>
+            </div>
           </WithTheme(AkGridColumn)>
         </WithTheme(AkGrid)>
       </WithTheme(AkGridColumn)>
     </WithTheme(AkGrid)>
-    <styled.div>
+    <div
+      className="nexus-c-partner-request__table-wrapper"
+    >
       <NexusGrid
         columnDefs={
           Array [
@@ -150,7 +170,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
         rowData={Array []}
         setRowData={null}
       />
-    </styled.div>
+    </div>
   </AkPage>
-</styled.div>
+</div>
 `;
