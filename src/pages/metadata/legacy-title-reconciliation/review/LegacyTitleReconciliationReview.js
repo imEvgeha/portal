@@ -23,9 +23,10 @@ import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelecto
 import {getRepositoryCell} from '../../../avails/utils';
 
 const LegacyTitleReconciliationReview = ({createColumnDefs,
-    columnDefs,
-    titles,
-    getReconciliationTitles}) => {
+        columnDefs,
+        titles,
+        getReconciliationTitles,
+    }) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();

@@ -17,4 +17,5 @@ UnderConstructionView.propTypes = {
 UnderConstructionView.defaultProps = {
     match: {},
 };
+
 export default UnderConstructionView;
