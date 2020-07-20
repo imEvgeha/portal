@@ -73,7 +73,7 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     dataRefreshComplete={[Function]}
     externalFilter={Object {}}
     fixedFilter={Object {}}
-    refreshData={false}
+    isRefreshData={false}
     setSelectedServicingOrders={[Function]}
   />
 </div>
