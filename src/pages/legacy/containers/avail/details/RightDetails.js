@@ -1227,7 +1227,8 @@ class RightDetails extends React.Component {
                     const error = errors.length ? errors.map(error => {
                         const {severityType='', fieldName='', message=''} = error || {};
                         return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                    }).join(' ; ') : '';
+                    }).join(` 
+`) : '';
                     return {
                         priceType: priceType,
                         priceValue: priceValue,
