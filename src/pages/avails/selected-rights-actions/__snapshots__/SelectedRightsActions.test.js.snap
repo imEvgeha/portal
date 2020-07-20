@@ -23,7 +23,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"
-        onClick={[Function]}
+        onClick={null}
       >
         <NexusTooltip
           content="This feature is enabled when:

@@ -80,11 +80,13 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
@@ -96,31 +98,35 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
-                    sourceRightId: '1',
+                    sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be enabled when sourceRightIds are not all populated', () => {
+        it('should be disabled when sourceRightIds are not all populated', () => {
             init([
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
         it('should be disabled when coreTitleIds are not all populated', () => {
@@ -128,28 +134,50 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
-        it('should be disabled when expired rights are selected', () => {
+        it('should be disabled when expired rights are selected when licensed is true', () => {
             init([
                 {
                     coreTitleId: '',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2010-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2010-04-30T00:00:00',
+                },
+            ]);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when expired rights are selected when licensed is false', () => {
+            init([
+                {
+                    coreTitleId: '',
+                    sourceRightId: '1',
+                    licensed: false,
+                    availEnd: '2010-04-30T00:00:00',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '2',
+                    licensed: false,
+                    availEnd: '2010-04-30T00:00:00',
                 },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -186,12 +214,14 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
@@ -204,12 +234,14 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
-                    sourceRightId: '1',
+                    sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
@@ -222,12 +254,14 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
@@ -240,31 +274,55 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     contentType: 'movie',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
-        it('should be disabled when expired rights are selected', () => {
+        it('should be disabled when expired rights are selected when licensed true', () => {
             init([
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
                     end: '2010-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     contentType: 'movie',
                     sourceRightId: '2',
+                    licensed: true,
                     end: '2010-04-30T00:00:00',
+                },
+            ]);
+            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when expired rights are selected when licensed false', () => {
+            init([
+                {
+                    coreTitleId: '',
+                    contentType: 'movie',
+                    sourceRightId: '1',
+                    licensed: false,
+                    availEnd: '2010-04-30T00:00:00',
+                },
+                {
+                    coreTitleId: '2',
+                    contentType: 'movie',
+                    sourceRightId: '2',
+                    licensed: false,
+                    availEnd: '2010-04-30T00:00:00',
                 },
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);

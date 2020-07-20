@@ -12,6 +12,6 @@ export const CREW_HEADER = 'Crew';
 export const CHARACTER_NAME = 'Character';
 export const MSV_ASSOCIATION_BTN = {
     title: 'Generate ID',
-    readyHover: 'Click to generate MSV Association IDs',
+    readyHover: 'Click to generate and attach the IDs to the title',
     disabledHover: 'You must select both a Licensor and Licensee before you can generate IDs',
 };

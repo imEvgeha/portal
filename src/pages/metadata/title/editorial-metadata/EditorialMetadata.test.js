@@ -4,7 +4,7 @@ import {shallow} from 'enzyme';
 import EditorialMetadata from './EditorialMetadata';
 
 describe('EditorialMetadata', () => {
-    let wrapper;
+    let wrapper = null;
     it('should match snapshot', () => {
         wrapper = shallow(
             <EditorialMetadata />

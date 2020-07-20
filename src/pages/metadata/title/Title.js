@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import TitleHeader from './title-header/TitleHeader';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
 
@@ -17,8 +18,8 @@ import {
 import './Title.scss';
 
 const Title = ({
-   coreTitleData,
-   editorialTitleData
+    coreTitleData,
+    editorialTitleData,
 }) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = coreTitleData || {};
@@ -60,10 +61,10 @@ const Title = ({
             <div className="nexus-c-metadata-title__sections-menu">
                 {METADATA_TITLE_SECTIONS.map((section, index) => (
                     <div
-                        className={`
-                            nexus-c-metadata-title__section-tab 
-                            ${section === currentSection ? 'nexus-c-metadata-title__section-tab--is-active' : ''}
-                        `}
+                        className={classNames(
+                            'nexus-c-metadata-title__section-tab',
+                            (section === currentSection) && 'nexus-c-metadata-title__section-tab--is-active'
+                        )}
                         key={index}
                         onClick={() => setCurrentSection(section)}
                     >
