@@ -53,7 +53,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                         {columnHeader.toUpperCase()}
                     </div>
                 ))}
-                {data.list.map(order => (
+                {data.list && data.list.map(order => (
                     COLUMN_KEYS.map((key, index) => (
                         <div
                             key={uid(key, index)}

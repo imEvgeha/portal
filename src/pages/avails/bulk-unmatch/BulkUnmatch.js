@@ -64,7 +64,8 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 setAffectedRights(rights);
             });
         },
-        [selectedRights, close, removeToast, setModalActions, setModalStyle, unMatchHandler]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selectedRights]
     );
 
     return (

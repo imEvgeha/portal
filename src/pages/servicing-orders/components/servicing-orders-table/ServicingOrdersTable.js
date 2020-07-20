@@ -25,7 +25,7 @@ const ServicingOrdersTable = (
         fixedFilter,
         externalFilter,
         setSelectedServicingOrders,
-        refreshData,
+        isRefreshData,
         dataRefreshComplete,
     }
 ) => {
@@ -102,7 +102,7 @@ const ServicingOrdersTable = (
 
     useEffect(
         () => {
-            if (refreshData) {
+            if (isRefreshData) {
                 // Refresh data
                 gridApi.purgeInfiniteCache();
 
@@ -113,7 +113,7 @@ const ServicingOrdersTable = (
                 dataRefreshComplete();
             }
         },
-        [refreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]
+        [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]
     );
 
     return (
@@ -140,18 +140,18 @@ const ServicingOrdersTable = (
 };
 
 ServicingOrdersTable.propTypes = {
-    fixedFilter: PropTypes.string,
-    externalFilter: PropTypes.string,
+    fixedFilter: PropTypes.object,
+    externalFilter: PropTypes.object,
     setSelectedServicingOrders: PropTypes.func,
-    refreshData: PropTypes.func,
+    isRefreshData: PropTypes.bool,
     dataRefreshComplete: PropTypes.func,
 };
 
 ServicingOrdersTable.defaultProps = {
-    fixedFilter: '',
-    externalFilter: '',
+    fixedFilter: {},
+    externalFilter: {},
     setSelectedServicingOrders: null,
-    refreshData: null,
+    isRefreshData: false,
     dataRefreshComplete: null,
 };
 

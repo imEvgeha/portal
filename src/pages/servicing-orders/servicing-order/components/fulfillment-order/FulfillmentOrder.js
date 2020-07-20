@@ -70,15 +70,8 @@ export const FulfillmentOrder = ({
                 });
             }
         },
-        [
-            isSuccess,
-            dispatch,
-            fetchFulfillmentOrders,
-            fulfillmentOrder,
-            serviceOrder,
-            setSelectedFulfillmentOrderID,
-            setSelectedOrder,
-        ]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [isSuccess]
     );
 
     useEffect(
@@ -92,7 +85,8 @@ export const FulfillmentOrder = ({
                     : setIsFormDisabled(false);
             }
         },
-        [selectedFulfillmentOrder, savedFulfillmentOrder, fieldKeys.READINESS]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selectedFulfillmentOrder, savedFulfillmentOrder]
     );
 
     // effect runs when the services table is updated
@@ -104,14 +98,16 @@ export const FulfillmentOrder = ({
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
         },
-        [updatedServices, fulfillmentOrder]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [updatedServices]
     );
 
     useEffect(
         () => {
             setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
         },
-        [fulfillmentOrder, savedFulfillmentOrder, selectedFulfillmentOrder]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [fulfillmentOrder]
     );
 
     const onFieldChange = (path, value) => {

@@ -49,7 +49,8 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         () => {
             onSelectedSourceChange(selectedSource);
         },
-        [selectedSource, onSelectedSourceChange]
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selectedSource]
     );
 
     const serviceButtonCell = ({data, selectedItem = {}}) => { // eslint-disable-line

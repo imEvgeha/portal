@@ -98,16 +98,16 @@ const ServiceOrderFilter = ({
 
 ServiceOrderFilter.propTypes = {
     orderDetails: PropTypes.object.isRequired,
-    filter: PropTypes.string,
+    filter: PropTypes.object,
     setFilter: PropTypes.func,
-    dueDateSortDirection: PropTypes.func,
+    dueDateSortDirection: PropTypes.object,
     setDueDateSortDirection: PropTypes.func,
 };
 
 ServiceOrderFilter.defaultProps = {
-    filter: '',
+    filter: {},
     setFilter: null,
-    dueDateSortDirection: null,
+    dueDateSortDirection: {},
     setDueDateSortDirection: null,
 };
 

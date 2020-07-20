@@ -22,11 +22,11 @@ const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
 };
 
 ServicingOrdersTableStatusBar.propTypes = {
-    statusBarInfo: PropTypes.string,
+    statusBarInfo: PropTypes.object,
 };
 
 ServicingOrdersTableStatusBar.defaultProps = {
-    statusBarInfo: '',
+    statusBarInfo: {},
 };
 
 export default ServicingOrdersTableStatusBar;
