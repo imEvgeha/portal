@@ -103,7 +103,7 @@ describe('SelectedRightsActions', () => {
                 },
                 {
                     coreTitleId: '2',
-                    sourceRightId: '1',
+                    sourceRightId: '2',
                     licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
@@ -111,7 +111,7 @@ describe('SelectedRightsActions', () => {
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be enabled when sourceRightIds are not all populated', () => {
+        it('should be disabled when sourceRightIds are not all populated', () => {
             init([
                 {
                     coreTitleId: '1',
@@ -126,7 +126,7 @@ describe('SelectedRightsActions', () => {
                     end: '2099-04-30T00:00:00',
                 },
             ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
         it('should be disabled when coreTitleIds are not all populated', () => {
@@ -240,7 +240,7 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '',
                     contentType: 'movie',
-                    sourceRightId: '1',
+                    sourceRightId: '2',
                     licensed: true,
                     end: '2099-04-30T00:00:00',
                 },
