@@ -52,11 +52,8 @@
 }
 
 .nexus-c-tag__tooltip-list {
-    display: flex;
-    flex-wrap: wrap;
     text-align: center;
-    justify-content: center;
-    flex-direction: column;
+    padding: 5px;
 }
 
 .nexus-c-tag__tooltip-prop {
