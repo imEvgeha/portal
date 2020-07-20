@@ -1,11 +1,11 @@
 import Blanket from '@atlaskit/blanket';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import {colors, gridSize, layers} from '@atlaskit/theme';
 import PropTypes from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
+import classnames from 'classnames';
 import IconButton from '../../atlaskit/icon-button/IconButton';
+import './NexusDrawer.scss';
 
 const NexusDrawer = ({
     children,
@@ -26,6 +26,22 @@ const NexusDrawer = ({
         wider: '60vw',
     };
 
+    const drawerClassNames = classnames('nexus-c-drawer', {
+        'nexus-c-drawer--from-left': direction === 'fromLeft',
+        'nexus-c-drawer--from-right': direction === 'fromRight',
+        [`nexus-c-drawer--is-${width}-open`]: isOpen,
+    });
+
+    const titleContainerClassNames = classnames('nexus-c-drawer__title-container', {
+        'nexus-c-drawer__title-container--from-left': direction === 'fromLeft',
+    });
+
+    const headerClassNames = classnames('nexus-c-drawer__header', {
+        'nexus-c-drawer__header--from-left': direction === 'fromLeft',
+        'nexus-c-drawer__header--from-right': direction === 'fromRight',
+        'nexus-c-drawer__header--is-open': isOpen,
+    });
+
     return (
         <>
             {isOpen && (
@@ -35,31 +51,31 @@ const NexusDrawer = ({
                     isTinted
                 />
             )}
-            <Drawer width={drawerWidths[width]} direction={direction} isOpen={isOpen}>
+            <div className={drawerClassNames}>
                 <Page>
                     <Grid layout="fluid">
                         <GridColumn>
-                            <Header isOpen={isOpen} direction={direction}>
-                                <TitleContainer direction={direction}>
-                                    <Title>{title}</Title>
+                            <div className={headerClassNames}>
+                                <div className={titleContainerClassNames}>
+                                    <h1 className="nexus-c-drawer__title">{title}</h1>
                                     {!!headerContent && (
                                         <>
                                             <div className="nexus-c-drawer__line-break" />
                                             <div>{headerContent}</div>
                                         </>
                                     )}
-                                </TitleContainer>
+                                </div>
                                 <IconButton
                                     icon={CrossIcon}
                                     label="Close Drawer"
                                     onClick={onClose}
                                 />
-                            </Header>
+                            </div>
                         </GridColumn>
                     </Grid>
                     {isOpen && children}
                 </Page>
-            </Drawer>
+            </div>
         </>
     );
 };
@@ -79,39 +95,7 @@ NexusDrawer.defaultProps = {
     width: 'medium',
     headerContent: null,
     isClosedOnBlur: true,
-    direction: 'fromRight',
+    direction: 'fromLeft',
 };
 
 export default NexusDrawer;
-
-// Styled Components
-const Drawer = styled.div`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: ${props => props.direction === 'fromLeft' && '0'};
-    right: ${props => props.direction === 'fromRight' && '0'};
-    background-color: ${colors.N0};
-    z-index: ${layers.blanket()};
-    transition: width 220ms cubic-bezier(0.2, 0, 0, 1) 0s;
-    width: ${props => (props.isOpen ? props.width : 0)};
-    overflow: auto;
-`;
-
-const Title = styled.h1`
-    margin-left: 0 !important;
-`;
-
-const TitleContainer = styled.div`
-    margin-left: ${props => (props.direction === 'fromLeft' ? gridSize() * 2 + 'px' : 0)};
-`;
-
-const Header = styled.div`
-    margin-top: ${gridSize() * 2}px;
-    margin-bottom: ${gridSize() * 2}px;
-    justify-content: ${props => (props.direction === 'fromRight' ? 'space-between' : 'flex-end')};
-    align-items: flex-start;
-    flex-direction: ${props => props.direction === 'fromLeft' && 'row-reverse'};
-    display: ${props => (props.isOpen ? 'flex' : 'none')};
-    flex-wrap: ${props => props.isOpen && 'wrap'};
-`;
