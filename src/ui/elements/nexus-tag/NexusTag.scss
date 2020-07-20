@@ -68,6 +68,12 @@
     &:not(:last-child) {
         border-bottom: 1px solid #00000080;
     }
+    &--error {
+        .nexus-c-tag__tooltip-prop-value {
+            color: #A94442;
+            font-size: 12px;
+        }
+    }
 }
 
 .nexus-c-tag__tooltip-prop-value {

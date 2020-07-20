@@ -17,7 +17,7 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove}) => {
                     && typeof value[key] !== 'object'
                     && value[key] !== null
                     && (
-                        <li className="nexus-c-tag__tooltip-prop" key={index}>
+                        <li className={`nexus-c-tag__tooltip-prop ${key === 'error' ? 'nexus-c-tag__tooltip-prop--error' : ''}`} key={index}>
                             {key}:
                             <span className="nexus-c-tag__tooltip-prop-value">
                                 { getValidValue(value[key]) }
