@@ -15,6 +15,8 @@ import {
     TIMES,
 } from '../constants';
 
+const MIN_DATE_LENGTH = 10;
+
 const NexusSimpleDateTimePicker = ({
     label,
     id,
@@ -24,7 +26,7 @@ const NexusSimpleDateTimePicker = ({
     error,
     isSimulcast,
     isTimestamp,
-    allowClear,
+    isClearable,
     ...restProps
 }) => {
     const [date, setDate] = useState(value);
@@ -69,7 +71,7 @@ const NexusSimpleDateTimePicker = ({
         if (date) {
             onChange(convertToRequiredFormat(date));
         } else {
-            return allowClear && onChange('');
+            return isClearable && onChange('');
         }
     };
 
@@ -98,7 +100,7 @@ const NexusSimpleDateTimePicker = ({
                             onChange: newValue => {
                                 !moment(value).isValid()
                                     ? onChange(convertToRequiredFormat(newValue))
-                                    : onChange(convertToRequiredFormat(newValue + date.slice(10)));
+                                    : onChange(convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH)));
                             },
                         }}
                         timePickerProps={{
@@ -117,7 +119,7 @@ const NexusSimpleDateTimePicker = ({
                         times={TIMES}
                         {...restProps}
                     />
-                    {allowClear && <ClearButton onClear={() => { setDate(''); onDateChange(''); }} />}
+                    {isClearable && <ClearButton onClear={() => { setDate(''); onDateChange(''); }} />}
                 </div>
             </TemporaryErrorBorder>
             {error && (
@@ -136,7 +138,7 @@ NexusSimpleDateTimePicker.propTypes = {
     error: PropTypes.string,
     isSimulcast: PropTypes.bool,
     isTimestamp: PropTypes.bool,
-    allowClear: PropTypes.bool,
+    isClearable: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
 };
@@ -148,7 +150,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     error: '',
     isSimulcast: true,
     isTimestamp: false,
-    allowClear: false,
+    isClearable: false,
 };
 
 export default NexusSimpleDateTimePicker;

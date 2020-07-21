@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import InlineEdit from '@atlaskit/inline-edit';
+import classnames from 'classnames';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import './NexusDatePicker.scss';
 import {getDateFormatBasedOnLocale, parseSimulcast, isUtc} from '../../../../util/date-time/DateTimeUtils';
 import ClearButton from '../clear-button/ClearButton';
 import {
@@ -13,6 +13,7 @@ import {
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT_WITHOUT_TIME,
 } from '../constants';
+import './NexusDatePicker.scss';
 
 const NexusDatePicker = ({
     id,
@@ -26,8 +27,8 @@ const NexusDatePicker = ({
     label,
     isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
     isReturningTime,
-    allowClear,
-    required,
+    isClearable,
+    isRequired,
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -69,7 +70,7 @@ const NexusDatePicker = ({
         return (
             <>
                 {!isLabelHidden && label && (
-                    <label htmlFor={id} className={required && 'required'}>{label}</label>
+                    <label htmlFor={id} className={classnames(isRequired && 'required')}>{label}</label>
                 )}
                 {isReadOnly
                     ? parseSimulcast(value, dateFormat, false)
@@ -85,7 +86,7 @@ const NexusDatePicker = ({
                                 value={date}
                                 {...restProps}
                             />
-                            {allowClear && <ClearButton onClear={() => onDateChange('')} />}
+                            {isClearable && <ClearButton onClear={() => onDateChange('')} />}
                         </div>
                     )}
                 {error && (
@@ -135,8 +136,8 @@ NexusDatePicker.propTypes = {
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    allowClear: PropTypes.bool,
-    required: PropTypes.bool,
+    isClearable: PropTypes.bool,
+    isRequired: PropTypes.bool,
 };
 
 NexusDatePicker.defaultProps = {
@@ -149,8 +150,8 @@ NexusDatePicker.defaultProps = {
     isLabelHidden: false,
     isReturningTime: true,
     onConfirm: () => null,
-    allowClear: false,
-    required: false,
+    isClearable: false,
+    isRequired: false,
 };
 
 export default NexusDatePicker;

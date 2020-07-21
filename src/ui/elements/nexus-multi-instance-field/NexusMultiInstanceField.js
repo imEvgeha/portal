@@ -22,7 +22,7 @@ const NexusMultiInstanceField = ({
     onSubmit,
     onConfirm,
     isUsingModal,
-    specialCreate,
+    isSpecialCreate,
 }) => {
     const [items, setItems] = useState(existingItems);
     const [editIndex, setEditIndex] = useState(-1);
@@ -46,7 +46,7 @@ const NexusMultiInstanceField = ({
 
         let clonedValue = value;
 
-        if (specialCreate && isNew) {
+        if (isSpecialCreate && isNew) {
             OKLabel = 'Create';
             clonedValue = {...value, create: true};
         }
@@ -243,7 +243,7 @@ NexusMultiInstanceField.propTypes = {
     isReadOnly: PropTypes.bool,
     onConfirm: PropTypes.func,
     isUsingModal: PropTypes.bool,
-    specialCreate: PropTypes.bool,
+    isSpecialCreate: PropTypes.bool,
 };
 
 NexusMultiInstanceField.defaultProps = {
@@ -252,7 +252,7 @@ NexusMultiInstanceField.defaultProps = {
     isReadOnly: false,
     onConfirm: () => null,
     isUsingModal: true,
-    specialCreate: false,
+    isSpecialCreate: false,
 };
 
 export default NexusMultiInstanceField;

@@ -16,7 +16,6 @@ import SearchResultsTab from './SearchResultsTab';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
-import {AVAILS_DASHBOARD, AVAILS_SEARCH_RESULTS, AVAILS_HISTORY} from '../../../constants/breadcrumb';
 import {isObjectEmpty} from '../../../../../util/Common';
 import RightsURL from '../util/RightsURL';
 

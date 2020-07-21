@@ -11,13 +11,14 @@ import {downloadFile} from '../../../util/Common';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
     const [filteredColumns, setFilteredColumns] = useState([]);
+    const columns = getColumns();
 
     useEffect(() => {
-        if (getColumns()) {
-            const filteredColumns = getColumns().filter(el => !CUSTOM_HEADER_LIST.includes(el));
+        if (columns) {
+            const filteredColumns = columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
             setFilteredColumns(filteredColumns);
         }
-    }, [getColumns()]);
+    }, [columns]);
 
     const noAvailSelectedAlert = () => {
         alertModal.open(
@@ -79,6 +80,7 @@ export default TableDownloadRights;
 TableDownloadRights.propTypes = {
     getColumns: PropTypes.func,
     getSelected: PropTypes.func,
+    // eslint-disable-next-line react/boolean-prop-naming
     allowDownloadFullTab: PropTypes.bool,
     selectedTab: PropTypes.string,
     exportCriteria: PropTypes.object,

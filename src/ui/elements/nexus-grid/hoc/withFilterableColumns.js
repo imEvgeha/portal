@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {SetFilter} from 'ag-grid-enterprise';
@@ -44,10 +45,8 @@ const withFilterableColumns = ({
         } = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
-        // eslint-disable-next-line react/destructuring-assignment
         const columns = props.filterableColumns || filterableColumns;
         const filters = pickBy(
-            // eslint-disable-next-line react/destructuring-assignment
             props.initialFilter || initialFilter || {},
             val => !EXCLUDED_INITIAL_FILTER_VALUES.includes(val)
         );

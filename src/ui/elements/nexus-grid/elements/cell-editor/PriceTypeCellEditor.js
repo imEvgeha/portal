@@ -43,7 +43,7 @@ class PriceTypeCellEditor extends Component {
                     schema={PriceTypeFormSchema(this.getOptions())}
                     keyForTagLabel="priceType"
                     isUsingModal={false}
-                    specialCreate={true}
+                    isSpecialCreate={true}
                 />
             </div>
         );

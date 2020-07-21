@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {isObject} from 'lodash';
 import './CustomComplexFloatingFilter.scss';
 
 class CustomComplexFloatingFilter extends React.Component {
     constructor(props) {
         super(props);
-        const {column: {colDef: {field}}, currentParentModel} = props;
+        const {currentParentModel} = props;
         const {filter = {}} = currentParentModel() || {};
         this.state = {
             value: filter,
@@ -47,5 +48,13 @@ class CustomComplexFloatingFilter extends React.Component {
         );
     }
 }
+
+CustomComplexFloatingFilter.propTypes = {
+    currentParentModel: PropTypes.func,
+};
+
+CustomComplexFloatingFilter.defaultProps = {
+    currentParentModel: () => ({}),
+};
 
 export default CustomComplexFloatingFilter;

@@ -29,7 +29,7 @@ const NexusDateTimeWindowPicker = ({
     onChangeAny,
     startDateTimePickerProps,
     endDateTimePickerProps,
-    allowClear,
+    isClearable,
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
 
@@ -127,7 +127,7 @@ const NexusDateTimeWindowPicker = ({
                                 value={startDate}
                                 onChange={setStartDate}
                                 error={startDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...startDateTimePickerProps}
                             />
                         )
@@ -137,7 +137,7 @@ const NexusDateTimeWindowPicker = ({
                                 isTimestamp={isTimestamp}
                                 onChange={setStartDate}
                                 error={startDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...startDateTimePickerProps}
                             />
                         )}
@@ -158,7 +158,7 @@ const NexusDateTimeWindowPicker = ({
                                 value={endDate}
                                 onChange={handleChangeEndDate}
                                 error={endDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...endDateTimePickerProps}
                             />
                         )
@@ -168,7 +168,7 @@ const NexusDateTimeWindowPicker = ({
                                 isTimestamp={isTimestamp}
                                 onChange={handleChangeEndDate}
                                 error={endDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 isReturningTime={isReturningTime}
                                 {...endDateTimePickerProps}
                             />
@@ -204,11 +204,13 @@ NexusDateTimeWindowPicker.propTypes = {
     isUsingTime: PropTypes.bool.isRequired,
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        defaultValue: PropTypes.string,
     }).isRequired,
     endDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        defaultValue: PropTypes.string,
     }).isRequired,
-    allowClear: PropTypes.bool,
+    isClearable: PropTypes.bool,
 };
 
 NexusDateTimeWindowPicker.defaultProps = {
@@ -218,7 +220,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     isReturningTime: true,
     onChangeAny: () => null,
     onChange: () => null,
-    allowClear: false,
+    isClearable: false,
 };
 
 export default NexusDateTimeWindowPicker;

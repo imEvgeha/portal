@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {omit, isEqual} from 'lodash';
@@ -62,7 +63,7 @@ const withInfiniteScrolling = ({
                 }, {});
             const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
             const sortParams = sortBy(sortModel);
-            const pageSize = paginationPageSize || 100;
+            const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
 
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {

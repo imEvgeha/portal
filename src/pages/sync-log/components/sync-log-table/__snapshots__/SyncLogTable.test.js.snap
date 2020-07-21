@@ -26,7 +26,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           label="Date From"
           onChange={[Function]}
           onConfirm={[Function]}
-          required={true}
+          isRequired={true}
           value="2020-07-11"
         />
       </div>

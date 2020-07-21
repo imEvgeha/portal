@@ -4,7 +4,7 @@ import FileSaver from 'file-saver';
 import NexusDownload from './NexusDownload';
 
 describe('NexusDownload', () => {
-    let wrapper;
+    let wrapper = null;
     const props = {
         data: {test: 'awesome string'},
         filename: 'event_filename',

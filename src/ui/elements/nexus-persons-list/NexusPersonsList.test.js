@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import NexusPersonsList from './NexusPersonsList';
 
 describe('NexusPersonsList', () => {
-    let wrapper;
+    let wrapper = null;
     const personsList = [
         {
             id: 'prs_Ac9oyaREip',

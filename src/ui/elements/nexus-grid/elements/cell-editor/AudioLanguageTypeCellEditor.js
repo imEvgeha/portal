@@ -44,7 +44,7 @@ class AudioLanguageTypeCellEditor extends Component {
                     schema={AudioLanguageTypeFormSchema(this.getOptions())}
                     keyForTagLabel="language"
                     isUsingModal={false}
-                    specialCreate={true}
+                    isSpecialCreate={true}
                 />
             </div>
         );

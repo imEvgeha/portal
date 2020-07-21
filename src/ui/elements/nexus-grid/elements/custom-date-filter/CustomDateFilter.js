@@ -111,7 +111,7 @@ export class CustomDateFilter extends React.Component {
                     }}
                     onChangeAny={this.onChange}
                     labels={DATEPICKER_LABELS}
-                    allowClear={true}
+                    isClearable={true}
                 />
             </div>
         );

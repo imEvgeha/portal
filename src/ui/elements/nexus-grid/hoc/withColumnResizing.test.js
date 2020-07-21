@@ -4,8 +4,8 @@ import configureStore from 'redux-mock-store';
 import withColumnsResizing from './withColumnsResizing';
 
 describe('withColumnsResizing', () => {
-    let wrapper;
-    let WithLoadingComponent;
+    let wrapper = null;
+    let WithLoadingComponent = null;
 
     beforeEach(() => {
         const Component = <h1>Test</h1>;

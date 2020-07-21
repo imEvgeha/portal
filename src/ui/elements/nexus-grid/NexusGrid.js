@@ -70,6 +70,7 @@ NexusGrid.propTypes = {
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
+    frameworkComponents: PropTypes.object,
 };
 
 NexusGrid.defaultProps = {
@@ -80,6 +81,7 @@ NexusGrid.defaultProps = {
     // rowHeight: 48,
     setRowData: null,
     isGridHidden: false,
+    frameworkComponents: {},
 };
 
 export default NexusGrid;

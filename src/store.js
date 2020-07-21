@@ -9,7 +9,8 @@ import {keycloak} from './auth/keycloak';
 import createRootReducer from './reducer';
 
 // configure store
-const configureStore = history => {
+// eslint-disable-next-line no-unused-vars
+const configureStore = (initialState = {}, history) => {
     const sagaMiddleware = createSagaMiddleware();
     let middleware = [
         routerMiddleware(history),

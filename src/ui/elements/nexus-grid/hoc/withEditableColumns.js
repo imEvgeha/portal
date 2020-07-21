@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep, isEqual, omit} from 'lodash';
@@ -44,7 +45,6 @@ const withEditableColumns = ({
         const previousSelectValues = usePrevious(selectValues);
         const previousColumnDefs = usePrevious(columnDefs);
         const [editableColumnDefs, setEditableColumnDefs] = useState(columnDefs);
-        // eslint-disable-next-line react/destructuring-assignment
         const excludedColumns = props.notEditableColumns || notEditableColumns;
 
         useEffect(() => {

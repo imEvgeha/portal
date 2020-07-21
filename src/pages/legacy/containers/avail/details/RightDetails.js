@@ -1638,11 +1638,11 @@ class RightDetails extends React.Component {
                 defaultValue: value,
                 value: editedRight[name] !== undefined ? editedRight[name] : value,
                 error,
-                required,
+                isRequired: required,
                 isReadOnly: !!sourceRightId || isReadOnly,
                 isTimestamp,
                 isWithInlineEdit: true,
-                allowClear: !required,
+                isClearable: !required,
             };
 
             const component = showTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;

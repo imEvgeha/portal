@@ -9,7 +9,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {logout} from '../../../auth/authActions';
-import {searchFormShowSearchResults} from '../../../pages/legacy/stores/actions/avail/dashboard';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {SETTINGS, backgroundColor} from './constants';
@@ -61,7 +60,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 const NexusNavigation = ({history, location, profileInfo, logout}) => {
     const [selectedItem, setSelectedItem] = useState('');
 
-    useEffect(() => setSelectedItem(location.pathname.split('/')[1]), []);
+    useEffect(() => setSelectedItem(location.pathname.split('/')[1]), [location.pathname]);
 
     const handleClick = destination => {
         history.push(`/${destination.toLowerCase()}`);
@@ -141,9 +140,5 @@ const mapStateToProps = ({auth}) => {
 const mapDispatchToProps = dispatch => ({
     logout: payload => dispatch(logout(payload)),
 });
-
-export const gotoAvailsDashboard = () => {
-    store.dispatch(searchFormShowSearchResults(false));
-};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NexusNavigation));
