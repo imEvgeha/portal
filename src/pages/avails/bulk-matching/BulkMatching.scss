@@ -21,6 +21,9 @@
     section {
         align-items: center;
     }
+    &__warning{
+        color: map-get($colors, nexus-warning);
+    }
 }
 
 .nexus-c-bulk-matching__header {

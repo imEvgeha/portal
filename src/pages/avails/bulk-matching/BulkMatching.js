@@ -292,7 +292,9 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     </Button>
                     {
                         hasExistingCoreTitleIds && (
-                            <div>{EXISTING_CORE_TITLE_ID_WARNING}</div>
+                            <div className='nexus-c-bulk-matching__warning'>
+                                {EXISTING_CORE_TITLE_ID_WARNING}
+                            </div>
                         )
                     }
                 </SectionMessage>
