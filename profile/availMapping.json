@@ -414,7 +414,7 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": false
+      "required": true
     },
     {
       "javaVariableName": "territoryExcluded",
