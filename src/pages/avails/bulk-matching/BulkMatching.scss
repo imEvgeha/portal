@@ -17,6 +17,10 @@
             color: map-get($colors, nexus-title-color);
         }
     }
+
+    section {
+        align-items: center;
+    }
 }
 
 .nexus-c-bulk-matching__header {
