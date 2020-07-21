@@ -10,6 +10,7 @@ import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
+import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     BULK_MATCH,
@@ -20,6 +21,10 @@ import {
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
+    ADD_TO_PREPLAN,
+    PREPLAN_TOOLTIP,
+    STATUS_CHECK_HEADER,
+    STATUS_CHECK_MSG,
 } from './constants';
 import moment from 'moment';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
@@ -38,6 +43,7 @@ export const SelectedRightsActions = ({
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
+    const [isPreplanEligible, setIsPreplanEligible] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
@@ -64,10 +70,10 @@ export const SelectedRightsActions = ({
         );
         const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
         const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
+        const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
         const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
         const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) =>
             licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd)));
-
         // Bulk match criteria check
         setIsMatchable(
             !!selectedRights.length
@@ -90,6 +96,14 @@ export const SelectedRightsActions = ({
             && hasEmptySourceRightIds
             && hasLicensedRights
             && hasReadyOrReadyNewStatus
+        );
+
+        // PrePlan criteria
+        setIsPreplanEligible(
+            !!selectedRights.length
+            && hasReadyOrReadyNewStatus
+            && hasLicensedRights
+            && hasPendingConfirmedTentativeStatus
         );
     }, [selectedRights]);
 
@@ -121,6 +135,14 @@ export const SelectedRightsActions = ({
                     toggleRefreshGridData={toggleRefreshGridData}
                 />
             ), BULK_UNMATCH_TITLE
+        );
+    };
+
+    const openStatusCheckModal = () => {
+        setModalContentAndTitle(
+            (
+                <StatusCheck message={STATUS_CHECK_MSG} />
+            ), STATUS_CHECK_HEADER
         );
     };
 
@@ -199,6 +221,24 @@ export const SelectedRightsActions = ({
                                 <NexusTooltip content={CREATE_BONUS_RIGHT_TOOLTIP} isDisabled={isBonusRightCreatable}>
                                     <div>
                                         {CREATE_BONUS_RIGHT}
+                                    </div>
+                                </NexusTooltip>
+                            </div>
+                        )
+                    }
+                    {
+                        URL.isLocalOrDevOrQA() && (
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="add-to-preplan"
+                                onClick={selectedRights.length ? openStatusCheckModal : null}
+                            >
+                                <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
+                                    <div>
+                                        {ADD_TO_PREPLAN}
                                     </div>
                                 </NexusTooltip>
                             </div>

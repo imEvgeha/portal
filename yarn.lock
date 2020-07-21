@@ -54,6 +54,15 @@
     tslib "^1.9.3"
     use-memo-one "^1.1.1"
 
+"@atlaskit/analytics-next@^7.0.0":
+  version "7.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics-next/-/analytics-next-7.0.1.tgz#b12bf30a22098f96eaa5f64a1967cba44ca1efa8"
+  integrity sha512-HEL2HFMStNF8oXfeaeKGc3Y/lsT4ldBvoh+tu+uNYSXENmkpZZG5clBskNOp8z2idD+i4JI8oJo/JH7GWopsuw==
+  dependencies:
+    prop-types "^15.5.10"
+    tslib "^1.9.3"
+    use-memo-one "^1.1.1"
+
 "@atlaskit/analytics@^6.1.1":
   version "6.1.1"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/analytics/-/analytics-6.1.1.tgz#0bdebeedda4d01155a8506849645b5facefaa1bd"
@@ -133,6 +142,18 @@
     "@atlaskit/spinner" "^12.1.3"
     "@atlaskit/theme" "^9.5.0"
     "@atlaskit/type-helpers" "^4.2.2"
+    "@emotion/core" "^10.0.9"
+    memoize-one "^5.1.0"
+    tslib "^1.9.3"
+
+"@atlaskit/button@^14.0.0":
+  version "14.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/button/-/button-14.0.0.tgz#0337e6b507685efabe51becafa36b8a116064a7a"
+  integrity sha512-uB+qylcOnXwI5Niq/GGprnGOGL9BsGH6huc0vCk23HX/vXB3CZ7ZKtcxI8ZpmMmgJzZeSrZG0BtuTxCLVixxUA==
+  dependencies:
+    "@atlaskit/analytics-next" "^7.0.0"
+    "@atlaskit/spinner" "^15.0.0"
+    "@atlaskit/theme" "^10.0.0"
     "@emotion/core" "^10.0.9"
     memoize-one "^5.1.0"
     tslib "^1.9.3"
@@ -291,6 +312,18 @@
     "@atlaskit/tooltip" "^15.1.1"
     "@babel/runtime" "^7.0.0"
     prop-types "^15.5.10"
+
+"@atlaskit/dynamic-table@^14.0.1":
+  version "14.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/dynamic-table/-/dynamic-table-14.0.1.tgz#784419ee7036de14d6e5890e8471e80140187d6b"
+  integrity sha512-HkB2SXa/Qd72voGvK283SsRKjKXaebGmnVdv2/MwK9SPPxIeFkFVf9whJIJ+VxUD5gYoAH0AEocldub0YkVfxw==
+  dependencies:
+    "@atlaskit/analytics-next" "^7.0.0"
+    "@atlaskit/pagination" "^13.0.0"
+    "@atlaskit/spinner" "^15.0.0"
+    "@atlaskit/theme" "^10.0.0"
+    react-beautiful-dnd "^12.1.1"
+    tslib "^1.9.3"
 
 "@atlaskit/field-base@^11.0.13", "@atlaskit/field-base@^11.0.14", "@atlaskit/field-base@^11.0.2":
   version "11.0.15"
@@ -470,6 +503,15 @@
     tslib "^1.9.3"
     uuid "^3.1.0"
 
+"@atlaskit/icon@^21.0.0":
+  version "21.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-21.0.1.tgz#9b6ff1be563b98f46f710547e661eeac2bf203a9"
+  integrity sha512-mTInVTD6m6/uNGMCwzcMOGdKMuDiJ56SJ4uf4VZIL/kTx0DOPIc03pJ6xOJveR+wgFCRP6xQmDztFmSAR/Eoyg==
+  dependencies:
+    "@atlaskit/theme" "^10.0.0"
+    tslib "^1.9.3"
+    uuid "^3.1.0"
+
 "@atlaskit/inline-dialog@^12.1.6":
   version "12.1.7"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/inline-dialog/-/inline-dialog-12.1.7.tgz#8898551c7a071d3a7425c8761e5c9f6c0c55865a"
@@ -644,6 +686,17 @@
     "@atlaskit/button" "^13.3.5"
     "@atlaskit/icon" "^19.1.0"
     "@atlaskit/theme" "^9.5.0"
+    tslib "^1.9.3"
+
+"@atlaskit/pagination@^13.0.0":
+  version "13.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/pagination/-/pagination-13.0.1.tgz#213fd848b292b2650a99d91d751d8951423d7029"
+  integrity sha512-I6YlGDjWBGSNDujRPFqMwdf2lQDg34sVyD/T2tjudgNbGMxTZXmKpH0Z7YGstz70FKRfSr3xAB9KcIDNoytCGA==
+  dependencies:
+    "@atlaskit/analytics-next" "^7.0.0"
+    "@atlaskit/button" "^14.0.0"
+    "@atlaskit/icon" "^21.0.0"
+    "@atlaskit/theme" "^10.0.0"
     tslib "^1.9.3"
 
 "@atlaskit/polyfills@^4.0.5":
@@ -843,6 +896,15 @@
     react-transition-group "^2.2.1"
     tslib "^1.9.3"
 
+"@atlaskit/spinner@^15.0.0":
+  version "15.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/spinner/-/spinner-15.0.0.tgz#bbf00803003ed4b674c27557d2b26198045ea5b0"
+  integrity sha512-y0D5PN/mddbNSJ0PaVAC962hbYT+RwgYtzcuY3cq0shXiDe6UIWRPcDSZ01f2GpimjZG7LbbsmpetYv43XX1Xg==
+  dependencies:
+    "@atlaskit/theme" "^10.0.0"
+    "@emotion/core" "^10.0.9"
+    tslib "^1.9.3"
+
 "@atlaskit/spinner@^9.0.13":
   version "9.0.13"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/spinner/-/spinner-9.0.13.tgz#030005c51a8acab842ce0771e16fe8c6cc7d585a"
@@ -898,6 +960,15 @@
     "@atlaskit/analytics-next" "^6.3.3"
     "@atlaskit/theme" "^9.2.8"
     "@emotion/core" "^10.0.9"
+    tslib "^1.9.3"
+
+"@atlaskit/theme@^10.0.0":
+  version "10.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/theme/-/theme-10.0.1.tgz#91c6fed6e369f154b7af2d99fbed98d9cefef6e6"
+  integrity sha512-XUor9lYlX0yTRSxd/rvaL8i2gdm0PDbOV+KhuezpuGBaS0opzseRrCnEc+OMGmpWRYHjCRyEugp6FwSSquFb8w==
+  dependencies:
+    exenv "^1.2.2"
+    prop-types "^15.5.10"
     tslib "^1.9.3"
 
 "@atlaskit/theme@^5.1.2":
