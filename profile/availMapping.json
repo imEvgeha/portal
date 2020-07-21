@@ -1044,6 +1044,7 @@
       "searchDataType": "boolean",
       "queryParamName": "temporaryPriceReduction",
       "readOnly": false,
+      "readOnlyEdit": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1739,6 +1740,7 @@
       "searchDataType": "string",
       "queryParamName": "originalRightIds",
       "readOnly": false,
+      "readOnlyEdit": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1816,6 +1818,7 @@
       "searchDataType": "timestamp",
       "queryParamName": "originallyReceivedAt",
       "readOnly": false,
+      "readOnlyEdit": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1849,6 +1852,7 @@
       "searchDataType": "timestamp",
       "queryParamName": "lastUpdateReceivedAt",
       "readOnly": false,
+      "readOnlyEdit": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
