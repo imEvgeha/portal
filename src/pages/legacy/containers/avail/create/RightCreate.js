@@ -35,7 +35,7 @@ const mapStateToProps = state => {
     };
 };
 
-const excludedFields = ['Status', 'Original Right Ids', 'Source Right Id'];
+const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
 class RightCreate extends React.Component {
 
@@ -836,7 +836,7 @@ class RightCreate extends React.Component {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
                 if(mapping.enableEdit &&
                     (!mapping.readOnly || mapping.defaultValue)
-                    && !excludedFields.find(item => item === mapping.displayName)){
+                    && !excludedFields.find(item => item === mapping.javaVariableName)){
                     const required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';
                     const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
