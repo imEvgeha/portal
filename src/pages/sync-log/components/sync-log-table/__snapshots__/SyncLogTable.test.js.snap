@@ -27,7 +27,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           onChange={[Function]}
           onConfirm={[Function]}
           required={true}
-          value="2020-07-11"
+          value="2020-07-10"
         />
       </div>
       <div
@@ -142,7 +142,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
     }
     externalFilter={
       Object {
-        "dateFrom": "2020-07-11",
+        "dateFrom": "2020-07-10",
         "dateTo": "",
       }
     }
@@ -213,6 +213,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
     rowSelection="single"
   />
   <NexusDrawer
+    direction="fromRight"
     headerContent={null}
     isClosedOnBlur={true}
     isOpen={false}
