@@ -21,7 +21,6 @@ import {
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
 } from './constants';
-import moment from 'moment';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
@@ -53,10 +52,6 @@ export const SelectedRightsActions = ({
         };
     }, []);
 
-    const checkNoExpiredRights= (end, availEnd, licensed) => {
-        return licensed ? moment().isBefore(end) : moment().isBefore(availEnd);
-    };
-
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
@@ -73,17 +68,16 @@ export const SelectedRightsActions = ({
         );
     };
 
-    // All the rights have Empty CoreTitleIds and SameContentType and NoExpiredRights
-    const haveEmptyCoreTitleIdsSameContentTypeNoExpiredRights = () => {
+    // All the rights have Empty CoreTitleIds and SameContentType
+    const haveEmptyCoreTitleIdsSameContentType = () => {
         return selectedRights.every(
-            ({coreTitleId, contentType, end, availEnd, licensed}) => !coreTitleId && contentType === selectedRights[0].contentType
-            && checkNoExpiredRights(end, availEnd, licensed)
+            ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
         );
     };
 
-    // All the rights have CoreTitleIds and No ExpiredRights
-    const haveCoreTitleIdsNoExpiredRights = () => {
-        return  selectedRights.every(({coreTitleId, end, availEnd, licensed}) => checkNoExpiredRights(end, availEnd, licensed) && !!coreTitleId);
+    // All the rights have CoreTitleIds
+    const haveCoreTitleIds = () => {
+        return  selectedRights.every(({coreTitleId}) => !!coreTitleId);
     };
 
     // Check the criteria for enabling specific actions
@@ -92,13 +86,13 @@ export const SelectedRightsActions = ({
 
             // Bulk match criteria check
             setIsMatchable(
-                haveEmptyCoreTitleIdsSameContentTypeNoExpiredRights()
+                haveEmptyCoreTitleIdsSameContentType()
                 && checkSourceRightIds()
             );
 
             // Bulk unmatch criteria check
             setIsUnmatchable(
-                haveCoreTitleIdsNoExpiredRights()
+                haveCoreTitleIds()
                 && checkSourceRightIds()
             );
 
@@ -166,42 +160,34 @@ export const SelectedRightsActions = ({
                         {/* TODO: Rewrite like the rest of the options when old design gets removed */}
                         <RightViewHistory selectedAvails={selectedRights} />
                     </div>
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="bulk-match"
-                                onClick={isMatchable ? openDrawer : null}
-                            >
-                                <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
-                                    <div>
-                                        {BULK_MATCH}
-                                    </div>
-                                </NexusTooltip>
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        data-test-id="bulk-match"
+                        onClick={isMatchable ? openDrawer : null}
+                    >
+                        <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
+                            <div>
+                                {BULK_MATCH}
                             </div>
-                        )
-                    }
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="bulk-unmatch"
-                                onClick={isUnmatchable ? openBulkUnmatchModal : null}
-                            >
-                                <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                                    <div>
-                                        {BULK_UNMATCH}
-                                    </div>
-                                </NexusTooltip>
+                        </NexusTooltip>
+                    </div>
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        data-test-id="bulk-unmatch"
+                        onClick={isUnmatchable ? openBulkUnmatchModal : null}
+                    >
+                        <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
+                            <div>
+                                {BULK_UNMATCH}
                             </div>
-                        )
-                    }
+                        </NexusTooltip>
+                    </div>
                     {
                         URL.isLocalOrDevOrQA() && (
                             <div
