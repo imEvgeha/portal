@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import {getSyncLog} from '../../syncLogService';
+import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -79,7 +79,7 @@ const SyncLogTable = () => {
                     </div>
                 </div>
                 <Button
-                    onClick={() => gridApi.exportDataAsExcel({fileName: EXCEL_EXPORT_FILE_NAME})}
+                    onClick={()=>exportSyncLog(dateFrom, dateTo)}
                     isDisabled={!gridApi}
                 >
                     {DOWNLOAD_BTN}

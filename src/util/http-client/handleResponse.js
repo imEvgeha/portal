@@ -38,7 +38,7 @@ const parseResponse = (response, type) => {
     } else if (type.includes('text/plain')) {
         // configuration/endpoint return text/plain content type as header response -> header request is application/json
         return response.json();
-    } else if (type.includes('text/html')) {
+    } else if (type.includes('text/html') || type.includes('text/csv')) {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
