@@ -520,6 +520,16 @@ class RightDetails extends React.Component {
         }));
     };
 
+    checkFieldValue = (mapping, field, fieldValue) => {
+        if (field.includes(".") ) {
+            const baseField = field.substring(0, field.indexOf("."));
+            const subField = field.substring(field.indexOf(".") + 1);
+            return this.state.right[baseField].some(x => x[subField] === true);
+        } else {
+            return this.state.right[field] === fieldValue;
+        }
+    };
+
     render() {
         const {sourceRightId} = this.state.right || {};
         const renderFieldTemplate = (
@@ -1691,6 +1701,10 @@ class RightDetails extends React.Component {
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
                     let readOnly = cannotUpdate || mapping.readOnly || mapping.readOnlyInDetails;
 
+                    if(mapping.readOnlyInDetailsBasedField && Array.isArray(mapping.readOnlyInDetailsBasedField)
+                        && mapping.readOnlyInDetailsBasedField.some(x => this.checkFieldValue(mapping.readOnlyInDetailsBasedField, x.field, x.fieldValue))) {
+                        readOnly = true;
+                    }
                     const {editedRight = {}, flatRight} = this.state;
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';
                     const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
