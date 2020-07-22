@@ -1698,7 +1698,7 @@ class RightDetails extends React.Component {
                         });
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    let readOnly = cannotUpdate || mapping.readOnly;
+                    let readOnly = cannotUpdate || mapping.readOnly || mapping.readOnlyInDetails;
 
                     const {editedRight = {}, flatRight} = this.state;
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';
