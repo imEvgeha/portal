@@ -2,24 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DynamicTable from '@atlaskit/dynamic-table';
 import Button from '@atlaskit/button';
+import {header} from './constants';
 import './StatusCheck.scss';
 
-const head2 = {
-    cells: [{
-        key: 1,
-        content: 'Title',
-        width: 80,
-    },
-    {
-        key: 2,
-        content: 'Status',
-        width: 20,
-    }],
-
-};
-
-const StatusCheck = ({message, nonEligibleTitles}) => {
-    const dataRows = nonEligibleTitles.map((content, index) => (
+const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
+    const dataRows = nonEligibleTitles && nonEligibleTitles.map((content, index) => (
         {
             key: index,
             cells: [
@@ -34,31 +21,47 @@ const StatusCheck = ({message, nonEligibleTitles}) => {
             ],
         }
     ));
-
     return (
         <div className="nexus-c-status-check">
             <div className="nexus-c-status-check__message">
                 {message}
             </div>
-            <DynamicTable
-                head={head2}
-                rows={dataRows}
-                rowsPerPage={10}
-                defaultPage={1}
-                loadingSpinnerSize="large"
-                isLoading={false}
+            {!!dataRows.length && (
+                <DynamicTable
+                    head={header}
+                    rows={dataRows}
+                    rowsPerPage={5}
+                    defaultPage={1}
+                    loadingSpinnerSize="large"
+                    isLoading={false}
                 // isFixedSize
-            />
-            <Button
-                appearance="primary"
-                onClick={() => null}
-                className="nexus-c-status-check__button"
-                isDisabled={false}
-            >
-                OK
-            </Button>
+                />
+            )}
+
+            <div className="nexus-c-status-check__btn-wrapper">
+                <Button
+                    appearance="primary"
+                    onClick={onClose}
+                    className="nexus-c-status-check__button"
+                    isDisabled={false}
+                >
+                    OK
+                </Button>
+            </div>
         </div>
     );
+};
+
+StatusCheck.propTypes = {
+    message: PropTypes.string,
+    nonEligibleTitles: PropTypes.array,
+    onClose: PropTypes.func,
+};
+
+StatusCheck.defaultProps = {
+    message: '',
+    nonEligibleTitles: [],
+    onClose: () => null,
 };
 
 export default StatusCheck;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {get} from 'lodash';
 import classNames from 'classnames';
+import moment from 'moment';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import RightViewHistory from '../right-history-view/RightHistoryView';
@@ -26,7 +27,6 @@ import {
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
 } from './constants';
-import moment from 'moment';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
@@ -74,7 +74,9 @@ export const SelectedRightsActions = ({
         const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
         const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
         const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) => (licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd))));
+        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) => (licensed
+            ? (moment().isBefore(end))
+            : (moment().isBefore(availEnd))));
         // Bulk match criteria check
         setIsMatchable(
             !!selectedRights.length
@@ -139,7 +141,7 @@ export const SelectedRightsActions = ({
         );
     };
 
-    const isPrePlanEligible = (status, rightStatus, licensed) => {
+    const prePlanEligible = (status, rightStatus, licensed) => {
         if ((status === 'Ready' || status === 'ReadyNew')
             && (rightStatus === 'Pending' || rightStatus === 'Confirmed' || rightStatus === 'Tentative')
             && licensed) {
@@ -148,25 +150,33 @@ export const SelectedRightsActions = ({
         return false;
     };
 
-    const openStatusCheckModal = () => {
-        if (isPreplanEligible) {
-            // move to pre-plan, clear selectedRights
-            setSelectedRights([]);
-            gridApi.deselectAll();
-            return;
-        }
+    const onCloseStatusCheckModal = () => {
+        gridApi.deselectAll();
+        toggleRefreshGridData(true);
+        close();
+    };
 
+    const openStatusCheckModal = () => {
         const eligibleRights = selectedRights.filter(right => {
             const {status, rightStatus, licensed} = right || {};
-            if (isPrePlanEligible(status, rightStatus, licensed)) {
+            if (prePlanEligible(status, rightStatus, licensed)) {
                 return right;
             }
             return null;
         });
 
+        if (isPreplanEligible) {
+            // move to pre-plan, clear selectedRights
+            // moveToPrePlan(eligibleRights);
+            gridApi.deselectAll();
+            setSelectedRights([]);
+            toggleRefreshGridData(true);
+            return;
+        }
+
         const nonEligibleRights = selectedRights.filter(right => {
             const {status, rightStatus, licensed} = right || {};
-            if (!isPrePlanEligible(status, rightStatus, licensed)) {
+            if (!prePlanEligible(status, rightStatus, licensed)) {
                 return right;
             }
             return null;
@@ -178,14 +188,14 @@ export const SelectedRightsActions = ({
             return [...acc, restrictedTitle];
         }, []);
 
-        setSelectedRights(eligibleRights);
-        gridApi.deselectAll();
-        toggleRefreshGridData(true);
+        setSelectedRights(nonEligibleRights);
+
         setModalContentAndTitle(
             (
                 <StatusCheck
                     message={STATUS_CHECK_MSG}
                     nonEligibleTitles={nonEligibleTitles}
+                    onClose={onCloseStatusCheckModal}
                 />
             ), STATUS_CHECK_HEADER
         );
@@ -315,6 +325,8 @@ SelectedRightsActions.propTypes = {
     removeToast: PropTypes.func,
     selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
+    setSelectedRights: PropTypes.func.isRequired,
+    gridApi: PropTypes.object,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -322,6 +334,7 @@ SelectedRightsActions.defaultProps = {
     addToast: () => null,
     removeToast: () => null,
     selectedRightGridApi: {},
+    gridApi: {},
 };
 
 const mapDispatchToProps = dispatch => ({
