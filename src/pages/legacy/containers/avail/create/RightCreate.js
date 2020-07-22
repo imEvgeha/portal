@@ -568,7 +568,7 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            const isRequired = name === 'platformCategory' && isPlatformCategoryMandatory ? true : required;
+            const isRequired = name === 'platformCategory' &&  (isPlatformCategoryMandatory || required);
 
             return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
