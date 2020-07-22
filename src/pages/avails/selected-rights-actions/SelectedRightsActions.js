@@ -38,6 +38,8 @@ export const SelectedRightsActions = ({
     removeToast,
     toggleRefreshGridData,
     selectedRightGridApi,
+    gridApi,
+    setSelectedRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -72,8 +74,7 @@ export const SelectedRightsActions = ({
         const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
         const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
         const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) =>
-            licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd)));
+        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) => (licensed ? (moment().isBefore(end)) : (moment().isBefore(availEnd))));
         // Bulk match criteria check
         setIsMatchable(
             !!selectedRights.length
@@ -138,10 +139,54 @@ export const SelectedRightsActions = ({
         );
     };
 
+    const isPrePlanEligible = (status, rightStatus, licensed) => {
+        if ((status === 'Ready' || status === 'ReadyNew')
+            && (rightStatus === 'Pending' || rightStatus === 'Confirmed' || rightStatus === 'Tentative')
+            && licensed) {
+            return true;
+        }
+        return false;
+    };
+
     const openStatusCheckModal = () => {
+        if (isPreplanEligible) {
+            // move to pre-plan, clear selectedRights
+            setSelectedRights([]);
+            gridApi.deselectAll();
+            return;
+        }
+
+        const eligibleRights = selectedRights.filter(right => {
+            const {status, rightStatus, licensed} = right || {};
+            if (isPrePlanEligible(status, rightStatus, licensed)) {
+                return right;
+            }
+            return null;
+        });
+
+        const nonEligibleRights = selectedRights.filter(right => {
+            const {status, rightStatus, licensed} = right || {};
+            if (!isPrePlanEligible(status, rightStatus, licensed)) {
+                return right;
+            }
+            return null;
+        });
+
+        const nonEligibleTitles = nonEligibleRights.reduce((acc, right) => {
+            const {title, status} = right || {};
+            const restrictedTitle = {title, status};
+            return [...acc, restrictedTitle];
+        }, []);
+
+        setSelectedRights(eligibleRights);
+        gridApi.deselectAll();
+        toggleRefreshGridData(true);
         setModalContentAndTitle(
             (
-                <StatusCheck message={STATUS_CHECK_MSG} />
+                <StatusCheck
+                    message={STATUS_CHECK_MSG}
+                    nonEligibleTitles={nonEligibleTitles}
+                />
             ), STATUS_CHECK_HEADER
         );
     };
@@ -231,7 +276,7 @@ export const SelectedRightsActions = ({
                             <div
                                 className={classNames(
                                     'nexus-c-selected-rights-actions__menu-item',
-                                    selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                    !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                                 )}
                                 data-test-id="add-to-preplan"
                                 onClick={selectedRights.length ? openStatusCheckModal : null}

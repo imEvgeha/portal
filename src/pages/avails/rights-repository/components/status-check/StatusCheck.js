@@ -14,46 +14,27 @@ const head2 = {
         key: 2,
         content: 'Status',
         width: 20,
-    }]
+    }],
 
 };
 
-const rows = [
-    {
-        key: 'morning-row',
-        cells: ['9:00', 'Math'].map(
-            (content, index) => ({
-                key: index,
-                content,
-            }),
-        ),
-    },
-    {
-        key: 'midday-row',
-        cells: [
-            {
-                key: 0,
-                content: '12:00',
-            },
-            {
-                key: 1,
-                content: 'LUNCH',
-            },
-        ],
-    },
-    {
-        key: 'afternoon-row',
-        cells: [
-            '13:00',
-            'Science',
-        ].map((content, index) => ({
+const StatusCheck = ({message, nonEligibleTitles}) => {
+    const dataRows = nonEligibleTitles.map((content, index) => (
+        {
             key: index,
-            content,
-        })),
-    },
-];
+            cells: [
+                {
+                    key: content.title,
+                    content: content.title,
+                },
+                {
+                    key: content.status,
+                    content: content.status,
+                },
+            ],
+        }
+    ));
 
-const StatusCheck = ({message}) => {
     return (
         <div className="nexus-c-status-check">
             <div className="nexus-c-status-check__message">
@@ -61,12 +42,12 @@ const StatusCheck = ({message}) => {
             </div>
             <DynamicTable
                 head={head2}
-                rows={rows}
+                rows={dataRows}
                 rowsPerPage={10}
                 defaultPage={1}
                 loadingSpinnerSize="large"
                 isLoading={false}
-                //isFixedSize
+                // isFixedSize
             />
             <Button
                 appearance="primary"

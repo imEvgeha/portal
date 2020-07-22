@@ -17,8 +17,10 @@ const NexusTableToolbar = ({
     selectedRows,
     activeTab,
     setActiveTab,
+    setSelectedRights,
     rightsFilter,
     rightColumnApi,
+    gridApi,
     selectedRightColumnApi,
     selectedRightGridApi,
     selectedRepoRights,
@@ -28,10 +30,12 @@ const NexusTableToolbar = ({
             <SelectedRightsActions
                 selectedRights={selectedRepoRights}
                 selectedRightGridApi={selectedRightGridApi}
+                setSelectedRights={setSelectedRights}
+                gridApi={gridApi}
             />
             <div
                 className={`
-                    nexus-c-table-toolbar__title 
+                    nexus-c-table-toolbar__title
                     ${activeTab !== RIGHTS_SELECTED_TAB ? 'nexus-c-table-toolbar__title--is-active' : ''}
                 `}
                 onClick={() => setActiveTab(RIGHTS_TAB)}
