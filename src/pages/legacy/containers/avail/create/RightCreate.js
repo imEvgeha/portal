@@ -37,6 +37,8 @@ const mapStateToProps = state => {
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
+let isPlatformCategoryMandatory = false;
+
 class RightCreate extends React.Component {
 
     constructor(props) {
@@ -566,7 +568,9 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, null, (
+            const isRequired = name === 'platformCategory' && isPlatformCategoryMandatory ? true : required;
+
+            return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
                     key={name}
@@ -611,6 +615,11 @@ class RightCreate extends React.Component {
         const renderSelectField = (name, displayName, required, value) => {
             let options = [];
             let val;
+
+            if(value && value['type'] === 'licensee') {
+                isPlatformCategoryMandatory = value['servicingRegion'] === 'US';
+            }
+
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
@@ -630,6 +639,7 @@ class RightCreate extends React.Component {
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
