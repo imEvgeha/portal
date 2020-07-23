@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {get} from 'lodash';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import {TITLE} from './eventManagementConstants';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import './EventManagement.scss';
+import {getEventById} from './eventManagementService';
 
 const EventManagement = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -23,7 +24,13 @@ const EventManagement = () => {
                 setGridApi(api);
                 break;
             case SELECTION_CHANGED:
-                setSelectedEvent(get(api.getSelectedRows(), '[0]', null));
+                const selectedRow = get(api.getSelectedRows(), '[0]', null);
+                // Call api to get event by ID
+                if (selectedRow) {
+                    getEventById(selectedRow.id).then(evt => {
+                        setSelectedEvent(get(evt, 'event', null));
+                    });
+                }
                 break;
         }
     };

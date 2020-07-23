@@ -2,7 +2,10 @@ import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
-export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) => {
+const pageSizeMax = 100;
+const headersOnly = true;
+
+export const getEventSearch = (params, page = 0, pageSize = pageSizeMax, sortedParams) => {
     let paramString = '';
 
     // Build sortParams string if sortParams are provided
@@ -14,6 +17,11 @@ export const getEventSearch = (params, page = 0, pageSize = 100, sortedParams) =
 
     // Spice it up with some page and pageSize stuff
     paramString = `${paramString}?page=${page}&size=${pageSize}`;
+
+    // Only fetch headers, not headers + data
+    if (headersOnly) {
+        paramString += `&headersOnly=${headersOnly}`;
+    }
 
     // Build param string if params are provided
     if (!isEmpty(params)) {
@@ -74,5 +82,16 @@ export const replicateEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replicate/${docId}`;
     return nexusFetch(url, {
         method: 'post'
+    });
+};
+
+/**
+ * Get Event Detail By Document Id
+ * @param {Event} docId
+ */
+export const getEventById = (docId) => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/event/${docId}`;
+    return nexusFetch(url, {
+        method: 'get'
     });
 };
