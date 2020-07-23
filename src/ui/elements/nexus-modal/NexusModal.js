@@ -39,7 +39,8 @@ export const NexusModalProvider = ({children}) => {
         content,
         close,
         open: () => setIsOpened(true),
-        setModalStyle: setStyle
+        setModalStyle: setStyle,
+        isOpened
     };
 
     return (
