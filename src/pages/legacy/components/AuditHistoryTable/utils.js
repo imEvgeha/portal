@@ -12,40 +12,33 @@ const { dataTypes: {DATE, AUDIO, RATING, METHOD},
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
 
 export const valueFormatter = ({colId, field, dataType}) => {
-    switch (dataType) {
-        case DATE:
-            return (params) => {
-                const {data = {}} = params || {};
-                const {[field]: date = ''} = data || {};
+    return (params) => {
+        const {data = {}} = params || {};
+        if (!!data) {
+            switch (dataType) {
+                case DATE:
+                    const {[field]: date = ''} = data || {};
 
-                if(data.separationRow){
-                    return date;
-                }
+                    if (data.separationRow) {
+                        return date;
+                    }
 
-                return ISODateToView(date, DATETIME_FIELDS.BUSINESS_DATETIME);
-            };
-        case RATING:
-            return (params) => {
-                const {data = {}} = params || {};
-                return get(data, [field, RATING_SUBFIELD, colId]) || get(data, [field, colId]) || '';
-            };
-        case AUDIO:
-            return (params) => {
-                const {data = {}} = params || {};
-                const languages = data[field] && languageMapper(data[field]);
-                return languages && languages.join(', ').toUpperCase() || '';
-            };
-        case METHOD:
-            return (params) => {
-                const {data, data: {headerRow, updatedBy} = {}} = params || {};
-                return headerRow ? data[field] : (INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL);
-            };
-        default:
-            return (params) => {
-                const {data = {}} = params || {};
-                return data[field];
-            };
-    }
+                    return ISODateToView(date, DATETIME_FIELDS.BUSINESS_DATETIME);
+                case RATING:
+                    return get(data, [field, RATING_SUBFIELD, colId]) || get(data, [field, colId]) || '';
+                case AUDIO:
+                    const languages = data[field] && languageMapper(data[field]);
+                    return languages && languages.join(', ').toUpperCase() || '';
+                case METHOD:
+                    const {data: {headerRow, updatedBy} = {}} = params || {};
+                    return headerRow ? data[field] : (INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL);
+                default:
+                    return data[field];
+            }
+        } else {
+            return '';
+        }
+    };
 };
 
 const valueCompare = (diffValue, currentValue, column) => {
@@ -78,7 +71,7 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
             styling.background = STALE_VALUE;
         }
     }
-    if (data[`${colId || field}Deleted`]) {
+    if (!!data && data[`${colId || field}Deleted`]) {
         styling.textDecoration = 'line-through';
         const path = field === RATING ? [field, colId] : [field];
         if(get(focusedRight, path, '').length){
@@ -92,7 +85,8 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
 
 export const formatData = data => {
     const { eventHistory, diffs } = data;
-    let tableRows = eventHistory.map((dataObj, index) => {
+    let tableRows = eventHistory.filter(x => x && !!x.message)
+        .map((dataObj, index) => {
         const {message : {updatedBy, createdBy, lastUpdateReceivedAt}} = dataObj;
         const row = {};
         diffs[index].forEach(diff => {

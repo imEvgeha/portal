@@ -6,22 +6,13 @@ import NexusDrawer from './NexusDrawer';
 describe('NexusDrawer', () => {
     let wrapper;
     it('should match snapshot', () => {
-        wrapper = shallow(
-            <NexusDrawer
-                width="narrow"
-                isOpen={true}
-                onClose={() => null}
-            />
-        );
+        wrapper = shallow(<NexusDrawer width="narrow" isOpen={true} onClose={() => null} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     it('should not render children when closed', () => {
         wrapper = shallow(
-            <NexusDrawer
-                onClose={() => null}
-                isOpen={false}
-            >
+            <NexusDrawer onClose={() => null} isOpen={false}>
                 <div>Child</div>
             </NexusDrawer>
         );
@@ -30,10 +21,7 @@ describe('NexusDrawer', () => {
 
     it('should render children when opened', () => {
         wrapper = shallow(
-            <NexusDrawer
-                onClose={() => null}
-                isOpen={true}
-            >
+            <NexusDrawer onClose={() => null} isOpen={true}>
                 <div>Child</div>
             </NexusDrawer>
         );
@@ -42,16 +30,13 @@ describe('NexusDrawer', () => {
 
     it('should have only one close button and call onClose when button is clicked', () => {
         const onClose = jest.fn();
-        wrapper = shallow(
-            <NexusDrawer
-                onClose={onClose}
-                isOpen={true}
-            />
-        );
+        wrapper = shallow(<NexusDrawer onClose={onClose} isOpen={true} />);
 
-        expect(wrapper.find('.nexus-c-drawer__header--close-btn')).toHaveLength(1);
-        wrapper.find('.nexus-c-drawer__header--close-btn').props().onClick();
+        expect(wrapper.find('IconButton')).toHaveLength(1);
+        wrapper
+            .find('IconButton')
+            .props()
+            .onClick();
         expect(onClose).toHaveBeenCalled();
     });
 });
-

@@ -5,14 +5,14 @@
   flex-direction: column;
   text-align: left;
   justify-content: space-around;
-  @include addSpace('margin-top', 1);
-  @include addSpace('margin-left', 6);
-  @include addSpace('margin-right', 3);
+  @include addSpace('margin-top', 2);
+  @include addSpace('margin-left', 12);
+  @include addSpace('margin-right', 6);
 
 
   &__row {
     margin-bottom: 1rem;
-    @include addSpace('margin-bottom', 1.5);
+    @include addSpace('margin-bottom', 3);
 
     &--inline {
       display: flex;

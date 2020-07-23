@@ -29,8 +29,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
           content="This feature is enabled when:
 All selected rights have same content type,
 have Core Title IDs un-populated,
-either all are bonus rights or none
-and are not expired"
+either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
           <div>
@@ -45,8 +44,8 @@ and are not expired"
       >
         <NexusTooltip
           content="This feature is enabled when:
-All selected rights have Core Title IDs populated
-and are not expired"
+All selected rights have Core Title IDs populated,
+either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
           <div>
@@ -87,6 +86,7 @@ empty Source Right IDs and Status is Ready/ReadyNew"
     </div>
   </div>
   <NexusDrawer
+    direction="fromRight"
     headerContent={null}
     isClosedOnBlur={false}
     isOpen={false}

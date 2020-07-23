@@ -3,7 +3,7 @@
 
   h1 {
     margin-top: 0;
-    @include addSpace('margin-left', 1);
+    @include addSpace('margin-left', 2);
   }
 
   &__title {

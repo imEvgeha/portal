@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {get} from 'lodash';
+import {get, uniqBy} from 'lodash';
 import classNames from 'classnames';
 import moment from 'moment';
 import withToasts from '../../../ui/toast/hoc/withToasts';
@@ -61,53 +61,66 @@ export const SelectedRightsActions = ({
         };
     }, []);
 
-    // Check the criteria for enabling specific actions
-    useEffect(() => {
-        // Criteria
-        const hasCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId);
+    // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
+    const checkSourceRightIds = () => {
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
-        const hasNoEmptySourceRightId = selectedRights.every(({sourceRightId}) => !!sourceRightId);
-        const hasEmptyCoreTitleIdsAndSameContentType = selectedRights.every(
+        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '') && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
+        return hasEmptySourceRightIds || hasUniqueSourceRightIds;
+    };
+
+    // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
+    const checkBonusRightCreateCriteria = () => {
+        return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
+            && !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', '')
+            && !sourceRightId
+            && ['ReadyNew', 'Ready'].includes(status));
+    };
+
+    const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
+    const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
+    const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
+
+    // All the rights have Empty CoreTitleIds and SameContentType
+    const haveEmptyCoreTitleIdsSameContentType = () => {
+        return selectedRights.every(
             ({coreTitleId, contentType}) => !coreTitleId && contentType === selectedRights[0].contentType
         );
-        const hasSameCoreTitleIds = selectedRights.every(({coreTitleId}) => !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', ''));
-        const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
-        const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
-        const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-        const hasNoExpiredRights = selectedRights.every(({end, availEnd, licensed}) => (licensed
-            ? (moment().isBefore(end))
-            : (moment().isBefore(availEnd))));
-        // Bulk match criteria check
-        setIsMatchable(
-            !!selectedRights.length
-            && hasEmptyCoreTitleIdsAndSameContentType
-            && (hasEmptySourceRightIds || hasNoEmptySourceRightId)
-            && hasNoExpiredRights
-        );
+    };
 
-        // Bulk unmatch criteria check
-        setIsUnmatchable(
-            !!selectedRights.length
-            && hasCoreTitleIds
-            && hasNoExpiredRights
-        );
+    // All the rights have CoreTitleIds
+    const haveCoreTitleIds = () => {
+        return selectedRights.every(({coreTitleId}) => !!coreTitleId);
+    };
 
-        // Bonus rights create criteria
-        setIsBonusRightCreatable(
-            !!selectedRights.length
-            && hasSameCoreTitleIds
-            && hasEmptySourceRightIds
-            && hasLicensedRights
-            && hasReadyOrReadyNewStatus
-        );
+    // Check the criteria for enabling specific actions
+    useEffect(() => {
+        if (selectedRights.length) {
+            // Bulk match criteria check
+            setIsMatchable(
+                haveEmptyCoreTitleIdsSameContentType()
+                && checkSourceRightIds()
+            );
 
-        // PrePlan criteria
-        setIsPreplanEligible(
-            !!selectedRights.length
-            && hasReadyOrReadyNewStatus
-            && hasLicensedRights
-            && hasPendingConfirmedTentativeStatus
-        );
+            // Bulk unmatch criteria check
+            setIsUnmatchable(
+                haveCoreTitleIds()
+                && checkSourceRightIds()
+            );
+
+            // Bonus rights create criteria
+            setIsBonusRightCreatable(
+                checkBonusRightCreateCriteria()
+            );
+
+            // PrePlan criteria
+            setIsPreplanEligible(
+                !!selectedRights.length
+                && hasReadyOrReadyNewStatus
+                && hasLicensedRights
+                && hasPendingConfirmedTentativeStatus
+            );
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);
@@ -227,42 +240,34 @@ export const SelectedRightsActions = ({
                         {/* TODO: Rewrite like the rest of the options when old design gets removed */}
                         <RightViewHistory selectedAvails={selectedRights} />
                     </div>
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="bulk-match"
-                                onClick={isMatchable ? openDrawer : null}
-                            >
-                                <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
-                                    <div>
-                                        {BULK_MATCH}
-                                    </div>
-                                </NexusTooltip>
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        data-test-id="bulk-match"
+                        onClick={isMatchable ? openDrawer : null}
+                    >
+                        <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
+                            <div>
+                                {BULK_MATCH}
                             </div>
-                        )
-                    }
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="bulk-unmatch"
-                                onClick={isUnmatchable ? openBulkUnmatchModal : null}
-                            >
-                                <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                                    <div>
-                                        {BULK_UNMATCH}
-                                    </div>
-                                </NexusTooltip>
+                        </NexusTooltip>
+                    </div>
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        data-test-id="bulk-unmatch"
+                        onClick={isUnmatchable ? openBulkUnmatchModal : null}
+                    >
+                        <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
+                            <div>
+                                {BULK_UNMATCH}
                             </div>
-                        )
-                    }
+                        </NexusTooltip>
+                    </div>
                     {
                         URL.isLocalOrDevOrQA() && (
                             <div
