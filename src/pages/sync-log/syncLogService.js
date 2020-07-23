@@ -5,7 +5,7 @@ import {downloadFile} from '../../util/Common';
 
 export const getSyncLog = (params, page = 0, size = 100) => {
     if (!params.dateFrom.length) {
-        return Promise.resolve({data: []});
+        return Promise.resolve({ data: [] });
     }
 
     const qs = querystring.stringify({
@@ -33,5 +33,8 @@ export const exportSyncLog = (startDate, endDate) => {
     fetchSyncLog(startDate, endDate)
         .then(response => {
             downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
-        }).catch(err => console.log(err));
+        })
+        .catch(err => {
+            throw new Error('Error on downloading sync log: ' + err);
+        });
 };
