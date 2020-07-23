@@ -30,12 +30,12 @@ import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
+import constants from '../constants';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import constants from '../constants';
 import './RightsRepository.scss';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';
