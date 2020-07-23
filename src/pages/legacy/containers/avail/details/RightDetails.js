@@ -534,7 +534,7 @@ class RightDetails extends React.Component {
             ref,
             content
         ) => {
-            const hasValidationError = Array.isArray(error) ? error.length > 0 : error;
+            const hasValidationError = (name !== 'pricing') && (Array.isArray(error) ? error.length > 0 : error);
             return (
                 <div
                     key={name}
@@ -1201,9 +1201,10 @@ class RightDetails extends React.Component {
 
             const removePriceNotOriginalFields = (list = []) => {
                 const {mappings} = this.props.availsMapping || [];
-                const originalFieldNames = mappings
+                let originalFieldNames = mappings
                     .filter(el => el.javaVariableName.startsWith('pricing.'))
                     .map(mapping => mapping.javaVariableName.split('.')[1]);
+                originalFieldNames = originalFieldNames.concat('errors');
 
                 const formattedList = [];
                 list.forEach(el => {
@@ -1222,12 +1223,20 @@ class RightDetails extends React.Component {
             });
             let pricesWithLabel = [];
             if (options.length) {
-                pricesWithLabel = prices.map(({priceType, priceValue, priceCurrency}) => ({
-                    priceType: priceType,
-                    priceValue: priceValue,
-                    priceCurrency: priceCurrency,
-                    label: get(options.find(o => o.value === priceType), 'label', ''),
-                }));
+                pricesWithLabel = prices.map(({priceType, priceValue, priceCurrency, errors = []}) => {
+                    const error = errors.length ? errors.map(error => {
+                        const {severityType='', fieldName='', message=''} = error || {};
+                        return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                    }).join(` 
+`) : '';
+                    return {
+                        priceType: priceType,
+                        priceValue: priceValue,
+                        priceCurrency: priceCurrency,
+                        label: get(options.find(o => o.value === priceType), 'label', ''),
+                        error,
+                    }
+                });
             }
 
             return renderFieldTemplate(
@@ -1689,7 +1698,7 @@ class RightDetails extends React.Component {
                         });
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    let readOnly = cannotUpdate || mapping.readOnly;
+                    let readOnly = cannotUpdate || mapping.readOnly || mapping.readOnlyInDetails;
 
                     const {editedRight = {}, flatRight} = this.state;
                     const value = flatRight ? flatRight[mapping.javaVariableName] : '';

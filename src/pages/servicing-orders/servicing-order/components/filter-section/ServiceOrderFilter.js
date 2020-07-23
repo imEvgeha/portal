@@ -1,5 +1,3 @@
-/* eslint camelcase: ["warn", {"properties": "never", ignoreDestructuring: true}] */
-
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import PropTypes from 'prop-types';
@@ -20,7 +18,8 @@ const ServiceOrderFilter = ({
     setDueDateSortDirection,
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const {tenant, external_id: extId, description, configured_pr_id: configPRID, sr_due_date} = orderDetails || {};
+    // eslint-disable-next-line camelcase
+    const {tenant, external_id, description, configured_pr_id, sr_due_date} = orderDetails || {};
     let FilterList = [{value: 'All', label: 'All'}];
     FilterList = FilterList.concat(Object.keys(Constants.STATUS).map(key => ({
         label: Constants.STATUS[key],
@@ -34,7 +33,8 @@ const ServiceOrderFilter = ({
                 </div>
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Order ID: {extId}
+                    {/* eslint-disable-next-line camelcase */}
+                    Order ID: {external_id}
                 </div>
             </div>
 
@@ -54,8 +54,10 @@ const ServiceOrderFilter = ({
                     title="Partner Request"
                 >
                     <PartnerRequest
-                        externalId={extId}
-                        configuredPrId={configPRID}
+                        // eslint-disable-next-line camelcase
+                        externalId={external_id}
+                        // eslint-disable-next-line camelcase
+                        configuredPrId={configured_pr_id}
                     />
                 </NexusDrawer>
             </div>

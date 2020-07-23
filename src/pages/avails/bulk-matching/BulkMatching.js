@@ -15,7 +15,7 @@ import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMat
 import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
-import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS} from './constants';
+import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS, EXISTING_CORE_TITLE_ID_WARNING} from './constants';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
 import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
@@ -179,7 +179,7 @@ export const BulkMatching = (
     const dispatchSuccessToast = () => {
         addToast({
             title: SUCCESS_TITLE,
-            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(selectedTableData.length + affectedTableData.length),
+            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
             isWithOverlay: false,
@@ -241,6 +241,8 @@ export const BulkMatching = (
         }
     };
 
+    const hasExistingCoreTitleIds = affectedTableData.some(({coreTitleId}) => coreTitleId);
+
     return (
         <div className="nexus-c-bulk-matching">
             <div className="nexus-c-bulk-matching__header">
@@ -298,6 +300,13 @@ export const BulkMatching = (
                     >
                         New Title
                     </Button>
+                    {
+                        hasExistingCoreTitleIds && (
+                            <div className="nexus-c-bulk-matching__warning">
+                                {EXISTING_CORE_TITLE_ID_WARNING}
+                            </div>
+                        )
+                    }
                 </SectionMessage>
             )}
             {loadTitlesTable && (
