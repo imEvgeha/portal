@@ -34,7 +34,6 @@ const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
                     defaultPage={1}
                     loadingSpinnerSize="large"
                     isLoading={false}
-                // isFixedSize
                 />
             )}
 
