@@ -10,7 +10,7 @@ import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import columnMappings from '../../columnMappings';
-import {DOWNLOAD_BTN, EXCEL_EXPORT_FILE_NAME, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
 import PublishErrors from '../PublishErrors/PublishErrors';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import './SyncLogTable.scss';
