@@ -1,16 +1,16 @@
-import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
-import * as actionTypes from './ingestActionTypes';
-import {URL, normalizeDataForStore} from '../../../util/Common';
-import Constants from '../constants';
-import {getFiltersToSend} from './utils';
-import FilterConstants from './constants';
-import {getIngestById} from './ingestSelectors';
-import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {URL, normalizeDataForStore} from '../../../util/Common';
 import {historyService} from '../../legacy/containers/avail/service/HistoryService';
 import {uploadService} from '../../legacy/containers/avail/service/UploadService';
+import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import Constants from '../constants';
+import * as actionTypes from './ingestActionTypes';
+import {getIngestById} from './ingestSelectors';
+import {getFiltersToSend} from './utils';
+import FilterConstants from './constants';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import loadingGif from '../../../../../assets/img/loading.gif';
 import {getDeepValue, isObject} from '../../../../../util/Common';
 import './LoadingCellRenderer.scss';
-import loadingGif from '../../../../../assets/img/loading.gif';
 
 const LoadingCellRenderer = (params) => {
     const {data, colDef, colDef: {field, colId},

@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {get, isEmpty} from 'lodash';
-import Select from '@atlaskit/select';
-import {RadioGroup} from '@atlaskit/radio';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import {getLicensors} from '../../../ingestSelectors';
-import {uploadIngest} from '../../../ingestActions';
+import {RadioGroup} from '@atlaskit/radio';
+import Select from '@atlaskit/select';
+import {get, isEmpty} from 'lodash';
+import {connect} from 'react-redux';
 import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 import constants from '../../../constants';
+import {uploadIngest} from '../../../ingestActions';
+import {getLicensors} from '../../../ingestSelectors';
 import './InputForm.scss';
 
 const {

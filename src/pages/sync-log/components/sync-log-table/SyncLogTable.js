@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import {getSyncLog} from '../../syncLogService';
-import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {compose} from 'redux';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
+import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import columnMappings from '../../columnMappings';
 import {DOWNLOAD_BTN, EXCEL_EXPORT_FILE_NAME, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {getSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
-import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(

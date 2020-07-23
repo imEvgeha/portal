@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {Checkbox} from '@atlaskit/checkbox';
 import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
+import {NexusModalContext} from '../nexus-modal/NexusModal';
 import './TableColumnCustomization.scss';
 
 const SELECT_ALL = 'selectAll';
