@@ -54,7 +54,7 @@ EventDrawerH.propTypes = {
     isReplaying: PropTypes.bool,
     onReplay: PropTypes.func,
     isReplicating: PropTypes.bool,
-    onReplicate: PropTypes.func
+    onReplicate: PropTypes.func,
 };
 
 EventDrawerH.defaultProps = {
@@ -62,18 +62,18 @@ EventDrawerH.defaultProps = {
     isReplaying: false,
     onReplay: null,
     isReplicating: false,
-    onReplicate: null
+    onReplicate: null,
 };
 
 const createMapStateToProps = () => {
     const replayingLoadingSelector = createLoadingSelector([REPLAY_EVENT]);
     const replicatingLoadingSelector = createLoadingSelector([REPLICATE_EVENT]);
-    return (state) => ({
+    return state => ({
         isReplaying: replayingLoadingSelector(state),
-        isReplicating: replicatingLoadingSelector(state)
+        isReplicating: replicatingLoadingSelector(state),
     });
 };
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     onReplay: payload => dispatch(replayEvent(payload)),
     onReplicate: payload => dispatch(replicateEvent(payload)),
 });

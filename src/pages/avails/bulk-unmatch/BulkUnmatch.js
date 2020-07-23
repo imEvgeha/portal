@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
@@ -14,11 +14,11 @@ import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/consta
 import './BulkUnmatch.scss';
 
 const BulkUnmatch = ({selectedRights = [], columnDefs = [],
-                         removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
+    removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
     const [affectedRights, setAffectedRights] = useState([]);
     const {setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    const unMatchHandler = rightIds => {
+    const unMatchHandler = useCallback(rightIds => {
         setCoreTitleId({rightIds}).then(unmatchedRights => {
             // Fetch fresh data from back-end
             toggleRefreshGridData(true);
@@ -40,7 +40,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 isAutoDismiss: true,
             });
         });
-    };
+    }, [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]);
 
     useEffect(
         () => {
@@ -64,6 +64,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 setAffectedRights(rights);
             });
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedRights]
     );
 

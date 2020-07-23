@@ -19,8 +19,7 @@ const columnDefinitions = [
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
         width: 320,
-        valueFormatter: params =>
-            ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME)
+        valueFormatter: params => ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
     },
     {
         colId: 'priority',
@@ -32,7 +31,7 @@ const columnDefinitions = [
         colId: 'operationalStatus',
         field: 'operationalStatus',
         headerName: 'Operational Status',
-    }
+    },
 ];
 
 export default columnDefinitions;

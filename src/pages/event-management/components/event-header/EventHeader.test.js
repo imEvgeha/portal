@@ -4,7 +4,7 @@ import EventHeader from './EventHeader';
 import {EVENT_HEADER_MAIN_FIELDS, EVENT_HEADER_SECONDARY_FIELDS} from '../../eventManagementConstants';
 
 describe('EventHeader', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         wrapper = shallow(
@@ -23,7 +23,8 @@ describe('EventHeader', () => {
                     eventClassName: 'string',
                     summary: 'string',
                 }}
-            />);
+            />
+        );
     });
 
     it('should match snapshot', () => {

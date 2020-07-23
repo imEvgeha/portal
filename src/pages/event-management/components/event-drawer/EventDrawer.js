@@ -19,12 +19,11 @@ import {
     JSON_DECODING_ERR_MSG,
     XML_DECODING_ERR_MSG,
     JSON_PARSING_ERR_MSG,
-    XML_EMPTY_ELEMENT
+    XML_EMPTY_ELEMENT,
 } from '../../eventManagementConstants';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
-
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
 
@@ -35,26 +34,25 @@ const EventDrawer = ({event, onDrawerClose}) => {
         if (!data && mimeType === JSON_MIME_TYPE) {
             return '{}';
         }
-        let decode;
+        let decode = '';
         try {
             decode = atob(data);
-        }
-        catch(e) {
+        } catch (e) {
             mimeType === XML_MIME_TYPE
                 ? decode = XML_DECODING_ERR_MSG
                 : decode = JSON_DECODING_ERR_MSG;
-
         }
         return decode;
     };
 
     const parseJSON = str => {
-        if (!str) return {};
+        if (!str) {
+            return {};
+        }
         let parsedString = '';
         try {
             parsedString = JSON.parse(str);
-        }
-        catch(e) {
+        } catch (e) {
             parsedString = JSON_PARSING_ERR_MSG;
         }
         return parsedString;
@@ -129,15 +127,16 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                                 : rawData}
                                             indentSize={4}
                                         />
-                            ) : (
-                                <NexusJsonView
-                                    src={base64Encoded
-                                        ? parseJSON(decodeBase64(rawData, mimeType))
-                                        : parseJSON(rawData)}
-                                />
-                            )}
+                                    ) : (
+                                        <NexusJsonView
+                                            src={base64Encoded
+                                                ? parseJSON(decodeBase64(rawData, mimeType))
+                                                : parseJSON(rawData)}
+                                        />
+                                    )}
                                 </EventSectionCollapsible>
-                        );})}
+                            );
+                        })}
                     </EventSectionCollapsible>
                 </div>
             </NexusDrawer>

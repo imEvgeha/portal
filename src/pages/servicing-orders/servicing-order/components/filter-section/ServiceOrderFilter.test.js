@@ -5,13 +5,13 @@ import ServiceOrderFilter from './ServiceOrderFilter';
 import PartnerRequest from '../partner-request/PartnerRequest';
 
 describe('SOFilter', () => {
-    let wrapper;
+    let wrapper = null;
     beforeAll(() => {
         const props = {
             soID: '12345',
             customer: 'Paramount',
             creationDate: '10/09/2020',
-            createdBy: 'John Wick'
+            createdBy: 'John Wick',
         };
         wrapper = shallow(<ServiceOrderFilter orderDetails={props} />);
     });

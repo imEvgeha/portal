@@ -1,4 +1,4 @@
-import {all, call, put, takeEvery, takeLatest} from 'redux-saga/effects';
+import {all, call, put, takeLatest} from 'redux-saga/effects';
 import * as actionTypes from './eventManagementActionTypes';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
@@ -9,7 +9,7 @@ export function* replayEvent(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.REPLAY_EVENT_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         yield call(requestMethod, payload);
@@ -25,7 +25,7 @@ export function* replayEvent(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: REPLAY_EVENT_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -40,7 +40,7 @@ export function* replicateEvent(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.REPLICATE_EVENT_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         yield call(requestMethod, payload);
@@ -56,7 +56,7 @@ export function* replicateEvent(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: REPLICATE_EVENT_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -70,6 +70,6 @@ export function* replicateEvent(requestMethod, {payload}) {
 export function* eventManagementWatcher() {
     yield all([
         takeLatest(actionTypes.REPLAY_EVENT, replayEvent, replayEventAPI),
-        takeLatest(actionTypes.REPLICATE_EVENT, replicateEvent, replicateEventAPI)
+        takeLatest(actionTypes.REPLICATE_EVENT, replicateEvent, replicateEventAPI),
     ]);
 }

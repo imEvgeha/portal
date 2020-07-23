@@ -42,7 +42,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -61,11 +61,10 @@ export const SelectedRightsActions = ({
 
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
-            return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
+        return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
             && !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', '')
             && !sourceRightId
-            && ['ReadyNew', 'Ready'].includes(status)
-        );
+            && ['ReadyNew', 'Ready'].includes(status));
     };
 
     // All the rights have Empty CoreTitleIds and SameContentType
@@ -77,13 +76,12 @@ export const SelectedRightsActions = ({
 
     // All the rights have CoreTitleIds
     const haveCoreTitleIds = () => {
-        return  selectedRights.every(({coreTitleId}) => !!coreTitleId);
+        return selectedRights.every(({coreTitleId}) => !!coreTitleId);
     };
 
     // Check the criteria for enabling specific actions
     useEffect(() => {
-        if(!!selectedRights.length) {
-
+        if (selectedRights.length) {
             // Bulk match criteria check
             setIsMatchable(
                 haveEmptyCoreTitleIdsSameContentType()
@@ -101,6 +99,7 @@ export const SelectedRightsActions = ({
                 checkBonusRightCreateCriteria()
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);

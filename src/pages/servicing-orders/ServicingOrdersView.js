@@ -2,11 +2,15 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import React, {useEffect, useState, useContext} from 'react';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
-import {CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN, SERVICING_ORDERS_TTL, EXPORT_WARNING_MESSAGE} from './constants';
+import {CUSTOMER_LBL,
+    HIDE_COMPLETED_BTN,
+    HIDE_READY_BTN,
+    SERVICING_ORDERS_TTL,
+    EXPORT_WARNING_MESSAGE,
+    readinessStatus} from './constants';
 import './ServicingOrdersView.scss';
 import {exportServicingOrders} from './servicingOrdersService';
 import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
-import {readinessStatus} from './constants';
 import {downloadFile} from '../../util/Common';
 
 const ServicingOrdersView = () => {
@@ -18,7 +22,7 @@ const ServicingOrdersView = () => {
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
     const [isExporting, setIsExporting] = useState(false);
-    const [refreshData, setRefreshData] = useState(false);
+    const [isRefreshData, setIsRefreshData] = useState(false);
     const ModalContent = (
         <>
             <p>
@@ -29,7 +33,7 @@ const ServicingOrdersView = () => {
     );
     const modalHeading = 'Warning';
     const modalStyle = {
-        width: 'small'
+        width: 'small',
     };
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
@@ -37,7 +41,7 @@ const ServicingOrdersView = () => {
         () => {
             setFixedFilter({
                 status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
-                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined
+                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined,
             });
         },
         [isHideReady, isHideCompleted]
@@ -46,7 +50,7 @@ const ServicingOrdersView = () => {
     useEffect(
         () => {
             setExternalFilter({
-                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value})
+                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
             });
         },
         [customerFilter]
@@ -71,8 +75,8 @@ const ServicingOrdersView = () => {
             .then(response => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
-                setRefreshData(true);
-        });
+                setIsRefreshData(true);
+            });
     };
 
     /**
@@ -87,12 +91,12 @@ const ServicingOrdersView = () => {
                 onClick: () => {
                     exportSelectedServicingOrders();
                     close();
-                }
+                },
             },
             {
                 text: 'Cancel',
-                onClick: close
-            }
+                onClick: close,
+            },
         ]);
     };
 
@@ -100,7 +104,7 @@ const ServicingOrdersView = () => {
      * After refreshing data, set to false
      */
     const handleDataRefreshComplete = () => {
-        setRefreshData(false);
+        setIsRefreshData(false);
     };
 
     return (
@@ -137,7 +141,7 @@ const ServicingOrdersView = () => {
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 setSelectedServicingOrders={setSelectedServicingOrders}
-                refreshData={refreshData}
+                isRefreshData={isRefreshData}
                 dataRefreshComplete={handleDataRefreshComplete}
             />
         </div>

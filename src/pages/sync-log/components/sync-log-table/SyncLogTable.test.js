@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import SyncLogTable from './SyncLogTable';
+import {shallow} from 'enzyme';
 import Button from '@atlaskit/button';
+import SyncLogTable from './SyncLogTable';
 
 describe('SyncLogTable', () => {
-    let wrapper;
-    let spy;
+    let wrapper = null;
+    let spy = null;
 
     beforeAll(() => {
         const mockDate = new Date('2020-07-11');

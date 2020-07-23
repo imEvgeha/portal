@@ -8,8 +8,6 @@ describe('BulkMatching', () => {
     let wrapper = null;
     let titleMatchingRightsTable = null;
     let sectionMessage = null;
-    const selectedClass = 'nexus-c-bulk-matching__selected';
-    const affectedClass = 'nexus-c-bulk-matching__affected';
     const headerTitle = 'Title Matching';
 
     beforeEach(() => {
@@ -52,8 +50,11 @@ describe('BulkMatching', () => {
     });
 
     it('should display affected tab on click', () => {
-        wrapper.find('.nexus-c-bulk-matching__rights-tab').at(1).props().onClick();
-        expect(wrapper.find('.nexus-c-bulk-matching__rights-tab--active').text().includes(RIGHT_TABS.AFFECTED)).toBe(true);
+        wrapper.find('.nexus-c-bulk-matching__rights-tab').at(1)
+            .props()
+            .onClick();
+        expect(wrapper.find('.nexus-c-bulk-matching__rights-tab--active').text()
+            .includes(RIGHT_TABS.AFFECTED)).toBe(true);
     });
 
     it('should not display affected tab when bonus right', () => {
@@ -63,8 +64,11 @@ describe('BulkMatching', () => {
 
     it('should display bonus rights tab on click', () => {
         wrapper.setProps({isBonusRight: true});
-        wrapper.find('.nexus-c-bulk-matching__rights-tab').at(1).props().onClick();
-        expect(wrapper.find('.nexus-c-bulk-matching__rights-tab--active').text().includes(RIGHT_TABS.BONUS_RIGHTS)).toBe(true);
+        wrapper.find('.nexus-c-bulk-matching__rights-tab').at(1)
+            .props()
+            .onClick();
+        expect(wrapper.find('.nexus-c-bulk-matching__rights-tab--active').text()
+            .includes(RIGHT_TABS.BONUS_RIGHTS)).toBe(true);
     });
 
     it('should have a new title button and a new title link', () => {

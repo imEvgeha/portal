@@ -8,5 +8,11 @@ module.exports = {
     "rules": {
         "no-magic-numbers": ["warn", {ignore: [0, 1, -1]}],
         "func-style": ["warn", "declaration", {"allowArrowFunctions": true}],
+    },
+    "overrides" : {
+        "files": "*.test.js",
+        "rules": {
+            "no-magic-numbers": "off",
+        }
     }
 };

@@ -43,7 +43,7 @@ const LegacyTitleReconciliationReview = ({
     useEffect(() => {
         const ids = [...duplicateIds, ...masterIds, newTitleId].filter(Boolean);
         getReconciliationTitles({ids});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleGridEvent = ({type, columnApi}) => {

@@ -9,7 +9,7 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.SAVE_FULFILLMENT_ORDER_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         yield call(requestMethod, payload);
@@ -25,7 +25,7 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -38,6 +38,6 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
 
 export function* servicingOrderWatcher() {
     yield all([
-        takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI)
+        takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI),
     ]);
 }
