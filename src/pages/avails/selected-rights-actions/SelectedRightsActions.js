@@ -118,7 +118,6 @@ export const SelectedRightsActions = ({
                 checkPrePlanEligibilityCriteria()
             );
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);
