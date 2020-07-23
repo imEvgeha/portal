@@ -4,7 +4,7 @@ import Badge from '@atlaskit/badge';
 import {Radio} from '@atlaskit/radio';
 import {isEqual} from 'lodash';
 import {compose} from 'redux';
-import mappings from '../../../../../../profile/sourceTableMapping';
+import mappings from '../../../../../../profile/sourceTableMapping.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';

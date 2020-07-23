@@ -6,7 +6,7 @@ import {Radio} from '@atlaskit/radio';
 import classNames from 'classnames';
 import {compose} from 'redux';
 import './CandidatesList.scss';
-import mappings from '../../../../../profile/titleMatchingMappings';
+import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';

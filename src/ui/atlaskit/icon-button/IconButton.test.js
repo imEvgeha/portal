@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import {shallow} from 'enzyme';
 import IconButton from './IconButton';
 
 describe('IconButton', () => {

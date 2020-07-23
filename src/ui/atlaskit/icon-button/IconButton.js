@@ -1,7 +1,7 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {gridSize} from '@atlaskit/theme';
-import PropTypes from 'prop-types';
-import React from 'react';
 
 const GRID_SIZE_MULTIPLIER = 4;
 

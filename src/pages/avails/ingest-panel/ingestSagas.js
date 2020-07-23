@@ -6,11 +6,11 @@ import {URL, normalizeDataForStore} from '../../../util/Common';
 import {historyService} from '../../legacy/containers/avail/service/HistoryService';
 import {uploadService} from '../../legacy/containers/avail/service/UploadService';
 import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
-import Constants from '../constants';
 import * as actionTypes from './ingestActionTypes';
 import {getIngestById} from './ingestSelectors';
 import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
+import Constants from '../constants';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
 const {URLFilterKeys} = FilterConstants;
