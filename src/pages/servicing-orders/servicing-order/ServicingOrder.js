@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
@@ -35,7 +36,7 @@ const ServicingOrder = ({match}) => {
 
                 setServiceOrder({
                     ...servicingOrder,
-                    fulfillmentOrders
+                    fulfillmentOrders,
                 });
                 setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
             } catch (e) {
@@ -54,7 +55,7 @@ const ServicingOrder = ({match}) => {
                 setServiceOrder({});
             }
         });
-    }, []);
+    }, [match]);
 
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
@@ -111,8 +112,12 @@ const ServicingOrder = ({match}) => {
     );
 };
 
-ServicingOrder.propTypes = {};
+ServicingOrder.propTypes = {
+    match: PropTypes.object,
+};
 
-ServicingOrder.defaultProps = {};
+ServicingOrder.defaultProps = {
+    match: {},
+};
 
 export default ServicingOrder;

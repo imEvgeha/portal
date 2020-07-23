@@ -4,9 +4,9 @@ export const HIDE_READY_BTN = 'Hide Ready';
 export const HIDE_COMPLETED_BTN = 'Hide Completed';
 
 export const readinessStatus = {
-  ON_HOLD: 'ON_HOLD',
-  READY: 'READY',
-  NEW: 'NEW'
+    ON_HOLD: 'ON_HOLD',
+    READY: 'READY',
+    NEW: 'NEW',
 };
 
 export const EXPORT_WARNING_MESSAGE = 'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';

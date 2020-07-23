@@ -20,12 +20,12 @@ const EventManagementGrid = compose(
     withSideBar(),
     withColumnsResizing(),
     withSorting(INITIAL_SORT),
-    withFilterableColumns({useDatesWithTime:true}),
+    withFilterableColumns({useDatesWithTime: true}),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
 const EventManagementTable = ({onGridEvent, toggleRefreshGridData}) => {
-    const updateColumnDefs = (columnDefs) => {
+    const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
                 ...columnDef,

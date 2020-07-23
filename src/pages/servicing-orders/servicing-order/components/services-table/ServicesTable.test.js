@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import ServicesTable from './ServicesTable';
 
 describe('ServicesTable', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         const data = {
@@ -11,7 +11,7 @@ describe('ServicesTable', () => {
             assetFormat: 'VIDEO_CONFORMANCEGROUP',
             assetType: 'DETE_FILE',
             barcode: 'DA16129',
-            deteServices:[
+            deteServices: [
                 {
                     type: 'Subtitles',
                     version: 'French',
@@ -20,13 +20,13 @@ describe('ServicesTable', () => {
                     componentId: 'LOL-123',
                     spec: 'M-DBS-2398 SCC',
                     addRecipient: 'MGM',
-                    sourceStandard: '_1080_23_976'
-                }
+                    sourceStandard: '_1080_23_976',
+                },
             ],
             externalId: 'DA16129',
             externalSystem: 'VSOM',
             fs: 'DETE',
-            startDate: '2020-05-19T15:13:13.731-03:00'
+            startDate: '2020-05-19T15:13:13.731-03:00',
         };
         wrapper = shallow(<ServicesTable data={data} />);
     });

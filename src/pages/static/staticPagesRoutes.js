@@ -4,15 +4,15 @@ import Welcome from './Welcome';
 const routes = [
     {
         path: '/',
-        component: Welcome
+        component: Welcome,
     },
     {
         path: '/v2',
-        component: Welcome
+        component: Welcome,
     },
     {
         path: '*',
-        component: NotFound
+        component: NotFound,
     },
 ];
 

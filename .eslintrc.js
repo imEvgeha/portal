@@ -40,5 +40,11 @@ module.exports = {
                 "caseInsensitive": false,
             }
         }],
+    },
+    "overrides" : {
+        "files": "*.test.js",
+        "rules": {
+            "no-magic-numbers": "off",
+        }
     }
 };

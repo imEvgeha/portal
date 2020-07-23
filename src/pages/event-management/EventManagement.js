@@ -17,7 +17,7 @@ const EventManagement = () => {
 
     const onGridEvent = ({type, api}) => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
-        switch(type) {
+        switch (type) {
             case READY:
                 api.sizeColumnsToFit();
                 setGridApi(api);
@@ -25,12 +25,14 @@ const EventManagement = () => {
             case SELECTION_CHANGED:
                 setSelectedEvent(get(api.getSelectedRows(), '[0]', null));
                 break;
+            default:
+                break;
         }
     };
 
     return (
-        <div className='nexus-c-event-management'>
-            <div className='nexus-c-event-management__title'>
+        <div className="nexus-c-event-management">
+            <div className="nexus-c-event-management__title">
                 {TITLE}
             </div>
             <div className="nexus-c-event-management__table">

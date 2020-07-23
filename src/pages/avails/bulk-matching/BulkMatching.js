@@ -32,7 +32,17 @@ import BulkMatchingReview from './components/BulkMatchingReview';
 import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS} from './constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, isBonusRight, setHeaderText}) => {
+export const BulkMatching = (
+    {
+        data,
+        closeDrawer,
+        addToast,
+        removeToast,
+        toggleRefreshGridData,
+        isBonusRight,
+        setHeaderText,
+    }
+) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [bonusRightsTableData, setBonusRightsTableData] = useState([]);
@@ -65,7 +75,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            if(isBonusRight){
+            if (isBonusRight) {
                 getExistingBonusRights(rightIds).then(res => {
                     if (Array.isArray(res) && res.length) {
                         setBonusRightsTableData(res);
@@ -81,7 +91,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 });
             }
         }
-    }, [selectedTableData]);
+    }, [selectedTableData, isBonusRight]);
 
     useEffect(() => {
         if (affectedTableData.length) {
@@ -98,8 +108,8 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const onMatch = () => {
         setMatchIsLoading(true);
         const coreTitleId = matchList[NEXUS].id;
-        if(isBonusRight) {
-            //call create bonus rights api here
+        if (isBonusRight) {
+            // call create bonus rights api here
         } else {
             bulkTitleMatch(coreTitleId);
         }
@@ -221,14 +231,14 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     };
 
     const getRightsTableData = () => {
-      switch(activeTab) {
-          case RIGHT_TABS.AFFECTED:
-              return affectedTableData;
-          case RIGHT_TABS.BONUS_RIGHTS:
-              return bonusRightsTableData;
-          default:
-              return selectedTableData;
-      }
+        switch (activeTab) {
+            case RIGHT_TABS.AFFECTED:
+                return affectedTableData;
+            case RIGHT_TABS.BONUS_RIGHTS:
+                return bonusRightsTableData;
+            default:
+                return selectedTableData;
+        }
     };
 
     const hasExistingCoreTitleIds = affectedTableData.some(({coreTitleId}) => coreTitleId);
@@ -292,7 +302,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     </Button>
                     {
                         hasExistingCoreTitleIds && (
-                            <div className='nexus-c-bulk-matching__warning'>
+                            <div className="nexus-c-bulk-matching__warning">
                                 {EXISTING_CORE_TITLE_ID_WARNING}
                             </div>
                         )
@@ -387,7 +397,7 @@ BulkMatching.defaultProps = {
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
     setHeaderText: () => null,
-    isBonusRight: false
+    isBonusRight: false,
 };
 
 const mapDispatchToProps = dispatch => ({

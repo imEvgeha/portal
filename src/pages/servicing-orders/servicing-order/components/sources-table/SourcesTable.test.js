@@ -12,8 +12,8 @@ describe('SourcesTable without rows', () => {
     });
 });
 
-describe('SourceTable with rows', ()=> {
-    const tableData  = get(data, 'fulfillmentOrders', []).find(s=> s && s.fulfillmentOrderId === 'VU000134567-001');
+describe('SourceTable with rows', () => {
+    const tableData = get(data, 'fulfillmentOrders', []).find(s => s && s.fulfillmentOrderId === 'VU000134567-001');
     it('Should match snapshot', () => {
         const wrapper = shallow(<SourcesTable data={prepareRowData(tableData)} onSelectedSourceChange={null} />);
         expect(wrapper).toMatchSnapshot();

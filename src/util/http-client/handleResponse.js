@@ -1,8 +1,10 @@
+const NO_CONTENT = 204;
+
 export default async (response) => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
-            if (response.status === 204) {
+            if (response.status === NO_CONTENT) {
                 return '';
             }
             // BE issue: empty response headers workaround
