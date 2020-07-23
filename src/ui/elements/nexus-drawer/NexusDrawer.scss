@@ -1,64 +1,66 @@
-@import '../../../styles/config';
-
-$width: (
-  extended: 95vw,
-  full: 100vw,
-  medium: 480px,
-  narrow: 360px,
-  wide: 800px,
-  wider: 60vw,
+$widths: (
+  'extended': 95vw,
+  'full': 100vw,
+  'medium': 480px,
+  'narrow': 360px,
+  'wide': 800px,
+  'wider': 60vw,
 );
-$sizes: full, narrow, extended, medium, wide, wider;
 
 .nexus-c-drawer {
   position: absolute;
   top: 0;
-  right: 0;
-  height: 100%;
-  background-color: map-get($colors, nexus-white);
-  z-index: map-get($z-index, z-index-500);
-  transition: width 500ms;
-  width: 0;
+  bottom: 0;
   overflow: auto;
+  width: 0;
+  background-color: white;
+  z-index: 500;
+  transition: width 220ms cubic-bezier(0.2, 0, 0, 1) 0s;
+
+  &--from-left {
+    left: 0;
+  }
+
+  &--from-right {
+    right: 0;
+  }
+
+  @each $width, $size in $widths {
+    &--is-#{$width}-open {
+      width: map-get($map: $widths, $key: $width);
+    }
+  }
+
+  &__title {
+    margin-left: 0 !important;
+  }
+
+  &__title-container {
+    margin-left: 0;
+
+    &--from-left {
+      margin-left: 1rem;
+    }
+  }
 
   &__header {
-    padding: 20px;
-    justify-content: space-between;
-    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     display: none;
-    &--title {
-      font-size: 29px;
-      color: map-get($colors, nexus-text);
-    }
-    svg {
-      cursor: pointer;
-      width: 15px;
-      height: 15px;
-      fill: #A5ADBA;
-    }
 
-    .break {
-      flex-basis: 100%;
-      height: 0;
-    }
-
-  }
-  &.nexus-c-drawer--is-open {
-    .nexus-c-drawer__header {
+    &--is-open {
       display: flex;
+      align-items: flex-start;
       flex-wrap: wrap;
     }
-  }
 
-  // Creates classes for each combination of positions and sizes
-  @each $size in $sizes {
-    // Set drawer widths
-    &--is-#{$size}-width.nexus-c-drawer--is-open {
-      width: map-get($width, #{$size});
+    &--from-left {
+      justify-content: flex-end;
+      flex-direction: row-reverse;
+    }
 
-      @media (max-width: 800px) {
-        width: map-get($width, full);
-      }
+    &--from-right {
+      justify-content: space-between;
     }
   }
 }

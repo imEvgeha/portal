@@ -5,3 +5,4 @@ export const RIGHT_TABS = {
     AFFECTED: 'Affected Rights',
     BONUS_RIGHTS: 'Existing Bonus Rights',
 };
+export const EXISTING_CORE_TITLE_ID_WARNING = 'Warning: Existing coreTitleIds of Affected Rights will be overridden.';

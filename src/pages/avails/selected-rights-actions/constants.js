@@ -2,12 +2,11 @@ export const BULK_MATCH = 'Bulk Match Titles';
 export const BULK_MATCH_DISABLED_TOOLTIP = `This feature is enabled when:
 All selected rights have same content type,
 have Core Title IDs un-populated,
-either all are bonus rights or none
-and are not expired`;
+either all are bonus rights(with unique sourceRightId) or none`;
 export const BULK_UNMATCH = 'Bulk Unmatch Titles';
 export const BULK_UNMATCH_DISABLED_TOOLTIP = `This feature is enabled when: 
-All selected rights have Core Title IDs populated
-and are not expired`;
+All selected rights have Core Title IDs populated,
+either all are bonus rights(with unique sourceRightId) or none`;
 export const BULK_UNMATCH_SUCCESS_TOAST = 'Bulk Unmatch Successful!';
 export const CREATE_BONUS_RIGHT = 'Create Bonus Right';
 export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when rights are licensed,
