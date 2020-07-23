@@ -3,7 +3,8 @@ module.exports = {
         "nexus-react-app",
     ],
     "rules": {
-        "no-magic-numbers": ["warn", {ignore: [0, 1, -1]}],
+        "react-hooks/exhaustive-deps": "off",
+        "no-magic-numbers": ["warn", {ignore: [0, 1, -1, 1000]}],
         "func-style": ["warn", "declaration", {"allowArrowFunctions": true}],
         "no-duplicate-imports": "warn",
         "import/order": ["warn", {

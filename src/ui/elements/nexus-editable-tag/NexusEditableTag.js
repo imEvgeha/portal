@@ -17,7 +17,7 @@ const NexusEditableTag = ({text, remove, save, index, inputWidth}) => {
     };
 
     const onBlur = e => {
-        isEditing && typeof save === 'function' && index !== null && save(index,e.target.value);
+        isEditing && typeof save === 'function' && index !== null && save(index, e.target.value);
         setEditing(prev => !prev);
     };
 

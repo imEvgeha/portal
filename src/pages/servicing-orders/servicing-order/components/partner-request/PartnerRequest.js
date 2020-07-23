@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import {gridSize} from '@atlaskit/theme';
 import 'ag-grid-enterprise';
 import PropTypes from 'prop-types';
-import {uid} from 'react-uid';
-import styled from 'styled-components';
 import {NexusGrid} from '../../../../../ui/elements';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {getServiceRequest} from '../../../servicingOrdersService';

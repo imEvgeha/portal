@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {get} from 'lodash';
-import * as data  from '../../../servicingOrderMockData.json';
+import * as data from '../../../servicingOrderMockData.json';
 import SourcesTable from './SourcesTable';
 import {prepareRowData} from './util';
 

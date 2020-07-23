@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {get, uniqBy} from 'lodash';
-import moment from 'moment';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';

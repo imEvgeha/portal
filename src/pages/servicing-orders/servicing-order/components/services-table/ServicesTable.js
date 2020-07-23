@@ -4,7 +4,6 @@ import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
-import {Checkbox} from '@atlaskit/checkbox';
 import mappings from '../../../../../../profile/servicesTableMappings';
 import Add from '../../../../../assets/action-add.svg';
 import {NexusGrid} from '../../../../../ui/elements';
