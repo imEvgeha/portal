@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {get, uniqBy} from 'lodash';
 import classNames from 'classnames';
-import moment from 'moment';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import RightViewHistory from '../right-history-view/RightHistoryView';

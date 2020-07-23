@@ -76,7 +76,7 @@ empty Source Right IDs and Status is Ready/ReadyNew"
       >
         <NexusTooltip
           content="Select Right to enable this feature"
-          isDisabled={0}
+          isDisabled={false}
         >
           <div>
             Add to Pre-Plan
