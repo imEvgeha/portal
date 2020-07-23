@@ -30,7 +30,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "licensed",
@@ -90,7 +96,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "licenseType",
@@ -102,7 +114,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "territory",
