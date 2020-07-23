@@ -1,10 +1,10 @@
+import React, {useContext, useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
 import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
-import PropTypes from 'prop-types';
-import React, {useContext, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
@@ -12,8 +12,8 @@ import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextAr
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
 import {getValidDate} from '../../../../../util/utils';
-import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
+import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
 

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {themed} from '@atlaskit/theme/components';
-import {gridSize} from '@atlaskit/theme/constants';
-import * as colors from '@atlaskit/theme/colors';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIconIndeterminate from '@atlaskit/icon/glyph/checkbox-indeterminate';
+import * as colors from '@atlaskit/theme/colors';
+import {themed} from '@atlaskit/theme/components';
+import {gridSize} from '@atlaskit/theme/constants';
 import './NexusCheckboxSelectOption.scss';
 
 // CheckboxSelect atlaskit package as components prop has {...components, Option: CheckboxOption}

@@ -1,8 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-
-import NexusPerson from './NexusPerson';
 import {uid} from 'react-uid';
+import NexusPerson from './NexusPerson';
 
 describe('NexusPerson', () => {
     let wrapper;

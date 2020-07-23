@@ -1,16 +1,16 @@
 import React, {useContext, useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
+import {connect} from 'react-redux';
+import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import {getAffectedRights, setCoreTitleId} from '../availsService';
 import {
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
-import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
-import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_WARNING} from './constants';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {BULK_UNMATCH_SUCCESS_TOAST} from '../selected-rights-actions/constants';
-import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
+import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';
 
 const BulkUnmatch = ({selectedRights = [], columnDefs = [],

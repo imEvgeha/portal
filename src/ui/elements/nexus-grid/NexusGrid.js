@@ -4,8 +4,8 @@ import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
-import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
+import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 
 const SELECTION_DELAY = 5;
 

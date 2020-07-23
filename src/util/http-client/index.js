@@ -1,7 +1,7 @@
 import {isObject} from 'lodash';
 import {keycloak} from '../../auth/keycloak';
-import handleResponse from './handleResponse';
 import handleError from './handleError';
+import handleResponse from './handleResponse';
 
 const DEFAULT_TIMEOUT = 60000;
 

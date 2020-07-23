@@ -1,27 +1,27 @@
-import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
-import * as actionTypes from './titleMatchingActionTypes';
-import {createColumnDefs} from '../utils';
+import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
 import mappings from '../../../../profile/titleMatchingMappings';
-import Constants from './titleMatchingConstants';
-import {URL} from '../../../util/Common';
-import {titleService} from '../../legacy/containers/metadata/service/TitleService';
-import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA, METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../legacy/constants/action-types';
-import {createAvailSelectValuesSelector} from '../../legacy/containers/avail/availSelectors';
-import {fetchAndStoreSelectItems} from '../../legacy/containers/avail/availSagas';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
-import {
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
-    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
-} from '../../../ui/toast/constants';
 import {
     ERROR_ICON,
     ERROR_TITLE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
+import {
+    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
+    TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
+} from '../../../ui/toast/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {URL} from '../../../util/Common';
+import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA, METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../legacy/constants/action-types';
+import {fetchAndStoreSelectItems} from '../../legacy/containers/avail/availSagas';
+import {createAvailSelectValuesSelector} from '../../legacy/containers/avail/availSelectors';
+import {rightsService} from '../../legacy/containers/avail/service/RightsService';
+import {titleService} from '../../legacy/containers/metadata/service/TitleService';
+import {createColumnDefs} from '../utils';
+import * as actionTypes from './titleMatchingActionTypes';
+import Constants from './titleMatchingConstants';
 
 function* fetchFocusedRight(requestMethod, {payload}) {
     try {

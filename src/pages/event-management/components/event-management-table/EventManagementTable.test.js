@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
 import Button from '@atlaskit/button';
+import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
 import EventManagementTable from './EventManagementTable';
 
