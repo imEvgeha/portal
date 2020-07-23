@@ -8,7 +8,7 @@ class SelectCellEditor extends Component {
         super(props);
         this.state = {
             value: {
-                label: props.value, 
+                label: props.value,
                 value: props.value,
             },
         };
@@ -16,15 +16,13 @@ class SelectCellEditor extends Component {
 
     isPopup = () => {
         const {options} = this.props;
-        if (options.length) {
-            return true;
-        }
-        return false;
+        return !!options.length;
     }
 
+    // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value.value;
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({
             value,
         });

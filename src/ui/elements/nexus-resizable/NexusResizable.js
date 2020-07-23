@@ -8,7 +8,7 @@ const NexusResizable = ({children, defaultWidth, defaultHeight, handles}) => {
         <Resizable
             defaultSize={{
                 width: defaultWidth,
-                height: defaultHeight
+                height: defaultHeight,
             }}
             enable={{...DEFAULT_HANDLES, ...handles}}
         >
@@ -20,13 +20,13 @@ const NexusResizable = ({children, defaultWidth, defaultHeight, handles}) => {
 NexusResizable.propTypes = {
     defaultWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     defaultHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    handles: PropTypes.object
+    handles: PropTypes.object,
 };
 
 NexusResizable.defaultProps = {
     defaultWidth: 'initial',
     defaultHeight: 'initial',
-    handles: {bottom: true}
+    handles: {bottom: true},
 };
 
 export default NexusResizable;

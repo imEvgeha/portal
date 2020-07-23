@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {saveAs} from 'file-saver';
-import {DOWNLOAD, JSON_MIME, XML_MIME} from './constants';
+import {DOWNLOAD, JSON_INDENT_SPACE, JSON_MIME, XML_MIME} from './constants';
 
 const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
-
     const tryParseJSON = data => {
-        let parsedData;
+        let parsedData = '{}';
         try {
             parsedData = JSON.parse(data);
-        }
-        catch(e) {
+        } catch (e) {
             parsedData = '{}';
         }
         return parsedData;
@@ -22,14 +20,14 @@ const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
     const handleDownload = () => {
         const blob = mimeType === XML_MIME
             ? new Blob([prettifyXML(parsedData)], {type: mimeType})
-            : new Blob([JSON.stringify(parsedData, null, 2)], {type: mimeType});
+            : new Blob([JSON.stringify(parsedData, null, JSON_INDENT_SPACE)], {type: mimeType});
 
         saveAs(blob, filename);
     };
 
     const prettifyXML = sourceXml => {
-        let xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
-        let xsltDoc = new DOMParser().parseFromString([
+        const xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
+        const xsltDoc = new DOMParser().parseFromString([
             // describes how we want to modify the XML - indent everything
             '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
             '  <xsl:strip-space elements="*"/>',
@@ -46,8 +44,7 @@ const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
         const xsltProcessor = new XSLTProcessor();
         xsltProcessor.importStylesheet(xsltDoc);
         const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-        const resultXml = new XMLSerializer().serializeToString(resultDoc);
-        return resultXml;
+        return new XMLSerializer().serializeToString(resultDoc);
     };
 
     return (
@@ -64,7 +61,7 @@ const NexusDownload = ({data, filename, mimeType, label, ...restProps}) => {
 NexusDownload.propTypes = {
     data: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.object
+        PropTypes.object,
     ]).isRequired,
     filename: PropTypes.string.isRequired,
     mimeType: PropTypes.string,

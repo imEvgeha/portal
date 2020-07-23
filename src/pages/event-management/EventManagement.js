@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {get} from 'lodash';
-import EventDrawer from './components/event-drawer/EventDrawer';
-import {TITLE} from './eventManagementConstants';
-import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+import EventDrawer from './components/event-drawer/EventDrawer';
+import EventManagementTable from './components/event-management-table/EventManagementTable';
+import {TITLE} from './eventManagementConstants';
 import './EventManagement.scss';
 import {getEventById} from './eventManagementService';
 
@@ -18,7 +18,7 @@ const EventManagement = () => {
 
     const onGridEvent = ({type, api}) => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
-        switch(type) {
+        switch (type) {
             case READY:
                 api.sizeColumnsToFit();
                 setGridApi(api);
@@ -32,12 +32,14 @@ const EventManagement = () => {
                     });
                 }
                 break;
+            default:
+                break;
         }
     };
 
     return (
-        <div className='nexus-c-event-management'>
-            <div className='nexus-c-event-management__title'>
+        <div className="nexus-c-event-management">
+            <div className="nexus-c-event-management__title">
                 {TITLE}
             </div>
             <div className="nexus-c-event-management__table">

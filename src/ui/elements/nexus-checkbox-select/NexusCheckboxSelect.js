@@ -6,7 +6,7 @@ import NexusCheckboxSelectValueContainer from './elements/NexusCheckboxSelectVal
 
 const selectAll = {
     label: 'Select All',
-    value: '*'
+    value: '*',
 };
 
 const NexusCheckboxSelect = ({
@@ -69,8 +69,8 @@ const NexusCheckboxSelect = ({
             onChange={onChange}
             value={values}
             components={{
-                Option: NexusCheckboxSelectOption, 
-                ValueContainer: NexusCheckboxSelectValueContainer
+                Option: NexusCheckboxSelectOption,
+                ValueContainer: NexusCheckboxSelectValueContainer,
             }}
             placeholder={placeholder}
         />

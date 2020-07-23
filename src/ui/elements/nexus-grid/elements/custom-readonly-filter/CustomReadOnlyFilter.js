@@ -1,6 +1,6 @@
 import React from 'react';
-import './CustomReadOnlyFilter.scss';
 import PropTypes from 'prop-types';
+import './CustomReadOnlyFilter.scss';
 
 export default class CustomReadOnlyFilter extends React.Component {
     constructor(props) {
@@ -10,14 +10,16 @@ export default class CustomReadOnlyFilter extends React.Component {
         };
     }
 
-    setModel = (model) => {
-        this.setState({value : model ? model.filter : this.props.readOnlyValue});
+    setModel = model => {
+        const {readOnlyValue} = this.props;
+        this.setState({value: model ? model.filter : readOnlyValue});
     };
 
     getModel = () => {
+        const {value} = this.state;
         return ({
             type: 'equals',
-            filter: this.state.value
+            filter: value,
         });
     };
 
@@ -29,10 +31,11 @@ export default class CustomReadOnlyFilter extends React.Component {
         return true;
     };
 
-    render () {
+    render() {
+        const {value} = this.state;
         return (
-            <div className='nexus-c-custom-read-only-filter'>
-                <span>Read Only value: {' ' + this.state.value || ''}</span>
+            <div className="nexus-c-custom-read-only-filter">
+                <span>Read Only value: {` ${value}` || ''}</span>
             </div>
         );
     }
@@ -43,5 +46,5 @@ CustomReadOnlyFilter.propTypes = {
 };
 
 CustomReadOnlyFilter.defaultProps = {
-    readOnlyValue: ''
+    readOnlyValue: '',
 };

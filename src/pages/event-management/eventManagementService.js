@@ -2,10 +2,10 @@ import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
-const pageSizeMax = 100;
-const headersOnly = true;
+const HEADERS_ONLY = true;
+const FETCH_PAGE_SIZE = 100;
 
-export const getEventSearch = (params, page = 0, pageSize = pageSizeMax, sortedParams) => {
+export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
     let paramString = '';
 
     // Build sortParams string if sortParams are provided
@@ -19,8 +19,8 @@ export const getEventSearch = (params, page = 0, pageSize = pageSizeMax, sortedP
     paramString = `${paramString}?page=${page}&size=${pageSize}`;
 
     // Only fetch headers, not headers + data
-    if (headersOnly) {
-        paramString += `&headersOnly=${headersOnly}`;
+    if (HEADERS_ONLY) {
+        paramString += `&headersOnly=${HEADERS_ONLY}`;
     }
 
     // Build param string if params are provided
@@ -32,18 +32,22 @@ export const getEventSearch = (params, page = 0, pageSize = pageSizeMax, sortedP
 
                 // Converts '-From' and '-To' suffixes to '-Start' and '-End' respectively
                 // and packs them into a param string
+                // eslint-disable-next-line no-param-reassign
                 paramString = Object.keys(complexFilter).reduce((paramString, key) => {
                     if (complexFilter[key]) {
                         let filterParamKey = key;
 
                         if (key.endsWith('From')) {
+                            // eslint-disable-next-line no-magic-numbers
                             filterParamKey = `${key.slice(0, -4)}Start`;
                         } else if (key.endsWith('To')) {
+                            // eslint-disable-next-line no-magic-numbers
                             filterParamKey = `${key.slice(0, -2)}End`;
                         }
 
                         return `${paramString}&${filterParamKey}=${complexFilter[key]}`;
                     }
+                    return '';
                 }, paramString);
 
                 return paramString;
@@ -74,14 +78,14 @@ export const getEventSearch = (params, page = 0, pageSize = pageSizeMax, sortedP
 export const replayEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replay/${docId}`;
     return nexusFetch(url, {
-        method: 'post'
+        method: 'post',
     });
 };
 
 export const replicateEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replicate/${docId}`;
     return nexusFetch(url, {
-        method: 'post'
+        method: 'post',
     });
 };
 
@@ -89,9 +93,9 @@ export const replicateEvent = ({docId}) => {
  * Get Event Detail By Document Id
  * @param {Event} docId
  */
-export const getEventById = (docId) => {
+export const getEventById = docId => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/event/${docId}`;
     return nexusFetch(url, {
-        method: 'get'
+        method: 'get',
     });
 };

@@ -1,4 +1,5 @@
 import React, {Suspense} from 'react';
+import PropTypes from 'prop-types';
 import {Switch, Route} from 'react-router-dom';
 import Loading from './pages/static/Loading';
 
@@ -29,5 +30,9 @@ const Router = ({routes}) => (
         </Switch>
     </Suspense>
 );
+
+Router.propTypes = {
+    routes: PropTypes.array.isRequired,
+};
 
 export default Router;
