@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+// import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {
