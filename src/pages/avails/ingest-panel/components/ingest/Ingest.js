@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Chevron from '../../../../../assets/chevron-right.svg';
-import IngestReport from '../ingest-report/IngestReport';
-import IngestStatus from '../ingest-status/IngestStatus';
 import IngestTitle from '../ingest-title/IngestTitle';
+import IngestStatus from '../ingest-status/IngestStatus';
+import IngestReport from '../ingest-report/IngestReport';
+import Chevron from '../../../../../assets/chevron-right.svg';
 import './Ingest.scss';
 
 const Ingest = ({

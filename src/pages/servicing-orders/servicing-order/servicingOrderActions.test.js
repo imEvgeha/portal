@@ -1,5 +1,5 @@
-import * as actionTypes from './servicingOrderActionTypes';
 import * as actions from './servicingOrderActions';
+import * as actionTypes from './servicingOrderActionTypes';
 
 describe('servicing order actions', () => {
     const payload = {};

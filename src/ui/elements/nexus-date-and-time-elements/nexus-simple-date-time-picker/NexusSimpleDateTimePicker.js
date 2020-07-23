@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
-import {ErrorMessage} from '@atlaskit/form';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
-import {getDateFormatBasedOnLocale} from '../../../../util/date-time/DateTimeUtils';
-import ClearButton from '../clear-button/ClearButton';
+import {DateTimePicker} from '@atlaskit/datetime-picker';
+import {ErrorMessage} from '@atlaskit/form';
 import {
     TIME_PLACEHOLDER,
     ATLASKIT_DATE_FORMAT,
@@ -14,6 +12,8 @@ import {
     RELATIVE_DATE_FORMAT,
     TIMES
 } from '../constants';
+import ClearButton from '../clear-button/ClearButton';
+import {getDateFormatBasedOnLocale} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusSimpleDateTimePicker = ({
     label,

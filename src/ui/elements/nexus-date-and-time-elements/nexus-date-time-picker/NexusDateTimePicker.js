@@ -1,10 +1,10 @@
+// eslint-disable-next-line no-unused-vars
 import React, {useState, Fragment, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import InlineEdit from '@atlaskit/inline-edit';
-import Select from '@atlaskit/select';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/date-time/DateTimeUtils';
+import Select from '@atlaskit/select';
+import InlineEdit from '@atlaskit/inline-edit';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import './NexusDateTimePicker.scss';
 import {
@@ -14,6 +14,7 @@ import {
     TIMESTAMP_TIME_FORMAT,
     RELATIVE_TIME_FORMAT, TIMESTAMP_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT,
 } from '../constants';
+import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDateTimePicker = ({
     id,

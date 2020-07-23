@@ -1,7 +1,7 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {IntlProvider} from 'react-intl';
-import {connect} from 'react-redux';
 
 const CustomIntlProvider = ({children, getLocale}) => (
     <IntlProvider locale={getLocale.locale}>

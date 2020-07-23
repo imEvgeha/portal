@@ -1,14 +1,14 @@
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {omit, isEqual} from 'lodash';
 import {connect} from 'react-redux';
-import {cleanObject} from '../../../../util/Common';
+import {omit, isEqual} from 'lodash';
 import usePrevious from '../../../../util/hooks/usePrevious';
-import {toggleRefreshGridData} from '../../../grid/gridActions';
-import {getShouldGridRefresh} from '../../../grid/gridSelectors';
-import {filterBy, sortBy} from '../utils';
 import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
+import {filterBy, sortBy} from '../utils';
+import {cleanObject} from '../../../../util/Common';
+import {getShouldGridRefresh} from '../../../grid/gridSelectors';
+import {toggleRefreshGridData} from '../../../grid/gridActions';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS, 

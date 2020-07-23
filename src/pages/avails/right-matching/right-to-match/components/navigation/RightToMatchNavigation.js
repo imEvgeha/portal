@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
-import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
-import Spinner from '@atlaskit/spinner';
 import {connect} from 'react-redux';
+import Spinner from '@atlaskit/spinner';
+import HipchatChevronUpIcon from '@atlaskit/icon/glyph/hipchat/chevron-up';
+import HipchatChevronDownIcon from '@atlaskit/icon/glyph/hipchat/chevron-down';
 import './RightToMatchNavigation.scss';
-import {URL, minTwoDigits} from '../../../../../../util/Common';
-import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 import {fetchRightMatchDataUntilFindId} from '../../../rightMatchingActions';
 import * as selectors from '../../../rightMatchingSelectors';
+import {URL, minTwoDigits} from '../../../../../../util/Common';
+import {RIGHT_PAGE_SIZE} from '../../../../../legacy/constants/rightFetching';
 
 const RightToMatchNavigation = ({
     searchParams,

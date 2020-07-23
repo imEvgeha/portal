@@ -1,5 +1,5 @@
+import {shallow} from 'enzyme';
 import React from 'react';
-import { shallow } from 'enzyme';
 import * as Redux from 'react-redux';
 import FulfillmentOrder, {transformClientToServerFulfillmentOrder} from './FulfillmentOrder';
 

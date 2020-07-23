@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {getRepositoryCell} from '../utils';
+import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
 import './MatchedCombinedTitlesTable.scss';
 

@@ -5,12 +5,6 @@ import './LegacyTitleReconciliationReview.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import {URL} from '../../../../util/Common';
-import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
-import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
-import {getRepositoryCell} from '../../../avails/utils';
-import {getReconciliationTitles} from '../../metadataActions';
-import * as selectors from '../../metadataSelectors';
 import {
     TITLE,
     MASTER_TABLE,
@@ -21,6 +15,12 @@ import {
     MERGED_ID,
     EMPTY_VIEW,
 } from './constants';
+import * as selectors from '../../metadataSelectors';
+import {getReconciliationTitles} from '../../metadataActions';
+import {URL} from '../../../../util/Common';
+import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
+import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
+import {getRepositoryCell} from '../../../avails/utils';
 
 const LegacyTitleReconciliationReview = ({
     createColumnDefs,

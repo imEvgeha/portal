@@ -1,27 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Button, {ButtonGroup} from '@atlaskit/button';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {isEmpty, isEqual} from 'lodash';
-import moment from 'moment';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {compose} from 'redux';
-import {NexusGrid, NexusTitle} from '../../../../ui/elements';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
-import {
-    defineCheckboxSelectionColumn,
-    defineColumn,
-    updateColumnDefs,
-} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
-import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
-import {URL} from '../../../../util/Common';
-import usePrevious from '../../../../util/hooks/usePrevious';
-import {backArrowColor} from '../../../legacy/constants/avails/constants';
-import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
-import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
+import moment from 'moment';
+import {Link} from 'react-router-dom';
+import {isEmpty, isEqual} from 'lodash';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import Button, {ButtonGroup} from '@atlaskit/button';
+import * as selectors from '../rightMatchingSelectors';
 import {
     createRightMatchingColumnDefs,
     fetchAndStoreFocusedRight,
@@ -29,6 +15,22 @@ import {
     fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
+import {NexusGrid, NexusTitle} from '../../../../ui/elements';
+import {URL} from '../../../../util/Common';
+import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
+import {
+    defineCheckboxSelectionColumn,
+    defineColumn,
+    updateColumnDefs,
+} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
+import usePrevious from '../../../../util/hooks/usePrevious';
+import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
+import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {
     CANCEL_BUTTON,
     COMBINED_RIGHTS,
@@ -37,8 +39,6 @@ import {
     RIGHT_MATCHING_DOP_STORAGE,
     SAVE_BUTTON,
 } from '../rightMatchingConstants';
-import * as selectors from '../rightMatchingSelectors';
-import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import './MatchRightsView.scss';
 
 const UNSELECTED_STATUSES = ['Pending', 'Error'];

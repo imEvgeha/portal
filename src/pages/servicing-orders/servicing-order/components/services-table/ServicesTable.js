@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {cloneDeep, get, isEmpty} from 'lodash';
+import PropTypes from 'prop-types';
+import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import {Checkbox} from '@atlaskit/checkbox';
 import mappings from '../../../../../../profile/servicesTableMappings';
@@ -13,8 +12,8 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import columnDefinitions from './columnDefinitions';
+import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import './ServicesTable.scss';
 
 const OP_STATUS_COL_INDEX = 4;

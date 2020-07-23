@@ -1,6 +1,6 @@
 import React from 'react';
-import Button, {ButtonGroup} from '@atlaskit/button';
 import {shallow} from 'enzyme';
+import Button, {ButtonGroup} from '@atlaskit/button';
 import BulkMatchingActionsBar from './BulkMatchingActionsBar';
 
 describe('BulkMatchingActionsBar', () => {

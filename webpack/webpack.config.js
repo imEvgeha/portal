@@ -1,10 +1,10 @@
+const webpackMerge = require('webpack-merge');
+const commonConfig = require('./webpack.common.js');
+const dotenv = require('dotenv');
 const fs = require('fs'); // to check if the file exists
 const path = require('path'); // to get the current path
-const dotenv = require('dotenv');
 const moment = require('moment');
-const webpackMerge = require('webpack-merge');
 const packageJSON = require('../package');
-const commonConfig = require('./webpack.common.js');
 
 const getAddons = addonsArgs => {
     const addons = Array.isArray(addonsArgs)

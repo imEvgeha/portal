@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import Select from '@atlaskit/select';
 import moment from 'moment';
-import {isUtc} from '../../../../util/date-time/DateTimeUtils';
-import CustomIntlProvider from '../../nexus-layout/CustomIntlProvider';
-import NexusDatePicker from '../nexus-date-picker/NexusDatePicker';
+import Select from '@atlaskit/select';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
+import NexusDatePicker from '../nexus-date-picker/NexusDatePicker';
 import './NexusDateTimeWindowPicker.scss';
 import {
     END_DATE_ERROR,
@@ -18,6 +16,8 @@ import {
     RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
 } from '../constants';
+import CustomIntlProvider from '../../nexus-layout/CustomIntlProvider';
+import {isUtc} from '../../../../util/date-time/DateTimeUtils';
 
 const NexusDateTimeWindowPicker = ({
     label,

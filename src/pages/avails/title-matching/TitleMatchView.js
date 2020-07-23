@@ -1,27 +1,27 @@
 import React, {useEffect, useContext} from 'react';
-import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import SectionMessage from '@atlaskit/section-message';
-import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {cloneDeep} from 'lodash';
+import SectionMessage from '@atlaskit/section-message';
+import Button from '@atlaskit/button';
 import './TitleMatchView.scss';
-import mappings from '../../../../profile/titleMatchingRightMappings';
+import TitlesList from './components/TitlesList';
+import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
+import {createColumnDefs as getRightColumns} from '../utils';
+import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
+import CreateTitleForm from './components/create-title-form/CreateTitleForm';
+import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
+import Constants from './titleMatchingConstants';
+import DOP from '../../../util/DOP';
 import {
     NexusGrid,
     NexusTitle,
 } from '../../../ui/elements';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import DOP from '../../../util/DOP';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import mappings from '../../../../profile/titleMatchingRightMappings';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
-import {createColumnDefs as getRightColumns} from '../utils';
-import TitlesList from './components/TitlesList';
-import CreateTitleForm from './components/create-title-form/CreateTitleForm';
-import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
-import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
-import Constants from './titleMatchingConstants';
-import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
 
 const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title 
 from the action menu.`;

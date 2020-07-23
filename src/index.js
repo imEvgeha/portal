@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 import Keycloak from 'keycloak-js';
 import {createBrowserHistory} from 'history';
 import {AppContainer} from 'react-hot-loader'; 
 import {ConnectedRouter} from 'connected-react-router';
 import {LicenseManager} from 'ag-grid-enterprise';
-import {PersistGate} from 'redux-persist/integration/react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import {defaultConfiguration, setEnvConfiguration} from './config';

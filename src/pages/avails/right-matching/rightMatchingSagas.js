@@ -1,19 +1,9 @@
-import {push} from 'connected-react-router';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
-import {
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-} from '../../../ui/elements/nexus-toast-notification/constants';
-import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
-import {URL} from '../../../util/Common';
-import {SET_LOCALE} from '../../legacy/constants/action-types';
-import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
-import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/service/Constants';
-import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import {createColumnDefs} from '../utils';
+import {push} from 'connected-react-router';
 import * as actionTypes from './rightMatchingActionTypes';
+import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
+import {rightsService} from '../../legacy/containers/avail/service/RightsService';
+import {URL} from '../../../util/Common';
 import {
     createRightById,
     getCombinedRight,
@@ -21,6 +11,16 @@ import {
     getRightMatchingList,
     putCombinedRight,
 } from './rightMatchingService';
+import {createColumnDefs} from '../utils';
+import {
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+} from '../../../ui/elements/nexus-toast-notification/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {SET_LOCALE} from '../../legacy/constants/action-types';
+import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/service/Constants';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {

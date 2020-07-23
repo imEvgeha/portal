@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import classnames from 'classnames';
+import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 import CustomActionsCellRenderer
     from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 import {ERROR_NO_CORE_TITLE_ID, FIND_MATCH, MATCHED_TITLE, NO_MATCHING_TITLE} from './constants';
 import './TooltipCellRenderer.scss';
 

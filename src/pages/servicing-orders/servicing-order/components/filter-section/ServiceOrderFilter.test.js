@@ -1,8 +1,8 @@
 import React from 'react';
-import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {shallow} from 'enzyme';
-import PartnerRequest from '../partner-request/PartnerRequest';
+import Button from '@atlaskit/button/dist/cjs/components/Button';
 import ServiceOrderFilter from './ServiceOrderFilter';
+import PartnerRequest from '../partner-request/PartnerRequest';
 
 describe('SOFilter', () => {
     let wrapper = null;

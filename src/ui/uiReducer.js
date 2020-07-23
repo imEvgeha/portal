@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux';
-import errorReducer from './error/errorReducer';
-import gridReducer from './grid/gridReducer';
 import loadingReducer from './loading/loadingReducer';
-import successReducer from './success/successReducer';
+import errorReducer from './error/errorReducer';
 import toastReducer from './toast/toastReducer';
+import successReducer from './success/successReducer';
+import gridReducer from './grid/gridReducer';
 
 const uiReducer = combineReducers({
     loading: loadingReducer,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import PriceTypeFormSchema from '../../../../../pages/legacy/components/form/PriceTypeFormSchema';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
+import PriceTypeFormSchema from '../../../../../pages/legacy/components/form/PriceTypeFormSchema';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 import './MultiInstanceCellEditor.scss';
 

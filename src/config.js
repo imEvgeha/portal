@@ -1,6 +1,6 @@
+import {isObject, mergeDeep} from './util/Common';
 import axios from 'axios';
 import config from 'react-global-configuration';
-import {isObject, mergeDeep} from './util/Common';
 
 export const defaultConfiguration = {
     gateway: {

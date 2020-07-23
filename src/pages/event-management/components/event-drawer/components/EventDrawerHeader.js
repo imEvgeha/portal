@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
-import NexusDownload from '../../../../../ui/elements/nexus-download/NexusDownload';
+import Button from '@atlaskit/button';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
 import {replayEvent, replicateEvent} from '../../../eventManagementActions';
+import NexusDownload from '../../../../../ui/elements/nexus-download/NexusDownload';
 import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {

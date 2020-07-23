@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
-import Avatar from '@atlaskit/avatar';
-import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
-import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
-import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/navigation-next';
-import {colors} from '@atlaskit/theme';
-import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {Can, idToAbilityNameMap} from '../../../ability';
-import {logout} from '../../../auth/authActions';
-import {searchFormShowSearchResults} from '../../../pages/legacy/stores/actions/avail/dashboard';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
+import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/navigation-next';
+import Avatar from '@atlaskit/avatar';
+import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
+import {colors} from '@atlaskit/theme';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
 import {SETTINGS, backgroundColor} from './constants';
+import {Can, idToAbilityNameMap} from '../../../ability';
+import {searchFormShowSearchResults} from '../../../pages/legacy/stores/actions/avail/dashboard';
+import {logout} from '../../../auth/authActions';
 
 const customThemeMode = modeGenerator({
     product: {

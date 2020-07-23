@@ -1,5 +1,5 @@
-import {get} from 'lodash';
 import {createSelector} from 'reselect';
+import {get} from 'lodash';
 
 const getAuth = state => state.auth || {};
 

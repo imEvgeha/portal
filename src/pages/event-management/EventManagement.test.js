@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 
 describe('EventManagement', () => {
     let wrapper = null;

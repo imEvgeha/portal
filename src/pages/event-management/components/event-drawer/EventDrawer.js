@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {get, isObject} from 'lodash';
 import {uid} from 'react-uid';
-import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
+import EventDrawerHeader from './components/EventDrawerHeader';
+import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
+import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
+import EventHeader from '../event-header/EventHeader';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
 import {
@@ -18,9 +21,6 @@ import {
     JSON_PARSING_ERR_MSG,
     XML_EMPTY_ELEMENT,
 } from '../../eventManagementConstants';
-import EventHeader from '../event-header/EventHeader';
-import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
-import EventDrawerHeader from './components/EventDrawerHeader';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
