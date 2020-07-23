@@ -1,5 +1,5 @@
-import {URL} from '../../../util/Common';
 import Constants from './constants';
+import {URL} from '../../../util/Common';
 
 const {STATUS_LIST, filterKeys: {LICENSOR, STATUS, RECEIVED_FROM, RECEIVED_TO}, URLFilterKeys} = Constants;
 

@@ -1,22 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {cloneDeep, isEmpty, isEqual, get} from 'lodash';
-import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
-import {
-    defineButtonColumn,
-    defineCheckboxSelectionColumn,
-} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
-import {filterBy} from '../../../ui/elements/nexus-grid/utils';
-import usePrevious from '../../../util/hooks/usePrevious';
+import {connect} from 'react-redux';
+import {cloneDeep, isEmpty, isEqual, get} from 'lodash';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
+import * as selectors from './rightsSelectors';
+import {setRightsFilter, setSelectedRights} from './rightsActions';
+import {
+    createAvailsMappingSelector,
+    createRightMatchingColumnDefsSelector,
+} from '../right-matching/rightMatchingSelectors';
+import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
+import Ingest from './components/ingest/Ingest';
 import {
     deselectIngest,
     downloadEmailAttachment,
@@ -25,17 +20,22 @@ import {
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
-import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
-import {
-    createAvailsMappingSelector,
-    createRightMatchingColumnDefsSelector,
-} from '../right-matching/rightMatchingSelectors';
-import constants from '../constants';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
-import Ingest from './components/ingest/Ingest';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {
+    defineButtonColumn,
+    defineCheckboxSelectionColumn,
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
+import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
+import {filterBy} from '../../../ui/elements/nexus-grid/utils';
+import usePrevious from '../../../util/hooks/usePrevious';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
-import {setRightsFilter, setSelectedRights} from './rightsActions';
-import * as selectors from './rightsSelectors';
+import constants from '../constants';
 import './RightsRepository.scss';
 
 export const RIGHTS_TAB = 'RIGHTS_TAB';

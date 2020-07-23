@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '@atlaskit/button';
 import {shallow} from 'enzyme';
+import Button from '@atlaskit/button';
 import BulkMatchingReview from './BulkMatchingReview';
 
 describe('BulkMatchingReview', () => {

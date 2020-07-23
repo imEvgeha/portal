@@ -1,12 +1,9 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
-import jwtDecode from 'jwt-decode';
-import {isEmpty} from 'lodash';
-import config from 'react-global-configuration';
 import {connect} from 'react-redux';
-import {updateAbility} from '../ability';
+import jwtDecode from 'jwt-decode';
+import config from 'react-global-configuration';
+import {isEmpty} from 'lodash';
 import {store} from '../index';
-import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
-import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import {
     loadDashboardState,
     loadHistoryState,
@@ -14,10 +11,13 @@ import {
     loadDopState,
     loadManualRightEntryState
 } from '../pages/legacy/stores/index';
-import Loading from '../pages/static/Loading';
+import {loadProfileInfo} from '../pages/legacy/stores/actions';
+import {updateAbility} from '../ability';
 import {injectUser, logout} from './authActions';
-import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
 import {getValidToken, getTokenDuration, wait} from './utils';
+import Loading from '../pages/static/Loading';
+import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
+import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 
 const MIN_VALIDITY_SEC = 30;
 const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;

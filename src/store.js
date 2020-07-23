@@ -3,10 +3,10 @@ import createSagaMiddleware, {END} from 'redux-saga';
 import {createLogger} from 'redux-logger';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {routerMiddleware} from 'connected-react-router';
-import storage from 'redux-persist/lib/storage';
 import createRootReducer from './reducer';
 // import {createPersistReducer, persistConfig} from './store-persist-config';
 import {LOGOUT} from './auth/authActionTypes';
+import storage from 'redux-persist/lib/storage';
 import {keycloak} from './auth/keycloak';
 
 // configure store

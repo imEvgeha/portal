@@ -1,5 +1,5 @@
-import * as actionTypes from './eventManagementActionTypes';
 import * as actions from './eventManagementActions';
+import * as actionTypes from './eventManagementActionTypes';
 
 describe('event management actions', () => {
     const payload = {};

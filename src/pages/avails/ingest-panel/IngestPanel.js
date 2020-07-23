@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Bundle from './components/bundle/Bundle';
-import Ingest from './components/ingest/Ingest';
-import PanelHeader from './components/panel-header/PanelHeader';
-import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
-import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
+import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
+import PanelHeader from './components/panel-header/PanelHeader';
+import Ingest from './components/ingest/Ingest';
+import Bundle from './components/bundle/Bundle';
+import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
 import Constants from './constants';

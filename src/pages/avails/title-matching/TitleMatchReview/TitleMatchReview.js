@@ -1,15 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
-import {connect} from 'react-redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import BackNavigationByUrl from '../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
-import {URL} from '../../../../util/Common';
-import DOP from '../../../../util/DOP';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
-import {getRepositoryCell} from '../../utils';
-import {createColumnDefs} from '../titleMatchingActions';
 import {getColumnDefs, getTitles, getCombinedTitle} from '../titleMatchingSelectors';
+import {createColumnDefs} from '../titleMatchingActions';
+import {getRepositoryCell} from '../../utils';
+import DOP from '../../../../util/DOP';
+import {URL} from '../../../../util/Common';
 import './TitleMatchReview.scss';
 
 const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnDefs, combinedTitle}) => {

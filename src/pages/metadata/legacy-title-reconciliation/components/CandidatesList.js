@@ -1,29 +1,29 @@
 import React, {useEffect, useState} from 'react';
+import {compose} from 'redux';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
+import Button from '@atlaskit/button';
 import classNames from 'classnames';
-import {compose} from 'redux';
 import './CandidatesList.scss';
-import mappings from '../../../../../profile/titleMatchingMappings';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
+import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
+import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
+import TitleSystems from '../../../legacy/constants/metadata/systems';
+import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
+import mappings from '../../../../../profile/titleMatchingMappings';
+import {getRepositoryName} from '../../../avails/utils';
+import constants from '../../../avails/title-matching/titleMatchingConstants';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
 import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
-import constants from '../../../avails/title-matching/titleMatchingConstants';
-import {getRepositoryName} from '../../../avails/utils';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
-import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
-import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
-import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),

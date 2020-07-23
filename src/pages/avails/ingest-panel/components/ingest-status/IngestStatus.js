@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EmailIcon from '@atlaskit/icon/glyph/email';
-import UploadIcon from '@atlaskit/icon/glyph/upload';
 import moment from 'moment';
+import UploadIcon from '@atlaskit/icon/glyph/upload';
+import EmailIcon from '@atlaskit/icon/glyph/email';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import './IngestStatus.scss';
 

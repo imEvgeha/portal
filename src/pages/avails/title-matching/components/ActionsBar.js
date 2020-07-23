@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
+import DOP from '../../../../util/DOP';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
@@ -13,9 +14,8 @@ import {
 } from '../../../../ui/toast/constants';
 import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {getDomainName, URL} from '../../../../util/Common';
-import DOP from '../../../../util/DOP';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
+import TitleSystems from '../../../legacy/constants/metadata/systems';
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './MultiInstanceCellEditor.scss';
-import RightTerritoryFormSchema from '../../../../../pages/legacy/components/form/RightTerritoryFormSchema';
-import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
+import {NexusModalContext} from '../../../nexus-modal/NexusModal';
+import RightTerritoryFormSchema from '../../../../../pages/legacy/components/form/RightTerritoryFormSchema';
 
 class TerritoryCellEditor extends Component {
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Chevron from '../../../../../assets/chevron-right.svg';
 import BundleTitle from '../bundle-title/BundleTitle';
+import Chevron from '../../../../../assets/chevron-right.svg';
 import IngestStatus from '../ingest-status/IngestStatus';
 import Ingest from '../ingest/Ingest';
 import './Bundle.scss';

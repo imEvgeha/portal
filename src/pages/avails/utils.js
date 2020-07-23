@@ -1,9 +1,9 @@
 import React from 'react';
 import {get, isEqual, cloneDeep} from 'lodash';
-import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createValueFormatter from '../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import TitleSystems from '../legacy/constants/metadata/systems';
+import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import Constants from './title-matching/titleMatchingConstants';
+import TitleSystems from '../legacy/constants/metadata/systems';
 
 const COLUMN_WIDTH_WIDE = 235;
 const COLUMN_WIDTH_DEFAULT = 150;

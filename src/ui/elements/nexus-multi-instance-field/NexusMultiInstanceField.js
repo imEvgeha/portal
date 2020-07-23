@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useContext, useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import AddIcon from '@atlaskit/icon/glyph/add';
-import InlineEdit from '@atlaskit/inline-edit';
-import {isEmpty} from 'lodash';
-import {Form} from 'react-forms-processor';
 import {renderer, FormButton} from 'react-forms-processor-atlaskit';
+import {Form} from 'react-forms-processor';
+import {isEmpty} from 'lodash';
 import {uid} from 'react-uid';
+import Button from '@atlaskit/button';
+import InlineEdit from '@atlaskit/inline-edit';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import NexusTag from '../nexus-tag/NexusTag';
 import './NexusMultiInstanceField.scss';

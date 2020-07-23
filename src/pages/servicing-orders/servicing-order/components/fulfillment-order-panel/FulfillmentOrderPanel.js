@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import File from '../../../../../assets/file.svg';
 import Constants from '../fulfillment-order/constants';
 import './FulfillmentOrderPanel.scss';

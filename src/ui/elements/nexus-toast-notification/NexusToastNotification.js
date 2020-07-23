@@ -1,9 +1,9 @@
 import React, {useEffect, useContext, isValidElement} from 'react';
 import PropTypes from 'prop-types';
 import Flag, {FlagGroup, AutoDismissFlag} from '@atlaskit/flag';
-import Tick from '@atlaskit/icon/glyph/check-circle';
 import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
+import Tick from '@atlaskit/icon/glyph/check-circle';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {colors} from '@atlaskit/theme';
 import {switchCase} from '../../../util/Common';

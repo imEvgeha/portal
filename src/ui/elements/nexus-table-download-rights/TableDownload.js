@@ -4,8 +4,8 @@ import DownloadIcon from '@atlaskit/icon/glyph/download';
 import './TableDownload.scss';
 import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
 import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
-import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
 import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
+import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
 import {downloadFile} from '../../../util/Common';
 

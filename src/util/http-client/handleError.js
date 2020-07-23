@@ -1,5 +1,5 @@
-import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
+import {store} from '../../index';
 import {ERROR_ICON, ERROR_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 import {addToast, removeToast} from '../../ui/toast/toastActions';
 

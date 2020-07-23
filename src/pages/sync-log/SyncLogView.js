@@ -1,11 +1,11 @@
 import React from 'react';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {Link} from 'react-router-dom';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './SyncLogView.scss';
-import {NexusTitle} from '../../ui/elements/';
-import {URL} from '../../util/Common';
-import SyncLogTable from './components/sync-log-table/SyncLogTable';
 import {TITLE} from './syncLogConstants';
+import {URL} from '../../util/Common';
+import {NexusTitle} from '../../ui/elements';
+import SyncLogTable from './components/sync-log-table/SyncLogTable';
 
 const SyncLogView = () => {
     return (

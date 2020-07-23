@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
-import {ErrorMessage} from '@atlaskit/form';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
+import {ErrorMessage} from '@atlaskit/form';
+import Button from '@atlaskit/button';
 import './CreateTitleForm.scss';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../ui/elements/nexus-toast-notification/constants';
-import withToasts from '../../../../../ui/toast/hoc/withToasts';
-import {URL, getDomainName} from '../../../../../util/Common';
-import DOP from '../../../../../util/DOP';
-import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
-import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
+import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
+import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
 import constants from './CreateTitleFormConstants';
+import DOP from '../../../../../util/DOP';
+import {URL, getDomainName} from '../../../../../util/Common';
+import withToasts from '../../../../../ui/toast/hoc/withToasts';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../ui/elements/nexus-toast-notification/constants';
 
 const {
     NEW_TITLE_LABEL_CANCEL,

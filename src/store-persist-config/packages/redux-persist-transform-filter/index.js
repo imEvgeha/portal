@@ -1,6 +1,6 @@
 // copied from https://github.com/edy/redux-persist-transform-filter
-import {get, set, unset, pickBy, isEmpty, forIn, cloneDeep} from 'lodash';
 import {createTransform} from 'redux-persist';
+import {get, set, unset, pickBy, isEmpty, forIn, cloneDeep} from 'lodash';
 
 export function createFilter (reducerName, inboundPaths, outboundPaths, transformType = 'whitelist') {
     return createTransform(

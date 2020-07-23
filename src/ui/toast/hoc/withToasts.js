@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {addToast, removeToast} from '../toastActions';
 import * as selectors from '../toastSelectors';
+import {addToast, removeToast} from '../toastActions';
 
 const withToasts = WrappedComponent => {
     const ComposedComponent = props => (

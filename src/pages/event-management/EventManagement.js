@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {get} from 'lodash';
-import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventDrawer from './components/event-drawer/EventDrawer';
-import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {TITLE} from './eventManagementConstants';
+import EventManagementTable from './components/event-management-table/EventManagementTable';
+import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import './EventManagement.scss';
 
 const EventManagement = () => {

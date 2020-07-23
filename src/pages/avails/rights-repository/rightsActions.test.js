@@ -1,5 +1,5 @@
-import * as actionTypes from './rightsActionTypes';
 import * as actions from './rightsActions';
+import * as actionTypes from './rightsActionTypes';
 
 describe('rights actions', () => {
     const payload = {};
