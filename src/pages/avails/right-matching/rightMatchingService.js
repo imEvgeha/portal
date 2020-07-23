@@ -1,9 +1,9 @@
-import config from 'react-global-configuration'; // config returns error for gateway
 import {identity, pickBy} from 'lodash';
-import {nexusFetch} from '../../../util/http-client/index';
-import {encodedSerialize, isObject, prepareSortMatrixParam, switchCase} from '../../../util/Common';
-import {CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../../ui/toast/constants';
+import config from 'react-global-configuration'; // config returns error for gateway
 import {store} from '../../../index';
+import {CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../../ui/toast/constants';
+import {encodedSerialize, isObject, prepareSortMatrixParam, switchCase} from '../../../util/Common';
+import {nexusFetch} from '../../../util/http-client/index';
 import {setFoundFocusRightInRightsRepository} from './rightMatchingActions';
 
 

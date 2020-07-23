@@ -1,8 +1,8 @@
 import {persistStore, persistReducer, createMigrate} from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import * as migrations from './migrations';
+import storage from 'redux-persist/lib/storage';
 import * as availsMigrations from '../pages/avails/availsMigrations';
+import * as migrations from './migrations';
 //import {createWhitelistFilter} from 'redux-persist-transform-filter';
 
 const STORE_PERSIST_KEY_PREFIX = 'portal-persist:';

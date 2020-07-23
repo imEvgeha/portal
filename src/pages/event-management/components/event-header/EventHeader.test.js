@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import EventHeader from './EventHeader';
 import {EVENT_HEADER_MAIN_FIELDS, EVENT_HEADER_SECONDARY_FIELDS} from '../../eventManagementConstants';
+import EventHeader from './EventHeader';
 
 describe('EventHeader', () => {
     let wrapper = null;

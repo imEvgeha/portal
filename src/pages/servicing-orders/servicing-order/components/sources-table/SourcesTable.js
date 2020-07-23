@@ -1,8 +1,8 @@
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import {Radio} from '@atlaskit/radio';
 import {isEqual} from 'lodash';
-import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -12,8 +12,8 @@ import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/colum
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import constants from '../fulfillment-order/constants';
-import columnDefinitions from './columnDefinitions';
 import {NON_EDITABLE_COLS, SELECT_VALUES} from './Constants';
+import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
