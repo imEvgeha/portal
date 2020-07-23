@@ -75,9 +75,15 @@ export const SelectedRightsActions = ({
             && ['ReadyNew', 'Ready'].includes(status));
     };
 
-    const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
-    const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-    const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
+    const checkPrePlanEligibilityCriteria = () => {
+        return selectedRights.every(({rightStatus, licensed, status}) => licensed
+            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
+            && ['ReadyNew', 'Ready'].includes(status));
+    };
+
+    // const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
+    // const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
+    // const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
 
     // All the rights have Empty CoreTitleIds and SameContentType
     const haveEmptyCoreTitleIdsSameContentType = () => {
@@ -113,10 +119,7 @@ export const SelectedRightsActions = ({
 
             // PrePlan criteria
             setIsPreplanEligible(
-                !!selectedRights.length
-                && hasReadyOrReadyNewStatus
-                && hasLicensedRights
-                && hasPendingConfirmedTentativeStatus
+                checkPrePlanEligibilityCriteria()
             );
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -154,8 +157,8 @@ export const SelectedRightsActions = ({
     };
 
     const prePlanEligible = (status, rightStatus, licensed) => {
-        if ((status === 'Ready' || status === 'ReadyNew')
-            && (rightStatus === 'Pending' || rightStatus === 'Confirmed' || rightStatus === 'Tentative')
+        if (['ReadyNew', 'Ready'].includes(status)
+            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
             && licensed) {
             return true;
         }
