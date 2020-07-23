@@ -33,7 +33,7 @@ import {
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
     RIGHT_TABS,
-    EXISTING_CORE_TITLE_ID_WARNING
+    EXISTING_CORE_TITLE_ID_WARNING,
 } from './constants';
 import './BulkMatching.scss';
 

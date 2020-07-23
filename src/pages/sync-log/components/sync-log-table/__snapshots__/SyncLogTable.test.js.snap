@@ -15,18 +15,18 @@ exports[`SyncLogTable should match snapshot 1`] = `
         className="nexus-c-sync-log-table__date-field"
       >
         <NexusDatePicker
-          allowClear={false}
           error=""
-          isLabelHidden={false}
           id="dateFrom"
+          isClearable={false}
+          isLabelHidden={false}
           isReadOnly={false}
+          isRequired={true}
           isReturningTime={false}
           isTimestamp={false}
           isWithInlineEdit={false}
           label="Date From"
           onChange={[Function]}
           onConfirm={[Function]}
-          isRequired={true}
           value="2020-07-11"
         />
       </div>
@@ -34,11 +34,12 @@ exports[`SyncLogTable should match snapshot 1`] = `
         className="nexus-c-sync-log-table__date-field"
       >
         <NexusDatePicker
-          allowClear={false}
           error=""
-          isLabelHidden={false}
           id="dateTo"
+          isClearable={false}
+          isLabelHidden={false}
           isReadOnly={false}
+          isRequired={false}
           isReturningTime={false}
           isTimestamp={false}
           isWithInlineEdit={false}

@@ -9179,10 +9179,10 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-nexus-react-app@1.0.7:
-  version "1.0.7"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.7.tgz#f9753c913c07f52bac03fceb6f7966b3a7d7d1d5"
-  integrity sha512-sfQ2GOWO8nJRsXruWbLpJ8zM/bWOlby6RXTkZODyULyI4+3YL+mhVynLytfJdbaUdG0QNMGVZk4zV4h8QxVMmg==
+eslint-config-nexus-react-app@1.0.8:
+  version "1.0.8"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/eslint-config-nexus-react-app/-/eslint-config-nexus-react-app-1.0.8.tgz#3a6f256356491510bc8dae675530ecdbd7f53921"
+  integrity sha512-LcErvWKeaB6xvLb8ESEsEvSepndfhLvPuzRNsAit/hec+BUoQFelw05QuqE+ijSs/pxuyzsr4/dM6jyo6zYqeQ==
 
 eslint-config-prettier@3.0.1:
   version "3.0.1"
