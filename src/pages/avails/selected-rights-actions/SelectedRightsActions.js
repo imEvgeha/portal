@@ -81,10 +81,6 @@ export const SelectedRightsActions = ({
             && ['ReadyNew', 'Ready'].includes(status));
     };
 
-    // const hasPendingConfirmedTentativeStatus = selectedRights.every(({rightStatus}) => ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus));
-    // const hasLicensedRights = selectedRights.every(({licensed}) => licensed);
-    // const hasReadyOrReadyNewStatus = selectedRights.every(({status}) => ['ReadyNew', 'Ready'].includes(status));
-
     // All the rights have Empty CoreTitleIds and SameContentType
     const haveEmptyCoreTitleIdsSameContentType = () => {
         return selectedRights.every(
