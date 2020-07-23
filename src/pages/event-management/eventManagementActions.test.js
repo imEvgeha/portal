@@ -2,7 +2,7 @@ import * as actionTypes from './eventManagementActionTypes';
 import * as actions from './eventManagementActions';
 
 describe('event management actions', () => {
-    let payload = {};
+    const payload = {};
     it('should create action to replay event', () => {
         const expectedAction = {
             type: actionTypes.REPLAY_EVENT,

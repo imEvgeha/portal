@@ -37,8 +37,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
     return (
         <div
             className={classNames('nexus-c-matched-combined-titles-table-wrapper',
-                isFullHeight && 'nexus-c-matched-full-view'
-            )}
+                isFullHeight && 'nexus-c-matched-full-view')}
         >
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"

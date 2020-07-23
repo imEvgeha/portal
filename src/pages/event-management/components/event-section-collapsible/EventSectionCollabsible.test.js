@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import EventSectionCollapsible from './EventSectionCollapsible';
 
 describe('EventSectionCollapsible', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeAll(() => {
         wrapper = shallow(<EventSectionCollapsible isInitiallyOpen={false} />);

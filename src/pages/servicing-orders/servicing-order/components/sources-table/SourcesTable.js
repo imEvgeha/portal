@@ -33,6 +33,8 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             }
             setSources(data);
         },
+        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [data]
     );
 
@@ -49,6 +51,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         () => {
             onSelectedSourceChange(selectedSource);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedSource]
     );
 
@@ -71,7 +74,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         colId: 'radio',
         field: 'radio',
         cellRendererParams: {selectedItem: selectedSource},
-        cellRendererFramework: serviceButtonCell
+        cellRendererFramework: serviceButtonCell,
     });
 
     const servicesColumn = defineColumn({
@@ -85,12 +88,12 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             const serviceLength = name && data[name] ? data[name].length : 0;
 
             return <Badge>{serviceLength}</Badge>;
-        }
+        },
     });
 
     const onSourceTableChange = ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            let newSources = sources.slice();
+            const newSources = sources.slice();
             newSources[rowIndex] = data;
             setSources(newSources);
         }
@@ -117,11 +120,11 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 
 SourcesTable.propTypes = {
     data: PropTypes.array,
-    onSelectedSourceChange: PropTypes.func.isRequired
+    onSelectedSourceChange: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {
-    data: []
+    data: [],
 };
 
 export default SourcesTable;

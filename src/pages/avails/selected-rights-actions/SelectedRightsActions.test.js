@@ -146,42 +146,6 @@ describe('SelectedRightsActions', () => {
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
-
-        it('should be disabled when expired rights are selected when licensed is true', () => {
-            init([
-                {
-                    coreTitleId: '',
-                    sourceRightId: '1',
-                    licensed: true,
-                    end: '2010-04-30T00:00:00',
-                },
-                {
-                    coreTitleId: '2',
-                    sourceRightId: '2',
-                    licensed: true,
-                    end: '2010-04-30T00:00:00',
-                },
-            ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
-        });
-
-        it('should be disabled when expired rights are selected when licensed is false', () => {
-            init([
-                {
-                    coreTitleId: '',
-                    sourceRightId: '1',
-                    licensed: false,
-                    availEnd: '2010-04-30T00:00:00',
-                },
-                {
-                    coreTitleId: '2',
-                    sourceRightId: '2',
-                    licensed: false,
-                    availEnd: '2010-04-30T00:00:00',
-                },
-            ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
-        });
     });
 
     describe('Bulk Match', () => {
@@ -287,46 +251,6 @@ describe('SelectedRightsActions', () => {
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
-
-        it('should be disabled when expired rights are selected when licensed true', () => {
-            init([
-                {
-                    coreTitleId: '',
-                    contentType: 'movie',
-                    sourceRightId: '1',
-                    licensed: true,
-                    end: '2010-04-30T00:00:00',
-                },
-                {
-                    coreTitleId: '2',
-                    contentType: 'movie',
-                    sourceRightId: '2',
-                    licensed: true,
-                    end: '2010-04-30T00:00:00',
-                },
-            ]);
-            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
-        });
-
-        it('should be disabled when expired rights are selected when licensed false', () => {
-            init([
-                {
-                    coreTitleId: '',
-                    contentType: 'movie',
-                    sourceRightId: '1',
-                    licensed: false,
-                    availEnd: '2010-04-30T00:00:00',
-                },
-                {
-                    coreTitleId: '2',
-                    contentType: 'movie',
-                    sourceRightId: '2',
-                    licensed: false,
-                    availEnd: '2010-04-30T00:00:00',
-                },
-            ]);
-            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
-        });
     });
 
     describe('Create Bonus Right', () => {
@@ -359,13 +283,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'ReadyNew'
+                    status: 'ReadyNew',
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
@@ -377,13 +301,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '1',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -413,13 +337,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -431,13 +355,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -449,13 +373,13 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: false,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
-                    status: 'Ready'
+                    status: 'Ready',
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);

@@ -9,10 +9,10 @@ import {TITLE} from './syncLogConstants';
 
 const SyncLogView = () => {
     return (
-        <div className='nexus-c-sync-log-view'>
+        <div className="nexus-c-sync-log-view">
             <NexusTitle>
                 <Link to={URL.keepEmbedded('/metadata')}>
-                    <ArrowLeftIcon size='large' />
+                    <ArrowLeftIcon size="large" />
                 </Link>
                 <span className="nexus-c-sync-log-view__title">{TITLE}</span>
             </NexusTitle>

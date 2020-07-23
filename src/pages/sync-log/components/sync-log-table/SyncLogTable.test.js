@@ -4,8 +4,8 @@ import { shallow } from 'enzyme';
 import SyncLogTable from './SyncLogTable';
 
 describe('SyncLogTable', () => {
-    let wrapper;
-    let spy;
+    let wrapper = null;
+    let spy = null;
 
     beforeAll(() => {
         const mockDate = new Date('2020-07-11');

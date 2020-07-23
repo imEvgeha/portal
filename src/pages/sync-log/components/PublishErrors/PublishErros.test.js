@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import PublishErrors from './PublishErrors';
 
 describe('PublishErrors', () => {
-    let wrapper;
+    let wrapper = null;
     const mockSetErrors = jest.fn();
 
     beforeEach(() => {
