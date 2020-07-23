@@ -4,8 +4,7 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
-import './TitleMatchView.scss';
-import mappings from '../../../../profile/titleMatchingRightMappings';
+import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {
     NexusGrid,
     NexusTitle,
@@ -22,6 +21,7 @@ import NewTitleConstants from './components/create-title-form/CreateTitleFormCon
 import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
 import Constants from './titleMatchingConstants';
 import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
+import './TitleMatchView.scss';
 
 const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title 
 from the action menu.`;

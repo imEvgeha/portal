@@ -1,10 +1,9 @@
-const NO_CONTENT = 204;
-
-export default async (response) => {
+/* eslint-disable no-magic-numbers, no-throw-literal */
+export default async response => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
-            if (response.status === NO_CONTENT) {
+            if (response.status === 204) {
                 return '';
             }
             // BE issue: empty response headers workaround
@@ -38,13 +37,14 @@ const parseResponse = (response, type) => {
     if (type.includes('application/json')) {
         return response.json();
     } else if (type.includes('text/plain')) {
-        // configuration/endpoint return text/plain content type as header response -> header request is application/json
+        // configuration/endpoint return text/plain content type as header response
+        // -> header request is application/json
         return response.json();
     } else if (type.includes('text/html')) {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
-    } else if (type.includes('application/octet-stream')) { 
+    } else if (type.includes('application/octet-stream')) {
         return response.arrayBuffer();
     }
 

@@ -29,7 +29,12 @@ import CreateTitleForm from '../title-matching/components/create-title-form/Crea
 import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
 import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
 import BulkMatchingReview from './components/BulkMatchingReview';
-import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS} from './constants';
+import {
+    TITLE_MATCHING_MSG,
+    TITLE_MATCHING_REVIEW_HEADER,
+    RIGHT_TABS,
+    EXISTING_CORE_TITLE_ID_WARNING,
+} from './constants';
 import './BulkMatching.scss';
 
 export const BulkMatching = (

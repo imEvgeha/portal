@@ -5,7 +5,6 @@ import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
-import {URL} from '../../../../util/Common';
 import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => [
@@ -54,6 +53,6 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => [
         tooltip: 'Event Management',
         isSelected: (selectedItem === EVENT_MANAGEMENT),
         onClick: () => handleClick(EVENT_MANAGEMENT),
-    }
+    },
 ];
 

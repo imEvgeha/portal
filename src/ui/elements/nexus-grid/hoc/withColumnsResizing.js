@@ -5,22 +5,26 @@ import {setGridColumnsSize} from '../../../../pages/legacy/stores/actions';
 import {createColumnsSizeSelector} from '../../../../pages/legacy/stores/selectors/columnsSize/columnsSizelSelectors';
 
 const AG_GRID_DEF_COL_DEF = {
-    resizable: true
+    resizable: true,
 };
 
-const withColumnsResizing = ({colDef= AG_GRID_DEF_COL_DEF} = {}) => WrappedComponent =>{
-     const ComposedComponent = (props) => {
+const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF} = {}) => WrappedComponent => {
+    const ComposedComponent = props => {
         const {columnDefs, id, existingColumnsSize, updateGridColumnsSize} = props;
         const existingTableColumnsSize = existingColumnsSize[id] || {};
         let columnDefsWithSizes = columnDefs;
         if (existingTableColumnsSize) {
-            columnDefsWithSizes = columnDefs.map(c => c.colId && existingTableColumnsSize[c.colId] ? {...c, width: existingTableColumnsSize[c.colId]} : c);
+            columnDefsWithSizes = columnDefs.map(c => (
+                c.colId && existingTableColumnsSize[c.colId]
+                    ? {...c, width: existingTableColumnsSize[c.colId]}
+                    : c
+            ));
         }
         const [columnsSize, setColumnsSize] = useState(existingTableColumnsSize);
 
-        const handleColumnResized  = e => {
-            if (e.finished){
-                const updatedColumnsSize = {...columnsSize, [e.column.colDef.colId] : e.column.actualWidth};
+        const handleColumnResized = e => {
+            if (e.finished) {
+                const updatedColumnsSize = {...columnsSize, [e.column.colDef.colId]: e.column.actualWidth};
                 setColumnsSize(updatedColumnsSize);
                 id && updateGridColumnsSize(id, updatedColumnsSize);
             }
@@ -33,7 +37,7 @@ const withColumnsResizing = ({colDef= AG_GRID_DEF_COL_DEF} = {}) => WrappedCompo
                 onColumnResized={handleColumnResized}
                 columnDefs={columnDefsWithSizes}
             />
-         );
+        );
     };
 
     const createMapStateToProps = () => {

@@ -3,7 +3,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import storage from 'redux-persist/lib/storage';
 import * as availsMigrations from '../pages/avails/availsMigrations';
 import * as migrations from './migrations';
-//import {createWhitelistFilter} from 'redux-persist-transform-filter';
+// import {createWhitelistFilter} from 'redux-persist-transform-filter';
 
 const STORE_PERSIST_KEY_PREFIX = 'portal-persist:';
 

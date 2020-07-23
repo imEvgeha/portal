@@ -7,45 +7,46 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
         case DATETIME_FIELDS.TIMESTAMP:
         case DATETIME_FIELDS.BUSINESS_DATETIME:
         case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-            return (params) => {
+            return params => {
                 const {data = {}} = params || {};
                 const {[javaVariableName]: date = ''} = data || {};
                 return ISODateToView(date, dataType);
             };
-            
+
         case 'select':
             if (javaVariableName === 'contentType') {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
 
                     if (data && data[javaVariableName]) {
                         return `${data[javaVariableName].slice(0, 1)}${data[javaVariableName].slice(1).toLowerCase()}`;
                     }
                 };
-            } else {
-                return (params) => {
-                    const {data = {}} = params || {};
-
-                    if (data && data[javaVariableName]) {
-                        // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
-
-                        return isEmphasized ? startCase(camelCase(data[javaVariableName])) : data[javaVariableName];
-                    }
-                };
             }
+            return params => {
+                const {data = {}} = params || {};
+
+                if (data && data[javaVariableName]) {
+                    // Capitalizes every word and removes non-alphanumeric characters if string is emphasized
+
+                    return isEmphasized ? startCase(camelCase(data[javaVariableName])) : data[javaVariableName];
+                }
+            };
+
 
         case 'priceType':
-            return (params) => {
+            return params => {
                 const {data = {}} = params || {};
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(`${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`)).join(', ');
+                        .map(e => String(`${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`))
+                        .join(', ');
                 }
             };
         case 'territoryType':
         case 'audioLanguageType':
-            return (params) => {
+            return params => {
                 const {data = {}} = params || {};
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
@@ -55,7 +56,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             };
         case 'string':
             if (javaVariableName && javaVariableName.startsWith('castCrew')) {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
                     if (data && data['castCrew']) {
                         return data['castCrew']
@@ -64,25 +65,25 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                     }
                 };
             } else if (javaVariableName === 'ratings') {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
                         return data[javaVariableName]
-                            .map(({ratingSystem, rating}) => `${ratingSystem ? ratingSystem : 'Empty'} ${rating ? rating : 'Empty'}`)
+                            .map(({ratingSystem, rating}) => `${ratingSystem || 'Empty'} ${rating || 'Empty'}`)
                             .join(', ');
                     }
                 };
             } else if (javaVariableName && javaVariableName.startsWith('externalIds')) {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
                     const {externalIds} = data || {};
-                    const key = javaVariableName.split('.')[1];
+                    const [, key] = javaVariableName.split('.');
                     if (externalIds && externalIds[key]) {
                         return externalIds[key];
                     }
                 };
             } else if (javaVariableName === 'system') {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
                     const {id, legacyIds = {}} = data || {};
                     const {movida, vz} = legacyIds || {};
@@ -94,11 +95,10 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return `Movida Title ID: ${movidaTitleId}`;
                     } else if (vzTitleId) {
                         return `VZ Title ID: ${vzTitleId}`;
-                    } else
-                        return `Nexus Title ID: ${id}`;
+                    } return `Nexus Title ID: ${id}`;
                 };
             } else if (javaVariableName === 'editorialGenres') {
-                return (params) => {
+                return params => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
                         return data[javaVariableName]
@@ -109,7 +109,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             }
             return;
         case 'boolean':
-            return ({ value }) => {
+            return ({value}) => {
                 // HACK: ag-grid converts boolean values to string when calling this function to format the filter
                 switch (value) {
                     case true:

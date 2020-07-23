@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
@@ -7,22 +8,22 @@ import DefaultUserIcon from '../../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
 import {
     CustomColumn, CustomEllipsis, CustomRow,
-    ListItemText, ListText, PersonListFlag
+    ListItemText, ListText, PersonListFlag,
 } from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 const NexusPersonRO = ({
-     person,
-     showPersonType,
- })=> {
+    person,
+    showPersonType,
+}) => {
     return (
         <Container>
             <CustomRow>
                 <CustomColumn xs={!person.characterName ? 12 : 6}>
                     <CustomEllipsis>
-                        <img src={DefaultUserIcon} alt="Cast" className='nexus-c-person-avatar' />
+                        <img src={DefaultUserIcon} alt="Cast" className="nexus-c-person-avatar" />
                         {showPersonType && (
                             <PersonListFlag>
-                                <span className='nexus-c-person-type'>
+                                <span className="nexus-c-person-type">
                                     <Lozenge appearance="default">
                                         {getFormatTypeName(person.personType)}
                                     </Lozenge>
@@ -36,10 +37,10 @@ const NexusPersonRO = ({
                 </CustomColumn>
                 {person.characterName ? (
                     <CustomColumn xs={6}>
-                        <CustomEllipsis className='nexus-c-person-character-container'>
-                            <ListText className='nexus-c-person-character'>
+                        <CustomEllipsis className="nexus-c-person-character-container">
+                            <ListText className="nexus-c-person-character">
                                 <PersonListFlag>
-                                    <span className='nexus-c-person-separator'>
+                                    <span className="nexus-c-person-separator">
                                         <Lozenge appearance="default">CHARACTER
                                         </Lozenge>
                                     </span>
@@ -58,11 +59,11 @@ const NexusPersonRO = ({
 
 NexusPersonRO.propTypes = {
     person: PropTypes.object.isRequired,
-    showPersonType: PropTypes.bool
+    showPersonType: PropTypes.bool,
 };
 
 NexusPersonRO.defaultProps = {
-    showPersonType: true
+    showPersonType: true,
 };
 
 export default NexusPersonRO;

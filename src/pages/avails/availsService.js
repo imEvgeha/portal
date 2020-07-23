@@ -6,7 +6,7 @@ export const getAffectedRights = params => {
     return nexusFetch(url);
 };
 export const getExistingBonusRights = params => {
-    //TODO: change the API to correct path
+    // TODO: change the API to correct path
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/impacted?rightIds=${params}`;
     return nexusFetch(url);
 };

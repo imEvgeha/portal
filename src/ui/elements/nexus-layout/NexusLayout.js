@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './NexusLayout.scss';
 import {IfEmbedded} from '../../../util/Common';
 import DOP from '../../../util/DOP';

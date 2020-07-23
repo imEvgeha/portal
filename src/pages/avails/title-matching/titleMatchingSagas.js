@@ -1,7 +1,7 @@
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
-import mappings from '../../../../profile/titleMatchingMappings';
+import mappings from '../../../../profile/titleMatchingMappings.json';
 import {
     ERROR_ICON,
     ERROR_TITLE,

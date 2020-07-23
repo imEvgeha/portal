@@ -2,7 +2,7 @@ import React from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {Link} from 'react-router-dom';
 import './SyncLogView.scss';
-import {NexusTitle} from '../../ui/elements/';
+import {NexusTitle} from '../../ui/elements';
 import {URL} from '../../util/Common';
 import SyncLogTable from './components/sync-log-table/SyncLogTable';
 import {TITLE} from './syncLogConstants';

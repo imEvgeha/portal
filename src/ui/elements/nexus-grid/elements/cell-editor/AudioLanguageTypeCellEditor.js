@@ -6,7 +6,6 @@ import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
 
 class AudioLanguageTypeCellEditor extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -16,11 +15,12 @@ class AudioLanguageTypeCellEditor extends Component {
 
     isPopup = () => true;
 
+    // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value;
 
-    handleChange = (value) => {
+    handleChange = value => {
         const addedLanguages = value
-            .map((language) => language.languageAudioTypes || language)
+            .map(language => language.languageAudioTypes || language)
             .filter(Boolean);
 
         this.setState({value: addedLanguages});
@@ -44,7 +44,7 @@ class AudioLanguageTypeCellEditor extends Component {
                     schema={AudioLanguageTypeFormSchema(this.getOptions())}
                     keyForTagLabel="language"
                     isUsingModal={false}
-                    specialCreate={true}
+                    isSpecialCreate={true}
                 />
             </div>
         );
@@ -64,7 +64,7 @@ AudioLanguageTypeCellEditor.defaultProps = {
         languages: [],
         audioTypes: [],
     },
-    value: null
+    value: null,
 };
 
 AudioLanguageTypeCellEditor.contextType = NexusModalContext;

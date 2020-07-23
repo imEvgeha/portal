@@ -67,7 +67,7 @@ const SyncLogTable = () => {
                             onChange={setDateFrom}
                             value={dateFrom}
                             isReturningTime={false}
-                            required
+                            isRequired
                         />
                     </div>
                     <div className="nexus-c-sync-log-table__date-field">

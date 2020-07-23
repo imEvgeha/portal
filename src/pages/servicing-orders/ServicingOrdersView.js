@@ -12,7 +12,7 @@ import {
     HIDE_READY_BTN,
     SERVICING_ORDERS_TTL,
     EXPORT_WARNING_MESSAGE,
-    readinessStatus
+    readinessStatus,
 } from './constants';
 
 const ServicingOrdersView = () => {

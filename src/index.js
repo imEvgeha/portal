@@ -1,35 +1,27 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {Provider} from 'react-redux';
-import Keycloak from 'keycloak-js';
-import {createBrowserHistory} from 'history';
-import {AppContainer} from 'react-hot-loader'; 
-import {ConnectedRouter} from 'connected-react-router';
 import {LicenseManager} from 'ag-grid-enterprise';
-import {PersistGate} from 'redux-persist/integration/react';
+import {ConnectedRouter} from 'connected-react-router';
+import {createBrowserHistory} from 'history';
+import {render} from 'react-dom';
+import {AppContainer} from 'react-hot-loader';
+import {Provider} from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import {defaultConfiguration, setEnvConfiguration} from './config';
+import AppProviders from './AppProviders';
+import Router from './Router';
+import {createKeycloakInstance} from './auth/keycloak';
+import {setEnvConfiguration} from './config';
+import {routesWithTracking} from './routes';
+import rootSaga from './saga';
+import configureStore from './store';
+import {configurePersistor} from './store-persist-config';
+import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
+import Toast from './ui/toast/Toast';
+import {initializeTracker} from './util/hoc/withTracker';
 import './styles/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
-import configureStore from './store';
-import rootSaga from './saga';
-import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
-import CustomIntlProvider from './ui/elements/nexus-layout/CustomIntlProvider';
-import {isObject, mergeDeep} from './util/Common';
-import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
-import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
-import {login, authRefreshToken, storeAuthCredentials, injectUser} from './auth/authActions';
-import Toast from './ui/toast/Toast';
-import {keycloak, createKeycloakInstance} from './auth/keycloak';
-import {configurePersistor} from './store-persist-config';
-import AuthProvider from './auth/AuthProvider';
-import { routesWithTracking } from './routes';
-import Router from './Router';
-import AppProviders from './AppProviders';
-import { initializeTracker } from './util/hoc/withTracker';
 
 const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
@@ -48,6 +40,7 @@ setEnvConfiguration()
 const history = createBrowserHistory();
 
 // temporary export -> we should not export store
+// eslint-disable-next-line no-underscore-dangle
 export const store = configureStore(window.__PRELOADED_STATE__ || {}, history);
 const persistor = configurePersistor(store);
 
@@ -78,22 +71,22 @@ function renderApp() {
         <App />,
         document.getElementById('app')
     );
-
-};
+}
 
 if (module.hot) {
     module.hot.accept(
-         ([
+        ([
             // TODO: we should enable AppProviders too
-            './ui/elements/nexus-layout/NexusLayout', 
+            './ui/elements/nexus-layout/NexusLayout',
             './Router',
             './routes',
             './saga',
-        ])
-        , () => {
+        ]),
+        () => {
             render(
                 <App />,
                 document.getElementById('app')
             );
-    });
+        }
+    );
 }

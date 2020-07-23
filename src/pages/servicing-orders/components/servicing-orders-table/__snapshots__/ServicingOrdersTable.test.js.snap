@@ -4,7 +4,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
 <div
   className="nexus-c-servicing-orders-table"
 >
-  <ComposedComponent
+  <Component
     columnDefs={
       Array [
         Object {

@@ -3,8 +3,8 @@ import {shallow} from 'enzyme';
 import NexusPersonsList from './NexusPersonsList';
 
 describe('NexusPersonsList', () => {
-    let wrapper;
-    let personsList = [
+    let wrapper = null;
+    const personsList = [
         {
             id: 'prs_Ac9oyaREip',
             firstName: null,
@@ -12,7 +12,7 @@ describe('NexusPersonsList', () => {
             lastName: null,
             displayName: 'Amaka Obi',
             personType: 'Actor',
-            characterName: null
+            characterName: null,
         },
         {
             id: 'prs_airo586ETR',
@@ -21,7 +21,7 @@ describe('NexusPersonsList', () => {
             lastName: null,
             displayName: 'Ebube Nwagbo',
             personType: 'Actor',
-            characterName: null
+            characterName: null,
         },
         {
             id: 'prs_x9TX5AkETo',
@@ -30,8 +30,8 @@ describe('NexusPersonsList', () => {
             lastName: null,
             displayName: 'Solomon Akiyesi',
             personType: 'Actor',
-            characterName: null
-        }
+            characterName: null,
+        },
     ];
     it('should match snapshot', () => {
         wrapper = shallow(

@@ -12,8 +12,10 @@ import {
     ATLASKIT_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT,
-    TIMES
+    TIMES,
 } from '../constants';
+
+const MIN_DATE_LENGTH = 10;
 
 const NexusSimpleDateTimePicker = ({
     label,
@@ -24,7 +26,7 @@ const NexusSimpleDateTimePicker = ({
     error,
     isSimulcast,
     isTimestamp,
-    allowClear,
+    isClearable,
     ...restProps
 }) => {
     const [date, setDate] = useState(value);
@@ -36,8 +38,8 @@ const NexusSimpleDateTimePicker = ({
     useEffect(() => setStrippedDate(date), [isSimulcast]);
     useEffect(() => setStrippedDate(value), [value]);
 
-    const setStrippedDate = (value) => {
-        if(!value) {
+    const setStrippedDate = value => {
+        if (!value) {
             setDate('');
             return;
         }
@@ -53,7 +55,7 @@ const NexusSimpleDateTimePicker = ({
     const datePlaceholder = getDateFormatBasedOnLocale(locale).toUpperCase();
 
     const convertToRequiredFormat = date => {
-        if(!date) {
+        if (!date) {
             setDate('');
             return;
         }
@@ -66,10 +68,10 @@ const NexusSimpleDateTimePicker = ({
     };
 
     const onDateChange = date => {
-        if(date){
+        if (date) {
             onChange(convertToRequiredFormat(date));
         } else {
-            return allowClear && onChange('');
+            return isClearable && onChange('');
         }
     };
 
@@ -84,9 +86,9 @@ const NexusSimpleDateTimePicker = ({
                 >
                     {label}
                 </label>
-              )}
+            )}
             <TemporaryErrorBorder error={error}>
-                <div className='nexus-c-date-picker__date-clear-wrapper'>
+                <div className="nexus-c-date-picker__date-clear-wrapper">
                     <DateTimePicker
                         locale={locale}
                         id={id}
@@ -95,18 +97,20 @@ const NexusSimpleDateTimePicker = ({
                         onChange={onDateChange}
                         datePickerProps={{
                             placeholder: datePlaceholder,
-                            onChange: (newValue) => {
+                            onChange: newValue => {
                                 !moment(value).isValid()
                                     ? onChange(convertToRequiredFormat(newValue))
-                                    : onChange(convertToRequiredFormat(newValue + date.slice(10)));
-                            }
+                                    : onChange(convertToRequiredFormat(newValue + date.slice(MIN_DATE_LENGTH)));
+                            },
                         }}
                         timePickerProps={{
                             placeholder: TIME_PLACEHOLDER,
                             onChange: (time = '') => {
                                 const [hours, minutes] = time.split(':');
                                 if (hours && minutes) {
-                                    const mergedDate = moment(date || undefined).hours(Number(hours)).minutes(Number(minutes));
+                                    const mergedDate = moment(date || undefined)
+                                        .hours(Number(hours))
+                                        .minutes(Number(minutes));
                                     onChange(convertToRequiredFormat(mergedDate));
                                 }
                             },
@@ -115,14 +119,14 @@ const NexusSimpleDateTimePicker = ({
                         times={TIMES}
                         {...restProps}
                     />
-                    {allowClear && <ClearButton onClear={() => {setDate(''); onDateChange('');}} />}
+                    {isClearable && <ClearButton onClear={() => { setDate(''); onDateChange(''); }} />}
                 </div>
             </TemporaryErrorBorder>
             {error && (
                 <ErrorMessage>
                     {error}
                 </ErrorMessage>
-              )}
+            )}
         </>
     );
 };
@@ -134,7 +138,7 @@ NexusSimpleDateTimePicker.propTypes = {
     error: PropTypes.string,
     isSimulcast: PropTypes.bool,
     isTimestamp: PropTypes.bool,
-    allowClear: PropTypes.bool,
+    isClearable: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
 };
@@ -146,13 +150,13 @@ NexusSimpleDateTimePicker.defaultProps = {
     error: '',
     isSimulcast: true,
     isTimestamp: false,
-    allowClear: false,
+    isClearable: false,
 };
 
 export default NexusSimpleDateTimePicker;
 
 // TODO: Remove when AtlasKit fixes DateTimePicker's error state
 const TemporaryErrorBorder = styled.div`
-    border: 2px solid ${({error}) => error ? '#DE350B' : 'transparent'};
+    border: 2px solid ${({error}) => (error ? '#DE350B' : 'transparent')};
     border-radius: 4px;
 `;

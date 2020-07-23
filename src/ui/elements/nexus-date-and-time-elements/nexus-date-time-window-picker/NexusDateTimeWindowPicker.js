@@ -29,7 +29,7 @@ const NexusDateTimeWindowPicker = ({
     onChangeAny,
     startDateTimePickerProps,
     endDateTimePickerProps,
-    allowClear
+    isClearable,
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
 
@@ -62,7 +62,7 @@ const NexusDateTimeWindowPicker = ({
 
     // Display an error when time-window is invalid
     // (i.e. If start date is after end date and vice versa)
-    const validateStartDate = (date) => {
+    const validateStartDate = date => {
         (date && endDate) && (
             moment(date).isAfter(endDate)
                 ? setStartDateError(START_DATE_ERROR)
@@ -70,7 +70,7 @@ const NexusDateTimeWindowPicker = ({
         );
     };
 
-    const validateEndDate = (date) => {
+    const validateEndDate = date => {
         (date && startDate) && (
             moment(date).isBefore(startDate)
                 ? setEndDateError(END_DATE_ERROR)
@@ -79,8 +79,8 @@ const NexusDateTimeWindowPicker = ({
     };
 
     // Fills seconds and milliseconds for DateTime endDate or Hours, minutes, seconds and milliseconds for Date endDate
-    const handleChangeEndDate = (date) => {
-        if(!date) {
+    const handleChangeEndDate = date => {
+        if (!date) {
             setEndDate('');
             return;
         }
@@ -107,10 +107,10 @@ const NexusDateTimeWindowPicker = ({
         <CustomIntlProvider>
             <div className="nexus-c-date-time-window-picker">
                 {label && (
-                <div className="nexus-c-date-time-window-picker__label">
-                    {label}
-                </div>
-              )}
+                    <div className="nexus-c-date-time-window-picker__label">
+                        {label}
+                    </div>
+                )}
                 <div className="nexus-c-date-time-window-picker__start-date">
                     {
                         !!labels.length && (
@@ -127,7 +127,7 @@ const NexusDateTimeWindowPicker = ({
                                 value={startDate}
                                 onChange={setStartDate}
                                 error={startDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...startDateTimePickerProps}
                             />
                         )
@@ -137,7 +137,7 @@ const NexusDateTimeWindowPicker = ({
                                 isTimestamp={isTimestamp}
                                 onChange={setStartDate}
                                 error={startDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...startDateTimePickerProps}
                             />
                         )}
@@ -158,7 +158,7 @@ const NexusDateTimeWindowPicker = ({
                                 value={endDate}
                                 onChange={handleChangeEndDate}
                                 error={endDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 {...endDateTimePickerProps}
                             />
                         )
@@ -168,27 +168,27 @@ const NexusDateTimeWindowPicker = ({
                                 isTimestamp={isTimestamp}
                                 onChange={handleChangeEndDate}
                                 error={endDateError}
-                                allowClear={allowClear}
+                                isClearable={isClearable}
                                 isReturningTime={isReturningTime}
                                 {...endDateTimePickerProps}
                             />
                         )}
                 </div>
                 {(!isTimestamp && isUsingTime) && (
-                <div className="nexus-c-date-time-picker__type-select">
-                    <label className="nexus-c-date-time-picker__label">
-                        Select Type
-                    </label>
-                    <Select
-                        defaultValue={{label: RELATIVE_TIME_LABEL, value: false}}
-                        options={[
-                            {label: RELATIVE_TIME_LABEL, value: false},
-                            {label: SIMULCAST_TIME_LABEL, value: true},
-                        ]}
-                        onChange={type => setIsSimulcast(type.value)}
-                    />
-                </div>
-              )}
+                    <div className="nexus-c-date-time-picker__type-select">
+                        <label className="nexus-c-date-time-picker__label">
+                            Select Type
+                        </label>
+                        <Select
+                            defaultValue={{label: RELATIVE_TIME_LABEL, value: false}}
+                            options={[
+                                {label: RELATIVE_TIME_LABEL, value: false},
+                                {label: SIMULCAST_TIME_LABEL, value: true},
+                            ]}
+                            onChange={type => setIsSimulcast(type.value)}
+                        />
+                    </div>
+                )}
             </div>
         </CustomIntlProvider>
     );
@@ -196,19 +196,21 @@ const NexusDateTimeWindowPicker = ({
 
 NexusDateTimeWindowPicker.propTypes = {
     label: PropTypes.string,
-    labels: PropTypes.array,    //example: ['From', 'To']
+    labels: PropTypes.array, // example: ['From', 'To']
     isTimestamp: PropTypes.bool,
     isReturningTime: PropTypes.bool,
     onChange: PropTypes.func,
-    onChangeAny: PropTypes.func,     //when any date is changed (returns blank dates as well)
+    onChangeAny: PropTypes.func, // when any date is changed (returns blank dates as well)
     isUsingTime: PropTypes.bool.isRequired,
     startDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        defaultValue: PropTypes.string,
     }).isRequired,
     endDateTimePickerProps: PropTypes.shape({
         id: PropTypes.string.isRequired,
+        defaultValue: PropTypes.string,
     }).isRequired,
-    allowClear: PropTypes.bool
+    isClearable: PropTypes.bool,
 };
 
 NexusDateTimeWindowPicker.defaultProps = {
@@ -218,7 +220,7 @@ NexusDateTimeWindowPicker.defaultProps = {
     isReturningTime: true,
     onChangeAny: () => null,
     onChange: () => null,
-    allowClear: false
+    isClearable: false,
 };
 
 export default NexusDateTimeWindowPicker;

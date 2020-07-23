@@ -19,7 +19,6 @@ const NexusGrid = ({
     frameworkComponents,
     ...restProps
 }) => {
-
     const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
@@ -56,10 +55,10 @@ const NexusGrid = ({
                 {...restProps}
                 frameworkComponents={{
                     ...frameworkComponents,
-                    loadingCellRenderer: LoadingCellRenderer
+                    loadingCellRenderer: LoadingCellRenderer,
                 }}
-            /> 
-        </div> 
+            />
+        </div>
     );
 };
 
@@ -71,6 +70,7 @@ NexusGrid.propTypes = {
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
+    frameworkComponents: PropTypes.object,
 };
 
 NexusGrid.defaultProps = {
@@ -81,6 +81,7 @@ NexusGrid.defaultProps = {
     // rowHeight: 48,
     setRowData: null,
     isGridHidden: false,
+    frameworkComponents: {},
 };
 
 export default NexusGrid;

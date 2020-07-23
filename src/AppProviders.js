@@ -20,10 +20,8 @@ const AppProviders = ({children, persistor}) => (
     </CustomIntlProvider>
 );
 
-AppProviders.propsTypes = {
+AppProviders.propTypes = {
     persistor: PropTypes.object.isRequired,
 };
 
 export default AppProviders;
-
-

@@ -1,4 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
@@ -7,7 +9,6 @@ import PriceTypeFormSchema from '../../../../pages/legacy/components/form/PriceT
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
 import {isObject} from '../../../../util/Common';
-import usePrevious from '../../../../util/hooks/usePrevious';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
@@ -19,10 +20,10 @@ import {
     DEFAULT_FILTER_PARAMS,
     DEFAULT_HOC_PROPS,
     EXCLUDED_INITIAL_FILTER_VALUES,
-    FILTERABLE_DATA_TYPES,
     FILTER_TYPE,
+    FILTERABLE_DATA_TYPES,
     GRID_EVENTS,
-    NOT_FILTERABLE_COLUMNS
+    NOT_FILTERABLE_COLUMNS,
 } from '../constants';
 
 const withFilterableColumns = ({
@@ -31,17 +32,16 @@ const withFilterableColumns = ({
     initialFilter = null,
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
     useDatesWithTime = false,
-    prepareFilterParams = params => params
+    prepareFilterParams = params => params,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {
             columnDefs,
             mapping,
             selectValues,
-            params,
             fetchAvailMapping,
             fixedFilter,
-            customDateFilterParamSuffixes = []
+            customDateFilterParamSuffixes = [],
         } = props;
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
@@ -50,9 +50,9 @@ const withFilterableColumns = ({
             props.initialFilter || initialFilter || {},
             val => !EXCLUDED_INITIAL_FILTER_VALUES.includes(val)
         );
+        // eslint-disable-next-line react/destructuring-assignment
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
-        const previousFilters = usePrevious(filters);
 
         // TODO: temporary solution to get select values
         useEffect(
@@ -87,11 +87,11 @@ const withFilterableColumns = ({
 
         let waitForFilter = 0;
         function initializeFilter(filterInstance, key, isCallback = false) {
-            //initialize one column filter with value
-            if (!filterInstance) return;
-            const field = key.replace(/Match/, '');
+            // initialize one column filter with value
+            if (!filterInstance) { return; }
             const currentValue = get(filters, key, undefined);
-            let filterValue;
+            let filterValue = null;
+
             if (fixedFilter && fixedFilter[key]) {
                 filterValue = fixedFilter[key];
             } else {
@@ -106,16 +106,14 @@ const withFilterableColumns = ({
                     filterValue = Array.isArray(filterValue) ? filterValue.join(', ') : filterValue;
                     filterInstance.setModel({
                         type: 'equals',
-                        filter: filterValue
+                        filter: filterValue,
                     });
                 }
+            } else if (filterInstance instanceof SetFilter) {
+                filterInstance.selectEverything();
+                filterInstance.applyModel();
             } else {
-                if (filterInstance instanceof SetFilter) {
-                    filterInstance.selectEverything();
-                    filterInstance.applyModel();
-                } else {
-                    filterInstance.setModel(null);
-                }
+                filterInstance.setModel(null);
             }
             if (isCallback) {
                 waitForFilter--;
@@ -135,25 +133,25 @@ const withFilterableColumns = ({
 
         // apply initial filter
         const initializeValues = () => {
-            //initialize all columns filters with values
+            // initialize all columns filters with values
             waitForFilter = 0;
             if (gridApi && Array.isArray(mapping) && mapping.length) {
                 setIsDatasourceEnabled(false);
-                //union of keys for column filter and fixed filter
+                // union of keys for column filter and fixed filter
                 const keys = [
                     ...new Set([
                         ...(filters ? Object.keys(filters) : []),
-                        ...(fixedFilter ? Object.keys(fixedFilter) : [])
-                    ])
+                        ...(fixedFilter ? Object.keys(fixedFilter) : []),
+                    ]),
                 ];
                 keys.forEach(key => {
                     const field = key.replace(/Match/, '');
                     const filterInstance = gridApi.getFilterInstance(field);
                     if (filterInstance) {
-                        //if filter is found or is not found but is not readonly
+                        // if filter is found or is not found but is not readonly
                         initializeFilter(filterInstance, key);
                     } else {
-                        //we need to use callback
+                        // we need to use callback
                         waitForFilter++;
                         gridApi.getFilterInstance(field, filterInstance => initializeFilter(filterInstance, key, true));
                     }
@@ -169,15 +167,13 @@ const withFilterableColumns = ({
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field} =
-                    (Array.isArray(mapping) &&
-                        mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
-                    {};
+                const {searchDataType, queryParamName = columnDef.field} = (Array.isArray(mapping)
+                        && mapping.find(({javaVariableName}) => javaVariableName === columnDef.field))
+                    || {};
                 const {field} = columnDef;
-                const isFilterable =
-                    FILTERABLE_DATA_TYPES.includes(searchDataType) &&
-                    (columns ? columns.includes(columnDef.field) : true) &&
-                    !excludedFilterColumns.includes(columnDef.field);
+                const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
+                    && (columns ? columns.includes(columnDef.field) : true)
+                    && !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
                     let locked = false;
@@ -192,7 +188,7 @@ const withFilterableColumns = ({
                         CUSTOM_DATE,
                         CUSTOM_COMPLEX,
                         CUSTOM_READONLY,
-                        CUSTOM_FLOAT_READONLY
+                        CUSTOM_FLOAT_READONLY,
                     } = AG_GRID_COLUMN_FILTER;
                     const {
                         BOOLEAN,
@@ -206,15 +202,15 @@ const withFilterableColumns = ({
                         TIMESTAMP,
                         BUSINESS_DATETIME,
                         REGIONAL_MIDNIGHT,
-                        READONLY
+                        READONLY,
                     } = FILTER_TYPE;
                     if (!locked) {
                         if (
-                            filterInstance &&
-                            searchDataType !== READONLY &&
-                            filterInstance.reactComponent === CustomReadOnlyFilter
+                            filterInstance
+                            && searchDataType !== READONLY
+                            && filterInstance.reactComponent === CustomReadOnlyFilter
                         ) {
-                            //if current filter is readonly (it just got unlocked) destroy to create the proper one
+                            // if current filter is readonly (it just got unlocked) destroy to create the proper one
                             gridApi.destroyFilter(field);
                         }
 
@@ -224,18 +220,18 @@ const withFilterableColumns = ({
                                 columnDef.filter = CUSTOM_READONLY;
                                 columnDef.floatingFilterComponentParams = {
                                     suppressFilterButton: true,
-                                    readOnlyValue: filters[field]
+                                    readOnlyValue: filters[field],
                                 };
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
-                                    readOnlyValue: filters[field]
+                                    readOnlyValue: filters[field],
                                 };
                                 break;
                             case BOOLEAN:
                                 columnDef.filter = SET;
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
-                                    values: [false, true]
+                                    values: [false, true],
                                 };
                                 break;
                             case INTEGER:
@@ -250,68 +246,67 @@ const withFilterableColumns = ({
                                     values:
                                         Array.isArray(columnDef.options) && !isEmpty(columnDef.options)
                                             ? columnDef.options
-                                            : getFilterOptions(field)
+                                            : getFilterOptions(field),
                                 };
                                 break;
                             case TERRITORY:
                                 columnDef.filter = SET;
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
-                                    values: getFilterOptions(field)
+                                    values: getFilterOptions(field),
                                 };
                                 columnDef.keyCreator = params => {
-                                    const countries = params.value.map(({country}) => country);
-                                    return countries;
+                                    return params.value.map(({country}) => country);
                                 };
                                 break;
-                            case PRICE:
+                            case PRICE: {
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
                                 const priceTypes = getFilterOptions(`${field}.priceType`);
                                 const currencies = getFilterOptions(`${field}.priceCurrency`);
                                 const priceSchema = PriceTypeFormSchema(priceTypes, currencies);
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const priceType = filters['priceType'];
-                                const priceValue = filters['priceValue'];
-                                const priceCurrency = filters['priceCurrency'];
+                                const {priceType, priceValue, priceCurrency} = filters;
                                 const pricingInitialFilters = {
                                     ...(priceType && {priceType}),
                                     ...(priceValue && {priceValue}),
-                                    ...(priceCurrency && {priceCurrency})
+                                    ...(priceCurrency && {priceCurrency}),
                                 };
                                 columnDef.filterParams = {
                                     ...DEFAULT_FILTER_PARAMS,
                                     initialFilters: pricingInitialFilters,
-                                    schema: priceSchema
+                                    schema: priceSchema,
                                 };
                                 break;
-                            case AUDIO_LANGUAGE:
+                            }
+                            case AUDIO_LANGUAGE: {
                                 columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
-                                // TODO; generate schema and values for select based on initial schema and found subfields
+                                // TODO generate schema and values for select
+                                //  based on initial schema and found subfields
                                 const languages = getFilterOptions(`${field}.language`);
                                 const audioTypes = getFilterOptions(`${field}.audioType`);
                                 const schema = AudioLanguageTypeFormSchema(languages, audioTypes);
                                 columnDef.filter = CUSTOM_COMPLEX;
-                                const audioTypeLanguage = filters['audioTypeLanguage'];
-                                const audioType = filters['audioType'];
+                                const {audioTypeLanguage, audioType} = filters;
                                 const audioLanguageInitialFilters = {
                                     ...(audioTypeLanguage && {audioTypeLanguage}),
-                                    ...(audioType && {audioType})
+                                    ...(audioType && {audioType}),
                                 };
                                 columnDef.filterParams = {
                                     // TODO; check is this neccessary
                                     ...DEFAULT_FILTER_PARAMS,
                                     initialFilters: audioLanguageInitialFilters,
-                                    schema
+                                    schema,
                                 };
                                 break;
+                            }
                             case REGIONAL_MIDNIGHT:
                             case TIMESTAMP:
-                            case BUSINESS_DATETIME:
+                            case BUSINESS_DATETIME: {
                                 const from = filters[`${field}From`];
                                 const to = filters[`${field}To`];
                                 const initialFilters = {
                                     ...(from && {from}),
-                                    ...(to && {to})
+                                    ...(to && {to}),
                                 };
                                 columnDef.floatingFilterComponent = 'customDateFloatingFilter';
                                 columnDef.filter = CUSTOM_DATE;
@@ -323,16 +318,18 @@ const withFilterableColumns = ({
                                     initialFilters,
                                     isUsingTime:
                                         useDatesWithTime && [TIMESTAMP, BUSINESS_DATETIME].includes(searchDataType),
-                                    customDateFilterParamSuffixes: customDateFilterParamSuffixes
+                                    customDateFilterParamSuffixes,
                                 };
                                 break;
+                            }
                             default:
                                 columnDef.filter = TEXT;
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
                         }
                     } else {
                         if (filterInstance && filterInstance.reactComponent !== CustomReadOnlyFilter) {
-                            //if we just locked the filter we need to destroy the previous one and replace it with read only filter
+                            // if we just locked the filter we need to destroy the previous one
+                            // and replace it with read only filter
                             gridApi.destroyFilter(field);
                         }
                         const currentVal = Array.isArray(fixedFilter[queryParamName])
@@ -342,11 +339,11 @@ const withFilterableColumns = ({
                         columnDef.filter = CUSTOM_READONLY;
                         columnDef.floatingFilterComponentParams = {
                             suppressFilterButton: true,
-                            readOnlyValue: currentVal
+                            readOnlyValue: currentVal,
                         };
                         columnDef.filterParams = {
                             ...DEFAULT_FILTER_PARAMS,
-                            readOnlyValue: currentVal
+                            readOnlyValue: currentVal,
                         };
                     }
                 }
@@ -364,7 +361,7 @@ const withFilterableColumns = ({
                 GRID_EVENTS.FIRST_DATA_RENDERED,
                 GRID_EVENTS.SELECTION_CHANGED,
                 GRID_EVENTS.FILTER_CHANGED,
-                GRID_EVENTS.ROW_DATA_CHANGED
+                GRID_EVENTS.ROW_DATA_CHANGED,
             ];
 
             if (type === GRID_EVENTS.READY) {
@@ -387,16 +384,15 @@ const withFilterableColumns = ({
         };
 
         const getFilterOptions = field => {
-            //TODO: refresh and show values when loaded
+            // TODO: refresh and show values when loaded
             const options = get(selectValues, field, []);
-            const parsedSelectValues = options.map(option => {
+            return options.map(option => {
                 if (isObject(option)) {
-                    //TODO: This is just a temporary solution for territory fields
+                    // TODO: This is just a temporary solution for territory fields
                     return option.value || option.countryCode;
                 }
                 return option;
             });
-            return parsedSelectValues;
         };
 
         const propsWithoutHocProps = omit(props, [...DEFAULT_HOC_PROPS, ...hocProps]);
@@ -414,7 +410,7 @@ const withFilterableColumns = ({
                     customComplexFloatingFilter: CustomComplexFloatingFilter,
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
-                    customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter
+                    customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
@@ -425,13 +421,37 @@ const withFilterableColumns = ({
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => ({
-            selectValues: availSelectValuesSelector(state, props)
+            selectValues: availSelectValuesSelector(state, props),
         });
     };
 
     const mapDispatchToProps = dispatch => ({
-        fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload))
+        fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
     });
+
+    ComposedComponent.propTypes = {
+        selectValues: PropTypes.object,
+        params: PropTypes.object,
+        customDateFilterParamSuffixes: PropTypes.array,
+        fixedFilter: PropTypes.object,
+        filterableColumns: PropTypes.array,
+        notFilterableColumns: PropTypes.array,
+        initialFilter: PropTypes.object,
+        columnDefs: PropTypes.array.isRequired,
+        mapping: PropTypes.array.isRequired,
+        fetchAvailMapping: PropTypes.func.isRequired,
+        onGridEvent: PropTypes.func.isRequired,
+    };
+
+    ComposedComponent.defaultProps = {
+        selectValues: {},
+        params: {},
+        customDateFilterParamSuffixes: [],
+        fixedFilter: {},
+        filterableColumns: null,
+        notFilterableColumns: null,
+        initialFilter: {},
+    };
 
     return connect(
         createMapStateToProps,

@@ -2,7 +2,6 @@ import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
 import authReducer from './auth/authReducer';
 import availsReducer from './pages/avails/availsReducer';
-import rightHistory from './pages/avails/right-history-view/rightHistoryReducer';
 import eventManagementReducer from './pages/event-management/eventManagementReducer';
 import settings from './pages/legacy/containers/settings/settingsReducer';
 import dopReducer from './pages/legacy/stores/reducers/DOP/dopReducer';
@@ -17,14 +16,14 @@ import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
 import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
 import {availsPersistConfig, authPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
-import uiReducer from './ui/uiReducer.js';
+import uiReducer from './ui/uiReducer';
 
 const createRootReducer = routerHistory => combineReducers({
     router: connectRouter(routerHistory),
     locale: localeReducer, // check it
 
     root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
-    settings, 
+    settings,
     media,
     dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
 
