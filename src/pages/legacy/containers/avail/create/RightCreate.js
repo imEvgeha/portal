@@ -568,8 +568,7 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            const isRequired = name === 'platformCategory' &&  (isPlatformCategoryMandatory || required);
-
+            const isRequired = name === 'platformCategory' &&  this.right.licensee && (this.right.licensee.servicingRegion === 'US' || required);
             return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
@@ -615,10 +614,6 @@ class RightCreate extends React.Component {
         const renderSelectField = (name, displayName, required, value) => {
             let options = [];
             let val;
-
-            if(value && value['type'] === 'licensee') {
-                isPlatformCategoryMandatory = value['servicingRegion'] === 'US';
-            }
 
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
