@@ -15,9 +15,7 @@ const SPINNER = (
 );
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-    const [opened, setOpened] = useState(false);
-
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened} = useContext(NexusModalContext);
 
     const title = `Audit History (${selectedAvails.length})`;
 
@@ -32,33 +30,27 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
     }, [rightsEventHistory, selectedAvails]);
 
     useEffect(() => {
-        if (opened) {
+        if (isOpened) {
             setModalStyle({width: '100%'});
             setModalContentAndTitle(buildContent(), title);
         }
-    }, [title, buildContent, opened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
+    }, [title, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
 
     const openHistoryModal = () => {
-        const ids = selectedAvails.map(e => e.id);
+        const ids = selectedAvails.map((e) => e.id);
         fetchRightsHistory(ids);
-        setModalActions([{
-            text: 'Done',
-            onClick: () => {
-                close();
-                setOpened(false);
+        setModalActions([
+            {
+                text: 'Done',
+                onClick: () => {
+                    close();
+                },
             },
-        }]);
+        ]);
         setModalContentAndTitle(SPINNER, title);
-        setOpened(true);
     };
 
-    return (
-        <span
-            onClick={openHistoryModal}
-        >
-            View Audit History
-        </span>
-    );
+    return <span onClick={openHistoryModal}>View Audit History</span>;
 };
 
 RightHistoryView.propTypes = {
@@ -75,8 +67,8 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = dispatch => ({
-    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload)),
+const mapDispatchToProps = (dispatch) => ({
+    fetchRightsHistory: (payload) => dispatch(fetchRightsHistory(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightHistoryView);

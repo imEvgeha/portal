@@ -46,14 +46,14 @@ const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
-    withSorting(constants.INITIAL_SORT),
+    withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -106,7 +106,7 @@ const RightsRepository = ({
         if (selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
             const attachment = Array.isArray(attachments)
-                ? attachments.find(a => a.id === selectedAttachmentId)
+                ? attachments.find((a) => a.id === selectedAttachmentId)
                 : undefined;
             setAttachment(attachment);
             if (!attachment) {
@@ -122,9 +122,9 @@ const RightsRepository = ({
             const filterInstance = gridApi.getFilterInstance('status');
             let values = [];
             if (!status || status === 'Rights') {
-                const {options = []} = (Array.isArray(mapping)
-                    && mapping.find(({javaVariableName}) => javaVariableName === 'status')
-                ) || {};
+                const {options = []} =
+                    (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) ||
+                    {};
                 values = options;
             } else {
                 values = [rightsFilter.external.status];
@@ -147,7 +147,7 @@ const RightsRepository = ({
 
             // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows().forEach(row => {
+                gridApi.getSelectedRows().forEach((row) => {
                     if (selectedIds.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
@@ -176,13 +176,13 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights, selectedGridApi]);
 
-    const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
+    const columnDefsClone = cloneDeep(columnDefs).map((columnDef) => {
         columnDef.menuTabs = ['generalMenuTab'];
 
         return columnDef;
     });
 
-    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
+    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map((columnDef) => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/',
@@ -234,34 +234,32 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-                if (!selectedIngest
-                    && rightsTableSelectedRows.length === selectedTableSelectedRows.length
-                    && clonedSelectedRights.length > rightsTableSelectedRows.length
+                if (
+                    !selectedIngest &&
+                    rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
+                    clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter(
-                        right => allSelectedRowsIds.includes(right.id)
+                    const updatedSelectedRights = clonedSelectedRights.filter((right) =>
+                        allSelectedRowsIds.includes(right.id)
                     );
 
                     // Pack the new selected rights into a payload for the store update; converts array of objects
                     // to object of objects where the keys are object(right) ids.
-                    const payload = updatedSelectedRights.reduce(
-                        (selectedRights, currentRight) => {
-                            selectedRights[currentRight.id] = currentRight;
-                            return selectedRights;
-                        },
-                        {}
-                    );
+                    const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                        selectedRights[currentRight.id] = currentRight;
+                        return selectedRights;
+                    }, {});
                     setSelectedRights(payload);
                     break;
                 }
 
                 // Select/deselect process
-                api.forEachNode(node => {
+                api.forEachNode((node) => {
                     const {data = {}} = node;
 
-                    const wasSelected = clonedSelectedRights.find(right => right.id === data.id) !== undefined;
+                    const wasSelected = clonedSelectedRights.find((right) => right.id === data.id) !== undefined;
 
                     // If it was selected and currently is not, then add it to the list of values to be deselected
                     // otherwise add it to selected rights
@@ -273,17 +271,14 @@ const RightsRepository = ({
                 });
 
                 // Filter out rights that were deselected
-                const updatedSelectedRights = clonedSelectedRights.filter(right => !idsToRemove.includes(right.id));
+                const updatedSelectedRights = clonedSelectedRights.filter((right) => !idsToRemove.includes(right.id));
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
-                const payload = updatedSelectedRights.reduce(
-                    (selectedRights, currentRight) => {
-                        selectedRights[currentRight.id] = currentRight;
-                        return selectedRights;
-                    },
-                    {}
-                );
+                const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                    selectedRights[currentRight.id] = currentRight;
+                    return selectedRights;
+                }, {});
                 setSelectedRights(payload);
                 break;
             }
@@ -316,12 +311,12 @@ const RightsRepository = ({
                 // Get ID of a right to be deselected
                 const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
-                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
+                    .filter((selectedRepoId) => !allSelectedRowsIds.includes(selectedRepoId));
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = gridApi.getSelectedNodes().filter(
-                    ({data = {}}) => toDeselectIds.includes(data.id)
-                );
+                const nodesToDeselect = gridApi
+                    .getSelectedNodes()
+                    .filter(({data = {}}) => toDeselectIds.includes(data.id));
 
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
@@ -329,7 +324,7 @@ const RightsRepository = ({
                 if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
                     setSelectedRights(selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)));
                 } else {
-                    nodesToDeselect.forEach(node => node.setSelected(false));
+                    nodesToDeselect.forEach((node) => node.setSelected(false));
                 }
                 break;
             }
@@ -350,11 +345,7 @@ const RightsRepository = ({
 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
-        return (
-            id
-                ? selectedRights.filter(({availHistoryId}) => (availHistoryId === id))
-                : selectedRights
-        );
+        return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
     return (
         <div className="nexus-c-rights-repository">
@@ -376,6 +367,8 @@ const RightsRepository = ({
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
+                setSelectedRights={setSelectedRights}
+                gridApi={gridApi}
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}
                 selectedRightColumnApi={selectedColumnApi}
@@ -455,15 +448,15 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = dispatch => ({
-    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
-    filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
+const mapDispatchToProps = (dispatch) => ({
+    createRightMatchingColumnDefs: (payload) => dispatch(createRightMatchingColumnDefs(payload)),
+    filterByStatus: (payload) => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
-    setSelectedRights: payload => dispatch(setSelectedRights(payload)),
+    setSelectedRights: (payload) => dispatch(setSelectedRights(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
-    downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
-    downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
-    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    downloadIngestEmail: (payload) => dispatch(downloadEmailAttachment(payload)),
+    downloadIngestFile: (payload) => dispatch(downloadFileAttachment(payload)),
+    setRightsFilter: (payload) => dispatch(setRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

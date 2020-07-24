@@ -49,12 +49,17 @@ describe('SelectedRightsActions', () => {
             const createBonusRights = wrapper.find('[data-test-id="bonus-rights"]');
             expect(createBonusRights.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
+
+        it('should disable "Add to Pre-Plan" option when no rights are selected', () => {
+            const addToPreplan = wrapper.find('[data-test-id="add-to-preplan"]');
+            expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
     });
 
     describe('Bulk Unmatch', () => {
         let bulkUnmatchOption = null;
 
-        const init = selectedRights => {
+        const init = (selectedRights) => {
             withHooks(() => {
                 mockStore = configureStore();
                 store = mockStore({ui: {toast: {list: []}}});
@@ -151,7 +156,7 @@ describe('SelectedRightsActions', () => {
     describe('Bulk Match', () => {
         let bulkMatchOption = null;
 
-        const init = selectedRights => {
+        const init = (selectedRights) => {
             mockStore = configureStore();
             store = mockStore({ui: {toast: {list: []}}});
             withHooks(() => {
@@ -256,7 +261,7 @@ describe('SelectedRightsActions', () => {
     describe('Create Bonus Right', () => {
         let createBonusRightsOption = null;
 
-        const init = selectedRights => {
+        const init = (selectedRights) => {
             withHooks(() => {
                 mockStore = configureStore();
                 store = mockStore({ui: {toast: {list: []}}});
@@ -383,6 +388,49 @@ describe('SelectedRightsActions', () => {
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+    });
+
+    describe('Add to Pre-Plan', () => {
+        let addToPreplan = null;
+
+        const init = (selectedRights) => {
+            mockStore = configureStore();
+            store = mockStore({ui: {toast: {list: []}}});
+            withHooks(() => {
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
+                addToPreplan = wrapper.find('[data-test-id="add-to-preplan"]');
+            });
+        };
+
+        afterEach(() => {
+            wrapper = null;
+            addToPreplan = null;
+        });
+
+        it('pre-plan option should be active when at least one item is selected', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'ReadyNew',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
     });
 });
