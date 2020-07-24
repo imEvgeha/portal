@@ -11,7 +11,7 @@ export const NexusModalProvider = ({children}) => {
     const [isOpened, setIsOpened] = useState(false);
     const [style, setStyle] = useState({});
 
-    const setModalContent = (content) => {
+    const setModalContent = content => {
         setIsOpened(true);
         setContent(content);
     };
@@ -58,7 +58,7 @@ export const NexusModalProvider = ({children}) => {
                         </div>
                     </Modal>
                 </ModalTransition>
-              )}
+            )}
             {children}
         </NexusModalContext.Provider>
     );

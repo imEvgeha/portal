@@ -1,8 +1,8 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import Blanket from '@atlaskit/blanket';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import PropTypes from 'prop-types';
-import React from 'react';
 import classnames from 'classnames';
 import IconButton from '../../atlaskit/icon-button/IconButton';
 import './NexusDrawer.scss';

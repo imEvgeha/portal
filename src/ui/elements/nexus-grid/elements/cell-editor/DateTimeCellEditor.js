@@ -9,15 +9,16 @@ class DateTimeCellEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.value, 
+            value: props.value,
         };
     }
 
     isPopup = () => true;
 
+    // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value;
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({
             value,
         });

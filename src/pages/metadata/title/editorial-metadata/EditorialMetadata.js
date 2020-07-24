@@ -5,9 +5,7 @@ import {CAST_CONFIG, CREW_CONFIG} from '../../../../ui/elements/nexus-persons-li
 import {getFilteredCastList, getFilteredCrewList} from '../../../legacy/constants/metadata/configAPI';
 
 
-const EditorialMetadata = ({
-    data,
-}) => {
+const EditorialMetadata = ({data}) => {
     // TODO: temporary integration of NexusPersonsList here as PoC
     // will be moved after folder structure is implemented
     // no onChange integration done, should be simple

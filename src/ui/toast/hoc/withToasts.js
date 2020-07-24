@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import * as selectors from '../toastSelectors';
 import {addToast, removeToast} from '../toastActions';
+import * as selectors from '../toastSelectors';
 
 const withToasts = WrappedComponent => {
     const ComposedComponent = props => (
@@ -27,7 +27,7 @@ const withToasts = WrappedComponent => {
         toasts: selectors.getToasts(state),
     });
 
-    const mapDispatchToProps = (dispatch) => ({
+    const mapDispatchToProps = dispatch => ({
         addToast: payload => dispatch(addToast(payload)),
         removeToast: payload => dispatch(removeToast(payload)),
     });

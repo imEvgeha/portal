@@ -1,9 +1,7 @@
-import Page, {Grid, GridColumn} from '@atlaskit/page';
-import {gridSize} from '@atlaskit/theme';
-import 'ag-grid-enterprise';
-import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import Page, {Grid, GridColumn} from '@atlaskit/page';
+import 'ag-grid-enterprise';
 import {NexusGrid} from '../../../../../ui/elements';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {getServiceRequest} from '../../../servicingOrdersService';
@@ -18,11 +16,14 @@ import {
 import {columnDefs, defaultColDef} from './PartnerRequestColumnDefinitions';
 import './PartnerRequest.scss';
 
+const TIMEOUT = 50;
+
 const PartnerRequest = ({externalId, configuredPrId}) => {
     const [data, setData] = useState({list: []});
 
     useEffect(() => {
         getServiceRequest(externalId).then(res => {
+            // eslint-disable-next-line prefer-destructuring
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
             setData({
@@ -32,21 +33,18 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 createdAt,
             });
         });
-    }, []);
+    }, [configuredPrId, externalId]);
 
-    const rowData = data.list.map(order =>
-        Object.keys(order).reduce(
-            (currRowData, key) =>
-                COLUMN_KEYS.includes(key)
-                    ? {
-                          ...currRowData,
-                          [key]: order[key],
-                      }
-                    : currRowData,
+    const rowData = data.list.map(order => Object.keys(order).reduce(
+        (currRowData, key) => (COLUMN_KEYS.includes(key)
+            ? {
+                ...currRowData,
+                [key]: order[key],
+            }
+            : currRowData),
 
-            {}
-        )
-    );
+        {}
+    ));
 
     const onFirstDataRendered = params => {
         const columnsToResize = [
@@ -64,7 +62,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 .filter(colId => columnsToResize.includes(colId));
             params.columnApi.autoSizeColumns(colIds);
             params.api.resetRowHeights();
-        }, 50);
+        }, TIMEOUT);
     };
 
     return (

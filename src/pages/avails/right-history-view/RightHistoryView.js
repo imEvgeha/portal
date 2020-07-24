@@ -1,11 +1,11 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
+import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import {getRightsEventHistorySelector} from './rightHistorySelectors';
-import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
+import {fetchRightsHistory} from './rightHistoryActions';
+import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import './RightHistoryView.scss';
 
 const SPINNER = (

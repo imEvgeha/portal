@@ -3,7 +3,9 @@ import {get} from 'lodash';
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
 
-    if(!fs) return [];
+    if (!fs) {
+        return [];
+    }
 
     const preparedSources = {};
 
@@ -12,11 +14,11 @@ export const prepareRowData = data => {
 
     const services = get(definition, servicesKey, []);
 
-    services.forEach((service) => {
+    services.forEach(service => {
         const sources = get(service, sourcesKey, {});
         const {barcode} = sources;
 
-        if(barcode){
+        if (barcode) {
             const source = get(preparedSources, barcode, {});
             preparedSources[barcode] = source;
             source.fs = fs;
