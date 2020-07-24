@@ -50,7 +50,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -165,7 +165,6 @@ export const SelectedRightsActions = ({
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
         toggleRefreshGridData(true);
-        // eslint-disable-next-line no-restricted-globals
         close();
     };
 

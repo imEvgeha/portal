@@ -35,11 +35,10 @@ import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
-export const RIGHTS_TAB = 'RIGHTS_TAB';
-export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withColumnsResizing(),

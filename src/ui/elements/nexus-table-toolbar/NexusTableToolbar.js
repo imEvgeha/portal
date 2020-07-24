@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import './NexusTableToolbar.scss';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
-} from '../../../pages/avails/rights-repository/RightsRepository';
+    PRE_PLAN_TAB,
+} from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
+import NexusTab from './components/NexusTab';
 import SelectedButton from './components/SelectedButton';
 
 const NexusTableToolbar = ({
@@ -34,15 +35,20 @@ const NexusTableToolbar = ({
                 setSelectedRights={setSelectedRights}
                 gridApi={gridApi}
             />
-            <div
-                className={classNames(
-                    'nexus-c-table-toolbar__title',
-                    activeTab !== RIGHTS_SELECTED_TAB && 'nexus-c-table-toolbar__title--is-active'
-                )}
-                onClick={() => setActiveTab(RIGHTS_TAB)}
-            >
-                {title} ({totalRows})
-            </div>
+            <NexusTab
+                title="Rights"
+                totalRows={totalRows}
+                activeTab={activeTab}
+                currentTab={RIGHTS_TAB}
+                setActiveTab={setActiveTab}
+            />
+            <NexusTab
+                title="Pre-Plan"
+                totalRows={0}
+                activeTab={activeTab}
+                currentTab={PRE_PLAN_TAB}
+                setActiveTab={setActiveTab}
+            />
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
                     <SelectedButton
