@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DynamicTable from '@atlaskit/dynamic-table';
 import Button from '@atlaskit/button';
+import DynamicTable from '@atlaskit/dynamic-table';
 import {header} from './constants';
 import './StatusCheck.scss';
 

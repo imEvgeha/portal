@@ -12,9 +12,9 @@ import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
-import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import RightViewHistory from '../right-history-view/RightHistoryView';
+import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -63,7 +63,8 @@ export const SelectedRightsActions = ({
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
-        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '') && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
+        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '')
+            && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
 
@@ -164,6 +165,7 @@ export const SelectedRightsActions = ({
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
         toggleRefreshGridData(true);
+        // eslint-disable-next-line no-restricted-globals
         close();
     };
 
