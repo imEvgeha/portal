@@ -29,12 +29,11 @@ import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntr
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 
-const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, EMAIL_BUTTON, ERROR_MESSAGE} = Constants;
+const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
 
 const mapStateToProps = () => {
     const manualRightsEntrySelectedTabSelector = selectors.createManualRightsEntrySelectedTabSelector();
     const manualRightsEntryColumnsSelector = selectors.createManualRightsEntryColumnsSelector();
-    const manualRightSelectedSelector = selectors.createSelectedRightsSelector();
     return (state, props) => ({
         availsMapping: state.root.availsMapping,
         selectedTab: manualRightsEntrySelectedTabSelector(state, props),
@@ -148,8 +147,10 @@ class RightsCreateFromAttachment extends React.Component {
         return Array.isArray(attachments) && attachments.map((attachment = {})=> {
             const {
                 status = '',
-                ingestReport: {errorDetails = ''} ,
+                ingestReport,
             } = attachment || {};
+
+            const {errorDetails = ''} = ingestReport || {};
 
             return ({
                 error: errorDetails,
