@@ -1,21 +1,23 @@
 import React from 'react';
-import { Button } from 'reactstrap';
 import PropTypes from 'prop-types';
+import {AgGridReact} from 'ag-grid-react';
+import {Button} from 'reactstrap';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
-import { profileService } from '../../service/ProfileService';
-import { historyService } from '../../service/HistoryService';
-import { URL } from '../../../../../../util/Common';
-import { Can } from '../../../../../../ability';
-import { connect } from 'react-redux';
+import {profileService} from '../../service/ProfileService';
+import {historyService} from '../../service/HistoryService';
+import {URL} from '../../../../../../util/Common';
+import {Can} from '../../../../../../ability';
+import {connect} from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
 import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
-import TableColumnCustomization from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import TableColumnCustomization
+    from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
 import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
-import {FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
+import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 import {
@@ -23,7 +25,9 @@ import {
     updateManualRightsEntryColumns
 } from '../../../../stores/actions/avail/manualRightEntry';
 import UploadIngestButton
-from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
+    from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
+import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
+import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, EMAIL_BUTTON, ERROR_MESSAGE} = Constants;
 
@@ -100,6 +104,59 @@ class RightsCreateFromAttachment extends React.Component {
             clearInterval(this.refresh);
             this.refresh = null;
         }
+    }
+
+    cellRenderers = {
+        status: ({value}) => (
+            <div className="nexus-c-status-tag-old">
+                <StatusTag status={value}/>
+            </div>
+        ),
+        attachment: ({value}) => (
+            <NexusTooltip content={ATTACHMENT_TOOLTIP}>
+                <div>
+                    <a
+                        href="#"
+                        className="nexus-c-attachment-link-old"
+                        onClick={() => this.getDownloadLink(value)}
+                    >
+                        {this.formatAttachmentName(value.link)}
+                    </a>
+                </div>
+            </NexusTooltip>
+        ),
+        error: ({value}) => (
+            <div className="nexus-c-attachment-error-old">
+                {value && (
+                    <>
+                        <span className="nexus-c-attachment-error-old__icon">⚠</span>
+                        {value}
+                    </>
+                )}
+            </div>
+        )
+    }
+
+    getAttachmentsColumnDefs = (initialColumnDefs = []) => {
+        return initialColumnDefs.map(colDef => ({
+            ...colDef,
+            cellRenderer: colDef.field,
+        }));
+    }
+
+    getAttachmentsRowData = (attachments = []) => {
+        return Array.isArray(attachments) && attachments.map((attachment = {})=> {
+            const {
+                status = '',
+                ingestReport: {errorDetails = ''} ,
+            } = attachment || {};
+
+            return ({
+                error: errorDetails,
+                attachment,
+                status,
+            });
+        });
     }
 
     getHistoryData() {
@@ -195,23 +252,13 @@ class RightsCreateFromAttachment extends React.Component {
             ingestReport: {errorDetails, created, updated, fatal} = {}} = {},
             availHistoryId}  = this.state;
         const {availsMapping, selectedTab, columns} = this.props;
+
         return (
             <div className='mx-2 nexus-c-manual-rights-entry'>
                 <ManualRightsEntryDOPConnector />
                 <div className='nexus-c-manual-rights-entry__description'>
                     <div>
                         <div><h3>Manual Rights Entry</h3></div>
-                        {
-                            attachments && (
-                                ATTACHMENTS.map(({label, type, icon, content}) => (
-                                    <section className='nexus-c-manual-rights-entry__attachment' key={label}>
-                                        <label>{label}:</label>
-                                        {this.state.historyData[content]}
-                                        {this.renderAttachments(type, icon)}
-                                    </section>
-                                ))
-                            )
-                        }
                         <section className='nexus-c-manual-rights-entry__attachment'>
                             <label>Received By:</label>
                             {ingestType} {this.renderAttachments(EMAIL_BUTTON.type, EMAIL_BUTTON.icon)}
@@ -261,7 +308,7 @@ class RightsCreateFromAttachment extends React.Component {
                                 />
                             </div>
                         </div>
-                        {selectedTab !== VIEW_JSON && (
+                        {![VIEW_JSON, ATTACHMENTS_TAB].includes(selectedTab) && (
                             <RightsResultTable
                                 fromServer={true}
                                 columns={columns}
@@ -274,7 +321,22 @@ class RightsCreateFromAttachment extends React.Component {
                                 searchCriteria={this.getCustomSearchCriteria(selectedTab)}
                                 onTableLoaded={this.onTableLoaded}
                             />
-                          )}
+                        )}
+                        {selectedTab === ATTACHMENTS_TAB && (
+                            <div className="ag-theme-balham" style={{height: '800px'}}>
+                                <AgGridReact
+                                    columnDefs={this.getAttachmentsColumnDefs(attachmentsColumnDefs)}
+                                    rowData={this.getAttachmentsRowData(attachments)}
+                                    headerHeight="52"
+                                    rowHeight="48"
+                                    frameworkComponents={{
+                                        status: this.cellRenderers['status'],
+                                        attachment: this.cellRenderers['attachment'],
+                                        error: this.cellRenderers['error'],
+                                    }}
+                                />
+                            </div>
+                        )}
                         <ManualRightEntryFatalView attachments={attachments} hidden={selectedTab !== FATAL} />
                     </>
                   )}

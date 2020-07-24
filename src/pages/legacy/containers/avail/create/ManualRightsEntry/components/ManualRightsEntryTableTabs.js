@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import config from 'react-global-configuration';
 import {ManualRightEntryTab, TabContainer} from '../../../../../../../ui/elements/nexus-table-tab/TableTab';
-
 import {
     FATAL,
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS
+    SUCCESS, ATTACHMENTS_TAB, ATTACHMENTS_COLUMNS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
-import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
+import {
+    updateManualRightEntrySelectedTab,
+    updateManualRightsEntryColumns,
+} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
 const ManualRightEntryTableTabs = ({
     selectedTab,
     updateManualRightEntrySelectedTab,
+    updateManualRightsEntryColumns,
     getCustomSearchCriteria,
     createdCount,
     updatedCount,
@@ -63,6 +66,8 @@ const ManualRightEntryTableTabs = ({
         window.open( url, '_blank');
     };
 
+    const {attachments = []} = historyData || {};
+
     return (
         <TabContainer>
             <ManualRightEntryTab
@@ -106,6 +111,14 @@ const ManualRightEntryTableTabs = ({
             >
                 View JSON
             </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === ATTACHMENTS_TAB}
+                onClick={() => {
+                    updateManualRightEntrySelectedTab(ATTACHMENTS_TAB);
+                }}
+            >
+                Attachments ({attachments.length})
+            </ManualRightEntryTab>
         </TabContainer>
     );
 };
@@ -113,6 +126,7 @@ const ManualRightEntryTableTabs = ({
 ManualRightEntryTableTabs.propTypes = {
     selectedTab: PropTypes.string,
     updateManualRightEntrySelectedTab: PropTypes.func,
+    updateManualRightsEntryCoulmns: PropTypes.func,
     getCustomSearchCriteria: PropTypes.func.isRequired,
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,
@@ -128,7 +142,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    updateManualRightEntrySelectedTab: updateManualRightEntrySelectedTab
+    updateManualRightEntrySelectedTab: updateManualRightEntrySelectedTab,
+    updateManualRightsEntryColumns: updateManualRightsEntryColumns,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManualRightEntryTableTabs);
