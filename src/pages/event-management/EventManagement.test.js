@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import EventManagement from './EventManagement';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {
     let wrapper = null;
@@ -32,7 +32,7 @@ describe('EventManagement', () => {
         const gridApiMock = {
             deselectAll: deselectAllMock,
             getSelectedRows: () => ([event]),
-            sizeColumnsToFit: () => {},
+            sizeColumnsToFit: () => null,
         };
 
         beforeEach(() => {

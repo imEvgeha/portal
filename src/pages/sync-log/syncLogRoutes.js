@@ -1,6 +1,7 @@
 import React from 'react';
 import {canRender} from '../../ability';
 import {SYNC_LOG} from '../../ui/elements/nexus-navigation/constants';
+
 const SyncLogViewImport = import(/* webpackChunkName: "SyncLog" */ './SyncLogView');
 const SyncLogView = React.lazy(() => SyncLogViewImport);
 
@@ -10,7 +11,7 @@ const routes = [
     {
         path: BASE_PATH,
         component: canRender(SyncLogView, 'read', 'SyncLog'),
-    }
+    },
 ];
 
 export default routes;

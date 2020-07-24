@@ -1,4 +1,5 @@
-export default async (response) => {
+/* eslint-disable no-magic-numbers, no-throw-literal */
+export default async response => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
@@ -36,13 +37,14 @@ const parseResponse = (response, type) => {
     if (type.includes('application/json')) {
         return response.json();
     } else if (type.includes('text/plain')) {
-        // configuration/endpoint return text/plain content type as header response -> header request is application/json
+        // configuration/endpoint return text/plain content type as header response
+        // -> header request is application/json
         return response.json();
     } else if (type.includes('text/html') || type.includes('text/csv')) {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();
-    } else if (type.includes('application/octet-stream')) { 
+    } else if (type.includes('application/octet-stream')) {
         return response.arrayBuffer();
     }
 

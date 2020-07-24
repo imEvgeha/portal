@@ -1,18 +1,21 @@
 import querystring from 'querystring';
 import config from 'react-global-configuration';
-import {nexusFetch} from '../../util/http-client';
 import {downloadFile} from '../../util/Common';
+import {nexusFetch} from '../../util/http-client';
 
-export const getSyncLog = (params, page = 0, size = 100) => {
+
+const PAGESIZE = 100;
+
+export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
     if (!params.dateFrom.length) {
-        return Promise.resolve({ data: [] });
+        return Promise.resolve({data: []});
     }
 
     const qs = querystring.stringify({
         startDate: params.dateFrom,
         endDate: params.dateTo,
         page,
-        size
+        size,
     });
 
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/externalsystems/search`;
@@ -35,6 +38,6 @@ export const exportSyncLog = (startDate, endDate) => {
             downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
         })
         .catch(err => {
-            throw new Error('Error on downloading sync log: ' + err);
+            throw new Error(`Error on downloading sync log: ${err}`);
         });
 };

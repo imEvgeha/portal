@@ -1,13 +1,13 @@
-import { shallow } from 'enzyme';
 import React from 'react';
+import {shallow} from 'enzyme';
 import * as Redux from 'react-redux';
-import FulfillmentOrder, { transformClientToServerFulfillmentOrder } from './FulfillmentOrder';
+import FulfillmentOrder, {transformClientToServerFulfillmentOrder} from './FulfillmentOrder';
 
 describe('FulfillmentOrder', () => {
     const setState = jest.fn();
     const useStateSpy = jest.spyOn(React, 'useState');
-    let useSelectorSpy = jest.spyOn(Redux, 'useSelector');
-    let useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
+    const useSelectorSpy = jest.spyOn(Redux, 'useSelector');
+    const useDispatchSpy = jest.spyOn(Redux, 'useDispatch');
 
     useStateSpy.mockImplementation(init => [init, setState]);
     useSelectorSpy.mockReturnValue({});
@@ -23,7 +23,7 @@ describe('FulfillmentOrder', () => {
             rateCard: 'MGM Rate Card',
             servicer: 'DETE',
             priority: '10',
-            startDate: '07/05/2021'
+            startDate: '07/05/2021',
         };
 
         const wrapper = shallow(<FulfillmentOrder selectedFulfillmentOrder={selectedFulfillmentOrder} />);
@@ -44,11 +44,11 @@ describe('FulfillmentOrder', () => {
         it('should correctly transform a client FO structure to a server FO structure', () => {
             const client = {
                 definition: {
-                    id: 'test'
-                }
+                    id: 'test',
+                },
             };
             const server = {
-                definition: '{"id":"test"}'
+                definition: '{"id":"test"}',
             };
 
             expect(transformClientToServerFulfillmentOrder(client)).toEqual(server);

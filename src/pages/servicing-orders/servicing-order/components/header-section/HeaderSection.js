@@ -1,16 +1,16 @@
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {get} from 'lodash';
 import moment from 'moment';
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../assets/filter.svg';
 import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import {getValidDate} from '../../../../../util/utils';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';
-import {SORT_DIRECTION} from '../filter-section/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
+import {SORT_DIRECTION} from '../filter-section/constants';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import './HeaderSection.scss';
 
@@ -44,19 +44,19 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
         switch (dueDateSortDirection.value) {
             case 'ASCENDING':
                 return diff;
-
             case 'DESCENDING':
                 return -diff;
+            default:
+                break;
         }
     };
 
     // determines whether to sort the fulfillment order panels or not
-    const getSortedFilteredList = () =>
-        dueDateSortDirection !== SORT_DIRECTION[0]
-            ? getFilteredList()
-                  .slice() // creates a copy of the list so that the sort doesn't mutate the original array
-                  .sort(sortByDueDate)
-            : getFilteredList();
+    const getSortedFilteredList = () => (dueDateSortDirection !== SORT_DIRECTION[0]
+        ? getFilteredList()
+            .slice() // creates a copy of the list so that the sort doesn't mutate the original array
+            .sort(sortByDueDate)
+        : getFilteredList());
 
     return (
         <div className="panel-header">
@@ -82,16 +82,21 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
             )}
             <div className="panel-header__list">
                 {getSortedFilteredList().map(
-                    ({id, external_id, status, definition: {dueDate} = {}, product_description}, index) => (
+                    ({
+                        id,
+                        external_id: extId,
+                        status, definition: {dueDate} = {},
+                        product_description: prodDesc,
+                    }, index) => (
                         <FulfillmentOrderPanel
                             key={index}
                             id={id}
-                            externalId={external_id}
+                            externalId={extId}
                             status={status}
                             dueDate={getValidDate(dueDate)}
                             selected={selectedFulfillmentOrder === id}
                             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
-                            productDescription={product_description}
+                            productDescription={prodDesc}
                         />
                     )
                 )}
@@ -103,11 +108,11 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
 HeaderSection.propTypes = {
     orderDetails: PropTypes.object.isRequired,
     handleFulfillmentOrderChange: PropTypes.func,
-    selectedFulfillmentOrder: PropTypes.string
+    selectedFulfillmentOrder: PropTypes.string,
 };
 
 HeaderSection.defaultProps = {
     handleFulfillmentOrderChange: () => null,
-    selectedFulfillmentOrder: ''
+    selectedFulfillmentOrder: '',
 };
 export default HeaderSection;

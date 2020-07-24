@@ -1,6 +1,6 @@
+import React from 'react';
 import Tag from '@atlaskit/tag';
 import TagGroup from '@atlaskit/tag-group';
-import React from 'react';
 
 const partnerRequestColumnDefs = [
     {

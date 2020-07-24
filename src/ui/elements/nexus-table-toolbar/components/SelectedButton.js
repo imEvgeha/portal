@@ -8,7 +8,6 @@ const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';
 
 const SelectedButton = ({activeTab, setActiveTab, selectedRightsCount}) => {
-
     const onClick = () => {
         if (activeTab !== RIGHTS_SELECTED_TAB) {
             setActiveTab(RIGHTS_SELECTED_TAB);
@@ -20,7 +19,7 @@ const SelectedButton = ({activeTab, setActiveTab, selectedRightsCount}) => {
     return (
         <Tooltip
             content={activeTab === RIGHTS_SELECTED_TAB ? TOOLTIP_BUTTON_SELECTED_MSG : TOOLTIP_BUTTON_UNSELECTED_MSG}
-            position='top'
+            position="top"
         >
             <Button
                 className="nexus-c-button"
@@ -37,11 +36,11 @@ const SelectedButton = ({activeTab, setActiveTab, selectedRightsCount}) => {
 SelectedButton.propTypes = {
     activeTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
-    selectedRightsCount: PropTypes.number
+    selectedRightsCount: PropTypes.number,
 };
 
 SelectedButton.defaultProps = {
-    selectedRightsCount: 0
+    selectedRightsCount: 0,
 };
 
 

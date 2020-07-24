@@ -4,18 +4,18 @@ export const SELECT_VALUES = {
     version: [
         {subtitles: ['English', 'French', 'Italian']},
         {audio: ['English', 'French', 'Italian']},
-        {video: ['Theatrical', 'Broadcast', 'Director\'s cut']}
+        {video: ['Theatrical', 'Broadcast', 'Director\'s cut']},
     ],
     standard: [
         {subtitles: ['Text Type - Full Stream', 'Forced', 'SDH']},
         {audio: ['Mono', 'Stereo', '2.0 LTRT', '3.0', '4.0', '5.0', '5.1', '6.1', '7.1', 'Dolby E']},
-        {video: ['SD', 'HD', '4K']}
+        {video: ['SD', 'HD', '4K']},
     ],
     priority: ['10', '20', '60', '50'],
     componentId: ['LOL-123'],
     spec: ['M-DBS-2396 SCC'],
     addRecipient: ['MGM', 'Vubiquity'],
-    sourceStandard: ['_1080_23_976']
+    sourceStandard: ['_1080_23_976'],
 };
 
 export const TABLE_ROW = {
@@ -24,7 +24,7 @@ export const TABLE_ROW = {
     doNotStartBefore: '',
     priority: '10',
     deliverToVu: false,
-    operationalStatus: 'Ready'
+    operationalStatus: 'Ready',
 };
 
 export const SERVICE_SCHEMA = {
@@ -35,8 +35,8 @@ export const SERVICE_SCHEMA = {
             externalId: '',
             externalSystem: '',
             assetFormat: '',
-            assetType: ''
-        }
+            assetType: '',
+        },
     },
     deteTasks: {
         deteDeliveries: {
@@ -45,11 +45,11 @@ export const SERVICE_SCHEMA = {
                 externalId: '',
                 externalSystem: '',
                 customerId: '',
-                deliverToId: ''
-            }
+                deliverToId: '',
+            },
         },
         dueDate: '',
-        typeAttribute: ''
+        typeAttribute: '',
     },
     externalServices: {
         externalId: '',
@@ -58,16 +58,16 @@ export const SERVICE_SCHEMA = {
         parameters: [
             {
                 name: 'Priority',
-                value: ''
-            }
+                value: '',
+            },
         ],
         requiresPropagation: '',
         serviceType: '',
-        subordinateFlag: ''
+        subordinateFlag: '',
     },
     mediaFormat: '',
     overrideStartDate: '',
     quantity: '',
     sequence: '',
-    status: ''
+    status: '',
 };

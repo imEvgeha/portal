@@ -1,38 +1,42 @@
-import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
+/* eslint-disable no-magic-numbers */
 import {store} from '../../index';
+import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
 import {ERROR_ICON, ERROR_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 import {addToast, removeToast} from '../../ui/toast/toastActions';
 
-/*passing errorToasts in param:
-errorToast for all status codes:
-errorToast: {title: '', description: ''}
+/*
+    Passing errorToasts in param:
+    errorToast for all status codes:
+    errorToast: {title: '', description: ''}
 
-can pass errorToast for specific error code as follows:
-errorCodesToast: [{status: 404, title: '', description: ''}, {status: 500, title: '', description: ''}]
-default error title, icon and autoDismiss are already added
+    can pass errorToast for specific error code as follows:
+    errorCodesToast: [{status: 404, title: '', description: ''}, {status: 500, title: '', description: ''}]
+    default error title, icon and autoDismiss are already added
 
-can pass successToast if needed to show toast on success of a API call
-default success title, icon and autoDismiss are already added (if successToast is passed then only these are displayed)*/
+    can pass successToast if needed to show toast on success of a API call
+    default success title, icon and autoDismiss are already added
+    (if successToast is passed then only these are displayed)
+*/
 
-const showErrorModal = (error) => {
-    const {status, data = {}, config: {url = '', method = ''} = {}} = error || {};
+const showErrorModal = error => {
+    const {status, config: {url = '', method = ''} = {}} = error || {};
     const ACCESS_DENIED = {
         codes: [401, 403, 451, 511],
-        title: 'Access denied'
+        title: 'Access denied',
     };
 
     if (ACCESS_DENIED.codes.includes(status)) {
         const description = `Status: ${status},\nURI: ${url},\nMethod: ${method.toUpperCase()}`;
-        errorModal.open(ACCESS_DENIED.title, () => {}, {description});
+        errorModal.open(ACCESS_DENIED.title, () => null, {description});
         return true;
     }
 };
 
-const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = null, errorCodesToast = []}) => {
-    const {status, data = {}, config: {url = '', method = ''} = {}, message, description} = error || {};
+const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
+    const {status, data = {}, message, description} = error || {};
     const ERROR_MODAL = {
         codes: [503],
-        title: 'Unexpected error occurred. Please try again later'
+        title: 'Unexpected error occurred. Please try again later',
     };
     const defaultErrorToast = {
         title: ERROR_TITLE,
@@ -40,8 +44,8 @@ const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = nul
         isAutoDismiss: true,
     };
 
-    let toast;
-    const err = errorCodesToast.filter(error => error.status === status)[0];
+    let toast = null;
+    const [err] = errorCodesToast.filter(error => error.status === status);
 
     if (err) {
         toast = {
@@ -58,7 +62,7 @@ const showToastForErrors = (error, {isWithErrorHandling = true, errorToast = nul
             description: description || message || data.message || JSON.stringify(data),
             icon: ERROR_ICON,
             actions: ERROR_MODAL.codes.includes(status) ? [
-                {content:'OK', onClick: () => store.dispatch(removeToast())}
+                {content: 'OK', onClick: () => store.dispatch(removeToast())},
             ] : [],
             isWithOverlay: ERROR_MODAL.codes.includes(status),
         };
@@ -75,7 +79,7 @@ const handleError = (error, options = {isWithErrorHandling: true}) => {
     } = error || {};
 
     // TODO: this should be removed from http client error handling
-    // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas 
+    // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas
     if (status) {
         const isModalOpened = showErrorModal(errorMessage);
 

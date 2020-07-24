@@ -1,22 +1,15 @@
 import jwtDecode from 'jwt-decode';
 
 export const getTokenDuration = token => {
-    const duration = (token.exp * 1000) - new Date().getTime();
-    return duration;
+    return (token.exp * 1000) - new Date().getTime();
 };
 
 export const isTokenExpired = token => {
-    if (token.exp < (new Date().getTime() / 1000)) {
-        return true;
-    }
-    return false;
+    return token.exp < (new Date().getTime() / 1000);
 };
 
 export const isTokenValid = (token, url) => {
-    if (!token || isTokenExpired(token) || (url && token.iss && !token.iss.includes(url))) {
-        return false;
-    }
-    return true;
+    return !(!token || isTokenExpired(token) || (url && token.iss && !token.iss.includes(url)));
 };
 
 export const getValidToken = (token, url) => {

@@ -1,29 +1,28 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {NexusModalContext} from '../nexus-modal/NexusModal';
 import {Checkbox} from '@atlaskit/checkbox';
 import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
+import {NexusModalContext} from '../nexus-modal/NexusModal';
 import './TableColumnCustomization.scss';
 
 const SELECT_ALL = 'selectAll';
 const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
 const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) => {
-
     const [hideShowColumns, setHideShowColumns] = useState();
     const {setModalContent, setModalActions, setModalTitle, setModalStyle, close} = useContext(NexusModalContext);
 
     useEffect(() => {
-        if(hideShowColumns) {
+        if (hideShowColumns) {
             setModalActions([{
                 text: 'Save',
                 onClick: () => {
                     close();
                     saveColumns();
-                }
+                },
             }, {
                 text: 'Cancel',
-                onClick: close
+                onClick: close,
             }]);
             setModalContent(buildModalContent(hideShowColumns));
         }
@@ -32,13 +31,13 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     const createConfigForColumnCustomization = () => {
         const config = {};
         availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if (column.javaVariableName === 'title') return '';
+            if (column.javaVariableName === 'title') { return ''; }
             const checked = columns.indexOf(column.javaVariableName) > -1;
 
             config[column.javaVariableName] = {
                 id: column.id,
                 label: column.displayName,
-                checked: checked,
+                checked,
             };
         });
 
@@ -50,29 +49,29 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         setHideShowColumns(config);
     };
 
-    const isAllSelected = (config) => {
+    const isAllSelected = config => {
         let allSelected = true;
         for (const key in config) {
-            if (key === SELECT_ALL) continue;
+            if (key === SELECT_ALL) { continue; }
             allSelected = allSelected && config[key].checked;
         }
         return allSelected;
     };
 
-    const toggleColumn = (id) => {
+    const toggleColumn = id => {
         const newHideShowColumns = {...hideShowColumns};
         newHideShowColumns[id].checked = !newHideShowColumns[id].checked;
         newHideShowColumns[SELECT_ALL].checked = isAllSelected(newHideShowColumns);
         setHideShowColumns(newHideShowColumns);
     };
 
-    const toggleSelectAll = (selectAllKey) => {
+    const toggleSelectAll = selectAllKey => {
         const newHideShowColumns = {...hideShowColumns};
         const newValue = !newHideShowColumns[selectAllKey].checked;
         newHideShowColumns[selectAllKey].checked = newValue;
 
         availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if (column.javaVariableName === 'title') return '';
+            if (column.javaVariableName === 'title') { return ''; }
             newHideShowColumns[column.javaVariableName].checked = newValue;
         });
         setHideShowColumns(newHideShowColumns);
@@ -80,8 +79,8 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
 
     const saveColumns = () => {
         const cols = columns.slice();
-        //remove all hidden columns
-        Object.keys(hideShowColumns).map(key => {
+        // remove all hidden columns
+        Object.keys(hideShowColumns).forEach(key => {
             if (hideShowColumns[key].checked === false) {
                 const position = cols.indexOf(key);
                 if (position > -1) {
@@ -89,8 +88,8 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
                 }
             }
         });
-        //add new visible columns
-        Object.keys(hideShowColumns).map(key => {
+        // add new visible columns
+        Object.keys(hideShowColumns).forEach(key => {
             if (hideShowColumns[key].checked === true) {
                 const position = cols.indexOf(key);
                 if (position === -1) {
@@ -102,10 +101,10 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         updateColumnsOrder(cols);
     };
 
-    const buildModalContent = (config) => {
+    const buildModalContent = config => {
         const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
         for (const key in config) {
-            if (key === SELECT_ALL) continue;
+            if (key === SELECT_ALL) { continue; }
             options.push(buildCheckBox(key, toggleColumn));
         }
 
@@ -123,7 +122,7 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
                 onChange={() => onChange(key)}
                 isChecked={data.checked}
             />
-);
+        );
     };
 
     const buildConfigAndOpenModal = () => {
@@ -133,7 +132,7 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         setModalStyle({width: 'small'});
     };
 
-    return (<div className='nexus-column-customization__icon-button' onClick={buildConfigAndOpenModal}><AppSwitcherIcon size='large' /></div>);
+    return (<div className="nexus-column-customization__icon-button" onClick={buildConfigAndOpenModal}><AppSwitcherIcon size="large" /></div>);
 };
 
 export default TableColumnCustomization;
@@ -141,5 +140,11 @@ export default TableColumnCustomization;
 TableColumnCustomization.propTypes = {
     availsMapping: PropTypes.object,
     columns: PropTypes.array,
-    updateColumnsOrder: PropTypes.func
+    updateColumnsOrder: PropTypes.func,
+};
+
+TableColumnCustomization.defaultProps = {
+    availsMapping: {},
+    columns: [],
+    updateColumnsOrder: null,
 };
