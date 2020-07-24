@@ -12,14 +12,12 @@ import {
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {
     updateManualRightEntrySelectedTab,
-    updateManualRightsEntryColumns,
 } from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
 const ManualRightEntryTableTabs = ({
     selectedTab,
     updateManualRightEntrySelectedTab,
-    updateManualRightsEntryColumns,
     getCustomSearchCriteria,
     createdCount,
     updatedCount,
@@ -113,9 +111,7 @@ const ManualRightEntryTableTabs = ({
             </ManualRightEntryTab>
             <ManualRightEntryTab
                 isActive={selectedTab === ATTACHMENTS_TAB}
-                onClick={() => {
-                    updateManualRightEntrySelectedTab(ATTACHMENTS_TAB);
-                }}
+                onClick={() => updateManualRightEntrySelectedTab(ATTACHMENTS_TAB)}
             >
                 Attachments ({attachments.length})
             </ManualRightEntryTab>
@@ -126,7 +122,6 @@ const ManualRightEntryTableTabs = ({
 ManualRightEntryTableTabs.propTypes = {
     selectedTab: PropTypes.string,
     updateManualRightEntrySelectedTab: PropTypes.func,
-    updateManualRightsEntryCoulmns: PropTypes.func,
     getCustomSearchCriteria: PropTypes.func.isRequired,
     fatalCount: PropTypes.number,
     createdCount: PropTypes.number,
@@ -143,7 +138,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     updateManualRightEntrySelectedTab: updateManualRightEntrySelectedTab,
-    updateManualRightsEntryColumns: updateManualRightsEntryColumns,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManualRightEntryTableTabs);

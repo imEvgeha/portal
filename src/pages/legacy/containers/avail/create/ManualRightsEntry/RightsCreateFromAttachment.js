@@ -2,22 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import {Button} from 'reactstrap';
+import {connect} from 'react-redux';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
 import {historyService} from '../../service/HistoryService';
 import {URL} from '../../../../../../util/Common';
 import {Can} from '../../../../../../ability';
-import {connect} from 'react-redux';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
-import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
-import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
-import TableColumnCustomization
-    from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
-import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
-import Constants from './Constants.js';
-import './ManualRighstEntry.scss';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
-import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import * as selectors from './manualRightEntrySelector';
 import ManualRightEntryFatalView from './components/ManualRightEntryFatalView';
 import {
@@ -26,8 +18,16 @@ import {
 } from '../../../../stores/actions/avail/manualRightEntry';
 import UploadIngestButton
     from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
-import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
+import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
+import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
+import TableColumnCustomization
+    from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
+import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
+import Constants from './Constants.js';
+import './ManualRighstEntry.scss';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, ATTACHMENTS, EMAIL_BUTTON, ERROR_MESSAGE} = Constants;
 
