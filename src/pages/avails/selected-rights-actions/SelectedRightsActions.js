@@ -39,6 +39,7 @@ export const SelectedRightsActions = ({
     selectedRightGridApi,
     gridApi,
     setSelectedRights,
+    setPrePlanRepoRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -168,31 +169,34 @@ export const SelectedRightsActions = ({
         close();
     };
 
-    const openStatusCheckModal = () => {
-        const eligibleRights = selectedRights.filter(right => {
+    const getEligibleRights = selectedRights => {
+        let eligibleRights = [];
+        let nonEligibleRights = [];
+        selectedRights.forEach(right => {
             const {status, rightStatus, licensed} = right || {};
             if (prePlanEligible(status, rightStatus, licensed)) {
-                return right;
+                eligibleRights = [...eligibleRights, right];
+            } else {
+                nonEligibleRights = [...nonEligibleRights, right];
             }
-            return null;
         });
+        return [
+            eligibleRights,
+            nonEligibleRights,
+        ];
+    };
 
+    const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
-            // moveToPrePlan(eligibleRights);
+            setPrePlanRepoRights(selectedRights);
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
             return;
         }
 
-        const nonEligibleRights = selectedRights.filter(right => {
-            const {status, rightStatus, licensed} = right || {};
-            if (!prePlanEligible(status, rightStatus, licensed)) {
-                return right;
-            }
-            return null;
-        });
+        const [eligibleRights, nonEligibleRights] = getEligibleRights(selectedRights);
 
         const nonEligibleTitles = nonEligibleRights.reduce((acc, right) => {
             const {title, status} = right || {};
@@ -201,6 +205,7 @@ export const SelectedRightsActions = ({
         }, []);
 
         setSelectedRights(nonEligibleRights);
+        setPrePlanRepoRights(eligibleRights);
 
         setModalContentAndTitle(
             (
@@ -293,7 +298,7 @@ export const SelectedRightsActions = ({
                                     !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                                 )}
                                 data-test-id="add-to-preplan"
-                                onClick={selectedRights.length ? openStatusCheckModal : null}
+                                onClick={selectedRights.length ? prepareRightsForPrePlan : null}
                             >
                                 <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
                                     <div>
@@ -330,6 +335,7 @@ SelectedRightsActions.propTypes = {
     selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
     setSelectedRights: PropTypes.func.isRequired,
+    setPrePlanRepoRights: PropTypes.func.isRequired,
     gridApi: PropTypes.object,
 };
 

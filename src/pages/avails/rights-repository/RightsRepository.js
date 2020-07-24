@@ -55,6 +55,13 @@ const SelectedRightsRepositoryTable = compose(
     withSorting(),
 )(NexusGrid);
 
+const PrePlanRightsRepositoryTable = compose(
+    withColumnsResizing(),
+    withSideBar(),
+    withFilterableColumns(),
+    withSorting(),
+)(NexusGrid);
+
 const RightsRepository = ({
     columnDefs,
     createRightMatchingColumnDefs,
@@ -79,6 +86,7 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
+    const [prePlanRepoRights, setPrePlanRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
@@ -372,6 +380,7 @@ const RightsRepository = ({
                 title="Rights"
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
+                prePlanRightsCount={prePlanRepoRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -382,18 +391,7 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-            />
-            <SelectedRightsRepositoryTable
-                id="selectedRightsRepo"
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                singleClickEdit
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
-                mapping={mapping}
-                rowData={selectedRepoRights}
-                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
-                onGridEvent={onSelectedRightsRepositoryGridEvent}
-                notFilterableColumns={['action', 'buttons']}
+                setPrePlanRepoRights={setPrePlanRepoRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -409,6 +407,30 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
+            />
+            <SelectedRightsRepositoryTable
+                id="selectedRightsRepo"
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                mapping={mapping}
+                rowData={selectedRepoRights}
+                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
+            />
+            <PrePlanRightsRepositoryTable
+                id="prePlanRightsRepo"
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                mapping={mapping}
+                rowData={prePlanRepoRights}
+                isGridHidden={activeTab !== PRE_PLAN_TAB}
+                onGridEvent={() => null}
+                notFilterableColumns={['action', 'buttons']}
             />
         </div>
     );

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import './NexusTab.scss';
 
 const NexusTab = ({title, totalRows, activeTab, currentTab, setActiveTab}) => {
-    console.log(currentTab);
     return (
         <div
             className={classNames(
