@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CheckboxCellEditor extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -26,11 +25,11 @@ class CheckboxCellEditor extends Component {
     render() {
         const {isChecked} = this.state;
         return (
-            <input 
+            <input
                 style={{width: '100%', height: '100%', position: 'relative', top: '-5px'}}
-                type="checkbox" 
+                type="checkbox"
                 ref={this.inputRef}
-                checked={isChecked} 
+                checked={isChecked}
                 onChange={this.onChange}
             />
         );
@@ -38,6 +37,7 @@ class CheckboxCellEditor extends Component {
 }
 
 CheckboxCellEditor.propTypes = {
+    // eslint-disable-next-line react/boolean-prop-naming
     value: PropTypes.bool,
 };
 

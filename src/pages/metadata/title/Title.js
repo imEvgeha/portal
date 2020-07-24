@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import TitleHeader from './title-header/TitleHeader';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
-
+import TitleHeader from './title-header/TitleHeader';
 import {
     METADATA_TITLE_TITLE_SECTION,
     METADATA_TITLE_CAST_N_CREW_SECTION,

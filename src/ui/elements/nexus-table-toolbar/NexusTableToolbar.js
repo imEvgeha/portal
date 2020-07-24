@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './NexusTableToolbar.scss';
-import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
-import SelectedButton from './components/SelectedButton';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
 } from '../../../pages/avails/rights-repository/RightsRepository';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
+import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
+import SelectedButton from './components/SelectedButton';
 
 const NexusTableToolbar = ({
     title,

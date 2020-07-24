@@ -25,8 +25,8 @@ const DEAFULT_TOOL_PANELS = [
 
 const defaultSideBar = {toolPanels: DEAFULT_TOOL_PANELS};
 
-const withSideBar = (sideBar = defaultSideBar) => WrappedComponent =>{
-    const ComposedComponent = (props) => {
+const withSideBar = (sideBar = defaultSideBar) => WrappedComponent => {
+    return props => {
         return (
             <WrappedComponent
                 {...props}
@@ -34,9 +34,6 @@ const withSideBar = (sideBar = defaultSideBar) => WrappedComponent =>{
             />
         );
     };
-
-    return ComposedComponent;
 };
 
 export default withSideBar;
-

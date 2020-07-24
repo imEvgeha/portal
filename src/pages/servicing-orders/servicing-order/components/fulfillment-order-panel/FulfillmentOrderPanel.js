@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import File from '../../../../../assets/file.svg';
 import Constants from '../fulfillment-order/constants';
 import './FulfillmentOrderPanel.scss';
@@ -11,7 +11,7 @@ const FulfillmentOrderPanel = ({
     dueDate,
     selected,
     handleFulfillmentOrderChange,
-    productDescription
+    productDescription,
 }) => {
     return (
         <div
@@ -42,9 +42,10 @@ FulfillmentOrderPanel.propTypes = {
     handleFulfillmentOrderChange: PropTypes.func,
     status: PropTypes.string,
     dueDate: PropTypes.string,
+    // eslint-disable-next-line react/boolean-prop-naming
     selected: PropTypes.bool,
     productDescription: PropTypes.string,
-    externalId: PropTypes.string
+    externalId: PropTypes.string,
 };
 
 FulfillmentOrderPanel.defaultProps = {
@@ -54,7 +55,7 @@ FulfillmentOrderPanel.defaultProps = {
     dueDate: '',
     selected: false,
     productDescription: '',
-    externalId: ''
+    externalId: '',
 };
 
 export default FulfillmentOrderPanel;

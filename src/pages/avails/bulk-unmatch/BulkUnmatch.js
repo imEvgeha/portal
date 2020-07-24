@@ -1,24 +1,24 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import SectionMessage from '@atlaskit/section-message';
+import {connect} from 'react-redux';
+import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import {getAffectedRights, setCoreTitleId} from '../availsService';
 import {
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
-import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
-import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_WARNING} from './constants';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {BULK_UNMATCH_SUCCESS_TOAST} from '../selected-rights-actions/constants';
-import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
+import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';
 
 const BulkUnmatch = ({selectedRights = [], columnDefs = [],
-                         removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
+    removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
     const [affectedRights, setAffectedRights] = useState([]);
     const {setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    const unMatchHandler = rightIds => {
+    const unMatchHandler = useCallback(rightIds => {
         setCoreTitleId({rightIds}).then(unmatchedRights => {
             // Fetch fresh data from back-end
             toggleRefreshGridData(true);
@@ -40,7 +40,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 isAutoDismiss: true,
             });
         });
-    };
+    }, [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]);
 
     useEffect(
         () => {
@@ -64,6 +64,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                 setAffectedRights(rights);
             });
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedRights]
     );
 

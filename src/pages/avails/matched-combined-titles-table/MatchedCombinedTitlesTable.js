@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import {getRepositoryCell} from '../utils';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import {getRepositoryCell} from '../utils';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
 import './MatchedCombinedTitlesTable.scss';
 
@@ -37,8 +37,7 @@ const MatchedCombinedTitlesTable = ({data, isFullHeight}) => {
     return (
         <div
             className={classNames('nexus-c-matched-combined-titles-table-wrapper',
-                isFullHeight && 'nexus-c-matched-full-view'
-            )}
+                isFullHeight && 'nexus-c-matched-full-view')}
         >
             <NexusGrid
                 className="nexus-c-matched-combined-titles-table"

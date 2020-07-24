@@ -1,15 +1,15 @@
-import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
-import {get} from 'lodash';
 import {push} from 'connected-react-router';
-import {titleService} from '../legacy/containers/metadata/service/TitleService';
-import * as actionTypes from './metadataActionTypes';
-import * as selectors from './metadataSelectors';
-import {normalizeDataForStore, URL} from '../../util/Common';
-import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import {get} from 'lodash';
+import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
 } from '../../ui/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
+import {normalizeDataForStore, URL} from '../../util/Common';
+import {titleService} from '../legacy/containers/metadata/service/TitleService';
+import * as actionTypes from './metadataActionTypes';
+import * as selectors from './metadataSelectors';
 
 export function* fetchTitle(action) {
     const {payload} = action || {};

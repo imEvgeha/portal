@@ -4,5 +4,5 @@ export default {
     FAILED: 'Failed',
     MANUAL: 'Manual',
     IN_PROGRESS: 'In Progress',
-    ON_HOLD: 'On Hold'
+    ON_HOLD: 'On Hold',
 };

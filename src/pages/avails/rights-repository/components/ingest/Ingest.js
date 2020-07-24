@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
-import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
-import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
-import {NexusTooltip} from '../../../../../ui/elements';
+import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
 import Email from '../../../../../assets/email.svg';
-import CrossCircle from '../../../../../assets/action-cross-circle.svg';
+import {NexusTooltip} from '../../../../../ui/elements';
+import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
+import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
+import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
 import Constants from '../../../ingest-panel/constants';
 import './Ingest.scss';
 

@@ -164,6 +164,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
             "resizable": true,
           }
         }
+        frameworkComponents={Object {}}
         isGridHidden={false}
         onFirstDataRendered={[Function]}
         onGridEvent={null}

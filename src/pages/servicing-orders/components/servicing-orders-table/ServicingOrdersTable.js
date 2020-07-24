@@ -1,27 +1,37 @@
+import React, {useEffect, useState, useCallback} from 'react';
+import PropTypes from 'prop-types';
 import {camelCase, startCase} from 'lodash';
-import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
+import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import EmphasizedCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
 import './ServicingOrdersTable.scss';
+
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicingOrders, refreshData, dataRefreshComplete}) => {
+const ServicingOrdersTable = (
+    {
+        fixedFilter,
+        externalFilter,
+        setSelectedServicingOrders,
+        isRefreshData,
+        dataRefreshComplete,
+    }
+) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
-        selectedRows: 0
+        selectedRows: 0,
     });
     const [gridApi, setGridApi] = useState(null);
 
@@ -40,16 +50,18 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                     const {[field]: date = ''} = data || {};
                     return ISODateToView(date, dataType);
                 };
+            default:
+                break;
         }
     };
 
-    const updateColumnDefs = columnDefs => {
+    const updateColumnDefs = useCallback(columnDefs => {
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: valueFormatter(columnDef),
-            cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer'
+            cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer',
         }));
-    };
+    }, []);
 
     /**
      * Callback when datatable is first rendered on the DOM
@@ -85,12 +97,12 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
         () => {
             setColumns(updateColumnDefs(columnDefs));
         },
-        [columnDefs]
+        [setColumns, updateColumnDefs]
     );
 
     useEffect(
         () => {
-            if (refreshData) {
+            if (isRefreshData) {
                 // Refresh data
                 gridApi.purgeInfiniteCache();
 
@@ -101,7 +113,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                 dataRefreshComplete();
             }
         },
-        [refreshData]
+        [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]
     );
 
     return (
@@ -110,7 +122,7 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
                 columnDefs={columns}
                 mapping={columnDefs}
                 frameworkComponents={{
-                    emphasizedStringCellRenderer: EmphasizedCellRenderer
+                    emphasizedStringCellRenderer: EmphasizedCellRenderer,
                 }}
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
@@ -125,6 +137,22 @@ const ServicingOrdersTable = ({fixedFilter, externalFilter, setSelectedServicing
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
         </div>
     );
+};
+
+ServicingOrdersTable.propTypes = {
+    fixedFilter: PropTypes.object,
+    externalFilter: PropTypes.object,
+    setSelectedServicingOrders: PropTypes.func,
+    isRefreshData: PropTypes.bool,
+    dataRefreshComplete: PropTypes.func,
+};
+
+ServicingOrdersTable.defaultProps = {
+    fixedFilter: {},
+    externalFilter: {},
+    setSelectedServicingOrders: null,
+    isRefreshData: false,
+    dataRefreshComplete: null,
 };
 
 export default ServicingOrdersTable;

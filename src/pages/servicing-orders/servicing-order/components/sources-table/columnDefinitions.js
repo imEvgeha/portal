@@ -4,7 +4,7 @@ const columnDefinitions = [
         field: 'barcode',
         headerName: 'Barcode',
         width: 200,
-    }
+    },
 ];
 
 export default columnDefinitions;

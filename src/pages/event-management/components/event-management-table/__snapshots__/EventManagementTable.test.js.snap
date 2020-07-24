@@ -13,7 +13,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
       Refresh
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
-  <ComposedComponent
+  <Component
     className="nexus-c-event-management-grid"
     columnDefs={
       Array [

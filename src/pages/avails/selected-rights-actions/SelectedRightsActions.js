@@ -1,17 +1,20 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {get, uniqBy} from 'lodash';
 import classNames from 'classnames';
-import withToasts from '../../../ui/toast/hoc/withToasts';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import RightViewHistory from '../right-history-view/RightHistoryView';
-import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {get, uniqBy} from 'lodash';
+import {connect} from 'react-redux';
+import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import {URL} from '../../../util/Common';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import RightViewHistory from '../right-history-view/RightHistoryView';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -26,10 +29,7 @@ import {
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
 } from './constants';
-import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import MoreIcon from '../../../assets/more-icon.svg';
 import './SelectedRightsActions.scss';
-import {URL} from '../../../util/Common';
 
 export const SelectedRightsActions = ({
     selectedRights,
@@ -50,7 +50,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {setModalContentAndTitle} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -118,6 +118,7 @@ export const SelectedRightsActions = ({
                 checkPrePlanEligibilityCriteria()
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
 
     const clickHandler = () => setMenuOpened(!menuOpened);

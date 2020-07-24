@@ -1,17 +1,20 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import {cloneDeep, isEqual, omit} from 'lodash';
 import {connect} from 'react-redux';
-import {omit, isEqual, cloneDeep} from 'lodash';
-import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
-import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
+import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
+import {isObject} from '../../../../util/Common';
+import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
+import usePrevious from '../../../../util/hooks/usePrevious';
+import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
 import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
-import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
-import {isObject} from '../../../../util/Common';
-import usePrevious from '../../../../util/hooks/usePrevious';
-import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
+import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
-import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
+import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
+import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
+
 const DEFAULT_HOC_PROPS = [
     'notEditableColumns',
     'mapping',
@@ -21,14 +24,14 @@ const DEFAULT_EDITABLE_DATA_TYPES = [
     'priceType',
     'audioLanguageType',
     'boolean',
-    DATETIME_FIELDS.TIMESTAMP,
-    DATETIME_FIELDS.BUSINESS_DATETIME,
-    DATETIME_FIELDS.REGIONAL_MIDNIGHT,
     'multiselect',
     'number',
     'string',
     'select',
-    'territoryType'
+    'territoryType',
+    DATETIME_FIELDS.TIMESTAMP,
+    DATETIME_FIELDS.BUSINESS_DATETIME,
+    DATETIME_FIELDS.REGIONAL_MIDNIGHT,
 ];
 const DEFAULT_NOT_EDITABLE_COLUMNS = ['id'];
 
@@ -37,7 +40,7 @@ const withEditableColumns = ({
     editableDataTypes = DEFAULT_EDITABLE_DATA_TYPES,
     notEditableColumns = DEFAULT_NOT_EDITABLE_COLUMNS,
 } = {}) => WrappedComponent => {
-    const ComposedComponent = (props) => {
+    const ComposedComponent = props => {
         const {columnDefs, mapping, selectValues} = props;
         const previousSelectValues = usePrevious(selectValues);
         const previousColumnDefs = usePrevious(columnDefs);
@@ -46,8 +49,8 @@ const withEditableColumns = ({
 
         useEffect(() => {
             if (!isEqual(previousSelectValues, selectValues) || !isEqual(previousColumnDefs, columnDefs)) {
-               const updatedColumnDefs = updateColumnDefs(columnDefs);
-               setEditableColumnDefs(updatedColumnDefs);
+                const updatedColumnDefs = updateColumnDefs(columnDefs);
+                setEditableColumnDefs(updatedColumnDefs);
             }
         }, [columnDefs, selectValues]);
 
@@ -55,8 +58,14 @@ const withEditableColumns = ({
             const copiedColumnDefs = cloneDeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {field} = columnDef || {};
-                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find((({javaVariableName}) => javaVariableName === field))) || {};
-                const isEditable = editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
+                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find(
+                    ({javaVariableName}) => javaVariableName === field
+                )) || {};
+                const isEditable = editableDataTypes.includes(dataType) && (
+                    excludedColumns
+                        ? !excludedColumns.includes(field)
+                        : true
+                );
                 if (enableEdit && isEditable) {
                     columnDef.editable = true;
                     switch (dataType) {
@@ -108,7 +117,7 @@ const withEditableColumns = ({
                         case 'territoryType':
                             columnDef.cellEditorFramework = TerritoryCellEditor;
                             columnDef.cellEditorParams = {
-                                options: (isObject(selectValues) && selectValues[field]) || []
+                                options: (isObject(selectValues) && selectValues[field]) || [],
                             };
                             break;
                         case 'audioLanguageType':
@@ -120,6 +129,8 @@ const withEditableColumns = ({
                                 },
                             };
                             break;
+                        default:
+                            break;
                     }
                 }
 
@@ -129,9 +140,9 @@ const withEditableColumns = ({
             return editableColumnDefs;
         };
 
-        const getOptions = (field) => {
+        const getOptions = field => {
             const options = (isObject(selectValues) && selectValues[field]) || [];
-            const parsedOptions = options.filter(Boolean).map(item => {
+            return options.filter(Boolean).map(item => {
                 if (isObject(item)) {
                     const {value, id, countryCode} = item;
                     return {
@@ -146,7 +157,6 @@ const withEditableColumns = ({
                     key: item,
                 };
             });
-            return parsedOptions;
         };
 
         const propsWithoutHocProps = omit(props, hocProps);
@@ -163,15 +173,26 @@ const withEditableColumns = ({
     const createMapStateToProps = () => {
         const availSelectValuesSelector = createAvailSelectValuesSelector();
         return (state, props) => {
-            let selectValues = props.selectValues || availSelectValuesSelector(state, props);
+            const selectValues = props.selectValues || availSelectValuesSelector(state, props);
             return {
                 selectValues,
             };
         };
     };
 
-    return connect(createMapStateToProps)(ComposedComponent); // eslint-disable-line
+    ComposedComponent.propTypes = {
+        columnDefs: PropTypes.array.isRequired,
+        mapping: PropTypes.array.isRequired,
+        selectValues: PropTypes.object,
+        notEditableColumns: PropTypes.array,
+    };
+
+    ComposedComponent.defaultProps = {
+        selectValues: {},
+        notEditableColumns: [],
+    };
+
+    return connect(createMapStateToProps)(ComposedComponent);
 };
 
 export default withEditableColumns;
-

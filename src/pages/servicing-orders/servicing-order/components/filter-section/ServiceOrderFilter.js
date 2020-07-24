@@ -1,13 +1,13 @@
+import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import {getValidDate} from '../../../../../util/utils';
 import Constants from '../fulfillment-order/constants';
 import PartnerRequest from '../partner-request/PartnerRequest';
 import {SORT_DIRECTION} from './constants';
-import NexusDrawer from '../../../../../ui/elements/nexus-drawer/NexusDrawer';
 import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({
@@ -18,14 +18,13 @@ const ServiceOrderFilter = ({
     setDueDateSortDirection,
 }) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    // eslint-disable-next-line camelcase
     const {tenant, external_id, description, configured_pr_id, sr_due_date} = orderDetails || {};
     let FilterList = [{value: 'All', label: 'All'}];
-    FilterList = FilterList.concat(
-        Object.keys(Constants.STATUS).map(key => ({
-            label: Constants.STATUS[key],
-            value: key,
-        }))
-    );
+    FilterList = FilterList.concat(Object.keys(Constants.STATUS).map(key => ({
+        label: Constants.STATUS[key],
+        value: key,
+    })));
     return (
         <div className="so-panel-filter-detail">
             <div className="so-panel-filter-detail__row">
@@ -34,6 +33,7 @@ const ServiceOrderFilter = ({
                 </div>
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                    {/* eslint-disable-next-line camelcase */}
                     Order ID: {external_id}
                 </div>
             </div>
@@ -53,7 +53,12 @@ const ServiceOrderFilter = ({
                     width="extended"
                     title="Partner Request"
                 >
-                    <PartnerRequest externalId={external_id} configuredPrId={configured_pr_id} />
+                    <PartnerRequest
+                        // eslint-disable-next-line camelcase
+                        externalId={external_id}
+                        // eslint-disable-next-line camelcase
+                        configuredPrId={configured_pr_id}
+                    />
                 </NexusDrawer>
             </div>
 
@@ -64,7 +69,7 @@ const ServiceOrderFilter = ({
                     value={getValidDate(sr_due_date)}
                     isDisabled
                     isReturningTime={false}
-                    onChange={() => {}}
+                    onChange={null}
                 />
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
@@ -76,6 +81,7 @@ const ServiceOrderFilter = ({
                         value={filter}
                         placeholder="Select Status"
                     />
+
                 </div>
                 <div className="so-panel-filter-detail__dropdown">
                     <label>Sort by Due Date</label>
@@ -85,6 +91,7 @@ const ServiceOrderFilter = ({
                         value={dueDateSortDirection}
                         placeholder="Select Date"
                     />
+
                 </div>
             </div>
         </div>
@@ -93,6 +100,17 @@ const ServiceOrderFilter = ({
 
 ServiceOrderFilter.propTypes = {
     orderDetails: PropTypes.object.isRequired,
+    filter: PropTypes.object,
+    setFilter: PropTypes.func,
+    dueDateSortDirection: PropTypes.object,
+    setDueDateSortDirection: PropTypes.func,
+};
+
+ServiceOrderFilter.defaultProps = {
+    filter: {},
+    setFilter: null,
+    dueDateSortDirection: {},
+    setDueDateSortDirection: null,
 };
 
 export default ServiceOrderFilter;

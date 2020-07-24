@@ -1,24 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import Spinner from '@atlaskit/spinner';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
-import {titleService} from '../../legacy/containers/metadata/service/TitleService';
-import withToasts from '../../../ui/toast/hoc/withToasts';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
-import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
-import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
-import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
-import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
-import BulkMatchingReview from './components/BulkMatchingReview';
-import {TITLE_MATCHING_MSG, TITLE_MATCHING_REVIEW_HEADER, RIGHT_TABS, EXISTING_CORE_TITLE_ID_WARNING} from './constants';
-import TitleSystems from '../../legacy/constants/metadata/systems';
-import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
-import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+import classNames from 'classnames';
+import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
@@ -26,13 +12,42 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '../../../ui/elements/nexus-toast-notification/constants';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import {
     TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
     TITLE_BULK_MATCH_SUCCESS_MESSAGE,
 } from '../../../ui/toast/constants';
+import withToasts from '../../../ui/toast/hoc/withToasts';
+import TitleSystems from '../../legacy/constants/metadata/systems';
+import {titleService} from '../../legacy/containers/metadata/service/TitleService';
+import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
+import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
+import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
+import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
+import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
+import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
+import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
+import BulkMatchingReview from './components/BulkMatchingReview';
+import {
+    TITLE_MATCHING_MSG,
+    TITLE_MATCHING_REVIEW_HEADER,
+    RIGHT_TABS,
+    EXISTING_CORE_TITLE_ID_WARNING,
+} from './constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRefreshGridData, isBonusRight, setHeaderText}) => {
+export const BulkMatching = (
+    {
+        data,
+        closeDrawer,
+        addToast,
+        removeToast,
+        toggleRefreshGridData,
+        isBonusRight,
+        setHeaderText,
+    }
+) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [bonusRightsTableData, setBonusRightsTableData] = useState([]);
@@ -65,7 +80,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     useEffect(() => {
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
-            if(isBonusRight){
+            if (isBonusRight) {
                 getExistingBonusRights(rightIds).then(res => {
                     if (Array.isArray(res) && res.length) {
                         setBonusRightsTableData(res);
@@ -81,7 +96,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                 });
             }
         }
-    }, [selectedTableData]);
+    }, [selectedTableData, isBonusRight]);
 
     useEffect(() => {
         if (affectedTableData.length) {
@@ -98,8 +113,8 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     const onMatch = () => {
         setMatchIsLoading(true);
         const coreTitleId = matchList[NEXUS].id;
-        if(isBonusRight) {
-            //call create bonus rights api here
+        if (isBonusRight) {
+            // call create bonus rights api here
         } else {
             bulkTitleMatch(coreTitleId);
         }
@@ -221,14 +236,14 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
     };
 
     const getRightsTableData = () => {
-      switch(activeTab) {
-          case RIGHT_TABS.AFFECTED:
-              return affectedTableData;
-          case RIGHT_TABS.BONUS_RIGHTS:
-              return bonusRightsTableData;
-          default:
-              return selectedTableData;
-      }
+        switch (activeTab) {
+            case RIGHT_TABS.AFFECTED:
+                return affectedTableData;
+            case RIGHT_TABS.BONUS_RIGHTS:
+                return bonusRightsTableData;
+            default:
+                return selectedTableData;
+        }
     };
 
     const hasExistingCoreTitleIds = affectedTableData.some(({coreTitleId}) => coreTitleId);
@@ -292,7 +307,7 @@ export const BulkMatching = ({data, closeDrawer, addToast, removeToast, toggleRe
                     </Button>
                     {
                         hasExistingCoreTitleIds && (
-                            <div className='nexus-c-bulk-matching__warning'>
+                            <div className="nexus-c-bulk-matching__warning">
                                 {EXISTING_CORE_TITLE_ID_WARNING}
                             </div>
                         )
@@ -387,7 +402,7 @@ BulkMatching.defaultProps = {
     closeDrawer: () => null,
     toggleRefreshGridData: () => null,
     setHeaderText: () => null,
-    isBonusRight: false
+    isBonusRight: false,
 };
 
 const mapDispatchToProps = dispatch => ({

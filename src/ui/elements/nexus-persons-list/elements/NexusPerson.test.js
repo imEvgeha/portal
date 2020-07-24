@@ -1,11 +1,10 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-
-import NexusPerson from './NexusPerson';
 import {uid} from 'react-uid';
+import NexusPerson from './NexusPerson';
 
 describe('NexusPerson', () => {
-    let wrapper;
+    let wrapper = null;
     const person = {
         id: 'prs_Ac9oyaREip',
         firstName: null,
@@ -13,7 +12,7 @@ describe('NexusPerson', () => {
         lastName: null,
         displayName: 'Amaka Obi',
         personType: 'Actor',
-        characterName: 'test2'
+        characterName: 'test2',
     };
     const index = 1;
     it('should match snapshot', () => {

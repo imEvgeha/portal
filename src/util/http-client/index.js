@@ -1,7 +1,6 @@
-import {isObject} from 'lodash';
 import {keycloak} from '../../auth/keycloak';
-import handleResponse from './handleResponse';
 import handleError from './handleError';
+import handleResponse from './handleResponse';
 
 const DEFAULT_TIMEOUT = 60000;
 
@@ -43,7 +42,6 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
         controller = null;
         clearTimeout(timeoutId);
     }
-
 };
 
 /**
@@ -51,15 +49,15 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
  *
  * @param url
  * @param options={...fetchOptions, params, ...rest}
- * @param abortAfter=DEFAULT_TIMEOUT 
+ * @param abortAfter=DEFAULT_TIMEOUT
  * @returns Promise (result fetch api)
  */
 export const nexusFetch = (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
     const {params, ...rest} = options;
+    let clonedUrl = url;
     if (params && typeof params === 'string') {
-        url += `${url.indexOf('?') === -1 ? '?' : '&'}${params}`;
+        clonedUrl += `${url.indexOf('?') === -1 ? '?' : '&'}${params}`;
     }
 
-    return fetchAPI(url, rest, abortAfter);
+    return fetchAPI(clonedUrl, rest, abortAfter);
 };
-

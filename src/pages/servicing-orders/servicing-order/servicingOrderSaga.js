@@ -1,15 +1,15 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects';
-import * as actionTypes from './servicingOrderActionTypes';
-import {saveFulfillmentOrder as saveFulfillmentOrderAPI} from '../servicingOrdersService';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
 import {SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {saveFulfillmentOrder as saveFulfillmentOrderAPI} from '../servicingOrdersService';
+import * as actionTypes from './servicingOrderActionTypes';
 
 export function* saveFulfillmentOrder(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.SAVE_FULFILLMENT_ORDER_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         yield call(requestMethod, payload);
@@ -25,7 +25,7 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: SAVE_FULFILLMENT_ORDER_SUCCESS_MESSAGE,
-            }
+            },
         });
     } catch (error) {
         yield put({
@@ -38,6 +38,6 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
 
 export function* servicingOrderWatcher() {
     yield all([
-        takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI)
+        takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI),
     ]);
 }

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import ServicingOrdersTable from './ServicingOrdersTable';
 
 describe('ServicingOrdersTable', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         wrapper = shallow(<ServicingOrdersTable />);

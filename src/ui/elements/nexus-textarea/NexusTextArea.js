@@ -19,7 +19,7 @@ NexusTextArea.propTypes = {
 };
 
 NexusTextArea.defaultProps = {
-    onTextChange: () => {},
+    onTextChange: null,
     notesValue: '',
 };
 
