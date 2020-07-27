@@ -37,8 +37,6 @@ const mapStateToProps = state => {
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
-let isPlatformCategoryMandatory = false;
-
 class RightCreate extends React.Component {
 
     constructor(props) {
@@ -568,7 +566,7 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            const isRequired = name === 'platformCategory' &&  this.right.licensee && (this.right.licensee.servicingRegion === 'US' || required);
+            const isRequired = required || (name === 'platformCategory' && this.right.licensee && this.right.licensee.servicingRegion === 'US');
             return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
