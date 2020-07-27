@@ -10,8 +10,8 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnMappings from '../../columnMappings';
-import {DOWNLOAD_BTN, EXCEL_EXPORT_FILE_NAME, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
-import {getSyncLog} from '../../syncLogService';
+import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
 import './SyncLogTable.scss';
 
@@ -81,7 +81,7 @@ const SyncLogTable = () => {
                     </div>
                 </div>
                 <Button
-                    onClick={() => gridApi.exportDataAsExcel({fileName: EXCEL_EXPORT_FILE_NAME})}
+                    onClick={() => exportSyncLog(dateFrom, dateTo)}
                     isDisabled={!gridApi}
                 >
                     {DOWNLOAD_BTN}

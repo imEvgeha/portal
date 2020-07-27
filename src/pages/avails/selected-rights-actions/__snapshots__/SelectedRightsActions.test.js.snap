@@ -43,7 +43,7 @@ either all are bonus rights(with unique sourceRightId) or none"
         onClick={null}
       >
         <NexusTooltip
-          content="This feature is enabled when: 
+          content="This feature is enabled when:
 All selected rights have Core Title IDs populated,
 either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
@@ -66,6 +66,20 @@ empty Source Right IDs and Status is Ready/ReadyNew"
         >
           <div>
             Create Bonus Right
+          </div>
+        </NexusTooltip>
+      </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="add-to-preplan"
+        onClick={null}
+      >
+        <NexusTooltip
+          content="Select Right to enable this feature"
+          isDisabled={false}
+        >
+          <div>
+            Add to Pre-Plan
           </div>
         </NexusTooltip>
       </div>

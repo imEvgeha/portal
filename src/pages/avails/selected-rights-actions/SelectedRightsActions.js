@@ -14,6 +14,7 @@ import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import RightViewHistory from '../right-history-view/RightHistoryView';
+import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -23,6 +24,10 @@ import {
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
     HEADER_TITLE,
+    ADD_TO_PREPLAN,
+    PREPLAN_TOOLTIP,
+    STATUS_CHECK_HEADER,
+    STATUS_CHECK_MSG,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -32,11 +37,14 @@ export const SelectedRightsActions = ({
     removeToast,
     toggleRefreshGridData,
     selectedRightGridApi,
+    gridApi,
+    setSelectedRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
+    const [isPreplanEligible, setIsPreplanEligible] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
@@ -55,7 +63,8 @@ export const SelectedRightsActions = ({
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
-        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '') && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
+        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '')
+            && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
 
@@ -64,6 +73,12 @@ export const SelectedRightsActions = ({
         return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
             && !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', '')
             && !sourceRightId
+            && ['ReadyNew', 'Ready'].includes(status));
+    };
+
+    const checkPrePlanEligibilityCriteria = () => {
+        return selectedRights.every(({rightStatus, licensed, status}) => licensed
+            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
             && ['ReadyNew', 'Ready'].includes(status));
     };
 
@@ -98,6 +113,11 @@ export const SelectedRightsActions = ({
             setIsBonusRightCreatable(
                 checkBonusRightCreateCriteria()
             );
+
+            // PrePlan criteria
+            setIsPreplanEligible(
+                checkPrePlanEligibilityCriteria()
+            );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
@@ -130,6 +150,67 @@ export const SelectedRightsActions = ({
                     toggleRefreshGridData={toggleRefreshGridData}
                 />
             ), BULK_UNMATCH_TITLE
+        );
+    };
+
+    const prePlanEligible = (status, rightStatus, licensed) => {
+        if (['ReadyNew', 'Ready'].includes(status)
+            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
+            && licensed) {
+            return true;
+        }
+        return false;
+    };
+
+    const onCloseStatusCheckModal = () => {
+        gridApi.deselectAll();
+        toggleRefreshGridData(true);
+        // eslint-disable-next-line no-restricted-globals
+        close();
+    };
+
+    const openStatusCheckModal = () => {
+        const eligibleRights = selectedRights.filter(right => {
+            const {status, rightStatus, licensed} = right || {};
+            if (prePlanEligible(status, rightStatus, licensed)) {
+                return right;
+            }
+            return null;
+        });
+
+        if (isPreplanEligible) {
+            // move to pre-plan, clear selectedRights
+            // moveToPrePlan(eligibleRights);
+            gridApi.deselectAll();
+            setSelectedRights([]);
+            toggleRefreshGridData(true);
+            return;
+        }
+
+        const nonEligibleRights = selectedRights.filter(right => {
+            const {status, rightStatus, licensed} = right || {};
+            if (!prePlanEligible(status, rightStatus, licensed)) {
+                return right;
+            }
+            return null;
+        });
+
+        const nonEligibleTitles = nonEligibleRights.reduce((acc, right) => {
+            const {title, status} = right || {};
+            const restrictedTitle = {title, status};
+            return [...acc, restrictedTitle];
+        }, []);
+
+        setSelectedRights(nonEligibleRights);
+
+        setModalContentAndTitle(
+            (
+                <StatusCheck
+                    message={STATUS_CHECK_MSG}
+                    nonEligibleTitles={nonEligibleTitles}
+                    onClose={onCloseStatusCheckModal}
+                />
+            ), STATUS_CHECK_HEADER
         );
     };
 
@@ -205,6 +286,24 @@ export const SelectedRightsActions = ({
                             </div>
                         )
                     }
+                    {
+                        URL.isLocalOrDevOrQA() && (
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="add-to-preplan"
+                                onClick={selectedRights.length ? openStatusCheckModal : null}
+                            >
+                                <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
+                                    <div>
+                                        {ADD_TO_PREPLAN}
+                                    </div>
+                                </NexusTooltip>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             <NexusDrawer
@@ -231,6 +330,8 @@ SelectedRightsActions.propTypes = {
     removeToast: PropTypes.func,
     selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
+    setSelectedRights: PropTypes.func.isRequired,
+    gridApi: PropTypes.object,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -238,6 +339,7 @@ SelectedRightsActions.defaultProps = {
     addToast: () => null,
     removeToast: () => null,
     selectedRightGridApi: {},
+    gridApi: {},
 };
 
 const mapDispatchToProps = dispatch => ({
