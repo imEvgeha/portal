@@ -36,8 +36,5 @@ export const exportSyncLog = (startDate, endDate) => {
     fetchSyncLog(startDate, endDate)
         .then(response => {
             downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
-        })
-        .catch(err => {
-            throw new Error(`Error on downloading sync log: ${err}`);
         });
 };
