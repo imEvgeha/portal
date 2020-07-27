@@ -1,6 +1,5 @@
 import {all, fork} from 'redux-saga/effects';
 import availsWatcher from './pages/avails/availsSagas';
-import rightHistoryWatcher from './pages/avails/right-history-view/rightHistorySagas';
 import {rightMatchingWatcher} from './pages/avails/right-matching/rightMatchingSagas';
 import {titleMatchingWatcher} from './pages/avails/title-matching/titleMatchingSagas';
 import {eventManagementWatcher} from './pages/event-management/eventManagementSagas';
@@ -15,7 +14,6 @@ export default function* rootSaga() {
         fork(settingsWatcher),
         fork(rightMatchingWatcher),
         fork(titleMatchingWatcher),
-        fork(rightHistoryWatcher),
         fork(availsWatcher),
         fork(metadataWatcher),
         fork(eventManagementWatcher),

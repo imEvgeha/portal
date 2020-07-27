@@ -1,3 +1,4 @@
+export const VIEW_AUDIT_HISTORY = 'View Audit History';
 export const BULK_MATCH = 'Bulk Match Titles';
 export const BULK_MATCH_DISABLED_TOOLTIP = `This feature is enabled when:
 All selected rights have same content type,
