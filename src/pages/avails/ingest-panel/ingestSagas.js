@@ -12,7 +12,7 @@ import {getFiltersToSend} from './utils';
 import FilterConstants from './constants';
 import Constants from '../constants';
 
-const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
+const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 const UPLOAD_DELAY = 6500;
@@ -81,7 +81,7 @@ function* filterRightsByStatus({payload}) {
 function* selectIngest({payload}) {
     const {availHistoryId, attachmentId} = payload || {};
     let ingestId = availHistoryId;
-    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_IDS]: attachmentId};
+    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_ID]: attachmentId};
 
     if (ingestId) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
@@ -99,7 +99,7 @@ function* selectIngest({payload}) {
             yield put({
                 type: REMOVE_RIGHTS_FILTER,
                 payload: {
-                    filter: INGEST_HISTORY_ATTACHMENT_IDS,
+                    filter: INGEST_HISTORY_ATTACHMENT_ID,
                 },
             });
         } else {
@@ -143,7 +143,7 @@ function* deselectIngest() {
     yield put({
         type: REMOVE_RIGHTS_FILTER,
         payload: {
-            filter: INGEST_HISTORY_ATTACHMENT_IDS,
+            filter: INGEST_HISTORY_ATTACHMENT_ID,
         },
     });
     yield put({
