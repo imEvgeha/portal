@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers, no-throw-literal */
-export default async response => {
+export default async (response) => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
@@ -26,7 +26,7 @@ export default async response => {
     }
 };
 
-const getResponseContentType = response => {
+const getResponseContentType = (response) => {
     const {headers = {}} = response || {};
     const type = headers && headers.get('content-type');
     return type;
@@ -40,7 +40,7 @@ const parseResponse = (response, type) => {
         // configuration/endpoint return text/plain content type as header response
         // -> header request is application/json
         return response.json();
-    } else if (type.includes('text/html')) {
+    } else if (type.includes('text/html') || type.includes('text/csv')) {
         return response.text();
     } else if (type.includes('multipart/form-data')) {
         return response.formData();

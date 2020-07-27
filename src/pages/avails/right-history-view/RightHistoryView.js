@@ -15,9 +15,11 @@ const SPINNER = (
 );
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened, title} = useContext(
+        NexusModalContext
+    );
 
-    const title = `Audit History (${selectedAvails.length})`;
+    const titleAuditHistory = `Audit History (${selectedAvails.length})`;
 
     const buildContent = useCallback(() => {
         return (
@@ -30,11 +32,11 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
     }, [rightsEventHistory, selectedAvails]);
 
     useEffect(() => {
-        if (isOpened) {
+        if (isOpened && title === titleAuditHistory) {
             setModalStyle({width: '100%'});
-            setModalContentAndTitle(buildContent(), title);
+            setModalContentAndTitle(buildContent(), titleAuditHistory);
         }
-    }, [title, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
+    }, [titleAuditHistory, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
 
     const openHistoryModal = () => {
         const ids = selectedAvails.map((e) => e.id);
@@ -47,7 +49,7 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
                 },
             },
         ]);
-        setModalContentAndTitle(SPINNER, title);
+        setModalContentAndTitle(SPINNER, titleAuditHistory);
     };
 
     return <span onClick={openHistoryModal}>View Audit History</span>;
