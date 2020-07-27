@@ -821,7 +821,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted, useAffirmative = false) => {
+        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted, useYesNo = false) => {
             let priorityError = null;
             if (error) {
                 priorityError = (
@@ -847,7 +847,7 @@ class RightDetails extends React.Component {
                 {server: true, value: 3, label: 'true', display: 'true'},
             ];
 
-            if (useAffirmative) {
+            if (useYesNo) {
                 options = [
                     {server: null, value: 1, label: 'Select...', display: null},
                     {server: false, value: 2, label: 'No', display: 'No'},
