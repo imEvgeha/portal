@@ -8,9 +8,9 @@ import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
+import {SELECT_VALUES} from './constants';
 
 
 const PrePlanGrid = compose(
@@ -23,11 +23,13 @@ const PrePlanGrid = compose(
 
 
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, currentTab}) => {
+    console.log(prePlanRepoRights);
     const planTerritoriesColumn = {
         headerName: 'Plan Territories',
         colId: 'planTerritories',
         field: 'planTerritories',
         editable: true,
+        cellRenderer: 'loadingCellRenderer',
         // cellRendererFramework:
     };
 
@@ -61,6 +63,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
             isGridHidden={activeTab !== currentTab}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
+            selectValues={SELECT_VALUES}
         />
     );
 };
