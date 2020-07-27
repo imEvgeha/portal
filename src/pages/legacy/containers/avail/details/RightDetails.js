@@ -1,5 +1,6 @@
 import InlineEdit from '@atlaskit/inline-edit';
 import TextField from '@atlaskit/textfield';
+import SectionMessage from '@atlaskit/section-message';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {cloneDeep, get} from 'lodash';
 import PropTypes from 'prop-types';
@@ -37,6 +38,8 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
 import './RightDetails.scss';
+import {Link} from "react-router-dom";
+
 
 const mapStateToProps = state => {
     return {
@@ -90,7 +93,7 @@ class RightDetails extends React.Component {
         history.back();
 
         setTimeout(function () {
-            if (window.location.href == prevPage) {
+            if (window.location.href === prevPage) {
                 window.location.href = URL.keepEmbedded(AVAILS_PATH);
             }
         }, 500);
@@ -530,6 +533,36 @@ class RightDetails extends React.Component {
         }
     };
 
+    getStatusNote = () => {
+        if(this.state.right) {
+            let note = '';
+            let noteStyle = '';
+            let status = this.state.right.status;
+            if (status === 'Error') {
+                note = 'LicenseRightsDescription and/or PlatformCategory are missing for Licensee Service Region \'US\'';
+                noteStyle = 'error';
+            } else if (status === 'Merged') {
+                note = 'Right Editing disabled for rights with status: Merged';
+                noteStyle = 'info';
+            } else if (status === 'Pending') {
+                note = 'Click here for Right Matching';
+                noteStyle = 'info';
+            }
+            console.log('PROPS: ',this.props);
+            return status === 'Error' || status === 'Merged' || status === 'Pending' ?
+            <SectionMessage appearance={noteStyle}>
+                { status === 'Pending' ?
+                    <Link to={URL.keepEmbedded(`/avails/history/${this.state.right.availHistoryId}/right-matching/${this.state.right.id}`)}>
+                        {note}
+                    </Link>
+                    :
+                    <p>{note}</p>
+                }
+            </SectionMessage>
+            : null;
+        }
+    }
+
     render() {
         const {sourceRightId} = this.state.right || {};
         const renderFieldTemplate = (
@@ -552,11 +585,10 @@ class RightDetails extends React.Component {
                     style={{
                         backgroundColor: hasValidationError ? '#f2dede' : '',
                         color: hasValidationError ? '#a94442' : null,
-                        border: 'none',
                         position: 'relative',
                         display: 'block',
                         padding: '0.75rem 1.25rem',
-                        marginBottom: '-1px',
+                        marginBottom: '5px',
                     }}
                 >
                     <div className="row">
@@ -958,7 +990,7 @@ class RightDetails extends React.Component {
                 displayName,
                 value,
                 error,
-                readOnly,
+                readOnly = name === 'status' ? true : readOnly,
                 required,
                 highlighted,
                 null,
@@ -1708,7 +1740,7 @@ class RightDetails extends React.Component {
                         });
                     }
                     const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    let readOnly = cannotUpdate || mapping.readOnly || mapping.readOnlyInDetails;
+                    let readOnly = cannotUpdate || mapping.readOnly || mapping.readOnlyInDetails || this.state.right.status === 'Merged';
 
                     if(mapping.readOnlyInDetailsBasedField && Array.isArray(mapping.readOnlyInDetailsBasedField)
                         && mapping.readOnlyInDetailsBasedField.some(x => this.checkFieldValue(mapping.readOnlyInDetailsBasedField, x.field, x.fieldValue))) {
@@ -1993,7 +2025,9 @@ class RightDetails extends React.Component {
         }
 
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{
+                position: 'relative'
+            }}>
                 <ManualRightsEntryDOPConnector/>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     {this.state.errorMessage && (
@@ -2011,7 +2045,8 @@ class RightDetails extends React.Component {
                                 title="Right Details"
                                 onNavigationClick={this.navigateToPreviousPreview}
                             />
-                            {renderFields}
+                                { this.getStatusNote() }
+                                {renderFields}
                         </div>
                     </div>
                 </BlockUi>
