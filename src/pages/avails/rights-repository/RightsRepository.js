@@ -25,6 +25,7 @@ import {
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
     createAvailsMappingSelector,
@@ -49,13 +50,6 @@ const RightsRepositoryTable = compose(
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
-    withColumnsResizing(),
-    withSideBar(),
-    withFilterableColumns(),
-    withSorting(),
-)(NexusGrid);
-
-const PrePlanRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
@@ -420,17 +414,12 @@ const RightsRepository = ({
                 onGridEvent={onSelectedRightsRepositoryGridEvent}
                 notFilterableColumns={['action', 'buttons']}
             />
-            <PrePlanRightsRepositoryTable
-                id="prePlanRightsRepo"
+            <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                singleClickEdit
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
+                prePlanRepoRights={prePlanRepoRights}
+                activeTab={activeTab}
+                currentTab={PRE_PLAN_TAB}
                 mapping={mapping}
-                rowData={prePlanRepoRights}
-                isGridHidden={activeTab !== PRE_PLAN_TAB}
-                onGridEvent={() => null}
-                notFilterableColumns={['action', 'buttons']}
             />
         </div>
     );
