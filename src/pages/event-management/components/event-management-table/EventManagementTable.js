@@ -1,31 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
 import Button from '@atlaskit/button';
-import {getEventSearch} from '../../eventManagementService';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import {toggleRefreshGridData} from '../../../../ui/grid/gridActions';
 import columnDefs from '../../columnMappings.json';
 import {INITIAL_SORT, NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
+import {getEventSearch} from '../../eventManagementService';
 import './EventManagementTable.scss';
 
 const EventManagementGrid = compose(
     withSideBar(),
     withColumnsResizing(),
     withSorting(INITIAL_SORT),
-    withFilterableColumns({useDatesWithTime:true}),
+    withFilterableColumns({useDatesWithTime: true}),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
 const EventManagementTable = ({onGridEvent, toggleRefreshGridData}) => {
-    const updateColumnDefs = (columnDefs) => {
+    const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => (
             {
                 ...columnDef,

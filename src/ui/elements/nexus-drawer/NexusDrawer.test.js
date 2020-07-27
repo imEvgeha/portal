@@ -1,10 +1,9 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-
 import NexusDrawer from './NexusDrawer';
 
 describe('NexusDrawer', () => {
-    let wrapper;
+    let wrapper = null;
     it('should match snapshot', () => {
         wrapper = shallow(<NexusDrawer width="narrow" isOpen={true} onClose={() => null} />);
         expect(wrapper).toMatchSnapshot();

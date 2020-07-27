@@ -1,4 +1,5 @@
-import React, { Component, } from 'react';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import GoogleAnalytics from 'react-ga';
 import config from 'react-global-configuration';
 
@@ -22,16 +23,18 @@ const withTracker = (WrappedComponent, options = {}) => {
 
     class ComposedComponent extends Component {
         componentDidMount() {
-            const page = this.props.location.pathname + this.props.location.search;
+            const {location} = this.props;
+            const page = location.pathname + location.search;
 
             trackPage(page);
         }
 
         componentDidUpdate(prevProps) {
-            const currentPage =
-                prevProps.location.pathname + prevProps.location.search;
-            const nextPage =
-                this.props.location.pathname + this.props.location.search;
+            const {location} = this.props;
+            const {location: prevLocation} = prevProps;
+
+            const currentPage = prevLocation.pathname + prevLocation.search;
+            const nextPage = location.pathname + location.search;
 
             if (currentPage !== nextPage) {
                 trackPage(nextPage);
@@ -41,6 +44,13 @@ const withTracker = (WrappedComponent, options = {}) => {
         render() {
             return <WrappedComponent {...this.props} />;
         }
+    }
+
+    ComposedComponent.propTypes = {
+        location: PropTypes.shape({
+            pathname: PropTypes.string,
+            search: PropTypes.string,
+        }).isRequired,
     };
 
     return ComposedComponent;

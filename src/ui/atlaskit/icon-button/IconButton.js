@@ -1,7 +1,9 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {gridSize} from '@atlaskit/theme';
-import PropTypes from 'prop-types';
-import React from 'react';
+
+const GRID_SIZE_MULTIPLIER = 4;
 
 const IconButton = ({icon, onClick, label}) => {
     const Icon = icon;
@@ -15,8 +17,8 @@ const IconButton = ({icon, onClick, label}) => {
                 return {
                     buttonStyles: {
                         ...buttonStyles,
-                        width: gridSize() * 4,
-                        height: gridSize() * 4,
+                        width: gridSize() * GRID_SIZE_MULTIPLIER,
+                        height: gridSize() * GRID_SIZE_MULTIPLIER,
                         padding: 0,
                         display: 'flex',
                         justifyContent: 'center',
@@ -32,11 +34,11 @@ const IconButton = ({icon, onClick, label}) => {
 IconButton.propTypes = {
     icon: PropTypes.func.isRequired,
     onClick: PropTypes.func,
-    label: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
 };
 
 IconButton.defaultProps = {
-    onClick: () => {},
+    onClick: () => null,
 };
 
 export default IconButton;

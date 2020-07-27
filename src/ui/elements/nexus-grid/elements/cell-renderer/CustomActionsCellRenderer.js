@@ -6,7 +6,7 @@ import loadingGif from '../../../../../assets/img/loading.gif';
 const CustomActionsCellRenderer = ({id, children, classname}) => ( // eslint-disable-line
     <div className={`nexus-c-custom-actions-cell-renderer ${classname}`}>
         {id ? children : (
-            <img src={loadingGif} className="nexus-c-custom-actions-cell-renderer__spinner" alt='loadingSpinner' />
+            <img src={loadingGif} className="nexus-c-custom-actions-cell-renderer__spinner" alt="loadingSpinner" />
         )}
     </div>
 );

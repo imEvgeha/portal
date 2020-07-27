@@ -3,6 +3,6 @@ const DATETIME_FIELDS = {
     BUSINESS_DATETIME: 'businessDateTime',
     SIMULCAST: 'simulcast',
     REGIONAL: 'regional',
-    REGIONAL_MIDNIGHT: 'regionalMidnight'
+    REGIONAL_MIDNIGHT: 'regionalMidnight',
 };
 export {DATETIME_FIELDS};

@@ -824,7 +824,7 @@ class RightCreate extends React.Component {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
                 },
-                allowClear: !required
+                isClearable: !required
             };
 
             const component = useTime

@@ -8,31 +8,27 @@ class MultiSelectCellEditor extends Component {
         super(props);
         const {value} = props;
         this.state = {
-            value: this.prepareDataForSelect(value), 
+            value: this.prepareDataForSelect(value),
         };
     }
 
     prepareDataForSelect = data => {
         if (data && data.length) {
             const arr = data.filter(Boolean);
-            const result = arr.map(el => {
+            return arr.map(el => {
                 return {
                     value: el,
                     label: el,
                     key: el,
                 };
             });
-            return result;
         }
         return [];
     }
 
     isPopup = () => {
         const {options} = this.props;
-        if (options.length) {
-            return true;
-        }
-        return false;
+        return !!options.length;
     }
 
     getValue = () => {
@@ -40,7 +36,7 @@ class MultiSelectCellEditor extends Component {
         return value && value.map(el => el.value);
     }
 
-    handleChange = (value) => {
+    handleChange = value => {
         this.setState({
             value,
         });

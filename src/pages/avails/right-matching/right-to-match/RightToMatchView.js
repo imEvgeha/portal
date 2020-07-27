@@ -1,31 +1,35 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import {Link} from 'react-router-dom';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
+import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
+import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineCheckboxSelectionColumn,
     defineActionButtonColumn,
 } from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withToasts from '../../../../ui/toast/hoc/withToasts';
-import {
-    NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-} from '../../../../ui/toast/constants';
+import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {
     WARNING_TITLE,
     WARNING_ICON,
 } from '../../../../ui/elements/nexus-toast-notification/constants';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
-import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import {
+    NEW_RIGHT_BUTTON_CLICK_MESSAGE,
+} from '../../../../ui/toast/constants';
+import withToasts from '../../../../ui/toast/hoc/withToasts';
+import {URL} from '../../../../util/Common';
+import {backArrowColor} from '../../../legacy/constants/avails/constants';
+import {parseAdvancedFilterV2} from '../../../legacy/containers/avail/service/RightsService';
+import constants from '../../constants';
 import {
     createRightMatchingColumnDefs,
     createNewRight,
@@ -33,13 +37,6 @@ import {
     fetchAndStoreFocusedRight,
     setFoundFocusRightInRightsRepository,
 } from '../rightMatchingActions';
-import * as selectors from '../rightMatchingSelectors';
-import {getRightToMatchList} from '../rightMatchingService';
-import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
-import {URL} from '../../../../util/Common';
-import {backArrowColor} from '../../../legacy/constants/avails/constants';
-import {parseAdvancedFilterV2} from '../../../legacy/containers/avail/service/RightsService';
-import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import {
     RIGHT_TO_MATCH_TITLE,
     NEW_BUTTON,
@@ -49,7 +46,10 @@ import {
     CANCEL_BUTTON,
     MATCH_BUTTON,
 } from '../rightMatchingConstants';
-import constants from '../../constants';
+import * as selectors from '../rightMatchingSelectors';
+import {getRightToMatchList} from '../rightMatchingService';
+import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import './RightToMatchView.scss';
 
 const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right 

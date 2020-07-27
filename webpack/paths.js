@@ -1,7 +1,7 @@
 'use strict';
 
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const url = require('url');
 
 const appDirectory = fs.realpathSync(process.cwd());

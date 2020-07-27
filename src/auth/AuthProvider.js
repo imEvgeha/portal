@@ -1,29 +1,29 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
-import {connect} from 'react-redux';
 import jwtDecode from 'jwt-decode';
-import config from 'react-global-configuration';
 import {isEmpty} from 'lodash';
+import config from 'react-global-configuration';
+import {connect} from 'react-redux';
+import {updateAbility} from '../ability';
 import {store} from '../index';
+import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
+import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import {
     loadDashboardState,
     loadHistoryState,
     loadCreateRightState,
     loadDopState,
-    loadManualRightEntryState
 } from '../pages/legacy/stores/index';
-import {loadProfileInfo} from '../pages/legacy/stores/actions';
-import {updateAbility} from '../ability';
-import {injectUser, logout} from './authActions';
-import {getValidToken, getTokenDuration, wait} from './utils';
 import Loading from '../pages/static/Loading';
+import {injectUser, logout} from './authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
-import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
+import {getValidToken, getTokenDuration, wait} from './utils';
 
 const MIN_VALIDITY_SEC = 30;
+// eslint-disable-next-line no-magic-numbers
 const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
 
 const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, addUser, getAppOptions, logoutUser}) => {
- // excecution until the user is Authenticated
+    // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -49,8 +49,8 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     updateAbility(roles);
                     addUser({token, refreshToken});
                     loadUserAccount();
-                    loadDashboardState(); // TODO: to remove 
-                    loadCreateRightState(); // TODO: to remove 
+                    loadDashboardState(); // TODO: to remove
+                    loadCreateRightState(); // TODO: to remove
                     loadHistoryState(); // TODO: to remove
                     loadDopState(); // TODO: to remove
                     loadProfileInfo();
@@ -62,7 +62,6 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     // window.location.reload();
                 }
                 setIsAuthenticatedUser(isAuthenticated);
-
             } catch (error) {
                 logoutUser();
             }
@@ -83,7 +82,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
         return userAccount;
     };
 
-    const updateUserToken = async (accessToken) => {
+    const updateUserToken = async accessToken => {
         try {
             const token = getValidToken(accessToken);
             if (!token) {
@@ -105,7 +104,6 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
 
             // recursion
             updateUserToken(keycloak.token);
-
         } catch (error) {
             logoutUser();
         }
@@ -119,7 +117,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
 };
 
 const mapStateToProps = ({root}) => ({
-    appOptions: root.selectValues
+    appOptions: root.selectValues,
 });
 
 const mapDispatchToProps = dispatch => ({

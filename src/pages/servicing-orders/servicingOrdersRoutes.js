@@ -16,7 +16,7 @@ const routes = [
     {
         path: `${BASE_PATH}/:id`,
         component: canRender(ServicingOrder, 'read', 'ServicingOrders'),
-    }
+    },
 ];
 
 export default routes;

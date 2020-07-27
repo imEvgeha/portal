@@ -34,7 +34,7 @@ export const COLUMN_KEYS = [
 ];
 
 export const SORT_DIRECTION = [
-    { value: 'NONE', label: 'None' },
-    { value: 'ASCENDING', label: 'Ascending' },
-    { value: 'DESCENDING', label: 'Descending' }
+    {value: 'NONE', label: 'None'},
+    {value: 'ASCENDING', label: 'Ascending'},
+    {value: 'DESCENDING', label: 'Descending'},
 ];

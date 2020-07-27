@@ -1,7 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {IntlProvider} from 'react-intl';
+import {connect} from 'react-redux';
 
 const CustomIntlProvider = ({children, getLocale}) => (
     <IntlProvider locale={getLocale.locale}>
@@ -11,7 +11,7 @@ const CustomIntlProvider = ({children, getLocale}) => (
 
 CustomIntlProvider.propTypes = {
     children: PropTypes.node.isRequired,
-    getLocale: PropTypes.object    
+    getLocale: PropTypes.object,
 };
 
 CustomIntlProvider.defaultProps = {
@@ -19,8 +19,7 @@ CustomIntlProvider.defaultProps = {
 };
 
 const mapStateToProps = state => {
-    return { getLocale: state.locale };
+    return {getLocale: state.locale};
 };
 
 export default connect(mapStateToProps)(CustomIntlProvider);
-

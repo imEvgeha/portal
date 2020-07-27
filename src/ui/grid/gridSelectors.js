@@ -1,5 +1,5 @@
-import {createSelector} from 'reselect';
 import {get} from 'lodash';
+import {createSelector} from 'reselect';
 
 export const getGridState = state => get(state, ['ui', 'grid'], {});
 

@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {get, isObject} from 'lodash';
 import {uid} from 'react-uid';
-import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
-import EventDrawerHeader from './components/EventDrawerHeader';
-import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
 import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload';
-import EventHeader from '../event-header/EventHeader';
+import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
 import {
@@ -19,12 +16,14 @@ import {
     JSON_DECODING_ERR_MSG,
     XML_DECODING_ERR_MSG,
     JSON_PARSING_ERR_MSG,
-    XML_EMPTY_ELEMENT
+    XML_EMPTY_ELEMENT,
 } from '../../eventManagementConstants';
+import EventHeader from '../event-header/EventHeader';
+import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
+import EventDrawerHeader from './components/EventDrawerHeader';
 import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
-
     const message = get(event, 'message', {});
     const attachments = get(message, 'attachments', {});
 
@@ -35,26 +34,25 @@ const EventDrawer = ({event, onDrawerClose}) => {
         if (!data && mimeType === JSON_MIME_TYPE) {
             return '{}';
         }
-        let decode;
+        let decode = '';
         try {
             decode = atob(data);
-        }
-        catch(e) {
+        } catch (e) {
             mimeType === XML_MIME_TYPE
                 ? decode = XML_DECODING_ERR_MSG
                 : decode = JSON_DECODING_ERR_MSG;
-
         }
         return decode;
     };
 
     const parseJSON = str => {
-        if (!str) return {};
+        if (!str) {
+            return {};
+        }
         let parsedString = '';
         try {
             parsedString = JSON.parse(str);
-        }
-        catch(e) {
+        } catch (e) {
             parsedString = JSON_PARSING_ERR_MSG;
         }
         return parsedString;
@@ -129,15 +127,16 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                                 : rawData}
                                             indentSize={4}
                                         />
-                            ) : (
-                                <NexusJsonView
-                                    src={base64Encoded
-                                        ? parseJSON(decodeBase64(rawData, mimeType))
-                                        : parseJSON(rawData)}
-                                />
-                            )}
+                                    ) : (
+                                        <NexusJsonView
+                                            src={base64Encoded
+                                                ? parseJSON(decodeBase64(rawData, mimeType))
+                                                : parseJSON(rawData)}
+                                        />
+                                    )}
                                 </EventSectionCollapsible>
-                        );})}
+                            );
+                        })}
                     </EventSectionCollapsible>
                 </div>
             </NexusDrawer>

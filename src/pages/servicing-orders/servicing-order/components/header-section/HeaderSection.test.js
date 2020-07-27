@@ -1,5 +1,5 @@
-import {shallow} from 'enzyme';
 import React from 'react';
+import {shallow} from 'enzyme';
 import {SORT_DIRECTION} from '../filter-section/constants';
 import HeaderSection from './HeaderSection';
 
@@ -16,32 +16,32 @@ describe('HeaderSection', () => {
                     external_id: 'VU000134567-001',
                     dueDate: '10/05/2021',
                     definition: {
-                        dueDate: '10/05/2021'
+                        dueDate: '10/05/2021',
                     },
                     status: 'COMPLETED',
-                    product_description: 'Movie1'
+                    product_description: 'Movie1',
                 },
                 {
                     fulfillmentOrderId: 'VU000134597-002',
                     external_id: 'VU000134597-002',
                     dueDate: '09/05/2021',
                     definition: {
-                        dueDate: '09/05/2021'
+                        dueDate: '09/05/2021',
                     },
                     status: 'PENDING',
-                    product_description: 'Movie2'
+                    product_description: 'Movie2',
                 },
                 {
                     fulfillmentOrderId: 'VU000134597-003',
                     external_id: 'VU000134597-003',
                     dueDate: '11/05/2021',
                     definition: {
-                        dueDate: '11/05/2021'
+                        dueDate: '11/05/2021',
                     },
                     status: 'PENDING',
-                    product_description: 'Movie3'
-                }
-            ]
+                    product_description: 'Movie3',
+                },
+            ],
         };
 
         const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
@@ -66,7 +66,7 @@ describe('HeaderSection', () => {
         it('does not sort by default', () => {
             wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[0]);
             const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
-            
+
             expect(dueDates).toEqual(['2021-10-05', '2021-09-05', '2021-11-05']);
         });
 
