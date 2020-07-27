@@ -821,7 +821,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderBooleanField = (name, displayName, value, error, readOnly, required, highlighted, useAffirmative = false) => {
             let priorityError = null;
             if (error) {
                 priorityError = (
@@ -841,11 +841,26 @@ class RightDetails extends React.Component {
                 this.fields[name] = ref = React.createRef();
             }
 
-            const options = [
+            let options = [
                 {server: null, value: 1, label: 'Select...', display: null},
                 {server: false, value: 2, label: 'false', display: 'false'},
                 {server: true, value: 3, label: 'true', display: 'true'},
             ];
+
+            if (useAffirmative) {
+                options = [
+                    {server: null, value: 1, label: 'Select...', display: null},
+                    {server: false, value: 2, label: 'No', display: 'No'},
+                    {server: true, value: 3, label: 'Yes', display: 'Yes'},
+                ]
+            } else {
+                options = [
+                    {server: null, value: 1, label: 'Select...', display: null},
+                    {server: false, value: 2, label: 'false', display: 'false'},
+                    {server: true, value: 3, label: 'true', display: 'true'},
+                ]
+            }
+
             const val = ref.current
                 ? options.find(opt => opt.display === ref.current.state.value)
                 : options.find(opt => opt.server === value);
@@ -1237,7 +1252,7 @@ class RightDetails extends React.Component {
                     const error = errors.length ? errors.map(error => {
                         const {severityType='', fieldName='', message=''} = error || {};
                         return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                    }).join(` 
+                    }).join(`
 `) : '';
                     return {
                         priceType: priceType,
@@ -1933,10 +1948,25 @@ class RightDetails extends React.Component {
                                     error,
                                     readOnly,
                                     required,
-                                    highlighted
+                                    highlighted,
                                 )
                             );
                             break;
+                            case 'yesOrNo':
+                                // Special case
+                                renderFields.push(
+                                    renderBooleanField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted,
+                                        true
+                                    )
+                                );
+                                break;
                         case 'priceType':
                             renderFields.push(
                                 renderPriceField(
