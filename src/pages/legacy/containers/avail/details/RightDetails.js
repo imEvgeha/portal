@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom'; // we should remove this, replace use of findD
 import config from 'react-global-configuration';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes'; // replace by new NexusSelectCheckbox
 import {connect} from 'react-redux';
+import {Link} from "react-router-dom";
 import Select from 'react-select';
 import Editable from 'react-x-editable'; // there is an atlaskit component for editable
 import {Label} from 'reactstrap';
@@ -37,8 +38,9 @@ import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/component
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
+import { NoteError, NoteMerged, NotePending } from './RightConstants';
 import './RightDetails.scss';
-import {Link} from "react-router-dom";
+
 
 const mapStateToProps = state => {
     return {
@@ -534,28 +536,24 @@ class RightDetails extends React.Component {
 
     getStatusNote = () => {
         if(this.state.right) {
-            let note = '';
-            let noteStyle = '';
+            let note = {};
             let status = this.state.right.status;
             if (status === 'Error') {
-                note = 'LicenseRightsDescription and/or PlatformCategory are missing for Licensee Service Region \'US\'';
-                noteStyle = 'error';
+                note = NoteError;
             } else if (status === 'Merged') {
-                note = 'Right Editing disabled for rights with status \'Merged\'';
-                noteStyle = 'info';
+                note = NoteMerged;
             } else if (status === 'Pending') {
-                note = 'Click here for Right Matching';
-                noteStyle = 'info';
+                note = NotePending;
             }
 
             return status === 'Error' || status === 'Merged' || status === 'Pending' ?
-            <SectionMessage appearance={noteStyle}>
+            <SectionMessage appearance={note.noteStyle}>
                 { status === 'Pending' ?
                     <Link to={URL.keepEmbedded(`/avails/history/${this.state.right.availHistoryId}/right-matching/${this.state.right.id}`)}>
-                        {note}
+                        {note.note}
                     </Link>
                     :
-                    <p>{note}</p>
+                    <p>{note.note}</p>
                 }
             </SectionMessage>
             : null;
