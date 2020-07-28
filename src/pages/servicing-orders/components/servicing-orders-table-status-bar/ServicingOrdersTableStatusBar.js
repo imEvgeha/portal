@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './ServicingOrdersTableStatusBar.scss';
 
 const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
@@ -18,6 +19,14 @@ const ServicingOrdersTableStatusBar = ({statusBarInfo}) => {
             )}
         </div>
     );
+};
+
+ServicingOrdersTableStatusBar.propTypes = {
+    statusBarInfo: PropTypes.object,
+};
+
+ServicingOrdersTableStatusBar.defaultProps = {
+    statusBarInfo: {},
 };
 
 export default ServicingOrdersTableStatusBar;

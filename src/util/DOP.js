@@ -1,7 +1,39 @@
 import React from 'react';
 
+const POST_MESSAGE_TIMEOUT = 100;
+
 class DOP extends React.Component {
-    static instance = null;
+    static sendInfoToDOP(errorCount, data) {
+        const message = {errorCount, externalAppData: data};
+        setTimeout(() => {
+            // eslint-disable-next-line no-restricted-globals
+            parent.postMessage(JSON.stringify(message), '*');
+        }, POST_MESSAGE_TIMEOUT);
+    }
+
+    // static mockOnDOPMessage() {
+    //     if(DOP.instance) {
+    //         DOP.instance.onDOPMessage({data: 'completeTriggered'});
+    //     }
+    // }
+
+    static setErrorsCount(val) {
+        if (DOP.instance) {
+            DOP.instance.setState({errorCount: val});
+        }
+    }
+
+    static setData(data) {
+        if (DOP.instance) {
+            DOP.instance.setState({data});
+        }
+    }
+
+    static setDOPMessageCallback(f) {
+        if (DOP.instance) {
+            DOP.instance.setState({onDOPMessage: f});
+        }
+    }
 
     constructor(props) {
         super(props);
@@ -23,6 +55,8 @@ class DOP extends React.Component {
         window.removeEventListener('message', this.onDOPMessage);
     }
 
+    static instance = null;
+
     onDOPMessage(e) {
         if (e.data === 'completeTriggered') {
             const {errorCount, data, onDOPMessage} = DOP.instance.state;
@@ -32,37 +66,6 @@ class DOP extends React.Component {
             } else {
                 DOP.sendInfoToDOP(errorCount, data);
             }
-        }
-    }
-
-    // static mockOnDOPMessage() {
-    //     if(DOP.instance) {
-    //         DOP.instance.onDOPMessage({data: 'completeTriggered'});
-    //     }
-    // }
-
-    static sendInfoToDOP(errorCount, data){
-        const message = {errorCount, externalAppData: data};
-        setTimeout(() => {
-            parent.postMessage(JSON.stringify(message), '*');
-        }, 100);
-    }
-
-    static setErrorsCount(val) {
-        if (DOP.instance) {
-            DOP.instance.setState({errorCount: val});
-        }
-    }
-
-    static setData(data) {
-        if (DOP.instance) {
-            DOP.instance.setState({data});
-        }
-    }
-
-    static setDOPMessageCallback(f) {
-        if (DOP.instance) {
-            DOP.instance.setState({onDOPMessage: f});
         }
     }
 

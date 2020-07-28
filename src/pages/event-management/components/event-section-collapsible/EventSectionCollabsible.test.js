@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {shallow} from 'enzyme';
+import ReactDOM from 'react-dom';
 import EventSectionCollapsible from './EventSectionCollapsible';
 
 describe('EventSectionCollapsible', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeAll(() => {
         wrapper = shallow(<EventSectionCollapsible isInitiallyOpen={false} />);

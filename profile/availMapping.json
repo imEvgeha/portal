@@ -30,7 +30,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "licensed",
@@ -78,7 +84,7 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": false
     },
     {
       "javaVariableName": "licensee",
@@ -90,7 +96,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "licenseType",
@@ -102,7 +114,13 @@
       "readOnly": false,
       "enableSearch": true,
       "enableEdit": true,
-      "required": true
+      "required": true,
+      "readOnlyInDetailsBasedField": [
+        {
+          "field": "territory.selected",
+          "fieldValue": true
+        }
+      ]
     },
     {
       "javaVariableName": "territory",
@@ -1044,6 +1062,7 @@
       "searchDataType": "boolean",
       "queryParamName": "temporaryPriceReduction",
       "readOnly": false,
+      "readOnlyInDetails": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1739,6 +1758,7 @@
       "searchDataType": "string",
       "queryParamName": "originalRightIds",
       "readOnly": false,
+      "readOnlyInDetails": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1816,6 +1836,7 @@
       "searchDataType": "timestamp",
       "queryParamName": "originallyReceivedAt",
       "readOnly": false,
+      "readOnlyInDetails": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false
@@ -1849,6 +1870,7 @@
       "searchDataType": "timestamp",
       "queryParamName": "lastUpdateReceivedAt",
       "readOnly": false,
+      "readOnlyInDetails": true,
       "enableSearch": true,
       "enableEdit": true,
       "required": false

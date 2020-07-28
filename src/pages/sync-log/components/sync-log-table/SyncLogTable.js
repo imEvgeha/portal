@@ -1,18 +1,18 @@
 import React, {useState} from 'react';
-import {compose} from 'redux';
 import Button from '@atlaskit/button';
-import {getSyncLog} from '../../syncLogService';
-import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {compose} from 'redux';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
+import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import columnMappings from '../../columnMappings';
-import {DOWNLOAD_BTN, EXCEL_EXPORT_FILE_NAME, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
-import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(
@@ -36,8 +36,8 @@ const SyncLogTable = () => {
         return columnMappings.map(col => ({
             ...col,
             cellRendererParams: {
-                setErrors
-            }
+                setErrors,
+            },
         }));
     };
 
@@ -47,6 +47,8 @@ const SyncLogTable = () => {
             case READY:
                 api.sizeColumnsToFit();
                 setGridApi(api);
+                break;
+            default:
                 break;
         }
     };
@@ -65,7 +67,7 @@ const SyncLogTable = () => {
                             onChange={setDateFrom}
                             value={dateFrom}
                             isReturningTime={false}
-                            required
+                            isRequired
                         />
                     </div>
                     <div className="nexus-c-sync-log-table__date-field">
@@ -79,7 +81,7 @@ const SyncLogTable = () => {
                     </div>
                 </div>
                 <Button
-                    onClick={() => gridApi.exportDataAsExcel({fileName: EXCEL_EXPORT_FILE_NAME})}
+                    onClick={() => exportSyncLog(dateFrom, dateTo)}
                     isDisabled={!gridApi}
                 >
                     {DOWNLOAD_BTN}
@@ -93,10 +95,10 @@ const SyncLogTable = () => {
                 onGridEvent={onGridEvent}
                 externalFilter={{
                     dateFrom,
-                    dateTo
+                    dateTo,
                 }}
                 frameworkComponents={{
-                    publishErrors: PublishErrors
+                    publishErrors: PublishErrors,
                 }}
             />
 
@@ -117,7 +119,7 @@ const SyncLogTable = () => {
                     {
                         errorsData.map((error, i) => (
                             ERROR_TABLE_COLUMNS.map(key => (
-                                <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i-key}`}>
+                                <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
                                     {error[key]}
                                 </div>
                             ))

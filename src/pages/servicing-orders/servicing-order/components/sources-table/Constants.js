@@ -1,4 +1,4 @@
-export const NON_EDITABLE_COLS = ['title','titleId','amsAssetId','standard'];
+export const NON_EDITABLE_COLS = ['title', 'titleId', 'amsAssetId', 'standard'];
 
 export const SELECT_VALUES = {
     assetStatus: ['IN', 'Being Fixed', 'Being Made'],
@@ -7,15 +7,15 @@ export const SELECT_VALUES = {
 };
 
 export const INIT_SOURCE_ROW = {
-    barcode:' ',
+    barcode: ' ',
     title: '',
-    titleId:'',
-    amsAssetId:'',
-    assetFormat:'',
-    standard:'',
-    assetStatus:'',
-    shipVia:'',
+    titleId: '',
+    amsAssetId: '',
+    assetFormat: '',
+    standard: '',
+    assetStatus: '',
+    shipVia: '',
     shipListId: '',
     startDate: '',
-    fs: ''
+    fs: '',
 };

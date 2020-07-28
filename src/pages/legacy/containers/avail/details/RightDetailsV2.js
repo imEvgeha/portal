@@ -322,7 +322,7 @@ class RightDetails extends React.Component {
                             /* For testing proposes */
                             console.warn('NexusDatePicker returned: ', date); // eslint-disable-line
                         }}
-                        required={required}
+                        isRequired={required}
                         isReadOnly={readOnly}
                      />)
                 ),
@@ -346,7 +346,7 @@ class RightDetails extends React.Component {
                             /* For testing proposes */
                             console.warn('NexusDateTimePicker returned: ', date); // eslint-disable-line
                         }}
-                        required={required}
+                        isRequired={required}
                         isReadOnly={readOnly}
                      />)
                 ),

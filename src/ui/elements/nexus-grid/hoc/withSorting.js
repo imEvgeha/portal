@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
 
 const withSorting = (
     initialSort = null,
 ) => WrappedComponent => {
-    return (props) => {
+    const ComposedComponent = props => {
         const onColumnVisible = ({column = {}}) => {
             const {gridApi, colId} = column || {};
             const sortModel = gridApi && gridApi.getSortModel ? gridApi.getSortModel() : [];
@@ -34,11 +35,13 @@ const withSorting = (
             onGridEvent && onGridEvent(params);
         };
 
+        const {defaultColDef = []} = props;
+
         return (
             <WrappedComponent
                 {...props}
                 defaultColDef={{
-                    ...props.defaultColDef,
+                    ...defaultColDef,
                     sortable: true,
                 }}
                 sortingOrder={DEFAULT_SORT_ORDER}
@@ -47,6 +50,13 @@ const withSorting = (
             />
         );
     };
+
+    ComposedComponent.propTypes = {
+        onGridEvent: PropTypes.func.isRequired,
+        defaultColDef: PropTypes.object.isRequired,
+    };
+
+    return ComposedComponent;
 };
 
 export default withSorting;

@@ -1,19 +1,19 @@
-// eslint-disable-next-line no-unused-vars
 import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import InlineEdit from '@atlaskit/inline-edit';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
+import InlineEdit from '@atlaskit/inline-edit';
+import classnames from 'classnames';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import './NexusDatePicker.scss';
+import {getDateFormatBasedOnLocale, parseSimulcast, isUtc} from '../../../../util/date-time/DateTimeUtils';
+import ClearButton from '../clear-button/ClearButton';
 import {
     RELATIVE_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
-    RELATIVE_DATE_FORMAT_WITHOUT_TIME
+    RELATIVE_DATE_FORMAT_WITHOUT_TIME,
 } from '../constants';
-import ClearButton from '../clear-button/ClearButton';
-import {getDateFormatBasedOnLocale, parseSimulcast, isUtc} from '../../../../util/date-time/DateTimeUtils';
+import './NexusDatePicker.scss';
 
 const NexusDatePicker = ({
     id,
@@ -25,10 +25,10 @@ const NexusDatePicker = ({
     value,
     error,
     label,
-    hideLabel, // TODO: Remove when RightDetails gets refactored/redesigned
+    isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
     isReturningTime,
-    allowClear,
-    required,
+    isClearable,
+    isRequired,
     ...restProps
 }) => {
     const [date, setDate] = useState(value || '');
@@ -36,7 +36,7 @@ const NexusDatePicker = ({
 
     useEffect(() => setDate(value || ''), [value]);
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
-    useEffect(() => {typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));}, []);
+    useEffect(() => typeof value === 'string' && setIsSimulcast(value.endsWith('Z')), []);
 
     // Get locale provided by intl
     const intl = useIntl();
@@ -48,7 +48,7 @@ const NexusDatePicker = ({
     const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
     const onDateChange = date => {
-        if(date){
+        if (date) {
             setDate(date);
             // Don't use onChange if the component has InlineEdit
             // onConfirm will handle changes
@@ -66,60 +66,60 @@ const NexusDatePicker = ({
         }
     };
 
-    const DatePickerComponent = (isReadOnly) => {
-  return (
-      <>
-          {!hideLabel && label && (
-          <label htmlFor={id} className={required && 'required'}>{label}</label>
-              )}
-          {isReadOnly
-                ? parseSimulcast(value, dateFormat, false)
-                : (
-                    <div className='nexus-c-date-picker__date-clear-wrapper'>
-                        <DatePicker
-                            name={id}
-                            id={id}
-                            locale={locale}
-                            placeholder={dateFormat}
-                            onChange={onDateChange}
-                            defaultValue={moment(value).isValid() ? value : ''}
-                            value={date}
-                            {...restProps}
-                        />
-                        {allowClear && <ClearButton onClear={() => onDateChange('')} />}
-                    </div>
+    const DatePickerComponent = isReadOnly => {
+        return (
+            <>
+                {!isLabelHidden && label && (
+                    <label htmlFor={id} className={classnames(isRequired && 'required')}>{label}</label>
                 )}
-          {error && (
-          <ErrorMessage>
-              {error}
-          </ErrorMessage>
-              )}
-      </>
-);
-};
+                {isReadOnly
+                    ? parseSimulcast(value, dateFormat, false)
+                    : (
+                        <div className="nexus-c-date-picker__date-clear-wrapper">
+                            <DatePicker
+                                name={id}
+                                id={id}
+                                locale={locale}
+                                placeholder={dateFormat}
+                                onChange={onDateChange}
+                                defaultValue={moment(value).isValid() ? value : ''}
+                                value={date}
+                                {...restProps}
+                            />
+                            {isClearable && <ClearButton onClear={() => onDateChange('')} />}
+                        </div>
+                    )}
+                {error && (
+                    <ErrorMessage>
+                        {error}
+                    </ErrorMessage>
+                )}
+            </>
+        );
+    };
 
     return (
         <> {isWithInlineEdit && !isReadOnly
-                ? (
-                    <InlineEdit
-                        readView={() => (
-                            <div className="nexus-c-date-picker__read-view-container">
-                                {(moment(value).isValid() && parseSimulcast(value, dateFormat, false))
-                                    || (
+            ? (
+                <InlineEdit
+                    readView={() => (
+                        <div className="nexus-c-date-picker__read-view-container">
+                            {(moment(value).isValid() && parseSimulcast(value, dateFormat, false))
+                                || (
                                     <div className="read-view-container__placeholder">
                                         {`Enter ${label}`}
                                     </div>
-)}
-                            </div>
-                        )}
-                        editView={() => DatePickerComponent(false)}
-                        defaultValue={moment(value).isValid() ? value : ''}
-                        onConfirm={() => onConfirm(date)}
-                        readViewFitContainerWidth
-                        {...restProps}
-                    />
-                )
-                : DatePickerComponent(isReadOnly)}
+                                )}
+                        </div>
+                    )}
+                    editView={() => DatePickerComponent(false)}
+                    defaultValue={moment(value).isValid() ? value : ''}
+                    onConfirm={() => onConfirm(date)}
+                    readViewFitContainerWidth
+                    {...restProps}
+                />
+            )
+            : DatePickerComponent(isReadOnly)}
         </>
     );
 };
@@ -131,12 +131,13 @@ NexusDatePicker.propTypes = {
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
     isTimestamp: PropTypes.bool,
-    hideLabel: PropTypes.bool,
+    isLabelHidden: PropTypes.bool,
     isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    allowClear: PropTypes.bool,
+    isClearable: PropTypes.bool,
+    isRequired: PropTypes.bool,
 };
 
 NexusDatePicker.defaultProps = {
@@ -146,10 +147,11 @@ NexusDatePicker.defaultProps = {
     isWithInlineEdit: false,
     isReadOnly: false,
     isTimestamp: false,
-    hideLabel: false,
+    isLabelHidden: false,
     isReturningTime: true,
     onConfirm: () => null,
-    allowClear: false,
+    isClearable: false,
+    isRequired: false,
 };
 
 export default NexusDatePicker;

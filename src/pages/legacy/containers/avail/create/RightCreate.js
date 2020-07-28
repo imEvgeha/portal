@@ -566,7 +566,8 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, null, (
+            const isRequired = required || (name === 'platformCategory' && this.right.licensee && this.right.licensee.servicingRegion === 'US');
+            return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
                     key={name}
@@ -611,6 +612,7 @@ class RightCreate extends React.Component {
         const renderSelectField = (name, displayName, required, value) => {
             let options = [];
             let val;
+
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
@@ -630,6 +632,7 @@ class RightCreate extends React.Component {
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
@@ -821,7 +824,7 @@ class RightCreate extends React.Component {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
                 },
-                allowClear: !required
+                isClearable: !required
             };
 
             const component = useTime

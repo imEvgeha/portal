@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import Button from '@atlaskit/button';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
-import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineActionButtonColumn} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
-import {getRightMatchingList} from './rightMatchingService';
-import * as selectors from './rightMatchingSelectors';
+import {URL} from '../../../util/Common';
 import {
     cleanStoredRightMatchDataWithIds,
     createRightMatchingColumnDefs,
     storeRightMatchDataWithIds,
 } from './rightMatchingActions';
-import {URL} from '../../../util/Common';
-import useDOPIntegration from './util/hooks/useDOPIntegration';
 import {RIGHT_MATCHING_TITLE, FOCUS_BUTTON, RIGHT_MATCHING_DOP_STORAGE} from './rightMatchingConstants';
+import * as selectors from './rightMatchingSelectors';
+import {getRightMatchingList} from './rightMatchingService';
+import useDOPIntegration from './util/hooks/useDOPIntegration';
 import './RightMatchingView.scss';
 
 const NexusGridWithInfiniteScrolling = compose(
@@ -66,7 +66,9 @@ const RightMatchingView = ({
     const storeData = (page, data) => {
         if (storeRightMatchDataWithIds) {
             const pages = {};
+            // eslint-disable-next-line react/prop-types
             pages[page] = data.data.map(e => e.id);
+            // eslint-disable-next-line react/prop-types
             const rightMatchPageData = {pages, total: data.total};
             storeRightMatchDataWithIds({rightMatchPageData});
         }

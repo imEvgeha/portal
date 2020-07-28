@@ -1,47 +1,57 @@
 import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
+import {connect} from 'react-redux';
 import './NexusTableExportDropdown.scss';
-import {downloadFile} from '../../../util/Common';
 import * as selectors from '../../../pages/avails/right-matching/rightMatchingSelectors';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
+import {downloadFile} from '../../../util/Common';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 
-const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRows, rightsFilter, rightColumnApi, selectedRightColumnApi, selectedRightGridApi, mapping}) => {
+const MAX_ROWS = 50000;
 
+const NexusTableExportDropdown = ({
+    isSelectedOptionActive,
+    selectedRows,
+    totalRows,
+    rightsFilter,
+    rightColumnApi,
+    selectedRightColumnApi,
+    selectedRightGridApi,
+    mapping,
+}) => {
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
     const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
-        if(mapping) {
-            setMappingColumnNames(mapping.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName));
+        if (mapping) {
+            setMappingColumnNames(
+                mapping.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName)
+            );
         }
     }, [mapping]);
 
     useEffect(() => {
         let disable = false;
-        if(isSelectedOptionActive) {
+        if (isSelectedOptionActive) {
             if (selectedRows.length === 0) {
                 setTooltipContent('Select at least one right to export');
                 disable = true;
             }
-        } else {
-            if (totalRows === 0) {
-                setTooltipContent('There is no result to export');
-                disable = true;
-            } else if (totalRows > 50000) {
-                setTooltipContent('You have more that 50000 avails, please change filters');
-                disable = true;
-            }
+        } else if (totalRows === 0) {
+            setTooltipContent('There is no result to export');
+            disable = true;
+        } else if (totalRows > MAX_ROWS) {
+            setTooltipContent('You have more that 50000 avails, please change filters');
+            disable = true;
         }
         setIsDisabled(disable);
     }, [isSelectedOptionActive, selectedRows, totalRows]);
 
     const getSelectedRightIds = () => {
         const ids = [];
-        selectedRightGridApi.forEachNodeAfterFilter((node) => {
+        selectedRightGridApi.forEachNodeAfterFilter(node => {
             const {data = {}} = node;
             ids.push(data.id);
         });
@@ -49,7 +59,7 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
     };
 
     const onAllColumnsExportClick = () => {
-        if(isSelectedOptionActive) {
+        if (isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
             exportService.exportAvails(getSelectedRightIds(), allDisplayedColumns)
                 .then(response => downloadFile(response));
@@ -62,7 +72,7 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
     };
 
     const onVisibleColumnsExportClick = () => {
-        if(isSelectedOptionActive) {
+        if (isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
             exportService.exportAvails(getSelectedRightIds(), visibleColumns)
                 .then(response => downloadFile(response));
@@ -74,10 +84,10 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
         }
     };
 
-    const getAllDisplayedColumns = (columnApi) => {
+    const getAllDisplayedColumns = columnApi => {
         const allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
         mappingColumnNames.forEach(mapCol => {
-            if(!allDisplayedColumns.includes(mapCol)) {
+            if (!allDisplayedColumns.includes(mapCol)) {
                 allDisplayedColumns.push(mapCol);
             }
         });
@@ -90,23 +100,23 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
     };
 
     const renderDropdown = () => {
-  return (
-      <DropdownMenu
-          className="nexus-c-button"
-          trigger="Export"
-          triggerType="button"
-          triggerButtonProps={{isDisabled: isDisabled}}
-      >
-          <DropdownItemGroup>
-              <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
-              <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
-          </DropdownItemGroup>
-      </DropdownMenu>
-);
-};
+        return (
+            <DropdownMenu
+                className="nexus-c-button"
+                trigger="Export"
+                triggerType="button"
+                triggerButtonProps={{isDisabled}}
+            >
+                <DropdownItemGroup>
+                    <DropdownItem onClick={onAllColumnsExportClick}>All Columns</DropdownItem>
+                    <DropdownItem onClick={onVisibleColumnsExportClick}>Visible Columns</DropdownItem>
+                </DropdownItemGroup>
+            </DropdownMenu>
+        );
+    };
 
     return (
-        <div className='nexus-c-right-repository-export'>
+        <div className="nexus-c-right-repository-export">
             {isDisabled ? (
                 <NexusTooltip
                     content={tooltipContent}
@@ -118,7 +128,7 @@ const NexusTableExportDropdown = ({isSelectedOptionActive, selectedRows, totalRo
     );
 };
 
-NexusTableExportDropdown.propsTypes = {
+NexusTableExportDropdown.propTypes = {
     isSelectedOptionActive: PropTypes.bool,
     selectedRows: PropTypes.array.isRequired,
     totalRows: PropTypes.number.isRequired,
@@ -126,11 +136,11 @@ NexusTableExportDropdown.propsTypes = {
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightGridApi: PropTypes.object.isRequired,
     selectedRightColumnApi: PropTypes.object.isRequired,
-    mapping: PropTypes.object.isRequired
+    mapping: PropTypes.array.isRequired,
 };
 
 NexusTableExportDropdown.defaultProps = {
-    isSelectedOptionActive: false
+    isSelectedOptionActive: false,
 };
 
 const mapStateToProps = () => {
