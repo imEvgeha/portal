@@ -122,7 +122,7 @@ export const SelectedRightsActions = ({
 
     const clickHandler = () => setMenuOpened(!menuOpened);
 
-    const removeMenu = (e) => {
+    const removeMenu = e => {
         if (!node.current.contains(e.target)) {
             setMenuOpened(false);
         }
@@ -169,14 +169,6 @@ export const SelectedRightsActions = ({
     };
 
     const openStatusCheckModal = () => {
-        const eligibleRights = selectedRights.filter((right) => {
-            const {status, rightStatus, licensed} = right || {};
-            if (prePlanEligible(status, rightStatus, licensed)) {
-                return right;
-            }
-            return null;
-        });
-
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
             // moveToPrePlan(eligibleRights);
@@ -186,7 +178,7 @@ export const SelectedRightsActions = ({
             return;
         }
 
-        const nonEligibleRights = selectedRights.filter((right) => {
+        const nonEligibleRights = selectedRights.filter(right => {
             const {status, rightStatus, licensed} = right || {};
             if (!prePlanEligible(status, rightStatus, licensed)) {
                 return right;
@@ -328,8 +320,8 @@ SelectedRightsActions.defaultProps = {
     gridApi: {},
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    toggleRefreshGridData: (payload) => dispatch(toggleRefreshGridData(payload)),
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(withToasts(SelectedRightsActions));

@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '@atlaskit/spinner';
 import {connect} from 'react-redux';
@@ -39,7 +39,7 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
     }, [titleAuditHistory, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
 
     const openHistoryModal = () => {
-        const ids = selectedAvails.map((e) => e.id);
+        const ids = selectedAvails.map(e => e.id);
         fetchRightsHistory(ids);
         setModalActions([
             {
@@ -69,8 +69,8 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchRightsHistory: (payload) => dispatch(fetchRightsHistory(payload)),
+const mapDispatchToProps = dispatch => ({
+    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightHistoryView);
