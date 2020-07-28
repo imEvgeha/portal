@@ -520,13 +520,13 @@ class RightDetails extends React.Component {
         }));
     };
 
-    checkFieldValue = (mapping, field, fieldValue) => {
+    checkFieldValue = (mapping, field, fieldValue = null) => {
         if (field.includes(".") ) {
             const baseField = field.substring(0, field.indexOf("."));
             const subField = field.substring(field.indexOf(".") + 1);
-            return this.state.right[baseField].some(x => x[subField] === true);
+            return this.state.right[baseField].some(x => fieldValue !== null ? x[subField] === fieldValue : !! x[subField]);
         } else {
-            return this.state.right[field] === fieldValue;
+            return fieldValue !== null ? this.state.right[field] === fieldValue : !!this.state.right[field];
         }
     };
 
