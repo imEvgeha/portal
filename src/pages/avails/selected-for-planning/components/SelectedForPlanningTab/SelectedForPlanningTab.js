@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {URL} from '../../../../../util/Common';
-import {SELECTED_FOR_PLANNING_TAB} from '../../constants';
 import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {URL} from '../../../../../util/Common';
 import DOPService from '../../DOP-services';
+import {SELECTED_FOR_PLANNING_TAB} from '../../constants';
 
 const SelectedForPlanningTab = ({activeTab, setActiveTab}) => {
     const [rightsCount, setRightsCount] = useState(0);
 
-    //TODO: Resolve DOP issue
-   /* useEffect(() => {
-        DOPService.getUsersProjectsList(1,1).then( res => {
+    useEffect(() => {
+        DOPService.getUsersProjectsList(1, 1).then( res => {
             setRightsCount(1);
         });
-    }, [activeTab]);*/
+    }, [activeTab]);
 
     const setPlanning = () => {
         setActiveTab(SELECTED_FOR_PLANNING_TAB);
@@ -21,7 +20,7 @@ const SelectedForPlanningTab = ({activeTab, setActiveTab}) => {
 
     return (
         URL.isLocalOrDevOrQA() && (
-            <NexusTooltip content='Click to refresh' isDisabled={activeTab !== SELECTED_FOR_PLANNING_TAB}>
+            <NexusTooltip content="Click to refresh" isDisabled={activeTab !== SELECTED_FOR_PLANNING_TAB}>
                 <div
                     className={`nexus-c-table-toolbar__title 
                         ${activeTab === SELECTED_FOR_PLANNING_TAB ? 'nexus-c-table-toolbar__title--is-active' : ''}`}

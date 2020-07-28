@@ -6,11 +6,10 @@ import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
 } from '../../../pages/avails/rights-repository/RightsRepository';
+import SelectedForPlanningTab from '../../../pages/avails/selected-for-planning/components/SelectedForPlanningTab/SelectedForPlanningTab';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import SelectedButton from './components/SelectedButton';
-import SelectedForPlanningTab
-    from '../../../pages/avails/selected-for-planning/components/SelectedForPlanningTab/SelectedForPlanningTab';
 
 const NexusTableToolbar = ({
     title,

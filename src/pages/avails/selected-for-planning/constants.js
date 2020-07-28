@@ -7,30 +7,30 @@ export const getSearchPayload = (user, offset, limit) => ({
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: user
+            value: user,
         },
         {
             fieldName: 'STATUS',
             valueDataType: 'String',
             operator: 'in',
-            'logicalAnd': true,
-            'value': 'CIN PROGRESS'
+            logicalAnd: true,
+            value: 'CIN PROGRESS',
         },
         {
             fieldName: 'TYPE',
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: 'Rights_Planning'
-        }
+            value: 'Rights_Planning',
+        },
     ],
     sortCriterion: [
         {
             fieldName: 'ID',
-            ascending: true
-        }
+            ascending: true,
+        },
     ],
     field: ['!projectAttribute'],
     offset,
-    limit
+    limit,
 });
