@@ -30,13 +30,15 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         field: 'planTerritories',
         editable: true,
         cellRenderer: 'loadingCellRenderer',
+        optionsKey: 'territory',
+        disabledOptionsKey: 'territoryExcluded',
         // cellRendererFramework:
     };
 
     const updatedMapping = {
         'javaVariableName': 'planTerritories',
         'displayName': 'Plan Territories',
-        'dataType': 'multiselect',
+        'dataType': 'dropdown',
         'queryParamName': 'planTerritories',
         'readOnly': true,
         'enableSearch': true,

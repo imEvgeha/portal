@@ -10,6 +10,7 @@ import usePrevious from '../../../../util/hooks/usePrevious';
 import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
 import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
+import DropdownCellEditor from '../elements/cell-editor/DropdownCellEditor';
 import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor';
 import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
@@ -25,6 +26,7 @@ const DEFAULT_EDITABLE_DATA_TYPES = [
     'audioLanguageType',
     'boolean',
     'multiselect',
+    'dropdown',
     'number',
     'string',
     'select',
@@ -57,7 +59,7 @@ const withEditableColumns = ({
         const updateColumnDefs = columnDefs => {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {field} = columnDef || {};
+                const {field, optionsKey, disabledOptionsKey} = columnDef || {};
                 const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find(
                     ({javaVariableName}) => javaVariableName === field
                 )) || {};
@@ -73,6 +75,13 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = SelectCellEditor;
                             columnDef.cellEditorParams = {
                                 options: getOptions(field),
+                            };
+                            break;
+                        case 'dropdown':
+                            columnDef.cellEditorFramework = DropdownCellEditor;
+                            columnDef.cellEditorParams = {
+                                optionsKey,
+                                disabledOptionsKey,
                             };
                             break;
                         case 'multiselect':
