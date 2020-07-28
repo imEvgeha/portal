@@ -21,6 +21,7 @@ const ability = new Ability([]);
  */
 
 const updateAbility = (roles = []) => {
+    console.log(roles);
     const {can, rules, cannot} = AbilityBuilder.extract();
 
     // ******** Avail *************
@@ -69,12 +70,16 @@ const updateAbility = (roles = []) => {
     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
 
-
     // ******** Servicing Orders *************
     can(['create', 'read', 'update', 'delete'], 'ServicingOrders');
 
     // ******** Event Management *************
-    can(['create', 'read', 'update', 'delete'], 'EventManagement');
+    if (roles && roles.includes('event_viewer')) {
+        can(['read'], 'EventManagement');
+    }
+    if (roles && roles.includes('event_admin')) {
+        can(['create', 'update', 'delete'], 'EventManagement');
+    }
 
     // ******** Sync Log *************
     can(['create', 'read', 'update', 'delete'], 'SyncLog');
@@ -112,6 +117,5 @@ const canRender = (Component, action, subject, field = undefined) => {
 
     return withRouter(AuthenticatedComponent);
 };
-
 
 export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

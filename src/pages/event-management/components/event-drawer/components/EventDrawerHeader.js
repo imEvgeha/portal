@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
+import {can} from '../../../../../ability';
 import NexusDownload from '../../../../../ui/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
@@ -10,7 +11,7 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const {eventId = '', id = ''} = event || {};
-
+    const canReplayAndReplicate = can('create', 'EventManagement');
     const onInnerReplay = () => {
         const payload = {docId: id};
         onReplay(payload);
@@ -27,7 +28,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 className="nexus-c-event-drawer-header__replay-button"
                 onClick={onInnerReplay}
                 isLoading={isReplaying}
-                isDisabled={!event || !eventId}
+                isDisabled={!canReplayAndReplicate || (!event || !eventId)}
             >
                 Replay
             </Button>
@@ -35,7 +36,7 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
                 className="nexus-c-event-drawer-header__replicate-button"
                 onClick={onInnerReplicate}
                 isLoading={isReplicating}
-                isDisabled={!event || !eventId}
+                isDisabled={!canReplayAndReplicate || (!event || !eventId)}
             >
                 Replicate
             </Button>
@@ -78,4 +79,7 @@ const mapDispatchToProps = dispatch => ({
     onReplicate: payload => dispatch(replicateEvent(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(EventDrawerH);
+export default connect(
+    createMapStateToProps,
+    mapDispatchToProps
+)(EventDrawerH);
