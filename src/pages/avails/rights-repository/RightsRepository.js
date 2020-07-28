@@ -25,21 +25,22 @@ import {
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
+import DOPService from '../selected-for-planning/DOP-services';
+import SelectedForPlanning from '../selected-for-planning/components/SelectedForPlanning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
-
-export const RIGHTS_TAB = 'RIGHTS_TAB';
-export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withColumnsResizing(),
@@ -80,11 +81,13 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
+    const [prePlanRepoRights, setPrePlanRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
+    const [planningRightsCount, setPlanningRightsCount] = useState(0);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -175,6 +178,12 @@ const RightsRepository = ({
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
+
+    useEffect(() => {
+        DOPService.getUsersProjectsList(1, 1).then(res => {
+            setPlanningRightsCount(1);
+        });
+    }, [activeTab]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
@@ -373,6 +382,7 @@ const RightsRepository = ({
                 title="Rights"
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
+                prePlanRightsCount={prePlanRepoRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -383,18 +393,8 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-            />
-            <SelectedRightsRepositoryTable
-                id="selectedRightsRepo"
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                singleClickEdit
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
-                mapping={mapping}
-                rowData={selectedRepoRights}
-                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
-                onGridEvent={onSelectedRightsRepositoryGridEvent}
-                notFilterableColumns={['action', 'buttons']}
+                setPrePlanRepoRights={setPrePlanRepoRights}
+                planningRightsCount={planningRightsCount}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -411,6 +411,25 @@ const RightsRepository = ({
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
             />
+            <SelectedRightsRepositoryTable
+                id="selectedRightsRepo"
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                mapping={mapping}
+                rowData={selectedRepoRights}
+                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
+            />
+            <PreplanRightsTable
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                prePlanRepoRights={prePlanRepoRights}
+                activeTab={activeTab}
+                mapping={mapping}
+            />
+            <SelectedForPlanning activeTab={activeTab} />
         </div>
     );
 };

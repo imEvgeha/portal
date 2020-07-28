@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusTab should match snapshot 1`] = `
+<NexusTooltip
+  content=""
+  isDisabled={false}
+>
+  <div
+    className="nexus-c-nexus-tab nexus-c-nexus-tab--is-active"
+    onClick={[Function]}
+  >
+    RIGHTS_TAB
+     (
+    0
+    )
+  </div>
+</NexusTooltip>
+`;

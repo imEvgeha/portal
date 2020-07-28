@@ -1,12 +1,12 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import SelectedForPlanningTab from './SelectedForPlanningTab';
+import SelectedForPlanning from './SelectedForPlanning';
 
-describe('SelectedForPlanningTab', () => {
+describe('SelectedForPlanning', () => {
     let wrapper = null;
     const props = {};
     beforeAll(() => {
-        wrapper = shallow(<SelectedForPlanningTab {...props} />);
+        wrapper = shallow(<SelectedForPlanning {...props} />);
     });
 
     it('should match snapshot', () => {
