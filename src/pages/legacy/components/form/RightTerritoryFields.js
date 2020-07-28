@@ -48,7 +48,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
             <Field
                 label="COUNTRY"
                 isRequired
-                isDisabled={isEdit}
+                isDisabled={isEdit && currentTerritory['selected']}
                 name="country"
                 validate={validate}
                 defaultValue={
