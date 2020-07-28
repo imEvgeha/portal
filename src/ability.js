@@ -21,7 +21,6 @@ const ability = new Ability([]);
  */
 
 const updateAbility = (roles = []) => {
-    console.log(roles);
     const {can, rules, cannot} = AbilityBuilder.extract();
 
     // ******** Avail *************

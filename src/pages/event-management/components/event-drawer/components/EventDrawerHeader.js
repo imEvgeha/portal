@@ -11,7 +11,7 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const {eventId = '', id = ''} = event || {};
-    const canReplayAndReplicate = can('create', 'EventManagement');
+    const canReplayAndReplicate = can('create', 'EventManagement') && can('update', 'EventManagement');
     const onInnerReplay = () => {
         const payload = {docId: id};
         onReplay(payload);
