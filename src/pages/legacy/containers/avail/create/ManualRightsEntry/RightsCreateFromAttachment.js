@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {AgGridReact} from 'ag-grid-react';
 import {Button} from 'reactstrap';
+import AkButton from '@atlaskit/button';
 import {connect} from 'react-redux';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
@@ -113,14 +114,15 @@ class RightsCreateFromAttachment extends React.Component {
         ),
         attachment: ({value}) => (
             <NexusTooltip content={ATTACHMENT_TOOLTIP}>
-                <div>
-                    <a
-                        href="#"
-                        className="nexus-c-attachment-link-old"
+                <div className="nexus-c-attachment-link-old">
+                    <AkButton
+                        appearance="link"
                         onClick={() => this.getDownloadLink(value)}
                     >
-                        {this.formatAttachmentName(value.link)}
-                    </a>
+                        <>
+                            {typeof value.link === 'string' && this.formatAttachmentName(value.link)}
+                        </>
+                    </AkButton>
                 </div>
             </NexusTooltip>
         ),
