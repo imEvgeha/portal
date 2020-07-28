@@ -35,11 +35,11 @@ const NexusDatePicker = ({
     const [isSimulcast, setIsSimulcast] = useState(false);
 
     useEffect(() => {
-        setDate(value || '')
+        setDate(value || '');
     }, [value]);
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
-        typeof value === 'string' && setIsSimulcast(value.endsWith('Z'))
+        typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));
     }, []);
 
     // Get locale provided by intl

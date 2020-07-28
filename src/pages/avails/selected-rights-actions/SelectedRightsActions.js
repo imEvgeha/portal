@@ -170,13 +170,13 @@ export const SelectedRightsActions = ({
     };
 
     const openStatusCheckModal = () => {
-        const eligibleRights = selectedRights.filter(right => {
+        /* const eligibleRights = selectedRights.filter(right => {
             const {status, rightStatus, licensed} = right || {};
             if (prePlanEligible(status, rightStatus, licensed)) {
                 return right;
             }
             return null;
-        });
+        }); */
 
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
