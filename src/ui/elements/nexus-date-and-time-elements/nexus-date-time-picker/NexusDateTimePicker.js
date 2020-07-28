@@ -33,7 +33,9 @@ const NexusDateTimePicker = ({
     const [firstRun, setFirstRun] = useState(true);
 
     // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
-    useEffect(() => typeof value === 'string' && setIsSimulcast(isUtc(value)), [value]);
+    useEffect(() => {
+        typeof value === 'string' && setIsSimulcast(isUtc(value)), [value]
+    });
 
     // Get locale provided by intl
     const intl = useIntl();

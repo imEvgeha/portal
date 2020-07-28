@@ -542,13 +542,13 @@ class RightDetails extends React.Component {
                 note = 'LicenseRightsDescription and/or PlatformCategory are missing for Licensee Service Region \'US\'';
                 noteStyle = 'error';
             } else if (status === 'Merged') {
-                note = 'Right Editing disabled for rights with status: Merged';
+                note = 'Right Editing disabled for rights with status \'Merged\'';
                 noteStyle = 'info';
             } else if (status === 'Pending') {
                 note = 'Click here for Right Matching';
                 noteStyle = 'info';
             }
-            console.log('PROPS: ',this.props);
+
             return status === 'Error' || status === 'Merged' || status === 'Pending' ?
             <SectionMessage appearance={noteStyle}>
                 { status === 'Pending' ?
