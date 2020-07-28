@@ -40,7 +40,6 @@ import {rightsService} from '../service/RightsService';
 import './RightDetails.scss';
 import {Link} from "react-router-dom";
 
-
 const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
