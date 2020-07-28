@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '@atlaskit/spinner';
 import {connect} from 'react-redux';
@@ -15,8 +15,8 @@ const SPINNER = (
 );
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
+    const {setModalContentAndTitle,
+        setModalActions, setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
 
     const titleAuditHistory = `Audit History (${selectedAvails.length})`;
 
