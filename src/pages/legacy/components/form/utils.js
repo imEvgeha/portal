@@ -9,7 +9,8 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
             dateSelected: data.dateSelected ? momentToISO(moment(data.dateSelected).utcOffset(0, true)) :isEdit ?existingTerritoryList[territoryIndex]['dateSelected'] : '',
             selected: data.selected['label'] === 'true' ? data.selected['label'] ? data.selected['value'] : existingTerritoryList[territoryIndex]['selected'] : false,
             rightContractStatus: data.rightContractStatus['value'] ? data.rightContractStatus['value'] : isEdit ? existingTerritoryList[territoryIndex]['rightContractStatus'] : '',
-            vuContractId: data.vuContractId ? data.vuContractId.split(', ') : isEdit ? existingTerritoryList[territoryIndex]['vuContractId'] : ''
+            vuContractId: data.vuContractId ? data.vuContractId.split(', ') : isEdit ? existingTerritoryList[territoryIndex]['vuContractId'] : '',
+            comment: data.comment ? data.comment  : isEdit ? existingTerritoryList[territoryIndex]['comment'] : '',
         };
         const updatedObject = {};
         for (const objectField in newObject) {

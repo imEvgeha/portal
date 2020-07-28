@@ -53,7 +53,7 @@ const withSorting = (
 
     ComposedComponent.propTypes = {
         onGridEvent: PropTypes.func.isRequired,
-        defaultColDef: PropTypes.array.isRequired,
+        defaultColDef: PropTypes.object.isRequired,
     };
 
     return ComposedComponent;

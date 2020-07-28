@@ -136,7 +136,7 @@ NexusTableExportDropdown.propTypes = {
     rightColumnApi: PropTypes.object.isRequired,
     selectedRightGridApi: PropTypes.object.isRequired,
     selectedRightColumnApi: PropTypes.object.isRequired,
-    mapping: PropTypes.object.isRequired,
+    mapping: PropTypes.array.isRequired,
 };
 
 NexusTableExportDropdown.defaultProps = {
