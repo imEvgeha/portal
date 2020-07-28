@@ -269,7 +269,7 @@ export const SelectedRightsActions = ({
                         </NexusTooltip>
                     </div>
                     {
-                        URL.isLocalOrDevOrQA() && (
+                        URL.isLocalOrDev() && (
                             <div
                                 className={classNames(
                                     'nexus-c-selected-rights-actions__menu-item',
