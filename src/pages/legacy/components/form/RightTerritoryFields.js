@@ -160,6 +160,19 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     />
                 )}
             </Field>
+            <Field label="COMMENTS" name="comment" defaultValue={isEdit && existingTerritoryList[territoryIndex]['comment']
+                ? existingTerritoryList[territoryIndex]['comment']
+                : ''}>
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <Textfield
+                        name="comment"
+                        isReadOnly={false}
+                        defaultValue={value}
+                        style={{'height': '40px'}}
+                        {...rest}
+                    />
+                )}
+            </Field>
         </>
     );
 };

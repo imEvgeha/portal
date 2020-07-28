@@ -15,8 +15,8 @@ const SPINNER = (
 );
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-    const {setModalContentAndTitle, setModalActions,
-        setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
+    const {setModalContentAndTitle,
+        setModalActions, setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
 
     const titleAuditHistory = `Audit History (${selectedAvails.length})`;
 
