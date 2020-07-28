@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
 import Button from '@atlaskit/button';
+import {shallow} from 'enzyme';
 import StatusCheck from './StatusCheck';
 
 describe('StatusCheck', () => {
