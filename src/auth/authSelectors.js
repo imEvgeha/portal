@@ -28,3 +28,8 @@ export const createAuthSelector = () => createSelector(
         };
     }
 );
+
+export const getUsername = createSelector(
+    getAuth,
+    auth => get(auth, 'userAccount.username', ''),
+);

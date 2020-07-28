@@ -11,10 +11,6 @@
     margin: 0 16px;
     cursor: pointer;
 
-    &:hover {
-        opacity: 0.6;
-    }
-
     &--is-active {
         color: map-get($colors, nexus-title-color);
     }

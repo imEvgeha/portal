@@ -8,6 +8,8 @@ import {
     RIGHTS_TAB,
 } from '../../../pages/avails/rights-repository/RightsRepository';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
+import SelectedForPlanningTab
+    from '../../../pages/avails/selected-for-planning/components/SelectedForPlanningTab/SelectedForPlanningTab';
 
 const NexusTableToolbar = ({
     title,
@@ -32,12 +34,13 @@ const NexusTableToolbar = ({
             <div
                 className={`
                     nexus-c-table-toolbar__title 
-                    ${activeTab !== RIGHTS_SELECTED_TAB ? 'nexus-c-table-toolbar__title--is-active' : ''}
+                    ${activeTab === RIGHTS_TAB ? 'nexus-c-table-toolbar__title--is-active' : ''}
                 `}
                 onClick={() => setActiveTab(RIGHTS_TAB)}
             >
                 {title} ({totalRows})
             </div>
+            <SelectedForPlanningTab activeTab={activeTab} setActiveTab={setActiveTab} />
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
                     <SelectedButton
