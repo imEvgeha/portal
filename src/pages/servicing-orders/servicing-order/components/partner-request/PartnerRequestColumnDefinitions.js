@@ -7,24 +7,30 @@ const partnerRequestColumnDefs = [
         field: 'productDesc',
         colId: 'productDesc',
         headerName: 'Title',
-        minWidth: 80,
+        minWidth: 100,
+        suppressMovable: true,
         maxWidth: 150,
     },
     {
         field: 'version',
         colId: 'version',
         headerName: 'Version',
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'srdueDate',
         colId: 'srdueDate',
         headerName: 'Due Date',
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'materialNotes',
         colId: 'materialNotes',
         headerName: 'Notes',
         minWidth: 80,
+        suppressMovable: true,
         maxWidth: 500,
     },
     {
@@ -32,55 +38,67 @@ const partnerRequestColumnDefs = [
         colId: 'primaryVideo',
         headerName: 'Primary Video',
         suppressSizeToFit: true,
+        minWidth: 100,
+        suppressMovable: true,
     },
     {
         field: 'secondaryAudio',
         colId: 'secondaryAudio',
         headerName: 'Secondary Audio',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'subtitlesFull',
         colId: 'subtitlesFull',
         headerName: 'Subtitles Full',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'subtitlesForced',
         colId: 'subtitlesForced',
         headerName: 'Subtitles Forced',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'trailer',
         colId: 'trailer',
         headerName: 'Trailer',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'metaData',
         colId: 'metaData',
         headerName: 'Metadata',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
     {
         field: 'artWork',
         colId: 'artWork',
         headerName: 'Artwork',
         suppressSizeToFit: true,
+        minWidth: 150,
+        suppressMovable: true,
     },
 ];
+
 export const defaultColDef = {autoHeight: true, cellClass: 'cell', resizable: true};
+
 export const columnDefs = partnerRequestColumnDefs.map(def => ({
     ...def,
     cellRendererFramework: data => {
         // render pill tags if the column is a list of languages
-        if (isLanguageColumn(data.colDef.field)) {
-            return renderLanguagesToTagGroup(data.value);
-        }
-
         // otherwise just return the value
-        return data.value;
+        return <div className="nexus-c-partner-request__cell">{isLanguageColumn(data.colDef.field) ? renderLanguagesToTagGroup(data.value) : data.value}</div>;
     },
 }));
 
@@ -89,14 +107,7 @@ export const columnDefs = partnerRequestColumnDefs.map(def => ({
  * @param {string} key the key to check
  */
 const isLanguageColumn = key => {
-    return [
-        'secondaryAudio',
-        'subtitlesFull',
-        'subtitlesForced',
-        'trailer',
-        'metaData',
-        'artWork',
-    ].includes(key);
+    return ['secondaryAudio', 'subtitlesFull', 'subtitlesForced', 'trailer', 'metaData', 'artWork'].includes(key);
 };
 
 /**
