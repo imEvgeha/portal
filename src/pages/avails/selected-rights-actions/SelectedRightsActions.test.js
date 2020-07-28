@@ -1,39 +1,76 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
-import SelectedRightsActions from './SelectedRightsActions';
+import configureStore from 'redux-mock-store';
+import {SelectedRightsActions} from './SelectedRightsActions';
 
 describe('SelectedRightsActions', () => {
     let wrapper = null;
+    let mockStore = null;
+    let store = null;
     const menuItemClass = 'nexus-c-selected-rights-actions__menu-item';
+
+    beforeEach(() => {
+        mockStore = configureStore();
+        store = mockStore({ui: {toast: {list: []}}});
+    });
 
     afterEach(() => {
         wrapper = null;
     });
 
-    it('should match snapshot', () => {
-       wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
-       expect(wrapper).toMatchSnapshot();
-    });
+    describe('SelectedRightsActions', () => {
+        beforeEach(() => {
+            wrapper = shallow(
+                <SelectedRightsActions
+                    selectedRights={[]}
+                    store={store}
+                    toggleRefreshGridData={() => null}
+                    selectedRightGridApi={{}}
+                />
+            );
+        });
 
-    it('should disable "View Rights History" option when no rights are selected', () => {
-        wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
-        const viewHistoryOption = wrapper.find('[data-test-id="view-history"]');
-        expect(viewHistoryOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
-    });
+        it('should match snapshot', () => {
+            expect(wrapper).toMatchSnapshot();
+        });
 
-    it('should disable "Bulk Unmatch" option when no rights are selected', () => {
-        wrapper = shallow(<SelectedRightsActions selectedRights={[]} />);
-        const bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
-        expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        it('should disable "View Rights History" option when no rights are selected', () => {
+            const viewHistoryOption = wrapper.find('[data-test-id="view-history"]');
+            expect(viewHistoryOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should disable "Bulk Unmatch" option when no rights are selected', () => {
+            const bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should disable "Create Bonus Right" option when no rights are selected', () => {
+            const createBonusRights = wrapper.find('[data-test-id="bonus-rights"]');
+            expect(createBonusRights.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should disable "Add to Pre-Plan" option when no rights are selected', () => {
+            const addToPreplan = wrapper.find('[data-test-id="add-to-preplan"]');
+            expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
     });
 
     describe('Bulk Unmatch', () => {
         let bulkUnmatchOption = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
             withHooks(() => {
-                wrapper = shallow(<SelectedRightsActions selectedRights={selectedRights} />);
+                mockStore = configureStore();
+                store = mockStore({ui: {toast: {list: []}}});
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
                 bulkUnmatchOption = wrapper.find('[data-test-id="bulk-unmatch"]');
             });
         };
@@ -48,27 +85,35 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '2',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be disabled when sourceRightIds are not unique', () => {
+        it('should be enabled when sourceRightIds are not unique', () => {
             init([
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
-                    sourceRightId: '1',
-                }
+                    sourceRightId: '2',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
-            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
         it('should be disabled when sourceRightIds are not all populated', () => {
@@ -76,11 +121,15 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '1',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
@@ -90,11 +139,15 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '2',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkUnmatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
@@ -103,9 +156,18 @@ describe('SelectedRightsActions', () => {
     describe('Bulk Match', () => {
         let bulkMatchOption = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
+            mockStore = configureStore();
+            store = mockStore({ui: {toast: {list: []}}});
             withHooks(() => {
-                wrapper = shallow(<SelectedRightsActions selectedRights={selectedRights} />);
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
                 bulkMatchOption = wrapper.find('[data-test-id="bulk-match"]');
             });
         };
@@ -121,30 +183,38 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '2',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
-        it('should be disabled when sourceRightIds are not unique', () => {
+        it('should be enabled when sourceRightIds are not unique', () => {
             init([
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
-                    sourceRightId: '1',
-                }
+                    sourceRightId: '2',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
-            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
 
         it('should be disabled when sourceRightIds are not all populated', () => {
@@ -153,12 +223,16 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
@@ -169,14 +243,194 @@ describe('SelectedRightsActions', () => {
                     coreTitleId: '',
                     contentType: 'movie',
                     sourceRightId: '1',
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
                 },
                 {
                     coreTitleId: '2',
                     contentType: 'movie',
                     sourceRightId: '2',
-                }
+                    licensed: true,
+                    end: '2099-04-30T00:00:00',
+                },
             ]);
             expect(bulkMatchOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+    });
+
+    describe('Create Bonus Right', () => {
+        let createBonusRightsOption = null;
+
+        const init = selectedRights => {
+            withHooks(() => {
+                mockStore = configureStore();
+                store = mockStore({ui: {toast: {list: []}}});
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
+                createBonusRightsOption = wrapper.find('[data-test-id="bonus-rights"]');
+            });
+        };
+
+        afterEach(() => {
+            wrapper = null;
+            createBonusRightsOption = null;
+        });
+
+        it('should be active when all criteria is met', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'ReadyNew',
+                },
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+        });
+
+        it('should be disabled when sourceRightIds are not empty', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '1',
+                    licensed: true,
+                    status: 'Ready',
+                },
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when status is not Ready/ReadyNew', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    status: 'ReadyNew',
+                    licensed: true,
+                },
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    status: 'Pending',
+                    licensed: true,
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when coreTitleIds are not all populated', () => {
+            init([
+                {
+                    coreTitleId: '',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when coreTitleIds are not same for all rights', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when licensed is false', () => {
+            init([
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: false,
+                    status: 'Ready',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+    });
+
+    describe('Add to Pre-Plan', () => {
+        let addToPreplan = null;
+
+        const init = selectedRights => {
+            mockStore = configureStore();
+            store = mockStore({ui: {toast: {list: []}}});
+            withHooks(() => {
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
+                addToPreplan = wrapper.find('[data-test-id="add-to-preplan"]');
+            });
+        };
+
+        afterEach(() => {
+            wrapper = null;
+            addToPreplan = null;
+        });
+
+        it('pre-plan option should be active when at least one item is selected', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'ReadyNew',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
     });
 });

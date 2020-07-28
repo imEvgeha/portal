@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkUnmatch should match snapshot 1`] = `
+<ContextProvider
+  value={null}
+>
+  <BulkUnmatch
+    columnDefs={Array []}
+    dispatch={[Function]}
+    selectedRights={
+      Array [
+        Object {
+          "id": "1",
+          "title": "Awesome Right",
+        },
+      ]
+    }
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+  />
+</ContextProvider>
+`;

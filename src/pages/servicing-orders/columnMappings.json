@@ -6,13 +6,15 @@
     "headerName": "SO Number",
     "width": 150,
     "javaVariableName": "so_number",
-    "displayName": "SO Number",
     "enableSearch": true,
     "searchDataType": "string",
     "cellRendererParams": {
       "link": "/servicing-orders/",
       "newTab": false
-    }
+    },
+    "checkboxSelection": true,
+    "suppressSizeToFit":true,
+    "sortable": true
   },
   {
     "colId": "description",
@@ -21,7 +23,6 @@
     "headerName": "SO Description",
     "width": 200,
     "javaVariableName": "description",
-    "displayName": "SO Description",
     "enableSearch": true,
     "searchDataType": "string"
   },
@@ -32,9 +33,9 @@
     "headerName": "SR Number",
     "width": 200,
     "javaVariableName": "external_id",
-    "displayName": "SR Number",
     "enableSearch": true,
-    "searchDataType": "string"
+    "searchDataType": "string",
+    "sortable": true
   },
   {
     "colId": "sr_due_date",
@@ -43,7 +44,6 @@
     "headerName": "SR Due Date",
     "width": 200,
     "javaVariableName": "sr_due_date",
-    "displayName": "SR Due Date",
     "enableSearch": true,
     "searchDataType": "regionalMidnight"
   },
@@ -54,20 +54,20 @@
     "headerName": "Submitted Date",
     "width": 200,
     "javaVariableName": "submitted_date",
-    "displayName": "Submitted Date",
     "enableSearch": true,
     "searchDataType": "regionalMidnight"
   },
   {
     "colId": "rush_order",
     "field": "rush_order",
-    "dataType": "string",
+    "dataType": "select",
     "headerName": "Rush",
     "width": 100,
     "javaVariableName": "rush_order",
-    "displayName": "Rush",
+    "isEmphasized": true,
     "enableSearch": true,
-    "searchDataType": "string"
+    "searchDataType": "multiselect",
+    "options": ["Y", "N"]
   },
   {
     "colId": "status",
@@ -76,7 +76,6 @@
     "headerName": "Status",
     "width": 150,
     "javaVariableName": "status",
-    "displayName": "Status",
     "isEmphasized": true,
     "enableSearch": true,
     "searchDataType": "multiselect",
@@ -89,7 +88,6 @@
     "headerName": "Readiness",
     "width": 150,
     "javaVariableName": "readiness",
-    "displayName": "Readiness",
     "isEmphasized": true,
     "enableSearch": true,
     "searchDataType": "multiselect",

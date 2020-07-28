@@ -1,28 +1,29 @@
 .nexus-c-fulfillment-order-panel {
   width: 100%;
   padding: 12px;
-  border-bottom: 1px solid #DCDCDC;
-  background: #FFFFFF;
+  border-bottom: 1px solid #dcdcdc;
+  background: #ffffff;
   font-size: 14px;
 
   display: block;
 
   &--is-selected {
-    background: #E0ECF7;
+    background: #e0ecf7;
 
     &:hover {
-      background: #E0ECF7;
+      background: #e0ecf7;
     }
   }
 
   svg {
     width: 18px;
     height: 18px;
-    fill: #A5ADBA;
+    fill: #a5adba;
     flex-shrink: 0;
   }
 
-  &__title {
+  &__title-and-date {
+    width: 100%;
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
@@ -30,14 +31,19 @@
 
   &__date {
     font-size: 11px;
-    color: #737E91;
+    color: #737e91;
   }
 
   &__file-icon {
     margin-right: 12px;
   }
 
-  &__filename {
+  &__title-container {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__title {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -45,11 +51,21 @@
     font-weight: bold;
   }
 
-  &__status {
+  &__description-and-status {
     width: 100%;
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 28px;
+    padding-left: 30px;
+  }
+
+  &__description {
+    font-size: 11px;
+    color: #737e91;
+  }
+
+  &__status {
+    flex-shrink: 0;
+    margin-left: 10px;
   }
 }

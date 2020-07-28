@@ -2,6 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Col, Label, Row } from 'reactstrap';
 import { AvField } from 'availity-reactstrap-validation';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Select from 'react-select';
+import { debounce } from 'lodash';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import {
@@ -10,8 +13,6 @@ import {
     EDITORIAL_METADATA_TITLE
 } from '../../../../../constants/metadata/metadataComponent';
 import { configFields, searchPerson } from '../../../service/ConfigService';
-import { connect } from 'react-redux';
-import Select from 'react-select';
 import { EPISODE, SEASON } from '../../../../../constants/metadata/contentType';
 import Info from '@atlaskit/icon/glyph/info';
 
@@ -53,7 +54,7 @@ class EditorialMetadataEditMode extends Component {
         const propsCategory = (data || {}).category ||  [];
 
         const category = propsCategory.map(e => {
-            return { value: e, label: e };
+            return { value: e.name, label: e.name };
         });
 
         this.state = {
@@ -62,6 +63,13 @@ class EditorialMetadataEditMode extends Component {
             category,
             showCategoryError: false
         };
+    }
+
+    delayedHandleChange = debounce(eventData => this.props.handleChange(eventData, this.props.data), 500);
+
+    handleChange = (e) => {
+        let eventData = { id: e.id, target: e.target };
+        this.delayedHandleChange(eventData);
     }
 
     handleGenre = (e) => {
@@ -176,8 +184,8 @@ class EditorialMetadataEditMode extends Component {
 
     render() {
         const { handleDelete, data: currentMetadata } = this.props;
-        const isMaster = this.props.data['hasGeneratedChildren'] || false;
-        const isDecorated = !!this.props.data['parentEmetId'] || false;
+        const isMaster = !!this.props.data.hasGeneratedChildren;
+        const isDecorated = !!this.props.data.parentEmetId;
 
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
@@ -292,7 +300,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialSeriesName"
                             name={this.getNameWithPrefix('seriesName')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }}
@@ -308,7 +316,7 @@ class EditorialMetadataEditMode extends Component {
                             type="number"
                             id="editorialSeasonNumber"
                             name={this.getNameWithPrefix('seasonNumber')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                         pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                         maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -327,7 +335,7 @@ class EditorialMetadataEditMode extends Component {
                             type="number"
                             id="editorialEpisodeNumber"
                             name={this.getNameWithPrefix('episodeNumber')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                             pattern: { value: '^[0-9]+$', errorMessage: 'Please enter a number' },
                                             maxLength: { value: 3, errorMessage: 'Max 3 digits' }
@@ -378,18 +386,20 @@ class EditorialMetadataEditMode extends Component {
                     isMaster &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title</b>
+                            <b className="required">Auto-Decorate Title</b>
                         </Col>
                         <Col>
                             <AvField
                                 type="text"
                                 id="editorialAutoDecorateTitle"
                                 name={this.getNameWithPrefix('shortTitleTemplate')}
-                                onChange={(e) => this.props.handleChange(e, this.props.data)}
+                                onChange={this.handleChange}
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                                 value={shortTitleTemplate}
+                                required
+                                errorMessage="Field cannot be empty!"
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                                     {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -420,19 +430,21 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Display Title</b>
                     </Col>
                     <Col>
                         <AvField
                             type="text"
                             id="editorialDisplayTitle"
                             name={this.getEditorialTitlePrefix('title')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH,
                                         errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
                             value={title.title}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                             {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -448,7 +460,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialBriefTitle"
                             name={this.getEditorialTitlePrefix('shortTitle')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_BRIEF_TITLE_LENGTH, errorMessage: `Too long Brief Title. Max ${MAX_BRIEF_TITLE_LENGTH} symbols.` }
                                 }}
@@ -468,7 +480,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialMediumTitle"
                             name={this.getEditorialTitlePrefix('mediumTitle')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_MEDIUM_TITLE_LENGTH, errorMessage: `Too long Medium Title. Max ${MAX_MEDIUM_TITLE_LENGTH} symbols.` }
                                 }}
@@ -488,7 +500,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialLongTitle"
                             name={this.getEditorialTitlePrefix('longTitle')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
@@ -508,7 +520,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialSortTitle"
                             name={this.getEditorialTitlePrefix('sortTitle')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_SORT_TITLE_LENGTH, errorMessage: `Too long Sort Title. Max ${MAX_SORT_TITLE_LENGTH} symbols.` }
                                 }}
@@ -522,18 +534,20 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Short Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
                             type="text"
                             id="editorialShortSynopsis"
                             name={this.getSynopsisPrefix('description')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                             value={synopsis.description}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -542,7 +556,7 @@ class EditorialMetadataEditMode extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis</b>
+                        <b className={`${isMaster ? 'required' : ''}`}>Medium Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
@@ -552,11 +566,13 @@ class EditorialMetadataEditMode extends Component {
                             cols={20}
                             rows={5}
                             style={{ resize: 'none' }}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
                             value={synopsis.shortDescription}
+                            required={isMaster}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -572,7 +588,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialLongSynopsis"
                             name={this.getSynopsisPrefix('longDescription')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             cols={20}
                             rows={5}
                             style={{ resize: 'none' }}
@@ -636,7 +652,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialCopyright"
                             name={this.getNameWithPrefix('copyright')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: MAX_COPYRIGHT_LENGTH, errorMessage: `Too long Copyright. Max ${MAX_COPYRIGHT_LENGTH} symbols.` }
                                 }}
@@ -656,7 +672,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialAwards"
                             name={this.getNameWithPrefix('awards')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
                                 }}
@@ -674,7 +690,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="editorialSasktelInventoryID"
                             name={this.getNameWithPrefix('sasktelInventoryId')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
                                 }}
@@ -692,7 +708,7 @@ class EditorialMetadataEditMode extends Component {
                             type="text"
                             id="sasktelLineupId"
                             name={this.getNameWithPrefix('sasktelLineupId')}
-                            onChange={(e) => this.props.handleChange(e, this.props.data)}
+                            onChange={this.handleChange}
                             validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.' }
                                 }}

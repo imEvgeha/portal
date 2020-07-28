@@ -1,5 +1,12 @@
 .fulfillment-order {
 
+  &__title {
+    &--text {
+      font-size: 29px;
+      color: #42526e;
+    }
+  }
+
   &__row {
     display: flex;
     flex-direction: row;

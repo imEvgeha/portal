@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StatusCheck should match snapshot 1`] = `
+<div
+  className="nexus-c-status-check"
+>
+  <div
+    className="nexus-c-status-check__message"
+  >
+    Status Check Message
+  </div>
+  <DynamicTable
+    defaultPage={1}
+    head={
+      Object {
+        "cells": Array [
+          Object {
+            "content": "Title",
+            "key": 1,
+            "width": 80,
+          },
+          Object {
+            "content": "Status",
+            "key": 2,
+            "width": 20,
+          },
+        ],
+      }
+    }
+    isFixedSize={false}
+    isLoading={false}
+    isRankable={false}
+    loadingSpinnerSize="large"
+    onSetPage={[Function]}
+    onSort={[Function]}
+    rows={
+      Array [
+        Object {
+          "cells": Array [
+            Object {
+              "content": undefined,
+              "key": undefined,
+            },
+            Object {
+              "content": undefined,
+              "key": undefined,
+            },
+          ],
+          "key": 0,
+        },
+      ]
+    }
+    rowsPerPage={5}
+  />
+  <div
+    className="nexus-c-status-check__btn-wrapper"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      className="nexus-c-status-check__button"
+      isDisabled={false}
+      onClick={[Function]}
+    >
+      OK
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+</div>
+`;

@@ -1,8 +1,11 @@
 module.exports = {
     "extends": [
         "nexus-react-app",
-        "./rules/javascript-rules.js",
-        "./rules/react-a11y.js",
-        "./rules/react.js",
-    ]
+    ],
+    "overrides" : {
+        "files": "*.test.js",
+        "rules": {
+            "no-magic-numbers": "off",
+        }
+    }
 };

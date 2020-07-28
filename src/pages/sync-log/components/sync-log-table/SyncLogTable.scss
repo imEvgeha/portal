@@ -1,0 +1,65 @@
+@import '../../../../styles/config';
+
+$border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
+
+.nexus-c-sync-log-table {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    &__errors-table {
+        margin: 20px;
+        display: grid;
+        grid-template-rows: 2em repeat(auto-fill, minmax(0, auto));
+        grid-template-columns: repeat(2, minmax(0, auto));
+        border: $border;
+        border-right: none;
+        &--header-cell {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            color: map-get($colors, nexus-title-color);
+            text-align: left;
+            border-bottom: $border;
+            border-right: $border;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        &--cell {
+            padding: 5px;
+            border-right: $border;
+            border-bottom: $border;
+            background: rgba(map_get($colors, nexus-title-color), .1);
+
+            // fixes content leaking from all table cells
+            // see http://agile.vubiquity.com/browse/PORT-2513
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+            hyphens: auto;
+        }
+
+    }
+    &__error-cell {
+        text-decoration: underline;
+        color: map-get($colors, nexus-link);
+        cursor: pointer;
+    }
+}
+
+.nexus-c-sync-log-table__actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.nexus-c-sync-log-table__date-filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nexus-c-sync-log-table__date-field {
+    width: 150px;
+    margin: 0 5px;
+}

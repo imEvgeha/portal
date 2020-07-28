@@ -1,11 +1,9 @@
-import * as actions from './rightsActions';
 import * as actionTypes from './rightsActionTypes';
+import * as actions from './rightsActions';
 
 describe('rights actions', () => {
-    let payload = {};
-    // beforeAll(() => {
-    //     payload = {};
-    // });
+    const payload = {};
+
     it('should create action to add selected rights to store', () => {
         const expectedAction = {
             type: actionTypes.SET_SELECTED_RIGHTS,

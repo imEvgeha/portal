@@ -179,7 +179,7 @@ class TitleReadOnlyMode extends Component {
                             { contentType === 'SEASON' && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
-                                        <Link to={`/metadata?parentId=${id}`} className="linked-url">Show all episodes</Link>
+                                        <Link to={`/metadata?parentId=${id}&contentType=EPISODE`} className="linked-url">Show all episodes</Link>
                                     </Alert>
                                 </Col>
                             )}
@@ -224,7 +224,7 @@ class TitleReadOnlyMode extends Component {
                                         <b>Categories: </b>
                                         {category.map((value, i) => (
                                             category.length === i + 1 ?
-                                                <span key={i}>{value}</span> : <span key={i}>{value}, </span>
+                                                <span key={i}>{value.name}</span> : <span key={i}>{value.name}, </span>
                                         ))}
                                     </Alert>
                                 </Col>

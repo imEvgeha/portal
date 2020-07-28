@@ -4,24 +4,25 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
 <div
   className="nexus-c-servicing-orders"
 >
-  <div
+  <span
     className="nexus-c-servicing-orders__title"
   >
     Servicing Orders
-  </div>
+  </span>
   <div
     className="nexus-c-servicing-orders__external-filters"
   >
     <div
       className="nexus-c-servicing-orders__customer-filter"
     >
-      <div
-        className="nexus-c-servicing-orders__customer-filter--label"
+      <label
+        htmlFor="customer"
       >
         Customer
-      </div>
+      </label>
       <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
         className="nexus-c-servicing-orders__customer-filter--select"
+        name="customer"
         onChange={[Function]}
         options={
           Array [
@@ -60,10 +61,20 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
     >
       Hide Completed
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      isDisabled={true}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Export
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </div>
   <ServicingOrdersTable
+    dataRefreshComplete={[Function]}
     externalFilter={Object {}}
     fixedFilter={Object {}}
+    isRefreshData={false}
+    setSelectedServicingOrders={[Function]}
   />
 </div>
 `;

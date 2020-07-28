@@ -10,3 +10,8 @@ export const CAST_HTML_FOR = 'new-person-cast';
 export const CAST_HEADER = 'Cast';
 export const CREW_HEADER = 'Crew';
 export const CHARACTER_NAME = 'Character';
+export const MSV_ASSOCIATION_BTN = {
+    title: 'Generate ID',
+    readyHover: 'Click to generate and attach the IDs to the title',
+    disabledHover: 'You must select both a Licensor and Licensee before you can generate IDs',
+};

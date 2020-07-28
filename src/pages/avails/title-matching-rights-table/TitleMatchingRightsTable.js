@@ -1,24 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {get, cloneDeep} from 'lodash';
-import columnDefinitions from './columnDefinitions';
+import {cloneDeep, get} from 'lodash';
 import {NexusGrid} from '../../../ui/elements';
 import mappings from './TitleMatchingRightsTable.json';
+import columnDefinitions from './columnDefinitions';
+import './TitleMatchingRightsTable.scss';
 
 const TitleMatchingRightsTable = ({data}) => {
     const [tableData, setTableData] = useState([]);
 
     const flattenData = data => {
-        const tableData = cloneDeep(data).filter(item => {
+        return cloneDeep(data).filter(item => {
             if (Array.isArray(item.territory)) {
                 item.territory = get(item.territory[0], 'country', '');
             }
+            if (item.episodic) {
+                item.episodeNumber = item.episodic.episodeNumber;
+                item.seasonNumber = item.episodic.seasonNumber;
+            }
             return item;
         });
-        return tableData;
     };
 
-    const handleRowSelectionChange = ({api}) => {
+    const handleRowSelectionChange = () => {
         // get selected row data with api.getSelectedRows()
     };
 
@@ -37,7 +41,6 @@ const TitleMatchingRightsTable = ({data}) => {
                 mapping={mappings}
                 rowData={tableData}
                 rowSelection="single"
-                domLayout="autoHeight"
                 onSelectionChanged={handleRowSelectionChange}
             />
         </div>

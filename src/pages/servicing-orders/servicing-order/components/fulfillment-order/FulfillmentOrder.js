@@ -1,9 +1,10 @@
+import React, {useContext, useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEqual, set, isEmpty} from 'lodash';
-import React, {useContext, useEffect, useState} from 'react';
+import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
@@ -11,8 +12,8 @@ import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextAr
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
 import {getValidDate} from '../../../../../util/utils';
-import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
+import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
 
@@ -23,7 +24,8 @@ export const FulfillmentOrder = ({
     fetchFulfillmentOrders,
     serviceOrder,
     updatedServices,
-    children
+    children,
+    cancelEditing,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -47,12 +49,12 @@ export const FulfillmentOrder = ({
     );
     const modalHeading = 'Warning';
     const modalStyle = {
-        width: 'small'
+        width: 'small',
     };
 
     // runs when a fulfillment order has been successfully edited and saved
     // 1. re-fetches all the fulfillment orders
-    // 2. dispatches a success action with a value different than 'SUCCESS' so that this effect only runs once on a successful edit
+    // 2. dispatches action with a value other than 'SUCCESS' so that this effect only runs once on a successful edit
     useEffect(
         () => {
             if (isSuccess && isSuccess !== 'ALREADY_SET') {
@@ -63,11 +65,12 @@ export const FulfillmentOrder = ({
                     setSelectedFulfillmentOrderID(get(fulfillmentOrder, 'id', ''));
                     dispatch({
                         type: SAVE_FULFILLMENT_ORDER_SUCCESS,
-                        payload: 'ALREADY_SET'
+                        payload: 'ALREADY_SET',
                     });
                 });
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isSuccess]
     );
 
@@ -82,6 +85,7 @@ export const FulfillmentOrder = ({
                     : setIsFormDisabled(false);
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedFulfillmentOrder, savedFulfillmentOrder]
     );
 
@@ -90,10 +94,11 @@ export const FulfillmentOrder = ({
         () => {
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
-            
+
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [updatedServices]
     );
 
@@ -101,6 +106,7 @@ export const FulfillmentOrder = ({
         () => {
             setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [fulfillmentOrder]
     );
 
@@ -123,14 +129,14 @@ export const FulfillmentOrder = ({
                 onClick: () => {
                     close();
                     setFulfillmentOrder(fo);
-                }
+                },
             },
             {
                 text: 'Cancel',
                 onClick: () => {
                     close();
-                }
-            }
+                },
+            },
         ]);
     };
 
@@ -142,6 +148,7 @@ export const FulfillmentOrder = ({
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
+        cancelEditing();
     };
 
     const onSaveHandler = () => {
@@ -156,7 +163,7 @@ export const FulfillmentOrder = ({
                     <div className="fulfillment-order">
                         <div className="fulfillment-order__row fulfillment-order__header">
                             <div className="fulfillment-order__title">
-                                <h1>Fulfillment Order</h1>
+                                <div className="fulfillment-order__title--text">Fulfillment Order</div>
                                 <div>Order ID: {get(fulfillmentOrder, fieldKeys.ID, '')}</div>
                             </div>
                             <div className="fulfillment-order__save-buttons">
@@ -228,7 +235,7 @@ export const FulfillmentOrder = ({
                                         options={Constants.READINESS_STATUS}
                                         value={{
                                             value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
-                                            label: readinessOption && readinessOption.label
+                                            label: readinessOption && readinessOption.label,
                                         }}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
                                         isDisabled={isFormDisabled}
@@ -255,15 +262,33 @@ export const FulfillmentOrder = ({
     );
 };
 
-FulfillmentOrder.propTypes = {};
+FulfillmentOrder.propTypes = {
+    selectedFulfillmentOrder: PropTypes.object,
+    setSelectedOrder: PropTypes.func,
+    setSelectedFulfillmentOrderID: PropTypes.func,
+    fetchFulfillmentOrders: PropTypes.func,
+    serviceOrder: PropTypes.object,
+    updatedServices: PropTypes.object,
+    children: PropTypes.any,
+    cancelEditing: PropTypes.func,
+};
 
-FulfillmentOrder.defaultProps = {};
+FulfillmentOrder.defaultProps = {
+    selectedFulfillmentOrder: {},
+    setSelectedOrder: null,
+    setSelectedFulfillmentOrderID: null,
+    fetchFulfillmentOrders: null,
+    serviceOrder: null,
+    updatedServices: null,
+    children: null,
+    cancelEditing: null,
+};
 
 export default FulfillmentOrder;
 
 export function transformClientToServerFulfillmentOrder(clientFulfillmentOrder) {
     return {
         ...clientFulfillmentOrder,
-        definition: JSON.stringify(clientFulfillmentOrder.definition)
+        definition: JSON.stringify(clientFulfillmentOrder.definition),
     };
 }

@@ -1,14 +1,22 @@
 import React from 'react';
-import {shallow} from 'enzyme';
-import EventManagementTable from './EventManagementTable';
 import Button from '@atlaskit/button';
+import {shallow} from 'enzyme';
+import configureStore from 'redux-mock-store';
+import EventManagementTable from './EventManagementTable';
 
 describe('EventManagementTable', () => {
-    let wrapper, eventManagementGrid;
+    let wrapper = null;
+    let eventManagementGrid = null;
+    let mockStore = null;
+    let store = null;
     const onGridEventMock = jest.fn();
 
     beforeEach(() => {
-        wrapper = shallow(<EventManagementTable onGridEvent={onGridEventMock} />);
+        mockStore = configureStore();
+        store = mockStore({});
+        wrapper = shallow(<EventManagementTable onGridEvent={onGridEventMock} store={store} />)
+            .dive()
+            .shallow();
         eventManagementGrid = wrapper.find('.nexus-c-event-management-grid');
     });
 
@@ -18,7 +26,6 @@ describe('EventManagementTable', () => {
 
     it('should pass rowSelection prop to EventManagementGrid', () => {
         expect(eventManagementGrid.props().rowSelection).toEqual('single');
-        expect(eventManagementGrid.props().setForceRefresh).toBeInstanceOf(Function);
     });
 
     it('should pass onGridEvent prop to EventManagementGrid', () => {

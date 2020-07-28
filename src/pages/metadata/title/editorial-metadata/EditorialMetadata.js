@@ -5,13 +5,10 @@ import {CAST_CONFIG, CREW_CONFIG} from '../../../../ui/elements/nexus-persons-li
 import {getFilteredCastList, getFilteredCrewList} from '../../../legacy/constants/metadata/configAPI';
 
 
-const EditorialMetadata = ({
-       data
-}) => {
-
-    //temporary integration of NexusPersonsList here as PoC
-    //will be moved after folder structure is implemented
-    //no onChange integration done, should be simple
+const EditorialMetadata = ({data}) => {
+    // TODO: temporary integration of NexusPersonsList here as PoC
+    // will be moved after folder structure is implemented
+    // no onChange integration done, should be simple
     return (
         <>
             <div>Editorial Metadata</div>
@@ -50,7 +47,7 @@ EditorialMetadata.propTypes = {
 };
 
 EditorialMetadata.defaultProps = {
-    data: []
+    data: [],
 };
 
 export default EditorialMetadata;

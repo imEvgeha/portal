@@ -4,25 +4,28 @@ import DownloadIcon from '@atlaskit/icon/glyph/download';
 import './TableDownload.scss';
 import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
 import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
-import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
 import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
+import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
 import {downloadFile} from '../../../util/Common';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
-
     const [filteredColumns, setFilteredColumns] = useState([]);
+    const columns = getColumns();
 
     useEffect(() => {
-        if (getColumns()) {
-            const filteredColumns = getColumns().filter(el => !CUSTOM_HEADER_LIST.includes(el));
+        if (columns) {
+            const filteredColumns = columns.filter(el => !CUSTOM_HEADER_LIST.includes(el));
             setFilteredColumns(filteredColumns);
         }
-    }, [getColumns()]);
+    }, [columns]);
 
     const noAvailSelectedAlert = () => {
-        alertModal.open('Action required', () => {
-        }, {description: 'Please select at least one right'});
+        alertModal.open(
+            'Action required',
+            () => null,
+            {description: 'Please select at least one right'}
+        );
     };
 
     const prettyTabName = () => {
@@ -36,7 +39,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
                     confirmModal.open('Confirm download',
                         exportAvailsCriteria,
                         () => {
-                            //Empty because of design confirmModal. The modal will just close on cancel button press.
+                            // Empty because of design confirmModal. The modal will just close on cancel button press.
                         },
                         {description: `You have select ${prettyTabName()} tab for download.`});
                 } else {
@@ -46,7 +49,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
                 confirmModal.open('Confirm download',
                     exportAvailsByIds,
                     () => {
-                        //Empty because of design confirmModal. The modal will just close on cancel button press.
+                        // Empty because of design confirmModal. The modal will just close on cancel button press.
                     },
                     {description: `You have selected ${getSelected().length} avails for download.`});
             }
@@ -55,20 +58,20 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
 
     const exportAvailsByIds = () => {
         exportService.exportAvails(getSelected().map(({id}) => id), filteredColumns)
-            .then(function (response) {
+            .then(response => {
                 downloadFile(response);
             });
     };
 
     const exportAvailsCriteria = () => {
         exportService.bulkExportAvails(exportCriteria, filteredColumns)
-            .then(function (response) {
+            .then(response => {
                 downloadFile(response);
             });
     };
 
     return (
-        <div className='nexus-download__icon-button' onClick={exportAvails}><DownloadIcon size='large' /></div>
+        <div className="nexus-download__icon-button" onClick={exportAvails}><DownloadIcon size="large" /></div>
     );
 };
 
@@ -77,6 +80,7 @@ export default TableDownloadRights;
 TableDownloadRights.propTypes = {
     getColumns: PropTypes.func,
     getSelected: PropTypes.func,
+    // eslint-disable-next-line react/boolean-prop-naming
     allowDownloadFullTab: PropTypes.bool,
     selectedTab: PropTypes.string,
     exportCriteria: PropTypes.object,
@@ -86,5 +90,6 @@ TableDownloadRights.defaultProps = {
     allowDownloadFullTab: false,
     selectedTab: 'None',
     getSelected: () => [],
-    exportCriteria: {}
+    getColumns: () => [],
+    exportCriteria: {},
 };

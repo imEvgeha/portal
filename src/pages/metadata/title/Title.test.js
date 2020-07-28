@@ -1,16 +1,14 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
-
+import {shallow} from 'enzyme';
 import Title from './Title';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
 import {
     METADATA_TITLE_SECTIONS,
-    METADATA_TITLE_TITLE_SECTION,
-    METADATA_TITLE_EDITORIAL_SECTION
+    METADATA_TITLE_EDITORIAL_SECTION,
 } from './constants';
 
 describe('Title', () => {
-    let wrapper;
+    let wrapper = null;
     const sectionTabClass = '.nexus-c-metadata-title__section-tab';
 
     beforeEach(() => {
@@ -32,7 +30,7 @@ describe('Title', () => {
     it('should render tabs', () => {
         expect(wrapper.find(sectionTabClass)).toHaveLength(METADATA_TITLE_SECTIONS.length);
     });
-    
+
     it('should render section when respective tab is clicked', () => {
         const EMetTab = wrapper.findWhere(
             node => node.hasClass('nexus-c-metadata-title__section-tab') && node.text() === METADATA_TITLE_EDITORIAL_SECTION

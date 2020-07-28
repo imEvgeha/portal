@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Input, Label} from 'reactstrap';
@@ -36,6 +35,8 @@ const mapStateToProps = state => {
     };
 };
 
+const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
+
 class RightCreate extends React.Component {
 
     constructor(props) {
@@ -57,7 +58,7 @@ class RightCreate extends React.Component {
     }
 
     componentDidMount() {
-        this.right = {};
+        this.right = {licensed: true};
 
         if(this.props.availsMapping){
             this.initMappingErrors(this.props.availsMapping.mappings);
@@ -565,7 +566,8 @@ class RightCreate extends React.Component {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, null, (
+            const isRequired = required || (name === 'platformCategory' && this.right.licensee && this.right.licensee.servicingRegion === 'US');
+            return renderFieldTemplate(name, displayName, isRequired, null, (
                 <div
                     id={'right-create-' + name + '-multiselect'}
                     key={name}
@@ -610,6 +612,7 @@ class RightCreate extends React.Component {
         const renderSelectField = (name, displayName, required, value) => {
             let options = [];
             let val;
+
             if(this.props.selectValues && this.props.selectValues[name]){
                 options  = this.props.selectValues[name];
             }
@@ -629,6 +632,7 @@ class RightCreate extends React.Component {
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
+
             return renderFieldTemplate(name, displayName, required, null, (
                 <div
                     id={'right-create-' + name + '-select'}
@@ -652,15 +656,16 @@ class RightCreate extends React.Component {
             ));
         };
 
-        const renderBooleanField = (name, displayName, required, value) => {
+        const renderBooleanField = (name, displayName, required, value, defaultValue) => {
             return renderFieldTemplate(name, displayName, required, null, (
                 <select
                     className="form-control"
                     name={name}
                     id={'right-create-' + name + '-select'}
                     placeholder={'Enter ' + displayName}
-                    value={value}
+                    value={defaultValue || value}
                     onChange={this.handleBooleanChange}
+                    disabled={!!defaultValue}
                 >
                     <option value="">None selected</option>
                     <option value="true">Yes</option>
@@ -819,7 +824,7 @@ class RightCreate extends React.Component {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
                 },
-                allowClear: !required
+                isClearable: !required
             };
 
             const component = useTime
@@ -830,10 +835,11 @@ class RightCreate extends React.Component {
         };
 
         const renderFields = [];
-
         if(this.props.availsMapping) {
             this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
-                if(mapping.enableEdit && !mapping.readOnly){
+                if(mapping.enableEdit &&
+                    (!mapping.readOnly || mapping.defaultValue)
+                    && !excludedFields.find(item => item === mapping.javaVariableName)){
                     const required = mapping.required;
                     const value = this.right ? this.right[mapping.javaVariableName] : '';
                     const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
@@ -841,37 +847,51 @@ class RightCreate extends React.Component {
                         return;
                     }
                     switch (mapping.dataType) {
-                        case 'string' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'string' :
+                            renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'integer' : renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'integer' :
+                            renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'year' : renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'year' :
+                            renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'double' : renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'double' :
+                            renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         case 'select' :
                             renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'multiselect' : renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'multiselect' :
+                            renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'duration' : renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value,
+                        case 'duration' :
+                            renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value,
                             'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'));
                              break;
-                        case 'time' : renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'time' :
+                            renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case DATETIME_FIELDS.TIMESTAMP : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
+                        case DATETIME_FIELDS.TIMESTAMP :
+                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
                             break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
+                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT :
+                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
                              break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME : renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
+                        case DATETIME_FIELDS.BUSINESS_DATETIME :
+                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
                             break;
-                        case 'boolean' : renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'boolean' :
+                            renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value, mapping.defaultValue));
                              break;
-                        case 'priceType': renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'priceType':
+                            renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
-                        case 'territoryType': renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'territoryType':
+                            renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
                              break;
-                        case 'audioLanguageType': renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));
+                        case 'audioLanguageType':
+                            renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));
                             break;
                         default:
                             console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName); // eslint-disable-line

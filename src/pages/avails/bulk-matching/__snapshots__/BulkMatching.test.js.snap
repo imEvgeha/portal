@@ -4,30 +4,30 @@ exports[`BulkMatching should match snapshot 1`] = `
 <div
   className="nexus-c-bulk-matching"
 >
-  <h2>
-    Title Matching
-  </h2>
   <div
     className="nexus-c-bulk-matching__header"
   >
     <div
-      className="nexus-c-bulk-matching__selected nexus-c-bulk-matching__selected--active"
-      onClick={null}
+      className="nexus-c-bulk-matching__rights-tab nexus-c-bulk-matching__rights-tab--active"
+      onClick={[Function]}
     >
-      Selected Rights (
+      Selected Rights
+       (
       0
       )
     </div>
     <div
-      className="nexus-c-bulk-matching__affected"
+      className="nexus-c-bulk-matching__rights-tab"
       onClick={[Function]}
     >
-      Affected Rights (
+      Affected Rights
+       (
       0
       )
     </div>
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       className="nexus-c-bulk-matching__btn"
+      isDisabled={false}
       onClick={[Function]}
     >
       New Title
@@ -42,10 +42,23 @@ exports[`BulkMatching should match snapshot 1`] = `
     Select titles from the repositories that match the incoming right or declare a 
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       appearance="link"
+      isDisabled={false}
+      onClick={[Function]}
       spacing="none"
     >
       New Title
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </SectionMessage>
+  <div
+    className="nexus-c-bulk-matching__spinner"
+  >
+    <Spinner
+      delay={100}
+      invertColor={false}
+      isCompleting={false}
+      onComplete={[Function]}
+      size="large"
+    />
+  </div>
 </div>
 `;

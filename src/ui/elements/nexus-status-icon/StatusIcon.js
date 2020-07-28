@@ -5,7 +5,7 @@ import Constants from './StatusConstants';
 import './StatusIcon.scss';
 
 const StatusIcon = ({status, title}) => {
-    const { COMPLETED, FAILED, MANUAL, PENDING} = Constants;
+    const {COMPLETED, FAILED, MANUAL, PENDING} = Constants;
     const className = `status-${status.toLowerCase()}`;
     if (status) {
         switch (status) {
@@ -14,21 +14,21 @@ const StatusIcon = ({status, title}) => {
                     <span className={className}>
                         <i className="fas fa-check-circle" />
                     </span>
-);
+                );
             case FAILED:
                 return (
                     <span title={title} className={className}>
                         <i className="fas fa-exclamation-circle" />
                     </span>
-);
+                );
             case MANUAL:
                 return (
                     <span className={className}>
                         <i className="fas fa-circle"> </i>
                     </span>
-);
+                );
             case PENDING:
-                return <img className='status-img' alt='Pending' src={LoadingEllipsis} />;
+                return <img className="status-img" alt="Pending" src={LoadingEllipsis} />;
             default:
                 return status;
         }

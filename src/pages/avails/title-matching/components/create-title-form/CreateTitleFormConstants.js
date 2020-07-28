@@ -1,4 +1,4 @@
-import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../legacy/constants/metadata/contentType';
+import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
 import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
 
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
@@ -7,7 +7,7 @@ const NEW_TITLE_LABEL_CANCEL = 'Cancel';
 const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
 const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
 const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
-const getTitleFormSchema = (currentValue) => ([
+const getTitleFormSchema = currentValue => ([
     {
         name: 'title',
         id: 'title',
@@ -20,10 +20,10 @@ const getTitleFormSchema = (currentValue) => ([
         validWhen: {
             lengthIsLessThan: {
                 length: MetadataConstants.MAX_TITLE_LENGTH,
-                message: `Title must have less than ${MetadataConstants.MAX_TITLE_LENGTH} characters`
+                message: `Title must have less than ${MetadataConstants.MAX_TITLE_LENGTH} characters`,
             },
         },
-        defaultValue: currentValue.title
+        defaultValue: currentValue.title,
     },
     {
         name: 'contentType',
@@ -46,6 +46,7 @@ const getTitleFormSchema = (currentValue) => ([
                     {label: EVENT.name, value: EVENT.apiName},
                     {label: SPORTS.name, value: SPORTS.apiName},
                     {label: ADVERTISEMENT.name, value: ADVERTISEMENT.apiName},
+                    {label: SPECIAL.name, value: SPECIAL.apiName},
                 ],
             },
         ],
@@ -65,20 +66,20 @@ const getTitleFormSchema = (currentValue) => ([
                 is: [
                     SEASON.apiName,
                     EPISODE.apiName,
-                ]
+                ],
             },
             {
                 field: 'seasonNumber',
                 isNot: [
-                    ''
-                ]
+                    '',
+                ],
             },
             {
                 field: 'episodeNumber',
                 isNot: [
-                    ''
-                ]
-            }
+                    '',
+                ],
+            },
         ],
         visibleWhen: [
             {
@@ -88,8 +89,9 @@ const getTitleFormSchema = (currentValue) => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
-                ]
-            }
+                    SPECIAL.apiName,
+                ],
+            },
         ],
     },
     {
@@ -107,20 +109,20 @@ const getTitleFormSchema = (currentValue) => ([
                 is: [
                     SEASON.apiName,
                     EPISODE.apiName,
-                ]
+                ],
             },
             {
                 field: 'seriesTitleName',
                 isNot: [
-                    ''
-                ]
+                    '',
+                ],
             },
             {
                 field: 'episodeNumber',
                 isNot: [
-                    ''
-                ]
-            }
+                    '',
+                ],
+            },
         ],
         visibleWhen: [
             {
@@ -130,17 +132,18 @@ const getTitleFormSchema = (currentValue) => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
-                ]
-            }
+                    SPECIAL.apiName,
+                ],
+            },
         ],
         validWhen: {
             fallsWithinNumericalRange: {
                 max: MetadataConstants.MAX_NUMBER_OF_SEASONS,
-                message: `Season number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_SEASONS}`
+                message: `Season number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_SEASONS}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
-                message: 'Only numbers are allowed'
+                message: 'Only numbers are allowed',
             },
         },
     },
@@ -158,20 +161,20 @@ const getTitleFormSchema = (currentValue) => ([
                 field: 'contentType',
                 is: [
                     EPISODE.apiName,
-                ]
+                ],
             },
             {
                 field: 'seriesTitleName',
                 isNot: [
-                    ''
-                ]
+                    '',
+                ],
             },
             {
                 field: 'seasonNumber',
                 isNot: [
-                    ''
-                ]
-            }
+                    '',
+                ],
+            },
         ],
         visibleWhen: [
             {
@@ -180,17 +183,18 @@ const getTitleFormSchema = (currentValue) => ([
                     EPISODE.apiName,
                     EVENT.apiName,
                     SPORTS.apiName,
-                ]
-            }
+                    SPECIAL.apiName,
+                ],
+            },
         ],
         validWhen: {
             fallsWithinNumericalRange: {
                 max: MetadataConstants.MAX_NUMBER_OF_EPISODES,
-                message: `Episode number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_EPISODES}`
+                message: `Episode number can't be higher than ${MetadataConstants.MAX_NUMBER_OF_EPISODES}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
-                message: 'Only numbers are allowed'
+                message: 'Only numbers are allowed',
             },
         },
     },
@@ -208,25 +212,25 @@ const getTitleFormSchema = (currentValue) => ([
                 field: 'contentType',
                 isNot: [
                     SERIES.apiName,
-                ]
-            }
+                ],
+            },
         ],
         visibleWhen: [
             {
                 field: 'contentType',
                 isNot: [
                     SEASON.apiName,
-                ]
-            }
+                ],
+            },
         ],
         validWhen: {
             fallsWithinNumericalRange: {
                 max: MetadataConstants.MAX_RELEASE_YEAR,
-                message: `Release Year can't be past year ${MetadataConstants.MAX_RELEASE_YEAR}`
+                message: `Release Year can't be past year ${MetadataConstants.MAX_RELEASE_YEAR}`,
             },
             matchesRegEx: {
                 pattern: '^[0-9]+$',
-                message: 'Only numbers are allowed'
+                message: 'Only numbers are allowed',
             },
         },
     },

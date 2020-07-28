@@ -1,11 +1,11 @@
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../util/http-client/index';
 
-export const getRightsHistory = (searchIds) => {
+export const getRightsHistory = searchIds => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`;
     const body = {
         excludes: ['header'],
-        searchIdType:'CORRELATION_ID',
+        searchIdType: 'CORRELATION_ID',
         searchIds,
     };
 

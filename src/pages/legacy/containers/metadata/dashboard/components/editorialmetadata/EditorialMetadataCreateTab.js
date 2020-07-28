@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Col, Label, Row } from 'reactstrap'; // ?
 import { AvField } from 'availity-reactstrap-validation'; // ?
 import Select from 'react-select';
+import { debounce } from 'lodash';
 import { editorialMetadataService } from '../../../../../constants/metadata/editorialMetadataService';
 import { resolutionFormat } from '../../../../../constants/resolutionFormat';
 import { EDITORIAL_METADATA_PREFIX } from '../../../../../constants/metadata/metadataComponent';
@@ -171,6 +172,13 @@ class EditorialMetadataCreateTab extends Component {
         this.props.handleChange(e);
     };
 
+    delayedHandleChange = debounce((eventData, func) => func(eventData), 500);
+
+    handleChange = (e, func) => {
+        let eventData = { id: e.id, target: e.target };
+        this.delayedHandleChange(eventData, func);
+    }
+
     render() {
         const { synopsis, title, copyright, awards, seriesName, sasktelInventoryId, sasktelLineupId, castCrew } = this.props.editorialMetadataForCreate;
         const { MAX_SEASON_LENGTH, MAX_TITLE_LENGTH, MAX_MEDIUM_TITLE_LENGTH, MAX_BRIEF_TITLE_LENGTH,
@@ -270,7 +278,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialSeriesName"
                             name={this.getNameWithPrefix('seriesName')}
-                            onChange={this.props.handleEpisodicChange}
+                            onChange={e => this.handleChange(e,this.props.handleEpisodicChange)}
                             validate={{
                                         maxLength: { value: 200, errorMessage: 'Too long Series Name. Max 200 symbols.' }
                                     }}
@@ -370,17 +378,19 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Display Title</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Display Title</b>
                     </Col>
                     <Col>
                         <AvField
                             type="text"
                             id="editorialDisplayTitle"
                             name={this.getNameWithPrefix('title')}
-                            onChange={this.props.handleTitleChange}
+                            onChange={e => this.handleChange(e,this.props.handleTitleChange)}
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Display Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                             {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -391,17 +401,19 @@ class EditorialMetadataCreateTab extends Component {
                 {this.state.autoDecorate &&
                     <Row style={{ padding: '15px' }}>
                         <Col md={2}>
-                            <b>Auto-Decorate Title</b>
+                            <b className="required">Auto-Decorate Title</b>
                         </Col>
                         <Col>
                             <AvField
                                 type="text"
                                 id="editorialAutoDecorateTitle"
                                 name={this.getNameWithPrefix('shortTitleTemplate')}
-                                onChange={this.props.handleChange}
+                                onChange={e => this.handleChange(e,this.props.handleChange)}
                                 validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Auto-Decorate Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
+                                required
+                                errorMessage="Field cannot be empty!"
                             />
                             <span style={{ float: 'right', fontSize: '13px', color: title ? this.handleFieldLength(title.title) === MAX_TITLE_LENGTH ? 'red' : '#111' : '#111' }}>
                                 {title ? this.handleFieldLength(title.title) : 0}/{MAX_TITLE_LENGTH} char
@@ -418,7 +430,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialBriefTitle"
                             name={this.getNameWithPrefix('shortTitle')}
-                            onChange={this.props.handleTitleChange}
+                            onChange={e => this.handleChange(e, this.props.handleTitleChange)}
                             validate={{
                                     maxLength: { value: MAX_BRIEF_TITLE_LENGTH, errorMessage: `Too long Brief Title. Max ${MAX_BRIEF_TITLE_LENGTH} symbols.` }
                                 }}
@@ -437,7 +449,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialMediumTitle"
                             name={this.getNameWithPrefix('mediumTitle')}
-                            onChange={this.props.handleTitleChange}
+                            onChange={e => this.handleChange(e,this.props.handleTitleChange)}
                             validate={{
                                     maxLength: { value: MAX_MEDIUM_TITLE_LENGTH, errorMessage: `Too long Medium Title. Max ${MAX_MEDIUM_TITLE_LENGTH} symbols.` }
                                 }}
@@ -456,7 +468,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialLongTitle"
                             name={this.getNameWithPrefix('longTitle')}
-                            onChange={this.props.handleTitleChange}
+                            onChange={e => this.handleChange(e,this.props.handleTitleChange)}
                             validate={{
                                     maxLength: { value: MAX_TITLE_LENGTH, errorMessage: `Too long Long Title. Max ${MAX_TITLE_LENGTH} symbols.` }
                                 }}
@@ -475,7 +487,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialSortTitle"
                             name={this.getNameWithPrefix('sortTitle')}
-                            onChange={this.props.handleTitleChange}
+                            onChange={e => this.handleChange(e,this.props.handleTitleChange)}
                             validate={{
                                     maxLength: { value: MAX_SORT_TITLE_LENGTH, errorMessage: `Too long Sort Title. Max ${MAX_SORT_TITLE_LENGTH} symbols.` }
                                 }}
@@ -488,17 +500,19 @@ class EditorialMetadataCreateTab extends Component {
 
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Short Synopsis</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Short Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
                             type="text"
                             id="editorialShortSynopsis"
                             name={this.getNameWithPrefix('description')}
-                            onChange={this.props.handleSynopsisChange}
+                            onChange={e => this.handleChange(e,this.props.handleSynopsisChange)}
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Short Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.description) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.description) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -507,7 +521,7 @@ class EditorialMetadataCreateTab extends Component {
                 </Row>
                 <Row style={{ padding: '15px' }}>
                     <Col md={2}>
-                        <b>Medium Synopsis</b>
+                        <b className={`${this.state.autoDecorate ? 'required' : ''}`}>Medium Synopsis</b>
                     </Col>
                     <Col>
                         <AvField
@@ -517,10 +531,12 @@ class EditorialMetadataCreateTab extends Component {
                             cols={20}
                             rows={5}
                             style={{ resize: 'none' }}
-                            onChange={this.props.handleSynopsisChange}
+                            onChange={e => this.handleChange(e,this.props.handleSynopsisChange)}
                             validate={{
                                     maxLength: { value: MAX_SYNOPSIS_LENGTH, errorMessage: `Too long Medium Synopsis. Max ${MAX_SYNOPSIS_LENGTH} symbols.` }
                                 }}
+                            required={this.state.autoDecorate}
+                            errorMessage="Field cannot be empty!"
                         />
                         <span style={{ float: 'right', color: synopsis ? this.handleFieldLength(synopsis.shortDescription) === MAX_SYNOPSIS_LENGTH ? 'red' : '#111' : '#111', fontSize: '13px' }}>
                             {synopsis ? this.handleFieldLength(synopsis.shortDescription) : 0}/{MAX_SYNOPSIS_LENGTH} char
@@ -536,7 +552,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="textarea"
                             id="editorialLongSynopsis"
                             name={this.getNameWithPrefix('longDescription')}
-                            onChange={this.props.handleSynopsisChange}
+                            onChange={e => this.handleChange(e,this.props.handleSynopsisChange)}
                             cols={20}
                             rows={5}
                             style={{ resize: 'none' }}
@@ -597,7 +613,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialCopyright"
                             name={this.getNameWithPrefix('copyright')}
-                            onChange={this.props.handleChange}
+                            onChange={e => this.handleChange(e,this.props.handleChange)}
                             validate={{
                                     maxLength: { value: MAX_COPYRIGHT_LENGTH, errorMessage: `Too long Copyright. Max ${MAX_COPYRIGHT_LENGTH} symbols.` }
                                 }}
@@ -616,7 +632,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialAwards"
                             name={this.getNameWithPrefix('awards')}
-                            onChange={this.props.handleChange}
+                            onChange={e => this.handleChange(e,this.props.handleChange)}
                             validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Awards. Max 500 symbols.' }
                                 }}
@@ -633,7 +649,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialSasktelInventoryID"
                             name={this.getNameWithPrefix('sasktelInventoryId')}
-                            onChange={this.props.handleChange}
+                            onChange={e => this.handleChange(e,this.props.handleChange)}
                             validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Inventory ID. Max 200 symbols.' }
                                 }}
@@ -650,7 +666,7 @@ class EditorialMetadataCreateTab extends Component {
                             type="text"
                             id="editorialSasktelLineupID"
                             name={this.getNameWithPrefix('sasktelLineupId')}
-                            onChange={this.props.handleChange}
+                            onChange={e => this.handleChange(e,this.props.handleChange)}
                             validate={{
                                     maxLength: { value: 200, errorMessage: 'Too long Sasktel Lineup ID. Max 200 symbols.' }
                                 }}

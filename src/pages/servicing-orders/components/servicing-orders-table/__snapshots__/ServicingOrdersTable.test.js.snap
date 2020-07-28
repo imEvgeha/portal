@@ -4,7 +4,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
 <div
   className="nexus-c-servicing-orders-table"
 >
-  <ComposedComponent
+  <Component
     columnDefs={
       Array [
         Object {
@@ -13,14 +13,16 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
             "link": "/servicing-orders/",
             "newTab": false,
           },
+          "checkboxSelection": true,
           "colId": "so_number",
           "dataType": "string",
-          "displayName": "SO Number",
           "enableSearch": true,
           "field": "so_number",
           "headerName": "SO Number",
           "javaVariableName": "so_number",
           "searchDataType": "string",
+          "sortable": true,
+          "suppressSizeToFit": true,
           "valueFormatter": [Function],
           "width": 150,
         },
@@ -28,7 +30,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "cellRenderer": "loadingCellRenderer",
           "colId": "description",
           "dataType": "string",
-          "displayName": "SO Description",
           "enableSearch": true,
           "field": "description",
           "headerName": "SO Description",
@@ -41,12 +42,12 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "cellRenderer": "loadingCellRenderer",
           "colId": "external_id",
           "dataType": "string",
-          "displayName": "SR Number",
           "enableSearch": true,
           "field": "external_id",
           "headerName": "SR Number",
           "javaVariableName": "external_id",
           "searchDataType": "string",
+          "sortable": true,
           "valueFormatter": [Function],
           "width": 200,
         },
@@ -54,7 +55,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "cellRenderer": "loadingCellRenderer",
           "colId": "sr_due_date",
           "dataType": "regionalMidnight",
-          "displayName": "SR Due Date",
           "enableSearch": true,
           "field": "sr_due_date",
           "headerName": "SR Due Date",
@@ -67,7 +67,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "cellRenderer": "loadingCellRenderer",
           "colId": "submitted_date",
           "dataType": "regionalMidnight",
-          "displayName": "Submitted Date",
           "enableSearch": true,
           "field": "submitted_date",
           "headerName": "Submitted Date",
@@ -77,23 +76,26 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 200,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "emphasizedStringCellRenderer",
           "colId": "rush_order",
-          "dataType": "string",
-          "displayName": "Rush",
+          "dataType": "select",
           "enableSearch": true,
           "field": "rush_order",
           "headerName": "Rush",
+          "isEmphasized": true,
           "javaVariableName": "rush_order",
-          "searchDataType": "string",
-          "valueFormatter": [Function],
+          "options": Array [
+            "Y",
+            "N",
+          ],
+          "searchDataType": "multiselect",
+          "valueFormatter": undefined,
           "width": 100,
         },
         Object {
           "cellRenderer": "emphasizedStringCellRenderer",
           "colId": "status",
           "dataType": "select",
-          "displayName": "Status",
           "enableSearch": true,
           "field": "status",
           "headerName": "Status",
@@ -114,7 +116,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "cellRenderer": "emphasizedStringCellRenderer",
           "colId": "readiness",
           "dataType": "select",
-          "displayName": "Readiness",
           "enableSearch": true,
           "field": "readiness",
           "headerName": "Readiness",
@@ -131,6 +132,14 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
       ]
     }
+    customDateFilterParamSuffixes={
+      Array [
+        "Start",
+        "End",
+      ]
+    }
+    externalFilter={Object {}}
+    fixedFilter={Object {}}
     frameworkComponents={
       Object {
         "emphasizedStringCellRenderer": [Function],
@@ -143,20 +152,21 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
             "link": "/servicing-orders/",
             "newTab": false,
           },
+          "checkboxSelection": true,
           "colId": "so_number",
           "dataType": "string",
-          "displayName": "SO Number",
           "enableSearch": true,
           "field": "so_number",
           "headerName": "SO Number",
           "javaVariableName": "so_number",
           "searchDataType": "string",
+          "sortable": true,
+          "suppressSizeToFit": true,
           "width": 150,
         },
         Object {
           "colId": "description",
           "dataType": "string",
-          "displayName": "SO Description",
           "enableSearch": true,
           "field": "description",
           "headerName": "SO Description",
@@ -167,18 +177,17 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         Object {
           "colId": "external_id",
           "dataType": "string",
-          "displayName": "SR Number",
           "enableSearch": true,
           "field": "external_id",
           "headerName": "SR Number",
           "javaVariableName": "external_id",
           "searchDataType": "string",
+          "sortable": true,
           "width": 200,
         },
         Object {
           "colId": "sr_due_date",
           "dataType": "regionalMidnight",
-          "displayName": "SR Due Date",
           "enableSearch": true,
           "field": "sr_due_date",
           "headerName": "SR Due Date",
@@ -189,7 +198,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         Object {
           "colId": "submitted_date",
           "dataType": "regionalMidnight",
-          "displayName": "Submitted Date",
           "enableSearch": true,
           "field": "submitted_date",
           "headerName": "Submitted Date",
@@ -199,19 +207,22 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
         Object {
           "colId": "rush_order",
-          "dataType": "string",
-          "displayName": "Rush",
+          "dataType": "select",
           "enableSearch": true,
           "field": "rush_order",
           "headerName": "Rush",
+          "isEmphasized": true,
           "javaVariableName": "rush_order",
-          "searchDataType": "string",
+          "options": Array [
+            "Y",
+            "N",
+          ],
+          "searchDataType": "multiselect",
           "width": 100,
         },
         Object {
           "colId": "status",
           "dataType": "select",
-          "displayName": "Status",
           "enableSearch": true,
           "field": "status",
           "headerName": "Status",
@@ -230,7 +241,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         Object {
           "colId": "readiness",
           "dataType": "select",
-          "displayName": "Readiness",
           "enableSearch": true,
           "field": "readiness",
           "headerName": "Readiness",
@@ -245,6 +255,19 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 150,
         },
       ]
+    }
+    onFirstDataRendered={[Function]}
+    onSelectionChanged={[Function]}
+    rowDeselection={true}
+    rowSelection="multiple"
+    setTotalCount={[Function]}
+  />
+  <ServicingOrdersTableStatusBar
+    statusBarInfo={
+      Object {
+        "selectedRows": 0,
+        "totalRows": 0,
+      }
     }
   />
 </div>

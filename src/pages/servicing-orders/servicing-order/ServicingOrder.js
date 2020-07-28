@@ -1,5 +1,6 @@
-import {get} from 'lodash';
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -33,17 +34,11 @@ const ServicingOrder = ({match}) => {
                     servicingOrder.so_number
                 );
 
-                const parsedFulfillmentOrders = fulfillmentOrders.map(fo => {
-                    let {definition} = fo || {};
-                    const parsedDefinition = definition ? JSON.parse(definition) : {};
-                    return {...fo, definition: parsedDefinition};
-                });
-
                 setServiceOrder({
                     ...servicingOrder,
-                    fulfillmentOrders: parsedFulfillmentOrders
+                    fulfillmentOrders,
                 });
-                setSelectedFulfillmentOrderID(get(parsedFulfillmentOrders, '[0].id', ''));
+                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
             } catch (e) {
                 setServiceOrder(servicingOrder);
             }
@@ -60,7 +55,7 @@ const ServicingOrder = ({match}) => {
                 setServiceOrder({});
             }
         });
-    }, []);
+    }, [match]);
 
     const handleSelectedSourceChange = source => {
         // CURRENT SELECTED SOURCE
@@ -98,6 +93,7 @@ const ServicingOrder = ({match}) => {
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
                     updatedServices={updatedServices}
+                    cancelEditing={() => setSelectedSource({...selectedSource})}
                 >
                     <SourcesTable
                         data={prepareRowData(selectedOrder)}
@@ -116,8 +112,12 @@ const ServicingOrder = ({match}) => {
     );
 };
 
-ServicingOrder.propTypes = {};
+ServicingOrder.propTypes = {
+    match: PropTypes.object,
+};
 
-ServicingOrder.defaultProps = {};
+ServicingOrder.defaultProps = {
+    match: {},
+};
 
 export default ServicingOrder;

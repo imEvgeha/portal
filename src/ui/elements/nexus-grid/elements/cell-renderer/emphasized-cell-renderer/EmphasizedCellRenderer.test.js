@@ -3,7 +3,7 @@ import {shallow} from 'enzyme';
 import EmphasizedCellRenderer from './EmphasizedCellRenderer';
 
 describe('EmphasizedCellRenderer', () => {
-    let wrapper;
+    let wrapper = null;
 
     beforeEach(() => {
         wrapper = shallow(<EmphasizedCellRenderer value="IN PROGRESS" />);

@@ -39,7 +39,6 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
         return undefined;
     };
 
-
     const returnValidData = data => {
         return existingTerritoryList && existingTerritoryList[territoryIndex] && existingTerritoryList[territoryIndex][data] && existingTerritoryList[territoryIndex][data] !== null;
     };
@@ -87,6 +86,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         name="readOnly"
                         isReadOnly={true}
                         defaultValue={selected.toString()}
+                        style={{'height': '40px'}}
                     />
                 )}
             </Field>
@@ -147,17 +147,31 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     </>
                 )}
             </Field>
-            <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit ? returnValidData('vuContractId') && existingTerritoryList[territoryIndex]['vuContractId'].length > 0 && existingTerritoryList[territoryIndex]['vuContractId'].map(e => { return { value: e, label: e }; }) : ''}>
-                {({ fieldProps: { id, ...rest } }) => (
-                    <CreatableSelect
-                        id={`creatable-select-${id}`}
-                        isClearable
-                        isMulti={true}
-                        placeholder="Add Contract ID"
+            <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit && existingTerritoryList[territoryIndex]['vuContractId']
+                ? existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
+                : ''}>
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <Textfield
+                        name="vuContractId"
+                        isReadOnly={false}
+                        defaultValue={value}
+                        style={{'height': '40px'}}
                         {...rest}
                     />
                 )}
-
+            </Field>
+            <Field label="COMMENTS" name="comment" defaultValue={isEdit && existingTerritoryList[territoryIndex]['comment']
+                ? existingTerritoryList[territoryIndex]['comment']
+                : ''}>
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <Textfield
+                        name="comment"
+                        isReadOnly={false}
+                        defaultValue={value}
+                        style={{'height': '40px'}}
+                        {...rest}
+                    />
+                )}
             </Field>
         </>
     );

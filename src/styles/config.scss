@@ -27,8 +27,17 @@ $colors: (
     nexus-light-grey: #a5adba,
     nexus-lighter-grey: #ebedf0,
     nexus-soft-grey: #f5f6f7,
+    nexus-link: #0065FF,
     warning: #DF1745,
+    nexus-text: #22212E,
+    nexus-error: #F2DEDE,
+    nexus-warning: #DE350B,
 );
 
 $nexus-font: Arial, Helvetica, sans-serif;
+
+// Vertical & Horizontal spacing
+$base-size: 14;
+$base-spacing-unit: 4;
+$base-relative-spacing: ($base-spacing-unit / $base-size);
 

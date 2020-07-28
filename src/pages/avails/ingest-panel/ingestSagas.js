@@ -1,26 +1,29 @@
-import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {push} from 'connected-react-router';
-import * as actionTypes from './ingestActionTypes';
-import {URL, normalizeDataForStore} from '../../../util/Common';
-import Constants from '../constants';
-import {getFiltersToSend} from './utils';
-import FilterConstants from './constants';
-import {getIngestById} from './ingestSelectors';
-import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+import {URL, normalizeDataForStore} from '../../../util/Common';
 import {historyService} from '../../legacy/containers/avail/service/HistoryService';
 import {uploadService} from '../../legacy/containers/avail/service/UploadService';
+import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';
+import * as actionTypes from './ingestActionTypes';
+import {getIngestById} from './ingestSelectors';
+import {getFiltersToSend} from './utils';
+import FilterConstants from './constants';
+import Constants from '../constants';
 
-const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_IDS} = Constants;
+const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
+const UPLOAD_DELAY = 6500;
 
 
 function* fetchIngests({payload}) {
     try {
         const filters = {};
-        Object.keys(URLFilterKeys).map(key => filters[URLFilterKeys[key]] = payload[key]);
+        Object.keys(URLFilterKeys).forEach(key => {
+            filters[URLFilterKeys[key]] = payload[key];
+        });
         filters.page = '';
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
@@ -57,7 +60,7 @@ function* fetchNextPage() {
 }
 
 function* filterRightsByStatus({payload}) {
-    const queryParam = payload === FilterConstants.REPORT.total.value ?  undefined : {status: payload};
+    const queryParam = payload === FilterConstants.REPORT.total.value ? undefined : {status: payload};
 
     if (queryParam) {
         yield put({
@@ -71,21 +74,21 @@ function* filterRightsByStatus({payload}) {
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: 'status',
-        }
+        },
     });
 }
 
 function* selectIngest({payload}) {
     const {availHistoryId, attachmentId} = payload || {};
     let ingestId = availHistoryId;
-    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_IDS]: attachmentId};
+    const queryParam = {[AVAIL_HISTORY_ID]: ingestId, [INGEST_HISTORY_ATTACHMENT_ID]: attachmentId};
 
     if (ingestId) {
         const url = `${window.location.pathname}?${URL.updateQueryParam(queryParam)}`;
         yield put(push(URL.keepEmbedded(url)));
         yield put({
             type: SET_RIGHTS_FILTER,
-            payload: {}
+            payload: {},
         });
         yield put({
             type: ADD_RIGHTS_FILTER,
@@ -96,8 +99,8 @@ function* selectIngest({payload}) {
             yield put({
                 type: REMOVE_RIGHTS_FILTER,
                 payload: {
-                    filter: INGEST_HISTORY_ATTACHMENT_IDS,
-                }
+                    filter: INGEST_HISTORY_ATTACHMENT_ID,
+                },
             });
         } else {
             yield put({
@@ -112,20 +115,19 @@ function* selectIngest({payload}) {
     if (ingestId) {
         let selectedIngest = yield select(getIngestById, ingestId);
 
-            try {
-                if (!selectedIngest) {
-                    const selectedIngest = yield call(historyService.getHistory, ingestId);
-                }
-                yield put({
-                    type: actionTypes.UPDATE_SELECTED_INGEST,
-                    payload: selectedIngest,
-                });
-            } catch (error) {
-                yield  put( {
-                    type: 'DESELECT_INGEST'
-                });
+        try {
+            if (!selectedIngest) {
+                selectedIngest = yield call(historyService.getHistory, ingestId);
             }
-
+            yield put({
+                type: actionTypes.UPDATE_SELECTED_INGEST,
+                payload: selectedIngest,
+            });
+        } catch (error) {
+            yield put({
+                type: 'DESELECT_INGEST',
+            });
+        }
     }
 }
 
@@ -134,30 +136,30 @@ function* deselectIngest() {
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: 'status',
-        }
+        },
     });
     const url = `${window.location.pathname}`;
     yield put(push(URL.keepEmbedded(url)));
     yield put({
         type: REMOVE_RIGHTS_FILTER,
         payload: {
-            filter: INGEST_HISTORY_ATTACHMENT_IDS,
-        }
+            filter: INGEST_HISTORY_ATTACHMENT_ID,
+        },
     });
     yield put({
         type: REMOVE_RIGHTS_FILTER,
         payload: {
             filter: AVAIL_HISTORY_ID,
-        }
+        },
     });
     yield put({
-        type: actionTypes.CLEAR_SELECTED_INGEST
+        type: actionTypes.CLEAR_SELECTED_INGEST,
     });
-
 }
 
 function* uploadIngest({payload}) {
     const {file, closeModal, ...rest} = payload || {};
+
     try {
         yield put({
             type: actionTypes.UPLOAD_INGEST_REQUEST,
@@ -165,7 +167,7 @@ function* uploadIngest({payload}) {
         });
 
         const response = yield uploadService.uploadAvail({file, params: rest});
-        yield delay(6500);
+        yield delay(UPLOAD_DELAY);
         yield put({
             type: actionTypes.FETCH_INGESTS,
             payload: getFiltersToSend(),
@@ -178,14 +180,13 @@ function* uploadIngest({payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: `${UPLOAD_SUCCESS_MESSAGE} ${response.fileName}`,
-            }
+            },
         });
         yield put({
             type: actionTypes.UPLOAD_INGEST_SUCCESS,
             payload: {},
         });
-    }
-    catch (e) {
+    } catch (e) {
         yield put({
             type: actionTypes.UPLOAD_INGEST_ERROR,
             payload: {},
@@ -194,13 +195,16 @@ function* uploadIngest({payload}) {
 }
 
 function* downloadIngestEmail({payload}) {
-    if (!payload.id) return;
+    if (!payload.id) {
+        return;
+    }
+
     try {
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.downloadUrl) {
             let filename = 'Unknown';
             if (payload.link) {
-                filename = payload.link.split(/(\\|\/)/g).pop();
+                filename = payload.link.split(/([\\/])/g).pop();
             }
             const link = document.createElement('a');
             link.href = response.downloadUrl;
@@ -215,12 +219,14 @@ function* downloadIngestEmail({payload}) {
 }
 
 function* downloadIngestFile({payload}) {
-    if (!payload.id) return;
+    if (!payload.id) {
+        return;
+    }
 
     let filename = 'Unknown';
     try {
         if (payload.link) {
-            filename = payload.link.split(/(\\|\/)/g).pop();
+            filename = payload.link.split(/([\\/])/g).pop();
         }
         const response = yield historyService.getAvailHistoryAttachment(payload.id);
         if (response && response.downloadUrl) {

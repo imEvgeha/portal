@@ -390,10 +390,10 @@ class SelectableInput extends Component {
                     />
                 </div>
                 { this.props.selected && (
-                <div style={{margin: '0 2px 16px'}}>
-                    {renderSelectedInput()}
-                </div>
-              )}
+                    <div style={{margin: '0 2px 16px', display: 'flex', alignItems: 'center'}}>
+                        {renderSelectedInput()}
+                    </div>
+                )}
                 { this.props.selected && (
                 <div style={{margin: '0 0 16px'}}>
                     <Button

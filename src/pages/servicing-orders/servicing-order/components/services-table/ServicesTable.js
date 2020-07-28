@@ -1,9 +1,10 @@
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {cloneDeep, get, isEmpty} from 'lodash';
-import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
 import {compose} from 'redux';
-import mappings from '../../../../../../profile/servicesTableMappings';
+import mappings from '../../../../../../profile/servicesTableMappings.json';
 import Add from '../../../../../assets/action-add.svg';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
@@ -11,14 +12,17 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import constants from '../fulfillment-order/constants';
-import columnDefinitions from './columnDefinitions';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
+import columnDefinitions from './columnDefinitions';
 import './ServicesTable.scss';
+
+const OP_STATUS_COL_INDEX = 4;
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
 const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const [services, setServices] = useState({});
+    const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
 
@@ -27,6 +31,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             if (!isEmpty(data)) {
                 setProviderServices(`${data.fs.toLowerCase()}Services`);
                 setServices(data);
+                setOriginalServices(data);
             }
         },
         [data]
@@ -35,17 +40,20 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     useEffect(
         () => {
             if (!isEmpty(services)) {
-                const flattenedObject = services[providerServices].map(service => ({
+                const flattenedObject = services[providerServices].map((service, index) => ({
                     componentId: service.externalServices.externalId,
                     spec: service.externalServices.formatType,
-                    doNotStartBefore: service.overrideDueDate,
+                    doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    deliverToVu: service.deteTasks.deteDeliveries.externalDelivery.deliverToId === 'VUBIQUITY',
-                    operationalStatus: service.status
+                    deliverToVu: service.deteTasks.deteDeliveries.externalDelivery.deliverToId.toLowerCase() === 'vu',
+                    operationalStatus: service.status,
+                    rowIndex: index,
                 }));
                 setTableData(flattenedObject);
             }
         },
+        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [services]
     );
 
@@ -57,6 +65,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         setUpdatedServices(newServices);
     };
 
+    // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
             <CustomActionsCellRenderer id={1} classname="nexus-c-services__close-icon">
@@ -69,6 +78,11 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         );
     };
 
+    const closeButtonColumn = defineButtonColumn({
+        cellRendererFramework: closeButtonCell,
+        cellRendererParams: services && services[providerServices],
+    });
+
     const handleRowDataChange = ({rowIndex, type, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
             const updatedServices = cloneDeep(services[providerServices]);
@@ -77,20 +91,27 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             // Re-mapping the data
             currentService.externalServices.externalId = data.componentId;
             currentService.externalServices.formatType = data.spec;
-            currentService.overrideDueDate = data.doNotStartBefore;
+            currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
-            currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId = data.deliverToVu
-                ? 'VUBIQUITY'
-                : currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId;
+            // eslint-disable-next-line max-len
+            currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId = setDeliverToId(data.deliverToVu, rowIndex);
             currentService.status = data.operationalStatus;
 
             const newServices = {...services, [providerServices]: updatedServices};
 
             setServices(newServices);
-
             // this change is propogated up to the Servicing Order form to submit
             setUpdatedServices(newServices);
         }
+    };
+
+    const setDeliverToId = (deliverToVu, index) => {
+        const deliverToId = get(originalServices, [providerServices, index, 'deteTasks', 'deteDeliveries', 'externalDelivery', 'deliverToId'], '');
+        if (deliverToVu) {
+            return 'VU';
+        }
+        // Set deliverToId to previous value, if none set to ''
+        return deliverToId && deliverToId.toLowerCase() !== 'vu' ? deliverToId : '';
     };
 
     const addEmptyServicesRow = () => {
@@ -109,20 +130,48 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         colId: 'serviceId',
         field: 'serviceId',
         cellRendererFramework: data => {
-            return data ? data.rowIndex : 0;
-        }
+            return data ? data.rowIndex + 1 : null;
+        },
     });
 
-    const closeButtonColumn = defineButtonColumn({
-        cellRendererFramework: closeButtonCell,
-        cellRendererParams: services && services[`${providerServices}`]
-    });
+    // Checkbox
+    const checkboxColumn = {
+        headerName: 'Deliver to VU',
+        colId: 'deliverToVu',
+        field: 'deliverToVu',
+        cellRendererFramework: ({data}) => {
+            return (
+                <div className="nexus-c-services-table__checkbox">
+                    <Checkbox
+                        isChecked={data.deliverToVu}
+                        value=""
+                        onChange={() => onCheckboxChange(data)}
+                        isDisabled={isDisabled}
+                    />
+                </div>
+            );
+        },
+    };
+
+    const onCheckboxChange = data => {
+        const newData = cloneDeep(data);
+        newData.deliverToVu = !newData.deliverToVu;
+        handleRowDataChange({rowIndex: newData.rowIndex, type: GRID_EVENTS.CELL_VALUE_CHANGED, data: newData});
+    };
 
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
     const barcode = services.barcode || null;
 
     const valueGetter = params => {
         return get(params.data, params.colDef.dataSource || params.colDef.field, '');
+    };
+
+    const disableMappings = () => {
+        return cloneDeep(mappings).map(mapping => ({
+            ...mapping,
+            readOnly: true,
+            enableEdit: false,
+        }));
     };
 
     return (
@@ -141,14 +190,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 columnDefs={[
                     orderingColumn,
                     closeButtonColumn,
-                    // TODO: Add custom checkbox column
-                    // TODO: Add custom datepicker column?
-                    ...columnDefinitions
+                    // slice column defs to put checkbox before operations status columns
+                    ...columnDefinitions.slice(0, OP_STATUS_COL_INDEX),
+                    checkboxColumn,
+                    columnDefinitions[OP_STATUS_COL_INDEX],
                 ]}
                 rowData={tableData}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
-                mapping={mappings}
+                mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={SELECT_VALUES}
                 onGridEvent={handleRowDataChange}
             />

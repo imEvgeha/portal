@@ -1,22 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import {NexusTag} from '../../../../../ui/elements/';
 import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
 import './PriceField.scss';
-import {get} from 'lodash';
 
-const PriceField = ({name, prices, onRemoveClick, onAddClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
+const PriceField = ({
+    name,
+    prices,
+    onRemoveClick,
+    onTagClick,
+    onAddClick,
+    renderChildren,
+    mappingErrorMessage,
+    isTableMode = false,
+}) => {
     const getPrices = () => {
-        return prices.map((price, i) => (
-            <NexusTag
-                key={uid(price)}
-                text={`${price.priceType}`}
-                value={price}
-                removeButtonText='Remove'
-                onRemove={() => onRemoveClick(price)}
-            />
-        ));
+        return prices.map((price, i) => {
+            const {
+                priceValue: value = '',
+                priceType: type = '',
+                priceCurrency: currency = ''
+            } = price || {};
+
+            return (
+                <NexusTag
+                    key={uid(price)}
+                    text={`${type} ${value || ''} ${currency || ''}`}
+                    value={price}
+                    removeButtonText="Remove"
+                    onRemove={() => onRemoveClick(price)}
+                    onClick={() => onTagClick(i)}
+                />
+            )
+        });
     };
 
     const getAddButton = () => {
@@ -31,7 +49,7 @@ const PriceField = ({name, prices, onRemoveClick, onAddClick, renderChildren, ma
     };
 
     return (
-        <div className='nexus-c-price-field'>
+        <div className="nexus-c-price-field">
             {isTableMode && getAddButton()}
             {prices && prices.length > 0 ? getPrices() : !isTableMode && getAddButton()}
             {renderChildren()}
@@ -50,6 +68,7 @@ PriceField.propTypes = {
     name: PropTypes.string.isRequired,
     onAddClick: PropTypes.func.isRequired,
     onRemoveClick: PropTypes.func.isRequired,
+    onTagClick: PropTypes.func.isRequired,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
     isTableMode: PropTypes.bool

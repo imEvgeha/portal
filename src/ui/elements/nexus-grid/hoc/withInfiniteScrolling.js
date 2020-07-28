@@ -1,47 +1,46 @@
+/* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {omit, isEqual} from 'lodash';
+import {connect} from 'react-redux';
+import {cleanObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
+import {toggleRefreshGridData} from '../../../grid/gridActions';
+import {getShouldGridRefresh} from '../../../grid/gridSelectors';
+import {filterBy, sortBy} from '../utils';
 import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
     MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
-import {filterBy, sortBy} from '../utils';
-import {cleanObject} from '../../../../util/Common';
 
 const withInfiniteScrolling = ({
-    hocProps = DEFAULT_HOC_PROPS, 
-    fetchData, 
+    hocProps = DEFAULT_HOC_PROPS,
+    fetchData,
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
     maxConcurrentDatasourceRequests = MAX_CONCURRENT_DATASOURCE_REQUEST,
     maxBlocksInCache = MAX_BLOCKS_IN_CACHE,
 } = {}) => WrappedComponent => {
-    const ComposedComponent = (props) => {
+    const ComposedComponent = props => {
         const hasBeenCalledRef = useRef();
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
-        const refresh = () => {
-            if (fetchData && gridApi) {
-                updateData(fetchData, gridApi);
-            }
-        };
-
-        // handle force refresh
+        // Handle refreshing grid's data from outside
         useEffect(() => {
-            if (props.setForceRefresh) {
-                props.setForceRefresh(refresh);
+            if (props.shouldGridRefresh && (fetchData && gridApi)) {
+                updateData(fetchData, gridApi);
+                props.toggleRefreshGridData(false);
             }
-        }, [props.setForceRefresh]);
+        }, [props.shouldGridRefresh, fetchData, gridApi]);
 
         //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
-            if ((!isEqual(params, previousParams) && params) 
-                && gridApi 
+            if ((!isEqual(params, previousParams) && params)
+                && gridApi
                 && !hasBeenCalledRef.current
                 && isDatasourceEnabled
-               ) {
+            ) {
                 updateData(fetchData, gridApi);
             }
         }, [props.params]);
@@ -64,7 +63,7 @@ const withInfiniteScrolling = ({
                 }, {});
             const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
             const sortParams = sortBy(sortModel);
-            const pageSize = paginationPageSize || 100;
+            const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
 
             if (gridApi && gridApi.getDisplayedRowCount() === 0) {
@@ -83,11 +82,11 @@ const withInfiniteScrolling = ({
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
-                    if (typeof props.setTotalCount === 'function') { 
+                    if (typeof props.setTotalCount === 'function') {
                         props.setTotalCount(total);
                     }
 
-                    if (total > 0){
+                    if (total > 0) {
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
                             lastRow = total;
@@ -102,7 +101,7 @@ const withInfiniteScrolling = ({
                                     rowNode.setSelected(true);
                                 }
                             });
-                        }  
+                        }
 
                         if (typeof props.successDataFetchCallback === 'function') {
                             const preparedData = {page, size, total, data};
@@ -111,7 +110,7 @@ const withInfiniteScrolling = ({
 
                         gridApi.hideOverlay();
                         return;
-                    } 
+                    }
 
                     gridApi.showNoRowsOverlay();
                 })
@@ -183,7 +182,6 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
         isDatasourceEnabled: PropTypes.bool,
-        setForceRefresh: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
@@ -194,10 +192,17 @@ const withInfiniteScrolling = ({
         onAddAdditionalField: null,
         params: null,
         isDatasourceEnabled: true,
-        setForceRefresh: null,
     };
 
-    return ComposedComponent;
+    const mapStateToProps = state => ({
+        shouldGridRefresh: getShouldGridRefresh(state),
+    });
+
+    const mapDispatchToProps = dispatch => ({
+        toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    });
+
+    return connect(mapStateToProps, mapDispatchToProps)(ComposedComponent);
 };
 
 export default withInfiniteScrolling;

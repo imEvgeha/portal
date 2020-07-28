@@ -1,37 +1,44 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
+import {ErrorMessage} from '@atlaskit/form';
 import {Form, FormFragment} from 'react-forms-processor';
 import {renderer} from 'react-forms-processor-atlaskit';
-import {ErrorMessage} from '@atlaskit/form';
-import Button from '@atlaskit/button';
 import './CreateTitleForm.scss';
-import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
-import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
-import {EPISODE, EVENT, SEASON, SPORTS} from '../../../../legacy/constants/metadata/contentType';
-import constants from './CreateTitleFormConstants';
-import DOP from '../../../../../util/DOP';
-import {URL, getDomainName} from '../../../../../util/Common';
-import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../ui/elements/nexus-toast-notification/constants';
+import withToasts from '../../../../../ui/toast/hoc/withToasts';
+import {URL, getDomainName} from '../../../../../util/Common';
+import DOP from '../../../../../util/DOP';
+import {EPISODE, EVENT, SEASON, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
+import {rightsService} from '../../../../legacy/containers/avail/service/RightsService';
+import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
+import constants from './CreateTitleFormConstants';
 
 const {
     NEW_TITLE_LABEL_CANCEL,
     NEW_TITLE_LABEL_SUBMIT,
-    getTitleFormSchema
+    getTitleFormSchema,
 } = constants;
 
 // Building a URL where user can check the newly created title
 // (Opens in new tab)
-const onViewTitleClick = (response) => {
-    const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
-    window.open(url, '_blank');
+const onViewTitleClick = id => {
+    window.open(`${getDomainName()}/metadata/detail/${id}`, '_blank');
 };
 
-const CreateTitleForm = ({close, focusedRight, addToast}) => {
-    // eslint-disable-next-line no-unused-vars
+const CreateTitleForm = ({
+    close,
+    focusedRight,
+    addToast,
+    bulkTitleMatch,
+}) => {
     const [error, setError] = useState();
-    const { id: focusedId, title: focusedTitle, contentType: focusedContentType, releaseYear: focusedReleaseYear } = focusedRight;
+    const {
+        id: focusedId,
+        title: focusedTitle,
+        contentType: focusedContentType,
+        releaseYear: focusedReleaseYear,
+    } = focusedRight;
     // TODO: metadata api expects 'AD'
     const parseContentType = contentType => {
         if (contentType) {
@@ -50,7 +57,7 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
     };
     const [titleValue, setTitleValue] = useState(initialState);
 
-    const submitTitle = (title) => {
+    const submitTitle = title => {
         // Delete empty properties before sending
         Object.keys(title).forEach(propKey => title[propKey] || delete title[propKey]);
         // Delete helper property
@@ -59,7 +66,7 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
         // If a title is of the episodic type group, put together episodic properties in
         // a single prop called 'episodic'. Then delete the leftovers
         const {contentType} = title || {};
-        const episodicTypes = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName];
+        const episodicTypes = [EPISODE.apiName, EVENT.apiName, SEASON.apiName, SPORTS.apiName, SPECIAL.apiName];
 
         if (episodicTypes.includes(contentType)) {
             const {seasonNumber, episodeNumber, seriesTitleName} = title || {};
@@ -67,7 +74,7 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
                 title.episodic = {
                     seasonNumber,
                     episodeNumber,
-                    seriesTitleName
+                    seriesTitleName,
                 };
             } else {
                 title.episodic = null;
@@ -80,31 +87,35 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
 
         // Submit the title to back-end
         titleService.createTitleWithoutErrorModal(title).then(res => {
+            const titleId = res.id;
             addToast({
                 title: SUCCESS_TITLE,
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                actions: [{ content: 'View title', onClick: () => onViewTitleClick(res)}]
+                actions: [{content: 'View title', onClick: () => onViewTitleClick(titleId)}],
             });
             if (URL.isEmbedded()) {
                 DOP.setErrorsCount(0);
                 DOP.setData({
                     match: {
                         rightId: focusedId,
-                        titleId: res.id
-                    }
+                        titleId: res.id,
+                    },
                 });
+            } else if (bulkTitleMatch) {
+                bulkTitleMatch(titleId, true);
             } else {
-                const updatedRight = { coreTitleId: res.id };
+                const updatedRight = {coreTitleId: res.id};
                 rightsService.update(updatedRight, focusedId);
             }
             close();
-        }).catch((error) => {
-            const {message: {description, bindingResult} = {}} = error;
+        })
+            .catch(error => {
+                const {message: {description, bindingResult} = {}} = error;
 
-            setError(description || bindingResult);
-        });
+                setError(description || bindingResult);
+            });
     };
 
     return (
@@ -123,7 +134,7 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
                         {error}
                     </ErrorMessage>
                 </div>
-              )}
+            )}
             <div className="nexus-c-create-title-form__action-buttons">
                 <Button onClick={close}>
                     {NEW_TITLE_LABEL_CANCEL}
@@ -143,10 +154,14 @@ const CreateTitleForm = ({close, focusedRight, addToast}) => {
 CreateTitleForm.propTypes = {
     close: PropTypes.func.isRequired,
     focusedRight: PropTypes.object,
+    bulkTitleMatch: PropTypes.func,
+    addToast: PropTypes.func,
 };
 
 CreateTitleForm.defaultProps = {
     focusedRight: {},
+    bulkTitleMatch: null,
+    addToast: () => null,
 };
 
 export default withToasts(CreateTitleForm);

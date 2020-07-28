@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SelectedRightsActions should match snapshot 1`] = `
+exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] = `
 <Fragment>
   <div
     className="nexus-c-selected-rights-actions"
@@ -23,14 +23,16 @@ exports[`SelectedRightsActions should match snapshot 1`] = `
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"
+        onClick={null}
       >
         <NexusTooltip
-          content="Rights selected must be the same criteria to make the feature available"
+          content="This feature is enabled when:
+All selected rights have same content type,
+have Core Title IDs un-populated,
+either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
-          <div
-            onClick={null}
-          >
+          <div>
             Bulk Match Titles
           </div>
         </NexusTooltip>
@@ -38,28 +40,65 @@ exports[`SelectedRightsActions should match snapshot 1`] = `
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-unmatch"
+        onClick={null}
       >
         <NexusTooltip
-          content="This feature is enabled when: 
-(All selected rights have Source Right ID populated and they are unique 
-OR Source Right IDs are all empty) AND all selected rights have Core Title IDs populated"
+          content="This feature is enabled when:
+All selected rights have Core Title IDs populated,
+either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
-          Bulk Unmatch Titles
+          <div>
+            Bulk Unmatch Titles
+          </div>
+        </NexusTooltip>
+      </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="bonus-rights"
+        onClick={null}
+      >
+        <NexusTooltip
+          content="This feature is enabled when rights are licensed,
+have the same Core Title IDs (not blank),
+empty Source Right IDs and Status is Ready/ReadyNew"
+          isDisabled={false}
+        >
+          <div>
+            Create Bonus Right
+          </div>
+        </NexusTooltip>
+      </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="add-to-preplan"
+        onClick={null}
+      >
+        <NexusTooltip
+          content="Select Right to enable this feature"
+          isDisabled={false}
+        >
+          <div>
+            Add to Pre-Plan
+          </div>
         </NexusTooltip>
       </div>
     </div>
   </div>
   <NexusDrawer
+    direction="fromRight"
     headerContent={null}
+    isClosedOnBlur={false}
     isOpen={false}
     onClose={[Function]}
-    title=""
+    title="Title Matching"
     width="wider"
   >
-    <BulkMatching
+    <Connect(Connect(ComposedComponent))
+      closeDrawer={[Function]}
       data={Array []}
-      headerTitle="Title Matching"
+      isBonusRight={false}
+      setHeaderText={[Function]}
     />
   </NexusDrawer>
 </Fragment>

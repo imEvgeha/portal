@@ -7,6 +7,23 @@
         color: map-get($colors, nexus-title-color);
         margin-bottom: 20px;
     }
+
+    &__rights-tab {
+        font-size: 16px;
+        cursor: pointer;
+        color: map-get($colors, nexus-light-grey);
+        margin-right: 20px;
+        &--active {
+            color: map-get($colors, nexus-title-color);
+        }
+    }
+
+    section {
+        align-items: center;
+    }
+    &__warning{
+        color: map-get($colors, nexus-warning);
+    }
 }
 
 .nexus-c-bulk-matching__header {
@@ -17,29 +34,50 @@
 
 .nexus-c-bulk-matching__btn {
     margin-left: auto;
-    min-width: 120px;
+    min-width: 100px;
     display: flex;
     justify-content: center;
 }
 
-.nexus-c-bulk-matching__selected,
-.nexus-c-bulk-matching__affected {
+.nexus-c-bulk-matching__titles-wrapper {
+    display: none;
+    height: calc(100vh - 425px);
+
+    &--is-active {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.nexus-c-bulk-matching__titles-table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.nexus-c-bulk-matching__titles-table-selected-btn {
+    margin-left: auto;
+    min-width: 100px;
+}
+
+.nexus-c-bulk-matching__titles-table-header-title {
     font-size: 16px;
-    cursor: pointer;
-    color: map-get($colors, nexus-light-grey);
+    color: map-get($colors, nexus-title-color);
 }
 
-.nexus-c-bulk-matching__affected {
-    margin-left: 20px;
+.nexus-c-bulk-matching__titles-table,
+.nexus-c-bulk-matching__selected-table {
+    display: none;
 
     &--active {
-        color: map-get($colors, nexus-title-color);
+        display: block;
     }
 }
 
-.nexus-c-bulk-matching__selected {
-
-    &--active {
-        color: map-get($colors, nexus-title-color);
-    }
+.nexus-c-bulk-matching__spinner {
+    height: calc(100vh - 500px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

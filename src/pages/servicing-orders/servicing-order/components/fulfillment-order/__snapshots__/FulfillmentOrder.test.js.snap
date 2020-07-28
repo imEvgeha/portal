@@ -16,9 +16,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
           <div
             className="fulfillment-order__title"
           >
-            <h1>
+            <div
+              className="fulfillment-order__title--text"
+            >
               Fulfillment Order
-            </h1>
+            </div>
             <div>
               Order ID: 
             </div>
@@ -95,12 +97,13 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               className="fulfillment-order__input"
             >
               <NexusDatePicker
-                allowClear={false}
                 error=""
-                hideLabel={false}
                 id="dueDate"
+                isClearable={false}
                 isDisabled={false}
+                isLabelHidden={false}
                 isReadOnly={false}
+                isRequired={false}
                 isReturningTime={false}
                 isTimestamp={false}
                 isWithInlineEdit={false}
@@ -156,12 +159,13 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               className="fulfillment-order__input"
             >
               <NexusDatePicker
-                allowClear={false}
                 error=""
-                hideLabel={false}
                 id="dueDate"
+                isClearable={false}
                 isDisabled={false}
+                isLabelHidden={false}
                 isReadOnly={false}
+                isRequired={false}
                 isReturningTime={false}
                 isTimestamp={false}
                 isWithInlineEdit={false}

@@ -1,9 +1,12 @@
 import {cloneDeep} from 'lodash';
 
+const DEFAULT_WIDTH = 100;
+const NO_HEADER_WIDTH = 40;
+
 export const defineColumn = ({
     field = '',
     headerName = '',
-    width = 100,
+    width = DEFAULT_WIDTH,
     pinned = 'left',
     resizable = false,
     suppressSizeToFit = true,
@@ -13,7 +16,7 @@ export const defineColumn = ({
     menuTabs = [],
     ...rest
 } = {}) => {
-    const columnDef = {
+    return {
         field,
         headerName,
         width,
@@ -26,12 +29,10 @@ export const defineColumn = ({
         menuTabs,
         ...rest,
     };
-
-    return columnDef;
 };
 
 export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) => {
-    const columnDef = defineColumn({
+    return defineColumn({
         field: 'action',
         headerName,
         width: 40,
@@ -39,37 +40,46 @@ export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) =
         lockVisible: true,
         ...rest,
     });
-
-    return columnDef;
 };
 
-export const defineActionButtonColumn = ({field, cellRendererFramework}) => {
-    return defineButtonColumn({headerName: 'Actions', cellRendererFramework});
+export const defineActionButtonColumn = ({cellRendererFramework}) => {
+    return defineButtonColumn({
+        headerName: 'Actions',
+        pinned: 'left',
+        lockPosition: true,
+        lockVisible: true,
+        lockPinned: true,
+        cellRendererFramework,
+    });
 };
 
-export const defineButtonColumn = ({headerName = '', cellRendererFramework, cellEditorFramework, editable = false, ...rest}) => {
-    const columnDef = defineColumn({
+export const defineButtonColumn = ({
+    headerName = '',
+    cellRendererFramework,
+    cellEditorFramework,
+    editable = false,
+    ...rest
+}) => {
+    return defineColumn({
         field: 'buttons',
-        headerName: headerName,
+        headerName,
         colId: headerName.toLowerCase(),
         cellRendererFramework,
         cellEditorFramework,
-        editable: editable,
-        width: headerName !== '' ? 100 : 40,
+        editable,
+        width: headerName !== '' ? DEFAULT_WIDTH : NO_HEADER_WIDTH,
         ...rest,
     });
-
-    return columnDef;
 };
 
 export const updateColumnDefs = (columnDefs, objectFields) => {
     const clonedColumnDefs = cloneDeep(columnDefs);
-    const updatedColumnDefs = clonedColumnDefs.map(def => {
-        Object.keys(objectFields).forEach(key => def[key] = objectFields[key]);
+    return clonedColumnDefs.map(def => {
+        Object.keys(objectFields).forEach(key => {
+            def[key] = objectFields[key];
+        });
         return def;
     });
-
-    return updatedColumnDefs;;
 };
 
 export const getColumnDefsWithCleanContentType = (columnDefs, data) => {
@@ -105,11 +115,11 @@ const renderEpisodeAndSeasonNumber = params => {
 };
 
 export const defineEpisodeAndSeasonNumberColumn = ({
-    headerName = '-', 
+    headerName = '-',
     pinned = false,
     lockPosition = false,
 } = {}) => {
-    const columnDef =  defineColumn({
+    return defineColumn({
         headerName,
         colId: 'episodeAndSeasonNumber',
         field: 'episodeAndSeasonNumber',
@@ -117,8 +127,6 @@ export const defineEpisodeAndSeasonNumberColumn = ({
         lockPosition,
         valueFormatter: renderEpisodeAndSeasonNumber,
     });
-
-    return columnDef;
 };
 
 export const getLinkableColumnDefs = (columnDefs, location) => {
@@ -126,7 +134,7 @@ export const getLinkableColumnDefs = (columnDefs, location) => {
         .map(e => {
             if (e.cellRenderer) {
                 e.cellRendererParams = {
-                    link: location
+                    link: location,
                 };
             }
             return e;

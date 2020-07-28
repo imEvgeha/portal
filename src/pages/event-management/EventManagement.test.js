@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import EventManagement from './EventManagement';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {
     let wrapper = null;
@@ -9,7 +9,7 @@ describe('EventManagement', () => {
 
     beforeEach(() => {
         wrapper = shallow(<EventManagement />);
-        eventManagementTableWrapper = wrapper.find('EventManagementTable');
+        eventManagementTableWrapper = wrapper.find('Connect(EventManagementTable)');
     });
 
     it('should match snapshot', () => {
@@ -26,13 +26,13 @@ describe('EventManagement', () => {
 
     describe('EventDrawer (gridApi)', () => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
-        const event = {eventId:'123'};
+        const event = {eventId: '123'};
 
         const deselectAllMock = jest.fn();
         const gridApiMock = {
             deselectAll: deselectAllMock,
             getSelectedRows: () => ([event]),
-            sizeColumnsToFit: () => {}
+            sizeColumnsToFit: () => null,
         };
 
         beforeEach(() => {
@@ -54,7 +54,8 @@ describe('EventManagement', () => {
         });
 
         it('should correct prop to close drawer in EventDrawer', () => {
-            wrapper.find('EventDrawer').props().onDrawerClose();
+            wrapper.find('EventDrawer').props()
+                .onDrawerClose();
             expect(deselectAllMock.mock.calls.length).toEqual(1);
         });
     });

@@ -1,25 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import {compose} from 'redux';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
-import Button from '@atlaskit/button';
+import classNames from 'classnames';
+import {compose} from 'redux';
 import './CandidatesList.scss';
-import {NexusTitle, NexusGrid} from '../../../../ui/elements/';
-import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import mappings from '../../../../../profile/titleMatchingMappings.json';
+import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
-import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
-import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
-import mappings from '../../../../../profile/titleMatchingMappings';
-import {getRepositoryName} from '../../../avails/utils';
+import {getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
+import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
+import {getRepositoryName} from '../../../avails/utils';
+import TitleSystems from '../../../legacy/constants/metadata/systems';
+import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
+import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
+import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
@@ -31,6 +35,7 @@ const NexusGridWithInfiniteScrolling = compose(
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
+    const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const {
         matchList,
         handleMatchClick,
@@ -41,7 +46,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
     // inform parent component about match, duplicate list change
     useEffect(() => {
         onCandidatesChange({matchList, duplicateList});
-    }, [matchList, duplicateList]);
+    }, [matchList, duplicateList, onCandidatesChange]);
 
     const matchButtonCell = ({data}) => { // eslint-disable-line
         const {id} = data || {};
@@ -109,32 +114,57 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         }
     };
 
+    const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
+
     return (
         <div className="nexus-c-candidates-list">
             <div className="nexus-c-candidates-list__header">
                 <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
-                <Button
-                    className="nexus-c-button"
-                    onClick={handleClearFilterClick}
-                    isDisabled={!gridApi}
-                >
-                    {CLEAR_FILTER}
-                </Button>
+                <div className="nexus-c-candidates-toolbar">
+                    <Button
+                        className="nexus-c-button"
+                        onClick={handleClearFilterClick}
+                        isDisabled={!gridApi}
+                    >
+                        {CLEAR_FILTER}
+                    </Button>
+                    <SelectedButton
+                        selectedRightsCount={selectedItems.length}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                    />
+                </div>
             </div>
-            {queryParams.title && (
-                <NexusGridWithInfiniteScrolling
-                    onGridEvent={handleGridEvent}
-                    columnDefs={[
-                        matchButton,
-                        duplicateButton,
-                        ...updatedColumnDefs,
-                    ]}
-                    rowClassRules={{'nexus-c-candidates-list__row' : params => params.node.id === titleId}}
-                    setTotalCount={setTotalCount}
-                    initialFilter={queryParams}
-                    mapping={mappings}
-                />
-            )}
+            <div
+
+                className={classNames(
+                    'nexus-c-candidates-titles-table',
+                    activeTab === RIGHTS_TAB && 'nexus-c-candidates-titles-table--active'
+                )}
+            >
+                {queryParams.title && (
+                    <NexusGridWithInfiniteScrolling
+                        onGridEvent={handleGridEvent}
+                        columnDefs={[
+                            matchButton,
+                            duplicateButton,
+                            ...updatedColumnDefs,
+                        ]}
+                        rowClassRules={{'nexus-c-candidates-list__row': params => params.node.id === titleId}}
+                        setTotalCount={setTotalCount}
+                        initialFilter={queryParams}
+                        mapping={mappings}
+                    />
+                )}
+            </div>
+            <div
+                className={classNames(
+                    'nexus-c-candidates-selected-table',
+                    activeTab === RIGHTS_SELECTED_TAB && 'nexus-c-candidates-selected-table--active'
+                )}
+            >
+                <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />
+            </div>
         </div>
     );
 };

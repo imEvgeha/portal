@@ -1,35 +1,26 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import Spinner from '@atlaskit/spinner';
+import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import {getRightsEventHistorySelector} from './rightHistorySelectors';
-import {fetchRightsHistory} from './rightHistoryActions';
 import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
+import {fetchRightsHistory} from './rightHistoryActions';
+import {getRightsEventHistorySelector} from './rightHistorySelectors';
 import './RightHistoryView.scss';
 
 const SPINNER = (
     <div style={{textAlign: 'center'}}>
         <Spinner size="medium" />
     </div>
-  );
+);
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
+    const {setModalContentAndTitle,
+        setModalActions, setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
 
-    const [opened, setOpened] = useState(false);
+    const titleAuditHistory = `Audit History (${selectedAvails.length})`;
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
-
-    const TITLE = `Audit History (${selectedAvails.length})`;
-
-    useEffect(() => {
-        if (opened) {
-            setModalStyle({width: '100%'});
-            setModalContentAndTitle(buildContent(), TITLE);
-        }
-    }, [rightsEventHistory]);
-
-    const buildContent = () => {
+    const buildContent = useCallback(() => {
         return (
             <div>
                 {selectedAvails.map((avail, index) => (
@@ -37,7 +28,15 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
                 ))}
             </div>
         );
-    };
+    }, [rightsEventHistory, selectedAvails]);
+
+    useEffect(() => {
+        if (isOpened && title === titleAuditHistory) {
+            setModalStyle({width: '100%'});
+            setModalContentAndTitle(buildContent(), titleAuditHistory);
+        }
+    }, [titleAuditHistory, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
+
 
     const openHistoryModal = () => {
         const ids = selectedAvails.map(e => e.id);
@@ -46,11 +45,9 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
             text: 'Done',
             onClick: () => {
                 close();
-                setOpened(false);
-            }
+            },
         }]);
-        setModalContentAndTitle(SPINNER, TITLE);
-        setOpened(true);
+        setModalContentAndTitle(SPINNER, titleAuditHistory);
     };
 
     return (
@@ -65,19 +62,19 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
 RightHistoryView.propTypes = {
     selectedAvails: PropTypes.array.isRequired,
     fetchRightsHistory: PropTypes.func.isRequired,
-    rightsEventHistory: PropTypes.array.isRequired
+    rightsEventHistory: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = () => {
     const rightsEventHistorySelector = getRightsEventHistorySelector();
 
     return (state, props) => ({
-        rightsEventHistory: rightsEventHistorySelector(state, props)
+        rightsEventHistory: rightsEventHistorySelector(state, props),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload))
+const mapDispatchToProps = dispatch => ({
+    fetchRightsHistory: payload => dispatch(fetchRightsHistory(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightHistoryView);

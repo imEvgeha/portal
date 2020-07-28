@@ -1,17 +1,17 @@
 import React from 'react';
-import {shallow} from 'enzyme';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
-import ServiceOrderFilter from './ServiceOrderFilter';
+import {shallow} from 'enzyme';
 import PartnerRequest from '../partner-request/PartnerRequest';
+import ServiceOrderFilter from './ServiceOrderFilter';
 
 describe('SOFilter', () => {
-    let wrapper;
+    let wrapper = null;
     beforeAll(() => {
         const props = {
             soID: '12345',
             customer: 'Paramount',
             creationDate: '10/09/2020',
-            createdBy: 'John Wick'
+            createdBy: 'John Wick',
         };
         wrapper = shallow(<ServiceOrderFilter orderDetails={props} />);
     });
@@ -28,6 +28,6 @@ describe('SOFilter', () => {
     });
 
     it('renders two select elements', () => {
-        expect(wrapper.find('.so-panel-filter-detail__dropdown-element')).toHaveLength(2);
+        expect(wrapper.find('.so-panel-filter-detail__dropdown')).toHaveLength(2);
     });
 });

@@ -1,29 +1,30 @@
 import React, {useEffect, useContext} from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {cloneDeep} from 'lodash';
-import SectionMessage from '@atlaskit/section-message';
 import Button from '@atlaskit/button';
-import './TitleMatchView.scss';
-import TitlesList from './components/TitlesList';
-import { getFocusedRight, getColumnDefs } from './titleMatchingSelectors';
-import { createColumnDefs as getRightColumns } from '../utils';
-import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
-import CreateTitleForm from './components/create-title-form/CreateTitleForm';
-import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
-import Constants from './titleMatchingConstants';
-import DOP from '../../../util/DOP';
+import SectionMessage from '@atlaskit/section-message';
+import {cloneDeep} from 'lodash';
+import {connect} from 'react-redux';
+import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {
     NexusGrid,
     NexusTitle,
-} from '../../../ui/elements/';
+} from '../../../ui/elements';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import mappings from '../../../../profile/titleMatchingRightMappings';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import DOP from '../../../util/DOP';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
+import {createColumnDefs as getRightColumns} from '../utils';
+import TitlesList from './components/TitlesList';
+import CreateTitleForm from './components/create-title-form/CreateTitleForm';
+import NewTitleConstants from './components/create-title-form/CreateTitleFormConstants';
+import {fetchFocusedRight, createColumnDefs, mergeTitles} from './titleMatchingActions';
+import Constants from './titleMatchingConstants';
+import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
+import './TitleMatchView.scss';
 
-const SECTION_MESSAGE = 'Select titles from the repository that match the Incoming right or declare it as a NEW title from the action menu.';
+const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title 
+from the action menu.`;
 
 const IncomingRightTable = withColumnsResizing()(NexusGrid);
 
@@ -34,7 +35,7 @@ const TitleMatchView = ({
     mergeTitles,
     focusedRight,
     columnDefs,
-    searchCriteria
+    searchCriteria,
 }) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
@@ -45,7 +46,8 @@ const TitleMatchView = ({
                 <Button
                     onClick={() => setModalContentAndTitle(
                         () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
-                        NewTitleConstants.NEW_TITLE_MODAL_TITLE)}
+                        NewTitleConstants.NEW_TITLE_MODAL_TITLE
+                    )}
                 >
                     New Title
                 </Button>
@@ -65,16 +67,16 @@ const TitleMatchView = ({
             fetchFocusedRight(match.params.rightId);
             DOP.setErrorsCount(1);
         }
-    }, []);
+    }, [fetchFocusedRight, match]);
 
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
-    }, [columnDefs]);
+    }, [columnDefs, createColumnDefs]);
 
     const deepCloneRightColumnDefs = cloneDeep(rightColumns);
-    let updatedRightColumnDefs;
+    let updatedRightColumnDefs = [];
 
     if (focusedRight && focusedRight.contentType === 'Episode') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.seasonNumber');
@@ -98,7 +100,7 @@ const TitleMatchView = ({
                         <NexusTitle isSubTitle>Incoming Right</NexusTitle>
                         <div className="nexus-c-title-to-match__grid">
                             <IncomingRightTable
-                                id='incomingRightTitleMatching'
+                                id="incomingRightTitleMatching"
                                 columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
                                 rowData={[focusedRight]}
                             />
@@ -111,8 +113,12 @@ const TitleMatchView = ({
                             rightId={match && match.params.rightId}
                             columnDefs={columnDefs}
                             mergeTitles={mergeTitles}
-                            // TODO: Capitalized first letter of contentType value to be checked inside drop down ag grid
-                            queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
+                            // TODO: Capitalize first letter of contentType value to be checked inside drop down ag grid
+                            queryParams={{
+                                contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
+                                title,
+                                releaseYear,
+                            }}
                         />
                     </>
                 )
@@ -135,20 +141,21 @@ TitleMatchView.defaultProps = {
     focusedRight: {},
     columnDefs: [],
     searchCriteria: {},
+    match: {},
 };
 
 const createMapStateToProps = () => {
-    return (state) => ({
+    return state => ({
         focusedRight: getFocusedRight(state),
         columnDefs: getColumnDefs(state),
         searchCriteria: getSearchCriteria(state),
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchFocusedRight(payload)),
     createColumnDefs: () => dispatch(createColumnDefs()),
-    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId}))
+    mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId})),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line

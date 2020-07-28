@@ -1,7 +1,5 @@
-import {camelCase, get} from 'lodash';
 import config from 'react-global-configuration';
 import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
-import {parseAdvancedFilter} from '../legacy/containers/avail/service/RightsService';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
@@ -13,12 +11,12 @@ const baseServicingOrdersURL = config => {
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
     let queryParams = {};
-    Object.keys(searchCriteria).forEach((key) => {
-        let value = searchCriteria[key];
-        if(value instanceof Object) {
+    Object.keys(searchCriteria).forEach(key => {
+        const value = searchCriteria[key];
+        if (value instanceof Object) {
             queryParams = {
                 ...queryParams,
-                ...value
+                ...value,
             };
         } else {
             queryParams[key] = value;
@@ -44,7 +42,7 @@ export const getFulfilmentOrdersForServiceOrder = id => {
 export const getServiceRequest = externalId => {
     const url = `${baseServicingOrdersURL(config)}/so/${externalId}/pr`;
     return nexusFetch(url, {
-        method: 'get'
+        method: 'get',
     });
 };
 
@@ -52,7 +50,20 @@ export const saveFulfillmentOrder = ({data}) => {
     const url = `${baseServicingOrdersURL(config)}/fo`;
     return nexusFetch(url, {
         method: 'put',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+    });
+};
+
+/**
+ * Export a list of servicing orders as a CSV file. This endpoint
+ * returns a data blob which can be converted to a .csv file.
+ * @param servicingOrders - Array of servicing order ids
+ */
+export const exportServicingOrders = servicingOrders => {
+    const url = `${baseServicingOrdersURL(config)}/so/export`;
+    return nexusFetch(url, {
+        method: 'post',
+        body: JSON.stringify(servicingOrders),
     });
 };
 
@@ -60,5 +71,6 @@ export const servicingOrdersService = {
     getServicingOrders,
     getServicingOrderById,
     getFulfilmentOrdersForServiceOrder,
-    saveFulfillmentOrder
+    saveFulfillmentOrder,
+    exportServicingOrders,
 };

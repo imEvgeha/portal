@@ -1,70 +1,150 @@
-import React, {useEffect, useState} from 'react';
-import Select from '@atlaskit/select';
+import React, {useEffect, useState, useContext} from 'react';
 import Button from '@atlaskit/button';
-import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
+import Select from '@atlaskit/select';
 import './ServicingOrdersView.scss';
-import {SERVICING_ORDERS_TTL, CUSTOMER_LBL, HIDE_COMPLETED_BTN, HIDE_READY_BTN} from './constants';
+import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
+import {downloadFile} from '../../util/Common';
+import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
+import {exportServicingOrders} from './servicingOrdersService';
+import {
+    CUSTOMER_LBL,
+    HIDE_COMPLETED_BTN,
+    HIDE_READY_BTN,
+    SERVICING_ORDERS_TTL,
+    EXPORT_WARNING_MESSAGE,
+    readinessStatus,
+} from './constants';
 
 const ServicingOrdersView = () => {
-
+    const [selectedServicingOrders, setSelectedServicingOrders] = useState([]);
     const [isHideReady, setIsHideReady] = useState(false);
     const [isHideCompleted, setIsHideCompleted] = useState(false);
-    const NO_CUSTOMER_FILTER = { label: 'Select...', value: '' };
+    const NO_CUSTOMER_FILTER = {label: 'Select...', value: ''};
     const [customerFilter, setCustomerFilter] = useState(NO_CUSTOMER_FILTER);
     const [fixedFilter, setFixedFilter] = useState({});
     const [externalFilter, setExternalFilter] = useState({});
+    const [isExporting, setIsExporting] = useState(false);
+    const [isRefreshData, setIsRefreshData] = useState(false);
+    const ModalContent = (
+        <>
+            <p>
+                {EXPORT_WARNING_MESSAGE}
+            </p>
+            <p>Do you wish to continue?</p>
+        </>
+    );
+    const modalHeading = 'Warning';
+    const modalStyle = {
+        width: 'small',
+    };
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    useEffect(() => {
-        setFixedFilter({
-            status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
-            readiness: isHideReady ? ['NEW', 'ON_HOLD'] : undefined,
-        });
-    }, [isHideReady, isHideCompleted]);
+    useEffect(
+        () => {
+            setFixedFilter({
+                status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
+                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined,
+            });
+        },
+        [isHideReady, isHideCompleted]
+    );
 
-    useEffect(() => {
-        setExternalFilter({
-            ...customerFilter && customerFilter.value && {tenant : customerFilter.value}
-        });
-    }, [customerFilter]);
+    useEffect(
+        () => {
+            setExternalFilter({
+                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
+            });
+        },
+        [customerFilter]
+    );
+
+    /**
+     * Handle export button onClick
+     */
+    const handleExportRequest = () => {
+        // Show warning modal if selected export contains a readiness of ON HOLD
+        selectedServicingOrders.filter(so => (
+            so.readiness === readinessStatus.ON_HOLD
+        )).length ? openWarningModal() : exportSelectedServicingOrders();
+    };
+
+    /**
+     * Download selected servicing orders as .csv file
+     */
+    const exportSelectedServicingOrders = () => {
+        setIsExporting(true);
+        exportServicingOrders(selectedServicingOrders.map(so => (so.so_number)))
+            .then(response => {
+                downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
+                setIsExporting(false);
+                setIsRefreshData(true);
+            });
+    };
+
+    /**
+     * Open global modal with config
+     */
+    const openWarningModal = () => {
+        setModalContentAndTitle(ModalContent, modalHeading);
+        setModalStyle(modalStyle);
+        setModalActions([
+            {
+                text: 'Continue',
+                onClick: () => {
+                    exportSelectedServicingOrders();
+                    close();
+                },
+            },
+            {
+                text: 'Cancel',
+                onClick: close,
+            },
+        ]);
+    };
+
+    /**
+     * After refreshing data, set to false
+     */
+    const handleDataRefreshComplete = () => {
+        setIsRefreshData(false);
+    };
 
     return (
-        <div className='nexus-c-servicing-orders'>
-            <div className='nexus-c-servicing-orders__title'>
-                {SERVICING_ORDERS_TTL}
-            </div>
-            <div className='nexus-c-servicing-orders__external-filters'>
-                <div className='nexus-c-servicing-orders__customer-filter'>
-                    <div className='nexus-c-servicing-orders__customer-filter--label'>
-                        {CUSTOMER_LBL}
-                    </div>
+        <div className="nexus-c-servicing-orders">
+            <span className="nexus-c-servicing-orders__title">{SERVICING_ORDERS_TTL}</span>
+
+            <div className="nexus-c-servicing-orders__external-filters">
+                <div className="nexus-c-servicing-orders__customer-filter">
+                    <label htmlFor="customer">{CUSTOMER_LBL}</label>
                     <Select
-                        options={[
-                            NO_CUSTOMER_FILTER,
-                            { label: 'MGM', value: 'MGM' },
-                            { label: 'WB', value: 'WB' },
-                        ]}
-                        className='nexus-c-servicing-orders__customer-filter--select'
+                        name="customer"
+                        options={[NO_CUSTOMER_FILTER, {label: 'MGM', value: 'MGM'}, {label: 'WB', value: 'WB'}]}
+                        className="nexus-c-servicing-orders__customer-filter--select"
                         placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
                         onChange={setCustomerFilter}
                     />
                 </div>
-                <Button
-                    isSelected={isHideReady}
-                    onClick={() => setIsHideReady(!isHideReady)}
-                >
+                <Button isSelected={isHideReady} onClick={() => setIsHideReady(!isHideReady)}>
                     {HIDE_READY_BTN}
                 </Button>
-                <Button
-                    isSelected={isHideCompleted}
-                    onClick={() => setIsHideCompleted(!isHideCompleted)}
-                >
+                <Button isSelected={isHideCompleted} onClick={() => setIsHideCompleted(!isHideCompleted)}>
                     {HIDE_COMPLETED_BTN}
+                </Button>
+                <Button
+                    isDisabled={!selectedServicingOrders.length}
+                    onClick={handleExportRequest}
+                    isLoading={isExporting}
+                >
+                    Export
                 </Button>
             </div>
             <ServicingOrdersTable
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
+                setSelectedServicingOrders={setSelectedServicingOrders}
+                isRefreshData={isRefreshData}
+                dataRefreshComplete={handleDataRefreshComplete}
             />
         </div>
     );

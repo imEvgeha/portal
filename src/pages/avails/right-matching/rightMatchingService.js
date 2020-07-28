@@ -1,12 +1,10 @@
-import config from 'react-global-configuration'; // config returns error for gateway
 import {identity, pickBy} from 'lodash';
-import {nexusFetch} from '../../../util/http-client/index';
-import {prepareSortMatrixParam, encodedSerialize, switchCase, isObject} from '../../../util/Common';
-import {
-    CREATE_NEW_RIGHT_ERROR_MESSAGE, CREATE_NEW_RIGHT_SUCCESS_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE,
-} from '../../../ui/toast/constants';
+import config from 'react-global-configuration'; // config returns error for gateway
 import {store} from '../../../index';
-import { setFoundFocusRightInRightsRepository } from './rightMatchingActions';
+import {CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../../ui/toast/constants';
+import {encodedSerialize, isObject, prepareSortMatrixParam, switchCase} from '../../../util/Common';
+import {nexusFetch} from '../../../util/http-client/index';
+import {setFoundFocusRightInRightsRepository} from './rightMatchingActions';
 
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {
@@ -17,7 +15,7 @@ export const getRightMatchingList = (searchCriteria = {}, page, size, sortedPara
     return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
-export const getCombinedRight = (rightIds) => {
+export const getCombinedRight = rightIds => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
     return nexusFetch(url);
 };
@@ -58,17 +56,15 @@ export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParam
         const updatedData = getUpdatedData(response, id);
 
         const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
-        const updatedResponse = {
+        return {
             ...response,
             data: updatedData,
-            total:  foundFocusRightInRightsRepository ? response.total - 1 : response.total,
+            total: foundFocusRightInRightsRepository ? response.total - 1 : response.total,
         };
-
-        return updatedResponse;
     });
 };
 
-export const getRightMatchingFieldSearchCriteria = (payload) => {
+export const getRightMatchingFieldSearchCriteria = payload => {
     const {availSource = {}, id} = payload || {};
     const {provider, templateName} = availSource || {};
     const params = {templateName};
@@ -91,13 +87,13 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
                 LT: `${name}To`,
                 LTE: `${name}To`,
             };
-            const parsedFieldName = switchCase(fieldNames)(name)(criteria);
-            return parsedFieldName;
+            return switchCase(fieldNames)(name)(criteria);
         };
 
         const parseFieldValue = (criteria, value, subFieldName) => {
             const subsetValue = Array.isArray(value)
-                ? value.map(el => isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el).filter(Boolean).join(',')
+                ? value.map(el => (isObject(el) ? el[subFieldName && subFieldName.toLowerCase()] : el)).filter(Boolean)
+                    .join(',')
                 : value;
             const fieldValues = {
                 EQ: value,
@@ -110,30 +106,44 @@ export const getRightMatchingFieldSearchCriteria = (payload) => {
             return switchCase(fieldValues)(value)(criteria);
         };
 
-        const result = searchCriteria.reduce((query, field) => {
-            const {targetFieldName, fieldName, subFieldName, criteria} = field;
-            const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
-            const fieldValue = targetFieldName || fieldName;
-            const preparedFieldValue = payload[`${fieldValue.slice(0,1).toLowerCase()}${fieldValue.slice(1)}`];
-            const key = parseFieldNames(criteria, preparedName);
-            query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
-            return query;
-        }, {});
+        // This was added to exclude custom filters which were causing issues with ag-grid
+        // Check http://agile.vubiquity.com/browse/PORT-2530
+        const criteriaToBeApplied = [
+            'Title',
+            'ContentType',
+            'Licensor',
+            'Licensee',
+            'LicenseType',
+            'PlatformCategory',
+            'ReleaseYear',
+            'LicenseRightsDescription',
+        ];
+        const result = searchCriteria.filter(({fieldName}) => criteriaToBeApplied.includes(fieldName))
+            .reduce((query, field) => {
+                const {targetFieldName, fieldName, subFieldName, criteria} = field;
+                const preparedName = `${fieldName.slice(0, 1).toLowerCase()}${fieldName.slice(1)}`;
+                const fieldValue = targetFieldName || fieldName;
+                const preparedFieldValue = payload[`${fieldValue.slice(0, 1).toLowerCase()}${fieldValue.slice(1)}`];
+                const key = parseFieldNames(criteria, preparedName);
+                query[key] = parseFieldValue(criteria, preparedFieldValue, subFieldName);
+
+                return query;
+            }, {});
 
         return {
             fieldSearchCriteria: {
                 id,
                 params: result,
-            }
+            },
         };
     })
-    .catch(error => {
-        throw {error};
-    });
+        .catch(error => {
+            throw new Error(error);
+        });
 };
 
 
-export const createRightById = (id) => {
+export const createRightById = id => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`;
     const errorCodesToast = [{
         status: 400,

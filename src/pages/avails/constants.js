@@ -1,7 +1,7 @@
 export default {
-  PAGE_SIZE: 100,
-  sortParams: [{id: 'received', desc: 'true'}],
-  AVAIL_HISTORY_ID: 'availHistoryIds',
-  INGEST_HISTORY_ATTACHMENT_IDS: 'ingestHistoryAttachmentIds',
-  INITIAL_SORT: {colId: 'updatedAt', sort: 'desc'},
+    PAGE_SIZE: 100,
+    sortParams: [{id: 'received', desc: 'true'}],
+    AVAIL_HISTORY_ID: 'availHistoryIds',
+    INGEST_HISTORY_ATTACHMENT_ID: 'ingestHistoryAttachmentId',
+    INITIAL_SORT: {colId: 'updatedAt', sort: 'desc'},
 };

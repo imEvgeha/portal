@@ -4,8 +4,8 @@ import {AgGridReact} from 'ag-grid-react';
 import 'ag-grid-enterprise';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
-import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
+import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
 
 const SELECTION_DELAY = 5;
 
@@ -19,7 +19,6 @@ const NexusGrid = ({
     frameworkComponents,
     ...restProps
 }) => {
-
     const handleGridEvent = data => {
         if (typeof onGridEvent === 'function') {
             onGridEvent(data);
@@ -52,13 +51,14 @@ const NexusGrid = ({
                 onFirstDataRendered={handleGridEvent}
                 onRowDataChanged={handleGridEvent}
                 onFilterChanged={handleGridEvent}
+                allowDragFromColumnsToolPanel
                 {...restProps}
                 frameworkComponents={{
                     ...frameworkComponents,
-                    loadingCellRenderer: LoadingCellRenderer
+                    loadingCellRenderer: LoadingCellRenderer,
                 }}
-            /> 
-        </div> 
+            />
+        </div>
     );
 };
 
@@ -70,6 +70,7 @@ NexusGrid.propTypes = {
     // rowHeight: PropTypes.number,
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
+    frameworkComponents: PropTypes.object,
 };
 
 NexusGrid.defaultProps = {
@@ -80,6 +81,7 @@ NexusGrid.defaultProps = {
     // rowHeight: 48,
     setRowData: null,
     isGridHidden: false,
+    frameworkComponents: {},
 };
 
 export default NexusGrid;

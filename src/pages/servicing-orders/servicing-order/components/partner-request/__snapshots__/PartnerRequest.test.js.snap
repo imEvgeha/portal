@@ -4,104 +4,174 @@ exports[`PartnerRequest should match snapshot 1`] = `
 <div
   className="nexus-c-partner-request"
 >
-  <div
-    className="nexus-c-partner-request__info"
+  <AkPage
+    bannerHeight={52}
+    isBannerOpen={false}
   >
-    <div
-      className="nexus-c-partner-request__info-field"
+    <WithTheme(AkGrid)
+      layout="fluid"
     >
-      Studio
-      : 
-    </div>
+      <WithTheme(AkGridColumn)>
+        <WithTheme(AkGrid)
+          layout="fluid"
+        >
+          <WithTheme(AkGridColumn)
+            medium={2}
+          >
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
+              <h6>
+                Studio
+              </h6>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
+                N/A
+              </p>
+            </div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
+              <h6>
+                MSS Order Details
+              </h6>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
+                345
+              </p>
+            </div>
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
+              <h6>
+                Created Date
+              </h6>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
+                N/A
+              </p>
+            </div>
+            <div
+              className="nexus-c-partner-request__info-section"
+            >
+              <h6>
+                Created By
+              </h6>
+              <p
+                className="nexus-c-partner-request__info-field"
+              >
+                N/A
+              </p>
+            </div>
+          </WithTheme(AkGridColumn)>
+        </WithTheme(AkGrid)>
+      </WithTheme(AkGridColumn)>
+    </WithTheme(AkGrid)>
     <div
-      className="nexus-c-partner-request__info-field"
+      className="nexus-c-partner-request__table-wrapper"
     >
-      MSS Order Details
-      : 
-      345
+      <NexusGrid
+        columnDefs={
+          Array [
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "productDesc",
+              "field": "productDesc",
+              "headerName": "Title",
+              "maxWidth": 150,
+              "minWidth": 80,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "version",
+              "field": "version",
+              "headerName": "Version",
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "srdueDate",
+              "field": "srdueDate",
+              "headerName": "Due Date",
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "materialNotes",
+              "field": "materialNotes",
+              "headerName": "Notes",
+              "maxWidth": 500,
+              "minWidth": 80,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "primaryVideo",
+              "field": "primaryVideo",
+              "headerName": "Primary Video",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "secondaryAudio",
+              "field": "secondaryAudio",
+              "headerName": "Secondary Audio",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "subtitlesFull",
+              "field": "subtitlesFull",
+              "headerName": "Subtitles Full",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "subtitlesForced",
+              "field": "subtitlesForced",
+              "headerName": "Subtitles Forced",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "trailer",
+              "field": "trailer",
+              "headerName": "Trailer",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "metaData",
+              "field": "metaData",
+              "headerName": "Metadata",
+              "suppressSizeToFit": true,
+            },
+            Object {
+              "cellRendererFramework": [Function],
+              "colId": "artWork",
+              "field": "artWork",
+              "headerName": "Artwork",
+              "suppressSizeToFit": true,
+            },
+          ]
+        }
+        defaultColDef={
+          Object {
+            "autoHeight": true,
+            "cellClass": "cell",
+            "resizable": true,
+          }
+        }
+        frameworkComponents={Object {}}
+        isGridHidden={false}
+        onFirstDataRendered={[Function]}
+        onGridEvent={null}
+        rowData={Array []}
+        setRowData={null}
+      />
     </div>
-    <div
-      className="nexus-c-partner-request__info-field"
-    >
-      Created Date
-      : 
-    </div>
-    <div
-      className="nexus-c-partner-request__info-field"
-    >
-      Created By
-      : 
-    </div>
-  </div>
-  <div
-    className="nexus-c-partner-request__table"
-  >
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="0"
-    >
-      TITLE
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="1"
-    >
-      VERSION
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="2"
-    >
-      DUE DATE
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="3"
-    >
-      PRIMARY VIDEO
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="4"
-    >
-      SECONDARY AUDIO
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="5"
-    >
-      SUB-TITLES FULL
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="6"
-    >
-      SUB-TITLES FORCED
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="7"
-    >
-      TRAILER
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="8"
-    >
-      METADATA
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="9"
-    >
-      ARTWORK
-    </div>
-    <div
-      className="nexus-c-partner-request__table-column-header"
-      key="10"
-    >
-      NOTES
-    </div>
-  </div>
+  </AkPage>
 </div>
 `;

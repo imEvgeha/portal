@@ -1,7 +1,7 @@
-import {useEffect, useContext} from 'react';
-import useLocalStorage from '../../../../../util/hooks/useLocalStorage';
-import DOP from '../../../../../util/DOP';
+import {useEffect, useContext, useCallback} from 'react';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import DOP from '../../../../../util/DOP';
+import useLocalStorage from '../../../../../util/hooks/useLocalStorage';
 
 const DOP_POP_UP_TITLE = 'Right Matching';
 const DOP_POP_UP_MESSAGE = 'Please, keep in mind not all rights have been matched!';
@@ -9,6 +9,21 @@ const DOP_POP_UP_MESSAGE = 'Please, keep in mind not all rights have been matche
 const useDOPIntegration = (totalCount, localStorageItem) => {
     const [dopCount, setDopCount] = useLocalStorage(localStorageItem, totalCount);
     const {setModalContentAndTitle, setModalActions, close} = useContext(NexusModalContext);
+
+    const openDOPPopUp = useCallback(errorCount => {
+        const handlePopUpClick = () => {
+            DOP.sendInfoToDOP(errorCount, null);
+            close();
+        };
+        setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
+        setModalActions([
+            {
+                text: 'OK',
+                onClick: handlePopUpClick,
+                appearance: 'primary',
+            },
+        ]);
+    }, [close, setModalActions, setModalContentAndTitle]);
 
     useEffect(() => {
         if (totalCount || totalCount === 0) {
@@ -18,29 +33,14 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
             }
             DOP.setDOPMessageCallback(totalCount > 0 ? () => openDOPPopUp(totalCount) : null);
         }
-    }, [totalCount]);
+    }, [dopCount, openDOPPopUp, setDopCount, totalCount]);
 
     useEffect(() => {
         if ((dopCount || dopCount === 0) && totalCount === null) {
             DOP.setErrorsCount(dopCount);
             DOP.setDOPMessageCallback(dopCount > 0 ? () => openDOPPopUp(dopCount) : null);
         }
-    }, [dopCount]);
-
-    const openDOPPopUp = (errorCount) => {
-        const handlePopUpClick = () => {
-            DOP.sendInfoToDOP(errorCount, null);
-            close();
-        };
-        setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
-        setModalActions([
-            {
-                text: 'OK', 
-                onClick: handlePopUpClick, 
-                appearance: 'primary', 
-            }
-        ]);
-    };
+    }, [dopCount, openDOPPopUp, totalCount]);
 
     return openDOPPopUp;
 };

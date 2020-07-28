@@ -3,12 +3,17 @@ import {store} from '../../index';
 import {
     RELATIVE_TIME_FORMAT,
     SIMULCAST_TIME_FORMAT,
-    TIMESTAMP_TIME_FORMAT
+    TIMESTAMP_TIME_FORMAT,
 } from '../../ui/elements/nexus-date-and-time-elements/constants';
 import {DATETIME_FIELDS} from './constants';
 
 // Create date format based on locale
-const getDateFormatBasedOnLocale = (locale) => (moment().locale(locale).localeData().longDateFormat('L'));
+const getDateFormatBasedOnLocale = locale => (
+    moment()
+        .locale(locale)
+        .localeData()
+        .longDateFormat('L')
+);
 
 // Attach (UTC) to date, if it is simulcast
 const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
@@ -23,25 +28,29 @@ const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
 const isUtc = (date = '') => typeof date === 'string' && date.endsWith('Z');
 
 const ISODateToView = (date, type) => {
-    if(date) {
+    if (date) {
         const {locale} = store.getState().locale;
         const dateFormat = getDateFormatBasedOnLocale(locale);
         switch (type) {
-            case DATETIME_FIELDS.TIMESTAMP:
+            case DATETIME_FIELDS.TIMESTAMP: {
                 const timestampFormat = `${dateFormat} ${TIMESTAMP_TIME_FORMAT}`;
                 return `${moment(date).utc(false).format(timestampFormat)}`;
-            case DATETIME_FIELDS.BUSINESS_DATETIME:
+            }
+            case DATETIME_FIELDS.BUSINESS_DATETIME: {
                 const isUtcDate = isUtc(date);
 
                 const timeFormat = isUtcDate ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
                 const dateTimeFormat = `${dateFormat} ${timeFormat}`;
 
                 return `${moment(date).utc(!isUtcDate).format(dateTimeFormat)}`;
+            }
             case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
                 return `${moment(date).utc(true).format(dateFormat)}`;
+            default:
+                return '';
         }
     }
-    return  '';
+    return '';
 };
 
 const dateToISO = (date, type) => {

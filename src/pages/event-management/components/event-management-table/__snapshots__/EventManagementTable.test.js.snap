@@ -4,13 +4,16 @@ exports[`EventManagementTable should match snapshot 1`] = `
 <div
   className="nexus-c-event-management-table"
 >
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+  <div
     className="nexus-c-event-management-table__refresh-button"
-    onClick={[Function]}
   >
-    Refresh
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  <ComposedComponent
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      onClick={[Function]}
+    >
+      Refresh
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+  <Component
     className="nexus-c-event-management-grid"
     columnDefs={
       Array [
@@ -324,7 +327,6 @@ exports[`EventManagementTable should match snapshot 1`] = `
     }
     onGridEvent={[MockFunction]}
     rowSelection="single"
-    setForceRefresh={[Function]}
   />
 </div>
 `;

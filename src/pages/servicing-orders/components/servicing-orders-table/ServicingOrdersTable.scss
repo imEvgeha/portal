@@ -1,13 +1,13 @@
 .nexus-c-servicing-orders-table {
   width: 100%;
-  height: 100%;
-  padding: 5px 24px 45px 24px;
+  height: calc(100vh - 205px);
+  position: relative;
 
-  & .nexus-c-nexus-grid {
+  .nexus-c-nexus-grid {
     height: 100%;
   }
   .ag-react-container a {
-    color: #0065FF;
+    color: #0065ff;
     text-decoration: underline;
   }
 }

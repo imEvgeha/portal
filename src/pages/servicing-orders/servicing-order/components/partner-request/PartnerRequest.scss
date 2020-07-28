@@ -1,45 +1,33 @@
-@import '../../../../../styles/config';
-
-$border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
+@import '../../../../../styles/mixins.scss';
 
 .nexus-c-partner-request {
-    padding: 0 20px;
-}
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: 92%;
 
-.nexus-c-partner-request__info-field {
-    color: map-get($colors, nexus-title-color);
-}
+  &__info-section {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 
-.nexus-c-partner-request__table {
-    margin-top: 20px;
-    display: grid;
-    grid-template-rows: 2em repeat(auto-fill, minmax(0, auto));
-    grid-template-columns: repeat(11, minmax(0, auto));
-    border: $border;
-    border-right: none;
-}
+  &__info-field {
+    margin-top: 0.25rem;
+  }
 
-.nexus-c-partner-request__table-column-header {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    color: map-get($colors, nexus-title-color);
-    text-align: left;
-    border-bottom: $border;
-    border-right: $border;
-    padding: 5px;
-}
+  &__table-wrapper {
+    margin-top: 1rem;
+    height: 80%;
 
-.nexus-c-partner-request__table-cell {
-    padding: 5px;
-    border-right: $border;
-    border-bottom: $border;
-    background: rgba(map_get($colors, nexus-title-color), .1);
+    /* the nexus grid container div */
+    & > div {
+      height: 100%;
+    }
 
-    // fixes content leaking from all table cells
-    // see http://agile.vubiquity.com/browse/PORT-2513
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    hyphens: auto;
+    .cell {
+      white-space: normal !important;
+      max-height: 10rem;
+      overflow-y: auto !important;
+      line-height: 1.618;
+    }
+  }
 }

@@ -40,15 +40,22 @@ export default class RightsResultsTable extends React.Component {
                         return null;
                     }
                 case 'priceType' :
+                    return ({data = {}}) => {
+                        if (data && Array.isArray(data[javaVariableName])) {
+                            return data[javaVariableName]
+                                .map(e => `${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`)
+                                .join(', ');
+                        }
+                    }
                 case 'territoryType' :
                 case 'audioLanguageType':
                     return ({data = {}}) => {
-                    if (data && Array.isArray(data[javaVariableName])) {
-                        return data[javaVariableName]
-                            .map(e => String(e.country || `${e.language}/${e.audioType}` || `${e.priceType} ${e.priceValue}`))
-                            .join(', ');
-                    }
-                };
+                        if (data && Array.isArray(data[javaVariableName])) {
+                            return data[javaVariableName]
+                                .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                                .join(', ');
+                        }
+                    };
                 case 'boolean':
                     return ({value}) => value ? 'Yes' : value === false ? 'No' : null;
                 default: return null;

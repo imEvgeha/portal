@@ -1,4 +1,4 @@
-export const RIGHT_MATCHING_TITLE = 'Right Matching'; 
+export const RIGHT_MATCHING_TITLE = 'Right Matching';
 export const RIGHT_TO_MATCH_TITLE = 'Right to Right Matching';
 export const MATCH_RIGHT_TITLE = 'Right Matching Preview';
 export const RIGHTS_REPOSITORY = 'Rights Repository';

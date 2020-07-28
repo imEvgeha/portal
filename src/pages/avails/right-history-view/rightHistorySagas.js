@@ -1,4 +1,4 @@
-import {put, call, takeEvery} from '@redux-saga/core/effects';
+import {put, call, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './rightHistoryActionTypes';
 import {getRightsHistory} from './rightHistoryService';
 
@@ -6,7 +6,7 @@ function* fetchRightsHistory(requestMethod, {payload}) {
     try {
         yield put({
             type: actionTypes.FETCH_RIGHT_HISTORY_REQUEST,
-            payload: {}
+            payload: {},
         });
 
         const response = yield call(requestMethod, payload);
@@ -15,10 +15,9 @@ function* fetchRightsHistory(requestMethod, {payload}) {
             type: actionTypes.FETCH_RIGHT_HISTORY_SUCCESS,
             payload: {
                 rightsEventHistory: response,
-                rightIds: payload
-            }
+                rightIds: payload,
+            },
         });
-
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_RIGHT_HISTORY_ERROR,
