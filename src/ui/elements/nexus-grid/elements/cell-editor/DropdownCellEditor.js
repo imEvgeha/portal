@@ -9,7 +9,6 @@ import './MultiSelectCellEditor.scss';
 class DropdownCellEditor extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
         const {data = {}, optionsKey, disabledOptionsKey} = props;
         const options = data[optionsKey];
         const optionsDisabled = data[disabledOptionsKey];

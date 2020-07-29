@@ -35,8 +35,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
         disabledOptionsKey: 'territoryExcluded',
-        valueFormatter: createValueFormatter('dropdown'),
-        // cellRendererFramework:
+        valueFormatter: createValueFormatter({dataType: 'dropdown'}),
     };
 
     const updatedMapping = {
@@ -57,12 +56,12 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
             const columnPosition = 10;
             columnApi.moveColumn('planTerritories', columnPosition);
         } else if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            api.forEachNode(({data}) => {
+            api.forEachNode(({data = {}}) => {
                 const {planTerritories: territory} = data || {};
-                delete data.planTerritories;
-                result.push({...data, territory});
-                setPreplanRights(result);
+                // delete data.planTerritories;
+                territory ? result.push({...data, territory}) : result.push(data);
             });
+            setPreplanRights(result);
         }
     };
 
