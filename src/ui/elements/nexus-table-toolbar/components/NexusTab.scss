@@ -1,0 +1,10 @@
+@import '../../../../styles/config';
+
+.nexus-c-nexus-tab {
+    margin: 0 16px;
+    cursor: pointer;
+
+    &--is-active {
+        color: map-get($colors, nexus-title-color);
+    }
+}

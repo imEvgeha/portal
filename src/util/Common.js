@@ -11,12 +11,7 @@ import moment from 'moment';
  * @param {string} fileExtension - File extension
  * @param {boolean} showTime - Show time in file name timestamp
  */
-function downloadFile(
-    data,
-    fileNamePrefix = 'INT_avails_',
-    fileExtension = '.xlsx',
-    showTime = true
-) {
+function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true) {
     // TODO: Header containing filename sugestion is not accesible by javascript by default,
     // additional changes on server required.
     // For now we recreate the filename using the same syntax as server
@@ -35,7 +30,9 @@ function downloadFile(
 }
 
 function safeTrim(value) {
-    if (value === undefined || value === null) { return value; }
+    if (value === undefined || value === null) {
+        return value;
+    }
     if (typeof value === 'string') {
         return value.trim();
     }
@@ -60,19 +57,23 @@ function momentToISO(date) {
 }
 
 function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
+    return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 function isObjectEmpty(obj) {
     for (const key in obj) {
-        if (obj.hasOwnProperty(key)) { return false; }
+        if (obj.hasOwnProperty(key)) {
+            return false;
+        }
     }
     return true;
 }
 
 // used to replace default axios serializer which encodes using JSON encoding
 function encodedSerialize(params) {
-    return Object.entries(params).map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`).join('&');
+    return Object.entries(params)
+        .map(x => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+        .join('&');
 }
 
 function prepareSortMatrixParam(sortedParams) {
@@ -149,9 +150,7 @@ const URL = {
         if (this.search()) {
             const query = this.search().substring(1);
             const params = query.split('&');
-            const param = params.find(
-                param => param.split('=').length === 2 && param.split('=')[0] === name
-            );
+            const param = params.find(param => param.split('=').length === 2 && param.split('=')[0] === name);
             if (param) {
                 toReturn = param.split('=')[1];
             }
@@ -189,10 +188,12 @@ const URL = {
     search: () => {
         if (window && window.location) {
             return window.location.search;
-        } return null;
+        }
+        return null;
     },
 
-    updateQueryParam: values => { // values = {date: '12/12/12'}
+    updateQueryParam: values => {
+        // values = {date: '12/12/12'}
         const search = window.location.search.substring(1);
         const params = new URLSearchParams(search);
         Object.keys(values).forEach(key => {
@@ -209,14 +210,15 @@ const URL = {
         const host = window.location.hostname;
         return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.');
     },
+
+    isLocalOrDev() {
+        const host = window.location.hostname;
+        return host.includes('localhost') || host.includes('.dev.');
+    },
 };
 
 // TODO: transform this to simple helper function - no need for React Component
-const IfEmbedded = ({value, children}) => (
-    <>
-        {URL.isEmbedded() === value && children}
-    </>
-);
+const IfEmbedded = ({value, children}) => <>{URL.isEmbedded() === value && children}</>;
 
 IfEmbedded.propTypes = {
     value: PropTypes.bool,
@@ -254,24 +256,23 @@ const normalizeDataForStore = data => {
 };
 
 const cleanObject = function (object, allowEmptyStrings = false) {
-    Object
-        .entries(object)
-        .forEach(([k, v]) => {
-            if (v && typeof v === 'object') {
-                cleanObject(v);
+    Object.entries(object).forEach(([k, v]) => {
+        if (v && typeof v === 'object') {
+            cleanObject(v);
+        }
+        if (
+            (v && typeof v === 'object' && !Object.keys(v).length) ||
+            v === null ||
+            v === undefined ||
+            (!allowEmptyStrings && v.length === 0)
+        ) {
+            if (Array.isArray(object)) {
+                object.splice(k, 1);
+            } else if (!(v instanceof Date)) {
+                delete object[k];
             }
-            if (v
-                && typeof v === 'object'
-                && !Object.keys(v).length
-                || v === null
-                || v === undefined
-                || (!allowEmptyStrings && v.length === 0)
-            ) {
-                if (Array.isArray(object)) {
-                    object.splice(k, 1);
-                } else if (!(v instanceof Date)) { delete object[k]; }
-            }
-        });
+        }
+    });
     return object;
 };
 

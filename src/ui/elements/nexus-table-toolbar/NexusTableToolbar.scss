@@ -7,19 +7,6 @@
     color: map-get($colors, nexus-light-grey);
 }
 
-.nexus-c-table-toolbar__title {
-    margin: 0 16px;
-    cursor: pointer;
-
-    &:hover {
-        opacity: 0.6;
-    }
-
-    &--is-active {
-        color: map-get($colors, nexus-title-color);
-    }
-}
-
 .nexus-c-table-toolbar__selected-option {
     margin-right: 16px;
     cursor: pointer;
