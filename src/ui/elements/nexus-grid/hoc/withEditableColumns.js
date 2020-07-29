@@ -16,11 +16,7 @@ import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
 
-const DEFAULT_HOC_PROPS = [
-    'notEditableColumns',
-    'mapping',
-    'selectValues',
-];
+const DEFAULT_HOC_PROPS = ['notEditableColumns', 'mapping', 'selectValues'];
 const DEFAULT_EDITABLE_DATA_TYPES = [
     'priceType',
     'audioLanguageType',
@@ -60,14 +56,10 @@ const withEditableColumns = ({
             const copiedColumnDefs = cloneDeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
                 const {field, optionsKey, disabledOptionsKey} = columnDef || {};
-                const {dataType, enableEdit} = (Array.isArray(mapping) && mapping.find(
-                    ({javaVariableName}) => javaVariableName === field
-                )) || {};
-                const isEditable = editableDataTypes.includes(dataType) && (
-                    excludedColumns
-                        ? !excludedColumns.includes(field)
-                        : true
-                );
+                const {dataType, enableEdit} =
+                    (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === field)) || {};
+                const isEditable =
+                    editableDataTypes.includes(dataType) && (excludedColumns ? !excludedColumns.includes(field) : true);
                 if (enableEdit && isEditable) {
                     columnDef.editable = true;
                     switch (dataType) {
@@ -133,8 +125,10 @@ const withEditableColumns = ({
                             columnDef.cellEditorFramework = AudioLanguageTypeCellEditor;
                             columnDef.cellEditorParams = {
                                 options: {
-                                    languages: (isObject(selectValues) && selectValues['languageAudioTypes.language']) || [],
-                                    audioTypes: (isObject(selectValues) && selectValues['languageAudioTypes.audioType']) || [],
+                                    languages:
+                                        (isObject(selectValues) && selectValues['languageAudioTypes.language']) || [],
+                                    audioTypes:
+                                        (isObject(selectValues) && selectValues['languageAudioTypes.audioType']) || [],
                                 },
                             };
                             break;
@@ -170,13 +164,7 @@ const withEditableColumns = ({
 
         const propsWithoutHocProps = omit(props, hocProps);
 
-        return (
-            <WrappedComponent
-                {...propsWithoutHocProps}
-                singleClickEdit={true}
-                columnDefs={editableColumnDefs}
-            />
-        );
+        return <WrappedComponent {...propsWithoutHocProps} singleClickEdit={true} columnDefs={editableColumnDefs} />;
     };
 
     const createMapStateToProps = () => {

@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Dropdown, {
-    DropdownItemCheckbox,
-    DropdownItemGroupCheckbox,
-} from '@atlaskit/dropdown-menu';
+import Dropdown, {DropdownItemCheckbox, DropdownItemGroupCheckbox} from '@atlaskit/dropdown-menu';
 
 class DropdownCellEditor extends Component {
     constructor(props) {
@@ -18,38 +15,42 @@ class DropdownCellEditor extends Component {
     }
 
     prepareDataForSelect = (options, optionsDisabled) => {
-        const preparedOptions = Array.isArray(options) && options.map(option => {
-            return ({
-                ...option,
-                isDisabled: false,
+        const preparedOptions =
+            Array.isArray(options) &&
+            options.map(option => {
+                return {
+                    ...option,
+                    isDisabled: false,
+                };
             });
-        });
-        const preparedDisabledOptions = Array.isArray(optionsDisabled) && optionsDisabled.map(option => (
-            {
+        const preparedDisabledOptions =
+            Array.isArray(optionsDisabled) &&
+            optionsDisabled.map(option => ({
                 selected: false,
                 isDisabled: true,
                 id: option,
                 country: option,
-            }
-        ));
+            }));
 
         return [...preparedOptions, ...preparedDisabledOptions];
-    }
+    };
 
     isPopup = () => {
         const {data = {}, optionsKey} = this.props;
         const options = data[optionsKey];
         return !!options.length;
-    }
+    };
 
     getValue = () => {
         const {value} = this.state;
-        const cleanValues = value.filter(option => !option.isDisabled).map(option => {
-            delete option.isDisabled;
-            return option;
-        });
+        const cleanValues = value
+            .filter(option => !option.isDisabled)
+            .map(option => {
+                delete option.isDisabled;
+                return option;
+            });
         return cleanValues;
-    }
+    };
 
     handleChange = index => {
         const {value} = this.state;
@@ -98,4 +99,3 @@ DropdownCellEditor.defaultProps = {
 };
 
 export default DropdownCellEditor;
-

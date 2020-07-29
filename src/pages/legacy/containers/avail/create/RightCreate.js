@@ -27,7 +27,7 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
@@ -103,7 +103,7 @@ class RightCreate extends React.Component {
     };
 
     handleDeleteObjectFromArray = (value, name, subField) => {
-        const newRight = this.right[name] && this.right[name].filter((e) => e[subField] !== value);
+        const newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
         this.checkRight(name, newRight, true);
     };
 
@@ -232,7 +232,7 @@ class RightCreate extends React.Component {
     }
 
     validateField(name, value) {
-        const map = this.props.availsMapping.mappings.find((x) => x.javaVariableName === name);
+        const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
         const isOriginRightIdRequired =
             name === 'originalRightId' &&
             this.right.temporaryPriceReduction === true &&
@@ -255,7 +255,7 @@ class RightCreate extends React.Component {
         if (
             this.props.availsMapping.mappings
                 .filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName))
-                .find((x) => x.required && !this.right[x.javaVariableName])
+                .find(x => x.required && !this.right[x.javaVariableName])
         )
             return true;
         return false;
@@ -264,7 +264,7 @@ class RightCreate extends React.Component {
     validateFields() {
         this.props.availsMapping.mappings
             .filter(({javaVariableName}) => can('create', 'Avail', javaVariableName))
-            .map((mapping) => {
+            .map(mapping => {
                 this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
             });
         this.setState({});
@@ -282,7 +282,7 @@ class RightCreate extends React.Component {
         }
         rightsService
             .create(this.right)
-            .then((response) => {
+            .then(response => {
                 this.right = {};
                 this.setState({});
                 if (response && response.id) {
@@ -314,11 +314,11 @@ class RightCreate extends React.Component {
         }
     }
 
-    initMappingErrors = (mappings) => {
+    initMappingErrors = mappings => {
         const mappingErrorMessage = {};
         mappings
             .filter(({dataType}) => dataType)
-            .map((mapping) => {
+            .map(mapping => {
                 mappingErrorMessage[mapping.javaVariableName] = {
                     inner: '',
                     date: '',
@@ -646,17 +646,17 @@ class RightCreate extends React.Component {
             }
 
             //fields with endpoints (these have ids)
-            const filterKeys = Object.keys(this.right).filter((key) => {
-                const map = this.props.availsMapping.mappings.find((x) => x.javaVariableName === key);
+            const filterKeys = Object.keys(this.right).filter(key => {
+                const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === key);
                 return map && map.configEndpoint;
             });
-            const filters = filterKeys.map((key) => this.right[key]).filter((x) => (Array.isArray(x) ? x.length : x));
+            const filters = filterKeys.map(key => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
-            filters.map((filter) => {
+            filters.map(filter => {
                 const fieldName = (Array.isArray(filter) ? filter[0].type : filter.type) + 'Id';
                 const allowedOptions = Array.isArray(filter) ? filter.map(({id}) => id) : [filter.id];
-                filteredOptions = filteredOptions.filter((option) =>
+                filteredOptions = filteredOptions.filter(option =>
                     option[fieldName] ? allowedOptions.indexOf(option[fieldName]) > -1 : true
                 );
             });
@@ -665,14 +665,14 @@ class RightCreate extends React.Component {
                 {
                     label: 'Select All',
                     options: filteredOptions
-                        .filter((rec) => rec.value)
-                        .map((rec) => {
+                        .filter(rec => rec.value)
+                        .map(rec => {
                             return {
                                 ...rec,
                                 label: rec.label || rec.value,
                                 aliasValue: rec.aliasId
-                                    ? options.filter((pair) => rec.aliasId === pair.id).length === 1
-                                        ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                                    ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                        ? options.filter(pair => rec.aliasId === pair.id)[0].value
                                         : null
                                     : null,
                             };
@@ -680,7 +680,7 @@ class RightCreate extends React.Component {
                 },
             ];
 
-            const handleOptionsChange = (selectedOptions) => {
+            const handleOptionsChange = selectedOptions => {
                 this.checkRight(name, selectedOptions, true);
             };
 
@@ -743,14 +743,14 @@ class RightCreate extends React.Component {
                 options = this.props.selectValues[name];
             }
             options = options
-                .filter((rec) => rec.value)
-                .map((rec) => {
+                .filter(rec => rec.value)
+                .map(rec => {
                     return {
                         ...rec,
                         label: rec.label || rec.value,
                         aliasValue: rec.aliasId
-                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
-                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
                                 : null
                             : null,
                     };
@@ -761,7 +761,7 @@ class RightCreate extends React.Component {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
-            const handleOptionsChange = (option) => {
+            const handleOptionsChange = option => {
                 this.checkRight(name, option.value ? option : null, true);
             };
 
@@ -827,14 +827,14 @@ class RightCreate extends React.Component {
             }
 
             priceTypeOptions = priceTypeOptions
-                .filter((rec) => rec.value)
-                .map((rec) => {
+                .filter(rec => rec.value)
+                .map(rec => {
                     return {
                         ...rec,
                         label: rec.label || rec.value,
                         aliasValue: rec.aliasId
-                            ? priceTypeOptions.filter((pair) => rec.aliasId === pair.id).length === 1
-                                ? priceTypeOptions.filter((pair) => rec.aliasId === pair.id)[0].value
+                            ? priceTypeOptions.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? priceTypeOptions.filter(pair => rec.aliasId === pair.id)[0].value
                                 : null
                             : null,
                     };
@@ -854,7 +854,7 @@ class RightCreate extends React.Component {
                 <PriceField
                     prices={this.right.pricing}
                     name={name}
-                    onRemoveClick={(price) => this.handleDeleteObjectFromArray(price.priceType, 'pricing', 'priceType')}
+                    onRemoveClick={price => this.handleDeleteObjectFromArray(price.priceType, 'pricing', 'priceType')}
                     onAddClick={this.toggleRightPriceForm}
                     renderChildren={() => (
                         <>
@@ -862,7 +862,7 @@ class RightCreate extends React.Component {
                                 <AddButton onClick={this.toggleRightPriceForm}>+</AddButton>
                             </div>
                             <RightPriceForm
-                                onSubmit={(e) => this.handleArrayPush(e, 'pricing')}
+                                onSubmit={e => this.handleArrayPush(e, 'pricing')}
                                 isOpen={this.state.isRightPriceFormOpen}
                                 onClose={this.toggleRightPriceForm}
                                 data={val}
@@ -884,14 +884,14 @@ class RightCreate extends React.Component {
             }
 
             options = options
-                .filter((rec) => rec.value)
-                .map((rec) => {
+                .filter(rec => rec.value)
+                .map(rec => {
                     return {
                         ...rec,
                         label: rec.label || rec.value,
                         aliasValue: rec.aliasId
-                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
-                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
                                 : null
                             : null,
                     };
@@ -911,7 +911,7 @@ class RightCreate extends React.Component {
                 <TerritoryField
                     territory={this.right.territory}
                     name={name}
-                    onRemoveClick={(terr) => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
+                    onRemoveClick={terr => this.handleDeleteObjectFromArray(terr.country, 'territory', 'country')}
                     onAddClick={this.toggleRightTerritoryForm}
                     renderChildren={() => (
                         <>
@@ -919,7 +919,7 @@ class RightCreate extends React.Component {
                                 <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
                             </div>
                             <RightTerritoryForm
-                                onSubmit={(e) => this.handleArrayPush(e, 'territory')}
+                                onSubmit={e => this.handleArrayPush(e, 'territory')}
                                 isOpen={this.state.isRightTerritoryFormOpen}
                                 onClose={this.toggleRightTerritoryForm}
                                 data={val}
@@ -944,14 +944,14 @@ class RightCreate extends React.Component {
             }
 
             options = options
-                .filter((rec) => rec.value)
-                .map((rec) => {
+                .filter(rec => rec.value)
+                .map(rec => {
                     return {
                         ...rec,
                         label: rec.label || rec.value,
                         aliasValue: rec.aliasId
-                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
-                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
                                 : null
                             : null,
                     };
@@ -961,8 +961,8 @@ class RightCreate extends React.Component {
                 val = value;
             }
             if (val) {
-                val.forEach((item) => {
-                    options.map((option) => {
+                val.forEach(item => {
+                    options.map(option => {
                         if (option.value === item.language) {
                             item.label = option.label;
                         }
@@ -977,7 +977,7 @@ class RightCreate extends React.Component {
                 <AudioLanguageField
                     audioLanguages={this.right.languageAudioTypes}
                     name={name}
-                    onRemoveClick={(audioL) =>
+                    onRemoveClick={audioL =>
                         this.handleDeleteObjectFromArray(audioL.language, 'languageAudioTypes', 'language')
                     }
                     onAddClick={this.toggleRightAudioLanguageForm}
@@ -987,7 +987,7 @@ class RightCreate extends React.Component {
                                 <AddButton onClick={this.toggleRightAudioLanguageForm}>+</AddButton>
                             </div>
                             <RightAudioLanguageForm
-                                onSubmit={(e) => this.handleArrayPush(e, 'languageAudioTypes')}
+                                onSubmit={e => this.handleArrayPush(e, 'languageAudioTypes')}
                                 isOpen={this.state.isRightAudioLanguageFormOpen}
                                 onClose={this.toggleRightAudioLanguageForm}
                                 data={val}
@@ -1012,7 +1012,7 @@ class RightCreate extends React.Component {
                 error,
                 isTimestamp,
                 isReturningTime: useTime,
-                onChange: (date) => {
+                onChange: date => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
                 },
@@ -1028,11 +1028,11 @@ class RightCreate extends React.Component {
         if (this.props.availsMapping) {
             this.props.availsMapping.mappings
                 .filter(({dataType}) => dataType)
-                .map((mapping) => {
+                .map(mapping => {
                     if (
                         mapping.enableEdit &&
                         (!mapping.readOnly || mapping.defaultValue) &&
-                        !excludedFields.find((item) => item === mapping.javaVariableName)
+                        !excludedFields.find(item => item === mapping.javaVariableName)
                     ) {
                         const required = mapping.required;
                         const value = this.right ? this.right[mapping.javaVariableName] : '';

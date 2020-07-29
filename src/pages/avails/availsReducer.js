@@ -12,4 +12,3 @@ const availsReducer = combineReducers({
 });
 
 export default availsReducer;
-

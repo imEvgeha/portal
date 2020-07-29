@@ -120,8 +120,7 @@ export const SelectedRightsActions = ({
 
             // PrePlan criteria
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
-        }
-        else {
+        } else {
             setIsMatchable(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,20 +161,23 @@ export const SelectedRightsActions = ({
         const title = `Audit History (${selectedRights.length})`;
 
         setModalStyle({width: '100%'});
-        setModalActions([{
-            text: 'Done',
-            onClick: close,
-        }]);
+        setModalActions([
+            {
+                text: 'Done',
+                onClick: close,
+            },
+        ]);
         setModalContentAndTitle(NexusSpinner, title);
 
         getRightsHistory(ids).then(rightsEventHistory => {
-            setModalContentAndTitle((
+            setModalContentAndTitle(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
-                </div>
-            ), title);
+                </div>,
+                title
+            );
         });
     };
 
@@ -207,10 +209,7 @@ export const SelectedRightsActions = ({
                 nonEligibleRights = [...nonEligibleRights, right];
             }
         });
-        return [
-            eligibleRights,
-            nonEligibleRights,
-        ];
+        return [eligibleRights, nonEligibleRights];
     };
 
     const prepareRightsForPrePlan = () => {
@@ -268,9 +267,7 @@ export const SelectedRightsActions = ({
                         data-test-id="view-history"
                         onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
-                        <div>
-                            {VIEW_AUDIT_HISTORY}
-                        </div>
+                        <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
                     <div
                         className={classNames(

@@ -1,3 +1,4 @@
+import {get} from 'lodash';
 import {createSelector} from 'reselect';
 
 const getAuth = state => state.auth || {};
@@ -26,4 +27,9 @@ export const createAuthSelector = () => createSelector(
             isAuthenticated,
         };
     }
+);
+
+export const getUsername = createSelector(
+    getAuth,
+    auth => get(auth, 'userAccount.username', ''),
 );

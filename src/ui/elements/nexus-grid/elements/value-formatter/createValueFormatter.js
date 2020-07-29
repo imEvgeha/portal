@@ -33,7 +33,6 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 }
             };
 
-
         case 'priceType':
             return params => {
                 const {data = {}} = params || {};
@@ -51,7 +50,8 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 if (data && Array.isArray(data[javaVariableName])) {
                     return data[javaVariableName]
                         .filter(Boolean)
-                        .map(e => String(e.country || `${e.language}/${e.audioType}`)).join(', ');
+                        .map(e => String(e.country || `${e.language}/${e.audioType}`))
+                        .join(', ');
                 }
             };
         case 'string':
@@ -95,15 +95,14 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return `Movida Title ID: ${movidaTitleId}`;
                     } else if (vzTitleId) {
                         return `VZ Title ID: ${vzTitleId}`;
-                    } return `Nexus Title ID: ${id}`;
+                    }
+                    return `Nexus Title ID: ${id}`;
                 };
             } else if (javaVariableName === 'editorialGenres') {
                 return params => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
-                        return data[javaVariableName]
-                            .map(({genre}) => genre)
-                            .join(', ');
+                        return data[javaVariableName].map(({genre}) => genre).join(', ');
                     }
                 };
             }
@@ -132,4 +131,3 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
 };
 
 export default createValueFormatter;
-

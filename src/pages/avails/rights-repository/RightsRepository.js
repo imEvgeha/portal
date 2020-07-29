@@ -31,15 +31,16 @@ import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
+import DOPService from '../selected-for-planning/DOP-services';
+import SelectedForPlanning from '../selected-for-planning/components/SelectedForPlanning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB} from './constants';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
-
 
 const RightsRepositoryTable = compose(
     withColumnsResizing(),
@@ -86,6 +87,7 @@ const RightsRepository = ({
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
+    const [planningRightsCount, setPlanningRightsCount] = useState(0);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -107,7 +109,7 @@ const RightsRepository = ({
         if (selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
             const attachment = Array.isArray(attachments)
-                ? attachments.find((a) => a.id === selectedAttachmentId)
+                ? attachments.find(a => a.id === selectedAttachmentId)
                 : undefined;
             setAttachment(attachment);
             if (!attachment) {
@@ -148,7 +150,7 @@ const RightsRepository = ({
 
             // Filter selected rights only when ingest is selected
             if (selectedIngest) {
-                gridApi.getSelectedRows().forEach((row) => {
+                gridApi.getSelectedRows().forEach(row => {
                     if (selectedIds.includes(row.id)) {
                         loadedSelectedRights.push(row);
                     }
@@ -177,13 +179,19 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights, selectedGridApi]);
 
-    const columnDefsClone = cloneDeep(columnDefs).map((columnDef) => {
+    useEffect(() => {
+        DOPService.getUsersProjectsList(1, 1).then(res => {
+            setPlanningRightsCount(1);
+        });
+    }, [activeTab]);
+
+    const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
 
         return columnDef;
     });
 
-    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map((columnDef) => {
+    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
         if (columnDef.cellRenderer) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/',
@@ -242,7 +250,7 @@ const RightsRepository = ({
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter((right) =>
+                    const updatedSelectedRights = clonedSelectedRights.filter(right =>
                         allSelectedRowsIds.includes(right.id)
                     );
 
@@ -257,10 +265,10 @@ const RightsRepository = ({
                 }
 
                 // Select/deselect process
-                api.forEachNode((node) => {
+                api.forEachNode(node => {
                     const {data = {}} = node;
 
-                    const wasSelected = clonedSelectedRights.find((right) => right.id === data.id) !== undefined;
+                    const wasSelected = clonedSelectedRights.find(right => right.id === data.id) !== undefined;
 
                     // If it was selected and currently is not, then add it to the list of values to be deselected
                     // otherwise add it to selected rights
@@ -272,7 +280,7 @@ const RightsRepository = ({
                 });
 
                 // Filter out rights that were deselected
-                const updatedSelectedRights = clonedSelectedRights.filter((right) => !idsToRemove.includes(right.id));
+                const updatedSelectedRights = clonedSelectedRights.filter(right => !idsToRemove.includes(right.id));
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
@@ -312,7 +320,7 @@ const RightsRepository = ({
                 // Get ID of a right to be deselected
                 const toDeselectIds = selectedRepoRights
                     .map(({id}) => id)
-                    .filter((selectedRepoId) => !allSelectedRowsIds.includes(selectedRepoId));
+                    .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
                 const nodesToDeselect = gridApi
@@ -325,7 +333,7 @@ const RightsRepository = ({
                 if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
                     setSelectedRights(selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)));
                 } else {
-                    nodesToDeselect.forEach((node) => node.setSelected(false));
+                    nodesToDeselect.forEach(node => node.setSelected(false));
                 }
                 break;
             }
@@ -377,6 +385,7 @@ const RightsRepository = ({
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={setPrePlanRepoRights}
+                planningRightsCount={planningRightsCount}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -409,9 +418,9 @@ const RightsRepository = ({
                 columnDefs={updatedColumnDefsCheckBoxHeader}
                 prePlanRepoRights={prePlanRepoRights}
                 activeTab={activeTab}
-                currentTab={PRE_PLAN_TAB}
                 mapping={mapping}
             />
+            <SelectedForPlanning activeTab={activeTab} />
         </div>
     );
 };
@@ -458,15 +467,15 @@ const mapStateToProps = () => {
     });
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    createRightMatchingColumnDefs: (payload) => dispatch(createRightMatchingColumnDefs(payload)),
-    filterByStatus: (payload) => dispatch(filterRightsByStatus(payload)),
+const mapDispatchToProps = dispatch => ({
+    createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
-    setSelectedRights: (payload) => dispatch(setSelectedRights(payload)),
+    setSelectedRights: payload => dispatch(setSelectedRights(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
-    downloadIngestEmail: (payload) => dispatch(downloadEmailAttachment(payload)),
-    downloadIngestFile: (payload) => dispatch(downloadFileAttachment(payload)),
-    setRightsFilter: (payload) => dispatch(setRightsFilter(payload)),
+    downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
+    downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
+    setRightsFilter: payload => dispatch(setRightsFilter(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

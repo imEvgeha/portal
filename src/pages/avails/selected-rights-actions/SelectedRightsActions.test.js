@@ -59,7 +59,7 @@ describe('SelectedRightsActions', () => {
     describe('Bulk Unmatch', () => {
         let bulkUnmatchOption = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
             withHooks(() => {
                 mockStore = configureStore();
                 store = mockStore({ui: {toast: {list: []}}});
@@ -156,7 +156,7 @@ describe('SelectedRightsActions', () => {
     describe('Bulk Match', () => {
         let bulkMatchOption = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
             mockStore = configureStore();
             store = mockStore({ui: {toast: {list: []}}});
             withHooks(() => {
@@ -261,7 +261,7 @@ describe('SelectedRightsActions', () => {
     describe('Create Bonus Right', () => {
         let createBonusRightsOption = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
             withHooks(() => {
                 mockStore = configureStore();
                 store = mockStore({ui: {toast: {list: []}}});
@@ -394,7 +394,7 @@ describe('SelectedRightsActions', () => {
     describe('Add to Pre-Plan', () => {
         let addToPreplan = null;
 
-        const init = (selectedRights) => {
+        const init = selectedRights => {
             mockStore = configureStore();
             store = mockStore({ui: {toast: {list: []}}});
             withHooks(() => {

@@ -1,5 +1,5 @@
 export const TOTAL_RIGHTS = 'TOTAL_RIGHTS';
-export const SUCCESS ='SUCCESS';
+export const SUCCESS = 'SUCCESS';
 export const UNMATCHED = 'UNMATCHED';
 export const ERRORS = 'ERRORS';
 export const FATAL = 'FATAL';
