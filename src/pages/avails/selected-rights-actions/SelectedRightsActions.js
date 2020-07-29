@@ -254,7 +254,7 @@ export const SelectedRightsActions = ({
                             <div>{BULK_UNMATCH}</div>
                         </NexusTooltip>
                     </div>
-                    {URL.isLocalOrDevOrQA() && (
+                    {URL.isLocalOrDev() && (
                         <div
                             className={classNames(
                                 'nexus-c-selected-rights-actions__menu-item',
