@@ -11,7 +11,7 @@ export const NexusModalProvider = ({children}) => {
     const [isOpened, setIsOpened] = useState(false);
     const [style, setStyle] = useState({});
 
-    const setModalContent = content => {
+    const setModalContent = (content) => {
         setIsOpened(true);
         setContent(content);
     };
@@ -40,6 +40,7 @@ export const NexusModalProvider = ({children}) => {
         close,
         open: () => setIsOpened(true),
         setModalStyle: setStyle,
+        isOpened,
     };
 
     return (
@@ -52,9 +53,7 @@ export const NexusModalProvider = ({children}) => {
                         onClose={close}
                         width={style.width || 'medium'}
                     >
-                        <div className="nexus-c-modal">
-                            {content}
-                        </div>
+                        <div className="nexus-c-modal">{content}</div>
                     </Modal>
                 </ModalTransition>
             )}

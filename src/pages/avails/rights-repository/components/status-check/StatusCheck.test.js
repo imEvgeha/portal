@@ -7,26 +7,26 @@ describe('StatusCheck', () => {
     let wrapper = null;
 
     const props = {
-        nonEligibleTitles: [{
-            key: 1,
-            cells: [
-                {
-                    key: 11,
-                    content: 'Title',
-                },
-                {
-                    key: 22,
-                    content: 'Status',
-                },
-            ],
-        }],
+        nonEligibleTitles: [
+            {
+                key: 1,
+                cells: [
+                    {
+                        key: 11,
+                        content: 'Title',
+                    },
+                    {
+                        key: 22,
+                        content: 'Status',
+                    },
+                ],
+            },
+        ],
         message: 'Status Check Message',
     };
 
     beforeEach(() => {
-        wrapper = shallow(
-            <StatusCheck {... props} />
-        );
+        wrapper = shallow(<StatusCheck {...props} />);
     });
 
     it('should match snapshot', () => {

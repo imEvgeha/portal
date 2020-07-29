@@ -22,3 +22,17 @@ export const setCoreTitleId = ({rightIds, coreTitleId = ''}) => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/coreTitleId?coreTitleId=${coreTitleId}&rightIds=${rightIds}`;
     return nexusFetch(url, {method: 'PATCH'});
 };
+
+export const getRightsHistory = searchIds => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`;
+    const body = {
+        excludes: ['header'],
+        searchIdType: 'CORRELATION_ID',
+        searchIds,
+    };
+
+    return nexusFetch(url, {
+        method: 'post',
+        body: JSON.stringify(body),
+    });
+};

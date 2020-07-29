@@ -27,18 +27,17 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
         availsMapping: state.root.availsMapping,
         selectValues: state.root.selectValues,
-        blocking: state.root.blocking
+        blocking: state.root.blocking,
     };
 };
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
 class RightCreate extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -52,21 +51,19 @@ class RightCreate extends React.Component {
         this.state = {
             isRightPriceFormOpen: false,
             isRightTerritoryFormOpen: false,
-            isRightAudioLanguageFormOpen: false
+            isRightAudioLanguageFormOpen: false,
         };
-
     }
 
     componentDidMount() {
         this.right = {licensed: true};
 
-        if(this.props.availsMapping){
+        if (this.props.availsMapping) {
             this.initMappingErrors(this.props.availsMapping.mappings);
-        }else{
+        } else {
             profileService.initAvailsMapping();
         }
     }
-
 
     componentDidUpdate(prevProps) {
         if (prevProps.availsMapping !== this.props.availsMapping) {
@@ -78,7 +75,7 @@ class RightCreate extends React.Component {
         const groupedMappingName = this.getGroupedMappingName(name);
         if (invalid) {
             this.mappingErrorMessage[name] = {date: INVALID_DATE};
-            if(this.mappingErrorMessage[groupedMappingName] && this.mappingErrorMessage[groupedMappingName].range) {
+            if (this.mappingErrorMessage[groupedMappingName] && this.mappingErrorMessage[groupedMappingName].range) {
                 this.mappingErrorMessage[groupedMappingName].range = '';
             }
         } else {
@@ -96,33 +93,33 @@ class RightCreate extends React.Component {
 
     handleArrayPush = (e, name) => {
         let newArray;
-        if(this.right[name]) {
+        if (this.right[name]) {
             newArray = Array.from(this.right[name]);
             newArray = [...newArray, e];
         } else {
             newArray = [e];
         }
         this.checkRight(name, newArray, true);
-    }
+    };
 
     handleDeleteObjectFromArray = (value, name, subField) => {
-        const newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
+        const newRight = this.right[name] && this.right[name].filter((e) => e[subField] !== value);
         this.checkRight(name, newRight, true);
-    }
+    };
 
     handleBooleanChange({target}) {
         const value = target.value;
         const name = target.name;
-        if(value === ''){
+        if (value === '') {
             delete this.right[name];
             this.checkRight(name, value, false);
-        }else{
+        } else {
             this.checkRight(name, value === 'true', true);
         }
     }
 
     checkRight(name, value, setNewValue) {
-        if(!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
+        if (!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
             const validationError = this.validateField(name, value, this.right);
 
             const errorMessage = {inner: '', pair: '', range: '', date: '', text: validationError};
@@ -131,9 +128,20 @@ class RightCreate extends React.Component {
             if (!validationError) {
                 const pairFieldName = this.getPairFieldName(name);
                 if (pairFieldName) {
-                    const map = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === name);
-                    const mappingPair = this.props.availsMapping.mappings.find(({javaVariableName}) => javaVariableName === pairFieldName);
-                    const oneOfValidationError = oneOfValidation(name, map.displayName, value, pairFieldName, mappingPair.displayName, this.right);
+                    const map = this.props.availsMapping.mappings.find(
+                        ({javaVariableName}) => javaVariableName === name
+                    );
+                    const mappingPair = this.props.availsMapping.mappings.find(
+                        ({javaVariableName}) => javaVariableName === pairFieldName
+                    );
+                    const oneOfValidationError = oneOfValidation(
+                        name,
+                        map.displayName,
+                        value,
+                        pairFieldName,
+                        mappingPair.displayName,
+                        this.right
+                    );
                     if (!this.mappingErrorMessage[name].range) {
                         this.mappingErrorMessage[name].pair = oneOfValidationError;
                     }
@@ -142,17 +150,17 @@ class RightCreate extends React.Component {
                         pair: '',
                         range: '',
                         date: '',
-                        text: ''
+                        text: '',
                     };
 
-                    if(!this.mappingErrorMessage[pairFieldName].range) {
+                    if (!this.mappingErrorMessage[pairFieldName].range) {
                         this.mappingErrorMessage[pairFieldName].pair = oneOfValidationError;
                     }
                 }
             }
         }
 
-        if(setNewValue){
+        if (setNewValue) {
             const newRight = {...this.right, [name]: value};
             this.right = newRight;
             this.setState({});
@@ -161,15 +169,15 @@ class RightCreate extends React.Component {
 
     handleDatepickerChange(name, displayName, val) {
         this.checkRight(name, val, true);
-        if(!this.mappingErrorMessage[name].text) {
+        if (!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
             if (this.mappingErrorMessage[groupedMappingName] && !this.mappingErrorMessage[groupedMappingName].date) {
                 const errorMessage = rangeValidation(name, displayName, val, this.right);
                 this.mappingErrorMessage[name].range = errorMessage;
                 if (this.mappingErrorMessage[groupedMappingName]) {
                     this.mappingErrorMessage[groupedMappingName].range = errorMessage;
-                    if(!errorMessage){
-                        this.checkRight(groupedMappingName, this.right[groupedMappingName],false);
+                    if (!errorMessage) {
+                        this.checkRight(groupedMappingName, this.right[groupedMappingName], false);
                     }
                 }
             }
@@ -179,18 +187,23 @@ class RightCreate extends React.Component {
     }
 
     getGroupedMappingName(name) {
-        if(name === 'start') return 'end';
-        if(name === 'end') return 'start';
+        if (name === 'start') return 'end';
+        if (name === 'end') return 'start';
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
     getPairFieldName(name) {
         switch (name) {
-            case 'start': return 'availStart';
-            case 'availStart': return 'start';
-            case 'end': return 'availEnd';
-            case 'availEnd': return 'end';
-            default: return '';
+            case 'start':
+                return 'availStart';
+            case 'availStart':
+                return 'start';
+            case 'end':
+                return 'availEnd';
+            case 'availEnd':
+                return 'end';
+            default:
+                return '';
         }
     }
 
@@ -204,7 +217,7 @@ class RightCreate extends React.Component {
 
     isAnyErrors() {
         for (const [, value] of Object.entries(this.mappingErrorMessage)) {
-            if(value.date || value.range || value.text || value.inner || value.pair) {
+            if (value.date || value.range || value.text || value.inner || value.pair) {
                 return true;
             }
         }
@@ -219,10 +232,14 @@ class RightCreate extends React.Component {
     }
 
     validateField(name, value) {
-        const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
-        const isOriginRightIdRequired = name === 'originalRightId' && this.right.temporaryPriceReduction === true && this.right.status && this.right.status.value === 'Ready';
-        if(map) {
-            const canCreate =  !map.readOnly && can('create', 'Avail', map.javaVariableName);
+        const map = this.props.availsMapping.mappings.find((x) => x.javaVariableName === name);
+        const isOriginRightIdRequired =
+            name === 'originalRightId' &&
+            this.right.temporaryPriceReduction === true &&
+            this.right.status &&
+            this.right.status.value === 'Ready';
+        if (map) {
+            const canCreate = !map.readOnly && can('create', 'Avail', map.javaVariableName);
 
             if (canCreate && (map.required || isOriginRightIdRequired)) {
                 if (Array.isArray(value)) {
@@ -235,86 +252,102 @@ class RightCreate extends React.Component {
     }
 
     areMandatoryFieldsEmpty() {
-        if(this.props.availsMapping.mappings.filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName)).find(x => x.required && !this.right[x.javaVariableName])) return true;
+        if (
+            this.props.availsMapping.mappings
+                .filter(({javaVariableName, readOnly}) => !readOnly && can('create', 'Avail', javaVariableName))
+                .find((x) => x.required && !this.right[x.javaVariableName])
+        )
+            return true;
         return false;
     }
 
-    validateFields(){
-        this.props.availsMapping.mappings.filter(({javaVariableName}) => can('create', 'Avail', javaVariableName)).map((mapping) => {
-            this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
-        });
+    validateFields() {
+        this.props.availsMapping.mappings
+            .filter(({javaVariableName}) => can('create', 'Avail', javaVariableName))
+            .map((mapping) => {
+                this.checkRight(mapping.javaVariableName, this.right[mapping.javaVariableName], false);
+            });
         this.setState({});
         return this.anyInvalidField();
     }
 
     confirm() {
-        if(this.validateFields()) {
+        if (this.validateFields()) {
             this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
             return;
         }
         store.dispatch(blockUI(true));
-        if(this.props.match.params.availHistoryId){
-            this.right.availHistoryIds=[this.props.match.params.availHistoryId];
+        if (this.props.match.params.availHistoryId) {
+            this.right.availHistoryIds = [this.props.match.params.availHistoryId];
         }
-        rightsService.create(this.right).then((response) => {
-            this.right={};
-            this.setState({});
-            if(response && response.id){
-                if(this.props.match.params.availHistoryId){
-                    this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
-                }else{
-                    this.context.router.history.push(RightsURL.getRightUrl(response.id));
+        rightsService
+            .create(this.right)
+            .then((response) => {
+                this.right = {};
+                this.setState({});
+                if (response && response.id) {
+                    if (this.props.match.params.availHistoryId) {
+                        this.context.router.history.push(
+                            URL.keepEmbedded(
+                                '/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'
+                            )
+                        );
+                    } else {
+                        this.context.router.history.push(RightsURL.getRightUrl(response.id));
+                    }
                 }
-
-            }
-            store.dispatch(blockUI(false));
-        })
+                store.dispatch(blockUI(false));
+            })
             .catch(() => {
                 this.setState({errorMessage: 'Right creation Failed'});
                 store.dispatch(blockUI(false));
             });
     }
 
-    cancel(){
-        if(this.props.match.params.availHistoryId){
-            this.context.router.history.push(URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'));
-        }else {
+    cancel() {
+        if (this.props.match.params.availHistoryId) {
+            this.context.router.history.push(
+                URL.keepEmbedded('/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry')
+            );
+        } else {
             this.context.router.history.push(URL.keepEmbedded('/avails'));
         }
     }
 
     initMappingErrors = (mappings) => {
         const mappingErrorMessage = {};
-        mappings.filter(({dataType}) => dataType).map((mapping) => {
-            mappingErrorMessage[mapping.javaVariableName] =  {
-                inner: '',
-                date: '',
-                range: '',
-                pair: '',
-                text:''
-            };
-        });
+        mappings
+            .filter(({dataType}) => dataType)
+            .map((mapping) => {
+                mappingErrorMessage[mapping.javaVariableName] = {
+                    inner: '',
+                    date: '',
+                    range: '',
+                    pair: '',
+                    text: '',
+                };
+            });
 
-        this.mappingErrorMessage =  mappingErrorMessage;
+        this.mappingErrorMessage = mappingErrorMessage;
     };
 
     toggleRightPriceForm = () => {
         this.setState({
-            isRightPriceFormOpen: !this.state.isRightPriceFormOpen
+            isRightPriceFormOpen: !this.state.isRightPriceFormOpen,
         });
-    }
+    };
 
     toggleRightTerritoryForm = () => {
         this.setState({
-            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen
+            isRightTerritoryFormOpen: !this.state.isRightTerritoryFormOpen,
         });
-    }
+    };
 
     toggleRightAudioLanguageForm = () => {
         this.setState({
-            isRightAudioLanguageFormOpen: !this.state.isRightAudioLanguageFormOpen
+            isRightAudioLanguageFormOpen: !this.state.isRightAudioLanguageFormOpen,
         });
-    }
+    };
 
     render() {
         const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
@@ -322,57 +355,90 @@ class RightCreate extends React.Component {
                 <div
                     key={name}
                     className="list-group-item-action"
-                    style={{border:'none', position:'relative', display:'block', padding:'0.75rem 1.25rem', marginBottom:'-1px', backgroundColor:'#fff'}}
+                    style={{
+                        border: 'none',
+                        position: 'relative',
+                        display: 'block',
+                        padding: '0.75rem 1.25rem',
+                        marginBottom: '-1px',
+                        backgroundColor: '#fff',
+                    }}
                 >
                     <div className="row">
-                        <div className="col-4">{displayName}{required?<span className="text-danger">*</span>:''}:
-                            {tooltip ? <span title={tooltip} style={{color: 'grey'}}>&nbsp;&nbsp;<i className="far fa-question-circle" /></span> : ''}
+                        <div className="col-4">
+                            {displayName}
+                            {required ? <span className="text-danger">*</span> : ''}:
+                            {tooltip ? (
+                                <span title={tooltip} style={{color: 'grey'}}>
+                                    &nbsp;&nbsp;
+                                    <i className="far fa-question-circle" />
+                                </span>
+                            ) : (
+                                ''
+                            )}
                         </div>
-                        <div className="col-8">
-                            {content}
-                        </div>
+                        <div className="col-8">{content}</div>
                     </div>
                 </div>
             );
         };
 
         const renderStringField = (name, displayName, required, value, tooltip) => {
-            return renderFieldTemplate(name, displayName, required, tooltip, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                tooltip,
                 <div>
-                    <Input defaultValue={value} type="text" name={name} id={'right-create-' + name + '-text'} placeholder={'Enter ' + displayName} onChange={this.handleChange} />
+                    <Input
+                        defaultValue={value}
+                        type="text"
+                        name={name}
+                        id={'right-create-' + name + '-text'}
+                        placeholder={'Enter ' + displayName}
+                        onChange={this.handleChange}
+                    />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderIntegerField = (name, displayName, required, value) => {
-            const validation = {number : true, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}};
+            const validation = {number: true, pattern: {value: /^\d+$/, errorMessage: 'Please enter a valid integer'}};
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
 
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     isValid = val ? validation.pattern.value.test(val) : !required;
-                }else if(validation && validation.number) {
-                    isValid = !isNaN(val.replace(',','.'));
+                } else if (validation && validation.number) {
+                    isValid = !isNaN(val.replace(',', '.'));
                 }
 
-                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isValid){
+                if (this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if (this.mappingErrorMessage[name].inner && isValid) {
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                    if (!this.mappingErrorMessage[name].inner && !isValid) {
                         this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
                 cb(isValid);
             };
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <div>
                     <AvForm>
                         <AvField
@@ -380,45 +446,55 @@ class RightCreate extends React.Component {
                             name={name}
                             id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
-                            onChange={(ev, val) => {this.handleChange(ev, Number(val));}}
+                            onChange={(ev, val) => {
+                                this.handleChange(ev, Number(val));
+                            }}
                             type="text"
                             validate={{number: true, async: validate}}
                             errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderYearField = (name, displayName, required, value) => {
-            const validation = {pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}};
+            const validation = {pattern: {value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}};
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
 
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     isValid = val ? validation.pattern.value.test(val) : !required;
-                }else if(validation && validation.number) {
-                    isValid = !isNaN(val.replace(',','.'));
+                } else if (validation && validation.number) {
+                    isValid = !isNaN(val.replace(',', '.'));
                 }
 
-                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isValid){
+                if (this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if (this.mappingErrorMessage[name].inner && isValid) {
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                    if (!this.mappingErrorMessage[name].inner && !isValid) {
                         this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
                 cb(isValid);
             };
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <div>
                     <AvForm>
                         <AvField
@@ -433,38 +509,49 @@ class RightCreate extends React.Component {
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderDoubleField = (name, displayName, required, value) => {
-            const validation = {number : true, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}};
+            const validation = {
+                number: true,
+                pattern: {value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'},
+            };
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
 
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     isValid = val ? validation.pattern.value.test(val) : !required;
-                }else if(validation && validation.number) {
-                    isValid = !isNaN(val.replace(',','.'));
+                } else if (validation && validation.number) {
+                    isValid = !isNaN(val.replace(',', '.'));
                 }
 
-                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isValid){
+                if (this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if (this.mappingErrorMessage[name].inner && isValid) {
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                    if (!this.mappingErrorMessage[name].inner && !isValid) {
                         this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
                 cb(isValid);
             };
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <div>
                     <AvForm>
                         <AvField
@@ -472,45 +559,60 @@ class RightCreate extends React.Component {
                             name={name}
                             id={'right-create-' + name + '-text'}
                             placeholder={'Enter ' + displayName}
-                            onChange={(ev, val) => {this.handleChange(ev, Number(val.replace(',','.')));}}
+                            onChange={(ev, val) => {
+                                this.handleChange(ev, Number(val.replace(',', '.')));
+                            }}
                             type="text"
                             validate={{async: validate}}
                             errorMessage={validation.pattern.errorMessage}
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderTimeField = (name, displayName, required, value) => {
-            const validation = {pattern:{value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/, errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)'}};
+            const validation = {
+                pattern: {
+                    value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
+                    errorMessage: 'Please enter a valid time! (00:00:00 - 23:59:59)',
+                },
+            };
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
 
-                if(validation && validation.pattern){
+                if (validation && validation.pattern) {
                     isValid = val ? validation.pattern.value.test(val) : !required;
-                }else if(validation && validation.number) {
-                    isValid = !isNaN(val.replace(',','.'));
+                } else if (validation && validation.number) {
+                    isValid = !isNaN(val.replace(',', '.'));
                 }
 
-                if(this.mappingErrorMessage && this.mappingErrorMessage[name]) {
-                    if(this.mappingErrorMessage[name].inner && isValid){
+                if (this.mappingErrorMessage && this.mappingErrorMessage[name]) {
+                    if (this.mappingErrorMessage[name].inner && isValid) {
                         this.mappingErrorMessage[name].inner = '';
                         this.setState({});
                     }
-                    if(!this.mappingErrorMessage[name].inner && !isValid){
+                    if (!this.mappingErrorMessage[name].inner && !isValid) {
                         this.mappingErrorMessage[name].inner = validation.pattern.errorMessage;
                         this.setState({});
                     }
                 }
                 cb(isValid);
             };
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <div>
                     <AvForm>
                         <AvField
@@ -525,69 +627,90 @@ class RightCreate extends React.Component {
                         />
                     </AvForm>
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderMultiSelectField = (name, displayName, required, value) => {
             let options = [];
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
             }
 
             //fields with endpoints (these have ids)
             const filterKeys = Object.keys(this.right).filter((key) => {
-                const map = this.props.availsMapping.mappings.find((x)=>x.javaVariableName === key);
+                const map = this.props.availsMapping.mappings.find((x) => x.javaVariableName === key);
                 return map && map.configEndpoint;
             });
-            const filters = filterKeys.map((key) => this.right[key]).filter(x => (Array.isArray(x) ? x.length : x));
+            const filters = filterKeys.map((key) => this.right[key]).filter((x) => (Array.isArray(x) ? x.length : x));
 
             let filteredOptions = options;
-            filters.map(filter => {
+            filters.map((filter) => {
                 const fieldName = (Array.isArray(filter) ? filter[0].type : filter.type) + 'Id';
                 const allowedOptions = Array.isArray(filter) ? filter.map(({id}) => id) : [filter.id];
-                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+                filteredOptions = filteredOptions.filter((option) =>
+                    option[fieldName] ? allowedOptions.indexOf(option[fieldName]) > -1 : true
+                );
             });
 
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                        label: rec.label || rec.value,
-                        aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};})
-                }
+                    options: filteredOptions
+                        .filter((rec) => rec.value)
+                        .map((rec) => {
+                            return {
+                                ...rec,
+                                label: rec.label || rec.value,
+                                aliasValue: rec.aliasId
+                                    ? options.filter((pair) => rec.aliasId === pair.id).length === 1
+                                        ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                                        : null
+                                    : null,
+                            };
+                        }),
+                },
             ];
 
             const handleOptionsChange = (selectedOptions) => {
                 this.checkRight(name, selectedOptions, true);
             };
 
-            return renderFieldTemplate(name, displayName, required, null, (
-                <div
-                    id={'right-create-' + name + '-multiselect'}
-                    key={name}
-                    className="react-select-container"
-                >
+            const isRequired =
+                required ||
+                (name === 'platformCategory' && this.right.licensee && this.right.licensee.servicingRegion === 'US');
+            return renderFieldTemplate(
+                name,
+                displayName,
+                isRequired,
+                null,
+                <div id={'right-create-' + name + '-multiselect'} key={name} className="react-select-container">
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
-                            if(value && value.length > 0){
+                            if (value && value.length > 0) {
                                 return (
-                                    <div
-                                        style={{width:'100%'}}
-                                    >
+                                    <div style={{width: '100%'}}>
                                         <div
-                                            style={{maxWidth:'90%', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                            style={{
+                                                maxWidth: '90%',
+                                                float: 'left',
+                                                textOverflow: 'ellipsis',
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                            }}
                                         >
                                             {value.map(({value}) => value).join(', ')}
                                         </div>
-                                        <div
-                                            style={{width:'10%', float:'left', paddingLeft:'5px'}}
-                                        >
+                                        <div style={{width: '10%', float: 'left', paddingLeft: '5px'}}>
                                             {' (' + value.length + ' selected)'}
                                         </div>
                                     </div>
@@ -600,42 +723,54 @@ class RightCreate extends React.Component {
                         onChange={handleOptionsChange}
                     />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderSelectField = (name, displayName, required, value) => {
             let options = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
             }
-            options = options.filter(rec => rec.value).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)
-                };
-            });
-            if(options.length > 0 && value){
+            options = options
+                .filter((rec) => rec.value)
+                .map((rec) => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
+                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
+            if (options.length > 0 && value) {
                 val = value;
-                if(!required) {
+                if (!required) {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
             const handleOptionsChange = (option) => {
                 this.checkRight(name, option.value ? option : null, true);
             };
-            return renderFieldTemplate(name, displayName, required, null, (
-                <div
-                    id={'right-create-' + name + '-select'}
-                    key={name}
-                    className="react-select-container"
-                >
+
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
+                <div id={'right-create-' + name + '-select'} key={name} className="react-select-container">
                     <Select
                         name={name}
                         isSearchable
@@ -645,16 +780,24 @@ class RightCreate extends React.Component {
                         onChange={handleOptionsChange}
                     />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
-                    <small className="text-danger m-2">
-                        {this.mappingErrorMessage[name] ? this.mappingErrorMessage[name].text ? this.mappingErrorMessage[name].text : '' : ''}
-                    </small>
-                  )}
+                        <small className="text-danger m-2">
+                            {this.mappingErrorMessage[name]
+                                ? this.mappingErrorMessage[name].text
+                                    ? this.mappingErrorMessage[name].text
+                                    : ''
+                                : ''}
+                        </small>
+                    )}
                 </div>
-            ));
+            );
         };
 
         const renderBooleanField = (name, displayName, required, value, defaultValue) => {
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <select
                     className="form-control"
                     name={name}
@@ -668,31 +811,46 @@ class RightCreate extends React.Component {
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                 </select>
-            ));
+            );
         };
 
         const renderPriceField = (name, displayName, required, value) => {
-            let priceTypeOptions = [], priceCurrencyOptions = [];
+            let priceTypeOptions = [],
+                priceCurrencyOptions = [];
             let val;
 
-            if(this.props.selectValues && this.props.selectValues['pricing.priceType']){
-                priceTypeOptions  = this.props.selectValues['pricing.priceType'];
+            if (this.props.selectValues && this.props.selectValues['pricing.priceType']) {
+                priceTypeOptions = this.props.selectValues['pricing.priceType'];
             }
             if (this.props.selectValues && this.props.selectValues['pricing.priceCurrency']) {
                 priceCurrencyOptions = this.props.selectValues['pricing.priceCurrency'];
             }
 
-            priceTypeOptions = priceTypeOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (priceTypeOptions.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? priceTypeOptions.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            priceTypeOptions = priceTypeOptions
+                .filter((rec) => rec.value)
+                .map((rec) => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? priceTypeOptions.filter((pair) => rec.aliasId === pair.id).length === 1
+                                ? priceTypeOptions.filter((pair) => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
 
-            if(priceTypeOptions.length > 0 && value){
+            if (priceTypeOptions.length > 0 && value) {
                 val = value;
-                if(!required) {
+                if (!required) {
                     priceTypeOptions.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <PriceField
                     prices={this.right.pricing}
                     name={name}
@@ -715,27 +873,41 @@ class RightCreate extends React.Component {
                     )}
                     mappingErrorMessage={this.mappingErrorMessage}
                 />
-            ));
+            );
         };
 
         const renderTerritoryField = (name, displayName, required, value) => {
             let options = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues[name]){
-                options  = this.props.selectValues[name];
+            if (this.props.selectValues && this.props.selectValues[name]) {
+                options = this.props.selectValues[name];
             }
 
-            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            options = options
+                .filter((rec) => rec.value)
+                .map((rec) => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
+                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
 
-            if(options.length > 0 && value){
+            if (options.length > 0 && value) {
                 val = value;
-                if(!required) {
+                if (!required) {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <TerritoryField
                     territory={this.right.territory}
                     name={name}
@@ -746,45 +918,68 @@ class RightCreate extends React.Component {
                             <div style={{position: 'absolute', right: '10px'}}>
                                 <AddButton onClick={this.toggleRightTerritoryForm}>+</AddButton>
                             </div>
-                            <RightTerritoryForm onSubmit={(e) => this.handleArrayPush(e, 'territory')} isOpen={this.state.isRightTerritoryFormOpen} onClose={this.toggleRightTerritoryForm} data={val} options={options} />
+                            <RightTerritoryForm
+                                onSubmit={(e) => this.handleArrayPush(e, 'territory')}
+                                isOpen={this.state.isRightTerritoryFormOpen}
+                                onClose={this.toggleRightTerritoryForm}
+                                data={val}
+                                options={options}
+                            />
                         </>
-)}
+                    )}
                     mappingErrorMessage={this.mappingErrorMessage}
                 />
-            ));
+            );
         };
 
         const renderAudioLanguageField = (name, displayName, required, value) => {
-            let options = [], audioTypeOptions = [];
+            let options = [],
+                audioTypeOptions = [];
             let val;
-            if(this.props.selectValues && this.props.selectValues['languageAudioTypes.language']){
-                options  = this.props.selectValues['languageAudioTypes.language'];
+            if (this.props.selectValues && this.props.selectValues['languageAudioTypes.language']) {
+                options = this.props.selectValues['languageAudioTypes.language'];
             }
             if (this.props.selectValues && this.props.selectValues['languageAudioTypes.audioType']) {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
             }
 
-            options = options.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                label: rec.label || rec.value,
-                aliasValue:(rec.aliasId ? (options.filter((pair) => (rec.aliasId === pair.id)).length === 1 ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null) : null)};});
+            options = options
+                .filter((rec) => rec.value)
+                .map((rec) => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter((pair) => rec.aliasId === pair.id).length === 1
+                                ? options.filter((pair) => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
 
-            if(options.length > 0 && value){
+            if (options.length > 0 && value) {
                 val = value;
             }
             if (val) {
-                val.forEach(item => {
-                    options.map(option => {
+                val.forEach((item) => {
+                    options.map((option) => {
                         if (option.value === item.language) {
-                            item.label = option.label
+                            item.label = option.label;
                         }
                     });
                 });
             }
-            return renderFieldTemplate(name, displayName, required, null, (
+            return renderFieldTemplate(
+                name,
+                displayName,
+                required,
+                null,
                 <AudioLanguageField
                     audioLanguages={this.right.languageAudioTypes}
                     name={name}
-                    onRemoveClick={(audioL) => this.handleDeleteObjectFromArray(audioL.language, 'languageAudioTypes', 'language')}
+                    onRemoveClick={(audioL) =>
+                        this.handleDeleteObjectFromArray(audioL.language, 'languageAudioTypes', 'language')
+                    }
                     onAddClick={this.toggleRightAudioLanguageForm}
                     renderChildren={() => (
                         <>
@@ -803,7 +998,7 @@ class RightCreate extends React.Component {
                     )}
                     mappingErrorMessage={this.mappingErrorMessage}
                 />
-            ));
+            );
         };
 
         const renderDatepickerField = (name, displayName, required, value, useTime, isTimestamp) => {
@@ -816,111 +1011,208 @@ class RightCreate extends React.Component {
                 value,
                 error,
                 isTimestamp,
-                isReturningTime:useTime,
+                isReturningTime: useTime,
                 onChange: (date) => {
                     this.handleDatepickerChange(name, displayName, date);
                     this.handleInvalidDatePicker(name, false);
                 },
-                isClearable: !required
+                isClearable: !required,
             };
 
-            const component = useTime
-                ? <NexusDateTimePicker {...props} />
-                : <NexusDatePicker {...props} />;
+            const component = useTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;
 
             return renderFieldTemplate(name, displayName, required, null, component);
         };
 
         const renderFields = [];
-        if(this.props.availsMapping) {
-            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map((mapping)=> {
-                if(mapping.enableEdit &&
-                    (!mapping.readOnly || mapping.defaultValue)
-                    && !excludedFields.find(item => item === mapping.javaVariableName)){
-                    const required = mapping.required;
-                    const value = this.right ? this.right[mapping.javaVariableName] : '';
-                    const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
-                    if(cannotCreate){
-                        return;
+        if (this.props.availsMapping) {
+            this.props.availsMapping.mappings
+                .filter(({dataType}) => dataType)
+                .map((mapping) => {
+                    if (
+                        mapping.enableEdit &&
+                        (!mapping.readOnly || mapping.defaultValue) &&
+                        !excludedFields.find((item) => item === mapping.javaVariableName)
+                    ) {
+                        const required = mapping.required;
+                        const value = this.right ? this.right[mapping.javaVariableName] : '';
+                        const cannotCreate = cannot('create', 'Avail', mapping.javaVariableName);
+                        if (cannotCreate) {
+                            return;
+                        }
+                        switch (mapping.dataType) {
+                            case 'string':
+                                renderFields.push(
+                                    renderStringField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'integer':
+                                renderFields.push(
+                                    renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'year':
+                                renderFields.push(
+                                    renderYearField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'double':
+                                renderFields.push(
+                                    renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'select':
+                                renderFields.push(
+                                    renderSelectField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'multiselect':
+                                renderFields.push(
+                                    renderMultiSelectField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value
+                                    )
+                                );
+                                break;
+                            case 'duration':
+                                renderFields.push(
+                                    renderStringField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'
+                                    )
+                                );
+                                break;
+                            case 'time':
+                                renderFields.push(
+                                    renderTimeField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case DATETIME_FIELDS.TIMESTAMP:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        true,
+                                        true
+                                    )
+                                );
+                                break;
+                            case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        false,
+                                        false
+                                    )
+                                );
+                                break;
+                            case DATETIME_FIELDS.BUSINESS_DATETIME:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        true,
+                                        false
+                                    )
+                                );
+                                break;
+                            case 'boolean':
+                                renderFields.push(
+                                    renderBooleanField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        mapping.defaultValue
+                                    )
+                                );
+                                break;
+                            case 'priceType':
+                                renderFields.push(
+                                    renderPriceField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'territoryType':
+                                renderFields.push(
+                                    renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value)
+                                );
+                                break;
+                            case 'audioLanguageType':
+                                renderFields.push(
+                                    renderAudioLanguageField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value
+                                    )
+                                );
+                                break;
+                            default:
+                                console.warn(
+                                    'Unsupported DataType: ' +
+                                        mapping.dataType +
+                                        ' for field name: ' +
+                                        mapping.displayName
+                                ); // eslint-disable-line
+                        }
                     }
-                    switch (mapping.dataType) {
-                        case 'string' :
-                            renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'integer' :
-                            renderFields.push(renderIntegerField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'year' :
-                            renderFields.push(renderYearField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'double' :
-                            renderFields.push(renderDoubleField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'select' :
-                            renderFields.push(renderSelectField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'multiselect' :
-                            renderFields.push(renderMultiSelectField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'duration' :
-                            renderFields.push(renderStringField(mapping.javaVariableName, mapping.displayName, required, value,
-                            'format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'));
-                             break;
-                        case 'time' :
-                            renderFields.push(renderTimeField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case DATETIME_FIELDS.TIMESTAMP :
-                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, true));
-                            break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT :
-                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, false, false));
-                             break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME :
-                            renderFields.push(renderDatepickerField(mapping.javaVariableName, mapping.displayName, required, value, true, false));
-                            break;
-                        case 'boolean' :
-                            renderFields.push(renderBooleanField(mapping.javaVariableName, mapping.displayName, required, value, mapping.defaultValue));
-                             break;
-                        case 'priceType':
-                            renderFields.push(renderPriceField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        case 'territoryType':
-                            renderFields.push(renderTerritoryField(mapping.javaVariableName, mapping.displayName, required, value));
-                             break;
-                        case 'audioLanguageType':
-                            renderFields.push(renderAudioLanguageField(mapping.javaVariableName, mapping.displayName, required, value));
-                            break;
-                        default:
-                            console.warn('Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName); // eslint-disable-line
-                    }
-                }
-            });
+                });
         }
 
-        return(
+        return (
             <div style={{position: 'relative'}}>
                 <BlockUi tag="div" blocking={this.props.blocking}>
                     <div
-                        className={'d-inline-flex justify-content-center w-100 position-absolute' + (this.state && this.state.errorMessage ? ' alert-danger' : '')}
-                        style={{top:'-20px', zIndex:'1000', height:'25px'}}
+                        className={
+                            'd-inline-flex justify-content-center w-100 position-absolute' +
+                            (this.state && this.state.errorMessage ? ' alert-danger' : '')
+                        }
+                        style={{top: '-20px', zIndex: '1000', height: '25px'}}
                     >
-                        <Label id="right-create-error-message">
-                            {this.state && this.state.errorMessage}
-                        </Label>
+                        <Label id="right-create-error-message">{this.state && this.state.errorMessage}</Label>
                     </div>
                     <div className="nx-stylish row mt-3 mx-5">
-                        <div className="nx-stylish list-group col" style={{overflowY:'scroll', height:'calc(100vh - 220px)'}}>
+                        <div
+                            className="nx-stylish list-group col"
+                            style={{overflowY: 'scroll', height: 'calc(100vh - 220px)'}}
+                        >
                             {renderFields}
                         </div>
                     </div>
                     {this.props.availsMapping && (
-                        <div style={{display:'flex', justifyContent: 'flex-end'}}>
+                        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
                             <div className="mt-4 mx-5">
-                                <Button className="mr-2" id="right-create-submit-btn" color="primary" onClick={this.confirm}>Submit</Button>
-                                <Button className="mr-4" id="right-create-cancel-btn" color="primary" onClick={this.cancel}>Cancel</Button>
+                                <Button
+                                    className="mr-2"
+                                    id="right-create-submit-btn"
+                                    color="primary"
+                                    onClick={this.confirm}
+                                >
+                                    Submit
+                                </Button>
+                                <Button
+                                    className="mr-4"
+                                    id="right-create-cancel-btn"
+                                    color="primary"
+                                    onClick={this.cancel}
+                                >
+                                    Cancel
+                                </Button>
                             </div>
                         </div>
-                      )}
+                    )}
                 </BlockUi>
                 {/* Provide clashingRights for modal open*/}
                 <RightsClashingModal />
@@ -933,11 +1225,11 @@ RightCreate.propTypes = {
     selectValues: PropTypes.object,
     availsMapping: PropTypes.any,
     blocking: PropTypes.bool,
-    match: PropTypes.object
+    match: PropTypes.object,
 };
 
 RightCreate.contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
 };
 
 export default connect(mapStateToProps, null)(RightCreate);
