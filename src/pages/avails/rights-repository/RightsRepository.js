@@ -47,14 +47,14 @@ const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
-    withSorting(constants.INITIAL_SORT),
+    withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -125,9 +125,9 @@ const RightsRepository = ({
             const filterInstance = gridApi.getFilterInstance('status');
             let values = [];
             if (!status || status === 'Rights') {
-                const {options = []} = (Array.isArray(mapping)
-                    && mapping.find(({javaVariableName}) => javaVariableName === 'status')
-                ) || {};
+                const {options = []} =
+                    (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) ||
+                    {};
                 values = options;
             } else {
                 values = [rightsFilter.external.status];
@@ -243,25 +243,23 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-                if (!selectedIngest
-                    && rightsTableSelectedRows.length === selectedTableSelectedRows.length
-                    && clonedSelectedRights.length > rightsTableSelectedRows.length
+                if (
+                    !selectedIngest &&
+                    rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
+                    clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter(
-                        right => allSelectedRowsIds.includes(right.id)
+                    const updatedSelectedRights = clonedSelectedRights.filter(right =>
+                        allSelectedRowsIds.includes(right.id)
                     );
 
                     // Pack the new selected rights into a payload for the store update; converts array of objects
                     // to object of objects where the keys are object(right) ids.
-                    const payload = updatedSelectedRights.reduce(
-                        (selectedRights, currentRight) => {
-                            selectedRights[currentRight.id] = currentRight;
-                            return selectedRights;
-                        },
-                        {}
-                    );
+                    const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                        selectedRights[currentRight.id] = currentRight;
+                        return selectedRights;
+                    }, {});
                     setSelectedRights(payload);
                     break;
                 }
@@ -286,13 +284,10 @@ const RightsRepository = ({
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
-                const payload = updatedSelectedRights.reduce(
-                    (selectedRights, currentRight) => {
-                        selectedRights[currentRight.id] = currentRight;
-                        return selectedRights;
-                    },
-                    {}
-                );
+                const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                    selectedRights[currentRight.id] = currentRight;
+                    return selectedRights;
+                }, {});
                 setSelectedRights(payload);
                 break;
             }
@@ -328,9 +323,9 @@ const RightsRepository = ({
                     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = gridApi.getSelectedNodes().filter(
-                    ({data = {}}) => toDeselectIds.includes(data.id)
-                );
+                const nodesToDeselect = gridApi
+                    .getSelectedNodes()
+                    .filter(({data = {}}) => toDeselectIds.includes(data.id));
 
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
@@ -359,11 +354,7 @@ const RightsRepository = ({
 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
-        return (
-            id
-                ? selectedRights.filter(({availHistoryId}) => (availHistoryId === id))
-                : selectedRights
-        );
+        return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
     return (
         <div className="nexus-c-rights-repository">
