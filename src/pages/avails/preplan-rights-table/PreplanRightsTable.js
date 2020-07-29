@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
@@ -14,16 +14,19 @@ import {SELECT_VALUES} from './constants';
 
 
 const PrePlanGrid = compose(
+    withEditableColumns(),
     withColumnsResizing(),
     withSideBar(),
-    withEditableColumns(),
-    withFilterableColumns(),
-    withSorting(),
 )(NexusGrid);
 
 
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, currentTab}) => {
-    console.log(prePlanRepoRights);
+    const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
+
+    useEffect(() => {
+        setPreplanRights(prePlanRepoRights);
+    }, [prePlanRepoRights]);
+
     const planTerritoriesColumn = {
         headerName: 'Plan Territories',
         colId: 'planTerritories',
@@ -32,6 +35,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
         disabledOptionsKey: 'territoryExcluded',
+        valueFormatter: createValueFormatter('dropdown'),
         // cellRendererFramework:
     };
 
@@ -46,10 +50,19 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         'required': true,
     };
 
-    const onGridReady = ({type, columnApi}) => {
+
+    const onGridReady = ({type, columnApi, api}) => {
+        const result = [];
         if (type === GRID_EVENTS.READY) {
             const columnPosition = 10;
             columnApi.moveColumn('planTerritories', columnPosition);
+        } else if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+            api.forEachNode(({data}) => {
+                const {planTerritories: territory} = data || {};
+                delete data.planTerritories;
+                result.push({...data, territory});
+                setPreplanRights(result);
+            });
         }
     };
 
@@ -61,7 +74,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
             rowSelection="multiple"
             suppressRowClickSelection={true}
             mapping={[...mapping, updatedMapping]}
-            rowData={prePlanRepoRights}
+            rowData={preplanRights}
             isGridHidden={activeTab !== currentTab}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}

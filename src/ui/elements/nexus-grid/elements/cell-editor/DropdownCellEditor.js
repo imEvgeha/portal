@@ -20,21 +20,21 @@ class DropdownCellEditor extends Component {
     }
 
     prepareDataForSelect = (options, optionsDisabled) => {
-        const preparedOptions = Array.isArray(options) && options.map(option => ({
-            isSelected: option.selected,
-            id: option.country,
-            country: option.country,
-            isDisabled: false,
-        }));
+        const preparedOptions = Array.isArray(options) && options.map(option => {
+            return ({
+                ...option,
+                isDisabled: false,
+            });
+        });
+        const preparedDisabledOptions = Array.isArray(optionsDisabled) && optionsDisabled.map(option => (
+            {
+                selected: false,
+                isDisabled: true,
+                id: option,
+                country: option,
+            }
+        ));
 
-
-        // territories excluded is an array of strings not objects?
-        const preparedDisabledOptions = Array.isArray(optionsDisabled) && optionsDisabled.map(option => ({
-            isSelected: false,
-            id: option,
-            country: option,
-            isDisabled: true,
-        }));
         return [...preparedOptions, ...preparedDisabledOptions];
     }
 
@@ -46,14 +46,17 @@ class DropdownCellEditor extends Component {
 
     getValue = () => {
         const {value} = this.state;
-        const selectedValues = value && value.map(el => (el.isSelected ? el.country : null)).join(', ');
-        return selectedValues;
+        const cleanValues = value.filter(option => !option.isDisabled).map(option => {
+            delete option.isDisabled;
+            return option;
+        });
+        return cleanValues;
     }
 
     handleChange = index => {
         const {value} = this.state;
-        const prevIsSelected = value[index].isSelected;
-        value[index].isSelected = !prevIsSelected;
+        const prevIsSelected = value[index].selected;
+        value[index].selected = !prevIsSelected;
 
         this.setState({
             value,
@@ -69,10 +72,10 @@ class DropdownCellEditor extends Component {
                     <DropdownItemGroupCheckbox id="languages2" title="Select Plan Territories">
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
-                                defaultSelected={option.isSelected}
-                                isSelected={option.isSelected}
-                                key={option.id}
-                                id={option.id}
+                                defaultSelected={option.selected}
+                                isSelected={option.selected}
+                                key={option.country}
+                                id={option.country}
                                 isDisabled={option.isDisabled}
                                 onClick={() => this.handleChange(index)}
                             >
