@@ -40,28 +40,22 @@ const NexusTableToolbar = ({
                 setPrePlanRepoRights={setPrePlanRepoRights}
                 gridApi={gridApi}
             />
-            <NexusTab
-                title={RIGHTS_TAB}
-                totalRows={totalRows}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-            />
+            <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
             <NexusTab
                 title={PRE_PLAN_TAB}
                 totalRows={prePlanRightsCount}
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
             />
-            {
-                URL.isLocalOrDevOrQA() && (
-                    <NexusTab
-                        title={SELECTED_FOR_PLANNING_TAB}
-                        totalRows={planningRightsCount}
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                    />
-                )
-            }
+            {URL.isLocalOrDevOrQA() && (
+                <NexusTab
+                    title={SELECTED_FOR_PLANNING_TAB}
+                    totalRows={planningRightsCount}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    tooltip="Click to refresh"
+                />
+            )}
 
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
