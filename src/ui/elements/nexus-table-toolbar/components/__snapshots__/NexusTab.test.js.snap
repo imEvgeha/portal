@@ -9,7 +9,7 @@ exports[`NexusTab should match snapshot 1`] = `
     className="nexus-c-nexus-tab nexus-c-nexus-tab--is-active"
     onClick={[Function]}
   >
-    RIGHTS_TAB
+    Title
      (
     0
     )
