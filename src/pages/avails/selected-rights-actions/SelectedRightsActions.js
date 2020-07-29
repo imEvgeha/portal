@@ -6,14 +6,16 @@ import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
+import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
+import {getRightsHistory} from '../availsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import RightViewHistory from '../right-history-view/RightHistoryView';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {
     BULK_MATCH,
@@ -28,6 +30,7 @@ import {
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
+    VIEW_AUDIT_HISTORY,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -50,7 +53,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -150,6 +153,28 @@ export const SelectedRightsActions = ({
         );
     };
 
+    const openAuditHistoryModal = () => {
+        const ids = selectedRights.map(e => e.id);
+        const title = `Audit History (${selectedRights.length})`;
+
+        setModalStyle({width: '100%'});
+        setModalActions([{
+            text: 'Done',
+            onClick: close,
+        }]);
+        setModalContentAndTitle(NexusSpinner, title);
+
+        getRightsHistory(ids).then(rightsEventHistory => {
+            setModalContentAndTitle((
+                <div>
+                    {selectedRights.map((right, index) => (
+                        <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
+                    ))}
+                </div>
+            ), title);
+        });
+    };
+
     const prePlanEligible = (status, rightStatus, licensed) => {
         if (
             ['ReadyNew', 'Ready'].includes(status) &&
@@ -226,9 +251,11 @@ export const SelectedRightsActions = ({
                             selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="view-history"
+                        onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
-                        {/* TODO: Rewrite like the rest of the options when old design gets removed */}
-                        <RightViewHistory selectedAvails={selectedRights} />
+                        <div>
+                            {VIEW_AUDIT_HISTORY}
+                        </div>
                     </div>
                     <div
                         className={classNames(
