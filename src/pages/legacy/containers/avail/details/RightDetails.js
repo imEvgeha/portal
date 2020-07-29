@@ -37,6 +37,7 @@ import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/component
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
+import {getConfigApiValues} from '../../../common/CommonConfigService';
 import {NoteError, NoteMerged, NotePending} from './RightConstants';
 import './RightDetails.scss';
 
@@ -69,6 +70,7 @@ class RightDetails extends React.Component {
             priceIndex: null,
             isEdit: false,
             editedRight: {},
+            configLicensees: [],
         };
     }
 
@@ -78,6 +80,7 @@ class RightDetails extends React.Component {
         if (this.refresh === null) {
             this.refresh = setInterval(this.getRightData, config.get('avails.edit.refresh.interval'));
         }
+        getConfigApiValues('licensees', 0, 100).then(({data}) => this.setState({configLicensees: data}));
     }
 
     componentWillUnmount() {
@@ -525,10 +528,12 @@ class RightDetails extends React.Component {
     };
 
     checkFieldValue = (mapping, field, fieldValue = null) => {
-        if (field.includes(".") ) {
-            const baseField = field.substring(0, field.indexOf("."));
-            const subField = field.substring(field.indexOf(".") + 1);
-            return this.state.right[baseField].some(x => fieldValue !== null ? x[subField] === fieldValue : !! x[subField]);
+        if (field.includes('.')) {
+            const baseField = field.substring(0, field.indexOf('.'));
+            const subField = field.substring(field.indexOf('.') + 1);
+            return this.state.right[baseField].some(x =>
+                fieldValue !== null ? x[subField] === fieldValue : !!x[subField]
+            );
         } else {
             return fieldValue !== null ? this.state.right[field] === fieldValue : !!this.state.right[field];
         }
@@ -1123,12 +1128,18 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            const {right: {licensee = {}} = {}} = this.state;
-            const {servicingRegion = ''} = licensee || {};
+            const {right: {licensee = {}} = {}, configLicensees} = this.state;
 
-            const isRequired = required
-                || (name === 'platformCategory' && servicingRegion === 'US')
-                || (name === 'licenseRightsDescription');
+            const configLicensee = Array.isArray(configLicensees)
+                ? configLicensees.find(({licenseeName}) => licenseeName === licensee)
+                : '';
+
+            const {servicingRegion = ''} = configLicensee || {};
+
+            const isRequired =
+                required ||
+                (name === 'platformCategory' && servicingRegion === 'US') ||
+                name === 'licenseRightsDescription';
             const tooltip = name === 'platformCategory' ? 'Required for US Licensee' : null;
 
             return renderFieldTemplate(
@@ -1244,7 +1255,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            const deletePrice = (id) => {
+            const deletePrice = id => {
                 const newArray = selectedVal && selectedVal.filter(e => id !== e.id);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
@@ -1278,10 +1289,12 @@ class RightDetails extends React.Component {
             if (options.length) {
                 pricesWithLabel = prices.map(({priceType, priceValue, priceCurrency, errors = []}) => {
                     const error = errors.length
-                        ? errors.map(error => {
-                              const {severityType = '', fieldName = '', message = ''} = error || {};
-                              return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                          }).join('\n')
+                        ? errors
+                              .map(error => {
+                                  const {severityType = '', fieldName = '', message = ''} = error || {};
+                                  return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                              })
+                              .join('\n')
                         : '';
                     return {
                         priceType: priceType,
