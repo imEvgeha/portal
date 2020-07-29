@@ -61,12 +61,14 @@ const NexusTableExportDropdown = ({
     const onAllColumnsExportClick = () => {
         if (isSelectedOptionActive) {
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-            exportService.exportAvails(getSelectedRightIds(), allDisplayedColumns)
+            exportService
+                .exportAvails(getSelectedRightIds(), allDisplayedColumns)
                 .then(response => downloadFile(response));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
             const {external, column} = rightsFilter;
-            exportService.bulkExportAvails({...external, ...column}, allDisplayedColumns)
+            exportService
+                .bulkExportAvails({...external, ...column}, allDisplayedColumns)
                 .then(response => downloadFile(response));
         }
     };
@@ -74,12 +76,12 @@ const NexusTableExportDropdown = ({
     const onVisibleColumnsExportClick = () => {
         if (isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService.exportAvails(getSelectedRightIds(), visibleColumns)
-                .then(response => downloadFile(response));
+            exportService.exportAvails(getSelectedRightIds(), visibleColumns).then(response => downloadFile(response));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
             const {external, column} = rightsFilter;
-            exportService.bulkExportAvails({...external, ...column}, visibleColumns)
+            exportService
+                .bulkExportAvails({...external, ...column}, visibleColumns)
                 .then(response => downloadFile(response));
         }
     };
@@ -117,13 +119,7 @@ const NexusTableExportDropdown = ({
 
     return (
         <div className="nexus-c-right-repository-export">
-            {isDisabled ? (
-                <NexusTooltip
-                    content={tooltipContent}
-                >
-                    {renderDropdown()}
-                </NexusTooltip>
-            ) : renderDropdown()}
+            {isDisabled ? <NexusTooltip content={tooltipContent}>{renderDropdown()}</NexusTooltip> : renderDropdown()}
         </div>
     );
 };

@@ -25,35 +25,36 @@ import {
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
     createAvailsMappingSelector,
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
+import DOPService from '../selected-for-planning/DOP-services';
+import SelectedForPlanning from '../selected-for-planning/components/SelectedForPlanning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
-
-export const RIGHTS_TAB = 'RIGHTS_TAB';
-export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
-    withSorting(constants.INITIAL_SORT),
+    withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -80,11 +81,13 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
+    const [prePlanRepoRights, setPrePlanRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
+    const [planningRightsCount, setPlanningRightsCount] = useState(0);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -122,9 +125,9 @@ const RightsRepository = ({
             const filterInstance = gridApi.getFilterInstance('status');
             let values = [];
             if (!status || status === 'Rights') {
-                const {options = []} = (Array.isArray(mapping)
-                    && mapping.find(({javaVariableName}) => javaVariableName === 'status')
-                ) || {};
+                const {options = []} =
+                    (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === 'status')) ||
+                    {};
                 values = options;
             } else {
                 values = [rightsFilter.external.status];
@@ -175,6 +178,12 @@ const RightsRepository = ({
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
+
+    useEffect(() => {
+        DOPService.getUsersProjectsList(1, 1).then(res => {
+            setPlanningRightsCount(1);
+        });
+    }, [activeTab]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
@@ -234,25 +243,23 @@ const RightsRepository = ({
                 //      is freshly loaded and we have selected rights from the store, while they appear in the table
                 //      and appear selected, they are not selected from the main table's perspective, so this would
                 //      cause loss of data without the check, as rights from ingest would have been removed.
-                if (!selectedIngest
-                    && rightsTableSelectedRows.length === selectedTableSelectedRows.length
-                    && clonedSelectedRights.length > rightsTableSelectedRows.length
+                if (
+                    !selectedIngest &&
+                    rightsTableSelectedRows.length === selectedTableSelectedRows.length &&
+                    clonedSelectedRights.length > rightsTableSelectedRows.length
                 ) {
                     // Filter out the selected rights whose rows are not selected. Basically finding the row
                     // that was just deselected.
-                    const updatedSelectedRights = clonedSelectedRights.filter(
-                        right => allSelectedRowsIds.includes(right.id)
+                    const updatedSelectedRights = clonedSelectedRights.filter(right =>
+                        allSelectedRowsIds.includes(right.id)
                     );
 
                     // Pack the new selected rights into a payload for the store update; converts array of objects
                     // to object of objects where the keys are object(right) ids.
-                    const payload = updatedSelectedRights.reduce(
-                        (selectedRights, currentRight) => {
-                            selectedRights[currentRight.id] = currentRight;
-                            return selectedRights;
-                        },
-                        {}
-                    );
+                    const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                        selectedRights[currentRight.id] = currentRight;
+                        return selectedRights;
+                    }, {});
                     setSelectedRights(payload);
                     break;
                 }
@@ -277,13 +284,10 @@ const RightsRepository = ({
 
                 // Pack the new selected rights into a payload for the store update; converts array of objects
                 // to object of objects where the keys are object(right) ids.
-                const payload = updatedSelectedRights.reduce(
-                    (selectedRights, currentRight) => {
-                        selectedRights[currentRight.id] = currentRight;
-                        return selectedRights;
-                    },
-                    {}
-                );
+                const payload = updatedSelectedRights.reduce((selectedRights, currentRight) => {
+                    selectedRights[currentRight.id] = currentRight;
+                    return selectedRights;
+                }, {});
                 setSelectedRights(payload);
                 break;
             }
@@ -319,9 +323,9 @@ const RightsRepository = ({
                     .filter(selectedRepoId => !allSelectedRowsIds.includes(selectedRepoId));
 
                 // Get all selected nodes from main ag-grid table and filter only ones to deselect
-                const nodesToDeselect = gridApi.getSelectedNodes().filter(
-                    ({data = {}}) => toDeselectIds.includes(data.id)
-                );
+                const nodesToDeselect = gridApi
+                    .getSelectedNodes()
+                    .filter(({data = {}}) => toDeselectIds.includes(data.id));
 
                 // If row was unselected but it was not found via gridApi, then manually deselect it and
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
@@ -350,11 +354,7 @@ const RightsRepository = ({
 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
-        return (
-            id
-                ? selectedRights.filter(({availHistoryId}) => (availHistoryId === id))
-                : selectedRights
-        );
+        return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
     return (
         <div className="nexus-c-rights-repository">
@@ -373,6 +373,7 @@ const RightsRepository = ({
                 title="Rights"
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
+                prePlanRightsCount={prePlanRepoRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -383,18 +384,8 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-            />
-            <SelectedRightsRepositoryTable
-                id="selectedRightsRepo"
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                singleClickEdit
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
-                mapping={mapping}
-                rowData={selectedRepoRights}
-                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
-                onGridEvent={onSelectedRightsRepositoryGridEvent}
-                notFilterableColumns={['action', 'buttons']}
+                setPrePlanRepoRights={setPrePlanRepoRights}
+                planningRightsCount={planningRightsCount}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -411,6 +402,25 @@ const RightsRepository = ({
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
             />
+            <SelectedRightsRepositoryTable
+                id="selectedRightsRepo"
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                mapping={mapping}
+                rowData={selectedRepoRights}
+                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
+            />
+            <PreplanRightsTable
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                prePlanRepoRights={prePlanRepoRights}
+                activeTab={activeTab}
+                mapping={mapping}
+            />
+            <SelectedForPlanning activeTab={activeTab} />
         </div>
     );
 };

@@ -6,8 +6,9 @@ import {header} from './constants';
 import './StatusCheck.scss';
 
 const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
-    const dataRows = nonEligibleTitles && nonEligibleTitles.map((content, index) => (
-        {
+    const dataRows =
+        nonEligibleTitles &&
+        nonEligibleTitles.map((content, index) => ({
             key: index,
             cells: [
                 {
@@ -19,13 +20,10 @@ const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
                     content: content.status,
                 },
             ],
-        }
-    ));
+        }));
     return (
         <div className="nexus-c-status-check">
-            <div className="nexus-c-status-check__message">
-                {message}
-            </div>
+            <div className="nexus-c-status-check__message">{message}</div>
             {!!dataRows.length && (
                 <DynamicTable
                     head={header}
