@@ -46,7 +46,6 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         'required': true,
     };
 
-
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
         if (type === GRID_EVENTS.READY) {
