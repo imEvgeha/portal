@@ -8,7 +8,6 @@ const partnerRequestColumnDefs = [
         colId: 'productDesc',
         headerName: 'Title',
         minWidth: 100,
-        suppressMovable: true,
         maxWidth: 150,
     },
     {
@@ -16,21 +15,19 @@ const partnerRequestColumnDefs = [
         colId: 'version',
         headerName: 'Version',
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'srdueDate',
         colId: 'srdueDate',
         headerName: 'Due Date',
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'materialNotes',
         colId: 'materialNotes',
         headerName: 'Notes',
         minWidth: 80,
-        suppressMovable: true,
+
         maxWidth: 500,
     },
     {
@@ -39,7 +36,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Primary Video',
         suppressSizeToFit: true,
         minWidth: 100,
-        suppressMovable: true,
     },
     {
         field: 'secondaryAudio',
@@ -47,7 +43,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Secondary Audio',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'subtitlesFull',
@@ -55,7 +50,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Subtitles Full',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'subtitlesForced',
@@ -63,7 +57,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Subtitles Forced',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'trailer',
@@ -71,7 +64,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Trailer',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'metaData',
@@ -79,7 +71,6 @@ const partnerRequestColumnDefs = [
         headerName: 'Metadata',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
     {
         field: 'artWork',
@@ -87,18 +78,21 @@ const partnerRequestColumnDefs = [
         headerName: 'Artwork',
         suppressSizeToFit: true,
         minWidth: 150,
-        suppressMovable: true,
     },
 ];
 
-export const defaultColDef = {autoHeight: true, cellClass: 'cell', resizable: true};
+export const defaultColDef = {autoHeight: true, cellClass: 'cell', resizable: true, suppressMovable: true};
 
 export const columnDefs = partnerRequestColumnDefs.map(def => ({
     ...def,
     cellRendererFramework: data => {
         // render pill tags if the column is a list of languages
         // otherwise just return the value
-        return <div className="nexus-c-partner-request__cell">{isLanguageColumn(data.colDef.field) ? renderLanguagesToTagGroup(data.value) : data.value}</div>;
+        return (
+            <div className="nexus-c-partner-request__cell">
+                {isLanguageColumn(data.colDef.field) ? renderLanguagesToTagGroup(data.value) : data.value}
+            </div>
+        );
     },
 }));
 
