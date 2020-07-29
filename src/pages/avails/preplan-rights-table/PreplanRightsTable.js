@@ -15,7 +15,6 @@ const PrePlanGrid = compose(
     withSideBar(),
 )(NexusGrid);
 
-
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, currentTab}) => {
     const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
 
