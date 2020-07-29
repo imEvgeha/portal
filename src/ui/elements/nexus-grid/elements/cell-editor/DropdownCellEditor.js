@@ -10,9 +10,9 @@ class DropdownCellEditor extends Component {
     constructor(props) {
         super(props);
         console.log(props);
-        const {data = {}, optionsKey, disabledOptionsKey: optionsDisabledKey} = props;
+        const {data = {}, optionsKey, disabledOptionsKey} = props;
         const options = data[optionsKey];
-        const optionsDisabled = data[optionsDisabledKey];
+        const optionsDisabled = data[disabledOptionsKey];
 
         this.state = {
             value: this.prepareDataForSelect(options, optionsDisabled),
@@ -26,10 +26,13 @@ class DropdownCellEditor extends Component {
             country: option.country,
             isDisabled: false,
         }));
+
+
+        // territories excluded is an array of strings not objects?
         const preparedDisabledOptions = Array.isArray(optionsDisabled) && optionsDisabled.map(option => ({
-            isSelected: option.selected,
-            id: option.country,
-            country: option.country,
+            isSelected: false,
+            id: option,
+            country: option,
             isDisabled: true,
         }));
         return [...preparedOptions, ...preparedDisabledOptions];
@@ -43,7 +46,8 @@ class DropdownCellEditor extends Component {
 
     getValue = () => {
         const {value} = this.state;
-        return value && value.map(el => el.country).join(', ');
+        const selectedValues = value && value.map(el => (el.isSelected ? el.country : null)).join(', ');
+        return selectedValues;
     }
 
     handleChange = index => {
@@ -60,12 +64,13 @@ class DropdownCellEditor extends Component {
         const {value} = this.state;
 
         return (
-            <div className="nexus-c-multi-select-cell-editor">
-                <Dropdown defaultOpen triggerType="button" trigger="Drop menu">
-                    <DropdownItemGroupCheckbox id="languages2" title="Languages">
+            <div className="nexus-c-dropdown-cell-editor">
+                <Dropdown defaultOpen triggerType="button" trigger="Select Values">
+                    <DropdownItemGroupCheckbox id="languages2" title="Select Plan Territories">
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
                                 defaultSelected={option.isSelected}
+                                isSelected={option.isSelected}
                                 key={option.id}
                                 id={option.id}
                                 isDisabled={option.isDisabled}
