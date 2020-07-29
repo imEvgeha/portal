@@ -66,23 +66,31 @@ export const SelectedRightsActions = ({
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
         const hasEmptySourceRightIds = selectedRights.every(({sourceRightId}) => !sourceRightId);
-        const hasUniqueSourceRightIds = selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '')
-            && selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
+        const hasUniqueSourceRightIds =
+            selectedRights.every(({sourceRightId}) => !!sourceRightId && sourceRightId !== '') &&
+            selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
 
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
-        return selectedRights.every(({coreTitleId, sourceRightId, licensed, status}) => licensed
-            && !!coreTitleId && coreTitleId === get(selectedRights, '[0].coreTitleId', '')
-            && !sourceRightId
-            && ['ReadyNew', 'Ready'].includes(status));
+        return selectedRights.every(
+            ({coreTitleId, sourceRightId, licensed, status}) =>
+                licensed &&
+                !!coreTitleId &&
+                coreTitleId === get(selectedRights, '[0].coreTitleId', '') &&
+                !sourceRightId &&
+                ['ReadyNew', 'Ready'].includes(status)
+        );
     };
 
     const checkPrePlanEligibilityCriteria = () => {
-        return selectedRights.every(({rightStatus, licensed, status}) => licensed
-            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
-            && ['ReadyNew', 'Ready'].includes(status));
+        return selectedRights.every(
+            ({rightStatus, licensed, status}) =>
+                licensed &&
+                ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
+                ['ReadyNew', 'Ready'].includes(status)
+        );
     };
 
     // All the rights have Empty CoreTitleIds and SameContentType
@@ -101,26 +109,16 @@ export const SelectedRightsActions = ({
     useEffect(() => {
         if (selectedRights.length) {
             // Bulk match criteria check
-            setIsMatchable(
-                haveEmptyCoreTitleIdsSameContentType()
-                && checkSourceRightIds()
-            );
+            setIsMatchable(haveEmptyCoreTitleIdsSameContentType() && checkSourceRightIds());
 
             // Bulk unmatch criteria check
-            setIsUnmatchable(
-                haveCoreTitleIds()
-                && checkSourceRightIds()
-            );
+            setIsUnmatchable(haveCoreTitleIds() && checkSourceRightIds());
 
             // Bonus rights create criteria
-            setIsBonusRightCreatable(
-                checkBonusRightCreateCriteria()
-            );
+            setIsBonusRightCreatable(checkBonusRightCreateCriteria());
 
             // PrePlan criteria
-            setIsPreplanEligible(
-                checkPrePlanEligibilityCriteria()
-            );
+            setIsPreplanEligible(checkPrePlanEligibilityCriteria());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
@@ -144,15 +142,14 @@ export const SelectedRightsActions = ({
 
     const openBulkUnmatchModal = () => {
         setModalContentAndTitle(
-            (
-                <BulkUnmatch
-                    selectedRights={selectedRights.map(({id}) => id)}
-                    removeToast={removeToast}
-                    addToast={addToast}
-                    selectedRightGridApi={selectedRightGridApi}
-                    toggleRefreshGridData={toggleRefreshGridData}
-                />
-            ), BULK_UNMATCH_TITLE
+            <BulkUnmatch
+                selectedRights={selectedRights.map(({id}) => id)}
+                removeToast={removeToast}
+                addToast={addToast}
+                selectedRightGridApi={selectedRightGridApi}
+                toggleRefreshGridData={toggleRefreshGridData}
+            />,
+            BULK_UNMATCH_TITLE
         );
     };
 
@@ -179,9 +176,11 @@ export const SelectedRightsActions = ({
     };
 
     const prePlanEligible = (status, rightStatus, licensed) => {
-        if (['ReadyNew', 'Ready'].includes(status)
-            && ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus)
-            && licensed) {
+        if (
+            ['ReadyNew', 'Ready'].includes(status) &&
+            ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
+            licensed
+        ) {
             return true;
         }
         return false;
@@ -195,14 +194,6 @@ export const SelectedRightsActions = ({
     };
 
     const openStatusCheckModal = () => {
-        const eligibleRights = selectedRights.filter(right => {
-            const {status, rightStatus, licensed} = right || {};
-            if (prePlanEligible(status, rightStatus, licensed)) {
-                return right;
-            }
-            return null;
-        });
-
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
             // moveToPrePlan(eligibleRights);
@@ -229,13 +220,12 @@ export const SelectedRightsActions = ({
         setSelectedRights(nonEligibleRights);
 
         setModalContentAndTitle(
-            (
-                <StatusCheck
-                    message={STATUS_CHECK_MSG}
-                    nonEligibleTitles={nonEligibleTitles}
-                    onClose={onCloseStatusCheckModal}
-                />
-            ), STATUS_CHECK_HEADER
+            <StatusCheck
+                message={STATUS_CHECK_MSG}
+                nonEligibleTitles={nonEligibleTitles}
+                onClose={onCloseStatusCheckModal}
+            />,
+            STATUS_CHECK_HEADER
         );
     };
 
@@ -276,9 +266,7 @@ export const SelectedRightsActions = ({
                         onClick={isMatchable ? openDrawer : null}
                     >
                         <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
-                            <div>
-                                {BULK_MATCH}
-                            </div>
+                            <div>{BULK_MATCH}</div>
                         </NexusTooltip>
                     </div>
                     <div
@@ -290,47 +278,37 @@ export const SelectedRightsActions = ({
                         onClick={isUnmatchable ? openBulkUnmatchModal : null}
                     >
                         <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
-                            <div>
-                                {BULK_UNMATCH}
-                            </div>
+                            <div>{BULK_UNMATCH}</div>
                         </NexusTooltip>
                     </div>
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isBonusRightCreatable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="bonus-rights"
-                                onClick={isBonusRightCreatable ? createBonusRights : null}
-                            >
-                                <NexusTooltip content={CREATE_BONUS_RIGHT_TOOLTIP} isDisabled={isBonusRightCreatable}>
-                                    <div>
-                                        {CREATE_BONUS_RIGHT}
-                                    </div>
-                                </NexusTooltip>
-                            </div>
-                        )
-                    }
-                    {
-                        URL.isLocalOrDevOrQA() && (
-                            <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
-                                data-test-id="add-to-preplan"
-                                onClick={selectedRights.length ? openStatusCheckModal : null}
-                            >
-                                <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
-                                    <div>
-                                        {ADD_TO_PREPLAN}
-                                    </div>
-                                </NexusTooltip>
-                            </div>
-                        )
-                    }
+                    {URL.isLocalOrDevOrQA() && (
+                        <div
+                            className={classNames(
+                                'nexus-c-selected-rights-actions__menu-item',
+                                isBonusRightCreatable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            )}
+                            data-test-id="bonus-rights"
+                            onClick={isBonusRightCreatable ? createBonusRights : null}
+                        >
+                            <NexusTooltip content={CREATE_BONUS_RIGHT_TOOLTIP} isDisabled={isBonusRightCreatable}>
+                                <div>{CREATE_BONUS_RIGHT}</div>
+                            </NexusTooltip>
+                        </div>
+                    )}
+                    {URL.isLocalOrDevOrQA() && (
+                        <div
+                            className={classNames(
+                                'nexus-c-selected-rights-actions__menu-item',
+                                !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            )}
+                            data-test-id="add-to-preplan"
+                            onClick={selectedRights.length ? openStatusCheckModal : null}
+                        >
+                            <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
+                                <div>{ADD_TO_PREPLAN}</div>
+                            </NexusTooltip>
+                        </div>
+                    )}
                 </div>
             </div>
             <NexusDrawer
