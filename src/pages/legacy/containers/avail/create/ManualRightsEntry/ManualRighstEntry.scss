@@ -16,6 +16,9 @@
   }
   .nexus-c-manual-rights-entry__attachment{
     display: flex;
+    align-items: center;
+    margin-top: 10px;
+
     label{
       margin-right: 10px;
     }
@@ -51,4 +54,30 @@
     justify-content: space-between;
     margin: 5px;
   }
+}
+
+.nexus-c-status-tag-old {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+
+  & > .nexus-status-tag {
+    height: 1.2rem;
+    font-size: .8rem;
+    width: 100px;
+  }
+}
+
+.nexus-c-attachment-link-old {
+  display: flex;
+}
+
+.nexus-c-attachment-error-old {
+  padding-left: 10px;
+}
+
+.nexus-c-attachment-error-old__icon {
+  color: #de350b;
+  padding-right: 5px;
 }
