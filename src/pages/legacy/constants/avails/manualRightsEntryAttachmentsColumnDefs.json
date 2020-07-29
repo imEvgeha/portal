@@ -1,0 +1,17 @@
+[
+  {
+    "headerName": "Status",
+    "field": "status",
+    "width": 120
+  },
+  {
+    "headerName": "Attachment",
+    "field": "attachment",
+    "width": 500
+  },
+  {
+    "headerName": "Error Message",
+    "field": "error",
+    "width": 1000
+  }
+]

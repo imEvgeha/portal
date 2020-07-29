@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '@atlaskit/spinner';
 import {connect} from 'react-redux';
@@ -15,8 +15,9 @@ const SPINNER = (
 );
 
 const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistory}) => {
-
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened, title} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close, isOpened, title} = useContext(
+        NexusModalContext
+    );
 
     const titleAuditHistory = `Audit History (${selectedAvails.length})`;
 
@@ -37,26 +38,21 @@ const RightHistoryView = ({selectedAvails, rightsEventHistory, fetchRightsHistor
         }
     }, [titleAuditHistory, buildContent, isOpened, rightsEventHistory, setModalContentAndTitle, setModalStyle]);
 
-
     const openHistoryModal = () => {
         const ids = selectedAvails.map(e => e.id);
         fetchRightsHistory(ids);
-        setModalActions([{
-            text: 'Done',
-            onClick: () => {
-                close();
+        setModalActions([
+            {
+                text: 'Done',
+                onClick: () => {
+                    close();
+                },
             },
-        }]);
+        ]);
         setModalContentAndTitle(SPINNER, titleAuditHistory);
     };
 
-    return (
-        <span
-            onClick={openHistoryModal}
-        >
-            View Audit History
-        </span>
-    );
+    return <span onClick={openHistoryModal}>View Audit History</span>;
 };
 
 RightHistoryView.propTypes = {
