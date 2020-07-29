@@ -1238,7 +1238,7 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            const deletePrice = (id) => {
+            const deletePrice = id => {
                 const newArray = selectedVal && selectedVal.filter(e => id !== e.id);
                 ref.current.handleChange(newArray);
                 setTimeout(() => {
@@ -1272,10 +1272,12 @@ class RightDetails extends React.Component {
             if (options.length) {
                 pricesWithLabel = prices.map(({priceType, priceValue, priceCurrency, errors = []}) => {
                     const error = errors.length
-                        ? errors.map(error => {
-                              const {severityType = '', fieldName = '', message = ''} = error || {};
-                              return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                          }).join('\n')
+                        ? errors
+                              .map(error => {
+                                  const {severityType = '', fieldName = '', message = ''} = error || {};
+                                  return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                              })
+                              .join('\n')
                         : '';
                     return {
                         priceType: priceType,
@@ -2048,7 +2050,8 @@ class RightDetails extends React.Component {
                                         mapping.dataType +
                                         ' for field name: ' +
                                         mapping.displayName
-                                ); // eslint-disable-line
+                                    // eslint-disable-next-line
+                                );
                         }
                     }
                 });

@@ -18,13 +18,8 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {
-    WARNING_TITLE,
-    WARNING_ICON,
-} from '../../../../ui/elements/nexus-toast-notification/constants';
-import {
-    NEW_RIGHT_BUTTON_CLICK_MESSAGE,
-} from '../../../../ui/toast/constants';
+import {WARNING_TITLE, WARNING_ICON} from '../../../../ui/elements/nexus-toast-notification/constants';
+import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '../../../../ui/toast/constants';
 import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
@@ -60,7 +55,7 @@ const RightRepositoryNexusGrid = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withInfiniteScrolling({fetchData: getRightToMatchList}),
-    withSorting(constants.INITIAL_SORT),
+    withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const IncomingRightNexusGrid = withColumnsResizing()(NexusGrid);
@@ -82,7 +77,8 @@ const RightToMatchView = ({
     setFoundFocusRightInRightsRepo,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
-    const [isMatchDisabled, setIsMatchDisabled] = useState(true); // eslint-disable-line
+    // eslint-disable-next-line
+    const [isMatchDisabled, setIsMatchDisabled] = useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
@@ -100,7 +96,7 @@ const RightToMatchView = ({
 
     useEffect(() => {
         fetchFocusedRight(rightId);
-        if (!fieldSearchCriteria || (rightId !== fieldSearchCriteria.id)) {
+        if (!fieldSearchCriteria || rightId !== fieldSearchCriteria.id) {
             fetchRightMatchingFieldSearchCriteria(availHistoryIds);
         }
     }, [availHistoryIds, fetchFocusedRight, fetchRightMatchingFieldSearchCriteria, fieldSearchCriteria, rightId]);
@@ -127,7 +123,8 @@ const RightToMatchView = ({
         });
     };
 
-    const createNewButtonCellRenderer = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const createNewButtonCellRenderer = ({data}) => {
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
@@ -162,14 +159,16 @@ const RightToMatchView = ({
 
     // temporary solution - when we enable date, datetime filter this
     // and params from RightRepoNexusGrid could be removed
-    const rightRepoParams = fieldSearchCriteria && Object.keys(fieldSearchCriteria.params).reduce((result, key) => {
-        const ENABLED_KEYS = ['startTo', 'startFrom', 'endTo', 'endFrom'];
-        if (ENABLED_KEYS.includes(key)) {
-            result[key] = fieldSearchCriteria.params[key];
-        }
+    const rightRepoParams =
+        fieldSearchCriteria &&
+        Object.keys(fieldSearchCriteria.params).reduce((result, key) => {
+            const ENABLED_KEYS = ['startTo', 'startFrom', 'endTo', 'endFrom'];
+            if (ENABLED_KEYS.includes(key)) {
+                result[key] = fieldSearchCriteria.params[key];
+            }
 
-        return result;
-    }, {});
+            return result;
+        }, {});
 
     return (
         <div className="nexus-c-right-to-match-view">
@@ -180,7 +179,9 @@ const RightToMatchView = ({
                 <span>{RIGHT_TO_MATCH_TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle isSubTitle isInline>{FOCUSED_RIGHT}</NexusTitle>
+                <NexusTitle isSubTitle isInline>
+                    {FOCUSED_RIGHT}
+                </NexusTitle>
                 <RightToMatchNavigation
                     searchParams={{availHistoryIds}}
                     focusedRightId={rightId}
@@ -201,22 +202,22 @@ const RightToMatchView = ({
                 <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>{RIGHTS_REPOSITORY} {`(${totalCount})`}</NexusTitle>
-                {fieldSearchCriteria
-                    && fieldSearchCriteria.id === rightId
-                    && (
-                        <RightRepositoryNexusGrid
-                            id="rightsMatchingRepo"
-                            columnDefs={updatedColumnDefs}
-                            mapping={mapping}
-                            setTotalCount={setTotalCount}
-                            params={rightRepoParams}
-                            initialFilter={fieldSearchCriteria.params}
-                            onGridEvent={handleGridEvent}
-                            rowSelection="multiple"
-                            suppressRowClickSelection={true}
-                        />
-                    )}
+                <NexusTitle isSubTitle>
+                    {RIGHTS_REPOSITORY} {`(${totalCount})`}
+                </NexusTitle>
+                {fieldSearchCriteria && fieldSearchCriteria.id === rightId && (
+                    <RightRepositoryNexusGrid
+                        id="rightsMatchingRepo"
+                        columnDefs={updatedColumnDefs}
+                        mapping={mapping}
+                        setTotalCount={setTotalCount}
+                        params={rightRepoParams}
+                        initialFilter={fieldSearchCriteria.params}
+                        onGridEvent={handleGridEvent}
+                        rowSelection="multiple"
+                        suppressRowClickSelection={true}
+                    />
+                )}
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
                 <ButtonGroup>
@@ -296,6 +297,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
     withToasts,
-    connect(createMapStateToProps, mapDispatchToProps) // eslint-disable-line
+    // eslint-disable-next-line
+    connect(createMapStateToProps, mapDispatchToProps)
 )(RightToMatchView);
-
