@@ -15,10 +15,7 @@ import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
 import './SyncLogTable.scss';
 
-const SyncLogGrid = compose(
-    withColumnsResizing(),
-    withInfiniteScrolling({fetchData: getSyncLog}),
-)(NexusGrid);
+const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
 
 const SyncLogTable = () => {
     const [gridApi, setGridApi] = useState(null);
@@ -27,13 +24,13 @@ const SyncLogTable = () => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
-    const setErrors = data => {
+    const setErrors = (data) => {
         setErrorsData(data);
         setShowDrawer(true);
     };
 
     const getColumnDefs = () => {
-        return columnMappings.map(col => ({
+        return columnMappings.map((col) => ({
             ...col,
             cellRendererParams: {
                 setErrors,
@@ -80,10 +77,7 @@ const SyncLogTable = () => {
                         />
                     </div>
                 </div>
-                <Button
-                    onClick={() => exportSyncLog(dateFrom, dateTo)}
-                    isDisabled={!gridApi}
-                >
+                <Button onClick={() => exportSyncLog(dateFrom, dateTo)} isDisabled={!gridApi}>
                     {DOWNLOAD_BTN}
                 </Button>
             </div>
@@ -102,29 +96,20 @@ const SyncLogTable = () => {
                 }}
             />
 
-            <NexusDrawer
-                onClose={closeDrawer}
-                isOpen={showDrawer}
-                title={ERROR_TABLE_TITLE}
-                width="wider"
-            >
+            <NexusDrawer onClose={closeDrawer} isOpen={showDrawer} title={ERROR_TABLE_TITLE} width="wider">
                 <div className="nexus-c-sync-log-table__errors-table">
-                    {
-                        ERROR_TABLE_COLUMNS.map(column => (
-                            <div className="nexus-c-sync-log-table__errors-table--header-cell" key={column}>
-                                {column.toUpperCase()}
+                    {ERROR_TABLE_COLUMNS.map((column) => (
+                        <div className="nexus-c-sync-log-table__errors-table--header-cell" key={column}>
+                            {column.toUpperCase()}
+                        </div>
+                    ))}
+                    {errorsData.map((error, i) =>
+                        ERROR_TABLE_COLUMNS.map((key) => (
+                            <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
+                                {error[key]}
                             </div>
                         ))
-                    }
-                    {
-                        errorsData.map((error, i) => (
-                            ERROR_TABLE_COLUMNS.map(key => (
-                                <div className="nexus-c-sync-log-table__errors-table--cell" key={`error-${i - key}`}>
-                                    {error[key]}
-                                </div>
-                            ))
-                        ))
-                    }
+                    )}
                 </div>
             </NexusDrawer>
         </div>
