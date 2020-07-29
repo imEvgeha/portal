@@ -1,5 +1,3 @@
-import './DashboardContainer.scss';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -13,6 +11,8 @@ import withRights from '../../../components/avails/ServerRightsResultsTable';
 import withLocalRights, {AVAILS_SELECTION} from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
+import NexusSpinner from '../../../../../ui/elements/nexus-spinner/NexusSpinner';
+import AuditHistoryTable from '../../../components/AuditHistoryTable/AuditHistoryTable';
 import {store} from '../../../../../index';
 import {
     resultPageUpdateColumnsOrder,
@@ -20,13 +20,15 @@ import {
     resultPageLoading,
     resultPageUpdate
 } from '../../../stores/actions/avail/dashboard';
-import RightViewHistory from '../../../../avails/right-history-view/RightHistoryView';
 import TableColumnCustomization from '../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
 import TableDownloadRights from '../../../../../ui/elements/nexus-table-download-rights/TableDownload';
 import {Clear} from './ClearInternal';
 import {Selected} from './SelectedInternal';
 import {Total} from './TotalInternal';
 import {Reports} from './ReportsInternal';
+import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import {getRightsHistory} from '../../../../avails/availsService';
+import './DashboardContainer.scss';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
 const SelectedRightsResultsTable = compose(
@@ -36,23 +38,7 @@ const SelectedRightsResultsTable = compose(
     withServerSorting,
     withLocalRights(AVAILS_SELECTION))(ResultsTable);
 
-const mapStateToProps = state => {
-    return {
-        showSelectedAvails: state.dashboard.showSelectedAvails,
-        reportName: state.dashboard.session.reportName,
-        availsMapping: state.root.availsMapping,
-        avails: state.dashboard.availTabPage.avails,
-        selectedRights: state.dashboard.session.availTabPageSelection.selected,
-    };
-};
-
-const mapDispatchToProps = {
-    resultPageUpdateColumnsOrder,
-    resultPageShowSelected
-};
-
 class SearchResultsTab extends React.Component {
-
     constructor(props) {
         super(props);
         this.toggleShowSelected = this.toggleShowSelected.bind(this);
@@ -105,6 +91,30 @@ class SearchResultsTab extends React.Component {
         return store.getState().dashboard.session.columns;
     }
 
+    handleViewAuditHistory = () => {
+        const {selectedRights = []} = this.props;
+        const {setModalStyle, setModalActions, setModalContentAndTitle, close} = this.context;
+
+        const title = `Audit History (${selectedRights.length})`;
+        setModalStyle({width: '100%'});
+        setModalActions([{
+            text: 'Done',
+            onClick: close,
+        }]);
+        setModalContentAndTitle(NexusSpinner, title);
+
+        const ids = selectedRights.map(e => e.id);
+        getRightsHistory(ids).then(rightsEventHistory => {
+            setModalContentAndTitle((
+                <div>
+                    {selectedRights.map((right, index) => (
+                        <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
+                    ))}
+                </div>
+            ), title);
+        });
+    }
+
     render() {
         return (
             <div id="dashboard-result-table">
@@ -116,7 +126,9 @@ class SearchResultsTab extends React.Component {
                             </span>
                             <Selected toggleShowSelected={this.toggleShowSelected} />
                             <span className="nx-container-margin table-top-text">
-                                <RightViewHistory selectedAvails={this.props.selectedRights} />
+                                <span onClick={this.handleViewAuditHistory}>
+                                    View Audit History
+                                </span>
                             </span>
                             {this.props.showSelectedAvails && (
                                 <a href="#" onClick={this.toggleShowSelected}>
@@ -130,7 +142,7 @@ class SearchResultsTab extends React.Component {
                               )}
                             <Clear clearAllSelected={() => {
                                 this.clearAllSelected && this.clearAllSelected();
-                                this.clearAllSelectedMainTable && this.clearAllSelectedMainTable(); 
+                                this.clearAllSelectedMainTable && this.clearAllSelectedMainTable();
                                 }} />
                         </div>
                         <div style={{marginRight: '15px'}}>
@@ -177,6 +189,8 @@ class SearchResultsTab extends React.Component {
     }
 }
 
+SearchResultsTab.contextType = NexusModalContext;
+
 SearchResultsTab.propTypes = {
     reportName: PropTypes.string,
     availsMapping: PropTypes.object,
@@ -184,7 +198,22 @@ SearchResultsTab.propTypes = {
     resultPageShowSelected: PropTypes.func,
     showSelectedAvails: PropTypes.bool,
     avails: PropTypes.array,
-    selectedRights: PropTypes.array
+    selectedRights: PropTypes.array,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);
 
+const mapStateToProps = state => {
+    return {
+        showSelectedAvails: state.dashboard.showSelectedAvails,
+        reportName: state.dashboard.session.reportName,
+        availsMapping: state.root.availsMapping,
+        avails: state.dashboard.availTabPage.avails,
+        selectedRights: state.dashboard.session.availTabPageSelection.selected,
+    };
+};
+
+const mapDispatchToProps = {
+    resultPageUpdateColumnsOrder,
+    resultPageShowSelected,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultsTab);

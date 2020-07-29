@@ -209,6 +209,11 @@ const URL = {
         const host = window.location.hostname;
         return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.');
     },
+
+    isLocalOrDev() {
+        const host = window.location.hostname;
+        return host.includes('localhost') || host.includes('.dev.');
+    },
 };
 
 // TODO: transform this to simple helper function - no need for React Component

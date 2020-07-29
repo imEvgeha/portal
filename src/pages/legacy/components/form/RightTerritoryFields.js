@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
-import Textfield from '@atlaskit/textfield'
+import Textfield from '@atlaskit/textfield';
 import {CreatableSelect} from '@atlaskit/select';
 
 const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
-
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    const {dateSelected = '', selected = false} = territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
+    const {dateSelected = '', selected = false} =
+        territoryIndex && typeof territoryIndex === 'number' ? existingTerritoryList[territoryIndex] : '';
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
@@ -19,7 +19,9 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     };
 
     const removeExistingOptions = () => {
-        return existingTerritoryList ? options.filter(x => !existingTerritoryList.find(y => y.country === x.value)) : options;
+        return existingTerritoryList
+            ? options.filter(x => !existingTerritoryList.find(y => y.country === x.value))
+            : options;
     };
 
     const getValidationState = (error, valid) => {
@@ -32,7 +34,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
         return 'error';
     };
 
-    const validate = (value) => {
+    const validate = value => {
         if (!value) {
             return 'EMPTY';
         }
@@ -40,7 +42,12 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     };
 
     const returnValidData = data => {
-        return existingTerritoryList && existingTerritoryList[territoryIndex] && existingTerritoryList[territoryIndex][data] && existingTerritoryList[territoryIndex][data] !== null;
+        return (
+            existingTerritoryList &&
+            existingTerritoryList[territoryIndex] &&
+            existingTerritoryList[territoryIndex][data] &&
+            existingTerritoryList[territoryIndex][data] !== null
+        );
     };
 
     return (
@@ -54,22 +61,28 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('country') ? getError('country').message : (returnValidData('country') && currentTerritory['country']),
-                            value: returnValidData('country') && currentTerritory['country']
-                        } : ''
+                              label: getError('country')
+                                  ? getError('country').message
+                                  : returnValidData('country') && currentTerritory['country'],
+                              value: returnValidData('country') && currentTerritory['country'],
+                          }
+                        : ''
                 }
             >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             validationState={getValidationState(error, valid)}
                             styles={{
-                                control: (base) => {
-                                    return getError('country', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                control: base => {
+                                    return getError('country', rest.value)
+                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
+                                        : {...base, borderColor: '#F4F5F7'};
                                 },
-                                singleValue: base => getError('country', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                singleValue: base =>
+                                    getError('country', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
                             isSearchable={true}
                             placeholder="Choose Country"
@@ -78,7 +91,6 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}
-
             </Field>
             <Field name="selected" defaultValue="False" label="SELECTED">
                 {() => (
@@ -86,11 +98,11 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         name="readOnly"
                         isReadOnly={true}
                         defaultValue={selected.toString()}
-                        style={{'height': '40px'}}
+                        style={{height: '40px'}}
                     />
                 )}
             </Field>
-            {(isEdit && dateSelected) && (
+            {isEdit && dateSelected && (
                 <Field name="date selected" defaultValue="" label="DATE SELECTED">
                     {() => (
                         <Textfield
@@ -109,53 +121,85 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('rightContractStatus') ? getError('rightContractStatus').message : returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'],
-                            value: returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'] }
+                              label: getError('rightContractStatus')
+                                  ? getError('rightContractStatus').message
+                                  : returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'],
+                              value: returnValidData('rightContractStatus') && currentTerritory['rightContractStatus'],
+                          }
                         : ''
                 }
             >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             isSearchable={false}
                             styles={{
-                                control: (base) => {
+                                control: base => {
                                     const defaultStyle = {
                                         ...base,
                                         borderColor: '#F4F5F6',
                                         fontSize: '15px',
                                     };
-                                    const controlStyle = getError('rightContractStatus', rest.value) ? {...defaultStyle, backgroundColor: 'rgb(242, 222, 222)'} : defaultStyle;
+                                    const controlStyle = getError('rightContractStatus', rest.value)
+                                        ? {...defaultStyle, backgroundColor: 'rgb(242, 222, 222)'}
+                                        : defaultStyle;
                                     return controlStyle;
                                 },
                                 singleValue: base => {
-                                    const style = getError('rightContractStatus', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base;
+                                    const style = getError('rightContractStatus', rest.value)
+                                        ? {...base, color: 'rgb(169, 68, 66)'}
+                                        : base;
                                     return style;
                                 },
                             }}
                             validationState={getValidationState(error, valid)}
                             placeholder="Choose Status"
                             options={[
-                                { label: 'Pending', value: 'Pending' },
-                                { label: 'Pending Manual', value: 'PendingManual' },
-                                { label: 'Matched Once', value: 'MatchedOnce' }
+                                {label: 'Pending', value: 'Pending'},
+                                {label: 'Pending Manual', value: 'PendingManual'},
+                                {label: 'Matched Once', value: 'MatchedOnce'},
                             ]}
                         />
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}
             </Field>
-            <Field label="VU CONTRACT ID" name="vuContractId" defaultValue={isEdit && existingTerritoryList[territoryIndex]['vuContractId']
-                ? existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
-                : ''}>
+            <Field
+                label="VU CONTRACT ID"
+                name="vuContractId"
+                defaultValue={
+                    isEdit && existingTerritoryList[territoryIndex]['vuContractId']
+                        ? existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
+                        : ''
+                }
+            >
                 {({fieldProps: {id, value, ...rest}}) => (
                     <Textfield
                         name="vuContractId"
                         isReadOnly={false}
                         defaultValue={value}
-                        style={{'height': '40px'}}
+                        style={{height: '40px'}}
+                        {...rest}
+                    />
+                )}
+            </Field>
+            <Field
+                label="COMMENTS"
+                name="comment"
+                defaultValue={
+                    isEdit && existingTerritoryList[territoryIndex]['comment']
+                        ? existingTerritoryList[territoryIndex]['comment']
+                        : ''
+                }
+            >
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <Textfield
+                        name="comment"
+                        isReadOnly={false}
+                        defaultValue={value}
+                        style={{height: '40px'}}
                         {...rest}
                     />
                 )}
