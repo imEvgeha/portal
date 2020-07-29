@@ -53,9 +53,7 @@ export const NexusModalProvider = ({children}) => {
                         onClose={close}
                         width={style.width || 'medium'}
                     >
-                        <div className="nexus-c-modal">
-                            {content}
-                        </div>
+                        <div className="nexus-c-modal">{content}</div>
                     </Modal>
                 </ModalTransition>
             )}

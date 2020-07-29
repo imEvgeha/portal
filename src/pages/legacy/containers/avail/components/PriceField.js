@@ -30,7 +30,7 @@ const PriceField = ({
                     text={`${type} ${value || ''} ${currency || ''}`}
                     value={price}
                     removeButtonText="Remove"
-                    onRemove={() => onRemoveClick(price)}
+                    onRemove={() => onRemoveClick(i)}
                     onClick={() => onTagClick(i)}
                 />
             )

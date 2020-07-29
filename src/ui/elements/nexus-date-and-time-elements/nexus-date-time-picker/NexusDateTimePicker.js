@@ -12,7 +12,10 @@ import {
     SIMULCAST_TIME_LABEL,
     SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
-    RELATIVE_TIME_FORMAT, TIMESTAMP_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT,
+    RELATIVE_TIME_FORMAT,
+    TIMESTAMP_DATE_FORMAT,
+    SIMULCAST_DATE_FORMAT,
+    RELATIVE_DATE_FORMAT,
 } from '../constants';
 
 const NexusDateTimePicker = ({
@@ -42,11 +45,14 @@ const NexusDateTimePicker = ({
     const {locale = 'en-US'} = intl || {};
 
     useEffect(() => {
-        date && setDate(moment.utc(date).format(
-            isTimestamp
-                ? TIMESTAMP_DATE_FORMAT
-                : (isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT)
-        ));
+        date &&
+            setDate(
+                moment
+                    .utc(date)
+                    .format(
+                        isTimestamp ? TIMESTAMP_DATE_FORMAT : isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_DATE_FORMAT
+                    )
+            );
     }, [isSimulcast, isTimestamp]);
 
     useEffect(() => {
@@ -54,16 +60,10 @@ const NexusDateTimePicker = ({
         setFirstRun(false);
     }, [date]);
 
-    const timeFormat = isTimestamp
-        ? TIMESTAMP_TIME_FORMAT
-        : isSimulcast
-            ? SIMULCAST_TIME_FORMAT
-            : RELATIVE_TIME_FORMAT;
+    const timeFormat = isTimestamp ? TIMESTAMP_TIME_FORMAT : isSimulcast ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
 
     // Create date format based on locale
-    const dateFormat = getDateFormatBasedOnLocale(locale)
-        .toUpperCase()
-        .concat(timeFormat);
+    const dateFormat = getDateFormatBasedOnLocale(locale).toUpperCase().concat(timeFormat);
 
     const getDisplayDate = date => {
         return moment(date).utc(!isUtc(date)).format(dateFormat);
@@ -72,61 +72,56 @@ const NexusDateTimePicker = ({
     const DatePicker = isReadOnly => {
         return (
             <>
-                {!isLabelHidden && label && (
-                    <div className="nexus-c-date-time-picker__label">
-                        {label}
-                    </div>
-                )}
-                {isReadOnly && !isViewModeDisabled
-                    ? getDisplayDate(value)
-                    : (
-                        <div className="nexus-c-date-time-picker">
-                            <div className="nexus-c-date-time-picker__date-time">
-                                <NexusSimpleDateTimePicker
-                                    id={id}
-                                    onChange={setDate}
-                                    value={value || ''}
-                                    isSimulcast={isSimulcast}
-                                    isTimestamp={isTimestamp}
-                                    defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
-                                    {...restProps}
+                {!isLabelHidden && label && <div className="nexus-c-date-time-picker__label">{label}</div>}
+                {isReadOnly && !isViewModeDisabled ? (
+                    getDisplayDate(value)
+                ) : (
+                    <div className="nexus-c-date-time-picker">
+                        <div className="nexus-c-date-time-picker__date-time">
+                            <NexusSimpleDateTimePicker
+                                id={id}
+                                onChange={setDate}
+                                value={value || ''}
+                                isSimulcast={isSimulcast}
+                                isTimestamp={isTimestamp}
+                                defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
+                                {...restProps}
+                            />
+                        </div>
+                        {!isTimestamp && ( // Timestamps are always UTC, no need for this option
+                            <div className="nexus-c-date-time-picker__type-select">
+                                <Select
+                                    defaultValue={
+                                        isSimulcast
+                                            ? {label: SIMULCAST_TIME_LABEL, value: true}
+                                            : {label: RELATIVE_TIME_LABEL, value: false}
+                                    }
+                                    options={[
+                                        {label: RELATIVE_TIME_LABEL, value: false},
+                                        {label: SIMULCAST_TIME_LABEL, value: true},
+                                    ]}
+                                    onChange={type => setIsSimulcast(type.value)}
                                 />
                             </div>
-                            {!isTimestamp && ( // Timestamps are always UTC, no need for this option
-                                <div className="nexus-c-date-time-picker__type-select">
-                                    <Select
-                                        defaultValue={
-                                            isSimulcast
-                                                ? {label: SIMULCAST_TIME_LABEL, value: true}
-                                                : {label: RELATIVE_TIME_LABEL, value: false}
-                                        }
-                                        options={[
-                                            {label: RELATIVE_TIME_LABEL, value: false},
-                                            {label: SIMULCAST_TIME_LABEL, value: true},
-                                        ]}
-                                        onChange={type => setIsSimulcast(type.value)}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )}
+                        )}
+                    </div>
+                )}
             </>
         );
     };
 
     return (
-        <> {isWithInlineEdit && !isReadOnly && !isViewModeDisabled
-            ? (
+        <>
+            {' '}
+            {isWithInlineEdit && !isReadOnly && !isViewModeDisabled ? (
                 <InlineEdit
                     readView={() => (
                         <div className="nexus-c-date-time-picker__read-view-container">
-                            {moment(value).isValid()
-                                ? `${getDisplayDate(value)}`
-                                : (
-                                    <div className="read-view-container__placeholder">
-                                        {`Enter ${label}`}
-                                    </div>
-                                )}
+                            {moment(value).isValid() ? (
+                                `${getDisplayDate(value)}`
+                            ) : (
+                                <div className="read-view-container__placeholder">{`Enter ${label}`}</div>
+                            )}
                         </div>
                     )}
                     editView={() => DatePicker(false)}
@@ -140,14 +135,15 @@ const NexusDateTimePicker = ({
                         } else if (date.endsWith('Z')) {
                             onConfirm(isSimulcast ? date : date.slice(0, -1)); // YYYY-MM-DD[T]HH:mm:ss(Z)
                         } else {
-                            onConfirm(isSimulcast ? (`${date}Z`) : date); // YYYY-MM-DD[T]HH:mm:ss(Z)
+                            onConfirm(isSimulcast ? `${date}Z` : date); // YYYY-MM-DD[T]HH:mm:ss(Z)
                         }
                     }}
                     readViewFitContainerWidth
                     {...restProps}
                 />
-            )
-            : DatePicker(isReadOnly)}
+            ) : (
+                DatePicker(isReadOnly)
+            )}
         </>
     );
 };
