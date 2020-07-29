@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import config from 'react-global-configuration';
 import {ManualRightEntryTab, TabContainer} from '../../../../../../../ui/elements/nexus-table-tab/TableTab';
-
 import {
     FATAL,
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS
+    SUCCESS, ATTACHMENTS_TAB, ATTACHMENTS_COLUMNS
 } from '../../../../../constants/avails/manualRightsEntryTabs';
-import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
+import {
+    updateManualRightEntrySelectedTab,
+} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
 const ManualRightEntryTableTabs = ({
@@ -63,6 +64,8 @@ const ManualRightEntryTableTabs = ({
         window.open( url, '_blank');
     };
 
+    const {attachments = []} = historyData || {};
+
     return (
         <TabContainer>
             <ManualRightEntryTab
@@ -106,6 +109,12 @@ const ManualRightEntryTableTabs = ({
             >
                 View JSON
             </ManualRightEntryTab>
+            <ManualRightEntryTab
+                isActive={selectedTab === ATTACHMENTS_TAB}
+                onClick={() => updateManualRightEntrySelectedTab(ATTACHMENTS_TAB)}
+            >
+                Attachments ({attachments.length})
+            </ManualRightEntryTab>
         </TabContainer>
     );
 };
@@ -128,7 +137,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = {
-    updateManualRightEntrySelectedTab: updateManualRightEntrySelectedTab
+    updateManualRightEntrySelectedTab: updateManualRightEntrySelectedTab,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManualRightEntryTableTabs);

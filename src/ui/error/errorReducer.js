@@ -6,9 +6,11 @@ const errorReducer = (state = {}, action) => {
     if (!matches) { return state; }
 
     const [, requestName, requestState] = matches;
+    const {message} = payload;
+
     return {
         ...state,
-        [requestName]: requestState === 'ERROR' ? payload.message || 'ERROR' : '',
+        [requestName]: requestState === 'ERROR' ? message || 'ERROR' : '',
     };
 };
 

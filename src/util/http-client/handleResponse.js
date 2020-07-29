@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers, no-throw-literal */
-export default async response => {
+export default async (response) => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
@@ -26,7 +26,7 @@ export default async response => {
     }
 };
 
-const getResponseContentType = response => {
+const getResponseContentType = (response) => {
     const {headers = {}} = response || {};
     const type = headers && headers.get('content-type');
     return type;
