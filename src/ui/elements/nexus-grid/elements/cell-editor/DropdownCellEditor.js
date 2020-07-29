@@ -4,7 +4,6 @@ import Dropdown, {
     DropdownItemCheckbox,
     DropdownItemGroupCheckbox,
 } from '@atlaskit/dropdown-menu';
-import './MultiSelectCellEditor.scss';
 
 class DropdownCellEditor extends Component {
     constructor(props) {
