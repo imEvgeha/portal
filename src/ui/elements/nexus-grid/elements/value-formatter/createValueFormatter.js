@@ -122,6 +122,10 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return value;
                 }
             };
+        case 'dropdown':
+            return ({value}) => {
+                return Array.isArray(value) && value.map(option => option.selected && option.country).join(', ');
+            };
         default:
             return ({value}) => value;
     }

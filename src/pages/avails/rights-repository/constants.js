@@ -1,0 +1,3 @@
+export const RIGHTS_TAB = 'RIGHTS_TAB';
+export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
+export const PRE_PLAN_TAB = 'PRE_PLAN_TAB';
