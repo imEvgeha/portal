@@ -17,7 +17,7 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {getRepositoryName} from '../../../avails/utils';
 import TitleSystems from '../../../legacy/constants/metadata/systems';

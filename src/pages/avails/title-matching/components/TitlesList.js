@@ -19,7 +19,7 @@ import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import useMatchAndDuplicateList from '../../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import MatchedCombinedTitlesTable from '../../matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/RightsRepository';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../rights-repository/constants';
 import {getRepositoryName, getRepositoryCell} from '../../utils';
 import Constants from '../titleMatchingConstants';
 import ActionsBar from './ActionsBar';

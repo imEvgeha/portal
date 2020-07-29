@@ -15,10 +15,11 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="view-history"
+        onClick={null}
       >
-        <Connect(RightHistoryView)
-          selectedAvails={Array []}
-        />
+        <div>
+          View Audit History
+        </div>
       </div>
       <div
         className="nexus-c-selected-rights-actions__menu-item"

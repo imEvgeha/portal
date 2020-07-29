@@ -6,14 +6,16 @@ import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
+import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
+import {getRightsHistory} from '../availsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import RightViewHistory from '../right-history-view/RightHistoryView';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {
     BULK_MATCH,
@@ -28,6 +30,7 @@ import {
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
+    VIEW_AUDIT_HISTORY,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -39,6 +42,7 @@ export const SelectedRightsActions = ({
     selectedRightGridApi,
     gridApi,
     setSelectedRights,
+    setPrePlanRepoRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -50,7 +54,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState(HEADER_TITLE);
     const node = useRef();
 
-    const {setModalContentAndTitle} = useContext(NexusModalContext);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -117,6 +121,9 @@ export const SelectedRightsActions = ({
             // PrePlan criteria
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
         }
+        else {
+            setIsMatchable(false);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
 
@@ -150,6 +157,28 @@ export const SelectedRightsActions = ({
         );
     };
 
+    const openAuditHistoryModal = () => {
+        const ids = selectedRights.map(e => e.id);
+        const title = `Audit History (${selectedRights.length})`;
+
+        setModalStyle({width: '100%'});
+        setModalActions([{
+            text: 'Done',
+            onClick: close,
+        }]);
+        setModalContentAndTitle(NexusSpinner, title);
+
+        getRightsHistory(ids).then(rightsEventHistory => {
+            setModalContentAndTitle((
+                <div>
+                    {selectedRights.map((right, index) => (
+                        <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
+                    ))}
+                </div>
+            ), title);
+        });
+    };
+
     const prePlanEligible = (status, rightStatus, licensed) => {
         if (
             ['ReadyNew', 'Ready'].includes(status) &&
@@ -164,27 +193,37 @@ export const SelectedRightsActions = ({
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
         toggleRefreshGridData(true);
-        // eslint-disable-next-line no-restricted-globals
         close();
     };
 
-    const openStatusCheckModal = () => {
+    const getEligibleRights = selectedRights => {
+        let eligibleRights = [];
+        let nonEligibleRights = [];
+        selectedRights.forEach(right => {
+            const {status, rightStatus, licensed} = right || {};
+            if (prePlanEligible(status, rightStatus, licensed)) {
+                eligibleRights = [...eligibleRights, right];
+            } else {
+                nonEligibleRights = [...nonEligibleRights, right];
+            }
+        });
+        return [
+            eligibleRights,
+            nonEligibleRights,
+        ];
+    };
+
+    const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
-            // moveToPrePlan(eligibleRights);
+            setPrePlanRepoRights(selectedRights);
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
             return;
         }
 
-        const nonEligibleRights = selectedRights.filter(right => {
-            const {status, rightStatus, licensed} = right || {};
-            if (!prePlanEligible(status, rightStatus, licensed)) {
-                return right;
-            }
-            return null;
-        });
+        const [eligibleRights, nonEligibleRights] = getEligibleRights(selectedRights);
 
         const nonEligibleTitles = nonEligibleRights.reduce((acc, right) => {
             const {title, status} = right || {};
@@ -193,6 +232,7 @@ export const SelectedRightsActions = ({
         }, []);
 
         setSelectedRights(nonEligibleRights);
+        setPrePlanRepoRights(eligibleRights);
 
         setModalContentAndTitle(
             <StatusCheck
@@ -226,9 +266,11 @@ export const SelectedRightsActions = ({
                             selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="view-history"
+                        onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
-                        {/* TODO: Rewrite like the rest of the options when old design gets removed */}
-                        <RightViewHistory selectedAvails={selectedRights} />
+                        <div>
+                            {VIEW_AUDIT_HISTORY}
+                        </div>
                     </div>
                     <div
                         className={classNames(
@@ -254,7 +296,7 @@ export const SelectedRightsActions = ({
                             <div>{BULK_UNMATCH}</div>
                         </NexusTooltip>
                     </div>
-                    {URL.isLocalOrDevOrQA() && (
+                    {URL.isLocalOrDev() && (
                         <div
                             className={classNames(
                                 'nexus-c-selected-rights-actions__menu-item',
@@ -275,7 +317,7 @@ export const SelectedRightsActions = ({
                                 !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                             )}
                             data-test-id="add-to-preplan"
-                            onClick={selectedRights.length ? openStatusCheckModal : null}
+                            onClick={selectedRights.length ? prepareRightsForPrePlan : null}
                         >
                             <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
                                 <div>{ADD_TO_PREPLAN}</div>
@@ -309,6 +351,7 @@ SelectedRightsActions.propTypes = {
     selectedRightGridApi: PropTypes.object,
     toggleRefreshGridData: PropTypes.func.isRequired,
     setSelectedRights: PropTypes.func.isRequired,
+    setPrePlanRepoRights: PropTypes.func.isRequired,
     gridApi: PropTypes.object,
 };
 

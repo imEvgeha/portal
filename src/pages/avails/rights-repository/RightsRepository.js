@@ -25,6 +25,7 @@ import {
     selectIngest,
 } from '../ingest-panel/ingestActions';
 import {getSelectedAttachmentId, getSelectedIngest} from '../ingest-panel/ingestSelectors';
+import PreplanRightsTable from '../preplan-rights-table/PreplanRightsTable';
 import {createRightMatchingColumnDefs} from '../right-matching/rightMatchingActions';
 import {
     createAvailsMappingSelector,
@@ -35,11 +36,10 @@ import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
-export const RIGHTS_TAB = 'RIGHTS_TAB';
-export const RIGHTS_SELECTED_TAB = 'RIGHTS_SELECTED_TAB';
 
 const RightsRepositoryTable = compose(
     withColumnsResizing(),
@@ -80,6 +80,7 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
+    const [prePlanRepoRights, setPrePlanRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
@@ -364,6 +365,7 @@ const RightsRepository = ({
                 title="Rights"
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
+                prePlanRightsCount={prePlanRepoRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -374,18 +376,7 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-            />
-            <SelectedRightsRepositoryTable
-                id="selectedRightsRepo"
-                columnDefs={updatedColumnDefsCheckBoxHeader}
-                singleClickEdit
-                rowSelection="multiple"
-                suppressRowClickSelection={true}
-                mapping={mapping}
-                rowData={selectedRepoRights}
-                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
-                onGridEvent={onSelectedRightsRepositoryGridEvent}
-                notFilterableColumns={['action', 'buttons']}
+                setPrePlanRepoRights={setPrePlanRepoRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -401,6 +392,25 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsRepositoryDataLoading}
+            />
+            <SelectedRightsRepositoryTable
+                id="selectedRightsRepo"
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                singleClickEdit
+                rowSelection="multiple"
+                suppressRowClickSelection={true}
+                mapping={mapping}
+                rowData={selectedRepoRights}
+                isGridHidden={activeTab !== RIGHTS_SELECTED_TAB}
+                onGridEvent={onSelectedRightsRepositoryGridEvent}
+                notFilterableColumns={['action', 'buttons']}
+            />
+            <PreplanRightsTable
+                columnDefs={updatedColumnDefsCheckBoxHeader}
+                prePlanRepoRights={prePlanRepoRights}
+                activeTab={activeTab}
+                currentTab={PRE_PLAN_TAB}
+                mapping={mapping}
             />
         </div>
     );
