@@ -9,7 +9,6 @@ import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditabl
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {SELECT_VALUES} from './constants';
 
-
 const PrePlanGrid = compose(
     withEditableColumns(),
     withColumnsResizing(),
