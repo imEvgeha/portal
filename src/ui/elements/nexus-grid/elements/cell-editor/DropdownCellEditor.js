@@ -71,7 +71,6 @@ class DropdownCellEditor extends Component {
                     <DropdownItemGroupCheckbox id="languages2" title="Select Plan Territories">
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
-                                defaultSelected={option.selected}
                                 isSelected={option.selected}
                                 key={option.country}
                                 id={option.country}

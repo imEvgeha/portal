@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
-import {defineColumn} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {SELECT_VALUES} from './constants';
 
 
@@ -50,15 +47,15 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
     };
 
 
-    const onGridReady = ({type, columnApi, api}) => {
+    const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
         if (type === GRID_EVENTS.READY) {
             const columnPosition = 10;
             columnApi.moveColumn('planTerritories', columnPosition);
-        } else if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+        }
+        if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
             api.forEachNode(({data = {}}) => {
                 const {planTerritories: territory} = data || {};
-                // delete data.planTerritories;
                 territory ? result.push({...data, territory}) : result.push(data);
             });
             setPreplanRights(result);
