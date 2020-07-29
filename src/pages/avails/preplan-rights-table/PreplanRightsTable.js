@@ -7,7 +7,6 @@ import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
-import {SELECT_VALUES} from './constants';
 
 const PrePlanGrid = compose(
     withEditableColumns(),
@@ -71,7 +70,6 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
             isGridHidden={activeTab !== currentTab}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
-            selectValues={SELECT_VALUES}
         />
     );
 };
