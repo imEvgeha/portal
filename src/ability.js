@@ -101,7 +101,7 @@ const canRender = (Component, action, subject, field = undefined) => {
         componentDidMount() {
             if (cannot(action, subject, field)) {
                 const {history} = this.props;
-                history.push('/');
+                history.push('/401');
             }
         }
 
