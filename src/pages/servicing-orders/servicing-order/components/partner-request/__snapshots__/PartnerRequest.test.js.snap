@@ -84,19 +84,21 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "field": "productDesc",
               "headerName": "Title",
               "maxWidth": 150,
-              "minWidth": 80,
+              "minWidth": 100,
             },
             Object {
               "cellRendererFramework": [Function],
               "colId": "version",
               "field": "version",
               "headerName": "Version",
+              "minWidth": 150,
             },
             Object {
               "cellRendererFramework": [Function],
               "colId": "srdueDate",
               "field": "srdueDate",
               "headerName": "Due Date",
+              "minWidth": 150,
             },
             Object {
               "cellRendererFramework": [Function],
@@ -111,6 +113,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "primaryVideo",
               "field": "primaryVideo",
               "headerName": "Primary Video",
+              "minWidth": 100,
               "suppressSizeToFit": true,
             },
             Object {
@@ -118,6 +121,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "secondaryAudio",
               "field": "secondaryAudio",
               "headerName": "Secondary Audio",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
             Object {
@@ -125,6 +129,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "subtitlesFull",
               "field": "subtitlesFull",
               "headerName": "Subtitles Full",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
             Object {
@@ -132,6 +137,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "subtitlesForced",
               "field": "subtitlesForced",
               "headerName": "Subtitles Forced",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
             Object {
@@ -139,6 +145,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "trailer",
               "field": "trailer",
               "headerName": "Trailer",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
             Object {
@@ -146,6 +153,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "metaData",
               "field": "metaData",
               "headerName": "Metadata",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
             Object {
@@ -153,6 +161,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
               "colId": "artWork",
               "field": "artWork",
               "headerName": "Artwork",
+              "minWidth": 150,
               "suppressSizeToFit": true,
             },
           ]
@@ -162,6 +171,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
             "autoHeight": true,
             "cellClass": "cell",
             "resizable": true,
+            "suppressMovable": true,
           }
         }
         frameworkComponents={Object {}}
