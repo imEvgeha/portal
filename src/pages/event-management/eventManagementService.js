@@ -2,6 +2,7 @@ import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
+const HEADERS_ONLY = true;
 const FETCH_PAGE_SIZE = 100;
 
 export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
@@ -16,6 +17,11 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
 
     // Spice it up with some page and pageSize stuff
     paramString = `${paramString}?page=${page}&size=${pageSize}`;
+
+    // Only fetch headers, not headers + data
+    if (HEADERS_ONLY) {
+        paramString += `&headersOnly=${HEADERS_ONLY}`;
+    }
 
     // Build param string if params are provided
     if (!isEmpty(params)) {
@@ -80,5 +86,16 @@ export const replicateEvent = ({docId}) => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/admin/replicate/${docId}`;
     return nexusFetch(url, {
         method: 'post',
+    });
+};
+
+/**
+ * Get Event Detail By Document Id
+ * @param {Event} docId
+ */
+export const getEventById = docId => {
+    const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApiV2')}/event/${docId}`;
+    return nexusFetch(url, {
+        method: 'get',
     });
 };

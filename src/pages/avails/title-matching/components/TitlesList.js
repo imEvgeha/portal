@@ -55,6 +55,7 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
             </CustomActionsCellRenderer>
         );
     };
+
     // eslint-disable-next-line
     const duplicateButtonCell = ({data}) => {
         const {id} = data || {};

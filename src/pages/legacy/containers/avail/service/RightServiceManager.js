@@ -1,11 +1,15 @@
 import {store} from '../../../../../index';
-import {resultPageLoading, searchFormSetSearchCriteria, resultPageSetBulkExport} from '../../../stores/actions/avail/dashboard';
+import {
+    resultPageLoading,
+    searchFormSetSearchCriteria,
+    resultPageSetBulkExport,
+} from '../../../stores/actions/avail/dashboard';
 import {rightsService} from './RightsService';
 
 export const rightServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
     //for now just table listens for that
-    search: (searchCriteria) => {
+    search: searchCriteria => {
         store.dispatch(searchFormSetSearchCriteria(searchCriteria));
         store.dispatch(resultPageLoading(true));
     },
@@ -13,18 +17,20 @@ export const rightServiceManager = {
     //called by the table either as result of other systems triggering the table (page 0) or scrolling the table (page > 0)
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
-        if(page === 0){
+        if (page === 0) {
             store.dispatch(resultPageSetBulkExport(false));
         }
-        if(store.getState().dashboard.session.searchCriteria.text){
+        if (store.getState().dashboard.session.searchCriteria.text) {
             return rightServiceManager.callService(rightsService.freeTextSearch, page, pageSize, sortedParams);
-        }else{
-            return rightServiceManager.callService(rightsService.advancedSearch, page, pageSize, sortedParams).then(response => {
-                if(response) {
-                    store.dispatch(resultPageSetBulkExport(true));
-                }
-                return response;
-            });
+        } else {
+            return rightServiceManager
+                .callService(rightsService.advancedSearch, page, pageSize, sortedParams)
+                .then(response => {
+                    if (response) {
+                        store.dispatch(resultPageSetBulkExport(true));
+                    }
+                    return response;
+                });
         }
     },
 
@@ -33,22 +39,28 @@ export const rightServiceManager = {
         return searchFn(store.getState().dashboard.session.searchCriteria, page, pageSize, sortedParams)
             .then(response => {
                 return response;
-            }).catch((error) => {
+            })
+            .catch(error => {
                 store.dispatch(resultPageLoading(false));
-                console.warn('unexpected error'); // eslint-disable-line
-                console.error(error); // eslint-disable-line
+                // eslint-disable-next-line
+                console.warn('unexpected error');
+                // eslint-disable-next-line
+                console.error(error);
             });
     },
 
     callPlanningSearch: (criteria, page, pageSize, sortedParams) => {
-        return rightsService.advancedSearch(criteria, page, pageSize, sortedParams)
+        return rightsService
+            .advancedSearch(criteria, page, pageSize, sortedParams)
             .then(response => {
                 return response;
-            }).catch((error) => {
-                 store.dispatch(resultPageLoading(false));
-                 console.warn('unexpected error'); // eslint-disable-line
-                 console.error(error); // eslint-disable-line
-             });
-
-    }
+            })
+            .catch(error => {
+                store.dispatch(resultPageLoading(false));
+                // eslint-disable-next-line
+                console.warn('unexpected error');
+                // eslint-disable-next-line
+                console.error(error);
+            });
+    },
 };

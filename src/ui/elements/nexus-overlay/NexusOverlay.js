@@ -3,7 +3,8 @@ import Blanket from '@atlaskit/blanket';
 
 export const NexusOverlayContext = createContext({});
 
-export const NexusOverlayProvider = ({children}) => { // eslint-disable-line
+// eslint-disable-next-line
+export const NexusOverlayProvider = ({children}) => {
     const [isOverlayActive, setIsOverlayActive] = useState(false);
     const context = {
         isOverlayActive,
