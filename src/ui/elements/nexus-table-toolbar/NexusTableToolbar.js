@@ -37,7 +37,7 @@ const NexusTableToolbar = ({
                 selectedRights={selectedRepoRights}
                 selectedRightGridApi={selectedRightGridApi}
                 setSelectedRights={setSelectedRights}
-                setPrePlanRepoRights={setPrePlanRepoRights}
+                setPrePlanRepoRights={rights => setPrePlanRepoRights(rights)}
                 gridApi={gridApi}
                 activeTab={activeTab}
             />

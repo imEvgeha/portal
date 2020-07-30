@@ -306,6 +306,12 @@ const RightsRepository = ({
                 break;
         }
     };
+    // add only new selected rights to pre-plan
+    const addRightsToPrePlan = rights => {
+        const prePlanIds = prePlanRepoRights.map(right => right.id);
+        const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
+        setPrePlanRepoRights([...prePlanRepoRights, ...newSelectedRights]);
+    };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, ROW_DATA_CHANGED, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
@@ -370,7 +376,6 @@ const RightsRepository = ({
                 />
             )}
             <NexusTableToolbar
-                title="Rights"
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={prePlanRepoRights.length}
@@ -384,7 +389,7 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-                setPrePlanRepoRights={setPrePlanRepoRights}
+                setPrePlanRepoRights={rights => addRightsToPrePlan(rights)}
                 planningRightsCount={planningRightsCount}
             />
             <RightsRepositoryTable
