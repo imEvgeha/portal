@@ -8,7 +8,10 @@ import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {
+    defineEpisodeAndSeasonNumberColumn,
+    getLinkableColumnDefs,
+} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -30,7 +33,7 @@ const TitleRepositoriesTable = compose(
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
@@ -38,7 +41,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
     const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
 
-    const matchButtonCell = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const matchButtonCell = ({data}) => {
         const {id} = data || {};
         const repoName = getRepositoryName(id);
         return (
@@ -52,7 +56,8 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
         );
     };
 
-    const duplicateButtonCell = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const duplicateButtonCell = ({data}) => {
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
@@ -136,7 +141,6 @@ const TitlesList = ({columnDefs, mergeTitles, rightId, queryParams}) => {
             >
                 <MatchedCombinedTitlesTable data={selectedItems} isFullHeight />
             </div>
-
 
             <ActionsBar
                 rightId={rightId}

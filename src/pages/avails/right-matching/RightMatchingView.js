@@ -22,7 +22,7 @@ import './RightMatchingView.scss';
 
 const NexusGridWithInfiniteScrolling = compose(
     withInfiniteScrolling({fetchData: getRightMatchingList}),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const RightMatchingView = ({
@@ -53,7 +53,8 @@ const RightMatchingView = ({
         history.push(URL.keepEmbedded(`${location.pathname}/${rightId}`));
     };
 
-    const createCellRenderer = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const createCellRenderer = ({data}) => {
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
@@ -128,4 +129,5 @@ const mapDispatchToProps = dispatch => ({
     cleanStoredRightMatchDataWithIds: payload => dispatch(cleanStoredRightMatchDataWithIds(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView); // eslint-disable-line
+// eslint-disable-next-line
+export default connect(createMapStateToProps, mapDispatchToProps)(RightMatchingView);

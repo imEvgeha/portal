@@ -23,18 +23,17 @@ import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
 
-const AG_GRID_LICENSE_KEY = 'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
+const AG_GRID_LICENSE_KEY =
+    'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
 // setEnvConfiguration('qa')
 setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
-        console.error(error); // eslint-disable-line
-        render(
-            <p>Problem with configuration, application cannot be started</p>,
-            document.querySelector('#app')
-        );
+        // eslint-disable-next-line
+        console.error(error);
+        render(<p>Problem with configuration, application cannot be started</p>, document.querySelector('#app'));
     });
 
 const history = createBrowserHistory();
@@ -44,7 +43,8 @@ const history = createBrowserHistory();
 export const store = configureStore(window.__PRELOADED_STATE__ || {}, history);
 const persistor = configurePersistor(store);
 
-delete window.__PRELOADED_STATE__; // eslint-disable-line 
+// eslint-disable-next-line
+delete window.__PRELOADED_STATE__;
 
 const App = () => (
     <AppContainer>
@@ -67,26 +67,20 @@ function renderApp() {
     createKeycloakInstance();
     initializeTracker();
     store.runSaga(rootSaga);
-    render(
-        <App />,
-        document.getElementById('app')
-    );
+    render(<App />, document.getElementById('app'));
 }
 
 if (module.hot) {
     module.hot.accept(
-        ([
+        [
             // TODO: we should enable AppProviders too
             './ui/elements/nexus-layout/NexusLayout',
             './Router',
             './routes',
             './saga',
-        ]),
+        ],
         () => {
-            render(
-                <App />,
-                document.getElementById('app')
-            );
+            render(<App />, document.getElementById('app'));
         }
     );
 }

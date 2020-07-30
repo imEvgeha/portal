@@ -1165,7 +1165,8 @@ class RightCreate extends React.Component {
                                         mapping.dataType +
                                         ' for field name: ' +
                                         mapping.displayName
-                                ); // eslint-disable-line
+                                    // eslint-disable-next-line
+                                );
                         }
                     }
                 });

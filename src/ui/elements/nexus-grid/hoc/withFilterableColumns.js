@@ -55,40 +55,33 @@ const withFilterableColumns = ({
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
 
         // TODO: temporary solution to get select values
-        useEffect(
-            () => {
-                if (isEmpty(selectValues)) {
-                    fetchAvailMapping();
-                }
-            },
-            [selectValues]
-        );
+        useEffect(() => {
+            if (isEmpty(selectValues)) {
+                fetchAvailMapping();
+            }
+        }, [selectValues]);
 
-        useEffect(
-            () => {
-                if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
-                    setFilterableColumnDefs(updateColumnDefs(columnDefs));
-                }
-            },
-            [columnDefs, selectValues]
-        );
+        useEffect(() => {
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+                setFilterableColumnDefs(updateColumnDefs(columnDefs));
+            }
+        }, [columnDefs, selectValues]);
 
-        useEffect(
-            () => {
-                if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
-                    setFilterableColumnDefs(updateColumnDefs(columnDefs));
-                    setTimeout(() => {
-                        initializeValues();
-                    }, 0);
-                }
-            },
-            [fixedFilter]
-        );
+        useEffect(() => {
+            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+                setFilterableColumnDefs(updateColumnDefs(columnDefs));
+                setTimeout(() => {
+                    initializeValues();
+                }, 0);
+            }
+        }, [fixedFilter]);
 
         let waitForFilter = 0;
         function initializeFilter(filterInstance, key, isCallback = false) {
             // initialize one column filter with value
-            if (!filterInstance) { return; }
+            if (!filterInstance) {
+                return;
+            }
             const currentValue = get(filters, key, undefined);
             let filterValue = null;
 
@@ -101,7 +94,10 @@ const withFilterableColumns = ({
             if (filterValue) {
                 if (filterInstance instanceof SetFilter) {
                     const filterValues = Array.isArray(filterValue) ? filterValue : filterValue.split(',');
-                    applySetFilter(filterInstance, filterValues.map(el => typeof el === 'string' && el.trim()));
+                    applySetFilter(
+                        filterInstance,
+                        filterValues.map(el => typeof el === 'string' && el.trim())
+                    );
                 } else {
                     filterValue = Array.isArray(filterValue) ? filterValue.join(', ') : filterValue;
                     filterInstance.setModel({
@@ -124,12 +120,9 @@ const withFilterableColumns = ({
             }
         }
 
-        useEffect(
-            () => {
-                initializeValues();
-            },
-            [gridApi, mapping]
-        );
+        useEffect(() => {
+            initializeValues();
+        }, [gridApi, mapping]);
 
         // apply initial filter
         const initializeValues = () => {
@@ -167,13 +160,15 @@ const withFilterableColumns = ({
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field} = (Array.isArray(mapping)
-                        && mapping.find(({javaVariableName}) => javaVariableName === columnDef.field))
-                    || {};
+                const {searchDataType, queryParamName = columnDef.field} =
+                    (Array.isArray(mapping) &&
+                        mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
+                    {};
                 const {field} = columnDef;
-                const isFilterable = FILTERABLE_DATA_TYPES.includes(searchDataType)
-                    && (columns ? columns.includes(columnDef.field) : true)
-                    && !excludedFilterColumns.includes(columnDef.field);
+                const isFilterable =
+                    FILTERABLE_DATA_TYPES.includes(searchDataType) &&
+                    (columns ? columns.includes(columnDef.field) : true) &&
+                    !excludedFilterColumns.includes(columnDef.field);
 
                 if (isFilterable) {
                     let locked = false;
@@ -206,9 +201,9 @@ const withFilterableColumns = ({
                     } = FILTER_TYPE;
                     if (!locked) {
                         if (
-                            filterInstance
-                            && searchDataType !== READONLY
-                            && filterInstance.reactComponent === CustomReadOnlyFilter
+                            filterInstance &&
+                            searchDataType !== READONLY &&
+                            filterInstance.reactComponent === CustomReadOnlyFilter
                         ) {
                             // if current filter is readonly (it just got unlocked) destroy to create the proper one
                             gridApi.destroyFilter(field);
@@ -456,7 +451,8 @@ const withFilterableColumns = ({
     return connect(
         createMapStateToProps,
         mapDispatchToProps
-    )(ComposedComponent); // eslint-disable-line
+        // eslint-disable-next-line
+    )(ComposedComponent);
 };
 
 export default withFilterableColumns;

@@ -3,7 +3,7 @@ import {Button} from 'reactstrap';
 import {
     searchFormUpdateAdvancedSearchCriteria,
     setHistoryCache,
-    resultPageSetBulkExport
+    resultPageSetBulkExport,
 } from '../../../../stores/actions/avail/dashboard';
 import {connect} from 'react-redux';
 
@@ -30,20 +30,19 @@ const mapStateToProps = state => {
         availsMapping: state.root.availsMapping,
         columns: state.dashboard.session.columns,
         historyCache: state.dashboard.session.historyCache,
-        bulkExportAvailable: state.dashboard.bulkExportAvailable
+        bulkExportAvailable: state.dashboard.bulkExportAvailable,
     };
 };
 
 const mapDispatchToProps = {
     searchFormUpdateAdvancedSearchCriteria,
     setHistoryCache,
-    resultPageSetBulkExport
+    resultPageSetBulkExport,
 };
 
 const ignoreForCloseable = ['invalid'];
 
 class AdvancedSearchPanel extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -67,9 +66,8 @@ class AdvancedSearchPanel extends React.Component {
         this.blink = this.blink.bind(this);
         this.refSearchBtn = React.createRef();
 
-
-        this.availsMap=null;
-        this.searchOptions=[];
+        this.availsMap = null;
+        this.searchOptions = [];
     }
 
     handleSelect(option) {
@@ -90,7 +88,7 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     selectField(name) {
-        this.handleSelect(this.searchOptions.find( (option) => (name === option.value)));
+        this.handleSelect(this.searchOptions.find(option => name === option.value));
     }
 
     removeField(name) {
@@ -101,13 +99,12 @@ class AdvancedSearchPanel extends React.Component {
 
         const sortedFields = this.getSortedFieldsToShow();
         let position = 0;
-        sortedFields.forEach((field) => {
+        sortedFields.forEach(field => {
             if (field.name !== name) {
                 searchCriteria[field.name] = {...this.props.searchCriteria[field.name], order: position++};
             } else {
                 searchCriteria[field.name] = null;
             }
-
         });
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, ...searchCriteria});
         this.props.resultPageSetBulkExport(false);
@@ -122,11 +119,14 @@ class AdvancedSearchPanel extends React.Component {
 
     addSearchField() {
         const value = this.state.value;
-        if ( this.isAnyValueSpecified() ) {
+        if (this.isAnyValueSpecified()) {
             if (!value.order && value.order !== 0) {
                 value.order = this.getFieldsToShow().length;
             }
-            this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [this.state.selected.value]: value});
+            this.props.searchFormUpdateAdvancedSearchCriteria({
+                ...this.props.searchCriteria,
+                [this.state.selected.value]: value,
+            });
             this.blink(this.state.selected.value);
         } else {
             this.removeField(this.state.selected.value);
@@ -137,25 +137,32 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleBulkExport() {
-        if(!this.props.bulkExportAvailable){
-            alertModal.open('Action required', () => {
-            }, {description: 'Search results are not aligned with the filtering, please apply filter before exporting'});
-        }else if (!this.props.availTabPage.total) {
-            alertModal.open('Action required', () => {
-            }, {description: 'There is no result of search, please change filters.'});
+        if (!this.props.bulkExportAvailable) {
+            alertModal.open('Action required', () => {}, {
+                description: 'Search results are not aligned with the filtering, please apply filter before exporting',
+            });
+        } else if (!this.props.availTabPage.total) {
+            alertModal.open('Action required', () => {}, {
+                description: 'There is no result of search, please change filters.',
+            });
         } else if (this.props.availTabPage.total > 50000) {
-            alertModal.open('Action required', () => {
-            }, {description: 'You have more that 50000 avails, please change filters'});
+            alertModal.open('Action required', () => {}, {
+                description: 'You have more that 50000 avails, please change filters',
+            });
         } else {
-
-            const onChange = () => { this.setState({exportAll: !this.state.exportAll});};
+            const onChange = () => {
+                this.setState({exportAll: !this.state.exportAll});
+            };
             const option = (
-                <div key='exportAll'>
-                    <br /> <input type='checkbox' name='buck_export_all' style={{marginRight: '8px'}} onChange={onChange} />Export all Fields
+                <div key="exportAll">
+                    <br />{' '}
+                    <input type="checkbox" name="buck_export_all" style={{marginRight: '8px'}} onChange={onChange} />
+                    Export all Fields
                 </div>
             );
             const options = [`You have ${this.props.availTabPage.total} avails for download.`, option];
-            confirmModal.open('Confirm download',
+            confirmModal.open(
+                'Confirm download',
                 () => {
                     this.bulkExport(this.state.exportAll);
                     this.setState({exportAll: false});
@@ -163,32 +170,44 @@ class AdvancedSearchPanel extends React.Component {
                 () => {
                     this.setState({exportAll: false});
                 },
-                {description: options});
+                {description: options}
+            );
         }
     }
 
     bulkExport(exportAll) {
         let exportColumns = this.props.columns.slice(0);
-        if(exportAll){
-            exportColumns = exportColumns.concat(this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName).filter(javaVariableName => !exportColumns.includes(javaVariableName)));
+        if (exportAll) {
+            exportColumns = exportColumns.concat(
+                this.props.availsMapping.mappings
+                    .filter(({dataType}) => dataType)
+                    .map(({javaVariableName}) => javaVariableName)
+                    .filter(javaVariableName => !exportColumns.includes(javaVariableName))
+            );
         }
-        exportService.bulkExportAvails(rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria), exportColumns, this.props.availTabPageSort)
-        .then(function (response) {
-            downloadFile(response);
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+        exportService
+            .bulkExportAvails(
+                rightSearchHelper.prepareAdvancedSearchCall(this.props.searchCriteria),
+                exportColumns,
+                this.props.availTabPageSort
+            )
+            .then(function (response) {
+                downloadFile(response);
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
     }
 
     handleDelete() {
-        confirmModal.open('Confirm delete',
+        confirmModal.open(
+            'Confirm delete',
             () => {
                 configurationService.deleteReport(this.props.reportName);
             },
-            () => {
-            },
-            {description: `Do you want to delete ${this.props.reportName} report.`});
+            () => {},
+            {description: `Do you want to delete ${this.props.reportName} report.`}
+        );
     }
 
     handleClear() {
@@ -198,21 +217,27 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     handleSave() {
-        saveReportModal.open((reportName) => {
-            if (this.props.reportName !== reportName && configurationService.getReportsNames().indexOf(reportName) > -1) {
-                confirmModal.open('Report "' + reportName + '" already exists, do you wanna to overwrite?', () => {
+        saveReportModal.open(
+            reportName => {
+                if (
+                    this.props.reportName !== reportName &&
+                    configurationService.getReportsNames().indexOf(reportName) > -1
+                ) {
+                    confirmModal.open('Report "' + reportName + '" already exists, do you wanna to overwrite?', () => {
+                        configurationService.saveReport(reportName);
+                    });
+                } else {
                     configurationService.saveReport(reportName);
-                });
-            } else {
-                configurationService.saveReport(reportName);
-            }
-        }, () => {
-        }, {reportName: this.props.reportName});
+                }
+            },
+            () => {},
+            {reportName: this.props.reportName}
+        );
     }
 
     handleSearch(e, criteria = null) {
         criteria = criteria || this.props.searchCriteria;
-        if ( !this.isAnyValueSpecified() ) {
+        if (!this.isAnyValueSpecified()) {
             this.setState({selected: null, value: null});
         }
         this.setState({blink: null});
@@ -221,12 +246,18 @@ class AdvancedSearchPanel extends React.Component {
 
     isAnyValueSpecified = () => {
         const value = this.state.value;
-        return value && (value.from || value.to || (value.value  && value.value.trim()) || (value.options && value.options.length > 0));
+        return (
+            value &&
+            (value.from ||
+                value.to ||
+                (value.value && value.value.trim()) ||
+                (value.options && value.options.length > 0))
+        );
     };
 
     getFieldsToShow() {
         const nonEmptyFields = [];
-        for (const key of Object.keys(this.props.searchCriteria) ) {
+        for (const key of Object.keys(this.props.searchCriteria)) {
             const field = this.props.searchCriteria[key];
             if (field) {
                 field.name = key;
@@ -237,19 +268,19 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     getSortedFieldsToShow() {
-        return this.getFieldsToShow().sort( (a, b) => (a.order ? a.order : -1)  - (b.order ? b.order : -1) );
+        return this.getFieldsToShow().sort((a, b) => (a.order ? a.order : -1) - (b.order ? b.order : -1));
     }
 
     getHistoryData(availHistoryId) {
-        historyService.getHistory(availHistoryId)
+        historyService
+            .getHistory(availHistoryId)
             .then(res => {
-                if(res && this.loadingHistoryData[availHistoryId]) {
+                if (res && this.loadingHistoryData[availHistoryId]) {
                     delete this.loadingHistoryData[availHistoryId];
-                    this.props.setHistoryCache({[availHistoryId] : res});
+                    this.props.setHistoryCache({[availHistoryId]: res});
                 }
             })
-            .catch(() => {
-            });
+            .catch(() => {});
     }
 
     componentWillUnmount() {
@@ -257,8 +288,8 @@ class AdvancedSearchPanel extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.location && this .props.location.state){
-            this.props.setHistoryCache({[this.props.location.state.id] : this.props.location.state});
+        if (this.props.location && this.props.location.state) {
+            this.props.setHistoryCache({[this.props.location.state.id]: this.props.location.state});
         }
     }
 
@@ -266,21 +297,25 @@ class AdvancedSearchPanel extends React.Component {
         if (this.props.availsMapping && this.availsMap === null) {
             this.availsMap = {};
             this.searchOptions = [];
-            this.props.availsMapping.mappings.forEach( (mapping) => {
+            this.props.availsMapping.mappings.forEach(mapping => {
                 this.availsMap[mapping.queryParamName] = mapping;
                 if (mapping.enableSearch) {
-                    this.searchOptions.push({value: mapping.queryParamName, label: mapping.displayName, field: mapping.javaVariableName});
+                    this.searchOptions.push({
+                        value: mapping.queryParamName,
+                        label: mapping.displayName,
+                        field: mapping.javaVariableName,
+                    });
                 }
             });
         }
 
-        const fieldsToShow = this.getSortedFieldsToShow().map((field) => (field.name));
-        const options = this.searchOptions.filter((option) => (!(fieldsToShow.indexOf(option.value) > -1)));
-        options.sort((a,b) => a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1);
+        const fieldsToShow = this.getSortedFieldsToShow().map(field => field.name);
+        const options = this.searchOptions.filter(option => !(fieldsToShow.indexOf(option.value) > -1));
+        options.sort((a, b) => (a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1));
 
         const renderCloseableBtn = (name, displayName) => {
             return (
-                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                <div key={name} style={{maxWidth: '300px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
                         value={' = ' + this.props.searchCriteria[name].value}
@@ -295,10 +330,15 @@ class AdvancedSearchPanel extends React.Component {
 
         const renderCloseableSelectBtn = (name, displayName) => {
             return (
-                <div key={name} style={{ maxWidth:'300px', margin:'5px 5px'}}>
+                <div key={name} style={{maxWidth: '300px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
-                        value={' = ' + (this.props.searchCriteria[name].options ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ') : '')}
+                        value={
+                            ' = ' +
+                            (this.props.searchCriteria[name].options
+                                ? this.props.searchCriteria[name].options.map(({label}) => label).join(', ')
+                                : '')
+                        }
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
@@ -313,17 +353,21 @@ class AdvancedSearchPanel extends React.Component {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
             }
             return (
-                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <div key={name} style={{maxWidth: '330px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
-                        value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                        value={
+                            prepareDate(' from', this.props.searchCriteria[name].from) +
+                            ' ' +
+                            prepareDate('to', this.props.searchCriteria[name].to)
+                        }
                         id={'dashboard-avails-advanced-search-' + name + '-criteria'}
                     />
                 </div>
-);
+            );
         };
 
         const renderCloseableDateBtn = (name, displayName) => {
@@ -331,17 +375,21 @@ class AdvancedSearchPanel extends React.Component {
                 return date ? prefix + ' ' + moment.utc(date).format('L') : '';
             }
             return (
-                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <div key={name} style={{maxWidth: '330px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
-                        value={prepareDate(' from', this.props.searchCriteria[name].from) + ' ' + prepareDate('to', this.props.searchCriteria[name].to)}
+                        value={
+                            prepareDate(' from', this.props.searchCriteria[name].from) +
+                            ' ' +
+                            prepareDate('to', this.props.searchCriteria[name].to)
+                        }
                         id={'dashboard-avails-advanced-search-' + name + '-criteria'}
                     />
                 </div>
-);
+            );
         };
 
         const renderCloseableDurationBtn = (name, displayName) => {
@@ -349,45 +397,69 @@ class AdvancedSearchPanel extends React.Component {
                 return value ? prefix + ' ' + value : '';
             }
             return (
-                <div key={name} style={{maxWidth:'330px', margin:'5px 5px'}}>
+                <div key={name} style={{maxWidth: '330px', margin: '5px 5px'}}>
                     <CloseableBtn
                         title={displayName}
                         onClick={() => this.selectField(name)}
                         onClose={() => this.removeField(name)}
                         highlighted={this.state.blink === name}
-                        value={prepareDuration(' from', this.props.searchCriteria[name].from) + ' ' + prepareDuration('to', this.props.searchCriteria[name].to)}
+                        value={
+                            prepareDuration(' from', this.props.searchCriteria[name].from) +
+                            ' ' +
+                            prepareDuration('to', this.props.searchCriteria[name].to)
+                        }
                         id={'dashboard-avails-advanced-search-' + name + '-criteria'}
                     />
                 </div>
-);
+            );
         };
 
         const renderCloseable = () => {
             if (this.availsMap != null) {
-                return Array.from(fieldsToShow).map((key) => {
+                return Array.from(fieldsToShow).map(key => {
                     const schema = this.availsMap[key];
                     if (ignoreForCloseable.indexOf(key) === -1) {
                         if (schema) {
                             switch (schema.searchDataType) {
-                                case 'string' : return renderCloseableBtn(key, schema.displayName);
-                                case 'integer' : return renderCloseableBtn(key, schema.displayName);
-                                case 'year' : return renderCloseableBtn(key, schema.displayName);
-                                case 'double' : return renderCloseableBtn(key, schema.displayName);
-                                case 'multiselect' : return renderCloseableSelectBtn(key, schema.displayName);
-                                case 'priceType' : return renderCloseableSelectBtn(key, schema.displayName);
-                                case 'territoryType' : return renderCloseableSelectBtn(key, schema.displayName);
-                                case 'duration' : return renderCloseableDurationBtn(key, schema.displayName);
-                                case 'time' : return renderCloseableBtn(key, schema.displayName);
-                                case DATETIME_FIELDS.TIMESTAMP : return renderCloseableDateTimeBtn(key, schema.displayName);
-                                case DATETIME_FIELDS.BUSINESS_DATETIME : return renderCloseableDateTimeBtn(key, schema.displayName);
-                                case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderCloseableDateBtn(key, schema.displayName);
-                                case 'boolean' : return renderCloseableBtn(key, schema.displayName);
+                                case 'string':
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case 'integer':
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case 'year':
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case 'double':
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case 'multiselect':
+                                    return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'priceType':
+                                    return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'territoryType':
+                                    return renderCloseableSelectBtn(key, schema.displayName);
+                                case 'duration':
+                                    return renderCloseableDurationBtn(key, schema.displayName);
+                                case 'time':
+                                    return renderCloseableBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.TIMESTAMP:
+                                    return renderCloseableDateTimeBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.BUSINESS_DATETIME:
+                                    return renderCloseableDateTimeBtn(key, schema.displayName);
+                                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                                    return renderCloseableDateBtn(key, schema.displayName);
+                                case 'boolean':
+                                    return renderCloseableBtn(key, schema.displayName);
                                 default:
-                                    console.warn('Unsupported searchDataType: ' + schema.searchDataType + ' for field name: ' + schema.displayName); // eslint-disable-line
+                                    // eslint-disable-next-line
+                                    console.warn(
+                                        'Unsupported searchDataType: ' +
+                                            schema.searchDataType +
+                                            ' for field name: ' +
+                                            schema.displayName
+                                    );
                             }
                         } else {
-                            if(key !== 'availHistoryIds') {
-                                console.warn('Cannot determine schema for field: ' + key); // eslint-disable-line
+                            if (key !== 'availHistoryIds') {
+                                // eslint-disable-next-line
+                                console.warn('Cannot determine schema for field: ' + key);
                             }
                         }
                     }
@@ -398,23 +470,23 @@ class AdvancedSearchPanel extends React.Component {
 
         const renderSpecialCloseable = () => {
             let val = '';
-            if(this.props.searchCriteria.availHistoryIds) {
+            if (this.props.searchCriteria.availHistoryIds) {
                 val = this.props.searchCriteria.availHistoryIds.value;
                 const data = this.props.historyCache[val];
                 if (data) {
                     const subTitle = data.ingestType + ', ';
                     val = subTitle;
                     if (data.ingestType === 'Email') {
-                        val += (data.provider ? data.provider + ', ' : '');
+                        val += data.provider ? data.provider + ', ' : '';
                     } else {
                         if (data.attachments && data.attachments[0]) {
                             const filename = data.attachments[0].link.split(/(\\|\/)/g).pop();
-                            val += (filename ? filename + ', ' : '');
+                            val += filename ? filename + ', ' : '';
                         }
                     }
                     val += moment(data.received).format('llll');
                 } else {
-                    if(!this.loadingHistoryData[val]) {
+                    if (!this.loadingHistoryData[val]) {
                         this.loadingHistoryData[val] = {loading: true};
                         this.getHistoryData(val);
                     }
@@ -422,23 +494,27 @@ class AdvancedSearchPanel extends React.Component {
             }
             return (
                 this.props.searchCriteria.availHistoryIds && (
-                <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
-                    <CloseableBtn
-                        title="Avail History"
-                        value={' = ' + val}
-                        onClose={() => {
-                            this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
-                        }}
-                        id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}
-                    />
-                </div>
-              )
+                    <div key={name} style={{maxWidth: '400px', margin: '5px 5px'}}>
+                        <CloseableBtn
+                            title="Avail History"
+                            value={' = ' + val}
+                            onClose={() => {
+                                this.props.searchFormUpdateAdvancedSearchCriteria({availHistoryIds: null});
+                            }}
+                            id={'dashboard-avails-advanced-search-' + 'AvailId' + '-criteria'}
+                        />
+                    </div>
+                )
             );
         };
         return (
             <div
                 className={'nx-stylish container-fluid vu-advanced-search-panel ' + (this.props.hide ? 'hide' : '')}
-                style={{background: 'rgba(0,0,0,0.1)', padding: '1em', overflow: this.props.hide ? 'hidden' : 'visible' }}
+                style={{
+                    background: 'rgba(0,0,0,0.1)',
+                    padding: '1em',
+                    overflow: this.props.hide ? 'hidden' : 'visible',
+                }}
             >
                 <button type="button" className="close" aria-label="Close" onClick={this.props.onToggleAdvancedSearch}>
                     <span aria-hidden="true">&times;</span>
@@ -451,24 +527,44 @@ class AdvancedSearchPanel extends React.Component {
                     dataType={this.state.selected ? this.availsMap[this.state.selected.value].searchDataType : null}
                     displayName={this.state.selected ? this.availsMap[this.state.selected.value].displayName : null}
                     id="dashboard-avails-advanced-search-selectable"
-
                     onChange={this.handleValueChange}
                     onSelect={this.handleSelect}
                     onSave={this.addSearchField}
                 />
-                <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',  alignItems:'flex-start'}}>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                    }}
+                >
                     {renderSpecialCloseable()}
                     {renderCloseable()}
                 </div>
-                <div className="mt-2" style={{ textAlign: 'right', display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-end', alignItems:'flex-start', alignContent:'flex-end', margin: '0px 0px 2px'}}>
+                <div
+                    className="mt-2"
+                    style={{
+                        textAlign: 'right',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'flex-end',
+                        alignItems: 'flex-start',
+                        alignContent: 'flex-end',
+                        margin: '0px 0px 2px',
+                    }}
+                >
                     <Button
                         outline
                         color="secondary"
                         id="dashboard-avails-advanced-search-save-btn"
                         onClick={this.handleBulkExport}
                         disabled={!this.props.availTabPage.total}
-                        style={{ margin: '4px 7px 0'}}
-                    >bulk export
+                        style={{margin: '4px 7px 0'}}
+                    >
+                        bulk export
                     </Button>
                     <Button
                         outline
@@ -477,7 +573,8 @@ class AdvancedSearchPanel extends React.Component {
                         onClick={this.handleDelete}
                         disabled={!this.props.reportName}
                         style={{width: '80px', margin: '4px 7px 0'}}
-                    >delete
+                    >
+                        delete
                     </Button>
                     <Button
                         outline
@@ -485,7 +582,8 @@ class AdvancedSearchPanel extends React.Component {
                         id="dashboard-avails-advanced-search-clear-btn"
                         onClick={this.handleClear}
                         style={{width: '80px', margin: '4px 7px 0'}}
-                    >clear
+                    >
+                        clear
                     </Button>
                     <Button
                         outline
@@ -493,7 +591,8 @@ class AdvancedSearchPanel extends React.Component {
                         id="dashboard-avails-advanced-search-save-btn"
                         onClick={this.handleSave}
                         style={{width: '80px', margin: '4px 7px 0'}}
-                    >save
+                    >
+                        save
                     </Button>
                     <Button
                         outline
@@ -502,7 +601,8 @@ class AdvancedSearchPanel extends React.Component {
                         onClick={this.handleSearch}
                         innerRef={this.refSearchBtn}
                         style={{width: '80px', margin: '4px 7px 0'}}
-                    >filter
+                    >
+                        filter
                     </Button>
                 </div>
             </div>
@@ -525,7 +625,7 @@ AdvancedSearchPanel.propTypes = {
     setHistoryCache: PropTypes.func,
     location: PropTypes.object,
     bulkExportAvailable: PropTypes.bool,
-    resultPageSetBulkExport: PropTypes.func
+    resultPageSetBulkExport: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdvancedSearchPanel);
