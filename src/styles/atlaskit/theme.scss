@@ -88,13 +88,14 @@ $element-colors: (
 **/
 // prettier-ignore
 $headings: (
-  h900: ( 35, 500, -0.01, map-get($neutrals, N800) , 40, 52),
-  h800: ( 29, 500, -0.01, map-get($neutrals, N800), 32, 40),
-  h700: ( 24, 500, -0.01, map-get($neutrals, N800), 28, 40 ),
-  h600: ( 20, 500, -0.008, map-get($neutrals, N800), 24, 28),
-  h500: ( 16, 500, -0.006, map-get($neutrals, N800), 20, 24),
-  h400: ( 14, 600, -0.003, map-get($neutrals, N800), 16, 16),
-  h300: ( 12, 600, 0, map-get($neutrals, N800), 16, 20, uppercase),
-  h200: ( 12, 600, 0, map-get($neutrals, N200), 16, 16),
-  h100: ( 11, 400, 0, map-get($neutrals, N200), 16, 16),
+  h900: ( 35, 500, -0.01, map-get($typographic-colors, heading) , 40, 52),
+  h800: ( 29, 500, -0.01, map-get($typographic-colors, heading) , 32, 40),
+  h700: ( 24, 500, -0.01, map-get($typographic-colors, heading) , 28, 40 ),
+  h600: ( 20, 500, -0.008, map-get($typographic-colors, heading) , 24, 28),
+  h500: ( 16, 500, -0.006, map-get($typographic-colors, heading) , 20, 24),
+  h400: ( 14, 600, -0.003, map-get($typographic-colors, heading) , 16, 16),
+  h300: ( 12, 600, 0, map-get($typographic-colors, heading) , 16, 20, uppercase),
+  h200: ( 12, 600, 0, map-get($typographic-colors, subtle-heading), 16, 16),
+  h100: ( 11, 400, 0, map-get($typographic-colors, subtle-heading), 16, 16),
+  c600: (20, 500, -0.008, map-get($typographic-colors, heading) , 24, 28)
 );
