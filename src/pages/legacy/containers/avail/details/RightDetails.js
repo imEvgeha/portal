@@ -1135,15 +1135,23 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            const {right: {licensee = {}} = {}} = this.state;
+            const {servicingRegion = ''} = licensee || {};
+
+            const isRequired = required
+                || (name === 'platformCategory' && servicingRegion === 'US')
+                || (name === 'licenseRightsDescription');
+            const tooltip = name === 'platformCategory' ? 'Required for US Licensee' : null;
+
             return renderFieldTemplate(
                 name,
                 displayName,
                 value,
                 error,
                 readOnly,
-                required,
+                isRequired,
                 highlighted,
-                null,
+                tooltip,
                 ref,
                 <EditableBaseComponent
                     ref={ref}
