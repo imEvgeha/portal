@@ -158,6 +158,7 @@ class RightsCreateFromAttachment extends React.Component {
                 error: errorDetails,
                 attachment,
                 status,
+                report: ingestReport,
             });
         }));
     }
