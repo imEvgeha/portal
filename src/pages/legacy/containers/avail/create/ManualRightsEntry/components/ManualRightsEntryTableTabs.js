@@ -8,7 +8,8 @@ import {
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS, ATTACHMENTS_TAB, ATTACHMENTS_COLUMNS
+    SUCCESS,
+    ATTACHMENTS_TAB
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {
     updateManualRightEntrySelectedTab,
