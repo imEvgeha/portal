@@ -1,4 +1,8 @@
 /* eslint-disable max-len, import/no-commonjs, import/unambiguous */
+
+// Set Timezone for all tests to GMT
+process.env.TZ = 'GMT';
+
 module.exports = {
     // All imported modules in your tests should be mocked automatically
     // automock: false,

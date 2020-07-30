@@ -2054,8 +2054,12 @@ class RightDetails extends React.Component {
                             break;
                         default:
                             console.warn(
-                                'Unsupported DataType: ' + mapping.dataType + ' for field name: ' + mapping.displayName
-                            ); // eslint-disable-line
+                                    'Unsupported DataType: ' +
+                                        mapping.dataType +
+                                        ' for field name: ' +
+                                        mapping.displayName
+                                    // eslint-disable-next-line
+                                );
                     }
                 }
             });
