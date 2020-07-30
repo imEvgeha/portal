@@ -107,24 +107,27 @@ export const SelectedRightsActions = ({
     };
 
     // Check the criteria for enabling specific actions
-    useEffect(() => {
-        if (selectedRights.length) {
-            // Bulk match criteria check
-            setIsMatchable(haveEmptyCoreTitleIdsSameContentType() && checkSourceRightIds());
+    useEffect(
+        () => {
+            if (selectedRights.length) {
+                // Bulk match criteria check
+                setIsMatchable(haveEmptyCoreTitleIdsSameContentType() && checkSourceRightIds());
 
-            // Bulk unmatch criteria check
-            setIsUnmatchable(haveCoreTitleIds() && checkSourceRightIds());
+                // Bulk unmatch criteria check
+                setIsUnmatchable(haveCoreTitleIds() && checkSourceRightIds());
 
-            // Bonus rights create criteria
-            setIsBonusRightCreatable(checkBonusRightCreateCriteria());
+                // Bonus rights create criteria
+                setIsBonusRightCreatable(checkBonusRightCreateCriteria());
 
-            // PrePlan criteria
-            setIsPreplanEligible(checkPrePlanEligibilityCriteria());
-        } else {
-            setIsMatchable(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedRights]);
+                // PrePlan criteria
+                setIsPreplanEligible(checkPrePlanEligibilityCriteria());
+            } else {
+                setIsMatchable(false);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        },
+        [selectedRights]
+    );
 
     const clickHandler = () => setMenuOpened(!menuOpened);
 
@@ -364,4 +367,7 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(withToasts(SelectedRightsActions));
+export default connect(
+    null,
+    mapDispatchToProps
+)(withToasts(SelectedRightsActions));

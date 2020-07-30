@@ -5,6 +5,7 @@ import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {TITLE} from './eventManagementConstants';
 import './EventManagement.scss';
+import {getEventById} from './eventManagementService';
 
 const EventManagement = () => {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -17,13 +18,20 @@ const EventManagement = () => {
 
     const onGridEvent = ({type, api}) => {
         const {READY, SELECTION_CHANGED} = GRID_EVENTS;
+        let selectedRow = null;
         switch (type) {
             case READY:
                 api.sizeColumnsToFit();
                 setGridApi(api);
                 break;
             case SELECTION_CHANGED:
-                setSelectedEvent(get(api.getSelectedRows(), '[0]', null));
+                selectedRow = get(api.getSelectedRows(), '[0]', null);
+                // Call api to get event by ID
+                if (selectedRow) {
+                    getEventById(selectedRow.id).then(evt => {
+                        setSelectedEvent(get(evt, 'event', null));
+                    });
+                }
                 break;
             default:
                 break;

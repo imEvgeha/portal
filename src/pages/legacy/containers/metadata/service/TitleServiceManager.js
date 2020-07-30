@@ -7,7 +7,7 @@ import {EXCLUDED_INITIAL_FILTER_VALUES} from '../../../../../ui/elements/nexus-g
 export const titleServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements
     //for now just table listens for that
-    search: (searchCriteria) => {
+    search: searchCriteria => {
         store.dispatch(searchFormSetSearchCriteria(searchCriteria));
         store.dispatch(resultPageLoading(true));
     },
@@ -16,21 +16,21 @@ export const titleServiceManager = {
     //this function is just a wrapper that decides which service function (and API as a result) to call depending on data in search criteria
     doSearch: (page, pageSize, sortedParams) => {
         let storeTitleReducer = store.getState().titleReducer;
-        if (storeTitleReducer.freeTextSearch.title || storeTitleReducer.session.searchCriteria.parentId)
-        {
+        if (storeTitleReducer.freeTextSearch.title || storeTitleReducer.session.searchCriteria.parentId) {
             return titleServiceManager.callService(titleService.freeTextSearch, page, pageSize, sortedParams);
-        } else{
+        } else {
             return titleServiceManager.callService(titleService.advancedSearch, page, pageSize, sortedParams);
         }
     },
 
     // Temporary solution - pick between 2 title APIs for fetching titles
     smartSearch: (searchCriteria, page, pageSize, sortedParams) => {
-        const isSeachCriteriaEmpty = isEmpty(searchCriteria)
-            || Object.values(searchCriteria).every(v => EXCLUDED_INITIAL_FILTER_VALUES.includes(v));
+        const isSeachCriteriaEmpty =
+            isEmpty(searchCriteria) ||
+            Object.values(searchCriteria).every(v => EXCLUDED_INITIAL_FILTER_VALUES.includes(v));
         if (isSeachCriteriaEmpty) {
             return titleService.advancedSearch(searchCriteria, page, pageSize, sortedParams);
-        } 
+        }
         // metadata titles/search API expects 'AD' as content type,
         // avails API expects 'Advertisement' as content type
         if (searchCriteria.contentType && searchCriteria.contentType.toLowerCase() === 'advertisement') {
@@ -44,20 +44,24 @@ export const titleServiceManager = {
         return searchFn(store.getState().titleReducer.session.searchCriteria, page, pageSize, sortedParams)
             .then(response => {
                 store.dispatch(resultPageLoading(false));
-                if(page === 0){
-                    store.dispatch(resultPageUpdate({
-                        pages: 1,
-                        titles: response.data,
-                        pageSize: response.data.length,
-                        total: response.total
-                    }));
+                if (page === 0) {
+                    store.dispatch(
+                        resultPageUpdate({
+                            pages: 1,
+                            titles: response.data,
+                            pageSize: response.data.length,
+                            total: response.total,
+                        })
+                    );
                 }
                 return response;
-            }
-            ).catch((error) => {
+            })
+            .catch(error => {
                 store.dispatch(resultPageLoading(false));
-                console.warn('Unexpected error'); // eslint-disable-line
-                console.error(error); // eslint-disable-line
+                // eslint-disable-next-line
+                console.warn('Unexpected error');
+                // eslint-disable-next-line
+                console.error(error);
             });
-    }
+    },
 };

@@ -41,7 +41,7 @@
         {
             "javaVariableName": "licensed",
             "displayName": "Licensed",
-            "dataType": "boolean",
+            "dataType": "yesOrNo",
             "searchDataType": "boolean",
             "queryParamName": "licensed",
             "readOnly": true,

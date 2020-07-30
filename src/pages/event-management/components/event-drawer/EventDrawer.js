@@ -25,6 +25,7 @@ import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
+    const headers = get(event, 'headers', {});
     const attachments = get(message, 'attachments', {});
 
     const decodeBase64 = (data, mimeType) => {
@@ -62,12 +63,12 @@ const EventDrawer = ({event, onDrawerClose}) => {
         <div className="nexus-c-event-drawer">
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={!!(event && event.eventId)}
+                isOpen={!!(headers && headers.eventId)}
                 title={DRAWER_TITLE}
                 width="wide"
-                headerContent={event && (
+                headerContent={headers && (
                     <EventDrawerHeader
-                        event={event}
+                        event={headers}
                     />
                 )}
             >
@@ -75,14 +76,14 @@ const EventDrawer = ({event, onDrawerClose}) => {
                     <EventSectionCollapsible
                         title={EVENT_HEADER}
                     >
-                        <EventHeader event={event} />
+                        <EventHeader event={headers} />
                     </EventSectionCollapsible>
                     <EventSectionCollapsible
                         title={EVENT_MESSAGE}
                         header={(
                             <NexusDownload
                                 data={message}
-                                filename={`${get(event, 'eventId', '')} - message`}
+                                filename={`${get(headers, 'eventId', '')} - message`}
                                 mimeType={JSON_MIME_TYPE}
                             />
                         )}
@@ -113,7 +114,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
                                                 data={base64Encoded
                                                     ? decodeBase64(rawData, mimeType)
                                                     : rawData}
-                                                filename={`${get(event, 'eventId', '')} - ${key}`}
+                                                filename={`${get(headers, 'eventId', '')} - ${key}`}
                                                 mimeType={mimeType}
                                             />
                                         </>
