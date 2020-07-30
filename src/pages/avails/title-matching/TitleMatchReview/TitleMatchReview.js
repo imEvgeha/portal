@@ -24,16 +24,20 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
 
     const getTitle = id => {
         return new Promise((resolve, reject) => {
-            return titleService.getTitleById(id).then(response => {
-                const title = response;
-                titleService.getEditorialMetadataByTitleId(id).then(data => {
-                    const founded = data.find(el => el.locale === 'US' && (el.language === 'English' || el.language === 'en'));
-                    if (founded) {
-                        title['editorialGenres'] = founded.genres;
-                    }
-                    resolve(title);
-                });
-            })
+            return titleService
+                .getTitleById(id)
+                .then(response => {
+                    const title = response;
+                    titleService.getEditorialMetadataByTitleId(id).then(data => {
+                        const founded = data.find(
+                            el => el.locale === 'US' && (el.language === 'English' || el.language === 'en')
+                        );
+                        if (founded) {
+                            title['editorialGenres'] = founded.genres;
+                        }
+                        resolve(title);
+                    });
+                })
                 .catch(() => {
                     reject(new Error('Unable to load Title Data'));
                 });
@@ -52,30 +56,33 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         }
     }, []);
 
-    const setParents = useCallback((list, merged) => {
-        const titleList = [...list];
-        const getTitles = [];
-        let indexTrack = 0;
-        const track = {};
-        list.forEach(title => {
-            if (title.parentIds && title.parentIds.length) {
-                title.parentIds.forEach((parent, i) => {
-                    getTitles.push(getTitle(parent.id));
-                    track[parent.id] = indexTrack + i;
-                });
-                indexTrack = indexTrack + 1 + title.parentIds.length;
-            }
-        });
-        if (getTitles.length) {
-            Promise.all(getTitles).then(values => {
-                values.forEach(parent => {
-                    titleList.splice(track[parent.id], 0, parent);
-                });
-                setTitles(titleList);
+    const setParents = useCallback(
+        (list, merged) => {
+            const titleList = [...list];
+            const getTitles = [];
+            let indexTrack = 0;
+            const track = {};
+            list.forEach(title => {
+                if (title.parentIds && title.parentIds.length) {
+                    title.parentIds.forEach((parent, i) => {
+                        getTitles.push(getTitle(parent.id));
+                        track[parent.id] = indexTrack + i;
+                    });
+                    indexTrack = indexTrack + 1 + title.parentIds.length;
+                }
             });
-        }
-        setCombinedTitleParents(merged);
-    }, [setCombinedTitleParents]);
+            if (getTitles.length) {
+                Promise.all(getTitles).then(values => {
+                    values.forEach(parent => {
+                        titleList.splice(track[parent.id], 0, parent);
+                    });
+                    setTitles(titleList);
+                });
+            }
+            setCombinedTitleParents(merged);
+        },
+        [setCombinedTitleParents]
+    );
 
     useEffect(() => {
         const matchedTitlesValues = Object.values(matchedTitles);
@@ -137,7 +144,6 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
         headerName: '-',
         valueFormatter: renderEpisodeAndSeasonNumber,
         width: 100,
-
     };
 
     const onGridReady = params => {
@@ -148,42 +154,35 @@ const TitleMatchReview = ({columnDefs, matchedTitles, match, history, getColumnD
     };
     return (
         <div className="nexus-c-title-to-match-review">
-            <BackNavigationByUrl
-                title="Title Matching Review"
-                onNavigationClick={navigateToMatchPreview}
-            />
-            {
-                !!titles.length && (
-                    <>
-                        <NexusTitle isSubTitle>Matched Titles</NexusTitle>
-                        <NexusGrid
-                            onGridEvent={onGridReady}
-                            columnDefs={[
-                                getRepositoryCell(),
-                                numOfEpisodeAndSeasonField,
-                                ...deepCloneMatchedTitlesColumnDefs,
-                            ]}
-                            rowData={titles}
-                        />
-                    </>
-                )
-            }
-            {
-                !!mergedTitles[0].id && (
-                    <>
-                        <NexusTitle isSubTitle>Combined Title</NexusTitle>
-                        <NexusGrid
-                            onGridEvent={onGridReady}
-                            columnDefs={[
-                                getRepositoryCell(),
-                                numOfEpisodeAndSeasonField,
-                                ...deepCloneCombinedTitleColumnDefs,
-                            ]}
-                            rowData={mergedTitles}
-                        />
-                    </>
-                )
-            }
+            <BackNavigationByUrl title="Title Matching Review" onNavigationClick={navigateToMatchPreview} />
+            {!!titles.length && (
+                <>
+                    <NexusTitle isSubTitle>Matched Titles</NexusTitle>
+                    <NexusGrid
+                        onGridEvent={onGridReady}
+                        columnDefs={[
+                            getRepositoryCell(),
+                            numOfEpisodeAndSeasonField,
+                            ...deepCloneMatchedTitlesColumnDefs,
+                        ]}
+                        rowData={titles}
+                    />
+                </>
+            )}
+            {!!mergedTitles[0].id && (
+                <>
+                    <NexusTitle isSubTitle>Combined Title</NexusTitle>
+                    <NexusGrid
+                        onGridEvent={onGridReady}
+                        columnDefs={[
+                            getRepositoryCell(),
+                            numOfEpisodeAndSeasonField,
+                            ...deepCloneCombinedTitleColumnDefs,
+                        ]}
+                        rowData={mergedTitles}
+                    />
+                </>
+            )}
         </div>
     );
 };
@@ -217,4 +216,5 @@ const mapDispatchToProps = dispatch => ({
     getColumnDefs: () => dispatch(createColumnDefs()),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchReview); // eslint-disable-line
+// eslint-disable-next-line
+export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchReview);

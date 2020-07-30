@@ -32,7 +32,7 @@ const fetchSyncLog = (startDate, endDate) => {
 };
 
 export const exportSyncLog = (startDate, endDate) => {
-    fetchSyncLog(startDate, endDate).then((response) => {
+    fetchSyncLog(startDate, endDate).then(response => {
         downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
     });
 };

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
 
-const withSorting = (initialSort = null) => (WrappedComponent) => {
-    const ComposedComponent = (props) => {
+const withSorting = (initialSort = null) => WrappedComponent => {
+    const ComposedComponent = props => {
         const onColumnVisible = ({column = {}}) => {
             const {gridApi, colId} = column || {};
             const sortModel = gridApi && gridApi.getSortModel ? gridApi.getSortModel() : [];

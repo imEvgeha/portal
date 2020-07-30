@@ -38,14 +38,11 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         [data]
     );
 
-    useEffect(
-        () => {
-            if (selectedSource === null && data.length > 0) {
-                setSelectedSource(data[0]);
-            }
-        },
-        [selectedSource, data]
-    );
+    useEffect(() => {
+        if (selectedSource === null && data.length > 0) {
+            setSelectedSource(data[0]);
+        }
+    }, [selectedSource, data]);
 
     useEffect(
         () => {
@@ -55,7 +52,8 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         [selectedSource]
     );
 
-    const serviceButtonCell = ({data, selectedItem = {}}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const serviceButtonCell = ({data, selectedItem = {}}) => {
         const {barcode} = data || {};
 
         return (

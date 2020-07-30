@@ -17,7 +17,7 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/RightsRepository';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {getRepositoryName} from '../../../avails/utils';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
@@ -29,26 +29,22 @@ const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
-    const {
-        matchList,
-        handleMatchClick,
-        duplicateList,
-        handleDuplicateClick,
-    } = useMatchAndDuplicateList();
+    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
 
     // inform parent component about match, duplicate list change
     useEffect(() => {
         onCandidatesChange({matchList, duplicateList});
     }, [matchList, duplicateList, onCandidatesChange]);
 
-    const matchButtonCell = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const matchButtonCell = ({data}) => {
         const {id} = data || {};
         const repo = getRepositoryName(id);
 
@@ -74,7 +70,8 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         cellRendererFramework: matchButtonCell,
     };
 
-    const duplicateButtonCell = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const duplicateButtonCell = ({data}) => {
         const {id} = data || {};
         const repo = getRepositoryName(id);
         return (
@@ -103,7 +100,9 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
     const handleGridEvent = ({type, api, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             setGridApi(api);
-            const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
+            const directorIndex = columnApi.columnController.columnDefs.findIndex(
+                ({field}) => field === 'castCrew.director'
+            );
             columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
     };
@@ -121,11 +120,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
             <div className="nexus-c-candidates-list__header">
                 <NexusTitle isSubTitle={true}>{`${CANDIDATES_LIST_TITLE} (${totalCount})`}</NexusTitle>
                 <div className="nexus-c-candidates-toolbar">
-                    <Button
-                        className="nexus-c-button"
-                        onClick={handleClearFilterClick}
-                        isDisabled={!gridApi}
-                    >
+                    <Button className="nexus-c-button" onClick={handleClearFilterClick} isDisabled={!gridApi}>
                         {CLEAR_FILTER}
                     </Button>
                     <SelectedButton
@@ -136,7 +131,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                 </div>
             </div>
             <div
-
                 className={classNames(
                     'nexus-c-candidates-titles-table',
                     activeTab === RIGHTS_TAB && 'nexus-c-candidates-titles-table--active'
@@ -145,11 +139,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                 {queryParams.title && (
                     <NexusGridWithInfiniteScrolling
                         onGridEvent={handleGridEvent}
-                        columnDefs={[
-                            matchButton,
-                            duplicateButton,
-                            ...updatedColumnDefs,
-                        ]}
+                        columnDefs={[matchButton, duplicateButton, ...updatedColumnDefs]}
                         rowClassRules={{'nexus-c-candidates-list__row': params => params.node.id === titleId}}
                         setTotalCount={setTotalCount}
                         initialFilter={queryParams}

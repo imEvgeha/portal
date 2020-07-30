@@ -14,11 +14,9 @@ const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF} = {}) => WrappedComp
         const existingTableColumnsSize = existingColumnsSize[id] || {};
         let columnDefsWithSizes = columnDefs;
         if (existingTableColumnsSize) {
-            columnDefsWithSizes = columnDefs.map(c => (
-                c.colId && existingTableColumnsSize[c.colId]
-                    ? {...c, width: existingTableColumnsSize[c.colId]}
-                    : c
-            ));
+            columnDefsWithSizes = columnDefs.map(c =>
+                c.colId && existingTableColumnsSize[c.colId] ? {...c, width: existingTableColumnsSize[c.colId]} : c
+            );
         }
         const [columnsSize, setColumnsSize] = useState(existingTableColumnsSize);
 
@@ -63,8 +61,8 @@ const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF} = {}) => WrappedComp
         existingColumnsSize: {},
     };
 
-    return connect(createMapStateToProps, mapDispatchToProps)(ComposedComponent); // eslint-disable-line
+    // eslint-disable-next-line
+    return connect(createMapStateToProps, mapDispatchToProps)(ComposedComponent);
 };
 
 export default withColumnsResizing;
-

@@ -13,17 +13,16 @@ import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 
 const mapStateToProps = state => {
     return {
-        selectValues: state.root.selectValues
+        selectValues: state.root.selectValues,
     };
 };
 
 class SelectableInput extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             invalid: false,
-            selectableInput: ''
+            selectableInput: '',
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleOptionsChange = this.handleOptionsChange.bind(this);
@@ -42,8 +41,8 @@ class SelectableInput extends Component {
         }
     }
 
-    _handleKeyPress = (e) => {
-        if (e.key === 'Enter' && ! this.state.invalid) {
+    _handleKeyPress = e => {
+        if (e.key === 'Enter' && !this.state.invalid) {
             this.props.onSave();
         }
     };
@@ -55,8 +54,14 @@ class SelectableInput extends Component {
     }
 
     handleChange(key, value) {
-        if(value) {
-            if ([DATETIME_FIELDS.TIMESTAMP, DATETIME_FIELDS.BUSINESS_DATETIME, DATETIME_FIELDS.REGIONAL_MIDNIGHT].includes(this.props.dataType)) {
+        if (value) {
+            if (
+                [
+                    DATETIME_FIELDS.TIMESTAMP,
+                    DATETIME_FIELDS.BUSINESS_DATETIME,
+                    DATETIME_FIELDS.REGIONAL_MIDNIGHT,
+                ].includes(this.props.dataType)
+            ) {
                 value = dateToISO(moment(value).startOf('day'), this.props.dataType);
             }
         }
@@ -71,9 +76,9 @@ class SelectableInput extends Component {
     }
 
     filterOption = (option, inputValue, previousOptions) => {
-        const { label } = option;
+        const {label} = option;
         let presentInPreviousSelection = false;
-        if(previousOptions) {
+        if (previousOptions) {
             presentInPreviousSelection = previousOptions.some(e => e.label === label);
         }
 
@@ -107,7 +112,7 @@ class SelectableInput extends Component {
 
         if (moment(from).isAfter(to)) return false;
 
-        return from || to || (value.value  && value.value.trim() || (options && options.length));
+        return from || to || (value.value && value.value.trim()) || (options && options.length);
     };
 
     render() {
@@ -126,12 +131,12 @@ class SelectableInput extends Component {
                         onKeyPress={this._handleKeyPress}
                     />
                 </div>
-);
+            );
         };
 
         const innerValidate = (val, ctx, input, cb) => {
             const isValid = input.props.validate.pattern.value.test(val);
-            if(this.state.invalid === isValid) {
+            if (this.state.invalid === isValid) {
                 this.setState({invalid: !isValid});
             }
             cb(isValid);
@@ -139,7 +144,10 @@ class SelectableInput extends Component {
 
         const renderIntegerField = (name, displayName) => {
             return (
-                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <div
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                >
                     <AvForm>
                         <AvField
                             id={this.props.id + '-text'}
@@ -149,16 +157,22 @@ class SelectableInput extends Component {
                             onChange={this.handleInputChange}
                             onKeyPress={this._handleKeyPress}
                             type="text"
-                            validate={{async: innerValidate, pattern:{value: /^\d+$/, errorMessage: 'Please enter a valid integer'}}}
+                            validate={{
+                                async: innerValidate,
+                                pattern: {value: /^\d+$/, errorMessage: 'Please enter a valid integer'},
+                            }}
                         />
                     </AvForm>
                 </div>
-);
+            );
         };
 
         const renderYearField = (name, displayName) => {
             return (
-                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <div
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                >
                     <AvForm>
                         <AvField
                             id={this.props.id + '-text'}
@@ -168,35 +182,50 @@ class SelectableInput extends Component {
                             onChange={this.handleInputChange}
                             onKeyPress={this._handleKeyPress}
                             type="text"
-                            validate={{async: innerValidate, pattern:{value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}}}
+                            validate={{
+                                async: innerValidate,
+                                pattern: {value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'},
+                            }}
                         />
                     </AvForm>
                 </div>
-);
+            );
         };
 
         const renderDoubleField = (name, displayName) => {
             return (
-                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <div
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                >
                     <AvForm>
                         <AvField
                             id={this.props.id + '-text'}
                             placeholder={'Enter ' + displayName}
                             name={name.value}
                             value={this.props.value && this.props.value.value ? this.props.value.value : ''}
-                            onChange={(e, val) => this.handleInputChange(e, val.replace(',','.'))}
+                            onChange={(e, val) => this.handleInputChange(e, val.replace(',', '.'))}
                             onKeyPress={this._handleKeyPress}
                             type="text"
-                            validate={{async: innerValidate, pattern:{value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'}}}
+                            validate={{
+                                async: innerValidate,
+                                pattern: {
+                                    value: /^\d*(\d[.,]|[.,]\d)?\d*$/,
+                                    errorMessage: 'Please enter a valid number',
+                                },
+                            }}
                         />
                     </AvForm>
                 </div>
-);
+            );
         };
 
         const renderTimeField = (name, displayName) => {
             return (
-                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <div
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                >
                     <AvForm>
                         <AvField
                             id={this.props.id + '-text'}
@@ -211,12 +240,15 @@ class SelectableInput extends Component {
                         />
                     </AvForm>
                 </div>
-);
+            );
         };
 
         const renderBooleanField = (name, displayName) => {
             return (
-                <div key={name.value} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                <div
+                    key={name.value}
+                    style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}
+                >
                     <select
                         className="form-control"
                         id={this.props.id + '-boolean'}
@@ -230,7 +262,7 @@ class SelectableInput extends Component {
                         <option value="false">No</option>
                     </select>
                 </div>
-);
+            );
         };
 
         const renderRangeDurationField = (name, displayName) => {
@@ -241,32 +273,29 @@ class SelectableInput extends Component {
                     ref={this.refDuration}
                     hideLabel={true}
                     displayName={displayName}
-                    value={{from: this.props.value.from !== undefined ? this.props.value.from : '', to: this.props.value.to !== undefined ? this.props.value.to : ''}}
-                    onFromDurationChange={(value) => this.handleChange('from', value)}
-                    onToDurationChange={(value) => this.handleChange('to', value)}
+                    value={{
+                        from: this.props.value.from !== undefined ? this.props.value.from : '',
+                        to: this.props.value.to !== undefined ? this.props.value.to : '',
+                    }}
+                    onFromDurationChange={value => this.handleChange('from', value)}
+                    onToDurationChange={value => this.handleChange('to', value)}
                     onInvalid={this.handleInvalid}
                     handleKeyPress={this._handleKeyPress}
                 />
-);
+            );
         };
 
         const renderRangeDatepicker = (selected, displayName, showTime) => {
             const {value, id, dataType, onChange} = this.props;
-            let {
-                from = '',
-                to = ''
-            } = value || {};
+            let {from = '', to = ''} = value || {};
 
             from = from.endsWith('Z') ? from.slice(0, -1) : from;
             to = to.endsWith('Z') ? to.slice(0, -1) : to;
             return (
                 <NexusDateTimeWindowPicker
                     name={displayName}
-                    onChange={(timeWindow) => {
-                        const {
-                            startDate: from = '',
-                            endDate: to = ''
-                        } = timeWindow || {};
+                    onChange={timeWindow => {
+                        const {startDate: from = '', endDate: to = ''} = timeWindow || {};
                         onChange({...value, from, to});
                     }}
                     isUsingTime={showTime}
@@ -279,7 +308,7 @@ class SelectableInput extends Component {
                     endDateTimePickerProps={{
                         id: `${id}-datepicker-end`,
                         defaultValue: to,
-                        label: 'To'
+                        label: 'To',
                     }}
                 />
             );
@@ -287,26 +316,38 @@ class SelectableInput extends Component {
 
         const renderSelect = (name, displayName) => {
             let options = [];
-            if(this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]){
-                options  = this.props.selectValues[this.props.selected.field];
+            if (this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]) {
+                options = this.props.selectValues[this.props.selected.field];
             }
 
-            const filters = Object.keys(this.props.currentCriteria).map((key) => this.props.currentCriteria[key]).filter((filter) => filter && filter.options);
+            const filters = Object.keys(this.props.currentCriteria)
+                .map(key => this.props.currentCriteria[key])
+                .filter(filter => filter && filter.options);
             let filteredOptions = options;
 
             filters.forEach(filter => {
                 const fieldName = filter.name + 'Id';
                 const allowedOptions = filter.options.map(({id}) => id);
-                filteredOptions = filteredOptions.filter((option) => option[fieldName] ? (allowedOptions.indexOf(option[fieldName]) > -1) : true);
+                filteredOptions = filteredOptions.filter(option =>
+                    option[fieldName] ? allowedOptions.indexOf(option[fieldName]) > -1 : true
+                );
             });
 
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions.filter((rec) => (rec.value)).map(rec => { return {...rec,
-                        label: rec.label || rec.value,
-                        aliasValue:(rec.aliasId ? options.filter((pair) => (rec.aliasId === pair.id))[0].value : null)};})
-                }
+                    options: filteredOptions
+                        .filter(rec => rec.value)
+                        .map(rec => {
+                            return {
+                                ...rec,
+                                label: rec.label || rec.value,
+                                aliasValue: rec.aliasId
+                                    ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                    : null,
+                            };
+                        }),
+                },
             ];
 
             return (
@@ -319,19 +360,21 @@ class SelectableInput extends Component {
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
                         getDropdownButtonLabel={({placeholderButtonLabel, value}) => {
-                            if(value && value.length > 0){
+                            if (value && value.length > 0) {
                                 return (
-                                    <div
-                                        style={{width:'90%'}}
-                                    >
+                                    <div style={{width: '90%'}}>
                                         <div
-                                            style={{maxWidth:'calc(100% - 90px)', float:'left', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace:'nowrap'}}
+                                            style={{
+                                                maxWidth: 'calc(100% - 90px)',
+                                                float: 'left',
+                                                textOverflow: 'ellipsis',
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                            }}
                                         >
                                             {value.map(({value}) => value).join(', ')}
                                         </div>
-                                        <div
-                                            style={{width:'90px', float:'left', paddingLeft:'5px'}}
-                                        >
+                                        <div style={{width: '90px', float: 'left', paddingLeft: '5px'}}>
                                             {' (' + value.length + ' selected)'}
                                         </div>
                                     </div>
@@ -359,23 +402,36 @@ class SelectableInput extends Component {
             const displayName = this.props.displayName;
 
             switch (this.props.dataType) {
-                case 'string' : return renderTextField(selected, displayName);
-                case 'integer' : return renderIntegerField(selected, displayName);
-                case 'year' : return renderYearField(selected, displayName);
-                case 'double' : return renderDoubleField(selected, displayName);
-                case 'multiselect' : return renderSelect(selected, displayName);
-                case 'priceType' : return renderSelect(selected, displayName);
-                case 'territoryType' : return renderSelect(selected, displayName);
-                case 'duration' : return renderRangeDurationField(selected, displayName);
-                case 'time' : return renderTimeField(selected, displayName);
-                case DATETIME_FIELDS.REGIONAL_MIDNIGHT : return renderRangeDatepicker(selected, displayName, false);
-                case DATETIME_FIELDS.BUSINESS_DATETIME : return renderRangeDatepicker(selected, displayName, true);
-                case DATETIME_FIELDS.TIMESTAMP : return renderRangeDatepicker(selected, displayName, true);
-                case 'boolean' : return renderBooleanField(selected, displayName);
+                case 'string':
+                    return renderTextField(selected, displayName);
+                case 'integer':
+                    return renderIntegerField(selected, displayName);
+                case 'year':
+                    return renderYearField(selected, displayName);
+                case 'double':
+                    return renderDoubleField(selected, displayName);
+                case 'multiselect':
+                    return renderSelect(selected, displayName);
+                case 'priceType':
+                    return renderSelect(selected, displayName);
+                case 'territoryType':
+                    return renderSelect(selected, displayName);
+                case 'duration':
+                    return renderRangeDurationField(selected, displayName);
+                case 'time':
+                    return renderTimeField(selected, displayName);
+                case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                    return renderRangeDatepicker(selected, displayName, false);
+                case DATETIME_FIELDS.BUSINESS_DATETIME:
+                    return renderRangeDatepicker(selected, displayName, true);
+                case DATETIME_FIELDS.TIMESTAMP:
+                    return renderRangeDatepicker(selected, displayName, true);
+                case 'boolean':
+                    return renderBooleanField(selected, displayName);
                 default:
-                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName); // eslint-disable-line
+                    // eslint-disable-next-line
+                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }
-
         };
 
         return (
@@ -389,31 +445,36 @@ class SelectableInput extends Component {
                         options={this.props.options}
                     />
                 </div>
-                { this.props.selected && (
+                {this.props.selected && (
                     <div style={{margin: '0 2px 16px', display: 'flex', alignItems: 'center'}}>
                         {renderSelectedInput()}
                     </div>
                 )}
-                { this.props.selected && (
-                <div style={{margin: '0 0 16px'}}>
-                    <Button
-                        outline
-                        color="secondary"
-                        id={this.props.id + '-add-btn'}
-                        onClick={this.props.onSave}
-                        disabled={this.state.invalid || !this.isAnyValueSpecified()}
-                        style={{width: '80px'}}
-                    >{this.props.saveText || 'add' }
-                    </Button>
-                </div>
-              )}
-                {   this.props.dataType === 'duration' && (
+                {this.props.selected && (
+                    <div style={{margin: '0 0 16px'}}>
+                        <Button
+                            outline
+                            color="secondary"
+                            id={this.props.id + '-add-btn'}
+                            onClick={this.props.onSave}
+                            disabled={this.state.invalid || !this.isAnyValueSpecified()}
+                            style={{width: '80px'}}
+                        >
+                            {this.props.saveText || 'add'}
+                        </Button>
+                    </div>
+                )}
+                {this.props.dataType === 'duration' && (
                     <span
-                        title={'* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'}
+                        title={
+                            '* format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)'
+                        }
                         style={{color: 'grey'}}
-                    >&nbsp;&nbsp;<i className="far fa-question-circle" />
+                    >
+                        &nbsp;&nbsp;
+                        <i className="far fa-question-circle" />
                     </span>
-                  )}
+                )}
             </div>
         );
     }
@@ -437,6 +498,5 @@ SelectableInput.propTypes = {
     onSelect: PropTypes.func,
     onChange: PropTypes.func,
     onSave: PropTypes.func,
-
 };
 export default connect(mapStateToProps, null)(SelectableInput);

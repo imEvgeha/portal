@@ -41,7 +41,7 @@
         {
             "javaVariableName": "licensed",
             "displayName": "Licensed",
-            "dataType": "boolean",
+            "dataType": "yesOrNo",
             "searchDataType": "boolean",
             "queryParamName": "licensed",
             "readOnly": true,
@@ -72,7 +72,29 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
+            "required": true
+        },
+        {
+            "javaVariableName": "keywords",
+            "displayName": "Keywords",
+            "dataType": "string",
+            "searchDataType": "string",
+            "queryParamName": "keywords",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
             "required": false
+        },
+        {
+            "javaVariableName": "selected",
+            "displayName": "Selected",
+            "dataType": "string",
+            "searchDataType": "string",
+            "queryParamName": "selected",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": true
         },
         {
             "javaVariableName": "licensee",
@@ -1814,17 +1836,6 @@
             "searchDataType": "timestamp",
             "queryParamName": "updatedCatalogReceivedAt",
             "readOnly": true,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
-            "javaVariableName": "keywords",
-            "displayName": "Keywords",
-            "dataType": "string",
-            "searchDataType": "string",
-            "queryParamName": "keywords",
-            "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
             "required": false

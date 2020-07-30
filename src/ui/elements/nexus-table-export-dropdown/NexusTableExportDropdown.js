@@ -51,7 +51,7 @@ const NexusTableExportDropdown = ({
 
     const getSelectedRightIds = () => {
         const ids = [];
-        selectedRightGridApi.forEachNodeAfterFilter((node) => {
+        selectedRightGridApi.forEachNodeAfterFilter(node => {
             const {data = {}} = node;
             ids.push(data.id);
         });
@@ -63,34 +63,32 @@ const NexusTableExportDropdown = ({
             const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
             exportService
                 .exportAvails(getSelectedRightIds(), allDisplayedColumns)
-                .then((response) => downloadFile(response));
+                .then(response => downloadFile(response));
         } else {
             const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
             const {external, column} = rightsFilter;
             exportService
                 .bulkExportAvails({...external, ...column}, allDisplayedColumns)
-                .then((response) => downloadFile(response));
+                .then(response => downloadFile(response));
         }
     };
 
     const onVisibleColumnsExportClick = () => {
         if (isSelectedOptionActive) {
             const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService
-                .exportAvails(getSelectedRightIds(), visibleColumns)
-                .then((response) => downloadFile(response));
+            exportService.exportAvails(getSelectedRightIds(), visibleColumns).then(response => downloadFile(response));
         } else {
             const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
             const {external, column} = rightsFilter;
             exportService
                 .bulkExportAvails({...external, ...column}, visibleColumns)
-                .then((response) => downloadFile(response));
+                .then(response => downloadFile(response));
         }
     };
 
-    const getAllDisplayedColumns = (columnApi) => {
+    const getAllDisplayedColumns = columnApi => {
         const allDisplayedColumns = getDownloadableColumns(columnApi.getAllDisplayedColumns());
-        mappingColumnNames.forEach((mapCol) => {
+        mappingColumnNames.forEach(mapCol => {
             if (!allDisplayedColumns.includes(mapCol)) {
                 allDisplayedColumns.push(mapCol);
             }
@@ -100,7 +98,7 @@ const NexusTableExportDropdown = ({
     };
 
     const getDownloadableColumns = (columns = []) => {
-        return columns.map(({colDef: {field} = {}}) => field).filter((col) => mappingColumnNames.includes(col));
+        return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
     };
 
     const renderDropdown = () => {
