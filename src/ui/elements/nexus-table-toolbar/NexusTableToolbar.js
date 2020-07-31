@@ -39,6 +39,7 @@ const NexusTableToolbar = ({
                 setSelectedRights={setSelectedRights}
                 setPrePlanRepoRights={setPrePlanRepoRights}
                 gridApi={gridApi}
+                activeTab={activeTab}
             />
             <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
             <NexusTab

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Dropdown, {DropdownItemCheckbox, DropdownItemGroupCheckbox} from '@atlaskit/dropdown-menu';
+import './DropdownCellEditor.scss';
 
 class DropdownCellEditor extends Component {
     constructor(props) {
@@ -67,8 +68,8 @@ class DropdownCellEditor extends Component {
 
         return (
             <div className="nexus-c-dropdown-cell-editor">
-                <Dropdown defaultOpen triggerType="button" trigger="Select Values">
-                    <DropdownItemGroupCheckbox id="languages2" title="Select Plan Territories">
+                <Dropdown defaultOpen triggerType="button">
+                    <DropdownItemGroupCheckbox id="select territories" title="Select Plan Territories">
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
                                 isSelected={option.selected}
