@@ -204,6 +204,7 @@ const RightsRepository = ({
     const actionMatchingButtonColumnDef = defineButtonColumn({
         cellRendererFramework: TooltipCellRenderer,
         cellRendererParams: {isTooltipEnabled: false},
+        lockVisible: true,
     });
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
