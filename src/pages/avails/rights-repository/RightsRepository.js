@@ -389,7 +389,7 @@ const RightsRepository = ({
                 selectedRightColumnApi={selectedColumnApi}
                 selectedRightGridApi={selectedGridApi}
                 selectedRepoRights={selectedRepoRights}
-                setPrePlanRepoRights={rights => addRightsToPrePlan(rights)}
+                setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
             />
             <RightsRepositoryTable
