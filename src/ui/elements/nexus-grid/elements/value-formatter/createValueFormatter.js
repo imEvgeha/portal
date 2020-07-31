@@ -123,7 +123,11 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             };
         case 'dropdown':
             return ({value}) => {
-                return Array.isArray(value) && value.map(option => option.selected && option.country).join(', ');
+                let result = [];
+                if (Array.isArray(value)) {
+                    result = value.filter(option => option.selected).map(option => option.country);
+                }
+                return result;
             };
         default:
             return ({value}) => value;
