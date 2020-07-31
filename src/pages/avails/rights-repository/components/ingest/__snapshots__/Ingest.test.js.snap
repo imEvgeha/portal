@@ -51,6 +51,7 @@ exports[`Ingest should match snapshot 1`] = `
           "updated": 19999,
         }
       }
+      showTooltips={false}
     />
     <div
       className="nexus-c-avails-ingest__email"
