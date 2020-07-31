@@ -2,13 +2,15 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import IngestReport from './IngestReport';
+import NexusTooltip from "../../../../../ui/elements/nexus-tooltip/NexusTooltip";
 
 describe('IngestReport', () => {
     let wrapper = null;
     const errorText = 'Some attachments could not be processed';
+    let props;
 
     beforeEach(() => {
-        const props = {
+        props = {
             filterClick: () => null,
             report: {
                 total: 20001,
@@ -64,6 +66,18 @@ describe('IngestReport', () => {
 
         expect(labels.at(5).text()).toEqual('Errors');
         expect(values.at(5).text()).toEqual('2');
+    });
+
+    it('should not include any tooltip', () => {
+        const tooltips = wrapper.find(NexusTooltip);
+        expect(tooltips).toHaveLength(0);
+    });
+
+    it('should include tooltip', () => {
+        const updatedProps = {...props, showTooltips: true};
+        wrapper = shallow(<IngestReport {...updatedProps} />);
+        const tooltips = wrapper.find(NexusTooltip);
+        expect(tooltips).toHaveLength(2);
     });
 
 });
