@@ -45,6 +45,11 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
         color: map-get($colors, nexus-link);
         cursor: pointer;
     }
+
+    .ag-cell {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 
 .nexus-c-sync-log-table__actions {

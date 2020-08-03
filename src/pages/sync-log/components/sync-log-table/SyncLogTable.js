@@ -32,7 +32,6 @@ const SyncLogTable = () => {
     const getColumnDefs = () => {
         return columnMappings.map(col => ({
             ...col,
-            cellRenderer: 'loadingCellRenderer',
             cellRendererParams: {
                 setErrors,
             },
