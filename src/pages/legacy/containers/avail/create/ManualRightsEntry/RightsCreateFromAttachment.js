@@ -149,17 +149,18 @@ class RightsCreateFromAttachment extends React.Component {
     getAttachmentsRowData = (attachments = []) => {
         return (
             Array.isArray(attachments) &&
-            attachments.map((attachment = {}) => {
-                const {status = '', ingestReport} = attachment || {};
+            attachments.filter(({attachmentType}) => attachmentType !== 'Email')
+                .map((attachment = {}) => {
+                    const {status = '', ingestReport} = attachment || {};
 
-                const {errorDetails = ''} = ingestReport || {};
+                    const {errorDetails = ''} = ingestReport || {};
 
-            return ({
+            return {
                 error: errorDetails,
                 attachment,
                 status,
                 report: ingestReport,
-            });
+            };
         }));
     }
 

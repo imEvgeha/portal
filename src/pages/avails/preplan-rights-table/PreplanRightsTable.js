@@ -22,6 +22,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
         headerName: 'Plan Territories',
         colId: 'planTerritories',
         field: 'planTerritories',
+        width: 180,
         editable: true,
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
@@ -42,9 +43,11 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
 
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
-        if (type === GRID_EVENTS.READY) {
-            const columnPosition = 10;
-            columnApi.moveColumn('planTerritories', columnPosition);
+        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+            const idIndex = columnDefs.findIndex(e => e.field === 'id');
+            // move column to position of id col position + 8 because we use columnDefs from RightsRepo
+            const columnPosition = 8;
+            columnApi.moveColumn('planTerritories', idIndex + columnPosition);
         }
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
             api.forEachNode(({data = {}}) => {

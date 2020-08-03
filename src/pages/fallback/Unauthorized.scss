@@ -1,0 +1,22 @@
+.nexus-c-unauthorized {
+    height: 100%;
+    width: 100%;
+    background: white;
+
+    &__content {
+        max-width: 25rem;
+        margin: 0 auto;
+    }
+
+    &__svg-container {
+        margin: 3rem auto;
+    }
+
+    &__heading {
+        text-align: center;
+    }
+
+    &__message {
+        text-align: center;
+    }
+}
