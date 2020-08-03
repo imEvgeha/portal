@@ -3,7 +3,6 @@ import config from 'react-global-configuration';
 import {downloadFile} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
-
 const PAGESIZE = 100;
 
 export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
@@ -33,8 +32,7 @@ const fetchSyncLog = (startDate, endDate) => {
 };
 
 export const exportSyncLog = (startDate, endDate) => {
-    fetchSyncLog(startDate, endDate)
-        .then(response => {
-            downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
-        });
+    fetchSyncLog(startDate, endDate).then(response => {
+        downloadFile(response, `Sync-log-${startDate}-${endDate}`, '.csv', false);
+    });
 };

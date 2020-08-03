@@ -13,18 +13,22 @@ const BasicTab = styled.div`
     padding: 0 10px 0 10px;
     text-align: center;
     color: #999;
-    ${props => props.isActive && css`
-        font-weight: bold;
-        font-size: 15px;
-        color: #000;
-    `}
-    ${props => props.isDisabled && css`
-        pointer-events: none;
-    `}
+    ${props =>
+        props.isActive &&
+        css`
+            font-weight: bold;
+            font-size: 15px;
+            color: #000;
+        `}
+    ${props =>
+        props.isDisabled &&
+        css`
+            pointer-events: none;
+        `}
 `;
 
 export const SelectRightsTab = styled(BasicTab)`
-   &:last-child {
+    &:last-child {
         border-right: none;
         width: 200px;
     }
@@ -36,17 +40,19 @@ export const SelectRightsTab = styled(BasicTab)`
 
 export const ManualRightEntryTab = styled(BasicTab)`
     font-size: 16px;
-    min-width: 120px;
+    min-width: 130px;
     padding: 0 5px 5px 5px;
     margin-top: 5px;
     &:last-child {
         border-right: none;
-        width: 120px;
+        width: 140px;
     }
-    ${props => !props.isNotClickable && css`
-     &:hover {
-        color: #666;
-        cursor: pointer;
-    }
-    `}
+    ${props =>
+        !props.isNotClickable &&
+        css`
+            &:hover {
+                color: #666;
+                cursor: pointer;
+            }
+        `}
 `;

@@ -5,10 +5,16 @@ import EventDrawer from './EventDrawer';
 describe('EventDrawer', () => {
     describe('HTML content', () => {
         const onCloseMock = jest.fn();
+        const event = {
+            headers: {
+                eventId: '123',
+            },
+            message: {},
+        };
         const wrapper = shallow(
             <EventDrawer
                 onDrawerClose={onCloseMock}
-                event={{eventId: '123'}}
+                event={event}
             />
         );
 

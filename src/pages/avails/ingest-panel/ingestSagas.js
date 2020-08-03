@@ -17,7 +17,6 @@ const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 const UPLOAD_DELAY = 6500;
 
-
 function* fetchIngests({payload}) {
     try {
         const filters = {};
