@@ -72,7 +72,7 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": false
         },
         {
             "javaVariableName": "keywords",
