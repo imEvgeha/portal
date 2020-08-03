@@ -22,7 +22,9 @@ import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusToolt
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
 import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
-import TableColumnCustomization from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import IngestReport from "../../../../../avails/ingest-panel/components/ingest-report/IngestReport";
+import TableColumnCustomization
+    from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';
@@ -106,6 +108,11 @@ class RightsCreateFromAttachment extends React.Component {
     }
 
     cellRenderers = {
+        report: ({value}) => (
+            <div className="nexus-c-report">
+                <IngestReport isShowingError={false} report={value} ingestId={this.state.availHistoryId } />
+            </div>
+        ),
         status: ({value}) => (
             <div className="nexus-c-status-tag-old">
                 <StatusTag status={value} />
@@ -148,14 +155,14 @@ class RightsCreateFromAttachment extends React.Component {
 
                     const {errorDetails = ''} = ingestReport || {};
 
-                    return {
-                        error: errorDetails,
-                        attachment,
-                        status,
-                    };
-                })
-        );
-    };
+            return {
+                error: errorDetails,
+                attachment,
+                status,
+                report: ingestReport,
+            };
+        }));
+    }
 
     getHistoryData() {
         if (this.state.availHistoryId) {
@@ -337,10 +344,11 @@ class RightsCreateFromAttachment extends React.Component {
                                     columnDefs={this.getAttachmentsColumnDefs(attachmentsColumnDefs)}
                                     rowData={this.getAttachmentsRowData(attachments)}
                                     headerHeight="52"
-                                    rowHeight="48"
+                                    rowHeight="80"
                                     frameworkComponents={{
                                         status: this.cellRenderers['status'],
                                         attachment: this.cellRenderers['attachment'],
+                                        report: this.cellRenderers['report'],
                                         error: this.cellRenderers['error'],
                                     }}
                                 />

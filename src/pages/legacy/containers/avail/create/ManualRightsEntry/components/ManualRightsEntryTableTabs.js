@@ -9,8 +9,7 @@ import {
     UNMATCHED,
     ERRORS,
     SUCCESS,
-    ATTACHMENTS_TAB,
-    ATTACHMENTS_COLUMNS,
+    ATTACHMENTS_TAB
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
