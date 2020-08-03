@@ -62,7 +62,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -73,7 +72,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "width": 120,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -85,7 +83,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -95,7 +92,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -105,7 +101,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "width": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -115,7 +110,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "width": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -125,7 +119,6 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "width": 120,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -137,7 +130,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "publishErrors",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
