@@ -71,6 +71,7 @@ const SelectedForPlanning = ({activeTab}) => {
                 cellRenderer: 'clickableCellRenderer',
                 cellRendererParams: {
                     onClick: DOPService.startProject,
+                    keyToDisplay: 'status',
                 },
             })
         }
