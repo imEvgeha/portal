@@ -11,7 +11,7 @@ const IngestReport = ({
     isShowingError = true,
     filterClick,
     ingestId,
-    showTooltips = false
+    hasTooltips = false
 }) => {
     const [activeFilter, setActiveFilter] = useState('total');
     const reportFields = Constants.REPORT;
@@ -60,7 +60,7 @@ const IngestReport = ({
             <div className="ingest-report__fields">
                 {
                     Object.keys(reportFields).map(key => (
-                        showTooltips && ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
+                        hasTooltips && ORIGINAL_VALUES_KEYS.includes(key) ? createTooltipTag(key) : createTag(key)
                     ))
                 }
             </div>
@@ -80,7 +80,7 @@ IngestReport.propTypes = {
     isShowingError: PropTypes.bool,
     filterClick: PropTypes.func,
     ingestId: PropTypes.string,
-    showTooltips: PropTypes.bool,
+    hasTooltips: PropTypes.bool,
 };
 
 IngestReport.defaultProps = {
@@ -88,7 +88,7 @@ IngestReport.defaultProps = {
     isShowingError: true,
     filterClick: () => null,
     ingestId: '',
-    showTooltips: false,
+    hasTooltips: false,
 };
 
 export default IngestReport;
