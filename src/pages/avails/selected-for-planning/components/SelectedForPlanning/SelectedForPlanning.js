@@ -14,35 +14,32 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
     let data = {};
 
     // Fetch all active projects for the current user
-    await DOPService.getUsersProjectsList(offset, limit).then(async res => {
-        const projectIds = [];
+    const projectsList = await DOPService.getUsersProjectsList(offset, limit);
+    const projectIds = [];
 
-        // Extract project IDs for incomplete projects to display in SelectForPlanning table
-        res.forEach(({id, status, href}) => {
-            if (status !== 'COMPLETED') {
-                projectIds.push(id);
-                data[id] = {status};
-            }
-        });
+    // Extract project IDs for incomplete projects to display in SelectForPlanning table
+    projectsList.forEach(({id, status, href}) => {
+        if (status !== 'COMPLETED') {
+            projectIds.push(id);
+            data[id] = {status};
+        }
+    });
 
         // Fetch project data and build rowData for ag-grid
-        await DOPService.getProjectAttributes(projectIds).then(res => {
-            res.forEach(({code, value, projectId}) => {
-                // Filter out unwanted fields
-                if (!['PROJECT_NAME'].includes(code)) {
-                    data[projectId][code] = value;
-                    // Adding projectId to be used for starting DOP project
-                    // in cellRenderer's onClick
-                    data[projectId]['projectId'] = projectId;
-                }
-            });
+    const projectAttributes = await DOPService.getProjectAttributes(projectIds);
+    projectAttributes.forEach(({code, value, projectId}) => {
+        // Filter out unwanted fields
+        if (!['PROJECT_NAME'].includes(code)) {
+            data[projectId][code] = value;
+            // Adding projectId to be used for starting DOP project
+            // in cellRenderer's onClick
+            data[projectId]['projectId'] = projectId;
+        }
+    });
 
-            // Convert object to an array
-            data = Object.keys(data).map(key => {
-                return data[key]
-            });
-
-        });
+    // Convert object to an array
+    data = Object.keys(data).map(key => {
+        return data[key]
     });
 
     return new Promise((res) => {
