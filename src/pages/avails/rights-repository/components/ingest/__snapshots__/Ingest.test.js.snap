@@ -37,6 +37,7 @@ exports[`Ingest should match snapshot 1`] = `
   >
     <IngestReport
       filterClick={[Function]}
+      hasTooltips={false}
       ingestId="avih_Tergd"
       isShowingError={false}
       report={
