@@ -4,22 +4,30 @@ exports[`EventDrawerHeader should match snapshot 1`] = `
 <div
   className="nexus-c-event-drawer-header"
 >
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    className="nexus-c-event-drawer-header__replay-button"
-    isDisabled={false}
-    isLoading={false}
-    onClick={[Function]}
+  <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+    content="Replay Event"
   >
-    Replay
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    className="nexus-c-event-drawer-header__replicate-button"
-    isDisabled={false}
-    isLoading={false}
-    onClick={[Function]}
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-event-drawer-header__replay-button"
+      isDisabled={false}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Replay
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+  <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+    content="Replicate Event"
   >
-    Replicate
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-event-drawer-header__replicate-button"
+      isDisabled={false}
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Replicate
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   <NexusDownload
     className="nexus-c-event-drawer-header__download-button"
     data={
