@@ -7,7 +7,8 @@
             "readOnly": true,
             "enableSearch": false,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "pinned": "left"
         },
         {
             "javaVariableName": "title",
@@ -72,7 +73,7 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": false
         },
         {
             "javaVariableName": "keywords",

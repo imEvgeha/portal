@@ -12,7 +12,7 @@ export const createColumnDefs = payload => {
     return payload
         .filter(column => column.dataType && column.displayName)
         .reduce((columnDefs, column) => {
-            const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
+            const {javaVariableName, displayName, dataType, queryParamName, sortParamName, pinned} = column;
             const isColumnLocked = ['id'].includes(javaVariableName);
             const columnDef = {
                 field: javaVariableName,
@@ -24,6 +24,7 @@ export const createColumnDefs = payload => {
                 lockPosition: isColumnLocked,
                 lockVisible: isColumnLocked,
                 lockPinned: isColumnLocked,
+                pinned
             };
             return [...columnDefs, columnDef];
         }, []);

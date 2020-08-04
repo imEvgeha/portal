@@ -34,7 +34,7 @@ either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
           <div>
-            Bulk Match Titles
+            Match Rights to Titles
           </div>
         </NexusTooltip>
       </div>
@@ -50,7 +50,7 @@ either all are bonus rights(with unique sourceRightId) or none"
           isDisabled={false}
         >
           <div>
-            Bulk Unmatch Titles
+            Unmatch Rights from Titles
           </div>
         </NexusTooltip>
       </div>
@@ -66,7 +66,7 @@ empty Source Right IDs and Status is Ready/ReadyNew"
           isDisabled={false}
         >
           <div>
-            Create Bonus Right
+            Create Bonus Rights
           </div>
         </NexusTooltip>
       </div>

@@ -2,13 +2,12 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import classnames from 'classnames';
-import CustomActionsCellRenderer
-    from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {calculateIndicatorType, INDICATOR_SUCCESS, INDICATOR_RED} from '../../util/indicator';
 import {ERROR_NO_CORE_TITLE_ID, FIND_MATCH, MATCHED_TITLE, NO_MATCHING_TITLE} from './constants';
 import './TooltipCellRenderer.scss';
 
-const TooltipCellRenderer = ({data = {}}) => {
+const TooltipCellRenderer = ({data = {}, isTooltipEnabled}) => {
     const [isTitleMatchTooltipOpen, setIsTitleMatchTooltipOpen] = useState(false);
     const {id} = data || {};
     const indicator = calculateIndicatorType(data);
@@ -22,13 +21,8 @@ const TooltipCellRenderer = ({data = {}}) => {
             case INDICATOR_RED:
                 return (
                     <span>
-                        {NO_MATCHING_TITLE}
-                        {' '}
-                        <a
-                            href={`/avails/rights/${id}/title-matching`}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
+                        {NO_MATCHING_TITLE}{' '}
+                        <a href={`/avails/rights/${id}/title-matching`} rel="noopener noreferrer" target="_blank">
                             <b>{FIND_MATCH}</b>
                         </a>
                     </span>
@@ -42,7 +36,7 @@ const TooltipCellRenderer = ({data = {}}) => {
 
     return (
         <CustomActionsCellRenderer id={id}>
-            <div onClick={toggleTooltip}>
+            <div onClick={isTooltipEnabled ? toggleTooltip : null}>
                 <EditorMediaWrapLeftIcon />
                 <span
                     className={classnames(
@@ -51,9 +45,7 @@ const TooltipCellRenderer = ({data = {}}) => {
                     )}
                 />
                 {isTitleMatchTooltipOpen && (
-                    <div className="nexus-c-tooltip-cell-renderer__tooltip">
-                        {renderContent()}
-                    </div>
+                    <div className="nexus-c-tooltip-cell-renderer__tooltip">{renderContent()}</div>
                 )}
             </div>
         </CustomActionsCellRenderer>
@@ -62,10 +54,12 @@ const TooltipCellRenderer = ({data = {}}) => {
 
 TooltipCellRenderer.propTypes = {
     data: PropTypes.object,
+    isTooltipEnabled: PropTypes.bool,
 };
 
 TooltipCellRenderer.defaultProps = {
     data: {},
+    isTooltipEnabled: true,
 };
 
 export default TooltipCellRenderer;
