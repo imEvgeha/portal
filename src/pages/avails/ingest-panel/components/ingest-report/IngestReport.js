@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import NexusTooltip from "../../../../../ui/elements/nexus-tooltip/NexusTooltip";
 import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
 import Constants from '../../constants';
 import './IngestReport.scss';
-import NexusTooltip from "../../../../../ui/elements/nexus-tooltip/NexusTooltip";
 
 const IngestReport = ({
     report,
