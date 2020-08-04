@@ -74,7 +74,7 @@ describe('IngestReport', () => {
     });
 
     it('should include tooltip', () => {
-        const updatedProps = {...props, showTooltips: true};
+        const updatedProps = {...props, hasTooltips: true};
         wrapper = shallow(<IngestReport {...updatedProps} />);
         const tooltips = wrapper.find(NexusTooltip);
         expect(tooltips).toHaveLength(2);

@@ -37,6 +37,7 @@ exports[`Ingest should match snapshot 1`] = `
   >
     <IngestReport
       filterClick={[Function]}
+      hasTooltips={false}
       ingestId="avih_Tergd"
       isShowingError={false}
       report={
@@ -51,7 +52,6 @@ exports[`Ingest should match snapshot 1`] = `
           "updated": 19999,
         }
       }
-      showTooltips={false}
     />
     <div
       className="nexus-c-avails-ingest__email"
