@@ -192,7 +192,7 @@ const RightsRepository = ({
     });
 
     const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
-        if (columnDef.cellRenderer) {
+        if (columnDef.cellRenderer && ['title', 'id'].includes(columnDef.field)) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/',
             };
