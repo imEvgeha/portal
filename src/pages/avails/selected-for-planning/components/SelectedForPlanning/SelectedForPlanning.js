@@ -25,7 +25,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
         }
     });
 
-        // Fetch project data and build rowData for ag-grid
+    // Fetch project data and build rowData for ag-grid
     const projectAttributes = await DOPService.getProjectAttributes(projectIds);
     projectAttributes.forEach(({code, value, projectId}) => {
         // Filter out unwanted fields
