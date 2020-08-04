@@ -20,3 +20,4 @@ export const ADD_TO_PREPLAN = 'Add to Pre-Plan';
 export const STATUS_CHECK_HEADER = 'Status Check';
 export const STATUS_CHECK_MSG = `Only rights with a status of Ready or Ready New can be added.
 These rights could not be added`;
+export const ADD_TO_SELECTED_PLANNING = 'Add to Selected for Planning';
