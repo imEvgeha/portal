@@ -38,9 +38,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
     });
 
     // Convert object to an array
-    data = Object.keys(data).map(key => {
-        return data[key]
-    });
+    data = Object.values(data);
 
     return new Promise((res) => {
         res({
