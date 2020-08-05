@@ -53,7 +53,7 @@ export const PrePlanActions = ({
                             'nexus-c-selected-rights-actions__menu-item',
                             prePlanRepoRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
-                        data-test-id="view-history"
+                        data-test-id="remove-pre-plan"
                         onClick={selectedRights.length ? removeRightsFromPrePlan : null}
                     >
                         <div>{REMOVE_PRE_PLAN_TAB}</div>
