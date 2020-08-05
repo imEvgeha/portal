@@ -6,7 +6,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
     Array [
       Object {
         "colId": "id",
-        "field": "id",
+        "field": "rightID",
         "headerName": "Right ID",
         "width": 120,
       },
@@ -23,10 +23,15 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "width": 150,
       },
       Object {
+        "cellRenderer": "clickableCellRenderer",
+        "cellRendererParams": Object {
+          "keyToDisplay": "status",
+          "onClick": [Function],
+        },
         "colId": "status",
         "field": "status",
         "headerName": "DOP Status",
-        "width": 120,
+        "width": 180,
       },
       Object {
         "colId": "format",
@@ -47,12 +52,17 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "width": 120,
       },
       Object {
-        "colId": "licenseType",
-        "field": "licenseType",
+        "colId": "transactionType",
+        "field": "transactionType",
         "headerName": "License type",
         "width": 120,
       },
     ]
+  }
+  frameworkComponents={
+    Object {
+      "clickableCellRenderer": [Function],
+    }
   }
   id="selectedForPlanningRepo"
   isGridHidden={true}

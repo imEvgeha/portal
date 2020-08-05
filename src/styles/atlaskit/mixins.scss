@@ -1,0 +1,56 @@
+@import './colors.scss';
+@import './utilities.scss';
+@import './constants.scss';
+
+/**
+  Atlaskit Headings
+  https://atlassian.design/guidelines/product/foundations/typography
+**/
+@mixin heading($type: body-copy) {
+    $heading: map-get($headings, $type);
+
+    font-size: calculateRems(nth($heading, 1));
+    font-weight: nth($heading, 2);
+    letter-spacing: addEm(nth($heading, 3));
+    color: nth($heading, 4);
+    line-height: calculateRems(nth($heading, 5));
+    margin-top: calculateRems(nth($heading, 6));
+}
+
+/**
+  Add margin(s) to element based on multiples of $fine-grid-size in rems. Uses the shorthand
+  syntax. Ex: margin(1), margin(1,2), margin(1,2,3), margin(1,2,3,4)
+**/
+@mixin margin($multipliers...) {
+    $content: null;
+    @for $i from 1 through length($multipliers) {
+        $val: nth($multipliers, $i);
+        @if $val == auto {
+            $content: append($content, auto);
+        } @else {
+            $content: append($content, calcSpacingRems(nth($multipliers, $i)));
+        }
+    }
+    margin: $content;
+}
+
+/**
+  Add padding(s) to element based on multiples of $fine-grid-size in rems. Uses the shorthand
+  syntax. Ex: padding(1), padding(1,2), padding(1,2,3), padding(1,2,3,4)
+**/
+@mixin padding($multipliers...) {
+    $content: null;
+    @for $i from 1 through length($multipliers) {
+        $content: append($content, calcSpacingRems(nth($multipliers, $i)));
+    }
+    padding: $content;
+}
+
+/**
+  A more generalized way to add spacing, but only one value at a time.
+  Pass in property name and multiplier
+  Ex: @include addSpace('margin-top', 4)
+**/
+@mixin addSpacing($property, $multiplier) {
+    #{$property}: calcSpacingRems($multiplier);
+}
