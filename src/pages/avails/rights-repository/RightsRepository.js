@@ -429,6 +429,7 @@ const RightsRepository = ({
                 prePlanRepoRights={selectedPreplanRights}
                 activeTab={activeTab}
                 mapping={mapping}
+                setPreplanRights={setPreplanRights}
             />
             <SelectedForPlanning activeTab={activeTab} />
         </div>
