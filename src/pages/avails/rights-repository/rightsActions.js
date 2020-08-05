@@ -5,6 +5,11 @@ export const setSelectedRights = payload => ({
     payload,
 });
 
+export const setPreplanRights = payload => ({
+    type: actionTypes.SET_PREPLAN_RIGHTS,
+    payload,
+});
+
 export const setRightsFilter = payload => ({
     type: actionTypes.SET_RIGHTS_FILTER,
     payload,
