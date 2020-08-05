@@ -13,6 +13,7 @@ const PrePlanGrid = compose(withEditableColumns(), withColumnsResizing(), withSi
 
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
     const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
+    const [selectedRights, setSelectedRights] = useState([]);
 
     useEffect(() => {
         setPreplanRights(prePlanRepoRights);
@@ -43,19 +44,30 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
 
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
-        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
-            const idIndex = columnDefs.findIndex(e => e.field === 'id');
-            // move column to position of id col position + 8 because we use columnDefs from RightsRepo
-            const columnPosition = 8;
-            columnApi.moveColumn('planTerritories', idIndex + columnPosition);
+        switch (type) {
+            case GRID_EVENTS.FIRST_DATA_RENDERED:
+                const idIndex = columnDefs.findIndex(e => e.field === 'id');
+                // move column to position of id col position + 8 because we use columnDefs from RightsRepo
+                const columnPosition = 8;
+                columnApi.moveColumn('planTerritories', idIndex + columnPosition);
+                break;
+            case GRID_EVENTS.CELL_VALUE_CHANGED:
+                if(data.planTerritories) {
+                    api.forEachNode(({data = {}}) => {
+                        const {planTerritories: territory} = data || {};
+                        territory ? result.push({...data, territory}) : result.push(data);
+                    });
+                    setPreplanRights(result);
+                }
+                break;
+            case GRID_EVENTS.SELECTION_CHANGED:
+                console.log(api.getSelectedRows());
+                break;
+            default:
+                break;
+
         }
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
-            api.forEachNode(({data = {}}) => {
-                const {planTerritories: territory} = data || {};
-                territory ? result.push({...data, territory}) : result.push(data);
-            });
-            setPreplanRights(result);
-        }
+
     };
 
     return (
