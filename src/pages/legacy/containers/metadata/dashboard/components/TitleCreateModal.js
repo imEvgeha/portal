@@ -6,7 +6,7 @@ import {get} from 'lodash';
 import {Checkbox} from '@atlaskit/checkbox';
 import '../Title.scss';
 import { titleService } from '../../service/TitleService';
-import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS} from '../../../../constants/metadata/contentType';
+import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-toast-notification/constants';
@@ -369,6 +369,7 @@ class TitleCreate extends React.Component {
                                                 <option value={EVENT.apiName}>{EVENT.name}</option>
                                                 <option value={SPORTS.apiName}>{SPORTS.name}</option>
                                                 <option value={ADVERTISEMENT.apiName}>{ADVERTISEMENT.name}</option>
+                                                <option value={SPECIAL.apiName}>{SPECIAL.name}</option>
                                             </AvField>
                                         </Col>
                                     </Row>
@@ -428,7 +429,7 @@ class TitleCreate extends React.Component {
                                                                     id="titleEpisodeNumber"
                                                                     errorMessage="Please enter a valid episode number!"
                                                                     placeholder="Enter Episode Number"
-                                                                    onChange={this.handleChangeEpisodic} 
+                                                                    onChange={this.handleChangeEpisodic}
                                                                     validate={{
                                                                         maxLength: { value: MAX_EPISODE_LENGTH },
                                                                         required: { value: this.state.isEpisodeNumberRequired, errorMessage: 'Field cannot be empty!'}
