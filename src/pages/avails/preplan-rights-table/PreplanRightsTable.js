@@ -6,15 +6,15 @@ import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+// import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 
 const PrePlanGrid = compose(
-    withEditableColumns(),
-    withFilterableColumns(),
     withColumnsResizing(),
-    withSideBar()
+    withSideBar(),
+    withEditableColumns()
+    // withFilterableColumns()
 )(NexusGrid);
 
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
@@ -46,6 +46,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
         editable: true,
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
+        newOptionsKey: 'planTerritories',
         disabledOptionsKey: 'territoryExcluded',
         valueFormatter: createValueFormatter({dataType: 'dropdown'}),
     };
@@ -71,8 +72,8 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
         }
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
             api.forEachNode(({data = {}}) => {
-                const {planTerritories: territory} = data || {};
-                territory ? result.push({...data, territory}) : result.push(data);
+                const {planTerritories} = data || {};
+                planTerritories ? result.push({...data, planTerritories}) : result.push(data);
             });
             setPreplanRights(result);
         }

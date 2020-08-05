@@ -6,24 +6,39 @@ import './DropdownCellEditor.scss';
 class DropdownCellEditor extends Component {
     constructor(props) {
         super(props);
-        const {data = {}, optionsKey, disabledOptionsKey} = props;
+        const {data = {}, optionsKey, disabledOptionsKey, newOptionsKey} = props;
         const options = data[optionsKey];
+        const newOption = data[newOptionsKey] || [];
         const optionsDisabled = data[disabledOptionsKey];
-
         this.state = {
-            value: this.prepareDataForSelect(options, optionsDisabled),
+            value: this.prepareDataForSelect(options, newOption, optionsDisabled),
         };
     }
 
-    prepareDataForSelect = (options, optionsDisabled) => {
-        const preparedOptions =
-            Array.isArray(options) &&
-            options.map(option => {
-                return {
-                    ...option,
-                    isDisabled: false,
-                };
-            });
+    prepareDataForSelect = (options, newOption, optionsDisabled) => {
+        let preparedOptions = [];
+        if (newOption && newOption.length) {
+            preparedOptions =
+                Array.isArray(newOption) &&
+                newOption.map(option => {
+                    return {
+                        ...option,
+                        isDisabled: false,
+                    };
+                });
+        } else {
+            preparedOptions =
+                Array.isArray(options) &&
+                options
+                    .filter(option => !option.selected)
+                    .map(option => {
+                        return {
+                            ...option,
+                            isNewlySelected: false,
+                            isDisabled: false,
+                        };
+                    });
+        }
         const preparedDisabledOptions =
             Array.isArray(optionsDisabled) &&
             optionsDisabled.map(option => ({
@@ -55,8 +70,8 @@ class DropdownCellEditor extends Component {
 
     handleChange = index => {
         const {value} = this.state;
-        const prevIsSelected = value[index].selected;
-        value[index].selected = !prevIsSelected;
+        const prevIsSelected = value[index].isNewlySelected;
+        value[index].isNewlySelected = !prevIsSelected;
 
         this.setState({
             value,
@@ -65,14 +80,13 @@ class DropdownCellEditor extends Component {
 
     render() {
         const {value} = this.state;
-
         return (
             <div className="nexus-c-dropdown-cell-editor">
                 <Dropdown defaultOpen triggerType="button">
                     <DropdownItemGroupCheckbox id="select territories" title="Select Plan Territories">
                         {value.map((option, index) => (
                             <DropdownItemCheckbox
-                                isSelected={option.selected}
+                                isSelected={option.isNewlySelected}
                                 key={option.country}
                                 id={option.country}
                                 isDisabled={option.isDisabled}
@@ -90,12 +104,14 @@ class DropdownCellEditor extends Component {
 
 DropdownCellEditor.propTypes = {
     optionsKey: PropTypes.string,
+    newOptionsKey: PropTypes.string,
     disabledOptionsKey: PropTypes.string,
     data: PropTypes.object.isRequired,
 };
 
 DropdownCellEditor.defaultProps = {
     optionsKey: '',
+    newOptionsKey: '',
     disabledOptionsKey: '',
 };
 
