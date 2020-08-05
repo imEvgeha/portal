@@ -18,7 +18,16 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": true,
+            "readOnlyInDetailsBasedField": [
+                {
+                    "field": "territory.selected",
+                    "fieldValue": true
+                },
+                {
+                    "field": "coreTitleId"
+                }
+            ]
         },
         {
             "javaVariableName": "licensor",
@@ -227,7 +236,16 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": true
+            "required": true,
+            "readOnlyInDetailsBasedField": [
+                {
+                    "field": "territory.selected",
+                    "fieldValue": true
+                },
+                {
+                    "field": "coreTitleId"
+                }
+            ]
         },
         {
             "javaVariableName": "format",
@@ -1758,6 +1776,7 @@
             "searchDataType": "string",
             "queryParamName": "sourceRightId",
             "readOnly": false,
+            "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
             "required": false
