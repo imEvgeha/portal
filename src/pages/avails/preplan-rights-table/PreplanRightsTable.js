@@ -40,7 +40,6 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         editable: true,
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
-        newOptionsKey: 'planTerritories',
         disabledOptionsKey: 'territoryExcluded',
         valueFormatter: createValueFormatter({dataType: 'dropdown'}),
     };
@@ -66,8 +65,8 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         }
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
             api.forEachNode(({data = {}}) => {
-                const {planTerritories} = data || {};
-                planTerritories ? result.push({...data, planTerritories}) : result.push(data);
+                const {planTerritories: territory} = data || {};
+                territory ? result.push({...data, territory}) : result.push(data);
             });
             setPreplanRights(result);
         }

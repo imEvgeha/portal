@@ -214,10 +214,21 @@ export const SelectedRightsActions = ({
         return [eligibleRights, nonEligibleRights];
     };
 
+    const filterOutUnselectedTerritories = rights => {
+        const filteredSelectedRights = cloneDeep(rights).map(right => {
+            const territoriesUnselected = right.territory.filter(item => !item.selected);
+            return {
+                ...right,
+                territory: territoriesUnselected,
+            };
+        });
+        return filteredSelectedRights;
+    };
+
     const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
-            setPrePlanRepoRights(cloneDeep(selectedRights));
+            setPrePlanRepoRights(filterOutUnselectedTerritories(selectedRights));
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
@@ -233,7 +244,7 @@ export const SelectedRightsActions = ({
         }, []);
 
         setSelectedRights(nonEligibleRights);
-        setPrePlanRepoRights(cloneDeep(eligibleRights));
+        setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
 
         setModalContentAndTitle(
             <StatusCheck

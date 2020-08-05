@@ -136,7 +136,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             return ({value}) => {
                 let result = [];
                 if (Array.isArray(value)) {
-                    result = value.filter(option => option.isNewlySelected).map(option => option.country);
+                    result = value.filter(option => option.selected).map(option => option.country);
                 }
                 return result;
             };

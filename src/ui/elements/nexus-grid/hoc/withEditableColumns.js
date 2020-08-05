@@ -55,7 +55,7 @@ const withEditableColumns = ({
         const updateColumnDefs = columnDefs => {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const editableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {field, optionsKey, disabledOptionsKey, newOptionsKey} = columnDef || {};
+                const {field, optionsKey, disabledOptionsKey} = columnDef || {};
                 const {dataType, enableEdit} =
                     (Array.isArray(mapping) && mapping.find(({javaVariableName}) => javaVariableName === field)) || {};
                 const isEditable =
@@ -74,7 +74,6 @@ const withEditableColumns = ({
                             columnDef.cellEditorParams = {
                                 optionsKey,
                                 disabledOptionsKey,
-                                newOptionsKey,
                             };
                             break;
                         case 'multiselect':
