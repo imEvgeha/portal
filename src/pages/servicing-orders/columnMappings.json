@@ -1,96 +1,98 @@
 [
-  {
-    "colId": "so_number",
-    "field": "so_number",
-    "dataType": "string",
-    "headerName": "SO Number",
-    "width": 150,
-    "javaVariableName": "so_number",
-    "enableSearch": true,
-    "searchDataType": "string",
-    "cellRendererParams": {
-      "link": "/servicing-orders/",
-      "newTab": false
+    {
+        "colId": "so_number",
+        "field": "so_number",
+        "dataType": "string",
+        "headerName": "SO Number",
+        "width": 150,
+        "javaVariableName": "so_number",
+        "enableSearch": true,
+        "searchDataType": "string",
+        "cellRendererParams": {
+            "link": "/servicing-orders/",
+            "newTab": false
+        },
+        "checkboxSelection": true,
+        "suppressSizeToFit": true,
+        "sortable": true
     },
-    "checkboxSelection": true,
-    "suppressSizeToFit":true,
-    "sortable": true
-  },
-  {
-    "colId": "description",
-    "field": "description",
-    "dataType": "string",
-    "headerName": "SO Description",
-    "width": 200,
-    "javaVariableName": "description",
-    "enableSearch": true,
-    "searchDataType": "string"
-  },
-  {
-    "colId": "external_id",
-    "field": "external_id",
-    "dataType": "string",
-    "headerName": "SR Number",
-    "width": 200,
-    "javaVariableName": "external_id",
-    "enableSearch": true,
-    "searchDataType": "string",
-    "sortable": true
-  },
-  {
-    "colId": "sr_due_date",
-    "field": "sr_due_date",
-    "dataType": "regionalMidnight",
-    "headerName": "SR Due Date",
-    "width": 200,
-    "javaVariableName": "sr_due_date",
-    "enableSearch": true,
-    "searchDataType": "regionalMidnight"
-  },
-  {
-    "colId": "submitted_date",
-    "field": "submitted_date",
-    "dataType": "regionalMidnight",
-    "headerName": "Submitted Date",
-    "width": 200,
-    "javaVariableName": "submitted_date",
-    "enableSearch": true,
-    "searchDataType": "regionalMidnight"
-  },
-  {
-    "colId": "rush_order",
-    "field": "rush_order",
-    "dataType": "select",
-    "headerName": "Rush",
-    "width": 100,
-    "javaVariableName": "rush_order",
-    "isEmphasized": true,
-    "enableSearch": true,
-    "searchDataType": "multiselect",
-    "options": ["Y", "N"]
-  },
-  {
-    "colId": "status",
-    "field": "status",
-    "dataType": "select",
-    "headerName": "Status",
-    "width": 150,
-    "javaVariableName": "status",
-    "isEmphasized": true,
-    "enableSearch": true,
-    "searchDataType": "multiselect",
-    "options": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE", "CANCELLED", "FAILED"]
-  },
-  {
-    "colId": "readiness",
-    "field": "readiness",
-    "dataType": "select",
-    "headerName": "Readiness",
-    "width": 150,
-    "javaVariableName": "readiness",
-    "isEmphasized": true,
-    "enableSearch": true,
-    "searchDataType": "multiselect",
-    "options": ["NEW", "READY", "ON_HOLD"]
-  }
+    {
+        "colId": "description",
+        "field": "description",
+        "dataType": "string",
+        "headerName": "SO Description",
+        "width": 200,
+        "javaVariableName": "description",
+        "enableSearch": true,
+        "searchDataType": "string"
+    },
+    {
+        "colId": "external_id",
+        "field": "external_id",
+        "dataType": "string",
+        "headerName": "SR Number",
+        "width": 200,
+        "javaVariableName": "external_id",
+        "enableSearch": true,
+        "searchDataType": "string",
+        "sortable": true
+    },
+    {
+        "colId": "sr_due_date",
+        "field": "sr_due_date",
+        "dataType": "regionalMidnight",
+        "headerName": "SR Due Date",
+        "width": 200,
+        "javaVariableName": "sr_due_date",
+        "enableSearch": true,
+        "searchDataType": "regionalMidnight",
+        "sortable": true
+    },
+    {
+        "colId": "submitted_date",
+        "field": "submitted_date",
+        "dataType": "regionalMidnight",
+        "headerName": "Submitted Date",
+        "width": 200,
+        "javaVariableName": "submitted_date",
+        "enableSearch": true,
+        "searchDataType": "regionalMidnight",
+        "sortable": true
+    },
+    {
+        "colId": "rush_order",
+        "field": "rush_order",
+        "dataType": "select",
+        "headerName": "Rush",
+        "width": 100,
+        "javaVariableName": "rush_order",
+        "isEmphasized": true,
+        "enableSearch": true,
+        "searchDataType": "multiselect",
+        "options": ["Y", "N"]
+    },
+    {
+        "colId": "status",
+        "field": "status",
+        "dataType": "select",
+        "headerName": "Status",
+        "width": 150,
+        "javaVariableName": "status",
+        "isEmphasized": true,
+        "enableSearch": true,
+        "searchDataType": "multiselect",
+        "options": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE", "CANCELLED", "FAILED"]
+    },
+    {
+        "colId": "readiness",
+        "field": "readiness",
+        "dataType": "select",
+        "headerName": "Readiness",
+        "width": 150,
+        "javaVariableName": "readiness",
+        "isEmphasized": true,
+        "enableSearch": true,
+        "searchDataType": "multiselect",
+        "options": ["NEW", "READY", "ON_HOLD"]
+    }
 ]

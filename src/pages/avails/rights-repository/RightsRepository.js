@@ -192,7 +192,7 @@ const RightsRepository = ({
     });
 
     const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
-        if (columnDef.cellRenderer) {
+        if (columnDef.cellRenderer && ['title', 'id'].includes(columnDef.field)) {
             columnDef.cellRendererParams = {
                 link: '/avails/rights/',
             };
@@ -203,6 +203,7 @@ const RightsRepository = ({
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({
         cellRendererFramework: TooltipCellRenderer,
+        cellRendererParams: {isTooltipEnabled: false},
         lockVisible: true,
     });
     const updatedColumnDefs = columnDefsWithRedirect.length
@@ -216,6 +217,7 @@ const RightsRepository = ({
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
+
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
@@ -363,6 +365,7 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
+
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />

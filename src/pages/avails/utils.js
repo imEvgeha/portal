@@ -18,12 +18,13 @@ export const createColumnDefs = payload => {
                 field: javaVariableName,
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
-                cellRenderer: 'loadingCellRenderer',
+                cellRenderer: isColumnLocked ? 'loadingCellRenderer' : null,
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
                 lockPosition: isColumnLocked,
                 lockVisible: isColumnLocked,
                 lockPinned: isColumnLocked,
+                pinned: isColumnLocked && 'left'
             };
             return [...columnDefs, columnDef];
         }, []);

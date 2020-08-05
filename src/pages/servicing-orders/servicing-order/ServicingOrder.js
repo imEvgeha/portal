@@ -18,19 +18,16 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
-    useEffect(
-        () => {
-            setSelectedOrder(
-                get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {}
-            );
-        },
-        [serviceOrder, selectedFulfillmentOrderID]
-    );
+    useEffect(() => {
+        setSelectedOrder(
+            get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {}
+        );
+    }, [serviceOrder, selectedFulfillmentOrderID]);
 
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
-                const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
+                const {fulfillmentOrders} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                     servicingOrder.so_number
                 );
 
