@@ -394,6 +394,7 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
+                prePlanRepoRights={prePlanRepoRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"

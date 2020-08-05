@@ -1,22 +1,10 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {get, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
-import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
-import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import {URL} from '../../../util/Common';
-import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
-import {getRightsHistory} from '../availsService';
-import BulkMatching from '../bulk-matching/BulkMatching';
-import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
-import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
-import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {
     REMOVE_PRE_PLAN_TAB,
 } from './constants';
@@ -31,13 +19,22 @@ export const PrePlanActions = ({
     gridApi,
     setSelectedRights,
     setPrePlanRepoRights,
+    prePlanRepoRights,
     activeTab,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const node = useRef();
     const clickHandler = () => setMenuOpened(!menuOpened);
 
-    const openAuditHistoryModal = () => {
+    const removeRightsFromPrePlan = () => {
+        // TODO: Use selected from preplan - not rights repo
+        const selectedRights = selectedRights.map(right => right.id);
+        const notSelectedRights = prePlanRepoRights.filter(right => !selectedRights.includes(right.id));
+        setPrePlanRepoRights([...notSelectedRights]);
+        setPrePlanRepoRights(selectedRights);
+        gridApi.deselectAll();
+        setSelectedRights([]);
+        toggleRefreshGridData(true);
     };
 
 
@@ -54,10 +51,10 @@ export const PrePlanActions = ({
                     <div
                         className={classNames(
                             'nexus-c-selected-rights-actions__menu-item',
-                            selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            prePlanRepoRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="view-history"
-                        onClick={selectedRights.length ? openAuditHistoryModal : null}
+                        onClick={selectedRights.length ? removeRightsFromPrePlan : null}
                     >
                         <div>{REMOVE_PRE_PLAN_TAB}</div>
                     </div>
@@ -77,6 +74,7 @@ PrePlanActions.propTypes = {
     setPrePlanRepoRights: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
     gridApi: PropTypes.object,
+    prePlanRepoRights: PropTypes.array,
 };
 
 PrePlanActions.defaultProps = {
@@ -85,6 +83,7 @@ PrePlanActions.defaultProps = {
     removeToast: () => null,
     selectedRightGridApi: {},
     gridApi: {},
+    prePlanRepoRights: [],
 };
 
 const mapDispatchToProps = dispatch => ({
