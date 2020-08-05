@@ -527,13 +527,8 @@ class RightDetails extends React.Component {
         if (field.includes('.')) {
             const baseField = field.substring(0, field.indexOf('.'));
             const subField = field.substring(field.indexOf('.') + 1);
-<<<<<<< HEAD
-            return this.state.right[baseField].some(x =>
-                fieldValue !== null ? x[subField] === fieldValue : !!x[subField]
-=======
             return this.state.right[baseField].some(
                 x => (fieldValue !== null ? x[subField] === fieldValue : !!x[subField])
->>>>>>> bdc60112fc844ecb852e119da9d1709dfeabdef1
             );
         } else {
             return fieldValue !== null ? this.state.right[field] === fieldValue : !!this.state.right[field];
