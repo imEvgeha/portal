@@ -25,6 +25,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
       Object {
         "cellRenderer": "clickableCellRenderer",
         "cellRendererParams": Object {
+          "keyToDisplay": "status",
           "onClick": [Function],
         },
         "colId": "status",
