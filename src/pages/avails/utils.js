@@ -9,22 +9,25 @@ const COLUMN_WIDTH_WIDE = 235;
 const COLUMN_WIDTH_DEFAULT = 150;
 
 export const createColumnDefs = payload => {
-    return payload.filter(column => column.dataType && column.displayName).reduce((columnDefs, column) => {
-        const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
-        const isColumnLocked = ['id'].includes(javaVariableName);
-        const columnDef = {
-            field: javaVariableName,
-            headerName: displayName,
-            colId: sortParamName || queryParamName,
-            cellRenderer: 'loadingCellRenderer',
-            valueFormatter: createValueFormatter(column),
-            width: (['businessDateTime', 'timestamp'].includes(dataType)) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
-            lockPosition: isColumnLocked,
-            lockVisible: isColumnLocked,
-            lockPinned: isColumnLocked,
-        };
-        return [...columnDefs, columnDef];
-    }, []);
+    return payload
+        .filter(column => column.dataType && column.displayName)
+        .reduce((columnDefs, column) => {
+            const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
+            const isColumnLocked = ['id'].includes(javaVariableName);
+            const columnDef = {
+                field: javaVariableName,
+                headerName: displayName,
+                colId: sortParamName || queryParamName,
+                cellRenderer: isColumnLocked ? 'loadingCellRenderer' : null,
+                valueFormatter: createValueFormatter(column),
+                width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
+                lockPosition: isColumnLocked,
+                lockVisible: isColumnLocked,
+                lockPinned: isColumnLocked,
+                pinned: isColumnLocked && 'left'
+            };
+            return [...columnDefs, columnDef];
+        }, []);
 };
 
 export const getRepositoryName = id => {
@@ -37,7 +40,8 @@ export const getRepositoryName = id => {
     return NEXUS;
 };
 
-const repositoryCell = ({data}) => {// eslint-disable-line
+// eslint-disable-next-line
+const repositoryCell = ({data}) => {
     const {id} = data || {};
     return (
         <CustomActionsCellRenderer id={id}>
@@ -59,7 +63,7 @@ export const getRepositoryCell = ({headerName = 'Repository'} = {}) => {
 
 export const createColumnSchema = (list, field) => {
     // eslint-disable-next-line no-magic-numbers
-    const majorityRule = (occurence, total) => occurence > (total / 2);
+    const majorityRule = (occurence, total) => occurence > total / 2;
     const destructedField = field.split('.');
     const values = list.map(el => {
         return get(el, destructedField, {});
@@ -71,15 +75,11 @@ export const createColumnSchema = (list, field) => {
         return o;
     }, {});
 
-    const sortedValuesEntries = Object.entries(occurence).sort(
-        (a, b) => b[1] - a[1]
-    );
+    const sortedValuesEntries = Object.entries(occurence).sort((a, b) => b[1] - a[1]);
 
     const getMostCommonValue = entries => {
         if (entries.length) {
-            const mostCommonValue = entries
-                .filter(([, value]) => majorityRule(value, list.length))
-                .map(([key]) => key);
+            const mostCommonValue = entries.filter(([, value]) => majorityRule(value, list.length)).map(([key]) => key);
 
             return mostCommonValue[0];
         }
@@ -87,13 +87,10 @@ export const createColumnSchema = (list, field) => {
 
     return {
         field,
-        values: sortedValuesEntries.reduce(
-            (o, [key, value]) => {
-                o[key] = value;
-                return o;
-            },
-            {}
-        ),
+        values: sortedValuesEntries.reduce((o, [key, value]) => {
+            o[key] = value;
+            return o;
+        }, {}),
         mostCommonValue: getMostCommonValue(sortedValuesEntries),
     };
 };
@@ -109,9 +106,9 @@ export const HIGHLIGHTED_CELL_CLASS = 'nexus-c-match-right-view__grid-column--hi
 
 const isMajorValue = (majorityValue, value) => {
     const EXCLUDES_VALUES = [{}, '{}', [], '[]', false, 'false', null, 'null', ''];
-    return (EXCLUDES_VALUES.includes(majorityValue)
-        && EXCLUDES_VALUES.includes(value))
-        || isEqual(majorityValue, value);
+    return (
+        (EXCLUDES_VALUES.includes(majorityValue) && EXCLUDES_VALUES.includes(value)) || isEqual(majorityValue, value)
+    );
 };
 
 export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}) => {
@@ -122,4 +119,3 @@ export const addCellClass = ({value, schema, cellClass = HIGHLIGHTED_CELL_CLASS}
         return cellClass;
     }
 };
-

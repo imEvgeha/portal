@@ -17,6 +17,7 @@ import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
+import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -43,6 +44,7 @@ export const SelectedRightsActions = ({
     gridApi,
     setSelectedRights,
     setPrePlanRepoRights,
+    activeTab,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -120,8 +122,7 @@ export const SelectedRightsActions = ({
 
             // PrePlan criteria
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
-        }
-        else {
+        } else {
             setIsMatchable(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,20 +163,23 @@ export const SelectedRightsActions = ({
         const title = `Audit History (${selectedRights.length})`;
 
         setModalStyle({width: '100%'});
-        setModalActions([{
-            text: 'Done',
-            onClick: close,
-        }]);
+        setModalActions([
+            {
+                text: 'Done',
+                onClick: close,
+            },
+        ]);
         setModalContentAndTitle(NexusSpinner, title);
 
         getRightsHistory(ids).then(rightsEventHistory => {
-            setModalContentAndTitle((
+            setModalContentAndTitle(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
-                </div>
-            ), title);
+                </div>,
+                title
+            );
         });
     };
 
@@ -207,10 +211,7 @@ export const SelectedRightsActions = ({
                 nonEligibleRights = [...nonEligibleRights, right];
             }
         });
-        return [
-            eligibleRights,
-            nonEligibleRights,
-        ];
+        return [eligibleRights, nonEligibleRights];
     };
 
     const prepareRightsForPrePlan = () => {
@@ -268,9 +269,7 @@ export const SelectedRightsActions = ({
                         data-test-id="view-history"
                         onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
-                        <div>
-                            {VIEW_AUDIT_HISTORY}
-                        </div>
+                        <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
                     <div
                         className={classNames(
@@ -310,7 +309,7 @@ export const SelectedRightsActions = ({
                             </NexusTooltip>
                         </div>
                     )}
-                    {URL.isLocalOrDevOrQA() && (
+                    {activeTab !== PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
                         <div
                             className={classNames(
                                 'nexus-c-selected-rights-actions__menu-item',
@@ -352,6 +351,7 @@ SelectedRightsActions.propTypes = {
     toggleRefreshGridData: PropTypes.func.isRequired,
     setSelectedRights: PropTypes.func.isRequired,
     setPrePlanRepoRights: PropTypes.func.isRequired,
+    activeTab: PropTypes.string.isRequired,
     gridApi: PropTypes.object,
 };
 

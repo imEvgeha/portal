@@ -7,14 +7,11 @@ import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import {PRE_PLAN_TAB} from '../rights-repository/constants';
 
-const PrePlanGrid = compose(
-    withEditableColumns(),
-    withColumnsResizing(),
-    withSideBar(),
-)(NexusGrid);
+const PrePlanGrid = compose(withEditableColumns(), withColumnsResizing(), withSideBar())(NexusGrid);
 
-const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, currentTab}) => {
+const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
     const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
 
     useEffect(() => {
@@ -25,6 +22,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         headerName: 'Plan Territories',
         colId: 'planTerritories',
         field: 'planTerritories',
+        width: 180,
         editable: true,
         cellRenderer: 'loadingCellRenderer',
         optionsKey: 'territory',
@@ -33,21 +31,23 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
     };
 
     const updatedMapping = {
-        'javaVariableName': 'planTerritories',
-        'displayName': 'Plan Territories',
-        'dataType': 'dropdown',
-        'queryParamName': 'planTerritories',
-        'readOnly': true,
-        'enableSearch': true,
-        'enableEdit': true,
-        'required': true,
+        javaVariableName: 'planTerritories',
+        displayName: 'Plan Territories',
+        dataType: 'dropdown',
+        queryParamName: 'planTerritories',
+        readOnly: true,
+        enableSearch: true,
+        enableEdit: true,
+        required: true,
     };
 
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
-        if (type === GRID_EVENTS.READY) {
-            const columnPosition = 10;
-            columnApi.moveColumn('planTerritories', columnPosition);
+        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
+            const idIndex = columnDefs.findIndex(e => e.field === 'id');
+            // move column to position of id col position + 8 because we use columnDefs from RightsRepo
+            const columnPosition = 8;
+            columnApi.moveColumn('planTerritories', idIndex + columnPosition);
         }
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data.planTerritories) {
             api.forEachNode(({data = {}}) => {
@@ -67,7 +67,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
             suppressRowClickSelection={true}
             mapping={[...mapping, updatedMapping]}
             rowData={preplanRights}
-            isGridHidden={activeTab !== currentTab}
+            isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
         />
@@ -79,7 +79,6 @@ PreplanRightsTable.propTypes = {
     mapping: PropTypes.array,
     prePlanRepoRights: PropTypes.array,
     activeTab: PropTypes.string.isRequired,
-    currentTab: PropTypes.string.isRequired,
 };
 
 PreplanRightsTable.defaultProps = {

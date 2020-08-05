@@ -69,12 +69,16 @@ const updateAbility = (roles = []) => {
     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
 
-
     // ******** Servicing Orders *************
     can(['create', 'read', 'update', 'delete'], 'ServicingOrders');
 
     // ******** Event Management *************
-    can(['create', 'read', 'update', 'delete'], 'EventManagement');
+    if (roles && roles.includes('event_viewer')) {
+        can(['read'], 'EventManagement');
+    }
+    if (roles && roles.includes('event_admin')) {
+        can(['create', 'update', 'delete'], 'EventManagement');
+    }
 
     // ******** Sync Log *************
     can(['create', 'read', 'update', 'delete'], 'SyncLog');
@@ -97,7 +101,7 @@ const canRender = (Component, action, subject, field = undefined) => {
         componentDidMount() {
             if (cannot(action, subject, field)) {
                 const {history} = this.props;
-                history.push('/');
+                history.push('/401');
             }
         }
 
@@ -112,6 +116,5 @@ const canRender = (Component, action, subject, field = undefined) => {
 
     return withRouter(AuthenticatedComponent);
 };
-
 
 export {ability, updateAbility, Can, can, cannot, canRender, idToAbilityNameMap};

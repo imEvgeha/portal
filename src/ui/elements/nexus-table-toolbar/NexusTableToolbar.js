@@ -5,17 +5,19 @@ import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
     PRE_PLAN_TAB,
+    SELECTED_FOR_PLANNING_TAB,
 } from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
+import {URL} from '../../../util/Common';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import NexusTab from './components/NexusTab';
 import SelectedButton from './components/SelectedButton';
 
 const NexusTableToolbar = ({
-    title,
     totalRows,
     selectedRightsCount,
     prePlanRightsCount,
+    planningRightsCount,
     hasDownloadButton,
     selectedRows,
     activeTab,
@@ -37,21 +39,25 @@ const NexusTableToolbar = ({
                 setSelectedRights={setSelectedRights}
                 setPrePlanRepoRights={setPrePlanRepoRights}
                 gridApi={gridApi}
-            />
-            <NexusTab
-                title="Rights"
-                totalRows={totalRows}
                 activeTab={activeTab}
-                currentTab={RIGHTS_TAB}
-                setActiveTab={setActiveTab}
             />
+            <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
             <NexusTab
-                title="Pre-Plan"
+                title={PRE_PLAN_TAB}
                 totalRows={prePlanRightsCount}
                 activeTab={activeTab}
-                currentTab={PRE_PLAN_TAB}
                 setActiveTab={setActiveTab}
             />
+            {URL.isLocalOrDevOrQA() && (
+                <NexusTab
+                    title={SELECTED_FOR_PLANNING_TAB}
+                    totalRows={planningRightsCount}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    tooltip="Click to refresh"
+                />
+            )}
+
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
                     <SelectedButton
@@ -75,13 +81,13 @@ const NexusTableToolbar = ({
 };
 
 NexusTableToolbar.propTypes = {
-    title: PropTypes.string,
     totalRows: PropTypes.number,
     hasDownloadButton: PropTypes.bool,
     selectedRightGridApi: PropTypes.object,
     selectedRightColumnApi: PropTypes.object,
     selectedRightsCount: PropTypes.number,
     prePlanRightsCount: PropTypes.number,
+    planningRightsCount: PropTypes.number,
     selectedRepoRights: PropTypes.array,
     setSelectedRights: PropTypes.func.isRequired,
     setPrePlanRepoRights: PropTypes.func.isRequired,
@@ -94,12 +100,12 @@ NexusTableToolbar.propTypes = {
 };
 
 NexusTableToolbar.defaultProps = {
-    title: null,
     totalRows: 0,
     hasDownloadButton: true,
     selectedRepoRights: [],
     selectedRightsCount: 0,
     prePlanRightsCount: 0,
+    planningRightsCount: 0,
     selectedRightGridApi: {},
     selectedRightColumnApi: {},
     rightColumnApi: {},

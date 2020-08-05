@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectedForPlanning should match snapshot 1`] = `
+<Connect(ComposedComponent)
+  columnDefs={
+    Array [
+      Object {
+        "colId": "id",
+        "field": "rightID",
+        "headerName": "Right ID",
+        "width": 120,
+      },
+      Object {
+        "colId": "title",
+        "field": "title",
+        "headerName": "Title",
+        "width": 120,
+      },
+      Object {
+        "colId": "territory",
+        "field": "territory",
+        "headerName": "Planned Territory",
+        "width": 150,
+      },
+      Object {
+        "cellRenderer": "clickableCellRenderer",
+        "cellRendererParams": Object {
+          "keyToDisplay": "status",
+          "onClick": [Function],
+        },
+        "colId": "status",
+        "field": "status",
+        "headerName": "DOP Status",
+        "width": 180,
+      },
+      Object {
+        "colId": "format",
+        "field": "format",
+        "headerName": "Format",
+        "width": 120,
+      },
+      Object {
+        "colId": "licensor",
+        "field": "licensor",
+        "headerName": "Licensor",
+        "width": 120,
+      },
+      Object {
+        "colId": "licensee",
+        "field": "licensee",
+        "headerName": "Licensee",
+        "width": 120,
+      },
+      Object {
+        "colId": "transactionType",
+        "field": "transactionType",
+        "headerName": "License type",
+        "width": 120,
+      },
+    ]
+  }
+  frameworkComponents={
+    Object {
+      "clickableCellRenderer": [Function],
+    }
+  }
+  id="selectedForPlanningRepo"
+  isGridHidden={true}
+  rowSelection="multiple"
+  suppressRowClickSelection={true}
+/>
+`;

@@ -8,8 +8,7 @@ describe('NexusTab', () => {
     const props = {
         title: 'Title',
         totalRows: 0,
-        currentTab: 'RIGHTS_TAB',
-        activeTab: 'RIGHTS_TAB',
+        activeTab: 'Title',
     };
 
     beforeEach(() => {

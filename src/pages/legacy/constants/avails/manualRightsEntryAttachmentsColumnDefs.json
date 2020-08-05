@@ -7,11 +7,16 @@
   {
     "headerName": "Attachment",
     "field": "attachment",
-    "width": 500
+    "width": 300
+  },
+  {
+    "headerName": "Report Summary",
+    "field": "report",
+    "width": 290
   },
   {
     "headerName": "Error Message",
     "field": "error",
-    "width": 1000
+    "width": 800
   }
 ]

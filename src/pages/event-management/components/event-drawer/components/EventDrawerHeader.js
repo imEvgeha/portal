@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 import {connect} from 'react-redux';
+import {can} from '../../../../../ability';
 import NexusDownload from '../../../../../ui/elements/nexus-download/NexusDownload';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {REPLAY_EVENT, REPLICATE_EVENT} from '../../../eventManagementActionTypes';
@@ -10,6 +12,7 @@ import './EventDrawerHeader.scss';
 
 export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onReplicate}) => {
     const {eventId = '', id = ''} = event || {};
+    const canReplayAndReplicate = can('create', 'EventManagement') && can('update', 'EventManagement');
 
     const onInnerReplay = () => {
         const payload = {docId: id};
@@ -23,22 +26,27 @@ export const EventDrawerH = ({event, isReplaying, onReplay, isReplicating, onRep
 
     return (
         <div className="nexus-c-event-drawer-header">
-            <Button
-                className="nexus-c-event-drawer-header__replay-button"
-                onClick={onInnerReplay}
-                isLoading={isReplaying}
-                isDisabled={!event || !eventId}
-            >
-                Replay
-            </Button>
-            <Button
-                className="nexus-c-event-drawer-header__replicate-button"
-                onClick={onInnerReplicate}
-                isLoading={isReplicating}
-                isDisabled={!event || !eventId}
-            >
-                Replicate
-            </Button>
+            <Tooltip content={canReplayAndReplicate ? 'Replay Event' : 'Insufficient permissions'}>
+                <Button
+                    className="nexus-c-event-drawer-header__replay-button"
+                    onClick={onInnerReplay}
+                    isLoading={isReplaying}
+                    isDisabled={!canReplayAndReplicate || !event || !eventId}
+                >
+                    Replay
+                </Button>
+            </Tooltip>
+
+            <Tooltip content={canReplayAndReplicate ? 'Replicate Event' : 'Insufficient permissions'}>
+                <Button
+                    className="nexus-c-event-drawer-header__replicate-button"
+                    onClick={onInnerReplicate}
+                    isLoading={isReplicating}
+                    isDisabled={!canReplayAndReplicate || !event || !eventId}
+                >
+                    Replicate
+                </Button>
+            </Tooltip>
             <NexusDownload
                 className="nexus-c-event-drawer-header__download-button"
                 data={event}

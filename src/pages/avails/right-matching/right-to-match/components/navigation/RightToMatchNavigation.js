@@ -29,23 +29,22 @@ const RightToMatchNavigation = ({
     const getNavigationDataIfExist = useCallback(() => {
         const pages = Object.keys(rightMatchPageData.pages || {}).sort();
         let navigationData = null;
-        loop:
-        for (let i = 0; i < pages.length; i++) {
+        loop: for (let i = 0; i < pages.length; i++) {
             const items = rightMatchPageData.pages[pages[i]];
             for (let j = 0; j < items.length; j++) {
                 if (items[j] === focusedRightId) {
-                    const previousId = j > 0
-                        ? items[j - 1]
-                        : (i > 0
+                    const previousId =
+                        j > 0
+                            ? items[j - 1]
+                            : i > 0
                             ? rightMatchPageData.pages[pages[i - 1]][RIGHT_PAGE_SIZE - 1]
-                            : null
-                        );
-                    const nextId = j + 1 < items.length
-                        ? items[j + 1]
-                        : (i + 1 < pages.length
+                            : null;
+                    const nextId =
+                        j + 1 < items.length
+                            ? items[j + 1]
+                            : i + 1 < pages.length
                             ? rightMatchPageData.pages[pages[i + 1]][0]
-                            : null
-                        );
+                            : null;
                     const currentPosition = i * RIGHT_PAGE_SIZE + pages[i].length + j;
                     navigationData = {previousId, currentPosition, focusedRightId, nextId};
                     break loop;
@@ -112,23 +111,31 @@ const RightToMatchNavigation = ({
         }
     };
 
-    return (
-        navigationData && navigationData.currentPosition ? (
-            <div className="nexus-c-right-to-match-navigation">
-                <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onPreviousRightClick}>
-                    <HipchatChevronUpIcon size="large" className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
-                </div>
-                <span className="nexus-c-right-to-match-navigation__data">
-                    {isSpinnerRunning
-                        ? <Spinner size="small" />
-                        : `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`}
-                </span>
-                <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onNextRightClick}>
-                    <HipchatChevronDownIcon size="large" className="nexus-c-right-to-match-navigation__icon" primaryColor="#939FB5" />
-                </div>
+    return navigationData && navigationData.currentPosition ? (
+        <div className="nexus-c-right-to-match-navigation">
+            <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onPreviousRightClick}>
+                <HipchatChevronUpIcon
+                    size="large"
+                    className="nexus-c-right-to-match-navigation__icon"
+                    primaryColor="#939FB5"
+                />
             </div>
-        ) : null
-    );
+            <span className="nexus-c-right-to-match-navigation__data">
+                {isSpinnerRunning ? (
+                    <Spinner size="small" />
+                ) : (
+                    `${minTwoDigits(navigationData.currentPosition)} of ${minTwoDigits(rightMatchPageData.total)}`
+                )}
+            </span>
+            <div className="nexus-c-right-to-match-navigation__icon-button" onClick={onNextRightClick}>
+                <HipchatChevronDownIcon
+                    size="large"
+                    className="nexus-c-right-to-match-navigation__icon"
+                    primaryColor="#939FB5"
+                />
+            </div>
+        </div>
+    ) : null;
 };
 
 RightToMatchNavigation.propTypes = {
@@ -160,5 +167,5 @@ const mapDispatchToProps = dispatch => ({
     fetchRightMatchDataUntilFindId: payload => dispatch(fetchRightMatchDataUntilFindId(payload)),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchNavigation); // eslint-disable-line
-
+// eslint-disable-next-line
+export default connect(createMapStateToProps, mapDispatchToProps)(RightToMatchNavigation);

@@ -1,4 +1,8 @@
-.nexus-c-event-drawer-header__replicate-button,
-.nexus-c-event-drawer-header__download-button {
-  margin-left: 20px;
+.nexus-c-event-drawer-header {
+    display: flex;
+
+    &__replicate-button,
+    &__download-button {
+        margin-left: 0.5rem;
+    }
 }

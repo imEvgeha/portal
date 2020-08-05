@@ -76,7 +76,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 200,
         },
         Object {
-          "cellRenderer": "emphasizedStringCellRenderer",
+          "cellRendererFramework": [Function],
           "colId": "rush_order",
           "dataType": "select",
           "enableSearch": true,
@@ -93,7 +93,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 100,
         },
         Object {
-          "cellRenderer": "emphasizedStringCellRenderer",
+          "cellRenderer": "loadingCellRenderer",
           "colId": "status",
           "dataType": "select",
           "enableSearch": true,
@@ -113,7 +113,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 150,
         },
         Object {
-          "cellRenderer": "emphasizedStringCellRenderer",
+          "cellRenderer": "loadingCellRenderer",
           "colId": "readiness",
           "dataType": "select",
           "enableSearch": true,
@@ -140,11 +140,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     }
     externalFilter={Object {}}
     fixedFilter={Object {}}
-    frameworkComponents={
-      Object {
-        "emphasizedStringCellRenderer": [Function],
-      }
-    }
     mapping={
       Array [
         Object {

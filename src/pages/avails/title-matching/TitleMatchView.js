@@ -5,10 +5,7 @@ import SectionMessage from '@atlaskit/section-message';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
 import mappings from '../../../../profile/titleMatchingRightMappings.json';
-import {
-    NexusGrid,
-    NexusTitle,
-} from '../../../ui/elements';
+import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
@@ -39,15 +36,18 @@ const TitleMatchView = ({
 }) => {
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
-    const newTitleCell = ({data}) => { // eslint-disable-line
+    // eslint-disable-next-line
+    const newTitleCell = ({data}) => {
         const {id} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
                 <Button
-                    onClick={() => setModalContentAndTitle(
-                        () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
-                        NewTitleConstants.NEW_TITLE_MODAL_TITLE
-                    )}
+                    onClick={() =>
+                        setModalContentAndTitle(
+                            () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
+                            NewTitleConstants.NEW_TITLE_MODAL_TITLE
+                        )
+                    }
                 >
                     New Title
                 </Button>
@@ -83,7 +83,9 @@ const TitleMatchView = ({
     } else if (focusedRight && focusedRight.contentType === 'Season') {
         updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber');
     } else {
-        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber');
+        updatedRightColumnDefs = deepCloneRightColumnDefs.filter(
+            e => e.field !== 'episodic.episodeNumber' && e.field !== 'episodic.seasonNumber'
+        );
     }
 
     // Taken from focused right to be able to filter title list table
@@ -94,35 +96,33 @@ const TitleMatchView = ({
             <div className="nexus-c-title-to-match__header">
                 <NexusTitle>Title Matching</NexusTitle>
             </div>
-            {
-                !!searchCriteria.title && (
-                    <>
-                        <NexusTitle isSubTitle>Incoming Right</NexusTitle>
-                        <div className="nexus-c-title-to-match__grid">
-                            <IncomingRightTable
-                                id="incomingRightTitleMatching"
-                                columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
-                                rowData={[focusedRight]}
-                            />
-                        </div>
-                        <SectionMessage>
-                            <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
-                        </SectionMessage>
-                        <br />
-                        <TitlesList
-                            rightId={match && match.params.rightId}
-                            columnDefs={columnDefs}
-                            mergeTitles={mergeTitles}
-                            // TODO: Capitalize first letter of contentType value to be checked inside drop down ag grid
-                            queryParams={{
-                                contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
-                                title,
-                                releaseYear,
-                            }}
+            {!!searchCriteria.title && (
+                <>
+                    <NexusTitle isSubTitle>Incoming Right</NexusTitle>
+                    <div className="nexus-c-title-to-match__grid">
+                        <IncomingRightTable
+                            id="incomingRightTitleMatching"
+                            columnDefs={[newTitleButton, ...updatedRightColumnDefs]}
+                            rowData={[focusedRight]}
                         />
-                    </>
-                )
-            }
+                    </div>
+                    <SectionMessage>
+                        <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
+                    </SectionMessage>
+                    <br />
+                    <TitlesList
+                        rightId={match && match.params.rightId}
+                        columnDefs={columnDefs}
+                        mergeTitles={mergeTitles}
+                        // TODO: Capitalize first letter of contentType value to be checked inside drop down ag grid
+                        queryParams={{
+                            contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
+                            title,
+                            releaseYear,
+                        }}
+                    />
+                </>
+            )}
         </div>
     );
 };
@@ -158,4 +158,5 @@ const mapDispatchToProps = dispatch => ({
     mergeTitles: (matchList, duplicateList, rightId) => dispatch(mergeTitles({matchList, duplicateList, rightId})),
 });
 
-export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView); // eslint-disable-line
+// eslint-disable-next-line
+export default connect(createMapStateToProps, mapDispatchToProps)(TitleMatchView);

@@ -52,7 +52,7 @@ const NexusDrawer = ({
                                     {!!headerContent && (
                                         <>
                                             <div className="nexus-c-drawer__line-break" />
-                                            <div>{headerContent}</div>
+                                            <div className="nexus-c-drawer__title-content">{headerContent}</div>
                                         </>
                                     )}
                                 </div>

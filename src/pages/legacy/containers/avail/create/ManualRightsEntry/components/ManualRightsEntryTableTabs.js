@@ -8,11 +8,10 @@ import {
     TOTAL_RIGHTS,
     UNMATCHED,
     ERRORS,
-    SUCCESS, ATTACHMENTS_TAB, ATTACHMENTS_COLUMNS
+    SUCCESS,
+    ATTACHMENTS_TAB
 } from '../../../../../constants/avails/manualRightsEntryTabs';
-import {
-    updateManualRightEntrySelectedTab,
-} from '../../../../../stores/actions/avail/manualRightEntry';
+import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 
 const ManualRightEntryTableTabs = ({
@@ -23,7 +22,7 @@ const ManualRightEntryTableTabs = ({
     updatedCount,
     fatalCount,
     historyData,
-    availHistoryId
+    availHistoryId,
 }) => {
     // Flag that tells if a component is mounted or not and is used as a failsafe in async requests
     // if component gets unmounted during call execution to prevent setting state on an unmounted component
@@ -43,25 +42,31 @@ const ManualRightEntryTableTabs = ({
     }, []);
 
     useEffect(() => {
-        rightsService.advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
+        rightsService
+            .advancedSearch(getCustomSearchCriteria(TOTAL_RIGHTS), 0, 1)
             .then(response => isMounted && setTotalRightsCount(response.total));
-        rightsService.advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
+        rightsService
+            .advancedSearch(getCustomSearchCriteria(SUCCESS), 0, 1)
             .then(response => isMounted && setSuccessCount(response.total));
-        rightsService.advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
+        rightsService
+            .advancedSearch(getCustomSearchCriteria(UNMATCHED), 0, 1)
             .then(response => isMounted && setPendingCount(response.total));
-        rightsService.advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
+        rightsService
+            .advancedSearch(getCustomSearchCriteria(ERRORS), 0, 1)
             .then(response => isMounted && setErrorsCount(response.total));
     }, [historyData]);
 
     const getCustomTotalCount = () => {
-        if(!isNaN(totalRightsCount) && !isNaN(fatalCount)) {
+        if (!isNaN(totalRightsCount) && !isNaN(fatalCount)) {
             return `${totalRightsCount + fatalCount}`;
         }
     };
 
     const viewJSON = () => {
-        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
-        window.open( url, '_blank');
+        const url = `${config.get('gateway.url')}${config.get(
+            'gateway.service.avails'
+        )}/avails/ingest/history/${availHistoryId}?appendErrorReports=true`;
+        window.open(url, '_blank');
     };
 
     const {attachments = []} = historyData || {};
@@ -74,12 +79,8 @@ const ManualRightEntryTableTabs = ({
             >
                 Total Rights ({getCustomTotalCount()})
             </ManualRightEntryTab>
-            <ManualRightEntryTab isNotClickable={true}>
-                New ({createdCount})
-            </ManualRightEntryTab>
-            <ManualRightEntryTab isNotClickable={true}>
-                Updated ({updatedCount})
-            </ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>New ({createdCount})</ManualRightEntryTab>
+            <ManualRightEntryTab isNotClickable={true}>Updated ({updatedCount})</ManualRightEntryTab>
             <ManualRightEntryTab
                 isActive={selectedTab === FATAL}
                 onClick={() => updateManualRightEntrySelectedTab(FATAL)}
@@ -104,11 +105,7 @@ const ManualRightEntryTableTabs = ({
             >
                 Errors ({errorsCount})
             </ManualRightEntryTab>
-            <ManualRightEntryTab
-                onClick={() => viewJSON()}
-            >
-                View JSON
-            </ManualRightEntryTab>
+            <ManualRightEntryTab onClick={() => viewJSON()}>View JSON</ManualRightEntryTab>
             <ManualRightEntryTab
                 isActive={selectedTab === ATTACHMENTS_TAB}
                 onClick={() => updateManualRightEntrySelectedTab(ATTACHMENTS_TAB)}
@@ -127,7 +124,7 @@ ManualRightEntryTableTabs.propTypes = {
     createdCount: PropTypes.number,
     updatedCount: PropTypes.number,
     historyData: PropTypes.object,
-    availHistoryId:  PropTypes.string,
+    availHistoryId: PropTypes.string,
 };
 
 const mapStateToProps = state => {

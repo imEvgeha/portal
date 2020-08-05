@@ -2,6 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
+import * as service from './eventManagementService';
 
 describe('EventManagement', () => {
     let wrapper = null;
@@ -35,6 +36,11 @@ describe('EventManagement', () => {
             sizeColumnsToFit: () => null,
         };
 
+        const serviceMock = jest.spyOn(service, 'getEventById');
+        serviceMock.mockImplementation(() => {
+            return Promise.resolve({id: '123'});
+        });
+
         beforeEach(() => {
             eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
             eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
@@ -45,18 +51,26 @@ describe('EventManagement', () => {
             deselectAllMock.mockReset();
         });
 
-        it('should render EventDrawer', () => {
-            expect(wrapper.find('EventDrawer').length).toEqual(1);
+
+        it('should render EventDrawer', async () => {
+            expect(serviceMock.mock.calls.length).toEqual(1);
+            await setTimeout(() => {
+                expect(wrapper.find('EventDrawer').length).toEqual(1);
+            }, 1000);
         });
 
-        it('should set api on grid event and passes correct prop to EventDrawer', () => {
-            expect(wrapper.find('EventDrawer').props().event).toEqual(event);
+        it('should set api on grid event and passes correct prop to EventDrawer', async () => {
+            await setTimeout(() => {
+                expect(wrapper.find('EventDrawer').props().event).toEqual(event);
+            }, 1000);
         });
 
-        it('should correct prop to close drawer in EventDrawer', () => {
-            wrapper.find('EventDrawer').props()
-                .onDrawerClose();
-            expect(deselectAllMock.mock.calls.length).toEqual(1);
+        it('should correct prop to close drawer in EventDrawer', async () => {
+            await setTimeout(() => {
+                wrapper.find('EventDrawer').props()
+                    .onDrawerClose();
+                expect(deselectAllMock.mock.calls.length).toEqual(1);
+            }, 1000);
         });
     });
 });

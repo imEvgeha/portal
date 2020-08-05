@@ -18,7 +18,7 @@ import {
     resultPageUpdateColumnsOrder,
     resultPageShowSelected,
     resultPageLoading,
-    resultPageUpdate
+    resultPageUpdate,
 } from '../../../stores/actions/avail/dashboard';
 import TableColumnCustomization from '../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
 import TableDownloadRights from '../../../../../ui/elements/nexus-table-download-rights/TableDownload';
@@ -36,7 +36,8 @@ const SelectedRightsResultsTable = compose(
     withColumnsReorder,
     withSelection,
     withServerSorting,
-    withLocalRights(AVAILS_SELECTION))(ResultsTable);
+    withLocalRights(AVAILS_SELECTION)
+)(ResultsTable);
 
 class SearchResultsTab extends React.Component {
     constructor(props) {
@@ -45,20 +46,20 @@ class SearchResultsTab extends React.Component {
         this.handleChangeReport = this.handleChangeReport.bind(this);
     }
 
-    storeData = (response) => {
+    storeData = response => {
         store.dispatch(resultPageLoading(false));
         const updatedResult = {
             pages: 0,
             avails: [],
             pageSize: 1,
-            total: 0
+            total: 0,
         };
 
-        if(response && response.data){
+        if (response && response.data) {
             updatedResult.pages = response.page + 1;
             updatedResult.pageSize = response.data.length;
             updatedResult.total = response.total;
-            if(response.page === 0) {
+            if (response.page === 0) {
                 updatedResult.avails = response.data;
             } else {
                 updatedResult.avails = [...this.props.avails, ...response.data];
@@ -66,9 +67,9 @@ class SearchResultsTab extends React.Component {
         }
 
         store.dispatch(resultPageUpdate(updatedResult));
-    }
+    };
 
-    toggleShowSelected(){
+    toggleShowSelected() {
         this.props.resultPageShowSelected(!this.props.showSelectedAvails);
     }
 
@@ -78,18 +79,18 @@ class SearchResultsTab extends React.Component {
         configurationService.changeReport(reportName);
     }
 
-    updateColumnsOrder = (cols) => {
+    updateColumnsOrder = cols => {
         this.props.resultPageUpdateColumnsOrder(cols);
         store.dispatch(resultPageLoading(true)); //force refresh
-    }
+    };
 
     getSelected = () => {
         return store.getState().dashboard.session.availTabPageSelection.selected;
-    }
+    };
 
     getColumns = () => {
         return store.getState().dashboard.session.columns;
-    }
+    };
 
     handleViewAuditHistory = () => {
         const {selectedRights = []} = this.props;
@@ -97,23 +98,26 @@ class SearchResultsTab extends React.Component {
 
         const title = `Audit History (${selectedRights.length})`;
         setModalStyle({width: '100%'});
-        setModalActions([{
-            text: 'Done',
-            onClick: close,
-        }]);
+        setModalActions([
+            {
+                text: 'Done',
+                onClick: close,
+            },
+        ]);
         setModalContentAndTitle(NexusSpinner, title);
 
         const ids = selectedRights.map(e => e.id);
         getRightsHistory(ids).then(rightsEventHistory => {
-            setModalContentAndTitle((
+            setModalContentAndTitle(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
-                </div>
-            ), title);
+                </div>,
+                title
+            );
         });
-    }
+    };
 
     render() {
         return (
@@ -126,38 +130,32 @@ class SearchResultsTab extends React.Component {
                             </span>
                             <Selected toggleShowSelected={this.toggleShowSelected} />
                             <span className="nx-container-margin table-top-text">
-                                <span onClick={this.handleViewAuditHistory}>
-                                    View Audit History
-                                </span>
+                                <span onClick={this.handleViewAuditHistory}>View Audit History</span>
                             </span>
                             {this.props.showSelectedAvails && (
                                 <a href="#" onClick={this.toggleShowSelected}>
-                                    <span
-                                        className="nx-container-margin table-top-text"
-                                        id="dashboard-go-to-filter"
-                                    >
+                                    <span className="nx-container-margin table-top-text" id="dashboard-go-to-filter">
                                         Back to search
                                     </span>
                                 </a>
-                              )}
-                            <Clear clearAllSelected={() => {
-                                this.clearAllSelected && this.clearAllSelected();
-                                this.clearAllSelectedMainTable && this.clearAllSelectedMainTable();
-                                }} />
+                            )}
+                            <Clear
+                                clearAllSelected={() => {
+                                    this.clearAllSelected && this.clearAllSelected();
+                                    this.clearAllSelectedMainTable && this.clearAllSelectedMainTable();
+                                }}
+                            />
                         </div>
                         <div style={{marginRight: '15px'}}>
                             <IfEmbedded value={false}>
-                                <div className="d-inline-flex align-content-center" style={{whiteSpace: 'nowrap', marginRight: '8px'}}>
+                                <div
+                                    className="d-inline-flex align-content-center"
+                                    style={{whiteSpace: 'nowrap', marginRight: '8px'}}
+                                >
                                     <span className="align-self-center">Selected report:</span>
-                                    <Reports
-                                        onChange={this.handleChangeReport}
-                                        reportName={this.props.reportName}
-                                    />
+                                    <Reports onChange={this.handleChangeReport} reportName={this.props.reportName} />
                                 </div>
-                                <TableDownloadRights
-                                    getSelected={this.getSelected}
-                                    getColumns={this.getColumns}
-                                />
+                                <TableDownloadRights getSelected={this.getSelected} getColumns={this.getColumns} />
                             </IfEmbedded>
                             <TableColumnCustomization
                                 availsMapping={this.props.availsMapping}
@@ -171,18 +169,19 @@ class SearchResultsTab extends React.Component {
                             availsMapping={this.props.availsMapping}
                             hidden={this.props.showSelectedAvails}
                             onDataLoaded={this.storeData}
-                            setClearAllSelected={clearAllSelected => this.clearAllSelectedMainTable = clearAllSelected}
+                            setClearAllSelected={clearAllSelected =>
+                                (this.clearAllSelectedMainTable = clearAllSelected)
+                            }
                         />
                     </div>
                     <div>
                         <SelectedRightsResultsTable
                             availsMapping={this.props.availsMapping}
-                            setClearAllSelected={clearAllSelected => this.clearAllSelected = clearAllSelected}
+                            setClearAllSelected={clearAllSelected => (this.clearAllSelected = clearAllSelected)}
                             hidden={!this.props.showSelectedAvails}
                             isAvailSelectedTab={true}
                         />
                     </div>
-
                 </div>
             </div>
         );

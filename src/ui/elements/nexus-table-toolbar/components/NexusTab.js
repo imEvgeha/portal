@@ -1,32 +1,36 @@
 import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import NexusTooltip from '../../nexus-tooltip/NexusTooltip';
 import './NexusTab.scss';
 
-const NexusTab = ({title, totalRows, activeTab, currentTab, setActiveTab}) => {
+const NexusTab = ({title, tooltip, totalRows, activeTab, setActiveTab}) => {
     return (
-        <div
-            className={classNames(
-                'nexus-c-nexus-tab',
-                activeTab === currentTab && 'nexus-c-nexus-tab--is-active'
-            )}
-            onClick={() => (activeTab !== currentTab ? setActiveTab(currentTab) : null)}
-        >
-            {title} ({totalRows})
-        </div>
+        <NexusTooltip content={tooltip}>
+            <div
+                className={classNames(
+                    'nexus-c-nexus-tab',
+                    activeTab === title && 'nexus-c-nexus-tab--is-active'
+                )}
+                onClick={() => (activeTab !== title ? setActiveTab(title) : null)}
+            >
+                {title} ({totalRows})
+            </div>
+        </NexusTooltip>
     );
 };
 
 NexusTab.propTypes = {
     title: PropTypes.string,
+    tooltip: PropTypes.string,
     totalRows: PropTypes.number,
     activeTab: PropTypes.string.isRequired,
-    currentTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
 };
 
 NexusTab.defaultProps = {
     title: '',
+    tooltip: '',
     totalRows: 0,
 };
 
