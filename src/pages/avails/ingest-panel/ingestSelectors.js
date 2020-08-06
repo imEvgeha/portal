@@ -39,3 +39,8 @@ export const getLicensors = createSelector(
     getSelectValues,
     selectValues => selectValues.licensor || [],
 );
+
+export const getLicensees = createSelector(
+    getSelectValues,
+    selectValues => selectValues.licensee || [],
+);
