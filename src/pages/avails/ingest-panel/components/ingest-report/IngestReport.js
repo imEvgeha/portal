@@ -50,7 +50,7 @@ const IngestReport = ({
     );
 
     const createTooltipTag = key => (
-        <NexusTooltip content={reportValues[key] ? reportValues[key].toString() : ''}>
+        <NexusTooltip content={reportValues[key] ? `Original Value: ${reportFields[key].label} (${reportValues[key].toString() })` : ''}>
             {createTag(key)}
         </NexusTooltip>
     );

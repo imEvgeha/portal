@@ -37,8 +37,8 @@ import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/component
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
+import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG} from './RightConstants';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
-import {NoteError, NoteMerged, NotePending} from './RightConstants';
 import './RightDetails.scss';
 
 const mapStateToProps = state => {
@@ -1147,10 +1147,10 @@ class RightDetails extends React.Component {
             const {servicingRegion = ''} = configLicensee || {};
 
             const isRequired =
-                required ||
-                (name === 'platformCategory' && servicingRegion === 'US') ||
-                name === 'licenseRightsDescription';
-            const tooltip = name === 'platformCategory' ? 'Required for US Licensee' : null;
+                required
+                || (name === 'platformCategory' && servicingRegion === 'US')
+                || name === 'licenseRightsDescription';
+            const tooltip = name === 'platformCategory' ? PLATFORM_INFORM_MSG : null;
 
             return renderFieldTemplate(
                 name,

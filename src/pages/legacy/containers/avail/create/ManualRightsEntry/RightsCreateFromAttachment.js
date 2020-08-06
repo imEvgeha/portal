@@ -110,7 +110,7 @@ class RightsCreateFromAttachment extends React.Component {
     cellRenderers = {
         report: ({value}) => (
             <div className="nexus-c-report">
-                <IngestReport isShowingError={false} report={value} ingestId={this.state.availHistoryId } hasTooltips={false} />
+                <IngestReport isShowingError={false} report={value} ingestId={this.state.availHistoryId } hasTooltips />
             </div>
         ),
         status: ({value}) => (
