@@ -89,10 +89,11 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status}) =>
+            ({rightStatus, licensed, status, territory}) =>
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
-                ['ReadyNew', 'Ready'].includes(status)
+                ['ReadyNew', 'Ready'].includes(status) &&
+                hasAtLeastOneUnselectedTerritory(territory)
         );
     };
 
@@ -183,11 +184,12 @@ export const SelectedRightsActions = ({
         });
     };
 
-    const prePlanEligible = (status, rightStatus, licensed) => {
+    const prePlanEligible = (status, rightStatus, licensed, territory) => {
         if (
             ['ReadyNew', 'Ready'].includes(status) &&
             ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
-            licensed
+            licensed &&
+            hasAtLeastOneUnselectedTerritory(territory)
         ) {
             return true;
         }
@@ -204,14 +206,18 @@ export const SelectedRightsActions = ({
         let eligibleRights = [];
         let nonEligibleRights = [];
         selectedRights.forEach(right => {
-            const {status, rightStatus, licensed} = right || {};
-            if (prePlanEligible(status, rightStatus, licensed)) {
+            const {status, rightStatus, licensed, territory} = right || {};
+            if (prePlanEligible(status, rightStatus, licensed, territory)) {
                 eligibleRights = [...eligibleRights, right];
             } else {
                 nonEligibleRights = [...nonEligibleRights, right];
             }
         });
         return [eligibleRights, nonEligibleRights];
+    };
+
+    const hasAtLeastOneUnselectedTerritory = territory => {
+        return territory.filter(item => !item.selected).length > 0;
     };
 
     const filterOutUnselectedTerritories = rights => {
