@@ -26,6 +26,7 @@ import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+import {PLATFORM_INFORM_MSG} from "../details/RightConstants";
 
 const mapStateToProps = state => {
     return {
@@ -687,11 +688,12 @@ class RightCreate extends React.Component {
             const isRequired =
                 required ||
                 (name === 'platformCategory' && this.right.licensee && this.right.licensee.servicingRegion === 'US');
+            const tooltip = name === 'platformCategory' ? PLATFORM_INFORM_MSG : null;
             return renderFieldTemplate(
                 name,
                 displayName,
                 isRequired,
-                null,
+                tooltip,
                 <div id={'right-create-' + name + '-multiselect'} key={name} className="react-select-container">
                     <ReactMultiSelectCheckboxes
                         placeholderButtonLabel={'Select ' + displayName + ' ...'}
