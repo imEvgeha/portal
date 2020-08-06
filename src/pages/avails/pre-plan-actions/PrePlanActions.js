@@ -28,7 +28,7 @@ export const PrePlanActions = ({
 
     const addToSelectedforPlanning = () => {
         //Todo - validate rights and call DOP service
-        //console.log('selectedPrePlanRights: ', selectedPrePlanRights);
+        console.log('selectedPrePlanRights: ', selectedPrePlanRights);
     }
 
     return (
@@ -49,7 +49,7 @@ export const PrePlanActions = ({
                         data-test-id="add-to-preplan"
                         onClick={selectedPrePlanRights.length ? addToSelectedforPlanning : null}
                     >
-                            <div>{ADD_TO_SELECTED_PLANNING}</div>
+                        <div>{ADD_TO_SELECTED_PLANNING}</div>
                     </div>
                     <div
                         className={classNames(
