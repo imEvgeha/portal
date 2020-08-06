@@ -17,9 +17,8 @@ const PrePlanGrid = compose(
     withSideBar()
 )(NexusGrid);
 
-const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
+const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, setSelectedPrePlanRights}) => {
     const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
-    const [selectedRights, setSelectedRights] = useState([]);
 
     const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'selected');
     const editedMappings = mapping.map(mapping => {
@@ -81,7 +80,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
                 }
                 break;
             case GRID_EVENTS.SELECTION_CHANGED:
-                console.log(api.getSelectedRows());
+                setSelectedPrePlanRights(api.getSelectedRows());
                 break;
             default:
                 break;
@@ -111,6 +110,7 @@ PreplanRightsTable.propTypes = {
     mapping: PropTypes.array,
     prePlanRepoRights: PropTypes.array,
     activeTab: PropTypes.string.isRequired,
+    setSelectedPrePlanRights: PropTypes.func.isRequired,
 };
 
 PreplanRightsTable.defaultProps = {

@@ -324,20 +324,6 @@ export const SelectedRightsActions = ({
                             </NexusTooltip>
                         </div>
                     )}
-                    {activeTab === PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
-                        <div
-                            className={classNames(
-                                'nexus-c-selected-rights-actions__menu-item',
-                                !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                            )}
-                            data-test-id="add-to-preplan"
-                            onClick={selectedRights.length ? prepareRightsForPrePlan : null}
-                        >
-                            <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
-                                <div>{ADD_TO_SELECTED_PLANNING}</div>
-                            </NexusTooltip>
-                        </div>
-                    )}
                 </div>
             </div>
             <NexusDrawer

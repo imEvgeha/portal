@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
+import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
@@ -8,7 +9,6 @@ import {
     SELECTED_FOR_PLANNING_TAB,
 } from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
-import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
 import {URL} from '../../../util/Common';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import NexusTab from './components/NexusTab';
@@ -32,12 +32,13 @@ const NexusTableToolbar = ({
     selectedRepoRights,
     setPrePlanRepoRights,
     prePlanRepoRights,
+    selectedPrePlanRights,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
             {activeTab === PRE_PLAN_TAB ?
                 <PrePlanActions
-                    selectedRights={selectedRepoRights}
+                    selectedRights={selectedPrePlanRights}
                     selectedRightGridApi={selectedRightGridApi}
                     setSelectedRights={setSelectedRights}
                     setPrePlanRepoRights={setPrePlanRepoRights}
@@ -111,6 +112,7 @@ NexusTableToolbar.propTypes = {
     selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
     prePlanRepoRights: PropTypes.array,
+    selectedPrePlanRights: PropTypes.array,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -125,6 +127,7 @@ NexusTableToolbar.defaultProps = {
     rightColumnApi: {},
     gridApi: {},
     prePlanRepoRights: [],
+    selectedPrePlanRights: [],
 };
 
 export default NexusTableToolbar;

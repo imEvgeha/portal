@@ -1,13 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import {
-    REMOVE_PRE_PLAN_TAB,
-} from './constants';
+import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
 import './PrePlanActions.scss';
 
 export const PrePlanActions = ({
@@ -37,6 +35,10 @@ export const PrePlanActions = ({
         toggleRefreshGridData(true);
     };
 
+    const addToSelectedforPlanning = () => {
+        //validate...
+        console.log('selectedRights: ', selectedRights);
+    }
 
     return (
         <>
@@ -48,6 +50,16 @@ export const PrePlanActions = ({
                         menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
                     )}
                 >
+                    <div
+                        className={classNames(
+                            'nexus-c-selected-rights-actions__menu-item',
+                            selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                        )}
+                        data-test-id="add-to-preplan"
+                        onClick={selectedRights.length ? addToSelectedforPlanning : null}
+                    >
+                            <div>{ADD_TO_SELECTED_PLANNING}</div>
+                    </div>
                     <div
                         className={classNames(
                             'nexus-c-selected-rights-actions__menu-item',
