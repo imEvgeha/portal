@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PrePlanActions PrePlanActions should match snapshot 1`] = `
+exports[`PrePlanActions Remove Rights Action should match snapshot 1`] = `
 <Fragment>
   <div
     className="nexus-c-selected-rights-actions"

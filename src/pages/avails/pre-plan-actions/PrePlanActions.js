@@ -28,11 +28,10 @@ export const PrePlanActions = ({
 
     const removeRightsFromPrePlan = () => {
         // TODO: Use selected from preplan - not rights repo
-        const selectedRights = selectedRights.map(right => right.id);
-        const notSelectedRights = prePlanRepoRights.filter(right => !selectedRights.includes(right.id));
+        const selectedRightsId = selectedRights.map(right => right.id);
+        const notSelectedRights = prePlanRepoRights.filter(right => !selectedRightsId.includes(right.id));
         setPrePlanRepoRights([...notSelectedRights]);
-        setPrePlanRepoRights(selectedRights);
-        gridApi.deselectAll();
+        gridApi && gridApi.deselectAll();
         setSelectedRights([]);
         toggleRefreshGridData(true);
     };
@@ -51,7 +50,7 @@ export const PrePlanActions = ({
                     <div
                         className={classNames(
                             'nexus-c-selected-rights-actions__menu-item',
-                            prePlanRepoRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="remove-pre-plan"
                         onClick={selectedRights.length ? removeRightsFromPrePlan : null}

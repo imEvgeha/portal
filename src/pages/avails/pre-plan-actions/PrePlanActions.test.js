@@ -8,6 +8,24 @@ describe('PrePlanActions', () => {
     let mockStore = null;
     let store = null;
     const menuItemClass = 'nexus-c-selected-rights-actions__menu-item';
+    const selectedRights = [
+        {
+            id: '1',
+            title: 'Awesome Right',
+        },
+    ];
+
+    const prePlanRepoRights = [
+        {
+            id: '1',
+            title: 'Awesome Right',
+        },
+        {
+            id: '2',
+            title: 'Awesome Right 2',
+        },
+    ];
+
 
     beforeEach(() => {
         mockStore = configureStore();
@@ -18,14 +36,14 @@ describe('PrePlanActions', () => {
         wrapper = null;
     });
 
-    describe('PrePlanActions', () => {
+    describe('Remove Rights Action', () => {
         beforeEach(() => {
             wrapper = shallow(
                 <PrePlanActions
                     selectedRights={[]}
                     store={store}
                     toggleRefreshGridData={() => null}
-                    selectedRightGridApi={{}}
+                    gridApi={null}
                 />
             );
         });
@@ -35,8 +53,32 @@ describe('PrePlanActions', () => {
         });
 
         it('should disable "Remove from Pre-Plan" option when no rights are selected', () => {
-            const viewHistoryOption = wrapper.find('[data-test-id="remove-pre-plan"]');
-            expect(viewHistoryOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+            const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
+            expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should enable "Remove from Pre-Plan" option when some rights are selected', () => {
+            const setPrePlanRepoRights = jest.fn();
+            const setSelectedRights = jest.fn();
+            const toggleRefreshGridData = jest.fn();
+
+            wrapper = shallow(
+                <PrePlanActions
+                    selectedRights={selectedRights}
+                    prePlanRepoRights={prePlanRepoRights}
+                    store={store}
+                    toggleRefreshGridData={toggleRefreshGridData}
+                    setSelectedRights={setSelectedRights}
+                    setPrePlanRepoRights={setPrePlanRepoRights}
+                    gridApi={null}
+                />
+            );
+            const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
+            expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+            removeRightsOption.simulate('click');
+            expect(setPrePlanRepoRights).toHaveBeenCalled();
+            expect(setSelectedRights).toHaveBeenCalled();
+            expect(toggleRefreshGridData).toHaveBeenCalled();
         });
     });
 

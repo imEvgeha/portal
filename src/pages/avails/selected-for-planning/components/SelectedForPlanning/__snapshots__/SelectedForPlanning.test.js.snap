@@ -23,6 +23,12 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "width": 150,
       },
       Object {
+        "colId": "keywords",
+        "field": "keywords",
+        "headerName": "Keywords",
+        "width": 150,
+      },
+      Object {
         "cellRenderer": "clickableCellRenderer",
         "cellRendererParams": Object {
           "keyToDisplay": "status",
@@ -49,6 +55,12 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "colId": "licensee",
         "field": "licensee",
         "headerName": "Licensee",
+        "width": 120,
+      },
+      Object {
+        "colId": "licenseType",
+        "field": "licenseType",
+        "headerName": "License type",
         "width": 120,
       },
       Object {
