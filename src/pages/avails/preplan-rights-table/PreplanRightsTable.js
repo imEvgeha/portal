@@ -6,14 +6,34 @@ import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 
-const PrePlanGrid = compose(withEditableColumns(), withColumnsResizing(), withSideBar())(NexusGrid);
+const PrePlanGrid = compose(
+    withEditableColumns(),
+    withFilterableColumns(),
+    withColumnsResizing(),
+    withSideBar()
+)(NexusGrid);
 
 const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
     const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
     const [selectedRights, setSelectedRights] = useState([]);
+
+    const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'selected');
+    const editedMappings = mapping.map(mapping => {
+        if (mapping.javaVariableName === 'keywords') {
+            return {
+                ...mapping,
+                enableEdit: true,
+            };
+        }
+        return {
+            ...mapping,
+            enableEdit: false,
+        };
+    });
 
     useEffect(() => {
         setPreplanRights(prePlanRepoRights);
@@ -31,7 +51,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
         valueFormatter: createValueFormatter({dataType: 'dropdown'}),
     };
 
-    const updatedMapping = {
+    const planTerritoriesMapping = {
         javaVariableName: 'planTerritories',
         displayName: 'Plan Territories',
         dataType: 'dropdown',
@@ -73,11 +93,11 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
     return (
         <PrePlanGrid
             id="prePlanRightsRepo"
-            columnDefs={[...columnDefs, planTerritoriesColumn]}
+            columnDefs={[...filteredColumnDefs, planTerritoriesColumn]}
             singleClickEdit
             rowSelection="multiple"
             suppressRowClickSelection={true}
-            mapping={[...mapping, updatedMapping]}
+            mapping={[...editedMappings, planTerritoriesMapping]}
             rowData={preplanRights}
             isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}

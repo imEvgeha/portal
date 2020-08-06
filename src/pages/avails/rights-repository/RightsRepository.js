@@ -36,7 +36,7 @@ import SelectedForPlanning from '../selected-for-planning/components/SelectedFor
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
-import {setRightsFilter, setSelectedRights} from './rightsActions';
+import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from './constants';
 import constants from '../constants';
@@ -66,7 +66,9 @@ const RightsRepository = ({
     filterByStatus,
     ingestClick,
     setSelectedRights,
+    setPreplanRights,
     selectedRights,
+    selectedPreplanRights,
     setRightsFilter,
     rightsFilter,
     deselectIngest,
@@ -81,7 +83,6 @@ const RightsRepository = ({
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
-    const [prePlanRepoRights, setPrePlanRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
     const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
@@ -311,9 +312,9 @@ const RightsRepository = ({
     };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
-        const prePlanIds = prePlanRepoRights.map(right => right.id);
+        const prePlanIds = selectedPreplanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPrePlanRepoRights([...prePlanRepoRights, ...newSelectedRights]);
+        setPreplanRights([...selectedPreplanRights, ...newSelectedRights]);
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -381,7 +382,7 @@ const RightsRepository = ({
             <NexusTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
-                prePlanRightsCount={prePlanRepoRights.length}
+                prePlanRightsCount={selectedPreplanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -394,6 +395,7 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
+                prePlanRepoRights={selectedPreplanRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -424,7 +426,7 @@ const RightsRepository = ({
             />
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={prePlanRepoRights}
+                prePlanRepoRights={selectedPreplanRights}
                 activeTab={activeTab}
                 mapping={mapping}
             />
@@ -439,6 +441,7 @@ RightsRepository.propTypes = {
     filterByStatus: PropTypes.func.isRequired,
     ingestClick: PropTypes.func.isRequired,
     setSelectedRights: PropTypes.func.isRequired,
+    setPreplanRights: PropTypes.func.isRequired,
     setRightsFilter: PropTypes.func.isRequired,
     downloadIngestEmail: PropTypes.func.isRequired,
     downloadIngestFile: PropTypes.func.isRequired,
@@ -448,6 +451,7 @@ RightsRepository.propTypes = {
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
+    selectedPreplanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
 };
 
@@ -456,6 +460,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
+    selectedPreplanRights: [],
     rightsFilter: {},
 };
 
@@ -463,6 +468,7 @@ const mapStateToProps = () => {
     const rightMatchingColumnDefsSelector = createRightMatchingColumnDefsSelector();
     const availsMappingSelector = createAvailsMappingSelector();
     const selectedRightsSelector = selectors.createSelectedRightsSelector();
+    const preplanRightsSelector = selectors.createPreplanRightsSelector();
     const rightsFilterSelector = selectors.createRightsFilterSelector();
 
     return (state, props) => ({
@@ -471,6 +477,7 @@ const mapStateToProps = () => {
         selectedIngest: getSelectedIngest(state),
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
+        selectedPreplanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
 };
@@ -480,6 +487,7 @@ const mapDispatchToProps = dispatch => ({
     filterByStatus: payload => dispatch(filterRightsByStatus(payload)),
     ingestClick: () => dispatch(selectIngest()),
     setSelectedRights: payload => dispatch(setSelectedRights(payload)),
+    setPreplanRights: payload => dispatch(setPreplanRights(payload)),
     deselectIngest: () => dispatch(deselectIngest()),
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),

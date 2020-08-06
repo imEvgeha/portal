@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import Tag from '@atlaskit/tag';
 import {camelCase, startCase} from 'lodash';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-import EmphasizedCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/emphasized-cell-renderer/EmphasizedCellRenderer';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
@@ -20,15 +20,13 @@ const ServicingOrderGrid = compose(
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
-const ServicingOrdersTable = (
-    {
-        fixedFilter,
-        externalFilter,
-        setSelectedServicingOrders,
-        isRefreshData,
-        dataRefreshComplete,
-    }
-) => {
+const ServicingOrdersTable = ({
+    fixedFilter,
+    externalFilter,
+    setSelectedServicingOrders,
+    isRefreshData,
+    dataRefreshComplete,
+}) => {
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0,
@@ -56,11 +54,23 @@ const ServicingOrdersTable = (
     };
 
     const updateColumnDefs = useCallback(columnDefs => {
-        return columnDefs.map(columnDef => ({
-            ...columnDef,
-            valueFormatter: valueFormatter(columnDef),
-            cellRenderer: columnDef.isEmphasized ? 'emphasizedStringCellRenderer' : 'loadingCellRenderer',
-        }));
+        return columnDefs.map(columnDef => {
+            if (columnDef.field === 'rush_order') {
+                return {
+                    ...columnDef,
+                    valueFormatter: valueFormatter(columnDef),
+                    cellRendererFramework: params => {
+                        return params.value === 'Y' ? <Tag text="Rush" color="yellowLight" /> : null;
+                    },
+                };
+            }
+
+            return {
+                ...columnDef,
+                valueFormatter: valueFormatter(columnDef),
+                cellRenderer: 'loadingCellRenderer',
+            };
+        });
     }, []);
 
     /**
@@ -93,37 +103,28 @@ const ServicingOrdersTable = (
 
     const [columns, setColumns] = useState(updateColumnDefs(columnDefs));
 
-    useEffect(
-        () => {
-            setColumns(updateColumnDefs(columnDefs));
-        },
-        [setColumns, updateColumnDefs]
-    );
+    useEffect(() => {
+        setColumns(updateColumnDefs(columnDefs));
+    }, [setColumns, updateColumnDefs]);
 
-    useEffect(
-        () => {
-            if (isRefreshData) {
-                // Refresh data
-                gridApi.purgeInfiniteCache();
+    useEffect(() => {
+        if (isRefreshData) {
+            // Refresh data
+            gridApi.purgeInfiniteCache();
 
-                // Remove all selections
-                gridApi.deselectAll();
-                setSelectedServicingOrders([]);
+            // Remove all selections
+            gridApi.deselectAll();
+            setSelectedServicingOrders([]);
 
-                dataRefreshComplete();
-            }
-        },
-        [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]
-    );
+            dataRefreshComplete();
+        }
+    }, [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]);
 
     return (
         <div className="nexus-c-servicing-orders-table">
             <ServicingOrderGrid
                 columnDefs={columns}
                 mapping={columnDefs}
-                frameworkComponents={{
-                    emphasizedStringCellRenderer: EmphasizedCellRenderer,
-                }}
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {get, uniqBy} from 'lodash';
+import {cloneDeep, get, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
@@ -218,7 +218,7 @@ export const SelectedRightsActions = ({
     const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
-            setPrePlanRepoRights(selectedRights);
+            setPrePlanRepoRights(cloneDeep(selectedRights));
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
@@ -234,7 +234,7 @@ export const SelectedRightsActions = ({
         }, []);
 
         setSelectedRights(nonEligibleRights);
-        setPrePlanRepoRights(eligibleRights);
+        setPrePlanRepoRights(cloneDeep(eligibleRights));
 
         setModalContentAndTitle(
             <StatusCheck
