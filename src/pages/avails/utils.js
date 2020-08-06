@@ -14,11 +14,12 @@ export const createColumnDefs = payload => {
         .reduce((columnDefs, column) => {
             const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
             const isColumnLocked = ['id'].includes(javaVariableName);
+            const hasLink = ['id', 'title'].includes(javaVariableName);
             const columnDef = {
                 field: javaVariableName,
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
-                cellRenderer: isColumnLocked ? 'loadingCellRenderer' : null,
+                cellRenderer: hasLink ? 'loadingCellRenderer' : null,
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
                 lockPosition: isColumnLocked,
