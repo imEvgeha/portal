@@ -68,7 +68,7 @@ const RightsRepository = ({
     setSelectedRights,
     setPreplanRights,
     selectedRights,
-    selectedPreplanRights,
+    prePlanRights,
     setRightsFilter,
     rightsFilter,
     deselectIngest,
@@ -312,9 +312,9 @@ const RightsRepository = ({
     };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
-        const prePlanIds = selectedPreplanRights.map(right => right.id);
+        const prePlanIds = prePlanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPreplanRights([...selectedPreplanRights, ...newSelectedRights]);
+        setPreplanRights([...prePlanRights, ...newSelectedRights]);
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -383,7 +383,7 @@ const RightsRepository = ({
             <NexusTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
-                prePlanRightsCount={selectedPreplanRights.length}
+                prePlanRightsCount={prePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -426,7 +426,7 @@ const RightsRepository = ({
             />
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={selectedPreplanRights}
+                prePlanRepoRights={prePlanRights}
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
@@ -452,7 +452,7 @@ RightsRepository.propTypes = {
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
-    selectedPreplanRights: PropTypes.array,
+    prePlanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
 };
 
@@ -461,7 +461,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
-    selectedPreplanRights: [],
+    prePlanRights: [],
     rightsFilter: {},
 };
 
@@ -478,7 +478,7 @@ const mapStateToProps = () => {
         selectedIngest: getSelectedIngest(state),
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
-        selectedPreplanRights: preplanRightsSelector(state, props),
+        prePlanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
 };
