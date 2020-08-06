@@ -66,7 +66,7 @@ const NexusDateTimePicker = ({
     const dateFormat = getDateFormatBasedOnLocale(locale).toUpperCase().concat(timeFormat);
 
     const getDisplayDate = date => {
-        return moment(date).utc(!isUtc(date)).format(dateFormat);
+        return date ? moment(date).utc(!isUtc(date)).format(dateFormat) : '';
     };
 
     const DatePicker = isReadOnly => {
