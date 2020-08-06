@@ -6,20 +6,18 @@ import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
+// import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 
 const PrePlanGrid = compose(
-    withEditableColumns(),
-    withFilterableColumns(),
     withColumnsResizing(),
-    withSideBar()
+    withSideBar(),
+    withEditableColumns()
+    // withFilterableColumns()
 )(NexusGrid);
 
-const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab}) => {
-    const [preplanRights, setPreplanRights] = useState(prePlanRepoRights);
-
+const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, setPreplanRights}) => {
     const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'selected');
     const editedMappings = mapping.map(mapping => {
         if (mapping.javaVariableName === 'keywords') {
@@ -33,10 +31,6 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
             enableEdit: false,
         };
     });
-
-    useEffect(() => {
-        setPreplanRights(prePlanRepoRights);
-    }, [prePlanRepoRights]);
 
     const planTerritoriesColumn = {
         headerName: 'Plan Territories',
@@ -86,7 +80,7 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab})
             rowSelection="multiple"
             suppressRowClickSelection={true}
             mapping={[...editedMappings, planTerritoriesMapping]}
-            rowData={preplanRights}
+            rowData={prePlanRepoRights}
             isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}
             notFilterableColumns={['action', 'buttons']}
@@ -98,6 +92,7 @@ PreplanRightsTable.propTypes = {
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
     prePlanRepoRights: PropTypes.array,
+    setPreplanRights: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
 };
 

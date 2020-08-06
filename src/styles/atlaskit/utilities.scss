@@ -1,0 +1,25 @@
+@import './constants.scss';
+@import './theme.scss';
+
+/**
+  Convert Pixels to Rems
+**/
+@function calculateRems($pixelSize, $base: $base-font-size) {
+    $remSize: $pixelSize / $base;
+    @return #{$remSize}rem;
+}
+
+/**
+  Add Ems type
+  (From bug where nth adds space after value)
+**/
+@function addEm($value) {
+    @return #{($value)}em;
+}
+
+/**
+  Calculate spacing in rems based off multiples of fine grid size
+**/
+@function calcSpacingRems($val) {
+    @return #{$val * ($spacing-size / $base-font-size)}rem;
+}

@@ -12,19 +12,19 @@ export const createColumnDefs = payload => {
     return payload
         .filter(column => column.dataType && column.displayName)
         .reduce((columnDefs, column) => {
-            const {javaVariableName, displayName, dataType, queryParamName, sortParamName, pinned} = column;
+            const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
             const isColumnLocked = ['id'].includes(javaVariableName);
             const columnDef = {
                 field: javaVariableName,
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
-                cellRenderer: 'loadingCellRenderer',
+                cellRenderer: isColumnLocked ? 'loadingCellRenderer' : null,
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
                 lockPosition: isColumnLocked,
                 lockVisible: isColumnLocked,
                 lockPinned: isColumnLocked,
-                pinned
+                pinned: isColumnLocked && 'left',
             };
             return [...columnDefs, columnDef];
         }, []);

@@ -22,9 +22,8 @@ import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusToolt
 import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
 import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
-import IngestReport from "../../../../../avails/ingest-panel/components/ingest-report/IngestReport";
-import TableColumnCustomization
-    from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import IngestReport from '../../../../../avails/ingest-panel/components/ingest-report/IngestReport';
+import TableColumnCustomization from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';
@@ -110,7 +109,7 @@ class RightsCreateFromAttachment extends React.Component {
     cellRenderers = {
         report: ({value}) => (
             <div className="nexus-c-report">
-                <IngestReport isShowingError={false} report={value} ingestId={this.state.availHistoryId } hasTooltips={false} />
+                <IngestReport isShowingError={false} report={value} ingestId={this.state.availHistoryId} hasTooltips />
             </div>
         ),
         status: ({value}) => (
@@ -149,20 +148,22 @@ class RightsCreateFromAttachment extends React.Component {
     getAttachmentsRowData = (attachments = []) => {
         return (
             Array.isArray(attachments) &&
-            attachments.filter(({attachmentType}) => attachmentType !== 'Email')
+            attachments
+                .filter(({attachmentType}) => attachmentType !== 'Email')
                 .map((attachment = {}) => {
                     const {status = '', ingestReport} = attachment || {};
 
                     const {errorDetails = ''} = ingestReport || {};
 
-            return {
-                error: errorDetails,
-                attachment,
-                status,
-                report: ingestReport,
-            };
-        }));
-    }
+                    return {
+                        error: errorDetails,
+                        attachment,
+                        status,
+                        report: ingestReport,
+                    };
+                })
+        );
+    };
 
     getHistoryData() {
         if (this.state.availHistoryId) {

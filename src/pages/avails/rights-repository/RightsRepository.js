@@ -366,6 +366,7 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
+
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -429,6 +430,7 @@ const RightsRepository = ({
                 prePlanRepoRights={selectedPreplanRights}
                 activeTab={activeTab}
                 mapping={mapping}
+                setPreplanRights={setPreplanRights}
             />
             <SelectedForPlanning activeTab={activeTab} />
         </div>

@@ -1,0 +1,309 @@
+@import './theme.scss';
+@import './constants.scss';
+@import './mixins.scss';
+
+/**
+    Atlaskit CSS reset
+    https://atlaskit.atlassian.com/packages/css-packs/css-reset
+**/
+
+html,
+body,
+p,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+dl,
+img,
+pre,
+form,
+fieldset {
+    margin: 0;
+    padding: 0;
+}
+img,
+fieldset {
+    border: 0;
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-color: map-get($element-colors, backgorund);
+    color: map-get($typographic-colors, body-text);
+    font-family: $font-family;
+    font-size: #{$base-font-size}px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.42857142857143; // 20px
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    text-decoration-skip-ink: auto;
+}
+
+/* Default margins */
+p,
+ul,
+ol,
+dl,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+blockquote,
+pre,
+form,
+table {
+    @include margin(3, 0, 0, 0);
+}
+
+/* Links */
+a {
+    color: map-get($typographic-colors, link);
+    text-decoration: none;
+}
+a:hover {
+    color: map-get($typographic-colors, link-hover);
+    text-decoration: underline;
+}
+a:active {
+    color: map-get($typographic-colors, link-active);
+}
+a:focus {
+    outline: 2px solid map-get($typographic-colors, link-outline);
+    outline-offset: 2px;
+}
+
+/* Headings */
+h1 {
+    @include heading(h800);
+    font-style: inherit;
+}
+h2 {
+    @include heading(h700);
+    font-style: inherit;
+}
+h3 {
+    @include heading(h600);
+    font-style: inherit;
+}
+h4 {
+    @include heading(h500);
+    font-style: inherit;
+}
+h5 {
+    @include heading(h400);
+    font-style: inherit;
+}
+h6 {
+    @include heading(h300);
+    font-style: inherit;
+}
+
+/* Lists */
+ul,
+ol,
+dl {
+    @include addSpacing(padding-left, 10);
+}
+[dir='rtl']ul,
+[dir='rtl']ol,
+[dir='rtl']dl {
+    padding-left: 0;
+    @include addSpacing(padding-right, 10);
+}
+
+dd,
+dd + dt,
+li + li {
+    @include addSpacing(margin-top, 1);
+}
+ul ul:not(:first-child),
+ol ul:not(:first-child),
+ul ol:not(:first-child),
+ol ol:not(:first-child) {
+    @include addSpacing(margin-top, 1);
+}
+
+/* remove top margin for first element */
+p:first-child,
+ul:first-child,
+ol:first-child,
+dl:first-child,
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child,
+blockquote:first-child,
+pre:first-child,
+form:first-child,
+table:first-child {
+    margin-top: 0;
+}
+
+/* Quotes */
+blockquote,
+q {
+    color: inherit;
+}
+blockquote {
+    border: none;
+    @include addSpacing(padding-left, 10);
+}
+[dir='rtl'] blockquote {
+    padding-left: 0;
+    @include addSpacing(padding-right, 10);
+}
+
+blockquote::before,
+q::before {
+    content: '\201C';
+}
+
+blockquote::after,
+q::after {
+    content: '\201D';
+}
+
+blockquote::before {
+    float: left;
+    /* to keep the quotes left of any child elements like blockquote > p */
+    margin-left: -1em;
+    text-align: right;
+    width: 1em;
+}
+[dir='rtl'] blockquote::before {
+    float: right;
+    margin-right: -1em;
+    text-align: left;
+}
+
+blockquote > :last-child {
+    display: inline-block; /* so the quotes added via pseudos follow it immediately. */
+}
+
+/* Other typographical elements */
+small {
+    @include heading(h200);
+    font-style: inherit;
+    @include addSpacing('margin-top', 4);
+}
+
+code,
+kbd {
+    font-family: $code-font-family;
+}
+
+var,
+address,
+dfn,
+cite {
+    font-style: italic;
+}
+
+abbr {
+    border-bottom: 1px #ccc dotted;
+    cursor: help;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead,
+tbody,
+tfoot {
+    border-bottom: 2px solid map-get($light-neutral-colors, N40);
+}
+
+td,
+th {
+    border: none;
+    @include padding(1, 2);
+    text-align: left;
+}
+
+th {
+    vertical-align: top;
+}
+
+td:first-child,
+th:first-child {
+    padding-left: 0;
+}
+
+td:last-child,
+th:last-child {
+    padding-right: 0;
+}
+
+caption {
+    @include heading(c600);
+    font-style: inherit;
+    @include addSpacing('margin-bottom', 2);
+    text-align: left;
+}
+
+/* IE11 doesn't support <template> elements which shouldn't be displayed */
+template {
+    display: none;
+}
+
+/* IE11 and some older browsers don't support these elements yet and treat them as display: inline; */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+    display: block;
+}
+
+/* Suppress the ugly broken image styling in Firefox */
+@-moz-document url-prefix() {
+    img {
+        font-size: 0;
+    }
+    img:-moz-broken {
+        font-size: inherit;
+    }
+}
+
+/*
+  Chrome 83.0.4103.61 introduced a new user-agent style that broke all buttons for us. This default override reverts it.
+  chrome user agent added this => font: 400 13.3333px Arial;
+*/
+button {
+    font-family: inherit;
+}
+
+.assistive {
+    border: 0 !important;
+    clip: rect(1px, 1px, 1px, 1px) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important;
+    white-space: nowrap !important;
+}
