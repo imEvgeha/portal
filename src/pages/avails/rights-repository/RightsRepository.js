@@ -68,7 +68,7 @@ const RightsRepository = ({
     setSelectedRights,
     setPreplanRights,
     selectedRights,
-    selectedForPreplanRights,
+    prePlanRights,
     setRightsFilter,
     rightsFilter,
     deselectIngest,
@@ -313,9 +313,9 @@ const RightsRepository = ({
     };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
-        const prePlanIds = selectedForPreplanRights.map(right => right.id);
+        const prePlanIds = prePlanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPreplanRights([...selectedForPreplanRights, ...newSelectedRights]);
+        setPreplanRights([...prePlanRights, ...newSelectedRights]);
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -383,7 +383,7 @@ const RightsRepository = ({
             <NexusTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
-                prePlanRightsCount={selectedForPreplanRights.length}
+                prePlanRightsCount={prePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -396,7 +396,6 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
-                prePlanRepoRights={selectedForPreplanRights}
                 selectedPrePlanRights={selectedPrePlanRights}
             />
             <RightsRepositoryTable
@@ -428,9 +427,10 @@ const RightsRepository = ({
             />
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={selectedForPreplanRights}
+                prePlanRepoRights={prePlanRights}
                 activeTab={activeTab}
                 mapping={mapping}
+                setPreplanRights={setPreplanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
             <SelectedForPlanning activeTab={activeTab} />
@@ -454,7 +454,7 @@ RightsRepository.propTypes = {
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
-    selectedForPreplanRights: PropTypes.array,
+    prePlanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
 };
 
@@ -463,7 +463,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
-    selectedForPreplanRights: [],
+    prePlanRights: [],
     rightsFilter: {},
 };
 
@@ -480,7 +480,7 @@ const mapStateToProps = () => {
         selectedIngest: getSelectedIngest(state),
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
-        selectedForPreplanRights: preplanRightsSelector(state, props),
+        prePlanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
 };

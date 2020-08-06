@@ -36,8 +36,8 @@ export const PrePlanActions = ({
     };
 
     const addToSelectedforPlanning = () => {
-        //validate...
-        console.log('selectedRights: ', selectedRights);
+        //Todo - validate rights and call DOP service
+        //console.log('selectedRights: ', selectedRights);
     }
 
     return (

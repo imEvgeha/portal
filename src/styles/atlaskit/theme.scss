@@ -1,0 +1,101 @@
+@import './colors.scss';
+
+// Base font typography
+$base-font-size: 14;
+$x-height: 8;
+$baseline: 4;
+
+// Typography
+$spacing-size: $baseline;
+$font-size-small: 11;
+$font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
+$code-font-family: "'SFMono-Medium', 'SF Mono', 'Segoe UI Mono', 'Roboto Mono', 'Ubuntu Mono', Menlo, Consolas, Courier, monospace";
+
+/**
+  Theme Color Palettes defined in the style guide
+  https://atlassian.design/guidelines/product/foundations/color
+**/
+
+$primary-colors: (
+    primary: map-get($blues, B400),
+    primary-neutral: map-get($neutrals, N800),
+    white: map-get($neutrals, N0),
+);
+
+$secondary-colors: (
+    teal: map-get($teals, T300),
+    purple: map-get($purples, P300),
+    red: map-get($reds, R300),
+    yellow: map-get($yellows, Y300),
+    green: map-get($greens, G300),
+);
+
+$dark-neutral-colors: (
+    dark-neutral-1: map-get($neutrals, N900),
+    dark-neutral-2: map-get($neutrals, N800),
+    dark-neutral-3: map-get($neutrals, N700),
+    dark-neutral-4: map-get($neutrals, N600),
+    dark-neutral-5: map-get($neutrals, N500),
+);
+
+$mid-neutral-colors: (
+    mid-neutral-1: map-get($neutrals, N400),
+    mid-neutral-2: map-get($neutrals, N300),
+    mid-neutral-3: map-get($neutrals, N200),
+    mid-neutral-4: map-get($neutrals, N100),
+    mid-neutral-5: map-get($neutrals, N90),
+    mid-neutral-6: map-get($neutrals, N80),
+    mid-neutral-7: map-get($neutrals, N70),
+    mid-neutral-8: map-get($neutrals, N60),
+);
+
+$light-neutral-colors: (
+    light-neutral-1: map-get($neutrals, N50),
+    light-neutral-2: map-get($neutrals, N40),
+    light-neutral-3: map-get($neutrals, N30),
+    light-neutral-4: map-get($neutrals, N20),
+    light-neutral-5: map-get($neutrals, N10),
+    light-neutral-6: map-get($neutrals, N0),
+);
+
+$typographic-colors: (
+    text: map-get($neutrals, N900),
+    body-text: map-get($neutrals, N800),
+    text-hover: map-get($neutrals, N800),
+    text-active: map-get($blues, B400),
+    subtle-text: map-get($neutrals, N200),
+    placeholder-text: map-get($neutrals, N100),
+    heading: map-get($neutrals, N800),
+    subtle-heading: map-get($neutrals, N200),
+    code-block: map-get($neutrals, N20),
+    link: map-get($blues, B400),
+    link-hover: map-get($blues, B300),
+    link-active: map-get($blues, B500),
+    link-outline: map-get($blues, B100),
+);
+
+$element-colors: (
+    background: map-get($neutrals, N0),
+    backgroundActive: map-get($blues, B50),
+    backgroundHover: map-get($neutrals, N30),
+    backgroundOnLayer: hsl(0, 0%, 100%),
+    skeleton: map-get($neutrals, N20),
+);
+
+/**
+  Heading definitions
+  (font-size (px), font-weight, letter-spacing, color, line-height, margin-top, text-transform )
+**/
+// prettier-ignore
+$headings: (
+  h900: ( 35, 500, -0.01, map-get($typographic-colors, heading) , 40, 52),
+  h800: ( 29, 500, -0.01, map-get($typographic-colors, heading) , 32, 40),
+  h700: ( 24, 500, -0.01, map-get($typographic-colors, heading) , 28, 40 ),
+  h600: ( 20, 500, -0.008, map-get($typographic-colors, heading) , 24, 28),
+  h500: ( 16, 500, -0.006, map-get($typographic-colors, heading) , 20, 24),
+  h400: ( 14, 600, -0.003, map-get($typographic-colors, heading) , 16, 16),
+  h300: ( 12, 600, 0, map-get($typographic-colors, heading) , 16, 20, uppercase),
+  h200: ( 12, 600, 0, map-get($typographic-colors, subtle-heading), 16, 16),
+  h100: ( 11, 400, 0, map-get($typographic-colors, subtle-heading), 16, 16),
+  c600: (20, 500, -0.008, map-get($typographic-colors, heading) , 24, 28)
+);

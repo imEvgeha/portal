@@ -1,0 +1,26 @@
+@import './colors.scss';
+
+/**
+  Atlaskit Constants
+  https://atlaskit.atlassian.com/packages/design-system/theme/docs/constants
+**/
+
+$border-radius: 3;
+
+// Use for sizing elements
+$grid-size: 8;
+
+/**
+  Fixed values for layering elements with z-index
+**/
+$layers: (
+    card: 100,
+    navigation: 200,
+    dialog: 300,
+    layer: 400,
+    blanket: 500,
+    modal: 510,
+    flag: 600,
+    spotlight: 700,
+    tooltip: 800,
+);
