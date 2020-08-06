@@ -68,7 +68,7 @@ const RightsRepository = ({
     setSelectedRights,
     setPreplanRights,
     selectedRights,
-    selectedPreplanRights,
+    prePlanRights,
     setRightsFilter,
     rightsFilter,
     deselectIngest,
@@ -89,6 +89,7 @@ const RightsRepository = ({
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
+    const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -312,9 +313,9 @@ const RightsRepository = ({
     };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
-        const prePlanIds = selectedPreplanRights.map(right => right.id);
+        const prePlanIds = prePlanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPreplanRights([...selectedPreplanRights, ...newSelectedRights]);
+        setPreplanRights([...prePlanRights, ...newSelectedRights]);
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -366,7 +367,6 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
-
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -383,7 +383,7 @@ const RightsRepository = ({
             <NexusTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
-                prePlanRightsCount={selectedPreplanRights.length}
+                prePlanRightsCount={prePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -396,7 +396,10 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
-                prePlanRepoRights={selectedPreplanRights}
+                selectedPrePlanRights={selectedPrePlanRights}
+                setSelectedPrePlanRights={setSelectedPrePlanRights}
+                prePlanRepoRights={prePlanRights}
+                setPreplanRights={setPreplanRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -427,10 +430,11 @@ const RightsRepository = ({
             />
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={selectedPreplanRights}
+                prePlanRepoRights={prePlanRights}
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
+                setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
             <SelectedForPlanning activeTab={activeTab} />
         </div>
@@ -453,7 +457,7 @@ RightsRepository.propTypes = {
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
-    selectedPreplanRights: PropTypes.array,
+    prePlanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
 };
 
@@ -462,7 +466,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
-    selectedPreplanRights: [],
+    prePlanRights: [],
     rightsFilter: {},
 };
 
@@ -479,7 +483,7 @@ const mapStateToProps = () => {
         selectedIngest: getSelectedIngest(state),
         selectedAttachmentId: getSelectedAttachmentId(state),
         selectedRights: selectedRightsSelector(state, props),
-        selectedPreplanRights: preplanRightsSelector(state, props),
+        prePlanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
     });
 };

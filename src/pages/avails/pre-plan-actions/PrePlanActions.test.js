@@ -40,10 +40,8 @@ describe('PrePlanActions', () => {
         beforeEach(() => {
             wrapper = shallow(
                 <PrePlanActions
-                    selectedRights={[]}
+                    selectedPrePlanRights={[]}
                     store={store}
-                    toggleRefreshGridData={() => null}
-                    gridApi={null}
                 />
             );
         });
@@ -58,27 +56,23 @@ describe('PrePlanActions', () => {
         });
 
         it('should enable "Remove from Pre-Plan" option when some rights are selected', () => {
-            const setPrePlanRepoRights = jest.fn();
-            const setSelectedRights = jest.fn();
-            const toggleRefreshGridData = jest.fn();
+            const setPreplanRights = jest.fn();
+            const setSelectedPrePlanRights = jest.fn();
 
             wrapper = shallow(
                 <PrePlanActions
-                    selectedRights={selectedRights}
+                    selectedPrePlanRights={selectedRights}
+                    setPreplanRights={setPreplanRights}
                     prePlanRepoRights={prePlanRepoRights}
                     store={store}
-                    toggleRefreshGridData={toggleRefreshGridData}
-                    setSelectedRights={setSelectedRights}
-                    setPrePlanRepoRights={setPrePlanRepoRights}
-                    gridApi={null}
+                    setSelectedPrePlanRights={setSelectedPrePlanRights}
                 />
             );
             const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
             expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
             removeRightsOption.simulate('click');
-            expect(setPrePlanRepoRights).toHaveBeenCalled();
-            expect(setSelectedRights).toHaveBeenCalled();
-            expect(toggleRefreshGridData).toHaveBeenCalled();
+            expect(setPreplanRights).toHaveBeenCalled();
+            expect(setSelectedPrePlanRights).toHaveBeenCalled();
         });
     });
 

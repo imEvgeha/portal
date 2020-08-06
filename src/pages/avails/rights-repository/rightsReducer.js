@@ -4,7 +4,7 @@ const initialState = {
     list: {},
     total: 0,
     selected: {},
-    prePlanSelected: {},
+    prePlanRights: {},
     filter: {
         column: {},
         external: {},
@@ -32,7 +32,7 @@ const rightsReducer = (state = initialState, action = {}) => {
         case actionTypes.SET_PREPLAN_RIGHTS:
             return {
                 ...state,
-                prePlanSelected: payload,
+                prePlanRights: payload,
             };
         case actionTypes.ADD_RIGHTS_FILTER_SUCCESS: {
             const {external, column} = state.filter || {};

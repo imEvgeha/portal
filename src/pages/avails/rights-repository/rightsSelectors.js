@@ -9,6 +9,6 @@ export const createSelectedRightsSelector = () =>
     createSelector(getRightsReducer, rights => Object.values(rights.selected || {}));
 
 export const createPreplanRightsSelector = () =>
-    createSelector(getRightsReducer, rights => Object.values(rights.prePlanSelected || {}));
+    createSelector(getRightsReducer, rights => Object.values(rights.prePlanRights || {}));
 
 export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights.filter || {});
