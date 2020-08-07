@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {cloneDeep, get, uniqBy} from 'lodash';
+import {get, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
@@ -16,6 +16,11 @@ import {getRightsHistory} from '../availsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import {
+    getEligibleRights,
+    hasAtLeastOneUnselectedTerritory,
+    filterOutUnselectedTerritories,
+} from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
@@ -32,7 +37,6 @@ import {
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
     VIEW_AUDIT_HISTORY,
-    ADD_TO_SELECTED_PLANNING
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -185,17 +189,6 @@ export const SelectedRightsActions = ({
         });
     };
 
-    const prePlanEligible = (status, rightStatus, licensed, territory) => {
-        if (
-            ['ReadyNew', 'Ready'].includes(status) &&
-            ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
-            licensed &&
-            hasAtLeastOneUnselectedTerritory(territory)
-        ) {
-            return true;
-        }
-        return false;
-    };
 
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
@@ -203,34 +196,6 @@ export const SelectedRightsActions = ({
         close();
     };
 
-    const getEligibleRights = selectedRights => {
-        let eligibleRights = [];
-        let nonEligibleRights = [];
-        selectedRights.forEach(right => {
-            const {status, rightStatus, licensed, territory} = right || {};
-            if (prePlanEligible(status, rightStatus, licensed, territory)) {
-                eligibleRights = [...eligibleRights, right];
-            } else {
-                nonEligibleRights = [...nonEligibleRights, right];
-            }
-        });
-        return [eligibleRights, nonEligibleRights];
-    };
-
-    const hasAtLeastOneUnselectedTerritory = territory => {
-        return territory.filter(item => !item.selected).length > 0;
-    };
-
-    const filterOutUnselectedTerritories = rights => {
-        const filteredSelectedRights = cloneDeep(rights).map(right => {
-            const territoriesUnselected = right.territory.filter(item => !item.selected);
-            return {
-                ...right,
-                territory: territoriesUnselected,
-            };
-        });
-        return filteredSelectedRights;
-    };
 
     const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {

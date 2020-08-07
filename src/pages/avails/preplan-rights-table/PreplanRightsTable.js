@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
@@ -56,12 +56,13 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
         switch (type) {
-            case GRID_EVENTS.FIRST_DATA_RENDERED:
+            case GRID_EVENTS.FIRST_DATA_RENDERED: {
                 const idIndex = columnDefs.findIndex(e => e.field === 'id');
                 // move column to position of id col position + 8 because we use columnDefs from RightsRepo
                 const columnPosition = 8;
                 columnApi.moveColumn('territory', idIndex + columnPosition);
                 break;
+            }
             case GRID_EVENTS.CELL_VALUE_CHANGED:
                     api.forEachNode(({data = {}}) => {
                         const {territory} = data || {};

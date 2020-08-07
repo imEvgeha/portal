@@ -43,6 +43,7 @@ const DOPService = {
         });
     },
     createProjectRequestData: (data = [], id) => {
+        //TODO: not completed yet. part of PORT-2522
         const selectedRightArray = !!data.length && data.map((right, index) => {
             return { code: `selectedRightID[${index}]`, value: right.id}
         });
