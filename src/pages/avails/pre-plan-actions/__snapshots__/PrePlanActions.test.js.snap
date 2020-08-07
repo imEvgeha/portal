@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PrePlanActions Remove Rights Action should match snapshot 1`] = `
+<Fragment>
+  <div
+    className="nexus-c-selected-rights-actions"
+  >
+    <[object Object]
+      fill="#A5ADBA"
+      onClick={[Function]}
+    />
+    <div
+      className="nexus-c-selected-rights-actions__menu"
+    >
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="add-to-preplan"
+        onClick={null}
+      >
+        <div>
+          Add to Selected for Planning
+        </div>
+      </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="remove-pre-plan"
+        onClick={null}
+      >
+        <div>
+          Remove from Pre-Plan
+        </div>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;

@@ -54,6 +54,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         .join(', ');
                 }
             };
+        case 'territory.selected':
+            return params => {
+                const {data = {}} = params || {};
+                if (data && Array.isArray(data[javaVariableName])) {
+                    const items = data[javaVariableName]
+                        .filter(item => item.selected)
+                        .map(item => item.country)
+                        .join(', ');
+                    return [items];
+                }
+            };
         case 'string':
             if (javaVariableName && javaVariableName.startsWith('castCrew')) {
                 return params => {

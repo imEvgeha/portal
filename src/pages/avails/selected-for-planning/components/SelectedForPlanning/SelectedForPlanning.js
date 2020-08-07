@@ -40,7 +40,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
     // Convert object to an array
     data = Object.values(data);
 
-    return new Promise((res) => {
+    return new Promise(res => {
         res({
             page: offset,
             size: limit,
@@ -51,9 +51,9 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
 };
 
 const SelectedForPlanningTable = compose(
-    withColumnsResizing(), 
+    withColumnsResizing(),
     withSideBar(),
-    withInfiniteScrolling({fetchData: prepareSelectForPlanningData}),
+    withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
 )(NexusGrid);
 
 const SelectedForPlanning = ({activeTab}) => {
@@ -61,14 +61,14 @@ const SelectedForPlanning = ({activeTab}) => {
         // Attaching cellRenderer and action to status field
         // as it's used for starting DOP project
         if (mapping.field === 'status') {
-            return ({
+            return {
                 ...mapping,
                 cellRenderer: 'clickableCellRenderer',
                 cellRendererParams: {
                     onClick: DOPService.startProject,
                     keyToDisplay: 'status',
                 },
-            })
+            };
         }
 
         return mapping;

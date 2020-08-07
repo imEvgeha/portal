@@ -25,7 +25,7 @@ export const createColumnDefs = payload => {
                 lockPosition: isColumnLocked,
                 lockVisible: isColumnLocked,
                 lockPinned: isColumnLocked,
-                pinned: isColumnLocked && 'left'
+                pinned: isColumnLocked && 'left',
             };
             return [...columnDefs, columnDef];
         }, []);

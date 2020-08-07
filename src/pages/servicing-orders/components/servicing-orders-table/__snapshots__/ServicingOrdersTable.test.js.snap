@@ -86,11 +86,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "Rush",
           "isEmphasized": true,
           "javaVariableName": "rush_order",
-          "options": Array [
-            "Y",
-            "N",
-          ],
-          "searchDataType": "multiselect",
+          "searchDataType": "boolean",
           "valueFormatter": undefined,
           "width": 100,
         },
@@ -212,11 +208,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "headerName": "Rush",
           "isEmphasized": true,
           "javaVariableName": "rush_order",
-          "options": Array [
-            "Y",
-            "N",
-          ],
-          "searchDataType": "multiselect",
+          "searchDataType": "boolean",
           "width": 100,
         },
         Object {
