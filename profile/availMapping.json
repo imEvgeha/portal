@@ -95,9 +95,9 @@
             "required": false
         },
         {
-            "javaVariableName": "selected",
+            "javaVariableName": "territory",
             "displayName": "Selected",
-            "dataType": "string",
+            "dataType": "territory.selected",
             "searchDataType": "string",
             "queryParamName": "selected",
             "readOnly": false,

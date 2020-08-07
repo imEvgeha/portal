@@ -10,17 +10,17 @@ const ClickableCellRenderer = ({data = {}, onClick = null, keyToDisplay = ''}) =
             {data[keyToDisplay]}
         </Button>
     );
-}
+};
 
 ClickableCellRenderer.propTypes = {
     data: PropTypes.object.isRequired,
     onClick: PropTypes.func,
     keyToDisplay: PropTypes.string,
-}
+};
 
 ClickableCellRenderer.defaultProps = {
     onClick: () => null,
     keyToDisplay: '',
-}
+};
 
 export default ClickableCellRenderer;
