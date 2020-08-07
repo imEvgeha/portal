@@ -16,7 +16,9 @@ const DOPService = {
         });
     },
     getProjectAttributes: (projectIds = []) => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}/projectAttribute`;
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPProjectManagement'
+        )}/projectAttribute`;
         const body = {
             filterCriterion: [
                 {
@@ -28,16 +30,17 @@ const DOPService = {
                 {
                     fieldName: 'code',
                     operator: 'in',
-                    value: 'PROJECT_NAME, format, licensee, licensor, platformCategory, releaseYear, rightID, title, transactionType',
+                    value:
+                        'PROJECT_NAME, format, licensee, licensor, platformCategory, releaseYear, rightID, title, transactionType',
                     logicalAnd: true,
-                }
-            ]
-        }
+                },
+            ],
+        };
 
         // return nexusFetch(url, {method: 'post', mode: 'no-cors', body: JSON.stringify(body)});
         return new Promise((resolve, reject) => {
             resolve(PROJECT_ATTRIBUTE_MOCK_RESPONSE);
-        })
+        });
     },
     startProject: ({data = {}}) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;

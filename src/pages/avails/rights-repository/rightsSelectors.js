@@ -5,12 +5,10 @@ const getRightsReducer = state => {
     return avails.rights;
 };
 
-export const createSelectedRightsSelector = () => createSelector(
-    getRightsReducer,
-    rights => Object.values(rights.selected || {}),
-);
+export const createSelectedRightsSelector = () =>
+    createSelector(getRightsReducer, rights => Object.values(rights.selected || {}));
 
-export const createRightsFilterSelector = () => createSelector(
-    getRightsReducer,
-    rights => rights.filter || {},
-);
+export const createPreplanRightsSelector = () =>
+    createSelector(getRightsReducer, rights => Object.values(rights.prePlanRights || {}));
+
+export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights.filter || {});

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
+import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
@@ -30,17 +31,32 @@ const NexusTableToolbar = ({
     selectedRightGridApi,
     selectedRepoRights,
     setPrePlanRepoRights,
+    prePlanRepoRights,
+    selectedPrePlanRights,
+    setSelectedPrePlanRights,
+    setPreplanRights,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            <SelectedRightsActions
-                selectedRights={selectedRepoRights}
-                selectedRightGridApi={selectedRightGridApi}
-                setSelectedRights={setSelectedRights}
-                setPrePlanRepoRights={setPrePlanRepoRights}
-                gridApi={gridApi}
-                activeTab={activeTab}
-            />
+            {activeTab === PRE_PLAN_TAB ?
+                <PrePlanActions
+                    selectedPrePlanRights={selectedPrePlanRights}
+                    setSelectedPrePlanRights={setSelectedPrePlanRights}
+                    selectedRightGridApi={selectedRightGridApi}
+                    setSelectedRights={setSelectedRights}
+                    setPreplanRights={setPreplanRights}
+                    prePlanRepoRights={prePlanRepoRights}
+                />
+                :
+                <SelectedRightsActions
+                    selectedRights={selectedRepoRights}
+                    selectedRightGridApi={selectedRightGridApi}
+                    setSelectedRights={setSelectedRights}
+                    setPrePlanRepoRights={setPrePlanRepoRights}
+                    gridApi={gridApi}
+                    activeTab={activeTab}
+                />
+            }
             <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
             <NexusTab
                 title={PRE_PLAN_TAB}
@@ -97,6 +113,10 @@ NexusTableToolbar.propTypes = {
     setActiveTab: PropTypes.func.isRequired,
     selectedRows: PropTypes.array.isRequired,
     rightsFilter: PropTypes.object.isRequired,
+    prePlanRepoRights: PropTypes.array,
+    selectedPrePlanRights: PropTypes.array,
+    setPreplanRights: PropTypes.func.isRequired,
+    setSelectedPrePlanRights: PropTypes.func.isRequired,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -110,6 +130,8 @@ NexusTableToolbar.defaultProps = {
     selectedRightColumnApi: {},
     rightColumnApi: {},
     gridApi: {},
+    prePlanRepoRights: [],
+    selectedPrePlanRights: [],
 };
 
 export default NexusTableToolbar;

@@ -60,7 +60,7 @@ const ServicingOrdersTable = ({
                     ...columnDef,
                     valueFormatter: valueFormatter(columnDef),
                     cellRendererFramework: params => {
-                        return params.value === 'Y' ? <Tag text="Rush" color="yellowLight" /> : null;
+                        return params.value ? <Tag text="Rush" color="yellowLight" /> : null;
                     },
                 };
             }

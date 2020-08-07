@@ -68,8 +68,7 @@
         "javaVariableName": "rush_order",
         "isEmphasized": true,
         "enableSearch": true,
-        "searchDataType": "multiselect",
-        "options": ["Y", "N"]
+        "searchDataType": "boolean"
     },
     {
         "colId": "status",

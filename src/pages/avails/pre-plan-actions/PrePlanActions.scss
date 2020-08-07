@@ -1,0 +1,42 @@
+@import '../../../styles/config';
+
+.nexus-c-selected-rights-actions{
+  position: relative;
+
+  svg {
+    cursor: pointer;
+  }
+
+  .nexus-c-selected-rights-actions__menu{
+    position: absolute;
+    top: 30px;
+    border: 1px solid #A5ADBA;
+    background: #FFFFFF;
+    z-index: 2; // 1 goes above ag-grid, 2 goes above ag-grid's separators...
+    padding: 10px;
+    display: none;
+
+    &--is-open {
+      display: block;
+    }
+  }
+
+  .nexus-c-selected-rights-actions__menu-item {
+    color: map-get($colors, nexus-primary-color);
+    white-space: nowrap; // Keep each option in one line
+    padding-bottom: 10px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    &--is-active {
+      color: map-get($colors, nexus-secondary-color);
+      cursor: pointer;
+    }
+  }
+}
+
+.Tooltip {
+  white-space: pre-wrap;
+}
