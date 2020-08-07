@@ -87,9 +87,7 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
             </Field>
             <Field
                 label="Audio Type"
-                isRequired
                 name="audioType"
-                validate={validate}
                 defaultValue={
                     isEdit
                         ? {
@@ -114,7 +112,6 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                             placeholder="Choose Audio Type"
                             options={audioTypesOptions}
                         />
-                        {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}
 
