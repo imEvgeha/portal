@@ -1,4 +1,5 @@
 @import '../../../../../../styles/config';
+@import '../../../../../../styles/atlaskit/colors';
 
 .manual-ingest-config {
   display: flex;
@@ -62,5 +63,10 @@
   }
   &__licensee {
       padding-bottom: 20px;
+  }
+  &__sub-text {
+      font-size: 12px;
+      padding-top: 5px;
+      color: map-get($neutrals, N90)
   }
 }
