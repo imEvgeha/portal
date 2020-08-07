@@ -11,7 +11,6 @@ exports[`NexusCharacterNameModal should match snapshot 1`] = `
     }
   }
   centered={false}
-  container="body"
   fade={true}
   isOpen={true}
   keyboard={true}

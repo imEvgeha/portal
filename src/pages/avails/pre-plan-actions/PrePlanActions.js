@@ -68,7 +68,7 @@ export const PrePlanActions = ({
                             'nexus-c-selected-rights-actions__menu-item',
                             selectedPrePlanRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
-                        data-test-id="add-to-preplan"
+                        data-test-id="add-to-pre-plan"
                         onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
                     >
                         <div>{ADD_TO_SELECTED_PLANNING}</div>
