@@ -38,6 +38,7 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
 import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG} from './RightConstants';
+import {getConfigApiValues} from '../../../common/CommonConfigService';
 import './RightDetails.scss';
 
 const mapStateToProps = state => {
@@ -69,6 +70,7 @@ class RightDetails extends React.Component {
             priceIndex: null,
             isEdit: false,
             editedRight: {},
+            configLicensees: [],
         };
     }
 
@@ -78,6 +80,7 @@ class RightDetails extends React.Component {
         if (this.refresh === null) {
             this.refresh = setInterval(this.getRightData, config.get('avails.edit.refresh.interval'));
         }
+        getConfigApiValues('licensees', 0, 100).then(({data}) => this.setState({configLicensees: data}));
     }
 
     componentWillUnmount() {
@@ -1135,12 +1138,18 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            const {right: {licensee = {}} = {}} = this.state;
-            const {servicingRegion = ''} = licensee || {};
+            const {right: {licensee = {}} = {}, configLicensees} = this.state;
 
-            const isRequired = required
+            const configLicensee = Array.isArray(configLicensees)
+                ? configLicensees.find(({licenseeName}) => licenseeName === licensee)
+                : '';
+
+            const {servicingRegion = ''} = configLicensee || {};
+
+            const isRequired =
+                required
                 || (name === 'platformCategory' && servicingRegion === 'US')
-                || (name === 'licenseRightsDescription');
+                || name === 'licenseRightsDescription';
             const tooltip = name === 'platformCategory' ? PLATFORM_INFORM_MSG : null;
 
             return renderFieldTemplate(
