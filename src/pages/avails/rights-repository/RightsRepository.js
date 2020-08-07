@@ -89,6 +89,7 @@ const RightsRepository = ({
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
+    const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -366,7 +367,6 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
-
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -396,6 +396,10 @@ const RightsRepository = ({
                 selectedRepoRights={selectedRepoRights}
                 setPrePlanRepoRights={addRightsToPrePlan}
                 planningRightsCount={planningRightsCount}
+                selectedPrePlanRights={selectedPrePlanRights}
+                setSelectedPrePlanRights={setSelectedPrePlanRights}
+                prePlanRepoRights={prePlanRights}
+                setPreplanRights={setPreplanRights}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -430,6 +434,7 @@ const RightsRepository = ({
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
+                setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
             <SelectedForPlanning activeTab={activeTab} />
         </div>

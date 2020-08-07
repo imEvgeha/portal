@@ -32,6 +32,7 @@ import {
     STATUS_CHECK_HEADER,
     STATUS_CHECK_MSG,
     VIEW_AUDIT_HISTORY,
+    ADD_TO_SELECTED_PLANNING
 } from './constants';
 import './SelectedRightsActions.scss';
 

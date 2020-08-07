@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
@@ -11,7 +11,7 @@ import {PRE_PLAN_TAB} from '../rights-repository/constants';
 
 const PrePlanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
-const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, setPreplanRights}) => {
+const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, setPreplanRights, setSelectedPrePlanRights}) => {
     const filteredColumnDefs = columnDefs.filter(
         columnDef => columnDef.colId !== 'selected' && columnDef.colId !== 'territoryCountry'
     );
@@ -53,20 +53,28 @@ const PreplanRightsTable = ({columnDefs, mapping, prePlanRepoRights, activeTab, 
         required: true,
     };
 
-    const onGridReady = ({type, columnApi, api}) => {
+    const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
-        if (type === GRID_EVENTS.FIRST_DATA_RENDERED) {
-            const idIndex = columnDefs.findIndex(e => e.field === 'id');
-            // move column to position of id col position + 8 because we use columnDefs from RightsRepo
-            const columnPosition = 8;
-            columnApi.moveColumn('territory', idIndex + columnPosition);
-        }
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            api.forEachNode(({data = {}}) => {
-                const {territory} = data || {};
-                territory ? result.push({...data, territory}) : result.push(data);
-            });
-            setPreplanRights(result);
+        switch (type) {
+            case GRID_EVENTS.FIRST_DATA_RENDERED:
+                const idIndex = columnDefs.findIndex(e => e.field === 'id');
+                // move column to position of id col position + 8 because we use columnDefs from RightsRepo
+                const columnPosition = 8;
+                columnApi.moveColumn('territory', idIndex + columnPosition);
+                break;
+            case GRID_EVENTS.CELL_VALUE_CHANGED:
+                    api.forEachNode(({data = {}}) => {
+                        const {territory} = data || {};
+                        territory ? result.push({...data, territory}) : result.push(data);
+                    });
+                    setPreplanRights(result);
+                break;
+            case GRID_EVENTS.SELECTION_CHANGED:
+                setSelectedPrePlanRights(api.getSelectedRows());
+                break;
+            default:
+                break;
+
         }
     };
 
@@ -92,6 +100,7 @@ PreplanRightsTable.propTypes = {
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
+    setSelectedPrePlanRights: PropTypes.func.isRequired,
 };
 
 PreplanRightsTable.defaultProps = {
