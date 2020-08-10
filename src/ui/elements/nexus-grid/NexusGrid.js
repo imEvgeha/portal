@@ -5,8 +5,8 @@ import 'ag-grid-enterprise';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
+import TooltipCellRenderer from './elements/cell-renderer/tooltip-cell-renderer/TooltipCellRenderer';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
-import TooltipCellRenderer from "./elements/cell-renderer/tooltip-cell-renderer/TooltipCellRenderer";
 
 const SELECTION_DELAY = 5;
 
