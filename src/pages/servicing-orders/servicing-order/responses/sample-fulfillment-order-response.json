@@ -1,0 +1,570 @@
+{
+    "fulfillmentOrders": [
+        {
+            "id": "fo_E7cyGeiy",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.709Z",
+            "updatedAt": "2020-08-07T20:41:04.709Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "DETE",
+            "readiness": "NEW",
+            "status": "NOT_STARTED",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "description": "VU Integration UAT - Complex Service Request (Primary Video = Y and 1 more field)",
+                "deteServices": [
+                    {
+                        "deteSources": {
+                            "amsAssetId": "DA10302",
+                            "barcode": "DA10302",
+                            "externalSources": {
+                                "externalId": "DA10302",
+                                "externalSystem": "VSOM",
+                                "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                "assetType": "DETE_FILE"
+                            }
+                        },
+                        "deteTasks": {
+                            "deteDeliveries": {
+                                "deliveryMethod": "Aspera Servicing",
+                                "externalDelivery": {
+                                    "externalId": "SR12345-25418-3-1",
+                                    "externalSystem": "VSOM",
+                                    "customerId": "AMAZDI_PR00000019",
+                                    "deliverToId": "VU"
+                                }
+                            },
+                            "dueDate": "2022-08-14T06:59:59Z",
+                            "typeAttribute": "deteGenericTask"
+                        },
+                        "externalServices": {
+                            "externalId": "SR12345-25418-3-1",
+                            "externalSystem": "VSOM",
+                            "formatType": "E-TEST-HD",
+                            "parameters": [
+                                {
+                                    "name": "Priority",
+                                    "value": "10"
+                                },
+                                {
+                                    "name": "SecurityImageOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "VisibleTC",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextPosition",
+                                    "value": ""
+                                }
+                            ],
+                            "requiresPropagation": "false",
+                            "serviceType": "DETE Recipient",
+                            "subordinateFlag": "false"
+                        },
+                        "mediaFormat": "HD EDUB",
+                        "overrideDueDate": "2022-08-14T06:59:59Z",
+                        "quantity": "1",
+                        "sequence": "1",
+                        "status": "Ready"
+                    }
+                ],
+                "dueDate": "2020-01-01T06:59:59Z",
+                "externalOrders": {
+                    "externalId": "SR12345-25418-3",
+                    "externalSystem": "VSOM",
+                    "requestorId": "mnadal",
+                    "revisionNumber": "0"
+                },
+                "startDate": "2020-08-07T20:41:03Z",
+                "status": "Conf",
+                "submissionDate": "2020-08-07T20:41:03Z",
+                "tenant": "MGM",
+                "vendor": "DETE"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "1st",
+            "fs_id": "",
+            "start_date": "2020-01-01T20:41:03Z",
+            "due_date": "2022-01-01T06:59:59Z",
+            "soi_doc_id": "SOI_1",
+            "product_description": "1st"
+        },
+        {
+            "id": "fo_L7TgracB",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.686Z",
+            "updatedAt": "2020-08-07T20:41:04.686Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "JUICEBOX",
+            "readiness": "NEW",
+            "status": "IN_PROGRESS",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "tenant": "MGM",
+                "externalId": "SR12345-25417-2",
+                "startDate": "2020-08-07T20:41:03Z",
+                "dueDate": "2020-02-02T06:59:59Z"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "2nd",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2021-08-14T06:59:59Z",
+            "soi_doc_id": "SOI_1",
+            "product_description": "2nd"
+        },
+        {
+            "id": "fo_BzinrqTg",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.727Z",
+            "updatedAt": "2020-08-07T20:41:04.727Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "JUICEBOX",
+            "readiness": "NEW",
+            "status": "IN_PROGRESS",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "tenant": "MGM",
+                "externalId": "derp",
+                "startDate": "2020-08-07T20:41:03Z",
+                "dueDate": "2020-03-03T06:59:59Z"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "3rd",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2022-08-14T06:59:59Z",
+            "soi_doc_id": null,
+            "product_description": "3rd"
+        },
+        {
+            "id": "fo_bEi7GrTM",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.634Z",
+            "updatedAt": "2020-08-07T20:41:04.634Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "DETE",
+            "readiness": "NEW",
+            "status": "CANCELLED",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "description": "VU Integration UAT - Complex Service Request (Primary Video = Y and 1 more field)",
+                "deteServices": [
+                    {
+                        "deteSources": {
+                            "amsAssetId": "DA10302",
+                            "barcode": "DA10302",
+                            "externalSources": {
+                                "externalId": "DA10302",
+                                "externalSystem": "VSOM",
+                                "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                "assetType": "DETE_FILE"
+                            }
+                        },
+                        "deteTasks": {
+                            "deteDeliveries": {
+                                "deliveryMethod": "Aspera Servicing",
+                                "externalDelivery": {
+                                    "externalId": "SR12345-25417-1-1",
+                                    "externalSystem": "VSOM",
+                                    "customerId": "AMAZDI_PR00000019",
+                                    "deliverToId": "VU"
+                                }
+                            },
+                            "dueDate": "2021-08-14T06:59:59Z",
+                            "typeAttribute": "deteGenericTask"
+                        },
+                        "externalServices": {
+                            "externalId": "SR12345-25417-1-1",
+                            "externalSystem": "VSOM",
+                            "formatType": "E-TEST-HD",
+                            "parameters": [
+                                {
+                                    "name": "Priority",
+                                    "value": "10"
+                                },
+                                {
+                                    "name": "SecurityImageOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "VisibleTC",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextPosition",
+                                    "value": ""
+                                }
+                            ],
+                            "requiresPropagation": "false",
+                            "serviceType": "DETE Recipient",
+                            "subordinateFlag": "false"
+                        },
+                        "mediaFormat": "HD EDUB",
+                        "overrideDueDate": "2021-08-14T06:59:59Z",
+                        "quantity": "1",
+                        "sequence": "1",
+                        "status": "Ready"
+                    }
+                ],
+                "dueDate": "2020-04-04T06:59:59Z",
+                "externalOrders": {
+                    "externalId": "SR12345-25417-1",
+                    "externalSystem": "VSOM",
+                    "requestorId": "mnadal",
+                    "revisionNumber": "0"
+                },
+                "startDate": "2020-08-07T20:41:03Z",
+                "status": "Conf",
+                "submissionDate": "2020-08-07T20:41:03Z",
+                "tenant": "MGM",
+                "vendor": "DETE"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "4th",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2021-08-14T06:59:59Z",
+            "soi_doc_id": "SOI_2",
+            "product_description": "4th"
+        },
+        {
+            "id": "fo_id_1",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.709Z",
+            "updatedAt": "2020-08-07T20:41:04.709Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "DETE",
+            "readiness": "NEW",
+            "status": "COMPLETE",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "description": "VU Integration UAT - Complex Service Request (Primary Video = Y and 1 more field)",
+                "deteServices": [
+                    {
+                        "deteSources": {
+                            "amsAssetId": "DA10302",
+                            "barcode": "DA10302",
+                            "externalSources": {
+                                "externalId": "DA10302",
+                                "externalSystem": "VSOM",
+                                "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                "assetType": "DETE_FILE"
+                            }
+                        },
+                        "deteTasks": {
+                            "deteDeliveries": {
+                                "deliveryMethod": "Aspera Servicing",
+                                "externalDelivery": {
+                                    "externalId": "SR12345-25418-3-1",
+                                    "externalSystem": "VSOM",
+                                    "customerId": "AMAZDI_PR00000019",
+                                    "deliverToId": "VU"
+                                }
+                            },
+                            "dueDate": "2022-08-14T06:59:59Z",
+                            "typeAttribute": "deteGenericTask"
+                        },
+                        "externalServices": {
+                            "externalId": "SR12345-25418-3-1",
+                            "externalSystem": "VSOM",
+                            "formatType": "E-TEST-HD",
+                            "parameters": [
+                                {
+                                    "name": "Priority",
+                                    "value": "10"
+                                },
+                                {
+                                    "name": "SecurityImageOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "VisibleTC",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextPosition",
+                                    "value": ""
+                                }
+                            ],
+                            "requiresPropagation": "false",
+                            "serviceType": "DETE Recipient",
+                            "subordinateFlag": "false"
+                        },
+                        "mediaFormat": "HD EDUB",
+                        "overrideDueDate": "2022-08-14T06:59:59Z",
+                        "quantity": "1",
+                        "sequence": "1",
+                        "status": "Ready"
+                    }
+                ],
+                "dueDate": "2020-05-05T06:59:59Z",
+                "externalOrders": {
+                    "externalId": "SR12345-25418-3",
+                    "externalSystem": "VSOM",
+                    "requestorId": "mnadal",
+                    "revisionNumber": "0"
+                },
+                "startDate": "2020-08-07T20:41:03Z",
+                "status": "Conf",
+                "submissionDate": "2020-08-07T20:41:03Z",
+                "tenant": "MGM",
+                "vendor": "DETE"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "5th",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2022-08-14T06:59:59Z",
+            "soi_doc_id": "SOI_2",
+            "product_description": "5th"
+        },
+        {
+            "id": "fo_id_2",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.686Z",
+            "updatedAt": "2020-08-07T20:41:04.686Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "JUICEBOX",
+            "readiness": "NEW",
+            "status": "FAILED",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "tenant": "MGM",
+                "externalId": "SR12345-25417-2",
+                "startDate": "2020-08-07T20:41:03Z",
+                "dueDate": "2020-06-06T06:59:59Z"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "6th",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2021-08-14T06:59:59Z",
+            "soi_doc_id": null,
+            "product_description": "6th"
+        },
+        {
+            "id": "fo_id_3",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.727Z",
+            "updatedAt": "2020-08-07T20:41:04.727Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "JUICEBOX",
+            "readiness": "NEW",
+            "status": "COMPLETE",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "tenant": "MGM",
+                "externalId": "SR12345-25418-4",
+                "startDate": "2020-08-07T20:41:03Z",
+                "dueDate": "2020-07-07T06:59:59Z"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "7th",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2022-08-14T06:59:59Z",
+            "soi_doc_id": "SOI_3",
+            "product_description": "7th"
+        },
+        {
+            "id": "fo_id_4",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.634Z",
+            "updatedAt": "2020-08-07T20:41:04.634Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "DETE",
+            "readiness": "NEW",
+            "status": "NOT_STARTED",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "description": "VU Integration UAT - Complex Service Request (Primary Video = Y and 1 more field)",
+                "deteServices": [
+                    {
+                        "deteSources": {
+                            "amsAssetId": "DA10302",
+                            "barcode": "DA10302",
+                            "externalSources": {
+                                "externalId": "DA10302",
+                                "externalSystem": "VSOM",
+                                "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                "assetType": "DETE_FILE"
+                            }
+                        },
+                        "deteTasks": {
+                            "deteDeliveries": {
+                                "deliveryMethod": "Aspera Servicing",
+                                "externalDelivery": {
+                                    "externalId": "SR12345-25417-1-1",
+                                    "externalSystem": "VSOM",
+                                    "customerId": "AMAZDI_PR00000019",
+                                    "deliverToId": "VU"
+                                }
+                            },
+                            "dueDate": "2021-08-14T06:59:59Z",
+                            "typeAttribute": "deteGenericTask"
+                        },
+                        "externalServices": {
+                            "externalId": "SR12345-25417-1-1",
+                            "externalSystem": "VSOM",
+                            "formatType": "E-TEST-HD",
+                            "parameters": [
+                                {
+                                    "name": "Priority",
+                                    "value": "10"
+                                },
+                                {
+                                    "name": "SecurityImageOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextOverlay",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "VisibleTC",
+                                    "value": "[RECIPIENT DEFAULT]"
+                                },
+                                {
+                                    "name": "SecurityTextPosition",
+                                    "value": ""
+                                }
+                            ],
+                            "requiresPropagation": "false",
+                            "serviceType": "DETE Recipient",
+                            "subordinateFlag": "false"
+                        },
+                        "mediaFormat": "HD EDUB",
+                        "overrideDueDate": "2021-08-14T06:59:59Z",
+                        "quantity": "1",
+                        "sequence": "1",
+                        "status": "Ready"
+                    }
+                ],
+                "dueDate": "2020-08-08T06:59:59Z",
+                "externalOrders": {
+                    "externalId": "SR12345-25417-1",
+                    "externalSystem": "VSOM",
+                    "requestorId": "mnadal",
+                    "revisionNumber": "0"
+                },
+                "startDate": "2020-08-07T20:41:03Z",
+                "status": "Conf",
+                "submissionDate": "2020-08-07T20:41:03Z",
+                "tenant": "MGM",
+                "vendor": "DETE"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "8th",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2021-07-11T06:59:59Z",
+            "soi_doc_id": "SOI_3",
+            "product_description": "7th"
+        }
+    ],
+    "servicingOrderItems": [
+        {
+            "id": "SOI_1",
+            "type": "ServicingOrderItem",
+            "createdAt": "2020-08-07T20:41:04.465Z",
+            "updatedAt": "2020-08-07T20:41:04.465Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "status": "NOT_STARTED",
+            "customer": "AMAZDI",
+            "external_id": "SR12345-25418",
+            "so_id": "so_kairoyTR",
+            "product_description": "SOI_1",
+            "partner_notes": null,
+            "format_type": "E-TEST-HD"
+        },
+        {
+            "id": "SOI_2",
+            "type": "ServicingOrderItem",
+            "createdAt": "2020-08-07T20:41:04.498Z",
+            "updatedAt": "2020-08-07T20:41:04.498Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "status": "IN_PROGRESS",
+            "customer": "AMAZDI",
+            "external_id": "SR12345-25417",
+            "so_id": "so_kairoyTR",
+            "product_description": "SOI_2",
+            "partner_notes": null,
+            "format_type": "E-TEST-HD"
+        },
+        {
+            "id": "SOI_3",
+            "type": "ServicingOrderItem",
+            "createdAt": "2020-08-07T20:41:04.498Z",
+            "updatedAt": "2020-08-07T20:41:04.498Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "status": "ON_HOLD",
+            "customer": "AMAZDI",
+            "external_id": "SR12345-25417",
+            "so_id": "so_kairoyTR",
+            "product_description": "SOI_3",
+            "partner_notes": null,
+            "format_type": "E-TEST-HD"
+        },
+        {
+            "id": "SOI_4",
+            "type": "ServicingOrderItem",
+            "createdAt": "2020-08-07T20:41:04.498Z",
+            "updatedAt": "2020-08-07T20:41:04.498Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "status": "COMPLETE",
+            "customer": "AMAZDI",
+            "external_id": "SR12345-25417",
+            "so_id": "so_kairoyTR",
+            "product_description": "SOI_4",
+            "partner_notes": null,
+            "format_type": "E-TEST-HD"
+        }
+    ]
+}
