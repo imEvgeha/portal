@@ -18,7 +18,6 @@ export const PrePlanActions = ({
     const clickHandler = () => setMenuOpened(!menuOpened);
 
     const removeRightsFromPrePlan = () => {
-        // TODO: Use selected from preplan - not rights repo
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => right.id);
         const notSelectedRights = prePlanRepoRights.filter(right => !selectedPrePlanRightsId.includes(right.id));
         setPreplanRights([...notSelectedRights]);
