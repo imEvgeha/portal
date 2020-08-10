@@ -27,13 +27,15 @@ const ServicingOrder = ({match}) => {
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
-                const {fulfillmentOrders} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
-                    servicingOrder.so_number
-                );
+                const {
+                    fulfillmentOrders,
+                    servicingOrderItems,
+                } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                 setServiceOrder({
                     ...servicingOrder,
                     fulfillmentOrders,
+                    servicingOrderItems,
                 });
                 setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
             } catch (e) {

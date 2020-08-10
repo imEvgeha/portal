@@ -1,0 +1,52 @@
+@import '../../../../../styles/atlaskit/reset';
+@import '../../../../../styles/atlaskit/theme';
+
+.nexus-c-servicing-order-item {
+    @include padding(3);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__row-group {
+        display: flex;
+        align-items: center;
+    }
+
+    &__folder-icon {
+        @include addSpacing('margin-right', 3);
+        @include addSpacing('width', 4.5);
+        @include addSpacing('height', 4.5);
+        fill: #a5adba;
+        flex-shrink: 0;
+    }
+
+    &__title {
+        @include margin(0);
+    }
+
+    &__external-id {
+        @include heading(h200);
+        @include margin(0, 0, 2, 7.5);
+    }
+
+    &__chevron-icon {
+        @include addSpacing('margin-right', 4.5);
+        @include addSpacing('width', 3);
+        @include addSpacing('height', 3);
+        fill: #a5adba;
+        flex-shrink: 0;
+
+        &--is-expanded {
+            transform: rotate(90deg);
+        }
+    }
+
+    &__due-dates {
+        @include heading(h100);
+        @include addSpacing('margin-top', 0);
+    }
+}

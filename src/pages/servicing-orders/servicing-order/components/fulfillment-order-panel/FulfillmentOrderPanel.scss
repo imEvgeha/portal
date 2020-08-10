@@ -1,71 +1,81 @@
+@import '../../../../../styles/atlaskit/reset';
+@import '../../../../../styles/atlaskit/colors';
+@import '../../../../../styles/atlaskit/mixins';
+
 .nexus-c-fulfillment-order-panel {
-  width: 100%;
-  padding: 12px;
-  border-bottom: 1px solid #dcdcdc;
-  background: #ffffff;
-  font-size: 14px;
+    // width: auto;
+    @include padding(3);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
+    background: map-get($primary-colors, white);
+    display: block;
+    position: relative;
 
-  display: block;
+    &--is-selected {
+        background: #e0ecf7;
 
-  &--is-selected {
-    background: #e0ecf7;
-
-    &:hover {
-      background: #e0ecf7;
+        &:hover {
+            background: #e0ecf7;
+        }
     }
-  }
 
-  svg {
-    width: 18px;
-    height: 18px;
-    fill: #a5adba;
-    flex-shrink: 0;
-  }
+    &--is-child {
+        border-left: solid map-get($light-neutral-colors, light-neutral-1);
+        @include addSpacing(border-left-width, 2);
+        @include addSpacing(padding-left, 4);
+        @include addSpacing(margin-left, 3.5);
+    }
 
-  &__title-and-date {
-    width: 100%;
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    svg {
+        width: 18px;
+        height: 18px;
+        fill: #a5adba;
+        flex-shrink: 0;
+    }
 
-  &__date {
-    font-size: 11px;
-    color: #737e91;
-  }
+    &__title-and-date {
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-  &__file-icon {
-    margin-right: 12px;
-  }
+    &__date {
+        font-size: 11px;
+        color: #737e91;
+    }
 
-  &__title-container {
-    display: flex;
-    align-items: flex-end;
-  }
+    &__file-icon {
+        margin-right: 12px;
+    }
 
-  &__title {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100%;
-    font-weight: bold;
-  }
+    &__title-container {
+        display: flex;
+        align-items: flex-end;
+    }
 
-  &__description-and-status {
-    width: 100%;
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 30px;
-  }
+    &__title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        font-weight: bold;
+    }
 
-  &__description {
-    font-size: 11px;
-    color: #737e91;
-  }
+    &__description-and-status {
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 30px;
+    }
 
-  &__status {
-    flex-shrink: 0;
-    margin-left: 10px;
-  }
+    &__description {
+        font-size: 11px;
+        color: #737e91;
+    }
+
+    &__status {
+        flex-shrink: 0;
+        margin-left: 10px;
+    }
 }
