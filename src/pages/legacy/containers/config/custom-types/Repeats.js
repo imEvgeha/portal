@@ -1,26 +1,27 @@
 // @flow
-import React, { Component } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import React, {Component} from 'react';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {get, uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
-import { Form, FormContext } from 'react-forms-processor';
-import { Expander } from 'react-forms-processor-atlaskit';
-import { Field as AkField } from '@atlaskit/form';
+import {Form, FormContext} from 'react-forms-processor';
+import {Expander} from 'react-forms-processor-atlaskit';
+import {Field as AkField} from '@atlaskit/form';
 
-const createFormForItem = (field,
-    item,
-    targetIndex,
-    fieldsForForm,
-    formChangeHandler) => {
-
+const createFormForItem = (field, item, targetIndex, fieldsForForm, formChangeHandler) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
-        id: `${field.id}[${targetIndex}].${subfield.id}`
+        id: `${field.id}[${targetIndex}].${subfield.id}`,
+        visibleWhen: subfield.visibleWhen
+            ? subfield.visibleWhen.map(condition => ({
+                  ...condition,
+                  field: `${field.id}[${targetIndex}].${condition.field}`,
+              }))
+            : [],
     }));
     return (
         <FormContext.Consumer>
             {context => {
-                const { renderer, optionsHandler, validationHandler } = context;
+                const {renderer, optionsHandler, validationHandler} = context;
                 return (
                     <Form
                         parentContext={context}
@@ -46,9 +47,8 @@ const reorder = (list, startIndex, endIndex) => {
     return result;
 };
 
-
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? 'lightblue' : 'white'
+    background: isDraggingOver ? 'lightblue' : 'white',
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -59,42 +59,41 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     background: isDragging ? 'lightgreen' : 'white',
 
     // styles we need to apply on draggables
-    ...draggableStyle
+    ...draggableStyle,
 });
 
 export default class Repeats extends Component {
-
     constructor(props) {
         super(props);
 
-        let { defaultValue} = props;
+        let {defaultValue} = props;
         defaultValue = defaultValue || [];
 
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
-        const items = defaultValue.map(data => ({ id: uniqueId(), data }));
+        const items = defaultValue.map(data => ({id: uniqueId(), data}));
         this.state = {
-            items
+            items,
         };
     }
 
     addItem() {
-        let { items } = this.state;
-        items = [...items, { id: uniqueId(), data: {} }];
+        let {items} = this.state;
+        items = [...items, {id: uniqueId(), data: {}}];
         // this.updateItemState(items);
         this.setState({
-            items
+            items,
         });
     }
 
     removeItem(id) {
-        let { items } = this.state;
+        let {items} = this.state;
         items = items.filter(item => item.id !== id);
         this.updateItemState(items);
     }
 
     createFormChangeHandler(index) {
-        return (value) => {
-            const { items } = this.state;
+        return value => {
+            const {items} = this.state;
             items[index].data = value;
             this.updateItemState(items);
         };
@@ -103,58 +102,40 @@ export default class Repeats extends Component {
     updateItemState(items) {
         this.setState(
             {
-                items
+                items,
             },
             () => {
-                const { onChange } = this.props;
-                const { items } = this.state;
+                const {onChange} = this.props;
+                const {items} = this.state;
                 const value = items.map(item => item.data);
                 onChange && onChange(value);
             }
         );
     }
 
-    onDragEnd = (result) => {
+    onDragEnd = result => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        const items = reorder(
-            this.state.items,
-            result.source.index,
-            result.destination.index
-        );
+        const items = reorder(this.state.items, result.source.index, result.destination.index);
 
         this.updateItemState(items);
-    }
+    };
 
     getForms() {
-        const { items } = this.state;
-        const {
-            field,
-            fields,
-            idAttribute = 'id',
-            unidentifiedLabel = 'Unidentified item'
-        } = this.props;
+        const {items} = this.state;
+        const {field, fields, idAttribute = 'id', unidentifiedLabel = 'Unidentified item'} = this.props;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
+                        <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                             {items.map((item, index) => {
                                 const formChangeHandler = this.createFormChangeHandler(index);
-                                const form = createFormForItem(
-                                    field,
-                                    item.data,
-                                    index,
-                                    fields,
-                                    formChangeHandler
-                                );
+                                const form = createFormForItem(field, item.data, index, fields, formChangeHandler);
                                 const label = get(item.data, idAttribute, unidentifiedLabel);
                                 return (
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
@@ -163,10 +144,7 @@ export default class Repeats extends Component {
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
-                                                style={getItemStyle(
-                                                    snapshot.isDragging,
-                                                    provided.draggableProps.style
-                                                )}
+                                                style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                                             >
                                                 <Expander
                                                     key={`exp_${item.id}`}
@@ -196,9 +174,9 @@ export default class Repeats extends Component {
             label = 'Item',
             // description,
             addButtonLabel = 'Add',
-            noItemsMessage = 'No items yet'
+            noItemsMessage = 'No items yet',
         } = this.props;
-        const { items } = this.state;
+        const {items} = this.state;
         const noItems = <span className="no-items">{noItemsMessage}</span>;
 
         return (
