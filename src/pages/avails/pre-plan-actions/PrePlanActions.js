@@ -1,11 +1,15 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
+import {NexusModalContext} from "../../../ui/elements/nexus-modal/NexusModal";
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
+import { rightsService } from '../../legacy/containers/avail/service/RightsService';
+import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
+import StatusCheck from "../rights-repository/components/status-check/StatusCheck";
+import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
+import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
@@ -15,6 +19,7 @@ export const PrePlanActions = ({
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const node = useRef();
+    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
 
     const removeRightsFromPrePlan = () => {
@@ -25,9 +30,26 @@ export const PrePlanActions = ({
         clickHandler();
     };
 
-    const addToSelectedforPlanning = () => {
-        //Todo - validate rights and call DOP service
-        //console.log('selectedPrePlanRights: ', selectedPrePlanRights);
+    const addToSelectedForPlanning = () => {
+        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id)))
+        .then(result => {
+            const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
+            if(nonEligibleRights && nonEligibleRights.length) {
+                setModalContentAndTitle(
+                    <StatusCheck
+                        message={STATUS_CHECK_MSG}
+                        nonEligibleTitles={nonEligibleRights}
+                        onClose={close}
+                    />,
+                    STATUS_CHECK_HEADER
+                );
+            }
+            else {
+                //TODO: call update rights api
+                //TODO: call DOP create/start Project apis here if all validation passed
+                //TODO: add rights to next tab - selected for planning
+            }
+        });
     }
 
     return (
@@ -45,10 +67,10 @@ export const PrePlanActions = ({
                             'nexus-c-selected-rights-actions__menu-item',
                             selectedPrePlanRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
-                        data-test-id="add-to-preplan"
-                        onClick={selectedPrePlanRights.length ? addToSelectedforPlanning : null}
+                        data-test-id="add-to-pre-plan"
+                        onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
                     >
-                            <div>{ADD_TO_SELECTED_PLANNING}</div>
+                        <div>{ADD_TO_SELECTED_PLANNING}</div>
                     </div>
                     <div
                         className={classNames(

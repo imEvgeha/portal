@@ -14,7 +14,7 @@ exports[`PrePlanActions Remove Rights Action should match snapshot 1`] = `
     >
       <div
         className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="add-to-preplan"
+        data-test-id="add-to-pre-plan"
         onClick={null}
       >
         <div>

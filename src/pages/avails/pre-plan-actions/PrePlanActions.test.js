@@ -55,7 +55,12 @@ describe('PrePlanActions', () => {
             expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
-        it('should enable "Remove from Pre-Plan" option when some rights are selected', () => {
+        it('should disable "Add to Selected For Planning" option when no rights are selected', () => {
+            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-pre-plan"]');
+            expect(addToSelectedRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should enable both option when some rights are selected', () => {
             const setPreplanRights = jest.fn();
             const setSelectedPrePlanRights = jest.fn();
 
@@ -69,7 +74,9 @@ describe('PrePlanActions', () => {
                 />
             );
             const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
+            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-pre-plan"]');
             expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+            expect(addToSelectedRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
             removeRightsOption.simulate('click');
             expect(setPreplanRights).toHaveBeenCalled();
             expect(setSelectedPrePlanRights).toHaveBeenCalled();

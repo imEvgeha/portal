@@ -42,6 +42,42 @@ const DOPService = {
             resolve(PROJECT_ATTRIBUTE_MOCK_RESPONSE);
         });
     },
+    createProjectRequestData: (data = [], id) => {
+        //TODO: not completed yet. part of PORT-2522
+        const selectedRightArray = !!data.length && data.map((right, index) => {
+            return { code: `selectedRightID[${index}]`, value: right.id}
+        });
+        const selectedTerritoryArray = !!data.length && data.map((index,right) => {
+            const arr = [];
+            right.territory.map((territory, territoryIndex) => {
+                arr.push({code: `selectedRightTerritory[${right.id}][${territoryIndex}]`, value: territory.country});
+            });
+            return arr;
+        });
+        let req = {
+            name : `Rights Planning (${username}) timestamp`,
+            projectType : { id },
+            action : 'Provide',
+            plannedStartDate:"2020-07-21T03:06:39.000Z",
+            manager: { userId :username },
+            projectAttribute :[
+                {
+                    code: "rightsPreSelected",
+                    value: true
+                },
+                ...selectedRightArray,
+                ...selectedTerritoryArray
+            ]
+        };
+
+    },
+    createProject: (data) => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
+        return nexusFetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+        });
+    },
     startProject: ({data = {}}) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
         // TODO: Error handling if necessary
