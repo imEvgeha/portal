@@ -199,9 +199,9 @@ export const rightsService = {
         });
     },
 
-    get: (id) => {
+    get: (id, errorHandling=false) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') +'/rights/' + id;
-        return nexusFetch(url, {isWithErrorHandling: false});
+        return nexusFetch(url, {isWithErrorHandling: errorHandling});
     },
 
     update: (rightDiff, id) => {

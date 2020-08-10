@@ -8,8 +8,10 @@ import { rightsService } from '../../legacy/containers/avail/service/RightsServi
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
 import StatusCheck from "../rights-repository/components/status-check/StatusCheck";
+import  DOPService from '../selected-for-planning/DOP-services'
 import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
 import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
+
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
@@ -31,7 +33,7 @@ export const PrePlanActions = ({
     };
 
     const addToSelectedForPlanning = () => {
-        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id)))
+        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, true)))
         .then(result => {
             const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
             if(nonEligibleRights && nonEligibleRights.length) {
@@ -48,6 +50,8 @@ export const PrePlanActions = ({
                 //TODO: call update rights api
                 //TODO: call DOP create/start Project apis here if all validation passed
                 //TODO: add rights to next tab - selected for planning
+
+                console.log(DOPService.createProjectRequestData(eligibleRights));
             }
         });
     }

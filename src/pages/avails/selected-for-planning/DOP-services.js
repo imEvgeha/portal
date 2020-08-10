@@ -1,8 +1,9 @@
+import moment from "moment";
 import config from 'react-global-configuration';
 import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
-import {PAGE_SIZE, getSearchPayload, PROJECT_ATTRIBUTE_MOCK_RESPONSE, PROJECT_SEARCH_MOCK_RESPONSE} from './constants';
+import {PAGE_SIZE, getSearchPayload, PROJECT_ATTRIBUTE_MOCK_RESPONSE, PROJECT_SEARCH_MOCK_RESPONSE, PROJECT_ID} from './constants';
 
 const username = getUsername(store.getState());
 
@@ -42,23 +43,28 @@ const DOPService = {
             resolve(PROJECT_ATTRIBUTE_MOCK_RESPONSE);
         });
     },
-    createProjectRequestData: (data = [], id) => {
-        //TODO: not completed yet. part of PORT-2522
+    createProjectRequestData: (data = []) => {
         const selectedRightArray = !!data.length && data.map((right, index) => {
             return { code: `selectedRightID[${index}]`, value: right.id}
         });
-        const selectedTerritoryArray = !!data.length && data.map((index,right) => {
+        const selectedTerritoryArray = () => {
             const arr = [];
-            right.territory.map((territory, territoryIndex) => {
-                arr.push({code: `selectedRightTerritory[${right.id}][${territoryIndex}]`, value: territory.country});
+            !!data.length && data.map(right => {
+                right.territory.map((territory, territoryIndex) => {
+                    arr.push({
+                        code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
+                        value: territory.country
+                    });
+                });
             });
             return arr;
-        });
+        };
+        const utc = moment().utc();
         let req = {
-            name : `Rights Planning (${username}) timestamp`,
-            projectType : { id },
+            name : `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
+            projectType : { id: PROJECT_ID },
             action : 'Provide',
-            plannedStartDate:"2020-07-21T03:06:39.000Z",
+            plannedStartDate:utc.toISOString(),
             manager: { userId :username },
             projectAttribute :[
                 {
@@ -66,10 +72,10 @@ const DOPService = {
                     value: true
                 },
                 ...selectedRightArray,
-                ...selectedTerritoryArray
+                ...selectedTerritoryArray()
             ]
         };
-
+        return req;
     },
     createProject: (data) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
