@@ -16,6 +16,11 @@ import {getRightsHistory} from '../availsService';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import {
+    getEligibleRights,
+    hasAtLeastOneUnselectedTerritory,
+    filterOutUnselectedTerritories,
+} from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
@@ -89,10 +94,11 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status}) =>
+            ({rightStatus, licensed, status, territory}) =>
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
-                ['ReadyNew', 'Ready'].includes(status)
+                ['ReadyNew', 'Ready'].includes(status) &&
+                hasAtLeastOneUnselectedTerritory(territory)
         );
     };
 
@@ -183,16 +189,6 @@ export const SelectedRightsActions = ({
         });
     };
 
-    const prePlanEligible = (status, rightStatus, licensed) => {
-        if (
-            ['ReadyNew', 'Ready'].includes(status) &&
-            ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
-            licensed
-        ) {
-            return true;
-        }
-        return false;
-    };
 
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
@@ -200,24 +196,11 @@ export const SelectedRightsActions = ({
         close();
     };
 
-    const getEligibleRights = selectedRights => {
-        let eligibleRights = [];
-        let nonEligibleRights = [];
-        selectedRights.forEach(right => {
-            const {status, rightStatus, licensed} = right || {};
-            if (prePlanEligible(status, rightStatus, licensed)) {
-                eligibleRights = [...eligibleRights, right];
-            } else {
-                nonEligibleRights = [...nonEligibleRights, right];
-            }
-        });
-        return [eligibleRights, nonEligibleRights];
-    };
 
     const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
-            setPrePlanRepoRights(selectedRights);
+            setPrePlanRepoRights(filterOutUnselectedTerritories(selectedRights));
             gridApi.deselectAll();
             setSelectedRights([]);
             toggleRefreshGridData(true);
@@ -233,7 +216,7 @@ export const SelectedRightsActions = ({
         }, []);
 
         setSelectedRights(nonEligibleRights);
-        setPrePlanRepoRights(eligibleRights);
+        setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
 
         setModalContentAndTitle(
             <StatusCheck

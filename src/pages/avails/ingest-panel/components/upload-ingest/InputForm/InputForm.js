@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
+import Tooltip from '@atlaskit/tooltip';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
-import {getLicensors} from '../../../ingestSelectors';
+import {getLicensees, getLicensors} from '../../../ingestSelectors';
 import './InputForm.scss';
 
 const {
     ingestTypes: {EMAIL},
     SERVICE_REGIONS,
     TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
+    LICENSEE_TOOLTIP,
+    LICENSEE_WARNING,
 } = constants;
 const US = 'US';
 
@@ -24,6 +27,7 @@ const InputForm = ({
     file,
     browseClick,
     licensors,
+    licensees,
     uploadIngest,
     isUploading,
 }) => {
@@ -32,32 +36,34 @@ const InputForm = ({
     const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
-        {label: 'Use International Template',
-            value: INTERNATIONAL,
-            disabled: isStudio,
-            testId: isStudio && 'disabled'},
-        {label: 'Use US Template',
+        {label: 'Use International Template', value: INTERNATIONAL, disabled: isStudio, testId: isStudio && 'disabled'},
+        {
+            label: 'Use US Template',
             value: USMASTER,
             disabled: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
-            testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled'},
-        {label: 'Use Studio Template',
+            testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled',
+        },
+        {
+            label: 'Use Studio Template',
             value: STUDIO,
             disabled: !isEmpty(ingestData) && !isStudio,
-            testId: !isEmpty(ingestData) && !isStudio && 'disabled'},
+            testId: !isEmpty(ingestData) && !isStudio && 'disabled',
+        },
     ];
-
 
     const initialTemplate = templates.find(t => !t.disabled);
     const [template, setTemplate] = useState(initialTemplate.value);
 
-    const getLicensor = (template === STUDIO && ingestLicensor)
-        && {label: ingestLicensor, value: {value: ingestLicensor}};
+    const getLicensor = template === STUDIO &&
+        ingestLicensor && {label: ingestLicensor, value: {value: ingestLicensor}};
     const [licensor, setLicensor] = useState(getLicensor);
+
+    const [licenseesOptions, setLicenseesOptions] = useState([]);
+    const [selectedLicensees, setSelectedLicensees] = useState([]);
 
     const [serviceRegion, setServiceRegion] = useState(
         ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
     );
-
 
     useEffect(() => {
         if (template === STUDIO && !ingestData) {
@@ -71,6 +77,16 @@ const InputForm = ({
         }
     }, [ingestData, licensor, template]);
 
+    useEffect(() => {
+        let parsedLicensees = licensees;
+        const {value: licensorServiceRegion = ''} = serviceRegion || {};
+
+        if (licensorServiceRegion) {
+            parsedLicensees = parsedLicensees.filter(({servicingRegion}) => servicingRegion === licensorServiceRegion);
+        }
+
+        setLicenseesOptions(parsedLicensees.map(({licenseeName}) => ({value: licenseeName, label: licenseeName})));
+    }, [licensees, serviceRegion]);
 
     const uploadHandler = () => {
         const params = {
@@ -78,21 +94,28 @@ const InputForm = ({
             file,
             closeModal,
         };
+
         if (get(ingestData, 'externalId', '')) {
             params.externalId = ingestData.externalId;
         }
+
         if (template !== STUDIO) {
             params.internal = true;
             params.internalTemplateType = template;
         } else {
             params.internal = false;
             params.licensor = get(licensor, 'value.value', '');
+            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
         uploadIngest(params);
     };
 
-    const serviceRegionOptions = get(licensor, 'value') ? get(licensor, 'value.servicingRegions', [])
-        .map(({servicingRegionName}) => ({label: servicingRegionName, value: servicingRegionName})) : SERVICE_REGIONS;
+    const serviceRegionOptions = get(licensor, 'value')
+        ? get(licensor, 'value.servicingRegions', []).map(({servicingRegionName}) => ({
+              label: servicingRegionName,
+              value: servicingRegionName,
+          }))
+        : SERVICE_REGIONS;
     const selectProps = {
         styles: {
             menuPortal: base => ({
@@ -105,12 +128,12 @@ const InputForm = ({
     const onTemplateChange = event => {
         const selectedTemplate = event.target.value;
         setTemplate(selectedTemplate);
-        const serviceRegionValue = (selectedTemplate === USMASTER) && {label: US, value: US};
+        const serviceRegionValue = selectedTemplate === USMASTER && {label: US, value: US};
         !get(ingestData, 'externalId', '') && setServiceRegion(serviceRegionValue);
-        (selectedTemplate !== STUDIO) && setLicensor('');
+        selectedTemplate !== STUDIO && setLicensor('');
     };
 
-    const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor : true));
+    const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
     return (
         <div className="manual-ingest-config">
             <div className="manual-ingest-config__grid">
@@ -118,14 +141,12 @@ const InputForm = ({
                     <label>File</label>
                     <span>{file.name}</span>
                 </div>
-                <Button onClick={browseClick} className="manual-ingest-config__grid--browse">Browse</Button>
+                <Button onClick={browseClick} className="manual-ingest-config__grid--browse">
+                    Browse
+                </Button>
             </div>
             <div className="manual-ingest-config__templates">
-                <RadioGroup
-                    options={templates}
-                    onChange={onTemplateChange}
-                    defaultValue={initialTemplate.value}
-                />
+                <RadioGroup options={templates} onChange={onTemplateChange} defaultValue={initialTemplate.value} />
             </div>
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--licensor">
@@ -153,8 +174,26 @@ const InputForm = ({
                     />
                 </div>
             </div>
+            <div className="manual-ingest-config__licensee">
+                <label>Licensee</label>
+                <Tooltip content={LICENSEE_TOOLTIP}>
+                    <Select
+                        id="manual-upload-licensee"
+                        onChange={setSelectedLicensees}
+                        value={selectedLicensees}
+                        options={licenseesOptions}
+                        isDisabled={!serviceRegion || [USMASTER, INTERNATIONAL].includes(template)}
+                        placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
+                        isMulti
+                        {...selectProps}
+                    />
+                </Tooltip>
+                <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
+            </div>
             <div className="manual-ingest-config__grid">
-                <Button isDisabled={isUploading} onClick={closeModal}>Cancel</Button>
+                <Button isDisabled={isUploading} onClick={closeModal}>
+                    Cancel
+                </Button>
                 <Button
                     onClick={uploadHandler}
                     className={uploadDisabled ? '' : 'btn-primary'}
@@ -170,6 +209,7 @@ const InputForm = ({
 
 InputForm.propTypes = {
     licensors: PropTypes.array,
+    licensees: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
     uploadIngest: PropTypes.func,
     browseClick: PropTypes.func,
@@ -180,6 +220,7 @@ InputForm.propTypes = {
 
 InputForm.defaultProps = {
     licensors: [],
+    licensees: [],
     uploadIngest: () => null,
     browseClick: () => null,
     file: {},
@@ -192,6 +233,7 @@ const mapStateToProps = state => {
 
     return {
         licensors: getLicensors(state),
+        licensees: getLicensees(state),
         isUploading: loadingSelector(state),
     };
 };
