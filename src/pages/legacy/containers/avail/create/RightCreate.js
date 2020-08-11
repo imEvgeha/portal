@@ -23,6 +23,7 @@ import {
     CREATE_NEW_RIGHT_ERROR_MSG_UNMERGED,
     CREATE_NEW_RIGHT_ERROR_MSG_MERGED,
 } from '../../../../../ui/elements/nexus-toast-notification/constants';
+import {storePendingRight} from '../../../../avails/right-matching/rightMatchingActions';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
@@ -46,6 +47,10 @@ const mapStateToProps = state => {
         blocking: state.root.blocking,
     };
 };
+
+const mapDispatchToProps = dispatch => ({
+    storePendingRight: payload => dispatch(storePendingRight(payload)),
+});
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
 
@@ -351,6 +356,7 @@ class RightCreate extends React.Component {
                     });
                 }
                 if (status === 409 && mergeRights) {
+                    this.props.storePendingRight({pendingRight: this.right});
                     this.context.router.history.push(URL.keepEmbedded(AVAILS_PATH));
                     return this.props.addToast({
                         title: CREATE_NEW_RIGHT_ERROR_TITLE,
@@ -1313,4 +1319,4 @@ RightCreate.contextTypes = {
     router: PropTypes.object,
 };
 
-export default connect(mapStateToProps, null)(withToasts(RightCreate));
+export default connect(mapStateToProps, mapDispatchToProps)(withToasts(RightCreate));

@@ -124,6 +124,14 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
+function* storePendingRight({payload}) {
+    const {pendingRight} = payload;
+    yield put({
+        type: actionTypes.STORE_PENDING_RIGHT_SUCCESS,
+        payload: {pendingRight},
+    });
+}
+
 export function* fetchMatchedRights(requestMethod, {payload}) {
     try {
         yield put({
@@ -248,7 +256,7 @@ export function* fetchMatchRightUntilFindId(requestMethod, {payload}) {
             if (isBoundaryValue || ids.length < pageSize) {
                 break;
             }
-            isBoundaryValue = isIdFounded && (ids[ids.length - 1] === id);
+            isBoundaryValue = isIdFounded && ids[ids.length - 1] === id;
 
             pageNumber += 1;
         }
@@ -305,6 +313,7 @@ export function* rightMatchingWatcher() {
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
+        takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
         takeLatest(
             actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
             fetchAndStoreRightMatchingSearchCriteria
@@ -316,4 +325,3 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
     ]);
 }
-

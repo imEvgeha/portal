@@ -4,10 +4,12 @@ const initialState = {
     columnDefs: [],
     fieldSearchCriteria: null,
     focusedRight: {},
+    pendingRight: {},
     rightMatchPageData: {},
     matchedRights: [],
     combinedRight: {},
     foundFocusRightInRightsRepository: false,
+    mergeRights: false,
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
@@ -19,6 +21,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         rightMatchPageData,
         matchedRights,
         combinedRight,
+        pendingRight,
         foundFocusRightInRightsRepository,
     } = payload || {};
 
@@ -38,6 +41,12 @@ const rightMatchingReducer = (state = initialState, action) => {
                 ...state,
                 focusedRight,
                 foundFocusRightInRightsRepository: false,
+            };
+        case actionTypes.STORE_PENDING_RIGHT_SUCCESS:
+            return {
+                ...state,
+                pendingRight,
+                mergeRights: true,
             };
         case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
             return {
@@ -74,4 +83,3 @@ const rightMatchingReducer = (state = initialState, action) => {
 };
 
 export default rightMatchingReducer;
-

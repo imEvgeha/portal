@@ -15,6 +15,11 @@ export const fetchAndStoreFocusedRight = payload => ({
     payload,
 });
 
+export const storePendingRight = payload => ({
+    type: actionTypes.STORE_PENDING_RIGHT,
+    payload,
+});
+
 export const fetchMatchedRights = ids => ({
     type: actionTypes.FETCH_MATCHED_RIGHT,
     payload: ids,
