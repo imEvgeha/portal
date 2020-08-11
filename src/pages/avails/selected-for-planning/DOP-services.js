@@ -78,7 +78,9 @@ const DOPService = {
         return req;
     },
     createProject: (data) => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
+        //const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
+        const urlQA = 'https://dop.qa.vubiquity.com:8045/dop/be-services/projectManagement/project';
+        const url = 'http://dops.dev.vubiquity.com:8040/dop/be-services/projectManagement/project;'
         return nexusFetch(url, {
             method: 'POST',
             body: JSON.stringify(data),

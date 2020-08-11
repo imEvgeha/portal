@@ -3,18 +3,20 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from "../../../ui/elements/nexus-modal/NexusModal";
+import {SUCCESS_ICON, SUCCESS_TITLE} from "../../../ui/elements/nexus-toast-notification/constants";
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import { rightsService } from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
 import StatusCheck from "../rights-repository/components/status-check/StatusCheck";
-import  DOPService from '../selected-for-planning/DOP-services'
+import  DOPService from '../selected-for-planning/DOP-services';
 import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
-import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
-
+import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg} from './constants';
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
+    addToast,
+    removeToast,
     setSelectedPrePlanRights,
     setPreplanRights,
     prePlanRepoRights,
@@ -46,15 +48,33 @@ export const PrePlanActions = ({
                     STATUS_CHECK_HEADER
                 );
             }
-            else {
-                //TODO: call update rights api
-                //TODO: call DOP create/start Project apis here if all validation passed
-                //TODO: add rights to next tab - selected for planning
-
-                console.log(DOPService.createProjectRequestData(eligibleRights));
+            if(eligibleRights && eligibleRights.length) {
+                const requestData = DOPService.createProjectRequestData(eligibleRights);
+                DOPService.createProject(requestData).then(res => {
+                    console.log(res);
+                    if(res.id) {
+                        const projectId = res.id;
+                        //call update avails api
+                        //call DOP start project api
+                        //show successful toast
+                        //remove above rights from preplan tab
+                        dispatchSuccessToast(eligibleRights.length);
+                        removeRightsFromPrePlan();
+                    }
+                });
             }
         });
     }
+
+    const dispatchSuccessToast = noOfItems => {
+        addToast({
+            title: SUCCESS_TITLE,
+            description: getSuccessToastMsg(noOfItems),
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            isWithOverlay: false,
+        });
+    };
 
     return (
         <>
@@ -94,6 +114,8 @@ export const PrePlanActions = ({
 
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
+    addToast: PropTypes.func,
+    removeToast: PropTypes.func,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
@@ -101,6 +123,8 @@ PrePlanActions.propTypes = {
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
+    addToast: () => null,
+    removeToast: () => null,
     prePlanRepoRights: [],
 };
 
