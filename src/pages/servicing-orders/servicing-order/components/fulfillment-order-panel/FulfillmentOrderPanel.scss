@@ -22,7 +22,7 @@
         border-left: solid map-get($light-neutral-colors, light-neutral-1);
         @include addSpacing(border-left-width, 2);
         @include addSpacing(padding-left, 4);
-        @include addSpacing(margin-left, 3.5);
+        @include addSpacing(margin-left, 0.5);
     }
 
     svg {
