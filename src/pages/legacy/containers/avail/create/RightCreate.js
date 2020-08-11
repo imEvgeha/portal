@@ -11,6 +11,7 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
+import {AVAILS_PATH} from '../../../../avails/availsRoutes';
 import {momentToISO, safeTrim, URL} from '../../../../../util/Common';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {
@@ -336,7 +337,7 @@ class RightCreate extends React.Component {
                 const {mergeRights, message, rightIDs} = responseMessage;
 
                 if (status === 409 && !mergeRights) {
-                    this.context.router.history.push(URL.keepEmbedded('/avails/v2'));
+                    this.context.router.history.push(URL.keepEmbedded(AVAILS_PATH));
                     return this.props.addToast({
                         title: CREATE_NEW_RIGHT_ERROR_TITLE,
                         description: CREATE_NEW_RIGHT_ERROR_MSG_UNMERGED(message),
@@ -350,7 +351,7 @@ class RightCreate extends React.Component {
                     });
                 }
                 if (status === 409 && mergeRights) {
-                    this.context.router.history.push(URL.keepEmbedded('/avails/v2'));
+                    this.context.router.history.push(URL.keepEmbedded(AVAILS_PATH));
                     return this.props.addToast({
                         title: CREATE_NEW_RIGHT_ERROR_TITLE,
                         description: CREATE_NEW_RIGHT_ERROR_MSG_MERGED,
