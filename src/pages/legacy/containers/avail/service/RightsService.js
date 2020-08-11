@@ -214,6 +214,13 @@ export const rightsService = {
             body: JSON.stringify(data),
         });
     },
+    updateRightWithFullData: (rightDiff, id) => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(rightDiff),
+        });
+    },
 };
 
 export {parseAdvancedFilter, parseAdvancedFilterV2};
