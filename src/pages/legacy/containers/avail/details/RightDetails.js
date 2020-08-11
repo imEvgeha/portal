@@ -371,10 +371,16 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
-        const updatedRight = {[name]: value};
+
+        const {flatRight} = this.state;
+        const updatedRight = {
+            ...flatRight,
+            [name]: value
+        };
+
         store.dispatch(blockUI(true));
         rightsService
-            .updateRightWithFullData({ ...this.state.flatRight, [name]: value }, this.state.right.id)
+            .updateRightWithFullData(updatedRight, flatRight.id)
             .then((editedRight = {}) => {
                 this.setState({
                     right: editedRight,
