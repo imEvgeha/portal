@@ -215,7 +215,7 @@ export const rightsService = {
         });
     },
 
-    updateRightWithFullData: (rightDiff, id) => {
+    updateRightWithFullData: (right, id) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
         const data = prepareRight(right, true);
         return nexusFetch(url, {
