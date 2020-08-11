@@ -43,10 +43,10 @@ const RightToMatchViewImport = import(
     /* webpackChunkName: "RightToMatchView" */ './right-matching/right-to-match/RightToMatchView'
 );
 const RightToMatchView = React.lazy(() => RightToMatchViewImport);
-const RightToRightMatchNoIdImport = import(
+const RightToRightMatchMergeImport = import(
     /* webpackChunkName: "RightToMatchView" */ './right-matching/right-to-match/RightToMatchView'
 );
-const RightToRightMatchNoId = React.lazy(() => RightToRightMatchNoIdImport);
+const RightToRightMatchMerge = React.lazy(() => RightToRightMatchMergeImport);
 const MatchRightViewImport = import(
     /* webpackChunkName: "MatchRightView" */ './right-matching/match-rights/MatchRightsView'
 );
@@ -137,7 +137,7 @@ const routes = [
     },
     {
         path: `${BASE_PATH}/right-matching`,
-        component: canRender(RightToRightMatchNoId, 'update', 'Avail'),
+        component: canRender(RightToRightMatchMerge, 'update', 'Avail'),
     },
     {
         path: `${BASE_PATH}/select-rights-planning`,

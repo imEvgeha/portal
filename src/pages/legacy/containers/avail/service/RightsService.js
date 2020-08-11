@@ -72,7 +72,7 @@ const populate = function (key, value, location) {
     }
 };
 
-const prepareRight = function (right, keepNulls = false) {
+export const prepareRight = function (right, keepNulls = false) {
     const rightCopy = {};
     Object.keys(right).forEach(key => {
         if (keepNulls || isNotEmpty(right[key])) {
