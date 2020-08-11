@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import classnames from 'classnames';
@@ -18,37 +18,39 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
         'nexus-c-servicing-order-item__chevron-icon--is-expanded': isOpen,
     });
 
-    return (
-        soi.fulfillmentOrders.length > 0 && (
-            <>
-                <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
-                    <div className="nexus-c-servicing-order-item__row">
-                        <div className="nexus-c-servicing-order-item__row-group">
-                            <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
-                            <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
-                        </div>
-                        <Badge>{count}</Badge>
-                    </div>
-                    <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>
-                    <div className="nexus-c-servicing-order-item__row">
-                        <div className="nexus-c-servicing-order-item__row-group">
-                            <ChevronIcon className={chevronClassNames} />
-                            <p className="nexus-c-servicing-order-item__due-dates">
-                                {renderDueDateRangeOfServicingOrderItem(soi)}
-                            </p>
-                        </div>
-                        {!!status && <StatusTag status={`FO_${status}`} />}
-                    </div>
-                </div>
+    // opens the SOI that contains the currently selected FO
+    useEffect(() => {
+        setOpen(isFulfillmentOrderInSoi(soi, selectedFulfillmentOrder));
+    }, [soi, selectedFulfillmentOrder]);
 
-                {/* renders any children FO panels */}
-                {isOpen &&
-                    soi.fulfillmentOrders.map(info =>
-                        renderPanel(info, selectedFulfillmentOrder, handleFulfillmentOrderChange, true)
-                    )}
-            </>
-        )
-    );
+    return soi.fulfillmentOrders.length > 0 ? (
+        <>
+            <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
+                <div className="nexus-c-servicing-order-item__row">
+                    <div className="nexus-c-servicing-order-item__row-group">
+                        <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
+                        <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
+                    </div>
+                    <Badge>{count}</Badge>
+                </div>
+                <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>
+                <div className="nexus-c-servicing-order-item__row">
+                    <div className="nexus-c-servicing-order-item__row-group">
+                        <ChevronIcon className={chevronClassNames} />
+                        <p className="nexus-c-servicing-order-item__due-dates">
+                            {renderDueDateRangeOfServicingOrderItem(soi)}
+                        </p>
+                    </div>
+                    {!!status && <StatusTag status={`FO_${status}`} />}
+                </div>
+            </div>
+            {/* renders any children FO panels */}
+            {isOpen &&
+                soi.fulfillmentOrders.map(info =>
+                    renderPanel(info, selectedFulfillmentOrder, handleFulfillmentOrderChange, true)
+                )}
+        </>
+    ) : null;
 };
 
 export default ServicingOrderItem;
@@ -91,4 +93,8 @@ const renderDueDateRangeOfServicingOrderItem = soi => {
     const isDifferent = earliestDueDate !== latestDueDate;
     const latestDueDateWithDash = ` - ${latestDueDate}`;
     return `Due Date${isDifferent ? 's' : ''}: ${earliestDueDate}${isDifferent ? latestDueDateWithDash : ''}`;
+};
+
+export const isFulfillmentOrderInSoi = (soi, foId) => {
+    return soi.fulfillmentOrders.map(fo => fo.id).includes(foId);
 };
