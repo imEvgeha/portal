@@ -1,14 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './TooltipCellRenderer.scss';
+import ServicingOrdersTableStatusTooltip from "../../../../../../pages/servicing-orders/components/servicing-orders-table-status-tooltip/ServicingOrdersTableStatusTooltip"
 import NexusTooltip from "../../../../nexus-tooltip/NexusTooltip";
 
 const TooltipCellRenderer = ({value}) => {
     return (
-        <NexusTooltip content='aaaaaaa'>
-            <span className='nexus-c-tooltip-cell-renderer'>
-                {value || ''}
-            </span>
+        <NexusTooltip hasWhiteBackground content={<ServicingOrdersTableStatusTooltip />}>
+            <span> {value || ''} </span>
         </NexusTooltip>
     );
 };
