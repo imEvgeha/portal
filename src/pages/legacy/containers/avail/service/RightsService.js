@@ -206,19 +206,21 @@ export const rightsService = {
         return nexusFetch(url, {isWithErrorHandling: false});
     },
 
-    update: (right, id) => {
+    update: (rightDiff, id) => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
+        const data = prepareRight(rightDiff, true);
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    },
+
+    updateRightWithFullData: (rightDiff, id) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
         const data = prepareRight(right, true);
         return nexusFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
-        });
-    },
-    updateRightWithFullData: (rightDiff, id) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
-        return nexusFetch(url, {
-            method: 'PATCH',
-            body: JSON.stringify(rightDiff),
         });
     },
 };
