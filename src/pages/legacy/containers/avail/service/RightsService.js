@@ -39,7 +39,7 @@ const parse = (value, key) => {
 
 const populate = function(key, value, location){
     const dotPos = key.indexOf('.');
-    if(dotPos > 0) {
+    if(key && dotPos > 0) {
         const firstKey = key.split('.')[0];
         const restKey = key.substring(dotPos+1);
         if(MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS.includes(firstKey)) {
@@ -62,14 +62,16 @@ const populate = function(key, value, location){
         }else {
             if (!location[firstKey])
                 location[firstKey] = {};
-            if(STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+            if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
                 value = value.split(',');
             }
             populate(restKey, value, location[firstKey]);
         }
     } else {
-        if (STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key) && value){
-            value = value.split(',');
+        if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+            // If value is an empty string, convert to an empty array
+            // .split() converts '' to [''] which is not desirable (BE error)
+            value = value ? value.split(',') : [];
         }
         location[key] = parse(value, key);
     }
@@ -204,11 +206,11 @@ export const rightsService = {
         return nexusFetch(url, {isWithErrorHandling: false});
     },
 
-    update: (rightDiff, id) => {
+    update: (right, id) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
-        const data = prepareRight(rightDiff, true);
+        const data = prepareRight(right, true);
         return nexusFetch(url, {
-            method: 'PATCH',
+            method: 'PUT',
             body: JSON.stringify(data),
         });
     },
