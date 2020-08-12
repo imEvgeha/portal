@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import moment from 'moment';
-import {getValidDate} from '../../../../../util/utils';
+import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import ServicingOrderItem from '../servicing-order-item/ServicingOrderItem';
 
@@ -28,7 +28,7 @@ const FulfillmentOrderPanels = ({
         return accordionData.map(info => renderPanel(info, selectedFulfillmentOrder, handleFulfillmentOrderChange));
     };
 
-    return <>{renderAccordion(sortedPanels)}</>;
+    return renderAccordion(sortedPanels);
 };
 
 export default FulfillmentOrderPanels;
@@ -61,7 +61,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             id={info.id}
             externalId={info.external_id}
             status={info.status}
-            dueDate={getValidDate(info && info.definition && info.definition.dueDate)}
+            dueDate={ISODateToView(info && info.definition && info.definition.dueDate, 'regionalMidnight')}
             selected={selectedFulfillmentOrder === info.id}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
             productDescription={info.product_description}
@@ -70,7 +70,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
     );
 };
 
-const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
+export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
     const toSort = panels.slice();
 
     const getDueDateOfServicingOrderItem = soi => {

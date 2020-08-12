@@ -7,6 +7,8 @@ import moment from 'moment';
 import ChevronIcon from '../../../../../assets/chevron-right.svg';
 import FolderIcon from '../../../../../assets/folder.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
+import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
 
@@ -84,7 +86,7 @@ const renderDueDateRangeOfServicingOrderItem = soi => {
     };
 
     // formats the moment date
-    const dateDisplay = momentObj => momentObj.format('M/D/YYYY');
+    const dateDisplay = momentObj => ISODateToView(momentObj, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
 
     const {length} = soi.fulfillmentOrders;
     const sortedDates = soi.fulfillmentOrders.slice().sort(dateSortFn).map(getMomentDueDate);

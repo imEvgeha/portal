@@ -7,6 +7,7 @@ import HeaderSection from './components/header-section/HeaderSection';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {prepareRowData} from './components/sources-table/util';
+import mockResponse from './responses/sample-fulfillment-order-response.json';
 import './ServicingOrder.scss';
 
 const ServicingOrder = ({match}) => {
@@ -27,10 +28,10 @@ const ServicingOrder = ({match}) => {
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
-                const {
-                    fulfillmentOrders,
-                    servicingOrderItems,
-                } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
+                // const {fulfillmentOrders, servicingOrderItems} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
+                //     servicingOrder.so_number
+                // );
+                const {fulfillmentOrders, servicingOrderItems} = mockResponse;
 
                 setServiceOrder({
                     ...servicingOrder,
