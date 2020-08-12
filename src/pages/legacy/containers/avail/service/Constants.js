@@ -3,7 +3,8 @@ const STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS = [
     'regionExcluded',
     'contractId',
     'originalRightIds',
-    'keywords'
+    'keywords',
+    'castCrew',
 ];
 const MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS = [];
 const ARRAY_OF_OBJECTS = ['pricing', 'territory', 'languageAudioTypes'];
