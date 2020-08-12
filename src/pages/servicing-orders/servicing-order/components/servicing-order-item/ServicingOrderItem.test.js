@@ -7,7 +7,7 @@ describe('ServicingOrderItem', () => {
     let wrapper = null;
 
     beforeEach(() => {
-        wrapper = shallow(<ServicingOrderItem soi={soiWithFo} />);
+        wrapper = shallow(<ServicingOrderItem servicingOrderItem={soiWithFo} />);
     });
 
     it('should render', () => {
@@ -15,7 +15,7 @@ describe('ServicingOrderItem', () => {
     });
 
     it('does not render anything when there are no child FOs', () => {
-        wrapper = shallow(<ServicingOrderItem soi={soiWithoutFo} />);
+        wrapper = shallow(<ServicingOrderItem servicingOrderItem={soiWithoutFo} />);
         expect(wrapper.html()).toBeNull();
     });
 
@@ -30,7 +30,7 @@ describe('ServicingOrderItem', () => {
     });
 
     it('does not display the status tag, if there is no status', () => {
-        wrapper = shallow(<ServicingOrderItem soi={soiWithFoWithoutStatus} />);
+        wrapper = shallow(<ServicingOrderItem servicingOrderItem={soiWithFoWithoutStatus} />);
         const statusTag = wrapper.find('StatusTag').length;
         expect(statusTag).toEqual(0);
     });
