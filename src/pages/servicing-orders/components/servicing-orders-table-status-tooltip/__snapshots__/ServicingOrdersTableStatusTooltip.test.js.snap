@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
+<div
+  className="nexus-c-servicing-orders-table-status-tooltip"
+>
+  <div
+    className="nexus-c-servicing-orders-table-status-tooltip__fields"
+  >
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="notStarted"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        Not Started
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        20001
+      </span>
+    </div>
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="inProgress"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        In Progress
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        1000
+      </span>
+    </div>
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="onHold"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        On Hold
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        1001
+      </span>
+    </div>
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="completed"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        Completed
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        19999
+      </span>
+    </div>
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="canceled"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        Canceled
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        3
+      </span>
+    </div>
+    <div
+      className="nexus-c-servicing-orders-table-status-tooltip__field"
+      key="failed"
+    >
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--label"
+      >
+        Failed
+      </span>
+      <span
+        className="nexus-c-servicing-orders-table-status-tooltip__field--value"
+      >
+        2
+      </span>
+    </div>
+  </div>
+</div>
+`;

@@ -3,6 +3,7 @@
 exports[`NexusTab should match snapshot 1`] = `
 <NexusTooltip
   content=""
+  hasWhiteBackground={false}
   isDisabled={false}
 >
   <div

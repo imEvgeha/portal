@@ -91,7 +91,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 100,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": "tooltipCellRenderer",
           "colId": "status",
           "dataType": "select",
           "enableSearch": true,
