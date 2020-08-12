@@ -11,8 +11,13 @@ import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
 
-const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrderChange}) => {
-    const {product_description: productDescription, fulfillmentOrders, external_id: externalId, status} = soi;
+const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handleFulfillmentOrderChange}) => {
+    const {
+        product_description: productDescription,
+        fulfillmentOrders,
+        external_id: externalId,
+        status,
+    } = servicingOrderItem;
     const count = fulfillmentOrders.length;
     const [isOpen, setOpen] = useState(false);
     const chevronClassNames = classnames('nexus-c-servicing-order-item__chevron-icon', {
@@ -21,12 +26,12 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
 
     // opens the SOI that contains the currently selected FO
     useEffect(() => {
-        if (isFulfillmentOrderInSoi(soi, selectedFulfillmentOrder)) {
+        if (isFulfillmentOrderInSoi(servicingOrderItem, selectedFulfillmentOrder)) {
             setOpen(true);
         }
-    }, [soi]);
+    }, [servicingOrderItem]);
 
-    return soi.fulfillmentOrders.length > 0 ? (
+    return servicingOrderItem.fulfillmentOrders.length > 0 ? (
         <>
             <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
                 <div className="nexus-c-servicing-order-item__row">
@@ -41,7 +46,7 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
                     <div className="nexus-c-servicing-order-item__row-group">
                         <ChevronIcon className={chevronClassNames} />
                         <p className="nexus-c-servicing-order-item__due-dates">
-                            {renderDueDateRangeOfServicingOrderItem(soi)}
+                            {renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}
                         </p>
                     </div>
                     {!!status && <StatusTag status={`FO_${status}`} />}
@@ -49,7 +54,7 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
             </div>
             {/* renders any children FO panels */}
             {isOpen &&
-                soi.fulfillmentOrders.map(info =>
+                servicingOrderItem.fulfillmentOrders.map(info =>
                     renderPanel(info, selectedFulfillmentOrder, handleFulfillmentOrderChange, true)
                 )}
         </>
@@ -59,7 +64,7 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
 export default ServicingOrderItem;
 
 ServicingOrderItem.propTypes = {
-    soi: PropTypes.any.isRequired,
+    servicingOrderItem: PropTypes.any.isRequired,
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
 };
@@ -71,14 +76,14 @@ ServicingOrderItem.defaultProps = {
 
 /**
  * Returns the date range of the fulfillment orders within a ServicingOrderItem
- * @param {ServicingOrderItem} soi the given ServicingOrderItem
+ * @param {ServicingOrderItem} servicingOrderItem the given ServicingOrderItem
  */
-const renderDueDateRangeOfServicingOrderItem = soi => {
+const renderDueDateRangeOfServicingOrderItem = servicingOrderItem => {
     // formats the moment date
     const dateDisplay = momentObj => ISODateToView(momentObj, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
 
-    const {length} = soi.fulfillmentOrders;
-    const sortedDates = sortByDateFn(soi.fulfillmentOrders, 'definition.dueDate', 'ASCENDING').map(fo =>
+    const {length} = servicingOrderItem.fulfillmentOrders;
+    const sortedDates = sortByDateFn(servicingOrderItem.fulfillmentOrders, 'definition.dueDate').map(fo =>
         get(fo, 'definition.dueDate')
     );
     const earliestDueDate = dateDisplay(sortedDates[0]);
@@ -88,6 +93,6 @@ const renderDueDateRangeOfServicingOrderItem = soi => {
     return `Due Date${isDifferent ? 's' : ''}: ${earliestDueDate}${isDifferent ? latestDueDateWithDash : ''}`;
 };
 
-export const isFulfillmentOrderInSoi = (soi, foId) => {
-    return soi.fulfillmentOrders.map(fo => fo.id).includes(foId);
+export const isFulfillmentOrderInSoi = (servicingOrderItem, fulfillmentOrderId) => {
+    return servicingOrderItem.fulfillmentOrders.map(fo => fo.id).includes(fulfillmentOrderId);
 };

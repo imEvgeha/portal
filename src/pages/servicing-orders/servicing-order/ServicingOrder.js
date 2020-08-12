@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
+import {SORT_DIRECTION} from '../../../util/date-time/constants';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -39,7 +40,11 @@ const ServicingOrder = ({match}) => {
                     servicingOrderItems,
                 });
 
-                const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate', 'ASCENDING');
+                const sortedFulfillmentOrders = sortByDateFn(
+                    fulfillmentOrders,
+                    'definition.dueDate',
+                    SORT_DIRECTION.ASCENDING
+                );
                 setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
             } catch (e) {
                 setServiceOrder(servicingOrder);

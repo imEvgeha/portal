@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import moment from 'moment';
-import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
+import {ISODateToView, sortByDateFn} from '../../../../../util/date-time/DateTimeUtils';
+import {SORT_DIRECTION} from '../../../../../util/date-time/constants';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import ServicingOrderItem from '../servicing-order-item/ServicingOrderItem';
 
@@ -75,8 +76,8 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
 
     const getDueDateOfServicingOrderItem = soi => {
         const {length} = soi.fulfillmentOrders;
-        const sortedDates = soi.fulfillmentOrders.slice().sort(panelSortFn).map(getMomentDueDate);
-        return dueDateSortDirection === 'ASCENDING' ? sortedDates[0] : sortedDates[length - 1];
+        const sortedDates = sortByDateFn(soi.fulfillmentOrders, 'definition.dueDate').map(getMomentDueDate);
+        return dueDateSortDirection === SORT_DIRECTION.ASCENDING ? sortedDates[0] : sortedDates[length - 1];
     };
 
     const getMomentDueDate = panel => {
@@ -93,9 +94,9 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
         const diff = prevPanelDueDate.diff(currPanelDueDate);
 
         switch (dueDateSortDirection) {
-            case 'ASCENDING':
+            case SORT_DIRECTION.ASCENDING:
                 return diff;
-            case 'DESCENDING':
+            case SORT_DIRECTION.DESCENDING:
                 return -diff;
             default:
                 break;

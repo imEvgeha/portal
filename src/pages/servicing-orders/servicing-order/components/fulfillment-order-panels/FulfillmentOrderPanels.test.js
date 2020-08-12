@@ -35,8 +35,6 @@ describe('FulfillmentOrderPanels', () => {
 
     describe('sorting by due date', () => {
         it('should sort panels by due date -- ascending', () => {
-            console.log(wrapper.debug({verbose: true}));
-
             const dueDateNodes = wrapper.map(node =>
                 node
                     .dive()

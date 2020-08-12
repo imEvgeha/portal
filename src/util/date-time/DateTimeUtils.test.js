@@ -1,4 +1,5 @@
 import {sortByDateFn} from './DateTimeUtils';
+import {SORT_DIRECTION} from './constants';
 
 describe('Date-Time Utils', () => {
     describe('sortByDateFn', () => {
@@ -36,7 +37,7 @@ describe('Date-Time Utils', () => {
         ];
 
         it('sorts an array of objects by date correctly -- ascending', () => {
-            const sortedArray = sortByDateFn(unsortedArray, ['nestedItem', 'someKindaDate'], 'ASCENDING');
+            const sortedArray = sortByDateFn(unsortedArray, ['nestedItem', 'someKindaDate']);
             expect(sortedArray).toEqual([
                 {
                     val: 1,
@@ -71,7 +72,7 @@ describe('Date-Time Utils', () => {
             ]);
         });
         it('sorts an array of objects by date correctly -- descending', () => {
-            const sortedArray = sortByDateFn(unsortedArray, ['nestedItem', 'someKindaDate'], 'DESCENDING');
+            const sortedArray = sortByDateFn(unsortedArray, ['nestedItem', 'someKindaDate'], SORT_DIRECTION.DESCENDING);
             expect(sortedArray).toEqual([
                 {
                     val: 5,

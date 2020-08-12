@@ -6,7 +6,7 @@ import {
     SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
 } from '../../ui/elements/nexus-date-and-time-elements/constants';
-import {DATETIME_FIELDS} from './constants';
+import {DATETIME_FIELDS, SORT_DIRECTION} from './constants';
 
 // Create date format based on locale
 const getDateFormatBasedOnLocale = locale => moment().locale(locale).localeData().longDateFormat('L');
@@ -65,12 +65,14 @@ const dateToISO = (date, type) => {
 };
 
 /**
+ * Sorts the given array of objects by date.
  *
  * @param {any[]} array an array of objects to sort
  * @param {string|string[]} pathToDate the node path to traverse to get to the date in each element in the array
- * @param {'ASCENDING'|'DESCENDING'} direction the sort direction. default is 'ASCENDING'
+ * @param {('ASCENDING'|'DESCENDING')} direction the sort direction. Default is 'ASCENDING'.
+ *   Use SORT_DIRECTION in util/date-time/constants
  */
-const sortByDateFn = (array, pathToDate, direction = 'ASCENDING') => {
+const sortByDateFn = (array, pathToDate, direction = SORT_DIRECTION.ASCENDING) => {
     const getMomentObjFromDate = (obj, pathToDate) => {
         return moment(get(obj, pathToDate));
     };
@@ -80,9 +82,9 @@ const sortByDateFn = (array, pathToDate, direction = 'ASCENDING') => {
         const diff = prevDueDate.diff(currDueDate);
 
         switch (direction) {
-            case 'ASCENDING':
+            case SORT_DIRECTION.ASCENDING:
                 return diff;
-            case 'DESCENDING':
+            case SORT_DIRECTION.DESCENDING:
                 return -diff;
             default:
                 break;
