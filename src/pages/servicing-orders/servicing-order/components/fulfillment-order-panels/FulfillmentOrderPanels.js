@@ -17,9 +17,9 @@ const FulfillmentOrderPanels = ({
     const {servicingOrderItems = []} = orderDetails;
     const fulfillmentOrdersWithoutParentServicingOrderItem = fulfillmentOrders.filter(fo => fo.soi_doc_id === null);
     const panels = fulfillmentOrdersWithoutParentServicingOrderItem.concat(
-        servicingOrderItems.map(soi => ({
-            ...soi,
-            fulfillmentOrders: fulfillmentOrders.filter(fo => fo.soi_doc_id === soi.id),
+        servicingOrderItems.map(servicingOrderItem => ({
+            ...servicingOrderItem,
+            fulfillmentOrders: fulfillmentOrders.filter(fo => fo.soi_doc_id === servicingOrderItem.id),
         }))
     );
     // determines whether to sort the fulfillment order panels or not
@@ -52,7 +52,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
     return info.type === 'ServicingOrderItem' ? (
         <ServicingOrderItem
             key={info.id}
-            soi={info}
+            servicingOrderItem={info}
             selectedFulfillmentOrder={selectedFulfillmentOrder}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
         />
@@ -74,9 +74,11 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
 export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
     const toSort = panels.slice();
 
-    const getDueDateOfServicingOrderItem = soi => {
-        const {length} = soi.fulfillmentOrders;
-        const sortedDates = sortByDateFn(soi.fulfillmentOrders, 'definition.dueDate').map(getMomentDueDate);
+    const getDueDateOfServicingOrderItem = servicingOrderItem => {
+        const {length} = servicingOrderItem.fulfillmentOrders;
+        const sortedDates = sortByDateFn(servicingOrderItem.fulfillmentOrders, 'definition.dueDate').map(
+            getMomentDueDate
+        );
         return dueDateSortDirection === SORT_DIRECTION.ASCENDING ? sortedDates[0] : sortedDates[length - 1];
     };
 
