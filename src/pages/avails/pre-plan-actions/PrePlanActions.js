@@ -55,10 +55,9 @@ export const PrePlanActions = ({
                 DOPService.createProject(requestData).then(res => {
                     if(res.id) {
                         const projectId = res.id;
-                        Promise.all(eligibleRights.map(right => {
-                            return rightsService.updateRightWithFullData(right, right.id);
-                        }))
-                            .then(()=> {
+                        Promise.all(eligibleRights.map(right =>
+                            rightsService.updateRightWithFullData(right, right.id)
+                        )).then(()=> {
                                 DOPService.startProject(projectId);
                                 dispatchSuccessToast(eligibleRights.length);
                                 removeRightsFromPrePlan();
