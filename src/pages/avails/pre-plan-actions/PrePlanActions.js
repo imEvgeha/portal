@@ -17,7 +17,6 @@ import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg} from 
 export const PrePlanActions = ({
     selectedPrePlanRights,
     addToast,
-    removeToast,
     setSelectedPrePlanRights,
     setPreplanRights,
     prePlanRepoRights,
@@ -125,7 +124,6 @@ export const PrePlanActions = ({
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
     addToast: PropTypes.func,
-    removeToast: PropTypes.func,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
@@ -134,7 +132,6 @@ PrePlanActions.propTypes = {
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
     addToast: () => null,
-    removeToast: () => null,
     prePlanRepoRights: [],
 };
 

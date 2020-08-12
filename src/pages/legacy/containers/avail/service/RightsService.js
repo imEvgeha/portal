@@ -222,7 +222,7 @@ export const rightsService = {
     update: (rightDiff, id) => {
         const url =
             config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}` + '?updateHistory=true';
-        let data = prepareRight(rightDiff, true);
+        const data = prepareRight(rightDiff, true);
         return nexusFetch(url, {
             method: 'PATCH',
             body: JSON.stringify(data),
