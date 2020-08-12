@@ -1,4 +1,4 @@
-import React, {useState, createContext} from 'react';
+import React, {useState, createContext, useCallback} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import './NexusModal.scss';
 
@@ -16,18 +16,18 @@ export const NexusModalProvider = ({children}) => {
         setContent(content);
     };
 
-    const setModalContentAndTitle = (content, title) => {
+    const setModalContentAndTitle = useCallback((content, title) => {
         setTitle(title);
         setModalContent(content);
-    };
+    }, [title, content]);
 
-    const close = () => {
+    const close = useCallback(() => {
         setIsOpened(false);
         setActions([]);
         setContent(null);
         setTitle('');
         setStyle({});
-    };
+    }, []);
 
     const context = {
         setModalContent,
