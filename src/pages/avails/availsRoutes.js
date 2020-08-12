@@ -44,13 +44,19 @@ const RightToMatchViewImport = import(
 );
 const RightToMatchView = React.lazy(() => RightToMatchViewImport);
 const RightToRightMatchMergeImport = import(
-    /* webpackChunkName: "RightToMatchView" */ './right-matching/right-to-match/RightToMatchView'
+    /* webpackChunkName: "RightToMatchViewMerge" */ './right-matching/right-to-match/RightToMatchView'
 );
 const RightToRightMatchMerge = React.lazy(() => RightToRightMatchMergeImport);
 const MatchRightViewImport = import(
     /* webpackChunkName: "MatchRightView" */ './right-matching/match-rights/MatchRightsView'
 );
 const MatchRightView = React.lazy(() => MatchRightViewImport);
+
+const MatchRightViewMergeImport = import(
+    /* webpackChunkName: "MatchRightViewMerge" */ './right-matching/match-rights/MatchRightsView'
+);
+const MatchRightViewMerge = React.lazy(() => MatchRightViewMergeImport);
+
 const TitleMatchViewImport = import(/* webpackChunkName: "TitleMatchView" */ './title-matching/TitleMatchView');
 const TitleMatchView = React.lazy(() => TitleMatchViewImport);
 const TitleMatchReviewImport = import(
@@ -138,6 +144,10 @@ const routes = [
     {
         path: `${BASE_PATH}/right-matching`,
         component: canRender(RightToRightMatchMerge, 'update', 'Avail'),
+    },
+    {
+        path: `${BASE_PATH}/right-matching/preview`,
+        component: canRender(MatchRightViewMerge, 'update', 'Avail'),
     },
     {
         path: `${BASE_PATH}/select-rights-planning`,

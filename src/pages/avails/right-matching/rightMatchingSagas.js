@@ -132,6 +132,14 @@ function* storePendingRight({payload}) {
     });
 }
 
+function* storeRightMatchingIds({payload}) {
+    const {matchedRightIds} = payload;
+    yield put({
+        type: actionTypes.STORE_MATCHED_RIGHT_IDS_SUCCESS,
+        payload: {matchedRightIds},
+    });
+}
+
 export function* fetchMatchedRights(requestMethod, {payload}) {
     try {
         yield put({
@@ -314,6 +322,7 @@ export function* rightMatchingWatcher() {
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
+        takeEvery(actionTypes.STORE_MATCHED_RIGHT_IDS, storeRightMatchingIds),
         takeLatest(
             actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
             fetchAndStoreRightMatchingSearchCriteria

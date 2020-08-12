@@ -33,6 +33,11 @@ const getMatchedRights = state => {
     return rightMatching.matchedRights;
 };
 
+const getMatchedRightIds = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.matchedRightIds;
+};
+
 const getCombinedRight = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching && rightMatching.combinedRight;
@@ -63,3 +68,5 @@ export const createRightMatchPageDataSelector = () =>
     createSelector(getRightMatchPageData, rightMatchPageData => rightMatchPageData);
 
 export const createPendingRightSelector = () => createSelector(getPendingRight, pendingRight => pendingRight);
+export const createRightMatchingIdsSelector = () =>
+    createSelector(getMatchedRightIds, matchedRightIds => matchedRightIds);
