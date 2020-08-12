@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import classnames from 'classnames';
 import {get} from 'lodash';
-import moment from 'moment';
 import ChevronIcon from '../../../../../assets/chevron-right.svg';
 import FolderIcon from '../../../../../assets/folder.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
-import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
+import {ISODateToView, sortByDateFn} from '../../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
@@ -22,8 +21,10 @@ const ServicingOrderItem = ({soi, selectedFulfillmentOrder, handleFulfillmentOrd
 
     // opens the SOI that contains the currently selected FO
     useEffect(() => {
-        setOpen(isFulfillmentOrderInSoi(soi, selectedFulfillmentOrder));
-    }, [soi, selectedFulfillmentOrder]);
+        if (isFulfillmentOrderInSoi(soi, selectedFulfillmentOrder)) {
+            setOpen(true);
+        }
+    }, [soi]);
 
     return soi.fulfillmentOrders.length > 0 ? (
         <>
@@ -73,23 +74,13 @@ ServicingOrderItem.defaultProps = {
  * @param {ServicingOrderItem} soi the given ServicingOrderItem
  */
 const renderDueDateRangeOfServicingOrderItem = soi => {
-    // parses the fulfillmentOrder due date with moment
-    const getMomentDueDate = panel => moment(get(panel, 'definition.dueDate'));
-
-    // sorts the due dates in the servicingOrderItem
-    const dateSortFn = (prevFulfillmentOrder, currFulfillmentOrder) => {
-        const prevDueDate = getMomentDueDate(prevFulfillmentOrder);
-        const currDueDate = getMomentDueDate(currFulfillmentOrder);
-        const diff = prevDueDate.diff(currDueDate);
-
-        return diff;
-    };
-
     // formats the moment date
     const dateDisplay = momentObj => ISODateToView(momentObj, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
 
     const {length} = soi.fulfillmentOrders;
-    const sortedDates = soi.fulfillmentOrders.slice().sort(dateSortFn).map(getMomentDueDate);
+    const sortedDates = sortByDateFn(soi.fulfillmentOrders, 'definition.dueDate', 'ASCENDING').map(fo =>
+        get(fo, 'definition.dueDate')
+    );
     const earliestDueDate = dateDisplay(sortedDates[0]);
     const latestDueDate = dateDisplay(sortedDates[length - 1]);
     const isDifferent = earliestDueDate !== latestDueDate;

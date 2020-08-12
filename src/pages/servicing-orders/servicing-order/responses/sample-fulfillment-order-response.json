@@ -1,6 +1,33 @@
 {
     "fulfillmentOrders": [
         {
+            "id": "fo_L7TgracB",
+            "type": "FulfillmentOrder",
+            "createdAt": "2020-08-07T20:41:04.686Z",
+            "updatedAt": "2020-08-07T20:41:04.686Z",
+            "createdBy": null,
+            "updatedBy": null,
+            "tenant": "MGM",
+            "fs": "JUICEBOX",
+            "readiness": "NEW",
+            "status": "IN_PROGRESS",
+            "acknowledgement": null,
+            "notes": null,
+            "definition": {
+                "tenant": "MGM",
+                "externalId": "SR12345-25417-2",
+                "startDate": "2020-08-07T20:41:03Z",
+                "dueDate": "2020-02-02T06:59:59Z"
+            },
+            "so_number": "SO_0000000055",
+            "external_id": "2nd",
+            "fs_id": "",
+            "start_date": "2020-08-07T20:41:03Z",
+            "due_date": "2021-08-14T06:59:59Z",
+            "soi_doc_id": "SOI_1",
+            "product_description": "2nd"
+        },
+        {
             "id": "fo_E7cyGeiy",
             "type": "FulfillmentOrder",
             "createdAt": "2020-08-07T20:41:04.709Z",
@@ -97,33 +124,6 @@
             "due_date": "2022-01-01T06:59:59Z",
             "soi_doc_id": "SOI_1",
             "product_description": "1st"
-        },
-        {
-            "id": "fo_L7TgracB",
-            "type": "FulfillmentOrder",
-            "createdAt": "2020-08-07T20:41:04.686Z",
-            "updatedAt": "2020-08-07T20:41:04.686Z",
-            "createdBy": null,
-            "updatedBy": null,
-            "tenant": "MGM",
-            "fs": "JUICEBOX",
-            "readiness": "NEW",
-            "status": "IN_PROGRESS",
-            "acknowledgement": null,
-            "notes": null,
-            "definition": {
-                "tenant": "MGM",
-                "externalId": "SR12345-25417-2",
-                "startDate": "2020-08-07T20:41:03Z",
-                "dueDate": "2020-02-02T06:59:59Z"
-            },
-            "so_number": "SO_0000000055",
-            "external_id": "2nd",
-            "fs_id": "",
-            "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2021-08-14T06:59:59Z",
-            "soi_doc_id": "SOI_1",
-            "product_description": "2nd"
         },
         {
             "id": "fo_BzinrqTg",

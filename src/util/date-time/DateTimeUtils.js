@@ -1,3 +1,4 @@
+import {get} from 'lodash';
 import moment from 'moment';
 import {store} from '../../index';
 import {
@@ -8,18 +9,13 @@ import {
 import {DATETIME_FIELDS} from './constants';
 
 // Create date format based on locale
-const getDateFormatBasedOnLocale = locale => (
-    moment()
-        .locale(locale)
-        .localeData()
-        .longDateFormat('L')
-);
+const getDateFormatBasedOnLocale = locale => moment().locale(locale).localeData().longDateFormat('L');
 
 // Attach (UTC) to date, if it is simulcast
 const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
     const isUTC = isUtc(date);
     return moment(date).isValid()
-        ? `${moment(date).utc(!isUTC).format(dateFormat)}${(isUTC && isTimeVisible) ? ' (UTC)' : ''}`
+        ? `${moment(date).utc(!isUTC).format(dateFormat)}${isUTC && isTimeVisible ? ' (UTC)' : ''}`
         : 'Invalid Date';
 };
 
@@ -68,10 +64,31 @@ const dateToISO = (date, type) => {
     }
 };
 
-export {
-    getDateFormatBasedOnLocale,
-    parseSimulcast,
-    ISODateToView,
-    dateToISO,
-    isUtc,
+/**
+ *
+ * @param {any[]} array an array of objects to sort
+ * @param {string|string[]} pathToDate the node path to traverse to get to the date in each element in the array
+ * @param {'ASCENDING'|'DESCENDING'} direction the sort direction. default is 'ASCENDING'
+ */
+const sortByDateFn = (array, pathToDate, direction = 'ASCENDING') => {
+    const getMomentObjFromDate = (obj, pathToDate) => {
+        return moment(get(obj, pathToDate));
+    };
+    const sortFn = (prevObj, currObj) => {
+        const prevDueDate = getMomentObjFromDate(prevObj, pathToDate);
+        const currDueDate = getMomentObjFromDate(currObj, pathToDate);
+        const diff = prevDueDate.diff(currDueDate);
+
+        switch (direction) {
+            case 'ASCENDING':
+                return diff;
+            case 'DESCENDING':
+                return -diff;
+            default:
+                break;
+        }
+    };
+    return array.slice().sort(sortFn);
 };
+
+export {getDateFormatBasedOnLocale, parseSimulcast, ISODateToView, dateToISO, isUtc, sortByDateFn};
