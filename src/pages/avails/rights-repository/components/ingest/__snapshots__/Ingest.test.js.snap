@@ -59,6 +59,7 @@ exports[`Ingest should match snapshot 1`] = `
     >
       <NexusTooltip
         content="Download Email"
+        hasWhiteBackground={false}
         isDisabled={false}
       >
         <[object Object]
@@ -74,6 +75,7 @@ exports[`Ingest should match snapshot 1`] = `
     >
       <NexusTooltip
         content="Download Email"
+        hasWhiteBackground={false}
         isDisabled={false}
       >
         <[object Object]
@@ -88,6 +90,7 @@ exports[`Ingest should match snapshot 1`] = `
     >
       <NexusTooltip
         content="Download Attachment"
+        hasWhiteBackground={false}
         isDisabled={false}
       >
         <[object Object]

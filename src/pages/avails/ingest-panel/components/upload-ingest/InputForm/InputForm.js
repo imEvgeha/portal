@@ -134,6 +134,7 @@ const InputForm = ({
     };
 
     const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
+
     return (
         <div className="manual-ingest-config">
             <div className="manual-ingest-config__grid">

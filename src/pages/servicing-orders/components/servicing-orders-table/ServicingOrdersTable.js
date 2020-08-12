@@ -65,6 +65,14 @@ const ServicingOrdersTable = ({
                 };
             }
 
+            if (columnDef.field === 'status') {
+                return {
+                    ...columnDef,
+                    valueFormatter: valueFormatter(columnDef),
+                    cellRenderer: 'tooltipCellRenderer',
+                };
+            }
+
             return {
                 ...columnDef,
                 valueFormatter: valueFormatter(columnDef),
