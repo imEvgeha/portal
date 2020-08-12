@@ -356,7 +356,7 @@ class RightDetails extends React.Component {
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
             if (val || val === false || val === null) {
-                if (Array.isArray(val) && map.dataType === 'string') {
+                if (Array.isArray(val) && map.dataType === 'string' && map.javaVariableName !== 'keywords') {
                     rightCopy[map.javaVariableName] = val.join(',');
                 } else {
                     rightCopy[map.javaVariableName] = val;
@@ -371,10 +371,16 @@ class RightDetails extends React.Component {
             onError();
             return;
         }
-        const updatedRight = {[name]: value};
+
+        const {flatRight} = this.state;
+        const updatedRight = {
+            ...flatRight,
+            [name]: value
+        };
+
         store.dispatch(blockUI(true));
         rightsService
-            .update(updatedRight, this.state.right.id)
+            .updateRightWithFullData(updatedRight, flatRight.id)
             .then((editedRight = {}) => {
                 this.setState({
                     right: editedRight,

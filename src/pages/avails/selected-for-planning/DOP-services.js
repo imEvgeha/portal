@@ -78,18 +78,16 @@ const DOPService = {
         return req;
     },
     createProject: (data) => {
-        //const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
-        const urlQA = 'https://dop.qa.vubiquity.com:8045/dop/be-services/projectManagement/project';
-        const url = 'http://dops.dev.vubiquity.com:8040/dop/be-services/projectManagement/project;'
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
         return nexusFetch(url, {
             method: 'POST',
             body: JSON.stringify(data),
         });
     },
-    startProject: ({data = {}}) => {
+    startProject: (projectId) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagement')}`;
         // TODO: Error handling if necessary
-        nexusFetch(`${url}/${data.projectId || ''}/start`, {method: 'post'});
+        nexusFetch(`${url}/${projectId}/start`, {method: 'post'});
     },
 };
 

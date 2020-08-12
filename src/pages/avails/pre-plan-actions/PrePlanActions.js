@@ -1,5 +1,6 @@
 import React, {useState, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
+import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
 import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from "../../../ui/elements/nexus-modal/NexusModal";
@@ -22,6 +23,7 @@ export const PrePlanActions = ({
     prePlanRepoRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
+    const [isFetchDOP, setIsFetchDOP] = useState(false);
     const node = useRef();
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
@@ -35,7 +37,8 @@ export const PrePlanActions = ({
     };
 
     const addToSelectedForPlanning = () => {
-        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, true)))
+        setIsFetchDOP(true);
+        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true})))
         .then(result => {
             const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
             if(nonEligibleRights && nonEligibleRights.length) {
@@ -51,19 +54,22 @@ export const PrePlanActions = ({
             if(eligibleRights && eligibleRights.length) {
                 const requestData = DOPService.createProjectRequestData(eligibleRights);
                 DOPService.createProject(requestData).then(res => {
-                    console.log(res);
                     if(res.id) {
                         const projectId = res.id;
-                        //call update avails api
-                        //call DOP start project api
-                        //show successful toast
-                        //remove above rights from preplan tab
-                        dispatchSuccessToast(eligibleRights.length);
-                        removeRightsFromPrePlan();
+                        Promise.all(eligibleRights.map(right => {
+                            return rightsService.updateRightWithFullData(right, right.id);
+                        }))
+                            .then(()=> {
+                                DOPService.startProject(projectId);
+                                dispatchSuccessToast(eligibleRights.length);
+                                removeRightsFromPrePlan();
+                                setIsFetchDOP(false);
+                            }).catch(()=> setIsFetchDOP(false));
                     }
-                });
+                }).catch(()=> setIsFetchDOP(false));
             }
-        });
+        }).catch(()=> setIsFetchDOP(false));
+
     }
 
     const dispatchSuccessToast = noOfItems => {
@@ -94,7 +100,11 @@ export const PrePlanActions = ({
                         data-test-id="add-to-pre-plan"
                         onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
                     >
-                        <div>{ADD_TO_SELECTED_PLANNING}</div>
+                        <div>
+                            {ADD_TO_SELECTED_PLANNING}
+                            { isFetchDOP && <span>  <Spinner size='small'/></span>}
+                        </div>
+
                     </div>
                     <div
                         className={classNames(
