@@ -58,15 +58,14 @@ const populate = function (key, value, location) {
                 }
             }
         } else {
-            if (!location[firstKey])
-                location[firstKey] = {};
-            if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+            if (!location[firstKey]) location[firstKey] = {};
+            if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)) {
                 value = value.split(',');
             }
             populate(restKey, value, location[firstKey]);
         }
     } else {
-        if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)){
+        if (typeof value === 'string' && STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS.includes(key)) {
             // If value is an empty string, convert to an empty array
             // .split() converts '' to [''] which is not desirable (BE error)
             value = value ? value.split(',') : [];
@@ -211,9 +210,10 @@ export const rightsService = {
         });
     },
 
-    get: id => {
+    get: (id, options = {isWithErrorHandling: false}) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/rights/' + id;
-        return nexusFetch(url, {isWithErrorHandling: false});
+        const {isWithErrorHandling} = options || {};
+        return nexusFetch(url, isWithErrorHandling);
     },
 
     update: (rightDiff, id) => {
@@ -226,9 +226,10 @@ export const rightsService = {
         });
     },
 
-    updateRightWithFullData: (right, id) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') +`/rights/${id}` + '?updateHistory=true';
-        const data = prepareRight(right, true);
+    updateRightWithFullData: (right, id, isFormatted = false) => {
+        const url =
+            config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}` + '?updateHistory=true';
+        const data = isFormatted ? right : prepareRight(right, true);
         return nexusFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
