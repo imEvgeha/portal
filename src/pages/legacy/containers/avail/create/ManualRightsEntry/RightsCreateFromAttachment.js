@@ -118,7 +118,7 @@ class RightsCreateFromAttachment extends React.Component {
             </div>
         ),
         attachment: ({value}) => (
-            <NexusTooltip content={ATTACHMENT_TOOLTIP}>
+            <NexusTooltip content={<div>{ATTACHMENT_TOOLTIP}<div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div></div>}>
                 <div className="nexus-c-attachment-link-old">
                     <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
                         <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
