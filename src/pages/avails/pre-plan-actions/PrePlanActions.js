@@ -63,7 +63,7 @@ export const PrePlanActions = ({
                             keywords,
                             territory:  previousRight['territory'].map(territory => {
                                 const selected = right['territory'].find(
-                                    obj => obj.country === territory.country
+                                    obj => obj.country === territory.country && obj.selected
                                 );
                                 return selected || territory;
                             }),
