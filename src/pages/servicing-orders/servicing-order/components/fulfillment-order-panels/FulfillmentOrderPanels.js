@@ -62,7 +62,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             id={info.id}
             externalId={info.external_id}
             status={info.status}
-            dueDate={ISODateToView(info && info.definition && info.definition.dueDate, 'regionalMidnight')}
+            dueDate={ISODateToView(get(info, 'definition.dueDate'), 'regionalMidnight')}
             selected={selectedFulfillmentOrder === info.id}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
             productDescription={info.product_description}
