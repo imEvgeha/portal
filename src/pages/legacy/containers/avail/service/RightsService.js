@@ -80,7 +80,6 @@ const prepareRight = function (right, keepNulls = false) {
         if (keepNulls || isNotEmpty(right[key])) {
             populate(key, right[key], rightCopy);
         }
-        if (Array.isArray(right[key])) rightCopy[key] = rightCopy[key].filter(item => item !== null);
     });
     return rightCopy;
 };
