@@ -11,7 +11,7 @@ const IngestStatus = ({date, status, ingestType}) => {
 
     return (
         <div className="ingest-status">
-            <div>
+            <div className="ingest-status__date-and-type">
                 <span className="ingest-status__date">{dateFormatted}</span>
                 {ingestType && (
                     <span className="ingest-status__type" title={`Ingest via ${ingestType}`}>
