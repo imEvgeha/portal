@@ -53,28 +53,31 @@ export const PrePlanActions = ({
                 }
                 if (eligibleRights && eligibleRights.length) {
                     const requestData = DOPService.createProjectRequestData(eligibleRights);
+                    const mergedWithSelectedRights = eligibleRights.map(right => {
+                        const previousRight = selectedPrePlanRights.find(obj => obj.id === right.id);
+                        const prevKeywords = Array.isArray(previousRight['keywords']) ?
+                            previousRight['keywords'] : previousRight['keywords'].split(',');
+                        const keywords = uniq(prevKeywords.concat(right['keywords']));
+                        const modifiedRight =  {
+                        ...right,
+                            keywords,
+                            territory:  previousRight['territory'].map(territory => {
+                                const selected = right['territory'].find(
+                                    obj => obj.country === territory.country
+                                );
+                                return selected || territory;
+                            }),
+                        }
+                        return modifiedRight;
+                    });
                     DOPService.createProject(requestData)
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
                                 Promise.all(
-                                    eligibleRights.map(right => {
-                                        const previousRight = selectedPrePlanRights.filter(obj => obj.id === right);
+                                    mergedWithSelectedRights.map(right => {
                                         return rightsService.updateRightWithFullData(
-                                            {
-                                                ...right,
-                                                keywords: uniq(
-                                                    previousRight['keywords']
-                                                        .split(',')
-                                                        .concat(right['keywords'].split(','))
-                                                ),
-                                                territory: previousRight['territory'].map(territory => {
-                                                    const selected = right['territory'].find(
-                                                        obj => obj.country === territory.country
-                                                    );
-                                                    return selected || territory;
-                                                }),
-                                            },
+                                            right,
                                             right.id,
                                             true
                                         );
