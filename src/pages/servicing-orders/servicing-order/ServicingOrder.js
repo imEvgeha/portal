@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {get} from 'lodash';
+import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -27,15 +28,19 @@ const ServicingOrder = ({match}) => {
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
-                const {fulfillmentOrders} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
-                    servicingOrder.so_number
-                );
+                const {
+                    fulfillmentOrders,
+                    servicingOrderItems,
+                } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                 setServiceOrder({
                     ...servicingOrder,
                     fulfillmentOrders,
+                    servicingOrderItems,
                 });
-                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
+
+                const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
+                setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
             } catch (e) {
                 setServiceOrder(servicingOrder);
             }

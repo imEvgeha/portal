@@ -5,4 +5,10 @@ const DATETIME_FIELDS = {
     REGIONAL: 'regional',
     REGIONAL_MIDNIGHT: 'regionalMidnight',
 };
-export {DATETIME_FIELDS};
+
+const SORT_DIRECTION = {
+    ASCENDING: 'ASCENDING',
+    DESCENDING: 'DESCENDING',
+};
+
+export {DATETIME_FIELDS, SORT_DIRECTION};
