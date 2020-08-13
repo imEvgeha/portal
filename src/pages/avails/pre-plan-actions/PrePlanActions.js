@@ -1,23 +1,29 @@
 import React, {useState, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
+import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
+import {uniq} from 'lodash';
 import MoreIcon from '../../../assets/more-icon.svg';
-import {NexusModalContext} from "../../../ui/elements/nexus-modal/NexusModal";
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import { rightsService } from '../../legacy/containers/avail/service/RightsService';
+import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
-import StatusCheck from "../rights-repository/components/status-check/StatusCheck";
+import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
+import DOPService from '../selected-for-planning/DOP-services';
 import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
-import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB} from './constants';
+import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg} from './constants';
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
+    addToast,
     setSelectedPrePlanRights,
     setPreplanRights,
     prePlanRepoRights,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
+    const [isFetchDOP, setIsFetchDOP] = useState(false);
     const node = useRef();
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
@@ -31,26 +37,76 @@ export const PrePlanActions = ({
     };
 
     const addToSelectedForPlanning = () => {
-        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id)))
-        .then(result => {
-            const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
-            if(nonEligibleRights && nonEligibleRights.length) {
-                setModalContentAndTitle(
-                    <StatusCheck
-                        message={STATUS_CHECK_MSG}
-                        nonEligibleTitles={nonEligibleRights}
-                        onClose={close}
-                    />,
-                    STATUS_CHECK_HEADER
-                );
-            }
-            else {
-                //TODO: call update rights api
-                //TODO: call DOP create/start Project apis here if all validation passed
-                //TODO: add rights to next tab - selected for planning
-            }
+        setIsFetchDOP(true);
+        Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true})))
+            .then(result => {
+                const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
+                if (nonEligibleRights && nonEligibleRights.length) {
+                    setModalContentAndTitle(
+                        <StatusCheck
+                            message={STATUS_CHECK_MSG}
+                            nonEligibleTitles={nonEligibleRights}
+                            onClose={close}
+                        />,
+                        STATUS_CHECK_HEADER
+                    );
+                }
+                if (eligibleRights && eligibleRights.length) {
+                    const requestData = DOPService.createProjectRequestData(eligibleRights);
+                    const mergedWithSelectedRights = eligibleRights.map(right => {
+                        const previousRight = selectedPrePlanRights.find(obj => obj.id === right.id);
+                        const prevKeywords = Array.isArray(previousRight['keywords']) ?
+                            previousRight['keywords'] : previousRight['keywords'].split(',');
+                        const keywords = uniq(prevKeywords.concat(right['keywords']));
+                        const modifiedRight =  {
+                        ...right,
+                            keywords,
+                            territory:  previousRight['territory'].map(territory => {
+                                const selected = right['territory'].find(
+                                    obj => obj.country === territory.country && obj.selected
+                                );
+                                return selected || territory;
+                            }),
+                        }
+                        return modifiedRight;
+                    });
+                    DOPService.createProject(requestData)
+                        .then(res => {
+                            if (res.id) {
+                                const projectId = res.id;
+                                Promise.all(
+                                    mergedWithSelectedRights.map(right => {
+                                        return rightsService.updateRightWithFullData(
+                                            right,
+                                            right.id,
+                                            true
+                                        );
+                                    })
+                                )
+                                    .then(() => {
+                                        DOPService.startProject(projectId);
+                                        dispatchSuccessToast(eligibleRights.length);
+                                        removeRightsFromPrePlan();
+                                        setIsFetchDOP(false);
+                                    })
+                                    .catch(() => setIsFetchDOP(false));
+                            }
+                        })
+                        .catch(() => setIsFetchDOP(false));
+                }
+            })
+            .catch(() => setIsFetchDOP(false));
+    };
+
+    const dispatchSuccessToast = noOfItems => {
+        addToast({
+            title: SUCCESS_TITLE,
+            description: getSuccessToastMsg(noOfItems),
+            icon: SUCCESS_ICON,
+            isAutoDismiss: true,
+            isWithOverlay: false,
         });
-    }
+    };
 
     return (
         <>
@@ -70,7 +126,15 @@ export const PrePlanActions = ({
                         data-test-id="add-to-pre-plan"
                         onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
                     >
-                        <div>{ADD_TO_SELECTED_PLANNING}</div>
+                        <div>
+                            {ADD_TO_SELECTED_PLANNING}
+                            {isFetchDOP && (
+                                <span>
+                                    {' '}
+                                    <Spinner size="small" />
+                                </span>
+                            )}
+                        </div>
                     </div>
                     <div
                         className={classNames(
@@ -90,6 +154,7 @@ export const PrePlanActions = ({
 
 PrePlanActions.propTypes = {
     selectedPrePlanRights: PropTypes.array,
+    addToast: PropTypes.func,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
@@ -97,6 +162,7 @@ PrePlanActions.propTypes = {
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
+    addToast: () => null,
     prePlanRepoRights: [],
 };
 

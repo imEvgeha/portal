@@ -209,19 +209,13 @@ export const SelectedRightsActions = ({
 
         const [eligibleRights, nonEligibleRights] = getEligibleRights(selectedRights);
 
-        const nonEligibleTitles = nonEligibleRights.reduce((acc, right) => {
-            const {title, status} = right || {};
-            const restrictedTitle = {title, status};
-            return [...acc, restrictedTitle];
-        }, []);
-
         setSelectedRights(nonEligibleRights);
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
 
         setModalContentAndTitle(
             <StatusCheck
                 message={STATUS_CHECK_MSG}
-                nonEligibleTitles={nonEligibleTitles}
+                nonEligibleTitles={nonEligibleRights}
                 onClose={onCloseStatusCheckModal}
             />,
             STATUS_CHECK_HEADER
