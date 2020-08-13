@@ -1,0 +1,30 @@
+.nexus-c-servicing-orders-table-status-tooltip {
+    width: 380px;
+    display: inline-flex;
+    flex-direction: column;
+    &__fields {
+        display: inline-flex;
+    }
+    &__field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: #42526E;
+        font-size: 11px;
+        width: 70px;
+        height: 45px;
+        line-height: initial;
+        &--label {
+            margin-bottom: 5px;
+        }
+        &--value {
+            background: #A5ADBA;
+            border-radius: 32px;
+            padding: 2px 8px;
+            text-align: center;
+            font-weight: bold;
+            min-width: 22px;
+            min-height: 20px;
+        }
+    }
+}

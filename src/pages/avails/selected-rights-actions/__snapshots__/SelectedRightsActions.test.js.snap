@@ -31,6 +31,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
 All selected rights have same content type,
 have Core Title IDs un-populated,
 either all are bonus rights(with unique sourceRightId) or none"
+          hasWhiteBackground={false}
           isDisabled={false}
         >
           <div>
@@ -47,6 +48,7 @@ either all are bonus rights(with unique sourceRightId) or none"
           content="This feature is enabled when:
 All selected rights have Core Title IDs populated,
 either all are bonus rights(with unique sourceRightId) or none"
+          hasWhiteBackground={false}
           isDisabled={false}
         >
           <div>
@@ -63,6 +65,7 @@ either all are bonus rights(with unique sourceRightId) or none"
           content="This feature is enabled when rights are licensed,
 have the same Core Title IDs (not blank),
 empty Source Right IDs and Status is Ready/ReadyNew"
+          hasWhiteBackground={false}
           isDisabled={false}
         >
           <div>
@@ -77,6 +80,7 @@ empty Source Right IDs and Status is Ready/ReadyNew"
       >
         <NexusTooltip
           content="Select Right to enable this feature"
+          hasWhiteBackground={false}
           isDisabled={false}
         >
           <div>
