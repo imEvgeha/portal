@@ -7,7 +7,7 @@
     "assetManagementURL": "https://asset-management-api.dev.vubiquity.com",
     "eventApiUrl": "https://eventapi.dev.vubiquity.com",
     "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
-    "DOPUrl": "https://dop.qa.vubiquity.com:8035",
+    "DOPUrl": "http://dops.dev.vubiquity.com:8040",
     "service": {
       "avails": "/avails-api/v1",
       "availsParser": "/avails-parser/v1",
@@ -18,7 +18,7 @@
       "eventApi": "/api/event-api/v1",
       "eventApiV2": "/api/event-api/v2",
       "servicingOrder": "",
-      "DOPProjectManagement": "/aff/rest/projectManagement/project"
+      "DOPProjectManagement": "/dop/be-services/projectManagement/project"
     }
   },
   "keycloak": {

@@ -13,6 +13,9 @@ import {
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
+import Constants from '../../../../../../../pages/avails/ingest-panel/constants';
+
+const {attachmentTypes: {EXCEL}} = Constants;
 
 const ManualRightEntryTableTabs = ({
     selectedTab,
@@ -110,7 +113,7 @@ const ManualRightEntryTableTabs = ({
                 isActive={selectedTab === ATTACHMENTS_TAB}
                 onClick={() => updateManualRightEntrySelectedTab(ATTACHMENTS_TAB)}
             >
-                Attachments ({attachments.length})
+                Attachments ({attachments.filter(a => a.attachmentType === EXCEL).length})
             </ManualRightEntryTab>
         </TabContainer>
     );
