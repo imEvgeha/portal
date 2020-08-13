@@ -7,7 +7,7 @@ const initialState = {
     pendingRight: {},
     rightMatchPageData: {},
     matchedRights: [],
-    matchedRightIds: [],
+    rightsForMatching: [],
     combinedRight: {},
     foundFocusRightInRightsRepository: false,
     mergeRights: false,
@@ -21,7 +21,7 @@ const rightMatchingReducer = (state = initialState, action) => {
         focusedRight,
         rightMatchPageData,
         matchedRights,
-        matchedRightIds,
+        rightsForMatching,
         combinedRight,
         pendingRight,
         foundFocusRightInRightsRepository,
@@ -50,10 +50,10 @@ const rightMatchingReducer = (state = initialState, action) => {
                 pendingRight,
                 mergeRights: true,
             };
-        case actionTypes.STORE_MATCHED_RIGHT_IDS_SUCCESS:
+        case actionTypes.STORE_MATCHED_RIGHTS_SUCCESS:
             return {
                 ...state,
-                matchedRightIds,
+                rightsForMatching,
             };
         case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
             return {

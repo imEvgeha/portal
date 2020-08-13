@@ -25,9 +25,9 @@ export const fetchMatchedRights = ids => ({
     payload: ids,
 });
 
-export const fetchCombinedRight = (rightIds, mapping) => ({
+export const fetchCombinedRight = payload => ({
     type: actionTypes.FETCH_COMBINED_RIGHT,
-    payload: {rightIds, mapping},
+    payload,
 });
 
 export const storeRightMatchDataWithIds = payload => ({
@@ -54,8 +54,8 @@ export const createNewRight = payload => ({
     payload,
 });
 
-export const storeMatchedRightIds = payload => ({
-    type: actionTypes.STORE_MATCHED_RIGHT_IDS,
+export const storeMatchedRights = payload => ({
+    type: actionTypes.STORE_MATCHED_RIGHTS,
     payload,
 });
 

@@ -32,7 +32,7 @@ import {
     fetchRightMatchingFieldSearchCriteria,
     fetchAndStoreFocusedRight,
     setFoundFocusRightInRightsRepository,
-    storeMatchedRightIds,
+    storeMatchedRights,
 } from '../rightMatchingActions';
 import {
     RIGHT_TO_MATCH_TITLE,
@@ -79,7 +79,7 @@ const RightToMatchView = ({
     setFoundFocusRightInRightsRepo,
     pendingRight,
     mergeRights,
-    storeMatchedRightIds,
+    storeMatchedRights,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchDisabled, setIsMatchDisabled] = useState(true);
@@ -161,12 +161,12 @@ const RightToMatchView = ({
 
     const handleMatchClick = () => {
         if (Array.isArray(selectedRows) && selectedRows.length > 0) {
-            const matchedRightIds = selectedRows.map(el => el.id);
+            const matchedRightIds = selectedRows.map(el => el.id).join();
             if (mergeRights) {
-                storeMatchedRightIds({matchedRightIds});
+                storeMatchedRights({rightsForMatching: selectedRows});
                 return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
             }
-            history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds.join()}`));
+            history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));
         }
     };
 
@@ -272,7 +272,7 @@ RightToMatchView.propTypes = {
     pendingRight: PropTypes.object,
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
-    storeMatchedRightIds: PropTypes.func,
+    storeMatchedRights: PropTypes.func,
 };
 
 RightToMatchView.defaultProps = {
@@ -290,7 +290,7 @@ RightToMatchView.defaultProps = {
     location: {},
     pendingRight: null,
     mergeRights: false,
-    storeMatchedRightIds: () => null,
+    storeMatchedRights: () => null,
 };
 
 const createMapStateToProps = () => {
@@ -316,7 +316,7 @@ const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     createNewRight: payload => dispatch(createNewRight(payload)),
     setFoundFocusRightInRightsRepo: payload => dispatch(setFoundFocusRightInRightsRepository(payload)),
-    storeMatchedRightIds: payload => dispatch(storeMatchedRightIds(payload)),
+    storeMatchedRights: payload => dispatch(storeMatchedRights(payload)),
 });
 
 export default compose(

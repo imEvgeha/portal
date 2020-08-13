@@ -20,6 +20,7 @@ import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {URL} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
+import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {
@@ -64,16 +65,18 @@ const MatchRightView = ({
     isMatching,
     pendingRight,
     mergeRights,
-    mergeRightIds,
+    rightsForMatching,
 }) => {
-    console.log(mergeRightIds);
+    const activeFocusedRight = mergeRights ? prepareRight(pendingRight) : focusedRight;
+    if (!activeFocusedRight.id) {
+        activeFocusedRight.id = null;
+    }
     const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
-    const [selectedMatchedRightIds, setSelectedMatchedRightIds] = useState([rightId, ...matchedRightIds.split(',')]);
+    const [selectedMatchedRights, setSelectedMatchedRights] = useState([activeFocusedRight, ...rightsForMatching]);
     const [cellColoringSchema, setCellColoringSchema] = useState();
-    const previousMatchedRights = usePrevious(matchedRights);
-    const previousSelectedMatchedRightIds = usePrevious(selectedMatchedRightIds);
+    const previousMatchedRights = usePrevious(selectedMatchedRights);
     const [combinedGridApi, setCombinedGridApi] = useState();
 
     // disable editing of columns
@@ -93,33 +96,21 @@ const MatchRightView = ({
             if (!focusedRight || focusedRight.id !== rightId) {
                 fetchFocusedRight(rightId);
             }
-            fetchMatchedRight(matchedRightIds.split(','));
         }
-    }, [matchedRightIds, rightId, columnDefs.length, focusedRight, fetchMatchedRight, fetchFocusedRight]);
+    }, [matchedRightIds, rightId, columnDefs.length, focusedRight, fetchFocusedRight]);
 
     // fetch combined rights
     useEffect(() => {
-        if (
-            !isEqual(previousMatchedRights, matchedRights) ||
-            !isEqual(previousSelectedMatchedRightIds, selectedMatchedRightIds)
-        ) {
-            const selectedMatchRights = [focusedRight, ...matchedRights].filter(right =>
-                selectedMatchedRightIds.some(id => id === right.id)
-            );
-            const schemas = createSchemaForColoring(selectedMatchRights, columnDefs);
-            setCellColoringSchema(schemas);
-            fetchCombinedRight(selectedMatchedRightIds, mapping);
-        }
-    }, [
-        columnDefs,
-        fetchCombinedRight,
-        focusedRight,
-        mapping,
-        matchedRights,
-        previousMatchedRights,
-        previousSelectedMatchedRightIds,
-        selectedMatchedRightIds,
-    ]);
+        const schemas = createSchemaForColoring(selectedMatchedRights, columnDefs);
+        setCellColoringSchema(schemas);
+        const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
+        // fetchCombinedRight(selectedMatchedRights, ids, mapping);
+        fetchCombinedRight({
+            rights: activeFocusedRight,
+            rightIds: ids,
+            mapping,
+        });
+    }, [columnDefs, fetchCombinedRight, mapping, rightsForMatching]);
 
     useEffect(() => {
         if (combinedGridApi) {
@@ -134,15 +125,15 @@ const MatchRightView = ({
         history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`));
     };
 
-    const onSaveCombinedRight = () => {
-        const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-        const payload = {
-            rightIds: selectedMatchedRightIds,
-            combinedRight: editedCombinedRight || combinedRight,
-            redirectPath,
-        };
-        saveCombinedRight(payload);
-    };
+    // const onSaveCombinedRight = () => {
+    //     const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
+    //     const payload = {
+    //         rightIds: selectedMatchedRightIds,
+    //         combinedRight: editedCombinedRight || combinedRight,
+    //         redirectPath,
+    //     };
+    //     saveCombinedRight(payload);
+    // };
 
     const onCombinedRightGridEvent = ({type, api}) => {
         const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
@@ -155,20 +146,20 @@ const MatchRightView = ({
         }
     };
 
-    const onMatchRightGridEvent = ({type, api}) => {
-        const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
-        if (type === FIRST_DATA_RENDERED) {
-            api.selectAll();
-        } else if (type === SELECTION_CHANGED) {
-            const selectedRows = api.getSelectedRows() || [];
-            const selectedIds = selectedRows.map(el => el.id);
-            if (!isEqual(selectedIds, selectedMatchedRightIds)) {
-                setSelectedMatchedRightIds(selectedIds);
-            }
-            // TODO: it would be better to apply via refreshCell, but it isn't working
-            api.redrawRows();
-        }
-    };
+    // const onMatchRightGridEvent = ({type, api}) => {
+    //     const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
+    //     if (type === FIRST_DATA_RENDERED) {
+    //         api.selectAll();
+    //     } else if (type === SELECTION_CHANGED) {
+    //         const selectedRows = api.getSelectedRows() || [];
+    //         const selectedIds = selectedRows.map(el => el.id);
+    //         if (!isEqual(selectedIds, selectedMatchedRightIds)) {
+    //             setSelectedMatchedRightIds(selectedIds);
+    //         }
+    //         // TODO: it would be better to apply via refreshCell, but it isn't working
+    //         api.redrawRows();
+    //     }
+    // };
 
     const getSelectedRows = api => {
         return api.getSelectedRows() || [];
@@ -213,7 +204,7 @@ const MatchRightView = ({
 
     // Sorted by start field. desc
     const matchedRightRowData =
-        [focusedRight, ...matchedRights].sort(
+        selectedMatchedRights.sort(
             (a, b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt))
         ) || [];
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -257,11 +248,11 @@ const MatchRightView = ({
                     <MatchedRightsNexusGrid
                         id="matchedRightsRepo"
                         columnDefs={matchedRightColumnDefs}
-                        rowData={matchedRightIds.split(',').length === matchedRights.length ? matchedRightRowData : []}
+                        rowData={matchedRightRowData}
                         domLayout="autoHeight"
                         rowSelection="multiple"
                         suppressRowClickSelection={true}
-                        onGridEvent={onMatchRightGridEvent}
+                        onGridEvent={/* onMatchRightGridEvent */ null}
                         getRowClass={applyRowRule}
                     />
                 )}
@@ -292,7 +283,7 @@ const MatchRightView = ({
                     <Button
                         className="nexus-c-button"
                         appearance="primary"
-                        onClick={onSaveCombinedRight}
+                        // onClick={onSaveCombinedRight}
                         isDisabled={!focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
                         isLoading={isMatching}
                     >
@@ -321,7 +312,7 @@ MatchRightView.propTypes = {
     pendingRight: PropTypes.object,
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
-    mergeRightIds: PropTypes.array,
+    rightsForMatching: PropTypes.array,
 };
 
 MatchRightView.defaultProps = {
@@ -340,7 +331,7 @@ MatchRightView.defaultProps = {
     match: {},
     pendingRight: null,
     mergeRights: false,
-    mergeRightIds: [],
+    rightsForMatching: [],
 };
 
 const createMapStateToProps = () => {
@@ -351,7 +342,7 @@ const createMapStateToProps = () => {
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
     const loadingSelector = createLoadingSelector([SAVE_COMBINED_RIGHT]);
     const pendingRightSelector = selectors.createPendingRightSelector();
-    const rightMatchingIdsSelector = selectors.createRightMatchingIdsSelector();
+    const rightsForMatchingSelector = selectors.createRightsForMatchingSelector();
 
     return state => ({
         focusedRight: focusedRightSelector(state),
@@ -362,16 +353,14 @@ const createMapStateToProps = () => {
         isMatching: loadingSelector(state),
         pendingRight: pendingRightSelector(state),
         mergeRights: state.avails.rightMatching.mergeRights,
-        mergeRightIds: rightMatchingIdsSelector(state),
+        rightsForMatching: rightsForMatchingSelector(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
-    fetchCombinedRight: (focusedRightId, matchedRightIds, mapping) => {
-        dispatch(fetchCombinedRight(focusedRightId, matchedRightIds, mapping));
-    },
+    fetchCombinedRight: payload => dispatch(fetchCombinedRight(payload)),
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
 });

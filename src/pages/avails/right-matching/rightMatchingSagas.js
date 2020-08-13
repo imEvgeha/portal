@@ -16,7 +16,7 @@ import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
 import {
     createRightById,
-    getCombinedRight,
+    getCombinedRightV2,
     getRightMatchingFieldSearchCriteria,
     getRightMatchingList,
     putCombinedRight,
@@ -132,11 +132,11 @@ function* storePendingRight({payload}) {
     });
 }
 
-function* storeRightMatchingIds({payload}) {
-    const {matchedRightIds} = payload;
+function* storeMatchedRights({payload}) {
+    const {rightsForMatching} = payload;
     yield put({
-        type: actionTypes.STORE_MATCHED_RIGHT_IDS_SUCCESS,
-        payload: {matchedRightIds},
+        type: actionTypes.STORE_MATCHED_RIGHTS_SUCCESS,
+        payload: {rightsForMatching},
     });
 }
 
@@ -166,16 +166,52 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
     }
 }
 
+// export function* fetchCombinedRight(requestMethod, {payload}) {
+//     const {rightIds, mapping} = payload || {};
+//     try {
+//         yield put({
+//             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
+//             payload: {},
+//         });
+
+//         const combinedRight = yield call(requestMethod, rightIds);
+
+//         // fix fields that are null but include subfields
+//         mapping.forEach(({javaVariableName}) => {
+//             const dotIndex = javaVariableName.indexOf('.');
+//             // has subfield
+//             if (dotIndex >= 0) {
+//                 const field = javaVariableName.substring(0, dotIndex);
+//                 if (combinedRight[field] === null && NULL_TO_OBJECT.includes(field)) {
+//                     combinedRight[field] = {};
+//                 }
+//                 if (combinedRight[field] === null && NULL_TO_ARRAY.includes(field)) {
+//                     combinedRight[field] = [];
+//                 }
+//             }
+//         });
+//         yield put({
+//             type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
+//             payload: {combinedRight},
+//         });
+//     } catch (error) {
+//         yield put({
+//             type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
+//             payload: {combinedRight: {}},
+//             error: true,
+//         });
+//     }
+// }
+
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {rightIds, mapping} = payload || {};
+    const {rights, rightIds, mapping} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
             payload: {},
         });
 
-        const combinedRight = yield call(requestMethod, rightIds);
-
+        const combinedRight = yield call(requestMethod, rightIds, rights);
         // fix fields that are null but include subfields
         mapping.forEach(({javaVariableName}) => {
             const dotIndex = javaVariableName.indexOf('.');
@@ -322,13 +358,13 @@ export function* rightMatchingWatcher() {
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
-        takeEvery(actionTypes.STORE_MATCHED_RIGHT_IDS, storeRightMatchingIds),
+        takeEvery(actionTypes.STORE_MATCHED_RIGHTS, storeMatchedRights),
         takeLatest(
             actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
             fetchAndStoreRightMatchingSearchCriteria
         ),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
-        takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
+        takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRightV2),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
         takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
