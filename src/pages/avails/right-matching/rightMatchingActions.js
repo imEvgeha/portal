@@ -5,11 +5,6 @@ export const createRightMatchingColumnDefs = payload => ({
     payload,
 });
 
-export const fetchRightMatchingFieldSearchCriteria = payload => ({
-    type: actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
-    payload,
-});
-
 export const fetchAndStoreFocusedRight = payload => ({
     type: actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT,
     payload,
@@ -46,10 +41,5 @@ export const saveCombinedRight = payload => ({
 
 export const createNewRight = payload => ({
     type: actionTypes.CREATE_NEW_RIGHT,
-    payload,
-});
-
-export const setFoundFocusRightInRightsRepository = payload => ({
-    type: actionTypes.FOUND_FOCUS_RIGHT_IN_RIGHTS_REPOSITORY,
     payload,
 });
