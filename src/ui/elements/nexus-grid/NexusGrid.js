@@ -5,8 +5,8 @@ import 'ag-grid-enterprise';
 import {debounce} from 'lodash';
 import './NexusGrid.scss';
 import LoadingCellRenderer from './elements/cell-renderer/LoadingCellRenderer';
-import TooltipCellRenderer from './elements/cell-renderer/tooltip-cell-renderer/TooltipCellRenderer';
 import getContextMenuItems from './elements/cell-renderer/getContextMenuItems';
+import TooltipCellRenderer from './elements/cell-renderer/tooltip-cell-renderer/TooltipCellRenderer';
 
 const SELECTION_DELAY = 5;
 
@@ -34,7 +34,8 @@ const NexusGrid = ({
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     return (
-        <div className={`
+        <div
+            className={`
             ag-theme-balham ${isGridHidden ? 'd-none' : ''}
             nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
@@ -87,4 +88,3 @@ NexusGrid.defaultProps = {
 };
 
 export default NexusGrid;
-

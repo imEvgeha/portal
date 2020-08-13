@@ -68,16 +68,15 @@ const MatchRightView = ({
     rightsForMatching,
 }) => {
     const activeFocusedRight = mergeRights ? prepareRight(pendingRight) : focusedRight;
-    if (!activeFocusedRight.id) {
-        activeFocusedRight.id = null;
-    }
-    const [editedCombinedRight, setEditedCombinedRight] = useState();
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const [selectedMatchedRights, setSelectedMatchedRights] = useState([activeFocusedRight, ...rightsForMatching]);
     const [cellColoringSchema, setCellColoringSchema] = useState();
     const previousMatchedRights = usePrevious(selectedMatchedRights);
     const [combinedGridApi, setCombinedGridApi] = useState();
+    const previousRoute = mergeRights
+        ? `/avails/right-matching`
+        : `/avails/history/${availHistoryIds}/right-matching/${rightId}`;
 
     // disable editing of columns
     const nonEditableMappings = mapping.map(mapping => ({...mapping, enableEdit: false}));
@@ -104,7 +103,7 @@ const MatchRightView = ({
         const schemas = createSchemaForColoring(selectedMatchedRights, columnDefs);
         setCellColoringSchema(schemas);
         const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
-        // fetchCombinedRight(selectedMatchedRights, ids, mapping);
+
         fetchCombinedRight({
             rights: activeFocusedRight,
             rightIds: ids,
@@ -120,9 +119,7 @@ const MatchRightView = ({
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
-        const {params} = match || {};
-        const {rightId, availHistoryIds} = params || {};
-        history.push(URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`));
+        history.push(URL.keepEmbedded(previousRoute));
     };
 
     // const onSaveCombinedRight = () => {
@@ -134,17 +131,6 @@ const MatchRightView = ({
     //     };
     //     saveCombinedRight(payload);
     // };
-
-    const onCombinedRightGridEvent = ({type, api}) => {
-        const {CELL_VALUE_CHANGED, READY} = GRID_EVENTS;
-        const result = [];
-        if (type === CELL_VALUE_CHANGED) {
-            api.forEachNode(({data}) => result.push(data));
-            setEditedCombinedRight(result[0]);
-        } else if (type === READY) {
-            setCombinedGridApi(api);
-        }
-    };
 
     // const onMatchRightGridEvent = ({type, api}) => {
     //     const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
@@ -237,7 +223,7 @@ const MatchRightView = ({
     return (
         <div className="nexus-c-match-right-view">
             <NexusTitle>
-                <Link to={URL.keepEmbedded(`/avails/history/${availHistoryIds}/right-matching/${rightId}`)}>
+                <Link to={URL.keepEmbedded(previousRoute)}>
                     <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
                 </Link>
                 <span>{MATCH_RIGHT_TITLE}</span>
@@ -268,7 +254,7 @@ const MatchRightView = ({
                                 ? [combinedRight]
                                 : []
                         }
-                        onGridEvent={onCombinedRightGridEvent}
+                        // onGridEvent={onCombinedRightGridEvent}
                         mapping={nonEditableMappings}
                         domLayout="autoHeight"
                         context={cellColoringSchema}
