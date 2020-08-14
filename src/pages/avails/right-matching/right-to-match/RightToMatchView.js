@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -69,12 +70,16 @@ const RightToMatchView = ({
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
-        focusedRight &&
-            getMatchingCandidates(rightId, focusedRight.temporaryPriceReduction).then(response => {
+        const tpr =
+            get(newPendingRight, '[0].temporaryPriceReduction', false) ||
+            get(focusedRight, 'temporaryPriceReduction', false) ||
+            false;
+        (focusedRight.id || newPendingRight.length) &&
+            getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
                 setTotalCount(response.length);
                 setMatchingCandidates(response);
             });
-    }, [focusedRight.id]);
+    }, [focusedRight.id, newPendingRight]);
 
     useEffect(() => {
         // TODO: refactor this - unnecessary call
