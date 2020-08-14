@@ -1,25 +1,53 @@
+@import '../../../styles/atlaskit/reset';
+@import '../../../styles/atlaskit/theme';
+
 .nexus-status-tag {
-  border-radius: 3px;
-  width: 75px;
-  height: 16px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 11px;
-  color: #FFFFFF;
-  &.completed {
-    background: #36B37E;
-  }
-  &.manual, &.in_progress {
-    background: #00B8D9;
-  }
-  &.pending {
-    background: #737E91;
-  }
-  &.failed {
-    background: #DE350B;
-  }
-  &.on_hold {
-    background: #FFC400;
-  }
+    border-radius: 3px;
+    width: 75px;
+    height: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+    color: #ffffff;
+
+    &--completed {
+        background: #36b37e;
+    }
+
+    &--manual,
+    &--in-progress {
+        background: #00b8d9;
+    }
+
+    &--pending {
+        background: #737e91;
+    }
+
+    &--failed {
+        background: #de350b;
+    }
+
+    &--on-hold {
+        background: #ffc400;
+    }
+
+    &--fo-not-started {
+        background: map-get($light-neutral-colors, light-neutral-1);
+    }
+    &--fo-in-progress {
+        background: map-get($secondary-colors, teal);
+    }
+    &--fo-on-hold {
+        background: map-get($secondary-colors, yellow);
+    }
+    &--fo-complete {
+        background: map-get($secondary-colors, green);
+    }
+    &--fo-cancelled {
+        background: map-get($secondary-colors, red);
+    }
+    &--fo-failed {
+        background: map-get($secondary-colors, red);
+    }
 }

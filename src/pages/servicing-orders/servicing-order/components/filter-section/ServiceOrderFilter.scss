@@ -1,42 +1,27 @@
-@import '../../../../../styles/mixins.scss';
+@import '../../../../../styles/atlaskit/reset';
+@import '../../../../../styles/atlaskit/mixins';
 
 .so-panel-filter-detail {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  justify-content: space-around;
-  @include addSpace('margin-top', 2);
-  @include addSpace('margin-left', 12);
-  @include addSpace('margin-right', 6);
-
-
-  &__row {
-    margin-bottom: 1rem;
-    @include addSpace('margin-bottom', 3);
-
-    &--inline {
-      display: flex;
-      flex-direction: row;
-    }
-  }
-
-
-
-  &__drawer {
-    margin-left: 20px;
-    margin-top: 2px;
-  }
-
-  &__dropdowns {
     display: flex;
-    margin-top: 1rem;
-  }
+    flex-direction: column;
+    text-align: left;
+    justify-content: space-around;
+    @include margin(2, 6, 0, 12);
 
-  &__dropdown {
-    flex: 1;
+    &__row {
+        @include addSpacing('margin-bottom', 3);
 
-    &:first-child {
-      margin-right: 8px;
+        &--inline {
+            display: flex;
+            flex-direction: row;
+        }
     }
-  }
+
+    &__dropdown {
+        flex: 1;
+
+        &:first-child {
+            @include addSpacing('margin-right', 2);
+        }
+    }
 }

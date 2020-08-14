@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import File from '../../../../../assets/file.svg';
 import Constants from '../fulfillment-order/constants';
 import './FulfillmentOrderPanel.scss';
@@ -12,14 +13,14 @@ const FulfillmentOrderPanel = ({
     selected,
     handleFulfillmentOrderChange,
     productDescription,
+    isChild,
 }) => {
+    const panelClassNames = classnames('nexus-c-fulfillment-order-panel', {
+        'nexus-c-fulfillment-order-panel--is-selected': selected,
+        'nexus-c-fulfillment-order-panel--is-child': isChild,
+    });
     return (
-        <div
-            className={`nexus-c-fulfillment-order-panel  ${
-                selected ? 'nexus-c-fulfillment-order-panel--is-selected' : ''
-            }`}
-            onClick={() => handleFulfillmentOrderChange(id)}
-        >
+        <div className={panelClassNames} onClick={() => handleFulfillmentOrderChange(id)}>
             <div className="nexus-c-fulfillment-order-panel__title-and-date">
                 <div className="nexus-c-fulfillment-order-panel__title-container">
                     <File className="nexus-c-fulfillment-order-panel__file-icon" />
@@ -46,6 +47,7 @@ FulfillmentOrderPanel.propTypes = {
     selected: PropTypes.bool,
     productDescription: PropTypes.string,
     externalId: PropTypes.string,
+    isChild: PropTypes.bool,
 };
 
 FulfillmentOrderPanel.defaultProps = {
@@ -56,6 +58,7 @@ FulfillmentOrderPanel.defaultProps = {
     selected: false,
     productDescription: '',
     externalId: '',
+    isChild: false,
 };
 
 export default FulfillmentOrderPanel;

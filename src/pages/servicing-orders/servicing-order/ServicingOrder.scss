@@ -1,22 +1,22 @@
 .servicing-order {
-  display: flex;
-  height: 100%;
-
-  &__left {
     display: flex;
-    flex-direction: column;
-    min-width: 390px;
-    max-width: 400px;
-    border-right: 1px solid #DCDCDC;
-    padding: 24px 0 0;
-  }
+    min-height: 100%;
 
-  &__right {
-    padding: 24px 20px 0;
-    width: 100%;
-    background-color: white;
-    overflow: auto;
-  }
+    &__left {
+        display: flex;
+        flex-direction: column;
+        min-width: 390px;
+        max-width: 400px;
+        border-right: 1px solid #dcdcdc;
+        padding: 24px 0 0;
+    }
+
+    &__right {
+        padding: 24px 20px 0;
+        width: 100%;
+        background-color: white;
+        overflow: auto;
+    }
 }
 
 .servicing-order__tables {

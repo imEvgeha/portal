@@ -2,7 +2,7 @@
 
 exports[`FulfillmentOrderPanel should match snapshot 1`] = `
 <div
-  className="nexus-c-fulfillment-order-panel  "
+  className="nexus-c-fulfillment-order-panel"
   onClick={[Function]}
 >
   <div
