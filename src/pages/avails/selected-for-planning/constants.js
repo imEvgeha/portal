@@ -8,7 +8,7 @@ export const getSearchPayload = (user, offset, limit) => ({
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: 'xx1234', // TODO: Fix username
+            value: user,
         },
         {
             fieldName: 'STATUS',
