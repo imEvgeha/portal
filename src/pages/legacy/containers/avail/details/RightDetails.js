@@ -351,7 +351,7 @@ class RightDetails extends React.Component {
     }
 
     flattenRight(right) {
-        let  rightCopy = {};
+        const  rightCopy = {};
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
             if (val || val === false || val === null) {
