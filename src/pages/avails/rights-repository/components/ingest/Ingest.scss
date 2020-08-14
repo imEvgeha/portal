@@ -1,4 +1,3 @@
-@import '../../../../../styles/atlaskit/theme';
 @import '../../../../../styles/atlaskit/mixins';
 
 .nexus-c-avails-ingest {
@@ -74,11 +73,11 @@
                     }
 
                     &.filter-active {
-                        background: #42526e;
+                        background: map-get($dark-neutral-colors, dark-neutral-5);
                         color: map-get($light-neutral-colors, light-neutral-6);
 
                         &:hover {
-                            background: #42526e;
+                            background: map-get($dark-neutral-colors, dark-neutral-5);
                             color: map-get($light-neutral-colors, light-neutral-6);
                         }
                     }
