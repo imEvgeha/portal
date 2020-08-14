@@ -1,4 +1,3 @@
-@import '../../../styles/atlaskit/reset';
 @import '../../../styles/atlaskit/theme';
 @import '../../../styles/atlaskit/mixins';
 
@@ -9,7 +8,6 @@
     @include addSpacing(min-width, 84);
     border-right: 1px solid map-get($light-neutral-colors, light-neutral-1);
     @include padding(6, 0, 0);
-    // @include addSpacing(margin-right, 2.5);
     color: map-get($dark-neutral-colors, dark-neutral-5);
 
     &__list {

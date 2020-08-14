@@ -35,18 +35,23 @@
     &--fo-not-started {
         background: map-get($light-neutral-colors, light-neutral-1);
     }
+
     &--fo-in-progress {
         background: map-get($secondary-colors, teal);
     }
+
     &--fo-on-hold {
         background: map-get($secondary-colors, yellow);
     }
+
     &--fo-complete {
         background: map-get($secondary-colors, green);
     }
+
     &--fo-cancelled {
         background: map-get($secondary-colors, red);
     }
+
     &--fo-failed {
         background: map-get($secondary-colors, red);
     }
