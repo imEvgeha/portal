@@ -29,7 +29,7 @@ const EventManagement = () => {
                 // Call api to get event by ID
                 if (selectedRow) {
                     getEventById(selectedRow.id).then(evt => {
-                        setSelectedEvent(get(evt, 'event', null));
+                        setSelectedEvent({...get(evt, 'event', null), id:selectedRow.id});
                     });
                 }
                 break;

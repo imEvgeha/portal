@@ -10,6 +10,7 @@ describe('EventDrawer', () => {
                 eventId: '123',
             },
             message: {},
+            id: '123',
         };
         const wrapper = shallow(
             <EventDrawer
