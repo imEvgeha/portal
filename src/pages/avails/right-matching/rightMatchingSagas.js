@@ -166,43 +166,6 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
     }
 }
 
-// export function* fetchCombinedRight(requestMethod, {payload}) {
-//     const {rightIds, mapping} = payload || {};
-//     try {
-//         yield put({
-//             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
-//             payload: {},
-//         });
-
-//         const combinedRight = yield call(requestMethod, rightIds);
-
-//         // fix fields that are null but include subfields
-//         mapping.forEach(({javaVariableName}) => {
-//             const dotIndex = javaVariableName.indexOf('.');
-//             // has subfield
-//             if (dotIndex >= 0) {
-//                 const field = javaVariableName.substring(0, dotIndex);
-//                 if (combinedRight[field] === null && NULL_TO_OBJECT.includes(field)) {
-//                     combinedRight[field] = {};
-//                 }
-//                 if (combinedRight[field] === null && NULL_TO_ARRAY.includes(field)) {
-//                     combinedRight[field] = [];
-//                 }
-//             }
-//         });
-//         yield put({
-//             type: actionTypes.FETCH_COMBINED_RIGHT_SUCCESS,
-//             payload: {combinedRight},
-//         });
-//     } catch (error) {
-//         yield put({
-//             type: actionTypes.FETCH_COMBINED_RIGHT_ERROR,
-//             payload: {combinedRight: {}},
-//             error: true,
-//         });
-//     }
-// }
-
 export function* fetchCombinedRight(requestMethod, {payload}) {
     const {rights, rightIds, mapping} = payload || {};
     try {
