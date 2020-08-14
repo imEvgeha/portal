@@ -1,31 +1,45 @@
+@import '../../../../../styles/atlaskit/reset';
+@import '../../../../../styles/atlaskit/theme';
+@import '../../../../../styles/atlaskit/mixins';
+
 .ingest-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  padding: 0 22px;
-  &__title {
-    display: flex;
-    font-size: 29px;
-    align-items: center;
-    svg {
-      margin-right: 16px;
-    }
-  }
-  &__actions {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    @include padding(0, 6, 6);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-1);
+
+    &--no-border {
+        border-bottom: none;
+    }
+
+    &__title-container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__title {
+        margin-top: 0;
+        @include margin(0, 0, 0, 4);
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+
+        svg {
+            cursor: pointer;
+        }
+
+        &--pop {
+            margin-right: 20px;
+            fill: #a5adba;
+        }
+    }
+
     svg {
-      cursor: pointer;
+        width: 20px;
+        height: 20px;
+        fill: #42526e;
     }
-    &--pop {
-      margin-right: 20px;
-      fill: #A5ADBA;
-    }
-  }
-  svg {
-    width: 20px;
-    height: 20px;
-    fill: #42526E;
-  }
 }

@@ -1,24 +1,22 @@
-.ingest-panel {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 335px;
-  border-right: 1px solid #DCDCDC;
-  padding: 24px 0 0;
-  margin-right: 10px;
-  color: #42526E;
-}
+@import '../../../styles/atlaskit/reset';
+@import '../../../styles/atlaskit/theme';
+@import '../../../styles/atlaskit/mixins';
 
-.ingest-panel__list {
+.ingest-panel {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    max-height: 100%;
+    overflow: hidden;
+    @include addSpacing(min-width, 84);
+    border-right: 1px solid map-get($light-neutral-colors, light-neutral-1);
+    @include padding(6, 0, 0);
+    // @include addSpacing(margin-right, 2.5);
+    color: map-get($dark-neutral-colors, dark-neutral-5);
 
-    // TODO: workaround - we should have
-    // the same class for each child of this element
-    & > :first-child {
-        border-top: 1px solid #DCDCDC;
+    &__list {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        max-height: 100%;
     }
 }

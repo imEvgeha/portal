@@ -3,11 +3,14 @@
 @import '../../../../../styles/atlaskit/mixins';
 
 .ingest-report {
+    width: 100%;
+    @include addSpacing(margin-top, 3.5);
     display: inline-flex;
     flex-direction: column;
 
     &__fields {
         display: inline-flex;
+        justify-content: space-between;
     }
 
     &__field {

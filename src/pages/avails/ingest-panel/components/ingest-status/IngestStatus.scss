@@ -7,7 +7,7 @@
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 15px;
+    @include addSpacing(padding-left, 4.5);
 
     &__date-and-type {
         display: flex;
@@ -15,11 +15,11 @@
     }
 
     &__date {
-        font-size: 11px;
-        color: #737e91;
+        @include heading(h100);
+        @include addSpacing(margin-top, 0);
     }
 
     &__type {
-        margin-left: 8px;
+        @include addSpacing(margin-left, 2);
     }
 }

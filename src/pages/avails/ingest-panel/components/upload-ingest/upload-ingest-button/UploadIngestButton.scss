@@ -1,11 +1,11 @@
+@import '../../../../../../styles/atlaskit/reset';
+@import '../../../../../../styles/atlaskit/mixins';
+
 .ingest-upload {
-  padding: 10px 20px;
-  svg {
-    height: 15px;
-    width: 15px;
-    cursor: pointer;
-  }
-  &__input {
-    display: none;
-  }
+    @include padding(2.5, 5);
+    border-top: 1px solid map-get($light-neutral-colors, light-neutral-1);
+
+    &__input {
+        display: none;
+    }
 }

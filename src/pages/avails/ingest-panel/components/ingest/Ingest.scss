@@ -4,9 +4,13 @@
 
 .nexus-c-avail-ingest {
     width: 100%;
-    padding: 12px;
-    border-bottom: 1px solid #dcdcdc;
-    background: #ffffff;
+    @include padding(3);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-1);
+    background: map-get($light-neutral-colors, light-neutral-6);
+
+    &:hover {
+        background: map-get($light-neutral-colors, light-neutral-4);
+    }
 
     &--is-in-bundle {
         border-left: solid map-get($light-neutral-colors, light-neutral-1);
@@ -15,58 +19,41 @@
         @include addSpacing(margin-left, 0.5);
     }
 
-    &:hover {
-        background: #fafafa;
-    }
-
     &--is-selected {
-        background: #e0ecf7;
+        background: map-get($blues, B50);
 
         &:hover {
-            background: #e0ecf7;
+            background: map-get($blues, B50);
         }
     }
 
-    .ingest-panel__list & {
-        cursor: pointer;
-    }
-}
-
-.nexus-c-avail-ingest__details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.nexus-c-avail-ingest__chevron {
-    svg {
-        width: 15px;
-        height: 15px;
-        fill: #a5adba;
-        cursor: pointer;
-    }
-
-    &--is-opened {
-        svg {
-            transform: rotate(90deg);
-        }
-    }
-}
-
-.nexus-c-avail-ingest .ingest-report {
-    width: 100%;
-    margin-top: 15px;
-
-    &__fields {
+    &__details {
+        display: flex;
         justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
-}
 
-.nexus-c-avail-ingest__status {
-    width: 100%;
+    &__chevron {
+        svg {
+            @include addSpacing(width, 3);
+            @include addSpacing(height, 3);
+            fill: map-get($mid-neutral-colors, mid-neutral-7);
+            cursor: pointer;
+        }
 
-    &--is-not-expandable {
-        margin-left: 15px;
+        &--is-opened {
+            svg {
+                transform: rotate(90deg);
+            }
+        }
+    }
+
+    &__status {
+        width: 100%;
+
+        &--is-not-expandable {
+            @include addSpacing(margin-left, 4);
+        }
     }
 }

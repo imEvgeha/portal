@@ -60,6 +60,7 @@
         .ingest-report {
             border-right: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
             @include addSpacing(padding-right, 4);
+            @include addSpacing(margin-top, 0);
 
             &__field {
                 @include addSpacing(width, 12);
