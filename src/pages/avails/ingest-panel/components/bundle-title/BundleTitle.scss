@@ -1,15 +1,11 @@
+@import '../../../../../styles/atlaskit/theme';
+@import '../../../../../styles/atlaskit/mixins';
+
 .nexus-c-bundle-title {
-    font-size: 14px;
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-
-    svg {
-        width: 18px;
-        height: 18px;
-        fill: #a5adba;
-    }
 
     &__details {
         width: 100%;
@@ -18,12 +14,15 @@
     }
 
     &__folder {
-        margin-right: 12px;
+        @include addSpacing(margin-right, 3);
+        @include addSpacing(width, 4.5);
+        @include addSpacing(height, 4.5);
+        fill: map-get($mid-neutral-colors, mid-neutral-7);
     }
 
     &__licensor {
         font-weight: bold;
-        margin-right: 12px;
+        @include addSpacing(margin-right, 3);
     }
 
     &__licensor-and-count {
