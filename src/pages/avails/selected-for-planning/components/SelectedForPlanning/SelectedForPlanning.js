@@ -8,6 +8,7 @@ import withInfiniteScrolling from '../../../../../ui/elements/nexus-grid/hoc/wit
 import withSideBar from '../../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import DOPService from '../../DOP-services';
 import {COLUMN_MAPPINGS, SELECTED_FOR_PLANNING_TAB} from '../../constants';
+import {DOP_PROJECT_STATUS_IN_PROGRESS, EXCLUDED_ATTRIBUTES, EXCLUDED_STATUSES} from './constants';
 
 const prepareSelectForPlanningData = async (sort, offset, limit) => {
     // Using object for easier parsing of getProjectAttributes response
@@ -21,8 +22,11 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
 
     // Extract project IDs for incomplete projects to display in SelectForPlanning table
     // TODO: Use projectsList when BE defect is fixed
-    [{id: 'Project8680', status: 'CIN PROGRESS'}, {id: 'Project8679', status: 'CIN PROGRESS'}].forEach(({id, status}) => {
-        if (!['COMPLETED', 'CANCELLED'].includes(status)) {
+    [
+        {id: 'Project8680', status: DOP_PROJECT_STATUS_IN_PROGRESS},
+        {id: 'Project8679', status: DOP_PROJECT_STATUS_IN_PROGRESS},
+    ].forEach(({id, status}) => {
+        if (!EXCLUDED_STATUSES.includes(status)) {
             projectIds.push(id);
             data[id] = {status};
         }
@@ -33,7 +37,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
 
     projectAttributes.forEach(({code, value, projectId}) => {
         // Filter out unwanted fields
-        if (!['PROJECT_NAME'].includes(code)) {
+        if (!EXCLUDED_ATTRIBUTES.includes(code)) {
             data[projectId][code] = value;
             // Adding projectId to be used for starting DOP project
             // in cellRenderer's onClick

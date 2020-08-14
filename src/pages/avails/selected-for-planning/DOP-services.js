@@ -43,8 +43,10 @@ const DOPService = {
         const selectedRightArray = !!data.length && data.map((right, index) => {
             return {code: `selectedRightID[${index}]`, value: right.id}
         });
+
         const selectedTerritoryArray = () => {
             const arr = [];
+
             !!data.length && data.map(right => {
                 right.territory.map((territory, territoryIndex) => {
                     arr.push({
@@ -53,24 +55,28 @@ const DOPService = {
                     });
                 });
             });
+
             return arr;
         };
+
         const utc = moment().utc();
+
         let req = {
-            name : `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
-            projectType : { id: PROJECT_ID },
-            action : 'Provide',
-            plannedStartDate:utc.toISOString(),
-            manager: { userId :username },
-            projectAttribute :[
+            name: `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
+            projectType: {id: PROJECT_ID},
+            action: 'Provide',
+            plannedStartDate: utc.toISOString(),
+            manager: {userId: username},
+            projectAttribute: [
                 {
-                    code: "rightsPreSelected",
+                    code: 'rightsPreSelected',
                     value: true
                 },
                 ...selectedRightArray,
-                ...selectedTerritoryArray()
-            ]
+                ...selectedTerritoryArray(),
+            ],
         };
+
         return req;
     },
     createProject: (data) => {
