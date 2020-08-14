@@ -2,23 +2,18 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {isEmpty, isEqual} from 'lodash';
+import {isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
-import {
-    defineCheckboxSelectionColumn,
-    defineColumn,
-    updateColumnDefs,
-} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineColumn, updateColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {URL} from '../../../../util/Common';
-import usePrevious from '../../../../util/hooks/usePrevious';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
@@ -70,10 +65,8 @@ const MatchRightView = ({
     const activeFocusedRight = mergeRights ? prepareRight(pendingRight) : focusedRight;
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
-    const [selectedMatchedRights, setSelectedMatchedRights] = useState([activeFocusedRight, ...rightsForMatching]);
+    const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
     const [cellColoringSchema, setCellColoringSchema] = useState();
-    const previousMatchedRights = usePrevious(selectedMatchedRights);
-    const [combinedGridApi, setCombinedGridApi] = useState();
     const previousRoute = mergeRights
         ? `/avails/right-matching`
         : `/avails/history/${availHistoryIds}/right-matching/${rightId}`;
@@ -98,54 +91,41 @@ const MatchRightView = ({
         }
     }, [matchedRightIds, rightId, columnDefs.length, focusedRight, fetchFocusedRight]);
 
-    // fetch combined rights
+    // fetch combined right
     useEffect(() => {
         const schemas = createSchemaForColoring(selectedMatchedRights, columnDefs);
         setCellColoringSchema(schemas);
-        const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
-
-        fetchCombinedRight({
-            rights: activeFocusedRight,
-            rightIds: ids,
-            mapping,
-        });
-    }, [columnDefs, fetchCombinedRight, mapping, rightsForMatching]);
-
-    useEffect(() => {
-        if (combinedGridApi) {
-            combinedGridApi.redrawRows();
+        if (selectedMatchedRights.length) {
+            const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
+            fetchCombinedRight({
+                rights: mergeRights ? activeFocusedRight : null,
+                rightIds: ids,
+                mapping,
+            });
         }
-    }, [cellColoringSchema, combinedGridApi]);
+    }, [fetchCombinedRight, selectedMatchedRights.length]);
 
     // TODO:  we should handle this via router Link
     const onCancel = () => {
         history.push(URL.keepEmbedded(previousRoute));
     };
 
-    // const onSaveCombinedRight = () => {
-    //     const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-    //     const payload = {
-    //         rightIds: selectedMatchedRightIds,
-    //         combinedRight: editedCombinedRight || combinedRight,
-    //         redirectPath,
-    //     };
-    //     saveCombinedRight(payload);
-    // };
+    const onSaveCombinedRight = () => {
+        const redirectPath = mergeRights ? `/avails/history/${availHistoryIds}/right-matching` : `avails/v2`;
+        const payload = {
+            rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
+            combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
+            redirectPath,
+        };
+        saveCombinedRight(payload);
+    };
 
-    // const onMatchRightGridEvent = ({type, api}) => {
-    //     const {FIRST_DATA_RENDERED, SELECTION_CHANGED} = GRID_EVENTS;
-    //     if (type === FIRST_DATA_RENDERED) {
-    //         api.selectAll();
-    //     } else if (type === SELECTION_CHANGED) {
-    //         const selectedRows = api.getSelectedRows() || [];
-    //         const selectedIds = selectedRows.map(el => el.id);
-    //         if (!isEqual(selectedIds, selectedMatchedRightIds)) {
-    //             setSelectedMatchedRightIds(selectedIds);
-    //         }
-    //         // TODO: it would be better to apply via refreshCell, but it isn't working
-    //         api.redrawRows();
-    //     }
-    // };
+    const onMatchRightGridEvent = ({type, api}) => {
+        const {FIRST_DATA_RENDERED} = GRID_EVENTS;
+        if (type === FIRST_DATA_RENDERED) {
+            api.selectAll();
+        }
+    };
 
     const getSelectedRows = api => {
         return api.getSelectedRows() || [];
@@ -193,14 +173,14 @@ const MatchRightView = ({
         selectedMatchedRights.sort(
             (a, b) => a && b && moment.utc(a.originallyReceivedAt).diff(moment.utc(b.originallyReceivedAt))
         ) || [];
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+
+    // checkboxes disabled
+    // const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
 
     // TODO: refactor column defs
     const updatedMatchedRightColumnDefs = updateColumnDefs(columnDefs, {cellClass: applyColumnRule});
     const matchedRightColumnDefs =
-        columnDefs.length && matchedRightRowData.length > 1
-            ? [checkboxSelectionColumnDef, ...updatedMatchedRightColumnDefs]
-            : columnDefs;
+        columnDefs.length && matchedRightRowData.length > 1 ? [...updatedMatchedRightColumnDefs] : columnDefs;
 
     const updatedCombinedColumnDefs = cellColoringSchema
         ? updateColumnDefs(columnDefs, {
@@ -238,7 +218,7 @@ const MatchRightView = ({
                         domLayout="autoHeight"
                         rowSelection="multiple"
                         suppressRowClickSelection={true}
-                        onGridEvent={/* onMatchRightGridEvent */ null}
+                        onGridEvent={onMatchRightGridEvent}
                         getRowClass={applyRowRule}
                     />
                 )}
@@ -249,12 +229,7 @@ const MatchRightView = ({
                     <CombinedRightNexusGrid
                         id="combinedRightRepo"
                         columnDefs={combinedRightColumnDefs}
-                        rowData={
-                            !isEmpty(combinedRight) && matchedRights.length === matchedRightIds.split(',').length
-                                ? [combinedRight]
-                                : []
-                        }
-                        // onGridEvent={onCombinedRightGridEvent}
+                        rowData={!isEmpty(combinedRight) ? [combinedRight] : []}
                         mapping={nonEditableMappings}
                         domLayout="autoHeight"
                         context={cellColoringSchema}
@@ -269,8 +244,8 @@ const MatchRightView = ({
                     <Button
                         className="nexus-c-button"
                         appearance="primary"
-                        // onClick={onSaveCombinedRight}
-                        isDisabled={!focusedRight.id || matchedRights.length === 0 || !combinedRight.id}
+                        onClick={onSaveCombinedRight}
+                        isDisabled={!combinedRight.id}
                         isLoading={isMatching}
                     >
                         {SAVE_BUTTON}
@@ -302,9 +277,9 @@ MatchRightView.propTypes = {
 };
 
 MatchRightView.defaultProps = {
-    focusedRight: null,
+    focusedRight: {},
     matchedRights: [],
-    combinedRight: null,
+    combinedRight: {},
     columnDefs: [],
     mapping: null,
     fetchFocusedRight: null,

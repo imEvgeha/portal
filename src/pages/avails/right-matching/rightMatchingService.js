@@ -16,15 +16,13 @@ export const getRightMatchingList = (searchCriteria = {}, page, size, sortedPara
     return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
-export const getCombinedRight = rightIds => {
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
-    return nexusFetch(url);
-};
-
-export const getCombinedRightV2 = (rightIds, rights) => {
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
+export const getCombinedRight = (rightIds, right) => {
+    const url = `${config.get('gateway.url')}${config.get(
+        'gateway.service.avails'
+    )}/rights/match/combined?rightIds=${rightIds}`;
     return nexusFetch(url, {
-        body: JSON.stringify(rights),
+        method: 'put',
+        ...(right && {body: JSON.stringify(right)}),
     });
 };
 

@@ -16,7 +16,7 @@ import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
 import {
     createRightById,
-    getCombinedRightV2,
+    getCombinedRight,
     getRightMatchingFieldSearchCriteria,
     getRightMatchingList,
     putCombinedRight,
@@ -364,7 +364,7 @@ export function* rightMatchingWatcher() {
             fetchAndStoreRightMatchingSearchCriteria
         ),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
-        takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRightV2),
+        takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
         takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
