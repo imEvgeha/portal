@@ -25,7 +25,7 @@ import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
-    const headers = get(event, 'headers', {});
+    const headers = { ...get(event, 'headers', {}), id: event.id };
     const attachments = get(message, 'attachments', {});
 
     const decodeBase64 = (data, mimeType) => {

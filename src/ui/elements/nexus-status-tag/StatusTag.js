@@ -4,11 +4,8 @@ import Constants from './Constants';
 import './StatusTag.scss';
 
 const StatusTag = ({status}) => {
-    return (
-        <div className={`nexus-status-tag ${status.toLowerCase()}`}>
-            {Constants[status]}
-        </div>
-    );
+    const statusClassNameModifier = status.toLowerCase().replace(/_/g, '-');
+    return <div className={`nexus-status-tag nexus-status-tag--${statusClassNameModifier}`}>{Constants[status]}</div>;
 };
 
 StatusTag.propTypes = {

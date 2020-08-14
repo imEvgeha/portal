@@ -1,50 +1,14 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import mockFulfillmentOrderResponse from '../../responses/sample-fulfillment-order-response.json';
 import {SORT_DIRECTION} from '../filter-section/constants';
 import HeaderSection from './HeaderSection';
 
 describe('HeaderSection', () => {
     describe('HTML content', () => {
-        const serviceOrder = {
-            soID: '12345',
-            customer: 'Paramount',
-            creationDate: '10/09/2020',
-            createdBy: 'John Wick',
-            fulfillmentOrders: [
-                {
-                    fulfillmentOrderId: 'VU000134567-001',
-                    external_id: 'VU000134567-001',
-                    dueDate: '10/05/2021',
-                    definition: {
-                        dueDate: '10/05/2021',
-                    },
-                    status: 'COMPLETED',
-                    product_description: 'Movie1',
-                },
-                {
-                    fulfillmentOrderId: 'VU000134597-002',
-                    external_id: 'VU000134597-002',
-                    dueDate: '09/05/2021',
-                    definition: {
-                        dueDate: '09/05/2021',
-                    },
-                    status: 'PENDING',
-                    product_description: 'Movie2',
-                },
-                {
-                    fulfillmentOrderId: 'VU000134597-003',
-                    external_id: 'VU000134597-003',
-                    dueDate: '11/05/2021',
-                    definition: {
-                        dueDate: '11/05/2021',
-                    },
-                    status: 'PENDING',
-                    product_description: 'Movie3',
-                },
-            ],
-        };
+        const mockResponse = mockFulfillmentOrderResponse;
 
-        const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
+        const wrapper = shallow(<HeaderSection orderDetails={mockResponse} />);
 
         it('should render header title', () => {
             expect(wrapper.find('.panel-header__title--text').text()).toEqual('Servicing Order');
@@ -55,42 +19,21 @@ describe('HeaderSection', () => {
             expect(wrapper.find('Link').props().to).toEqual('/servicing-orders');
         });
 
-        it('should render 3 FulfillmentOrderPanel components', () => {
-            expect(wrapper.find('FulfillmentOrderPanel').length).toEqual(3);
+        it('sorts due dates by default - ascending', () => {
+            const sortDirection = wrapper.find('ServiceOrderFilter').prop('dueDateSortDirection');
+
+            expect(sortDirection).toEqual(SORT_DIRECTION[0]);
         });
 
-        it('should find filter element', () => {
-            expect(wrapper.find('.panel-header__filter').length).toEqual(1);
+        it('does not filter Fulfillment Orders by default', () => {
+            const {fulfillmentOrders} = wrapper.find('ServiceOrderFilter').prop('orderDetails');
+            expect(fulfillmentOrders.length).toEqual(8);
         });
 
-        it('does not sort by default', () => {
-            wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[0]);
-            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
-
-            expect(dueDates).toEqual(['2021-10-05', '2021-09-05', '2021-11-05']);
-        });
-
-        it('sorts FulfillmentOrderPanel components by ascending due dates correctly', () => {
-            wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[1]);
-            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
-
-            expect(dueDates).toEqual(['2021-09-05', '2021-10-05', '2021-11-05']);
-        });
-
-        it('sorts FulfillmentOrderPanel components by descending due dates correctly', () => {
-            wrapper.find('ServiceOrderFilter').prop('setDueDateSortDirection')(SORT_DIRECTION[2]);
-            const dueDates = wrapper.find('FulfillmentOrderPanel').map(node => node.props().dueDate);
-
-            expect(dueDates).toEqual(['2021-11-05', '2021-10-05', '2021-09-05']);
-        });
-
-        it('renders FulfillmentOrderPanel components with correct product_descriptions', () => {
-            const wrapper = shallow(<HeaderSection orderDetails={serviceOrder} />);
-            const productDescriptions = wrapper
-                .find('FulfillmentOrderPanel')
-                .map(node => node.props().productDescription);
-
-            expect(productDescriptions).toEqual(['Movie1', 'Movie2', 'Movie3']);
+        it('correctly filters by status', () => {
+            wrapper.find('ServiceOrderFilter').prop('setFilter')({label: 'Not Started', value: 'NOT_STARTED'});
+            const orders = wrapper.find('FulfillmentOrderPanels').prop('fulfillmentOrders');
+            expect(orders.length).toEqual(2);
         });
     });
 });
