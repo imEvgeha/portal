@@ -1,19 +1,17 @@
-@import '../../../../../styles/config';
+@import '../../../../../styles/atlaskit/mixins';
 
 .nexus-c-rights-repository-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 20px;
-}
+    @include padding(0, 0, 6, 0);
 
-.nexus-c-rights-repository-header__title {
-    display: flex;
-    align-items: center;
-    color: map-get($colors, nexus-title-color);
-}
+    &__title {
+        display: flex;
+        align-items: center;
+    }
 
-.nexus-c-rights-repository-header__title-text {
-    margin: 0 16px;
-    font-size: 29px;
+    &__title-text {
+        @include margin(0, 4);
+    }
 }

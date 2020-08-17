@@ -1,14 +1,23 @@
+@import '../../../../../styles/atlaskit/mixins';
+
 .ingest-status {
-  width: 100%;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 15px;
-  &__date {
-    font-size: 11px;
-    color: #737E91;
-  }
-  &__type {
-    margin-left: 8px;
-  }
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    @include addSpacing(padding-left, 4.5);
+
+    &__date-and-type {
+        display: flex;
+        align-items: center;
+    }
+
+    &__date {
+        @include heading(h100);
+        @include addSpacing(margin-top, 0);
+    }
+
+    &__type {
+        @include addSpacing(margin-left, 2);
+    }
 }

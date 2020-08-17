@@ -1,7 +1,8 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import config from 'react-global-configuration';
-import Add from '../../../../../../assets/action-add.svg';
+import IconButton from '../../../../../../ui/atlaskit/icon-button/IconButton';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
@@ -24,14 +25,7 @@ const UploadIngestButton = ({ingestData}) => {
     }, [closeModal]);
 
     const buildForm = useCallback(() => {
-        return (
-            <InputForm
-                ingestData={ingestData}
-                closeModal={closeModal}
-                file={file}
-                browseClick={browseClick}
-            />
-        );
+        return <InputForm ingestData={ingestData} closeModal={closeModal} file={file} browseClick={browseClick} />;
     }, [browseClick, closeModal, file, ingestData]);
 
     useEffect(() => {
@@ -61,9 +55,13 @@ const UploadIngestButton = ({ingestData}) => {
                 ref={inputRef}
                 onInput={handleUpload}
             />
-            {ingestData
-                ? <button className="btn btn-primary" onClick={inputClick}>Upload</button>
-                : <Add onClick={inputClick} />}
+            {ingestData ? (
+                <button className="btn btn-primary" onClick={inputClick}>
+                    Upload
+                </button>
+            ) : (
+                <IconButton icon={AddIcon} onClick={inputClick} label="Upload Ingest" />
+            )}
         </div>
     );
 };

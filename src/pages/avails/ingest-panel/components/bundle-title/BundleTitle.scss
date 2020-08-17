@@ -1,27 +1,33 @@
+@import '../../../../../styles/atlaskit/mixins';
+
 .nexus-c-bundle-title {
-  font-size: 14px;
-  width: 300px;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 
-  svg {
-    width: 18px;
-    height: 18px;
-    fill: #A5ADBA;
-  }
-}
+    &__details {
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
 
-.nexus-c-bundle-title__details {
-  display: flex;
-  align-items: center;
-}
+    &__folder {
+        @include addSpacing(margin-right, 3);
+        @include addSpacing(width, 4.5);
+        @include addSpacing(height, 4.5);
+        fill: map-get($mid-neutral-colors, mid-neutral-7);
+    }
 
-.nexus-c-bundle-title__folder {
-  margin-right: 12px;
-}
+    &__licensor {
+        font-weight: bold;
+        @include addSpacing(margin-right, 3);
+    }
 
-.nexus-c-bundle-title__licensor, .nexus-c-bundle-title__separator {
-  font-weight: bold;
-  margin-right: 12px;
+    &__licensor-and-count {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }

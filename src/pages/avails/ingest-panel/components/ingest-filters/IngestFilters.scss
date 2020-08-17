@@ -1,71 +1,88 @@
-.ingest-filters{
-  font-size: 16px;
-  color: #42526E;
-  padding: 0 22px;
-  margin-bottom: 20px;
-  &__section {
-    color: #A5ADBA;
-    display: flex;
-    flex-direction: column;
-    & > div {
-      width: 135px;
-      > div {
-        background: #EBEDF0;
-        border: 0;
-      }
-    }
-    & > input {
-      width: 135px;
-      height: 40px;
-      background: #EBEDF0;
-      border: 0;
-      color: #42526E;
-      padding: 0 10px;
-    }
-  }
-  &__row1{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .nexus-c-date-time-window-picker{
-    display: flex;
-    justify-content: space-between;
-    &__start-date, &__end-date{
-      width: 135px;
-      div {
-        background: white;
-        border: 0;
-        &.nexus-c-date-time-window-picker__label {
-          background: transparent;
-          color: #A5ADBA;
+@import '../../../../../styles/atlaskit/mixins';
+
+.ingest-filters {
+    color: #42526e;
+    @include padding(0, 6, 6);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-1);
+
+    &__section {
+        color: map-get($mid-neutral-colors, mid-neutral-7);
+        display: flex;
+        flex-direction: column;
+
+        & > div {
+            width: 135px;
+
+            > div {
+                background: #ebedf0;
+                border: 0;
+            }
         }
-        input {
-          color: transparent!important;
+
+        & > input {
+            width: 135px;
+            height: 40px;
+            background: #ebedf0;
+            border: 0;
+            color: #42526e;
+            padding: 0 10px;
         }
-      }
     }
-    svg{
-      margin-right: 5px;
+
+    &__row1 {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
     }
-  }
-  &__actions {
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    button{
-      width: 135px;
-      background: #EBEDF0;
-      color: #42526E;
-      justify-content: center;
-      &.ingest-filters__actions--apply{
-        pointer-events: none;
-        &.ingest-filters__actions--active {
-          background: #42526E;
-          color: #FFFFFF!important;
-          pointer-events: all;
+
+    .nexus-c-date-time-window-picker {
+        display: flex;
+        justify-content: space-between;
+
+        &__start-date,
+        &__end-date {
+            width: 135px;
+
+            div {
+                background: white;
+                border: 0;
+
+                &.nexus-c-date-time-window-picker__label {
+                    background: transparent;
+                    color: #a5adba;
+                }
+
+                input {
+                    color: transparent !important;
+                }
+            }
         }
-      }
+
+        svg {
+            margin-right: 5px;
+        }
     }
-  }
+
+    &__actions {
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+
+        button {
+            width: 135px;
+            background: #ebedf0;
+            color: #42526e;
+            justify-content: center;
+
+            &.ingest-filters__actions--apply {
+                pointer-events: none;
+
+                &.ingest-filters__actions--active {
+                    background: #42526e;
+                    color: #ffffff !important;
+                    pointer-events: all;
+                }
+            }
+        }
+    }
 }
