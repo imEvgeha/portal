@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import File from '../../../../../assets/file.svg';
-import Constants from '../fulfillment-order/constants';
+import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import './FulfillmentOrderPanel.scss';
 
 const FulfillmentOrderPanel = ({
@@ -32,7 +32,7 @@ const FulfillmentOrderPanel = ({
             </div>
             <div className="nexus-c-fulfillment-order-panel__description-and-status">
                 <span className="nexus-c-fulfillment-order-panel__description">{productDescription}</span>
-                <span className="nexus-c-fulfillment-order-panel__status">{Constants.STATUS[status]}</span>
+                <StatusTag status={`FO_${status}`} />
             </div>
         </div>
     );
