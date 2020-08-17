@@ -93,8 +93,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                 )}
             </Field>
             <Field name="selected" defaultValue="False" label="SELECTED">
-                {() => {
-                    return (
+                {() => (
                         <Textfield
                             name="readOnly"
                             isReadOnly={true}
@@ -102,7 +101,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                             style={{height: '40px'}}
                         />
                     )
-                }}
+                }
             </Field>
             {isEdit && dateSelected && (
                 <Field name="date selected" defaultValue="" label="DATE SELECTED">
