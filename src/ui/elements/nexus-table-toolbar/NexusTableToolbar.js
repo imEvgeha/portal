@@ -38,7 +38,7 @@ const NexusTableToolbar = ({
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
-            {activeTab === PRE_PLAN_TAB ?
+            {activeTab === PRE_PLAN_TAB ? (
                 <PrePlanActions
                     selectedPrePlanRights={selectedPrePlanRights}
                     setSelectedPrePlanRights={setSelectedPrePlanRights}
@@ -47,7 +47,7 @@ const NexusTableToolbar = ({
                     setPreplanRights={setPreplanRights}
                     prePlanRepoRights={prePlanRepoRights}
                 />
-                :
+            ) : (
                 <SelectedRightsActions
                     selectedRights={selectedRepoRights}
                     selectedRightGridApi={selectedRightGridApi}
@@ -56,7 +56,7 @@ const NexusTableToolbar = ({
                     gridApi={gridApi}
                     activeTab={activeTab}
                 />
-            }
+            )}
             <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
             <NexusTab
                 title={PRE_PLAN_TAB}
@@ -103,7 +103,7 @@ NexusTableToolbar.propTypes = {
     selectedRightColumnApi: PropTypes.object,
     selectedRightsCount: PropTypes.number,
     prePlanRightsCount: PropTypes.number,
-    planningRightsCount: PropTypes.number,
+    planningRightsCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     selectedRepoRights: PropTypes.array,
     setSelectedRights: PropTypes.func.isRequired,
     setPrePlanRepoRights: PropTypes.func.isRequired,

@@ -22,6 +22,7 @@ import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
+import {AVAILS_PATH} from '../../availsRoutes';
 import {
     createRightMatchingColumnDefs,
     createNewRight,
@@ -73,7 +74,7 @@ const RightToMatchView = ({
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
-    const previousPageRoute = mergeRights ? '/avails/v2' : `/avails/history/${availHistoryIds}/right-matching`;
+    const previousPageRoute = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
@@ -110,8 +111,7 @@ const RightToMatchView = ({
 
     const onDeclareNewRight = () => {
         removeToast();
-        const redirectPath = `/avails/history/${availHistoryIds}/right-matching`;
-        createNewRight({rightId, redirectPath});
+        createNewRight({rightId, previousPageRoute});
     };
 
     const onNewRightClick = () => {

@@ -114,7 +114,7 @@ const MatchRightView = ({
     };
 
     const onSaveCombinedRight = () => {
-        const redirectPath = availHistoryIds ? `/avails/history/${availHistoryIds}/right-matching` : AVAILS_PATH;
+        const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
         const payload = {
             rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
             combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
