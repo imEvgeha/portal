@@ -15,7 +15,7 @@ const FulfillmentOrderPanels = ({
     handleFulfillmentOrderChange,
 }) => {
     const {servicingOrderItems = []} = orderDetails;
-    const fulfillmentOrdersWithoutParentServicingOrderItem = fulfillmentOrders.filter(fo => fo.soi_doc_id === null);
+    const fulfillmentOrdersWithoutParentServicingOrderItem = fulfillmentOrders.filter(fo => !fo.soi_doc_id);
     const panels = fulfillmentOrdersWithoutParentServicingOrderItem.concat(
         servicingOrderItems.map(servicingOrderItem => ({
             ...servicingOrderItem,
