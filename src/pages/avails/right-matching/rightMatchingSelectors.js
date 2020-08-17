@@ -23,9 +23,19 @@ const getFocusedRight = state => {
     return rightMatching.focusedRight;
 };
 
+const getPendingRight = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.pendingRight;
+};
+
 const getMatchedRights = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.matchedRights;
+};
+
+const getRightsForMatching = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.rightsForMatching;
 };
 
 const getCombinedRight = state => {
@@ -38,39 +48,25 @@ const getRightMatchPageData = state => {
     return rightMatching && rightMatching.rightMatchPageData;
 };
 
-export const createRightMatchingColumnDefsSelector = () => createSelector(
-    getColumnDefs,
-    columnDefs => columnDefs,
-);
+export const createRightMatchingColumnDefsSelector = () => createSelector(getColumnDefs, columnDefs => columnDefs);
 
-export const createAvailsMappingSelector = () => createSelector(
-    getAvailsMapping,
-    availsMapping => {
+export const createAvailsMappingSelector = () =>
+    createSelector(getAvailsMapping, availsMapping => {
         return availsMapping && availsMapping.mappings;
-    }
-);
+    });
 
-export const createFieldSearchCriteriaSelector = () => createSelector(
-    getFieldSearchCriteria,
-    fieldSearchCriteria => fieldSearchCriteria,
-);
+export const createFieldSearchCriteriaSelector = () =>
+    createSelector(getFieldSearchCriteria, fieldSearchCriteria => fieldSearchCriteria);
 
-export const createFocusedRightSelector = () => createSelector(
-    getFocusedRight,
-    focusedRight => focusedRight,
-);
+export const createFocusedRightSelector = () => createSelector(getFocusedRight, focusedRight => focusedRight);
 
-export const createMatchedRightsSelector = () => createSelector(
-    getMatchedRights,
-    matchedRights => matchedRights,
-);
+export const createMatchedRightsSelector = () => createSelector(getMatchedRights, matchedRights => matchedRights);
 
-export const createCombinedRightSelector = () => createSelector(
-    getCombinedRight,
-    combinedRight => combinedRight
-);
+export const createCombinedRightSelector = () => createSelector(getCombinedRight, combinedRight => combinedRight);
 
-export const createRightMatchPageDataSelector = () => createSelector(
-    getRightMatchPageData,
-    rightMatchPageData => rightMatchPageData,
-);
+export const createRightMatchPageDataSelector = () =>
+    createSelector(getRightMatchPageData, rightMatchPageData => rightMatchPageData);
+
+export const createPendingRightSelector = () => createSelector(getPendingRight, pendingRight => pendingRight);
+export const createRightsForMatchingSelector = () =>
+    createSelector(getRightsForMatching, rightsForMatching => rightsForMatching);
