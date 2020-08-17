@@ -2,6 +2,7 @@ import React from 'react';
 import {get, isEqual, cloneDeep} from 'lodash';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createValueFormatter from '../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import {DATETIME_FIELDS} from '../../util/date-time/constants';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import Constants from './title-matching/titleMatchingConstants';
 
@@ -26,6 +27,7 @@ export const createColumnDefs = payload => {
                 lockVisible: isColumnLocked,
                 lockPinned: isColumnLocked,
                 pinned: isColumnLocked && 'left',
+                type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
             };
             return [...columnDefs, columnDef];
         }, []);

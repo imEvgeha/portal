@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import {AG_GRID_COLUMN_FILTER, GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineCheckboxSelectionColumn,
@@ -22,7 +22,12 @@ import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
-import {createRightMatchingColumnDefs, createNewRight, fetchAndStoreFocusedRight} from '../rightMatchingActions';
+import {
+    createRightMatchingColumnDefs,
+    createNewRight,
+    fetchAndStoreFocusedRight,
+    storeMatchedRights,
+} from '../rightMatchingActions';
 import {
     RIGHT_TO_MATCH_TITLE,
     NEW_BUTTON,
@@ -98,7 +103,7 @@ const RightToMatchView = ({
         } else {
             fetchFocusedRight(rightId);
         }
-    }, [availHistoryIds, fetchFocusedRight, fetchRightMatchingFieldSearchCriteria, fieldSearchCriteria, rightId]);
+    }, [availHistoryIds, fetchFocusedRight, rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
@@ -203,6 +208,19 @@ const RightToMatchView = ({
                     rowSelection="multiple"
                     rowData={matchingCandidates}
                     suppressRowClickSelection={true}
+                    floatingFilter={true}
+                    defaultColDef={{
+                        filter: AG_GRID_COLUMN_FILTER.TEXT,
+                        sort: true,
+                    }}
+                    columnTypes={{
+                        dateColumn: {
+                            filter: AG_GRID_COLUMN_FILTER.DATE,
+                            filterParams: {
+                                inRangeInclusive: true,
+                            },
+                        },
+                    }}
                 />
             </div>
             <div className="nexus-c-right-to-match-view__buttons">
