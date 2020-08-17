@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 
 const ClickableCellRenderer = ({data = {}, onClick = null, keyToDisplay = ''}) => {
-    const handleClick = (data = {}) => onClick(data);
-
     return (
-        <Button appearance="link" onClick={handleClick}>
+        <Button appearance="link" onClick={() => onClick(data)}>
             {data[keyToDisplay]}
         </Button>
     );

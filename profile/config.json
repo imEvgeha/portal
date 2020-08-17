@@ -18,7 +18,8 @@
       "eventApi": "/api/event-api/v1",
       "eventApiV2": "/api/event-api/v2",
       "servicingOrder": "",
-      "DOPProjectManagement": "/dop/be-services/projectManagement/project"
+      "DOPProjectManagementBase": "/dop/be-services/projectManagement",
+      "DOPProjectManagementProject": "/dop/be-services/projectManagement/project"
     }
   },
   "keycloak": {

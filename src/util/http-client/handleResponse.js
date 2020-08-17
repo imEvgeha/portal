@@ -1,17 +1,24 @@
 /* eslint-disable no-magic-numbers, no-throw-literal */
-export default async response => {
+export default async (response, fetchHeaders) => {
     try {
         const contentType = getResponseContentType(response);
         if (response.ok) {
             if (response.status === 204) {
                 return '';
             }
+
             // BE issue: empty response headers workaround
             if (!contentType) {
-                return response.body;
+                return fetchHeaders
+                    ? [response.body, response.headers]
+                    : response.body;
             }
+
             const responseBody = await parseResponse(response, contentType);
-            return responseBody;
+
+            return fetchHeaders
+                ? [responseBody, response.headers]
+                : responseBody;
         }
 
         let errorBody = '';
