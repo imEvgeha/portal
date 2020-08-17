@@ -31,7 +31,7 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
                 : isEdit
                 ? existingTerritoryList[territoryIndex]['vuContractId']
                 : '',
-            comment: data.comment ? data.comment : isEdit ? existingTerritoryList[territoryIndex]['comment'] : '',
+            comment: data.comment || ' ',
         };
         const updatedObject = {};
         for (const objectField in newObject) {
