@@ -675,31 +675,33 @@ class RightDetails extends React.Component {
                 highlighted,
                 null,
                 ref,
-                <InlineEdit
-                    placeholder={`${this.emptyValueText} ${displayName}`}
-                    defaultValue={value}
-                    hideActionButtons={!!sourceRightId || readOnly}
-                    readView={() => <p>{value || `${this.emptyValueText} ${displayName}`}</p>}
-                    editView={fieldProps => (
-                        <TextField
-                            {...fieldProps}
-                            name={name}
-                            isReadOnly={!!sourceRightId || readOnly}
-                            style={{...fieldProps.style, border: 'none', borderRadius: 0}}
-                            autoFocus
-                            autoComplete={`new-${displayName.replace(' ', '-').toLowerCase()}`}
-                            theme={(theme, props) => ({
-                                ...theme(props),
-                                input: {
-                                    height: '32px',
-                                    width: '100%',
-                                },
-                            })}
-                        />
-                    )}
-                    validate={value => this.validateTextField(name, value)}
-                    onConfirm={value => onSubmit(name, value)}
-                />
+                readOnly
+                    ? value
+                    : (<InlineEdit
+                        placeholder={`${this.emptyValueText} ${displayName}`}
+                        defaultValue={value}
+                        hideActionButtons={!!sourceRightId || readOnly}
+                        readView={() => <p>{value || `${this.emptyValueText} ${displayName}`}</p>}
+                        editView={fieldProps => (
+                            <TextField
+                                {...fieldProps}
+                                name={name}
+                                isReadOnly={!!sourceRightId || readOnly}
+                                style={{...fieldProps.style, border: 'none', borderRadius: 0}}
+                                autoFocus
+                                autoComplete={`new-${displayName.replace(' ', '-').toLowerCase()}`}
+                                theme={(theme, props) => ({
+                                    ...theme(props),
+                                    input: {
+                                        height: '32px',
+                                        width: '100%',
+                                    },
+                                })}
+                            />
+                        )}
+                        validate={value => this.validateTextField(name, value)}
+                        onConfirm={value => onSubmit(name, value)}
+                    />)
             );
         };
 
