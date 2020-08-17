@@ -18,5 +18,4 @@ export const HEADER_TITLE = 'Title Matching';
 export const HEADER_TITLE_BONUS_RIGHT = 'Title Matching for Creating Bonus Rights';
 export const ADD_TO_PREPLAN = 'Add to Pre-Plan';
 export const STATUS_CHECK_HEADER = 'Status Check';
-export const STATUS_CHECK_MSG = `Only rights with a status of Ready or Ready New can be added.
-These rights could not be added`;
+export const STATUS_CHECK_MSG = 'These rights have fields that do not meet the criteria to be added.';

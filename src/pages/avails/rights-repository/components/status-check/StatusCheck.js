@@ -2,37 +2,63 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DynamicTable from '@atlaskit/dynamic-table';
+import {ELIGIBLE_RIGHT_STATUS, ELIGIBLE_STATUS} from '../../../pre-plan-actions/constants';
+import {STATUS_CHECK_MSG} from '../../../selected-rights-actions/constants';
 import {header} from './constants';
 import './StatusCheck.scss';
 
-const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
+const InValidData = ({data}) => <span className="nexus-c-status-check__table--invalid">{data}</span>;
+
+const StatusCheck = ({nonEligibleTitles, onClose}) => {
     const dataRows =
         nonEligibleTitles &&
-        nonEligibleTitles.map((content, index) => ({
-            key: index,
-            cells: [
-                {
-                    key: content.title,
-                    content: content.title,
-                },
-                {
-                    key: content.status,
-                    content: content.status,
-                },
-            ],
-        }));
+        nonEligibleTitles.map(content => {
+            const {id, title, status, rightStatus, licensed, territory} = content;
+            const hasUnplannedTerritory = territory.filter(ter => !ter.selected).length;
+            return {
+                key: id,
+                cells: [
+                    {
+                        key: `${id}-title`,
+                        content: title,
+                    },
+                    {
+                        key: `${id}-status`,
+                        content: ELIGIBLE_STATUS.includes(status) ? status : <InValidData data={status} />,
+                    },
+                    {
+                        key: `${id}-rightStatus`,
+                        content: ELIGIBLE_RIGHT_STATUS.includes(rightStatus) ? (
+                            rightStatus
+                        ) : (
+                            <InValidData data={rightStatus} />
+                        ),
+                    },
+                    {
+                        key: `${id}-licensed`,
+                        content: licensed ? 'YES' : <InValidData data="NO" />,
+                    },
+                    {
+                        key: `${id}-territory`,
+                        content: hasUnplannedTerritory ? '' : <InValidData data="NONE" />,
+                    },
+                ],
+            };
+        });
     return (
         <div className="nexus-c-status-check">
-            <div className="nexus-c-status-check__message">{message}</div>
+            <div className="nexus-c-status-check__message">{STATUS_CHECK_MSG}</div>
             {!!dataRows.length && (
-                <DynamicTable
-                    head={header}
-                    rows={dataRows}
-                    rowsPerPage={5}
-                    defaultPage={1}
-                    loadingSpinnerSize="large"
-                    isLoading={false}
-                />
+                <div className="nexus-c-status-check__table">
+                    <DynamicTable
+                        head={header}
+                        rows={dataRows}
+                        rowsPerPage={5}
+                        defaultPage={1}
+                        loadingSpinnerSize="large"
+                        isLoading={false}
+                    />
+                </div>
             )}
 
             <div className="nexus-c-status-check__btn-wrapper">
@@ -49,14 +75,20 @@ const StatusCheck = ({message, nonEligibleTitles, onClose}) => {
     );
 };
 
+InValidData.propTypes = {
+    data: PropTypes.string,
+};
+
+InValidData.defaultProps = {
+    data: '',
+};
+
 StatusCheck.propTypes = {
-    message: PropTypes.string,
     nonEligibleTitles: PropTypes.array,
     onClose: PropTypes.func,
 };
 
 StatusCheck.defaultProps = {
-    message: '',
     nonEligibleTitles: [],
     onClose: () => null,
 };

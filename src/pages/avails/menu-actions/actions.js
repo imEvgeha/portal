@@ -1,15 +1,13 @@
-import {cloneDeep} from "lodash";
+import {cloneDeep} from 'lodash';
+import {ELIGIBLE_RIGHT_STATUS, ELIGIBLE_STATUS} from '../pre-plan-actions/constants';
 
 export const prePlanEligible = (status, rightStatus, licensed, territory) => {
-    if (
-        ['ReadyNew', 'Ready'].includes(status) &&
-        ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
+    return !!(
+        ELIGIBLE_STATUS.includes(status) &&
+        ELIGIBLE_RIGHT_STATUS.includes(rightStatus) &&
         licensed &&
         hasAtLeastOneUnselectedTerritory(territory)
-    ) {
-        return true;
-    }
-    return false;
+    );
 };
 
 export const getEligibleRights = selectedRights => {
