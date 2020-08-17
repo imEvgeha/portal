@@ -16,6 +16,7 @@ import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
+import {AVAILS_PATH} from '../../availsRoutes';
 import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {
@@ -113,7 +114,7 @@ const MatchRightView = ({
     };
 
     const onSaveCombinedRight = () => {
-        const redirectPath = mergeRights ? `/avails/history/${availHistoryIds}/right-matching` : `avails/v2`;
+        const redirectPath = availHistoryIds ? `/avails/history/${availHistoryIds}/right-matching` : AVAILS_PATH;
         const payload = {
             rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
             combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],

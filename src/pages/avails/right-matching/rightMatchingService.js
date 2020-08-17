@@ -37,39 +37,6 @@ export const putCombinedRight = (rightIds, combinedRight) => {
     });
 };
 
-export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParams) => {
-    const queryParams = pickBy(searchCriteria, identity) || {};
-    const params = {...queryParams, page, size};
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
-        sortedParams
-    )}`;
-
-    return nexusFetch(url, {
-        params: encodedSerialize(params),
-    }).then(response => {
-        const {rightMatching} = store.getState().avails || {};
-        const {focusedRight} = rightMatching || {};
-        const {id} = focusedRight || {};
-        // temporary FE handling for operand 'not equal'
-        const getUpdatedData = (response, excludedId) => {
-            const {data = []} = response || {};
-            if (data && data.find(({id}) => id === excludedId)) {
-                store.dispatch(setFoundFocusRightInRightsRepository({foundFocusRightInRightsRepository: true}));
-                return data.filter(({id}) => id !== excludedId);
-            }
-            return data;
-        };
-        const updatedData = getUpdatedData(response, id);
-
-        const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
-        return {
-            ...response,
-            data: updatedData,
-            total: foundFocusRightInRightsRepository ? response.total - 1 : response.total,
-        };
-    });
-};
-
 export const createRightById = id => {
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/${id}/match`;
     const errorCodesToast = [

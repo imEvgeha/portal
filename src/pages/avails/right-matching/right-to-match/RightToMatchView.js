@@ -215,10 +215,7 @@ const RightToMatchView = ({
                     }}
                     columnTypes={{
                         dateColumn: {
-                            filter: AG_GRID_COLUMN_FILTER.DATE,
-                            filterParams: {
-                                inRangeInclusive: true,
-                            },
+                            filter: false,
                         },
                     }}
                 />

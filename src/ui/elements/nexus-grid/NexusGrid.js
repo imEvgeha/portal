@@ -54,6 +54,9 @@ const NexusGrid = ({
                 onRowDataChanged={handleGridEvent}
                 onFilterChanged={handleGridEvent}
                 allowDragFromColumnsToolPanel
+                columnTypes={{
+                    dateColumn: {},
+                }}
                 {...restProps}
                 frameworkComponents={{
                     ...frameworkComponents,
