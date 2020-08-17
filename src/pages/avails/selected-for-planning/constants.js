@@ -93,7 +93,7 @@ export const COLUMN_MAPPINGS = [
     {
         colId: 'transactionType',
         field: 'transactionType',
-        headerName: 'License type',
+        headerName: 'Transaction type',
         width: 120,
     },
 ];
