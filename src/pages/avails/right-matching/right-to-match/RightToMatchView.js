@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import {get} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -21,13 +21,14 @@ import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '../../../../ui/toast/constants';
 import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
+import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {createRightMatchingColumnDefs, createNewRight, fetchAndStoreFocusedRight} from '../rightMatchingActions';
 import {
     RIGHT_TO_MATCH_TITLE,
     NEW_BUTTON,
     RIGHT_MATCHING_DOP_STORAGE,
-    FOCUSED_RIGHT,
-    RIGHTS_REPOSITORY,
+    PENDING_RIGHT,
+    CONFLICTING_RIGHTS,
     CANCEL_BUTTON,
     MATCH_BUTTON,
 } from '../rightMatchingConstants';
@@ -37,7 +38,7 @@ import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import './RightToMatchView.scss';
 
-const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right 
+const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right
 from the action menu above.`;
 
 const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(NexusGrid);
@@ -56,15 +57,18 @@ const RightToMatchView = ({
     createNewRight,
     addToast,
     removeToast,
+    pendingRight,
+    mergeRights,
+    storeMatchedRights,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
-    // eslint-disable-next-line
     const [isMatchDisabled, setIsMatchDisabled] = useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
     const [matchingCandidates, setMatchingCandidates] = useState([]);
+    const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
-    const previousPageRoute = `/avails/history/${availHistoryIds}/right-matching`;
+    const previousPageRoute = mergeRights ? '/avails/v2' : `/avails/history/${availHistoryIds}/right-matching`;
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
@@ -89,8 +93,12 @@ const RightToMatchView = ({
     }, [columnDefs, mapping, createRightMatchingColumnDefs]);
 
     useEffect(() => {
-        fetchFocusedRight(rightId);
-    }, [availHistoryIds, fetchFocusedRight, rightId]);
+        if (mergeRights && !isEmpty(pendingRight)) {
+            setNewPendingRight([prepareRight(pendingRight)]);
+        } else {
+            fetchFocusedRight(rightId);
+        }
+    }, [availHistoryIds, fetchFocusedRight, fetchRightMatchingFieldSearchCriteria, fieldSearchCriteria, rightId]);
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
@@ -116,7 +124,7 @@ const RightToMatchView = ({
 
     // eslint-disable-next-line
     const createNewButtonCellRenderer = ({data}) => {
-        const {id} = data || {};
+        const {id = '0'} = data || {};
         return (
             <CustomActionsCellRenderer id={id}>
                 <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
@@ -142,6 +150,10 @@ const RightToMatchView = ({
     const handleMatchClick = () => {
         if (Array.isArray(selectedRows) && selectedRows.length > 0) {
             const matchedRightIds = selectedRows.map(el => el.id).join();
+            if (mergeRights) {
+                storeMatchedRights({rightsForMatching: selectedRows});
+                return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
+            }
             history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));
         }
     };
@@ -156,21 +168,23 @@ const RightToMatchView = ({
             </NexusTitle>
             <div className="nexus-c-right-to-match-view__table-header">
                 <NexusTitle isSubTitle isInline>
-                    {FOCUSED_RIGHT}
+                    {PENDING_RIGHT}
                 </NexusTitle>
-                <RightToMatchNavigation
-                    searchParams={{availHistoryIds}}
-                    focusedRightId={rightId}
-                    focusedRight={focusedRight}
-                    availHistoryIds={availHistoryIds}
-                    history={history}
-                />
+                {!mergeRights && (
+                    <RightToMatchNavigation
+                        searchParams={{availHistoryIds}}
+                        focusedRightId={rightId}
+                        focusedRight={focusedRight}
+                        availHistoryIds={availHistoryIds}
+                        history={history}
+                    />
+                )}
             </div>
             <div className="nexus-c-right-to-match-view__focused-right">
                 <IncomingRightNexusGrid
                     id="incomingRightRightsMatching"
                     columnDefs={updatedFocusedRightColumnDefs}
-                    rowData={updatedFocusedRight}
+                    rowData={newPendingRight.length ? newPendingRight : updatedFocusedRight}
                     domLayout="autoHeight"
                 />
             </div>
@@ -179,7 +193,7 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>
-                    {RIGHTS_REPOSITORY} {`(${totalCount})`}
+                    {CONFLICTING_RIGHTS} {`(${totalCount})`}
                 </NexusTitle>
                 <RightRepositoryNexusGrid
                     id="rightsMatchingRepo"
@@ -225,6 +239,10 @@ RightToMatchView.propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
     location: PropTypes.object,
+    pendingRight: PropTypes.object,
+    // eslint-disable-next-line react/boolean-prop-naming
+    mergeRights: PropTypes.bool,
+    storeMatchedRights: PropTypes.func,
 };
 
 RightToMatchView.defaultProps = {
@@ -238,17 +256,23 @@ RightToMatchView.defaultProps = {
     history: {push: () => null},
     match: {},
     location: {},
+    pendingRight: null,
+    mergeRights: false,
+    storeMatchedRights: () => null,
 };
 
 const createMapStateToProps = () => {
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const availsMappingSelector = selectors.createAvailsMappingSelector();
     const focusedRightSelector = selectors.createFocusedRightSelector();
+    const pendingRightSelector = selectors.createPendingRightSelector();
 
     return state => ({
         columnDefs: rightMatchingColumnDefsSelector(state),
         mapping: availsMappingSelector(state),
         focusedRight: focusedRightSelector(state),
+        pendingRight: pendingRightSelector(state),
+        mergeRights: state.avails.rightMatching.mergeRights,
     });
 };
 
@@ -256,6 +280,7 @@ const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     createNewRight: payload => dispatch(createNewRight(payload)),
+    storeMatchedRights: payload => dispatch(storeMatchedRights(payload)),
 });
 
 export default compose(

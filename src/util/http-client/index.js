@@ -4,7 +4,7 @@ import handleResponse from './handleResponse';
 
 const DEFAULT_TIMEOUT = 60000;
 
-const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
+const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHeaders = false) => {
     let controller = new AbortController();
     const {signal} = controller;
     const {token} = keycloak;
@@ -12,7 +12,7 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
     const allOptions = {
         headers: {
             'Content-Type': 'application/json',
-            ...(token ? {'Authorization': `Bearer ${token}`} : {}),
+            ...(token ? {Authorization: `Bearer ${token}`} : {}),
         },
         signal,
         method: 'get',
@@ -33,7 +33,7 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
 
     try {
         const response = await fetch(url, allOptions);
-        const parsedResponse = await handleResponse(response);
+        const parsedResponse = await handleResponse(response, fetchHeaders);
         return parsedResponse;
     } catch (error) {
         const handledError = await handleError(error, options);
@@ -50,14 +50,15 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
  * @param url
  * @param options={...fetchOptions, params, ...rest}
  * @param abortAfter=DEFAULT_TIMEOUT
+ * @param fetchHeaders: boolean flag that controls whether response headers will be returned along with response body
  * @returns Promise (result fetch api)
  */
-export const nexusFetch = (url, options = {}, abortAfter = DEFAULT_TIMEOUT) => {
+export const nexusFetch = (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHeaders) => {
     const {params, ...rest} = options;
     let clonedUrl = url;
     if (params && typeof params === 'string') {
         clonedUrl += `${url.indexOf('?') === -1 ? '?' : '&'}${params}`;
     }
 
-    return fetchAPI(clonedUrl, rest, abortAfter);
+    return fetchAPI(clonedUrl, rest, abortAfter, fetchHeaders);
 };

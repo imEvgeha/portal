@@ -38,7 +38,7 @@ import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
 import * as selectors from './rightsSelectors';
-import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from './constants';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, SELECTED_FOR_PLANNING_TAB} from './constants';
 import constants from '../constants';
 import './RightsRepository.scss';
 
@@ -182,8 +182,9 @@ const RightsRepository = ({
     }, [selectedRepoRights, selectedGridApi]);
 
     useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1).then(res => {
-            setPlanningRightsCount(1);
+        DOPService.getUsersProjectsList(1, 1).then(([response, headers]) => {
+            const total = headers.get('X-Total-Count') || response.length;
+            setPlanningRightsCount(total);
         });
     }, [activeTab]);
 
@@ -436,7 +437,7 @@ const RightsRepository = ({
                 setPreplanRights={setPreplanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
-            <SelectedForPlanning activeTab={activeTab} />
+            {activeTab === SELECTED_FOR_PLANNING_TAB && <SelectedForPlanning activeTab={activeTab} />}
         </div>
     );
 };

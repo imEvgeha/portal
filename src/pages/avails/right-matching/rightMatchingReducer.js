@@ -3,14 +3,25 @@ import * as actionTypes from './rightMatchingActionTypes';
 const initialState = {
     columnDefs: [],
     focusedRight: {},
+    pendingRight: {},
     rightMatchPageData: {},
     matchedRights: [],
+    rightsForMatching: [],
     combinedRight: {},
+    mergeRights: false,
 };
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
-    const {columnDefs, focusedRight, rightMatchPageData, matchedRights, combinedRight} = payload || {};
+    const {
+        columnDefs,
+        focusedRight,
+        rightMatchPageData,
+        matchedRights,
+        rightsForMatching,
+        combinedRight,
+        pendingRight,
+    } = payload || {};
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -22,6 +33,17 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedRight,
+            };
+        case actionTypes.STORE_PENDING_RIGHT_SUCCESS:
+            return {
+                ...state,
+                pendingRight,
+                mergeRights: true,
+            };
+        case actionTypes.STORE_MATCHED_RIGHTS_SUCCESS:
+            return {
+                ...state,
+                rightsForMatching,
             };
         case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
             return {

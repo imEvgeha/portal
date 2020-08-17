@@ -94,7 +94,7 @@ class RightDetails extends React.Component {
         const prevPage = window.location.href;
         history.back();
 
-        setTimeout(function() {
+        setTimeout(function () {
             if (window.location.href === prevPage) {
                 window.location.href = URL.keepEmbedded(AVAILS_PATH);
             }
@@ -139,8 +139,9 @@ class RightDetails extends React.Component {
                                 pricing.filter(Boolean).map((el, index) => {
                                     const error = priceErrors.find(error => error.index === index);
                                     if (error) {
-                                        el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        el.value = `${error.message} ${
+                                            error.sourceDetails && error.sourceDetails.originalValue
+                                        }`;
                                         el.isValid = false;
                                         el.errors = priceErrors.filter(error => error.index === index);
                                     } else {
@@ -177,8 +178,9 @@ class RightDetails extends React.Component {
                                 territory.filter(Boolean).map((el, index) => {
                                     const error = territoryErrors.find(error => error.index === index);
                                     if (error) {
-                                        el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        el.value = `${error.message} ${
+                                            error.sourceDetails && error.sourceDetails.originalValue
+                                        }`;
                                         el.isValid = false;
                                         el.errors = territoryErrors.filter(error => error.index === index);
                                     } else {
@@ -210,8 +212,9 @@ class RightDetails extends React.Component {
                                 languageAudioTypes.filter(Boolean).map((el, index) => {
                                     const error = audioLanguageErrors.find(error => error.index === index);
                                     if (error) {
-                                        el.value = `${error.message} ${error.sourceDetails &&
-                                            error.sourceDetails.originalValue}`;
+                                        el.value = `${error.message} ${
+                                            error.sourceDetails && error.sourceDetails.originalValue
+                                        }`;
                                         el.isValid = false;
                                         el.errors = audioLanguageErrors.filter(error => error.index === index);
                                     } else {
@@ -293,8 +296,9 @@ class RightDetails extends React.Component {
                             ...affiliateiExcludeList,
                             ...affiliateExcludeErrors.map((error, index) => {
                                 const obj = {};
-                                obj.value = `${error.message} ${error.sourceDetails &&
-                                    error.sourceDetails.originalValue}`;
+                                obj.value = `${error.message} ${
+                                    error.sourceDetails && error.sourceDetails.originalValue
+                                }`;
                                 obj.isValid = false;
                                 obj.errors = affiliateExcludeErrors[index];
                                 obj.id = error.index;
@@ -352,7 +356,6 @@ class RightDetails extends React.Component {
 
     flattenRight(right) {
         const rightCopy = {};
-
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
             if (val || val === false || val === null) {
@@ -373,9 +376,19 @@ class RightDetails extends React.Component {
         }
 
         const {flatRight} = this.state;
+        const {
+            availHistoryId,
+            availHistoryIds,
+            ingestHistoryAttachmentId,
+            ingestHistoryAttachmentIds,
+        } = this.state.right;
         const updatedRight = {
             ...flatRight,
-            [name]: value
+            availHistoryId,
+            availHistoryIds,
+            ingestHistoryAttachmentId,
+            ingestHistoryAttachmentIds,
+            [name]: value,
         };
 
         store.dispatch(blockUI(true));
@@ -533,8 +546,8 @@ class RightDetails extends React.Component {
         if (field.includes('.')) {
             const baseField = field.substring(0, field.indexOf('.'));
             const subField = field.substring(field.indexOf('.') + 1);
-            return this.state.right[baseField].some(
-                x => (fieldValue !== null ? x[subField] === fieldValue : !!x[subField])
+            return this.state.right[baseField].some(x =>
+                fieldValue !== null ? x[subField] === fieldValue : !!x[subField]
             );
         } else {
             return fieldValue !== null ? this.state.right[field] === fieldValue : !!this.state.right[field];
@@ -558,9 +571,7 @@ class RightDetails extends React.Component {
                     {status === 'Pending' ? (
                         <Link
                             to={URL.keepEmbedded(
-                                `/avails/history/${this.state.right.availHistoryId}/right-matching/${
-                                    this.state.right.id
-                                }`
+                                `/avails/history/${this.state.right.availHistoryId}/right-matching/${this.state.right.id}`
                             )}
                         >
                             {note.note}
@@ -984,17 +995,19 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            options = options.filter(rec => rec.value).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue: rec.aliasId
-                        ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                            ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                            : null
-                        : null,
-                };
-            });
+            options = options
+                .filter(rec => rec.value)
+                .map(rec => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
 
             if (options.length > 0 && selectedVal) {
                 val = options.find(opt => opt.value === selectedVal);
@@ -1098,25 +1111,27 @@ class RightDetails extends React.Component {
             filters.map(filter => {
                 const fieldName = filter[0].type + 'Id';
                 const allowedOptions = filter.map(({id}) => id);
-                filteredOptions = filteredOptions.filter(
-                    option => (option[fieldName] ? allowedOptions.indexOf(option[fieldName]) > -1 : true)
+                filteredOptions = filteredOptions.filter(option =>
+                    option[fieldName] ? allowedOptions.indexOf(option[fieldName]) > -1 : true
                 );
             });
 
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions.filter(rec => rec.value).map(rec => {
-                        return {
-                            ...rec,
-                            label: rec.label || rec.value,
-                            aliasValue: rec.aliasId
-                                ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                    ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                    : null
-                                : null,
-                        };
-                    }),
+                    options: filteredOptions
+                        .filter(rec => rec.value)
+                        .map(rec => {
+                            return {
+                                ...rec,
+                                label: rec.label || rec.value,
+                                aliasValue: rec.aliasId
+                                    ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                        ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                        : null
+                                    : null,
+                            };
+                        }),
                 },
             ];
 
@@ -1153,9 +1168,9 @@ class RightDetails extends React.Component {
             const {servicingRegion = ''} = configLicensee || {};
 
             const isRequired =
-                required
-                || (name === 'platformCategory' && servicingRegion === 'US')
-                || name === 'licenseRightsDescription';
+                required ||
+                (name === 'platformCategory' && servicingRegion === 'US') ||
+                name === 'licenseRightsDescription';
             const tooltip = name === 'platformCategory' ? PLATFORM_INFORM_MSG : null;
 
             return renderFieldTemplate(
@@ -1232,17 +1247,19 @@ class RightDetails extends React.Component {
                 currencyOptions = this.props.selectValues['pricing.priceCurrency'];
             }
 
-            options = options.filter(rec => rec.value).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue: rec.aliasId
-                        ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                            ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                            : null
-                        : null,
-                };
-            });
+            options = options
+                .filter(rec => rec.value)
+                .map(rec => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1314,7 +1331,11 @@ class RightDetails extends React.Component {
                         priceType: priceType,
                         priceValue: priceValue,
                         priceCurrency: priceCurrency,
-                        label: get(options.find(o => o.value === priceType), 'label', ''),
+                        label: get(
+                            options.find(o => o.value === priceType),
+                            'label',
+                            ''
+                        ),
                         error,
                     };
                 });
@@ -1397,17 +1418,19 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            options = options.filter(rec => rec.value).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue: rec.aliasId
-                        ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                            ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                            : null
-                        : null,
-                };
-            });
+            options = options
+                .filter(rec => rec.value)
+                .map(rec => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
 
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
@@ -1544,17 +1567,19 @@ class RightDetails extends React.Component {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
             }
 
-            options = options.filter(rec => rec.value).map(rec => {
-                return {
-                    ...rec,
-                    label: rec.label || rec.value,
-                    aliasValue: rec.aliasId
-                        ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                            ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                            : null
-                        : null,
-                };
-            });
+            options = options
+                .filter(rec => rec.value)
+                .map(rec => {
+                    return {
+                        ...rec,
+                        label: rec.label || rec.value,
+                        aliasValue: rec.aliasId
+                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
+                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
+                                : null
+                            : null,
+                    };
+                });
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1617,7 +1642,11 @@ class RightDetails extends React.Component {
                 languagesWithLabel = languages.map(({language, audioType}) => ({
                     language: language,
                     audioType: audioType,
-                    label: get(options.find(o => o.value === language), 'label', ''),
+                    label: get(
+                        options.find(o => o.value === language),
+                        'label',
+                        ''
+                    ),
                 }));
             }
 
@@ -1751,341 +1780,345 @@ class RightDetails extends React.Component {
         const renderFields = [];
 
         if (this.state.flatRight && this.props.availsMapping) {
-            this.props.availsMapping.mappings.filter(({dataType}) => dataType).map(mapping => {
-                if (mapping.enableEdit) {
-                    let error = null;
-                    // TODO: write this from scratch
-                    if (this.state.right && this.state.right.validationErrors) {
-                        this.state.right.validationErrors.forEach(e => {
-                            if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
-                                error = e.message;
-                                if (e.sourceDetails) {
-                                    if (e.sourceDetails.originalValue)
-                                        error += ", original value:  '" + e.sourceDetails.originalValue + "'";
-                                    if (e.sourceDetails.fileName) {
-                                        error +=
-                                            ', in file ' +
-                                            e.sourceDetails.fileName +
-                                            ', row number ' +
-                                            e.sourceDetails.rowId +
-                                            ', column ' +
-                                            e.sourceDetails.originalFieldName;
+            this.props.availsMapping.mappings
+                .filter(({dataType}) => dataType)
+                .map(mapping => {
+                    if (mapping.enableEdit) {
+                        let error = null;
+                        // TODO: write this from scratch
+                        if (this.state.right && this.state.right.validationErrors) {
+                            this.state.right.validationErrors.forEach(e => {
+                                if (equalOrIncluded(mapping.javaVariableName, e.fieldName)) {
+                                    error = e.message;
+                                    if (e.sourceDetails) {
+                                        if (e.sourceDetails.originalValue)
+                                            error += ", original value:  '" + e.sourceDetails.originalValue + "'";
+                                        if (e.sourceDetails.fileName) {
+                                            error +=
+                                                ', in file ' +
+                                                e.sourceDetails.fileName +
+                                                ', row number ' +
+                                                e.sourceDetails.rowId +
+                                                ', column ' +
+                                                e.sourceDetails.originalFieldName;
+                                        }
                                     }
                                 }
-                            }
-                        });
-                    }
-                    const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
-                    let readOnly =
-                        cannotUpdate ||
-                        mapping.readOnly ||
-                        mapping.readOnlyInDetails ||
-                        this.state.right.status === 'Merged';
-
-                    if (
-                        mapping.readOnlyInDetailsBasedField &&
-                        Array.isArray(mapping.readOnlyInDetailsBasedField) &&
-                        mapping.readOnlyInDetailsBasedField.some(x =>
-                            this.checkFieldValue(mapping.readOnlyInDetailsBasedField, x.field, x.fieldValue)
-                        )
-                    ) {
-                        readOnly = true;
-                    }
-                    const {editedRight = {}, flatRight} = this.state;
-                    const value = flatRight ? flatRight[mapping.javaVariableName] : '';
-                    const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
-
-                    let required = mapping.required && !mapping.requiredBasedField;
-                    if (mapping.requiredBasedField && Array.isArray(mapping.requiredBasedField)) {
-                        if (mapping.requiredBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
-                            required = true;
+                            });
                         }
-                    }
-                    if (mapping.readOnlyBasedField && Array.isArray(mapping.readOnlyBasedField)) {
-                        if (mapping.readOnlyBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
+                        const cannotUpdate = cannot('update', 'Avail', mapping.javaVariableName);
+                        let readOnly =
+                            cannotUpdate ||
+                            mapping.readOnly ||
+                            mapping.readOnlyInDetails ||
+                            this.state.right.status === 'Merged';
+
+                        if (
+                            mapping.readOnlyInDetailsBasedField &&
+                            Array.isArray(mapping.readOnlyInDetailsBasedField) &&
+                            mapping.readOnlyInDetailsBasedField.some(x =>
+                                this.checkFieldValue(mapping.readOnlyInDetailsBasedField, x.field, x.fieldValue)
+                            )
+                        ) {
                             readOnly = true;
                         }
-                    }
-                    let highlighted = false;
-                    if (this.state.right && this.state.right.highlightedFields) {
-                        highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
-                    }
+                        const {editedRight = {}, flatRight} = this.state;
+                        const value = flatRight ? flatRight[mapping.javaVariableName] : '';
+                        const valueV2 = editedRight[mapping.javaVariableName] || flatRight[mapping.javaVariableName];
 
-                    const {right = {}} = this.state;
-                    const {validationErrors} = right || {};
-
-                    switch (mapping.dataType) {
-                        case 'string':
-                            renderFields.push(
-                                renderTextField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'integer':
-                            renderFields.push(
-                                renderIntegerField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'year':
-                            renderFields.push(
-                                renderYearField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'double':
-                            renderFields.push(
-                                renderDoubleField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'select':
-                            renderFields.push(
-                                renderSelectField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'multiselect':
-                            if (mapping.javaVariableName === 'affiliate') {
-                                renderFields.push(
-                                    renderMultiSelectField(
-                                        mapping.javaVariableName,
-                                        mapping.displayName,
-                                        this.state.affiliates,
-                                        Array.isArray(validationErrors) &&
-                                            validationErrors.filter(
-                                                el =>
-                                                    el.fieldName &&
-                                                    el.fieldName.includes('affiliate') &&
-                                                    !el.fieldName.includes('affiliateExclude')
-                                            ),
-                                        readOnly,
-                                        required,
-                                        highlighted
-                                    )
-                                );
-                                break;
-                            } else if (mapping.javaVariableName === 'affiliateExclude') {
-                                renderFields.push(
-                                    renderMultiSelectField(
-                                        mapping.javaVariableName,
-                                        mapping.displayName,
-                                        this.state.affiliatesExclude,
-                                        Array.isArray(validationErrors) &&
-                                            validationErrors.filter(
-                                                el => el.fieldName && el.fieldName.includes('affiliateExclude')
-                                            ),
-                                        readOnly,
-                                        required,
-                                        highlighted
-                                    )
-                                );
-                                break;
+                        let required = mapping.required && !mapping.requiredBasedField;
+                        if (mapping.requiredBasedField && Array.isArray(mapping.requiredBasedField)) {
+                            if (mapping.requiredBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
+                                required = true;
                             }
-                            renderFields.push(
-                                renderMultiSelectField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'duration':
-                            renderFields.push(
-                                renderDurationField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'time':
-                            renderFields.push(
-                                renderTimeField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                            renderFields.push(
-                                renderDatepickerField(
-                                    false,
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    valueV2,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted,
-                                    false
-                                )
-                            );
-                            break;
-                        case DATETIME_FIELDS.TIMESTAMP:
-                            renderFields.push(
-                                renderDatepickerField(
-                                    true,
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    valueV2,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted,
-                                    true
-                                )
-                            );
-                            break;
-                        case DATETIME_FIELDS.BUSINESS_DATETIME:
-                            renderFields.push(
-                                renderDatepickerField(
-                                    true,
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    valueV2,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted,
-                                    false
-                                )
-                            );
-                            break;
-                        case 'boolean':
-                            renderFields.push(
-                                renderBooleanField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'yesOrNo':
-                            // Special case
-                            renderFields.push(
-                                renderBooleanField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    value,
-                                    error,
-                                    readOnly,
-                                    required,
-                                    highlighted,
-                                    true
-                                )
-                            );
-                            break;
-                        case 'priceType':
-                            renderFields.push(
-                                renderPriceField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    this.state.pricing,
-                                    Array.isArray(validationErrors) &&
-                                        validationErrors.filter(el => el.fieldName && el.fieldName.includes('pricing')),
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        case 'territoryType':
-                            renderFields.push(
-                                renderTerritoryField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    this.state.territory,
-                                    Array.isArray(validationErrors) &&
-                                        validationErrors.filter(
-                                            el => el.fieldName && el.fieldName.includes('territory')
-                                        ),
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
+                        }
+                        if (mapping.readOnlyBasedField && Array.isArray(mapping.readOnlyBasedField)) {
+                            if (mapping.readOnlyBasedField.some(x => this.state.right[x.field] === x.fieldValue)) {
+                                readOnly = true;
+                            }
+                        }
+                        let highlighted = false;
+                        if (this.state.right && this.state.right.highlightedFields) {
+                            highlighted = this.state.right.highlightedFields.indexOf(mapping.javaVariableName) > -1;
+                        }
 
-                        case 'audioLanguageType':
-                            renderFields.push(
-                                renderAudioLanguageField(
-                                    mapping.javaVariableName,
-                                    mapping.displayName,
-                                    this.state.audioLanguage,
-                                    Array.isArray(validationErrors) &&
-                                        validationErrors.filter(
-                                            el => el.fieldName && el.fieldName.includes('languageAudioTypes')
-                                        ),
-                                    readOnly,
-                                    required,
-                                    highlighted
-                                )
-                            );
-                            break;
-                        default:
-                            console.warn(
+                        const {right = {}} = this.state;
+                        const {validationErrors} = right || {};
+
+                        switch (mapping.dataType) {
+                            case 'string':
+                                renderFields.push(
+                                    renderTextField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'integer':
+                                renderFields.push(
+                                    renderIntegerField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'year':
+                                renderFields.push(
+                                    renderYearField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'double':
+                                renderFields.push(
+                                    renderDoubleField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'select':
+                                renderFields.push(
+                                    renderSelectField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'multiselect':
+                                if (mapping.javaVariableName === 'affiliate') {
+                                    renderFields.push(
+                                        renderMultiSelectField(
+                                            mapping.javaVariableName,
+                                            mapping.displayName,
+                                            this.state.affiliates,
+                                            Array.isArray(validationErrors) &&
+                                                validationErrors.filter(
+                                                    el =>
+                                                        el.fieldName &&
+                                                        el.fieldName.includes('affiliate') &&
+                                                        !el.fieldName.includes('affiliateExclude')
+                                                ),
+                                            readOnly,
+                                            required,
+                                            highlighted
+                                        )
+                                    );
+                                    break;
+                                } else if (mapping.javaVariableName === 'affiliateExclude') {
+                                    renderFields.push(
+                                        renderMultiSelectField(
+                                            mapping.javaVariableName,
+                                            mapping.displayName,
+                                            this.state.affiliatesExclude,
+                                            Array.isArray(validationErrors) &&
+                                                validationErrors.filter(
+                                                    el => el.fieldName && el.fieldName.includes('affiliateExclude')
+                                                ),
+                                            readOnly,
+                                            required,
+                                            highlighted
+                                        )
+                                    );
+                                    break;
+                                }
+                                renderFields.push(
+                                    renderMultiSelectField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'duration':
+                                renderFields.push(
+                                    renderDurationField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'time':
+                                renderFields.push(
+                                    renderTimeField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        false,
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        valueV2,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted,
+                                        false
+                                    )
+                                );
+                                break;
+                            case DATETIME_FIELDS.TIMESTAMP:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        true,
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        valueV2,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted,
+                                        true
+                                    )
+                                );
+                                break;
+                            case DATETIME_FIELDS.BUSINESS_DATETIME:
+                                renderFields.push(
+                                    renderDatepickerField(
+                                        true,
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        valueV2,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted,
+                                        false
+                                    )
+                                );
+                                break;
+                            case 'boolean':
+                                renderFields.push(
+                                    renderBooleanField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'yesOrNo':
+                                // Special case
+                                renderFields.push(
+                                    renderBooleanField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        value,
+                                        error,
+                                        readOnly,
+                                        required,
+                                        highlighted,
+                                        true
+                                    )
+                                );
+                                break;
+                            case 'priceType':
+                                renderFields.push(
+                                    renderPriceField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        this.state.pricing,
+                                        Array.isArray(validationErrors) &&
+                                            validationErrors.filter(
+                                                el => el.fieldName && el.fieldName.includes('pricing')
+                                            ),
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            case 'territoryType':
+                                renderFields.push(
+                                    renderTerritoryField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        this.state.territory,
+                                        Array.isArray(validationErrors) &&
+                                            validationErrors.filter(
+                                                el => el.fieldName && el.fieldName.includes('territory')
+                                            ),
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+
+                            case 'audioLanguageType':
+                                renderFields.push(
+                                    renderAudioLanguageField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        this.state.audioLanguage,
+                                        Array.isArray(validationErrors) &&
+                                            validationErrors.filter(
+                                                el => el.fieldName && el.fieldName.includes('languageAudioTypes')
+                                            ),
+                                        readOnly,
+                                        required,
+                                        highlighted
+                                    )
+                                );
+                                break;
+                            default:
+                                console.warn(
                                     'Unsupported DataType: ' +
                                         mapping.dataType +
                                         ' for field name: ' +
                                         mapping.displayName
                                     // eslint-disable-next-line
                                 );
+                        }
                     }
-                }
-            });
+                });
         }
 
         return (

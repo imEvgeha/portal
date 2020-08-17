@@ -18,9 +18,19 @@ const getFocusedRight = state => {
     return rightMatching.focusedRight;
 };
 
+const getPendingRight = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.pendingRight;
+};
+
 const getMatchedRights = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.matchedRights;
+};
+
+const getRightsForMatching = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.rightsForMatching;
 };
 
 const getCombinedRight = state => {
@@ -48,3 +58,7 @@ export const createCombinedRightSelector = () => createSelector(getCombinedRight
 
 export const createRightMatchPageDataSelector = () =>
     createSelector(getRightMatchPageData, rightMatchPageData => rightMatchPageData);
+
+export const createPendingRightSelector = () => createSelector(getPendingRight, pendingRight => pendingRight);
+export const createRightsForMatchingSelector = () =>
+    createSelector(getRightsForMatching, rightsForMatching => rightsForMatching);

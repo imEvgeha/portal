@@ -14,9 +14,14 @@ export const getRightMatchingList = (searchCriteria = {}, page, size, sortedPara
     return nexusFetch(url, {params: encodedSerialize(params)});
 };
 
-export const getCombinedRight = rightIds => {
-    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match?rightIds=${rightIds}`;
-    return nexusFetch(url);
+export const getCombinedRight = (rightIds, right) => {
+    const url = `${config.get('gateway.url')}${config.get(
+        'gateway.service.avails'
+    )}/rights/match/combined?rightIds=${rightIds}`;
+    return nexusFetch(url, {
+        method: 'put',
+        ...(right && {body: JSON.stringify(right)}),
+    });
 };
 
 export const putCombinedRight = (rightIds, combinedRight) => {
@@ -29,6 +34,39 @@ export const putCombinedRight = (rightIds, combinedRight) => {
         method: 'put',
         body: JSON.stringify(combinedRight),
         errorToast,
+    });
+};
+
+export const getRightToMatchList = (searchCriteria = {}, page, size, sortedParams) => {
+    const queryParams = pickBy(searchCriteria, identity) || {};
+    const params = {...queryParams, page, size};
+    const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
+        sortedParams
+    )}`;
+
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    }).then(response => {
+        const {rightMatching} = store.getState().avails || {};
+        const {focusedRight} = rightMatching || {};
+        const {id} = focusedRight || {};
+        // temporary FE handling for operand 'not equal'
+        const getUpdatedData = (response, excludedId) => {
+            const {data = []} = response || {};
+            if (data && data.find(({id}) => id === excludedId)) {
+                store.dispatch(setFoundFocusRightInRightsRepository({foundFocusRightInRightsRepository: true}));
+                return data.filter(({id}) => id !== excludedId);
+            }
+            return data;
+        };
+        const updatedData = getUpdatedData(response, id);
+
+        const {foundFocusRightInRightsRepository} = store.getState().avails.rightMatching;
+        return {
+            ...response,
+            data: updatedData,
+            total: foundFocusRightInRightsRepository ? response.total - 1 : response.total,
+        };
     });
 };
 

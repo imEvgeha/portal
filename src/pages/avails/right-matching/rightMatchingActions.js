@@ -10,14 +10,19 @@ export const fetchAndStoreFocusedRight = payload => ({
     payload,
 });
 
+export const storePendingRight = payload => ({
+    type: actionTypes.STORE_PENDING_RIGHT,
+    payload,
+});
+
 export const fetchMatchedRights = ids => ({
     type: actionTypes.FETCH_MATCHED_RIGHT,
     payload: ids,
 });
 
-export const fetchCombinedRight = (rightIds, mapping) => ({
+export const fetchCombinedRight = payload => ({
     type: actionTypes.FETCH_COMBINED_RIGHT,
-    payload: {rightIds, mapping},
+    payload,
 });
 
 export const storeRightMatchDataWithIds = payload => ({
@@ -41,5 +46,10 @@ export const saveCombinedRight = payload => ({
 
 export const createNewRight = payload => ({
     type: actionTypes.CREATE_NEW_RIGHT,
+    payload,
+});
+
+export const storeMatchedRights = payload => ({
+    type: actionTypes.STORE_MATCHED_RIGHTS,
     payload,
 });

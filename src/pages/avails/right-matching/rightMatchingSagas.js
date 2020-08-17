@@ -88,6 +88,22 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
+function* storePendingRight({payload}) {
+    const {pendingRight} = payload;
+    yield put({
+        type: actionTypes.STORE_PENDING_RIGHT_SUCCESS,
+        payload: {pendingRight},
+    });
+}
+
+function* storeMatchedRights({payload}) {
+    const {rightsForMatching} = payload;
+    yield put({
+        type: actionTypes.STORE_MATCHED_RIGHTS_SUCCESS,
+        payload: {rightsForMatching},
+    });
+}
+
 export function* fetchMatchedRights(requestMethod, {payload}) {
     try {
         yield put({
@@ -115,15 +131,14 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
 }
 
 export function* fetchCombinedRight(requestMethod, {payload}) {
-    const {rightIds, mapping} = payload || {};
+    const {rights, rightIds, mapping} = payload || {};
     try {
         yield put({
             type: actionTypes.FETCH_COMBINED_RIGHT_REQUEST,
             payload: {},
         });
 
-        const combinedRight = yield call(requestMethod, rightIds);
-
+        const combinedRight = yield call(requestMethod, rightIds, rights);
         // fix fields that are null but include subfields
         mapping.forEach(({javaVariableName}) => {
             const dotIndex = javaVariableName.indexOf('.');
@@ -269,6 +284,8 @@ export function* rightMatchingWatcher() {
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
+        takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
+        takeEvery(actionTypes.STORE_MATCHED_RIGHTS, storeMatchedRights),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
