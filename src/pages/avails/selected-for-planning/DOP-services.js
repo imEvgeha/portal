@@ -23,8 +23,7 @@ const DOPService = {
                 {
                     fieldName: 'projectId',
                     operator: 'in',
-                    // value: projectIds.join(','),
-                    value: 'Project8680,Project8679',
+                    value: projectIds.join(','),
                     logicalAnd: true,
                 },
                 {
@@ -47,8 +46,8 @@ const DOPService = {
         const selectedTerritoryArray = () => {
             const arr = [];
 
-            !!data.length && data.map(right => {
-                right.territory.map((territory, territoryIndex) => {
+            !!data.length && data.forEach(right => {
+                right.territory.forEach((territory, territoryIndex) => {
                     arr.push({
                         code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
                         value: territory.country
@@ -61,7 +60,7 @@ const DOPService = {
 
         const utc = moment().utc();
 
-        let req = {
+        const req = {
             name: `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
             projectType: {id: PROJECT_ID},
             action: 'Provide',
