@@ -94,7 +94,6 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
             </Field>
             <Field name="selected" defaultValue="False" label="SELECTED">
                 {() => {
-                    console.error('brt', selected, selected.toString());
                     return (
                         <Textfield
                             name="readOnly"
