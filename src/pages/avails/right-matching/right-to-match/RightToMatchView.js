@@ -211,7 +211,7 @@ const RightToMatchView = ({
                     floatingFilter={true}
                     defaultColDef={{
                         filter: AG_GRID_COLUMN_FILTER.TEXT,
-                        sort: true,
+                        sortable: true,
                     }}
                     columnTypes={{
                         dateColumn: {
