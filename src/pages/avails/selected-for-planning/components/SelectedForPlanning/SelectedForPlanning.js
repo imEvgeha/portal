@@ -47,7 +47,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
 
     // Convert object to an array
     data = Object.values(data);
-    const total = headers.get('X-Total-Count') && data.length;
+    const total = headers.get('X-Total-Count') || data.length;
 
     return new Promise(res => {
         res({
