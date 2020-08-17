@@ -34,7 +34,8 @@ const NexusGrid = ({
     const isAutoHeight = ({domLayout}) => !!(domLayout && domLayout === 'autoHeight');
 
     return (
-        <div className={`
+        <div
+            className={`
             ag-theme-balham ${isGridHidden ? 'd-none' : ''}
             nexus-c-nexus-grid
             nexus-c-nexus-grid--overflow
@@ -87,4 +88,3 @@ NexusGrid.defaultProps = {
 };
 
 export default NexusGrid;
-
