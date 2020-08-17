@@ -351,8 +351,7 @@ class RightDetails extends React.Component {
     }
 
     flattenRight(right) {
-        const rightCopy = {};
-
+        const  rightCopy = {};
         this.props.availsMapping.mappings.forEach(map => {
             const val = getDeepValue(right, map.javaVariableName);
             if (val || val === false || val === null) {
@@ -373,8 +372,13 @@ class RightDetails extends React.Component {
         }
 
         const {flatRight} = this.state;
+        const { availHistoryId, availHistoryIds, ingestHistoryAttachmentId, ingestHistoryAttachmentIds} = this.state.right;
         const updatedRight = {
             ...flatRight,
+            availHistoryId,
+            availHistoryIds,
+            ingestHistoryAttachmentId,
+            ingestHistoryAttachmentIds,
             [name]: value
         };
 
