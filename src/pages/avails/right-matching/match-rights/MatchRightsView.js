@@ -63,9 +63,7 @@ const MatchRightView = ({
     mergeRights,
     rightsForMatching,
 }) => {
-    const activeFocusedRight = mergeRights
-        ? {...prepareRight(pendingRight), id: null, status: 'Pending'}
-        : focusedRight;
+    const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
     const {params} = match || {};
     const {availHistoryIds, rightId, matchedRightIds} = params || {};
     const selectedMatchedRights = [activeFocusedRight, ...rightsForMatching];
