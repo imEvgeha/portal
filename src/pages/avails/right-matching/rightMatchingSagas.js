@@ -191,6 +191,14 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
+                actions: URL.isEmbedded
+                    ? []
+                    : [
+                          {
+                              content: 'View Combined Right',
+                              onClick: () => window.open(`/avails/rights/${focusedRight.id}`, '_blank'),
+                          },
+                      ],
             },
         });
     } catch (error) {
