@@ -75,6 +75,7 @@ const RightsRepository = ({
     downloadIngestEmail,
     downloadIngestFile,
     location,
+    setIsTableDataLoading,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -372,6 +373,11 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
+
+    const changeTableDataLoadingState = state => {
+        setIsTableDataLoading(state);
+        setIsRepositoryDataLoading(state);
+    };
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -419,7 +425,7 @@ const RightsRepository = ({
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
-                setDataLoading={setIsRepositoryDataLoading}
+                setDataLoading={changeTableDataLoadingState}
             />
             <SelectedRightsRepositoryTable
                 id="selectedRightsRepo"
@@ -464,6 +470,7 @@ RightsRepository.propTypes = {
     selectedRights: PropTypes.array,
     prePlanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
+    setIsTableDataLoading: PropTypes.func,
 };
 
 RightsRepository.defaultProps = {
@@ -473,6 +480,7 @@ RightsRepository.defaultProps = {
     selectedRights: [],
     prePlanRights: [],
     rightsFilter: {},
+    setIsTableDataLoading: () => null,
 };
 
 const mapStateToProps = () => {

@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import IngestPanel from './ingest-panel/IngestPanel';
 import RightsRepository from './rights-repository/RightsRepository';
 import './AvailsView.scss';
 
-const AvailsView = ({location}) => (
-    <div className="nexus-c-avails-view">
-        <IngestPanel />
-        <RightsRepository location={location} />
-    </div>
-);
+const AvailsView = ({location}) => {
+    const [isTableDataLoading, setIsTableDataLoading] = useState(false);
+    return (
+        <div className="nexus-c-avails-view">
+            <IngestPanel isTableDataLoading={isTableDataLoading} />
+            <RightsRepository setIsTableDataLoading={setIsTableDataLoading} location={location} />
+        </div>
+    );
+};
 
 AvailsView.propTypes = {
     location: PropTypes.object,
