@@ -338,7 +338,7 @@ class RightCreate extends React.Component {
             .catch(error => {
                 this.setState({errorMessage: 'Right creation Failed'});
                 store.dispatch(blockUI(false));
-                const {message: responseMessage, status} = error || {};
+                const {message: responseMessage = {}, status} = error || {};
                 const {mergeRights, message, rightIDs} = responseMessage;
 
                 if (status === 409 && !mergeRights) {

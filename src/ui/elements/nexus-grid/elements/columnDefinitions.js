@@ -38,6 +38,7 @@ export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) =
         width: 40,
         checkboxSelection: true,
         lockVisible: true,
+        filter: false,
         ...rest,
     });
 };
@@ -100,7 +101,7 @@ export const getColumnDefsWithCleanContentType = (columnDefs, data) => {
         case CONTENT_TYPE.SEASON:
             return clonedColumnDefs.filter(({field}) => field !== FIELD.EPISODE);
         default:
-            return clonedColumnDefs.filter(({field}) => !([FIELD.EPISODE, FIELD.SEASON].includes(field)));
+            return clonedColumnDefs.filter(({field}) => ![FIELD.EPISODE, FIELD.SEASON].includes(field));
     }
 };
 
@@ -114,11 +115,7 @@ const renderEpisodeAndSeasonNumber = params => {
     }
 };
 
-export const defineEpisodeAndSeasonNumberColumn = ({
-    headerName = '-',
-    pinned = false,
-    lockPosition = false,
-} = {}) => {
+export const defineEpisodeAndSeasonNumberColumn = ({headerName = '-', pinned = false, lockPosition = false} = {}) => {
     return defineColumn({
         headerName,
         colId: 'episodeAndSeasonNumber',
@@ -130,13 +127,12 @@ export const defineEpisodeAndSeasonNumberColumn = ({
 };
 
 export const getLinkableColumnDefs = (columnDefs, location) => {
-    return cloneDeep(columnDefs)
-        .map(e => {
-            if (e.cellRenderer) {
-                e.cellRendererParams = {
-                    link: location,
-                };
-            }
-            return e;
-        });
+    return cloneDeep(columnDefs).map(e => {
+        if (e.cellRenderer) {
+            e.cellRendererParams = {
+                link: location,
+            };
+        }
+        return e;
+    });
 };

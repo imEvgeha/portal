@@ -16,13 +16,13 @@ import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
+import {AVAILS_PATH} from '../../availsRoutes';
 import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {
     createRightMatchingColumnDefs,
     fetchAndStoreFocusedRight,
     fetchCombinedRight,
-    fetchMatchedRights,
     saveCombinedRight,
 } from '../rightMatchingActions';
 import {
@@ -48,7 +48,6 @@ const MatchRightView = ({
     history,
     match,
     focusedRight,
-    matchedRights,
     combinedRight,
     fetchFocusedRight,
     fetchMatchedRight,
@@ -78,6 +77,12 @@ const MatchRightView = ({
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
+        if (!rightsForMatching.length && !mergeRights) {
+            fetchMatchedRight(matchedRightIds.split(','));
+        }
+    }, [rightsForMatching.length]);
+
+    useEffect(() => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         }
@@ -95,8 +100,8 @@ const MatchRightView = ({
     useEffect(() => {
         const schemas = createSchemaForColoring(selectedMatchedRights, columnDefs);
         setCellColoringSchema(schemas);
-        if (selectedMatchedRights.length) {
-            const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
+        const ids = selectedMatchedRights.filter(right => right.id).map(right => right.id);
+        if (ids.length) {
             fetchCombinedRight({
                 rights: mergeRights ? activeFocusedRight : null,
                 rightIds: ids,
@@ -111,7 +116,7 @@ const MatchRightView = ({
     };
 
     const onSaveCombinedRight = () => {
-        const redirectPath = mergeRights ? `/avails/history/${availHistoryIds}/right-matching` : `avails/v2`;
+        const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
         const payload = {
             rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
             combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
@@ -258,7 +263,6 @@ const MatchRightView = ({
 
 MatchRightView.propTypes = {
     focusedRight: PropTypes.object,
-    matchedRights: PropTypes.array,
     combinedRight: PropTypes.object,
     columnDefs: PropTypes.array,
     mapping: PropTypes.array,
@@ -278,7 +282,6 @@ MatchRightView.propTypes = {
 
 MatchRightView.defaultProps = {
     focusedRight: {},
-    matchedRights: [],
     combinedRight: {},
     columnDefs: [],
     mapping: null,
@@ -297,7 +300,6 @@ MatchRightView.defaultProps = {
 
 const createMapStateToProps = () => {
     const focusedRightSelector = selectors.createFocusedRightSelector();
-    const matchedRightsSelector = selectors.createMatchedRightsSelector();
     const combinedRightSelector = selectors.createCombinedRightSelector();
     const rightMatchingColumnDefsSelector = selectors.createRightMatchingColumnDefsSelector();
     const rightMatchingMappingSelector = selectors.createAvailsMappingSelector();
@@ -307,7 +309,6 @@ const createMapStateToProps = () => {
 
     return state => ({
         focusedRight: focusedRightSelector(state),
-        matchedRights: matchedRightsSelector(state),
         combinedRight: combinedRightSelector(state),
         columnDefs: rightMatchingColumnDefsSelector(state),
         mapping: rightMatchingMappingSelector(state),
@@ -320,7 +321,6 @@ const createMapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
     fetchFocusedRight: payload => dispatch(fetchAndStoreFocusedRight(payload)),
-    fetchMatchedRight: payload => dispatch(fetchMatchedRights(payload)),
     fetchCombinedRight: payload => dispatch(fetchCombinedRight(payload)),
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),

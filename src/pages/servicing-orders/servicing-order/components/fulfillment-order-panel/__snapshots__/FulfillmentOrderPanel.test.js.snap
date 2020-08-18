@@ -32,8 +32,8 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
     <span
       className="nexus-c-fulfillment-order-panel__description"
     />
-    <span
-      className="nexus-c-fulfillment-order-panel__status"
+    <StatusTag
+      status="FO_COMPLETED"
     />
   </div>
 </div>

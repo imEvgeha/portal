@@ -7,51 +7,113 @@ exports[`StatusCheck should match snapshot 1`] = `
   <div
     className="nexus-c-status-check__message"
   >
-    Status Check Message
+    These rights have fields that do not meet the criteria to be added.
   </div>
-  <DynamicTable
-    defaultPage={1}
-    head={
-      Object {
-        "cells": Array [
-          Object {
-            "content": "Title",
-            "key": 1,
-            "width": 80,
-          },
-          Object {
-            "content": "Status",
-            "key": 2,
-            "width": 20,
-          },
-        ],
-      }
-    }
-    isFixedSize={false}
-    isLoading={false}
-    isRankable={false}
-    loadingSpinnerSize="large"
-    onSetPage={[Function]}
-    onSort={[Function]}
-    rows={
-      Array [
+  <div
+    className="nexus-c-status-check__table"
+  >
+    <DynamicTable
+      defaultPage={1}
+      head={
         Object {
           "cells": Array [
             Object {
-              "content": undefined,
-              "key": undefined,
+              "content": "Title",
+              "key": 1,
+              "width": 35,
             },
             Object {
-              "content": undefined,
-              "key": undefined,
+              "content": "Status",
+              "key": 2,
+              "width": 15,
+            },
+            Object {
+              "content": "Right Status",
+              "key": 1,
+              "width": 15,
+            },
+            Object {
+              "content": "Licensed",
+              "key": 2,
+              "width": 10,
+            },
+            Object {
+              "content": "Unplanned Territories",
+              "key": 2,
+              "width": 25,
             },
           ],
-          "key": 0,
-        },
-      ]
-    }
-    rowsPerPage={5}
-  />
+        }
+      }
+      isFixedSize={false}
+      isLoading={false}
+      isRankable={false}
+      loadingSpinnerSize="large"
+      onSetPage={[Function]}
+      onSort={[Function]}
+      rows={
+        Array [
+          Object {
+            "cells": Array [
+              Object {
+                "content": "title1",
+                "key": "1-title",
+              },
+              Object {
+                "content": <InValidData
+                  data="Merged"
+                />,
+                "key": "1-status",
+              },
+              Object {
+                "content": "Pending",
+                "key": "1-rightStatus",
+              },
+              Object {
+                "content": "YES",
+                "key": "1-licensed",
+              },
+              Object {
+                "content": <InValidData
+                  data="NONE"
+                />,
+                "key": "1-territory",
+              },
+            ],
+            "key": 1,
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": "title12",
+                "key": "2-title",
+              },
+              Object {
+                "content": "ReadyNew",
+                "key": "2-status",
+              },
+              Object {
+                "content": "Pending",
+                "key": "2-rightStatus",
+              },
+              Object {
+                "content": <InValidData
+                  data="NO"
+                />,
+                "key": "2-licensed",
+              },
+              Object {
+                "content": "",
+                "key": "2-territory",
+              },
+            ],
+            "key": 2,
+          },
+        ]
+      }
+      rowsPerPage={5}
+    />
+  </div>
   <div
     className="nexus-c-status-check__btn-wrapper"
   >

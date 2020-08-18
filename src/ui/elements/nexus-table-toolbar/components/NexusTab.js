@@ -8,10 +8,7 @@ const NexusTab = ({title, tooltip, totalRows, activeTab, setActiveTab}) => {
     return (
         <NexusTooltip content={tooltip}>
             <div
-                className={classNames(
-                    'nexus-c-nexus-tab',
-                    activeTab === title && 'nexus-c-nexus-tab--is-active'
-                )}
+                className={classNames('nexus-c-nexus-tab', activeTab === title && 'nexus-c-nexus-tab--is-active')}
                 onClick={() => (activeTab !== title ? setActiveTab(title) : null)}
             >
                 {title} ({totalRows})
@@ -23,7 +20,7 @@ const NexusTab = ({title, tooltip, totalRows, activeTab, setActiveTab}) => {
 NexusTab.propTypes = {
     title: PropTypes.string,
     tooltip: PropTypes.string,
-    totalRows: PropTypes.number,
+    totalRows: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     activeTab: PropTypes.string.isRequired,
     setActiveTab: PropTypes.func.isRequired,
 };

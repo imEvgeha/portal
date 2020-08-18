@@ -17,7 +17,7 @@ const prepareSelectForPlanningData = async (sort, offset, limit) => {
     // Fetch all active projects for the current user
     // N.B. offset + 1 because DOP API starts counting pages from 1
     //      while the rest of the APIs start from 0
-    const [projectsList, headers]  = await DOPService.getUsersProjectsList(offset + 1, limit);
+    const [projectsList, headers] = await DOPService.getUsersProjectsList(offset + 1, limit);
     const projectIds = [];
 
     // Extract project IDs for incomplete projects to display in SelectForPlanning table
