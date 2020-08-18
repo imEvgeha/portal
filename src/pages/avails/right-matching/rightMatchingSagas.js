@@ -92,7 +92,7 @@ function* storePendingRight({payload}) {
     const {pendingRight} = payload;
     yield put({
         type: actionTypes.STORE_PENDING_RIGHT_SUCCESS,
-        payload: {pendingRight},
+        payload: {pendingRight: {...pendingRight, status: 'Pending'}},
     });
 }
 
