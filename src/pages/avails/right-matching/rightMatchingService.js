@@ -55,12 +55,12 @@ export const createRightById = id => {
     });
 };
 
-export const getMatchingCandidates = (id, tpr = false, rightData = '') => {
+export const getMatchingCandidates = (id, tpr = false, rightData) => {
     let query = `?tpr=${tpr}`;
     query += id ? `&rightId=${id}` : '';
     const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/match/candidates${query}`;
     return nexusFetch(url, {
         method: 'put',
-        body: JSON.stringify(rightData),
+        body: rightData && JSON.stringify(rightData),
     });
 };

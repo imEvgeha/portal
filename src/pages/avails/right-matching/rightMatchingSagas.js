@@ -118,8 +118,8 @@ export function* fetchMatchedRights(requestMethod, {payload}) {
         }
 
         yield put({
-            type: actionTypes.FETCH_MATCHED_RIGHT_SUCCESS,
-            payload: {matchedRights},
+            type: actionTypes.STORE_MATCHED_RIGHTS_SUCCESS,
+            payload: {rightsForMatching: matchedRights},
         });
     } catch (error) {
         yield put({

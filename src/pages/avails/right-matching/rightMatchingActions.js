@@ -15,11 +15,6 @@ export const storePendingRight = payload => ({
     payload,
 });
 
-export const fetchMatchedRights = ids => ({
-    type: actionTypes.FETCH_MATCHED_RIGHT,
-    payload: ids,
-});
-
 export const fetchCombinedRight = payload => ({
     type: actionTypes.FETCH_COMBINED_RIGHT,
     payload,

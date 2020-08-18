@@ -23,11 +23,6 @@ const getPendingRight = state => {
     return rightMatching.pendingRight;
 };
 
-const getMatchedRights = state => {
-    const rightMatching = getRightMatching(state);
-    return rightMatching.matchedRights;
-};
-
 const getRightsForMatching = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.rightsForMatching;
@@ -51,8 +46,6 @@ export const createAvailsMappingSelector = () =>
     });
 
 export const createFocusedRightSelector = () => createSelector(getFocusedRight, focusedRight => focusedRight);
-
-export const createMatchedRightsSelector = () => createSelector(getMatchedRights, matchedRights => matchedRights);
 
 export const createCombinedRightSelector = () => createSelector(getCombinedRight, combinedRight => combinedRight);
 
