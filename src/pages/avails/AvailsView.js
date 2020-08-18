@@ -9,7 +9,11 @@ const AvailsView = ({location}) => {
     return (
         <div className="nexus-c-avails-view">
             <IngestPanel isTableDataLoading={isTableDataLoading} />
-            <RightsRepository setIsTableDataLoading={setIsTableDataLoading} location={location} />
+            <RightsRepository
+                setIsTableDataLoading={setIsTableDataLoading}
+                isTableDataLoading={isTableDataLoading}
+                location={location}
+            />
         </div>
     );
 };
