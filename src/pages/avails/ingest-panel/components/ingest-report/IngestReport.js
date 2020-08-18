@@ -30,7 +30,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
     const createTag = key => (
         <div className="ingest-report__field" key={key}>
             <span className="ingest-report__field--label">{reportFields[key].label}</span>
-            <span
+            <div
                 className={classnames('ingest-report__field--value', activeFilter === key && 'filter-active')}
                 onClick={() =>
                     key === 'fatal'
@@ -39,7 +39,7 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
                 }
             >
                 {reportValues[key] || 0}
-            </span>
+            </div>
         </div>
     );
 

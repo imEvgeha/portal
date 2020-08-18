@@ -1,34 +1,48 @@
+@import '../../../../../styles/atlaskit/mixins';
+
 .ingest-report {
-  display: inline-flex;
-  flex-direction: column;
-  &__fields {
+    width: 100%;
+    @include addSpacing(margin-top, 3.5);
     display: inline-flex;
-  }
-  &__field {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-    color: #42526E;
-    font-size: 11px;
-    width: 45px;
-    height: 45px;
-    line-height: initial;
-    &--label {
-      margin-bottom: 5px;
+
+    &__fields {
+        display: inline-flex;
+        justify-content: space-between;
     }
-    &--value {
-      background: #A5ADBA;
-      border-radius: 32px;
-      padding: 2px 8px;
-      text-align: center;
-      font-weight: bold;
-      min-width: 22px;
-      min-height: 20px;
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: map-get($dark-neutral-colors, dark-neutral-5);
+        @include addSpacing(width, 10);
+        @include addSpacing(height, 10);
+        line-height: initial;
+
+        &--label {
+            @include heading(h100);
+            @include margin(0, 0, 1, 0);
+        }
+
+        &--value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: map-get($dark-neutral-colors, dark-neutral-1);
+            background: map-get($light-neutral-colors, light-neutral-1);
+            border-radius: 32px;
+            padding: 2px 8px;
+            text-align: center;
+            font-weight: bold;
+            min-width: 22px;
+            min-height: 20px;
+        }
     }
-  }
-  &__error-message{
-    font-size: 11px;
-    color: #DE350B;
-    margin: 10px 0 0 5px;
-  }
+
+    &__error-message {
+        font-size: 11px;
+        color: #de350b;
+        margin: 10px 0 0 5px;
+    }
 }

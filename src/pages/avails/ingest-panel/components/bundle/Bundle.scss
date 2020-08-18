@@ -1,33 +1,37 @@
-.nexus-c-avail-bundle__cell {
-  cursor: grab;
-  width: 350px;
-  padding: 12px;
-  border-bottom: 1px solid #DCDCDC;
-  background: #F5F5F7;
+@import '../../../../../styles/atlaskit/mixins';
 
-  &:hover {
-    background: #E6EDF0;
-  }
-}
-
-.nexus-c-avail-bundle__details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.nexus-c-avail-bundle__chevron {
-    & svg {
-        width: 15px;
-        height: 15px;
-        fill: #A5ADBA;
+.nexus-c-avail-bundle {
+    &__cell {
         cursor: pointer;
+        width: 100%;
+        @include padding(3);
+        border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-1);
+        background: map-get($light-neutral-colors, light-neutral-4);
+
+        &:hover {
+            background: map-get($light-neutral-colors, light-neutral-3);
+        }
     }
 
-    &--is-opened {
-        & svg {
-            transform: rotate(90deg);
+    &__details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    &__chevron {
+        svg {
+            @include addSpacing('width', 3);
+            @include addSpacing('height', 3);
+            fill: map-get($mid-neutral-colors, mid-neutral-7);
+            cursor: pointer;
+        }
+
+        &--is-opened {
+            svg {
+                transform: rotate(90deg);
+            }
         }
     }
 }

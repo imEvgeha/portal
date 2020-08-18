@@ -3,7 +3,7 @@
 @import '../../../../../styles/atlaskit/mixins';
 
 .nexus-c-fulfillment-order-panel {
-    // width: auto;
+    cursor: pointer;
     @include padding(3);
     border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
     background: map-get($primary-colors, white);
@@ -11,10 +11,10 @@
     position: relative;
 
     &--is-selected {
-        background: #e0ecf7;
+        background: map-get($blues, B50);
 
         &:hover {
-            background: #e0ecf7;
+            background: map-get($blues, B50);
         }
     }
 

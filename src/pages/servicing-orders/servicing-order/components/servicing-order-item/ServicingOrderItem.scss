@@ -2,6 +2,7 @@
 @import '../../../../../styles/atlaskit/theme';
 
 .nexus-c-servicing-order-item {
+    cursor: pointer;
     @include padding(3);
     border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
 
@@ -20,8 +21,9 @@
         @include addSpacing('margin-right', 3);
         @include addSpacing('width', 4.5);
         @include addSpacing('height', 4.5);
-        fill: #a5adba;
+        fill: map-get($mid-neutral-colors, mid-neutral-7);
         flex-shrink: 0;
+        cursor: pointer;
     }
 
     &__title {
@@ -37,7 +39,7 @@
         @include addSpacing('margin-right', 4.5);
         @include addSpacing('width', 3);
         @include addSpacing('height', 3);
-        fill: #a5adba;
+        fill: map-get($mid-neutral-colors, mid-neutral-7);
         flex-shrink: 0;
 
         &--is-expanded {

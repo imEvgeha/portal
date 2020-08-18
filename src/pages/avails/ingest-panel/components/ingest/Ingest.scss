@@ -1,66 +1,57 @@
+@import '../../../../../styles/atlaskit/mixins';
+
 .nexus-c-avail-ingest {
-  width: 100%;
-  padding: 12px;
-  border-bottom: 1px solid #DCDCDC;
-  background: #FFFFFF;
+    width: 100%;
+    @include padding(3);
+    border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-1);
+    background: map-get($light-neutral-colors, light-neutral-6);
 
-  &--is-in-bundle {
-    padding-left: 30px;
-  }
-
-  &:hover {
-    background: #FAFAFA;
-  }
-
-  &--is-selected {
-      background: #E0ECF7;
-
-      &:hover {
-          background: #E0ECF7;
-      }
-  }
-
-  .ingest-panel__list & {
-      cursor: pointer;
-  }
-}
-
-.nexus-c-avail-ingest__details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.nexus-c-avail-ingest__chevron {
-    & svg {
-        width: 15px;
-        height: 15px;
-        fill: #A5ADBA;
-        cursor: pointer;
+    &:hover {
+        background: map-get($light-neutral-colors, light-neutral-4);
     }
 
-    &--is-opened {
-        & svg {
-            transform: rotate(90deg);
+    &--is-in-bundle {
+        border-left: solid map-get($light-neutral-colors, light-neutral-1);
+        @include addSpacing(border-left-width, 2);
+        @include addSpacing(padding-left, 4);
+        @include addSpacing(margin-left, 0.5);
+    }
+
+    &--is-selected {
+        background: map-get($blues, B50);
+
+        &:hover {
+            background: map-get($blues, B50);
         }
     }
-}
 
-.nexus-c-avail-ingest .ingest-report {
-  width: 100%;
-  margin-top: 15px;
+    &__details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
 
-  &__fields {
-    justify-content: space-between;
-  }
-}
+    &__chevron {
+        svg {
+            @include addSpacing(width, 3);
+            @include addSpacing(height, 3);
+            fill: map-get($mid-neutral-colors, mid-neutral-7);
+            cursor: pointer;
+        }
 
-.nexus-c-avail-ingest__status {
-  width: 100%;
+        &--is-opened {
+            svg {
+                transform: rotate(90deg);
+            }
+        }
+    }
 
-  &--is-not-expandable {
-    margin-left: 15px;
-  }
+    &__status {
+        width: 100%;
 
+        &--is-not-expandable {
+            @include addSpacing(margin-left, 4);
+        }
+    }
 }

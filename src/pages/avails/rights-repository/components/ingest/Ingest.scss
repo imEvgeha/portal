@@ -1,87 +1,106 @@
-@import '../../../../../styles/config.scss';
+@import '../../../../../styles/atlaskit/mixins';
 
 .nexus-c-avails-ingest {
-  position:relative;
-  display: flex;
-  background-color: #FFFFFF;
-  justify-content: space-between;
-  border: 1px solid #A5ADBA;
-  padding: 10px;
-  margin-bottom: 20px;
-  &__avail-id{
-    padding-left: 30px;
-    font-size: 11px;
-    color: #737E91;
-  }
-  &:hover {
-    .nexus-c-avails-ingest__cross-icon {
-      display: block;
-    }
-  }
-  &__cross-icon {
-    display: none;
-    position: absolute;
-    right: -13px;
-    top: -15px;
-      svg {
-        height: 25px;
-        width: 25px;
-        fill: map-get($colors, nexus-secondary-color);
-        cursor: pointer;
-        background: #FFFFFF;
-        border-radius: 50%;
-      }
-  }
-  &__details {
+    position: relative;
     display: flex;
-    flex-direction: column;
+    background-color: map-get($light-neutral-colors, light-neutral-6);
     justify-content: space-between;
-    width: 65vh;
-    flex: 1;
-    .ingest-status {
-      padding-left: 30px;
-      width: 100%;
+    border: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
+    @include padding(3);
+    @include addSpacing(margin-bottom, 5);
+
+    &__avail-id {
+        @include addSpacing(padding-left, 7.5);
+        font-size: 11px;
+        color: #737e91;
     }
-  }
-  &__stats {
-    display: flex;
-    align-items: center;
-    .ingest-report {
-      border-right: 1px solid #A5ADBA;
-      padding-right: 15px;
-      &__field {
-        width: 50px;
-        &--value {
-          cursor: pointer;
-          background: #A5ADBA;
-          &:hover {
-            background: #737E91;
-            color: #000000;
-          }
-          &.filter-active{
-            background: #42526E;
-            color: #FFFFFF;
-            &:hover {
-              background: #42526E;
-              color: #FFFFFF;
-            }
-          }
+
+    &:hover {
+        .nexus-c-avails-ingest__cross-icon {
+            display: block;
         }
-      }
     }
-  }
-  &__email {
-    margin-left: 20px;
-  }
-  &__download {
-    margin: 0 20px;
-  }
-  &__download, &__email {
-    svg {
-      height: 30px;
-      width: 30px;
-      fill: #A5ADBA;
-      cursor: pointer;
+
+    &__cross-icon {
+        display: none;
+        position: absolute;
+        @include addSpacing(right, -3);
+        @include addSpacing(top, -3);
+        svg {
+            @include addSpacing(height, 6);
+            @include addSpacing(width, 6);
+            fill: map-get($dark-neutral-colors, dark-neutral-4);
+            cursor: pointer;
+            background: map-get($light-neutral-colors, light-neutral-6);
+            border-radius: 50%;
+        }
     }
-  }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+
+        .ingest-status {
+            @include addSpacing(padding-left, 7.5);
+            width: 100%;
+        }
+    }
+
+    &__stats {
+        @include addSpacing(margin-left, 4);
+        flex-basis: auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .ingest-report {
+            border-right: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
+            @include addSpacing(padding-right, 4);
+            @include addSpacing(margin-top, 0);
+
+            &__field {
+                @include addSpacing(width, 12);
+
+                &--value {
+                    cursor: pointer;
+                    background: map-get($mid-neutral-colors, mid-neutral-7);
+
+                    &:hover {
+                        background: map-get($mid-neutral-colors, mid-neutral-5);
+                        color: map-get($dark-neutral-colors, dark-neutral-1);
+                    }
+
+                    &.filter-active {
+                        background: map-get($dark-neutral-colors, dark-neutral-5);
+                        color: map-get($light-neutral-colors, light-neutral-6);
+
+                        &:hover {
+                            background: map-get($dark-neutral-colors, dark-neutral-5);
+                            color: map-get($light-neutral-colors, light-neutral-6);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__email {
+        @include addSpacing(margin-left, 5);
+    }
+
+    &__download {
+        @include margin(0, 5);
+    }
+
+    &__download,
+    &__email {
+        svg {
+            @include addSpacing(height, 7);
+            @include addSpacing(width, 7);
+            fill: map-get($mid-neutral-colors, mid-neutral-7);
+            cursor: pointer;
+        }
+    }
 }
