@@ -31,11 +31,11 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
                 : isEdit
                 ? existingTerritoryList[territoryIndex]['vuContractId']
                 : '',
-            comment: data.comment || '',
+            comment: data.comment || ' ',
         };
         const updatedObject = {};
         for (const objectField in newObject) {
-            if (newObject[objectField] || newObject['comment'] === '') {
+            if (newObject[objectField]) {
                 updatedObject[objectField] = newObject[objectField];
             } else {
                 if (objectField === 'selected') {
