@@ -16,12 +16,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         Rights
       </span>
-      <span
+      <div
         className="ingest-report__field--value filter-active"
         onClick={[Function]}
       >
         20001
-      </span>
+      </div>
     </div>
     <div
       className="ingest-report__field"
@@ -32,12 +32,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         New
       </span>
-      <span
+      <div
         className="ingest-report__field--value"
         onClick={[Function]}
       >
         1001
-      </span>
+      </div>
     </div>
     <div
       className="ingest-report__field"
@@ -48,12 +48,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         Updated
       </span>
-      <span
+      <div
         className="ingest-report__field--value"
         onClick={[Function]}
       >
         19999
-      </span>
+      </div>
     </div>
     <div
       className="ingest-report__field"
@@ -64,12 +64,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         Fatals
       </span>
-      <span
+      <div
         className="ingest-report__field--value"
         onClick={[Function]}
       >
         3
-      </span>
+      </div>
     </div>
     <div
       className="ingest-report__field"
@@ -80,12 +80,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         Pending
       </span>
-      <span
+      <div
         className="ingest-report__field--value"
         onClick={[Function]}
       >
         0
-      </span>
+      </div>
     </div>
     <div
       className="ingest-report__field"
@@ -96,12 +96,12 @@ exports[`IngestReport should match snapshot 1`] = `
       >
         Errors
       </span>
-      <span
+      <div
         className="ingest-report__field--value"
         onClick={[Function]}
       >
         2
-      </span>
+      </div>
     </div>
   </div>
   <span
