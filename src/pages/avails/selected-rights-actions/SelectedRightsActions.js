@@ -130,6 +130,9 @@ export const SelectedRightsActions = ({
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
         } else {
             setIsMatchable(false);
+            setIsUnmatchable(false);
+            setIsBonusRightCreatable(false);
+            setIsPreplanEligible(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
