@@ -13,11 +13,6 @@ const getAvailsMapping = state => {
     return root && root.availsMapping;
 };
 
-const getFieldSearchCriteria = state => {
-    const rightMatching = getRightMatching(state);
-    return rightMatching.fieldSearchCriteria;
-};
-
 const getFocusedRight = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.focusedRight;
@@ -54,9 +49,6 @@ export const createAvailsMappingSelector = () =>
     createSelector(getAvailsMapping, availsMapping => {
         return availsMapping && availsMapping.mappings;
     });
-
-export const createFieldSearchCriteriaSelector = () =>
-    createSelector(getFieldSearchCriteria, fieldSearchCriteria => fieldSearchCriteria);
 
 export const createFocusedRightSelector = () => createSelector(getFocusedRight, focusedRight => focusedRight);
 

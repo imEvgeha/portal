@@ -182,10 +182,14 @@ const RightsRepository = ({
     }, [selectedRepoRights, selectedGridApi]);
 
     useEffect(() => {
-        DOPService.getUsersProjectsList(1, 1).then(([response, headers]) => {
-            const total = headers.get('X-Total-Count') || response.length;
-            setPlanningRightsCount(total);
-        });
+        DOPService.getUsersProjectsList(1, 1)
+            .then(([response, headers]) => {
+                const total = headers.get('X-Total-Count') || response.length;
+                setPlanningRightsCount(total);
+            })
+            .catch(error => {
+                // error-handling here
+            });
     }, [activeTab]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
@@ -437,8 +441,7 @@ const RightsRepository = ({
                 setPreplanRights={setPreplanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
-            {activeTab === SELECTED_FOR_PLANNING_TAB
-                && <SelectedForPlanning activeTab={activeTab} />}
+            {activeTab === SELECTED_FOR_PLANNING_TAB && <SelectedForPlanning activeTab={activeTab} />}
         </div>
     );
 };

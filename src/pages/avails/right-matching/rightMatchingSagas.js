@@ -14,13 +14,7 @@ import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/servi
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
-import {
-    createRightById,
-    getCombinedRight,
-    getRightMatchingFieldSearchCriteria,
-    getRightMatchingList,
-    putCombinedRight,
-} from './rightMatchingService';
+import {createRightById, getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -52,36 +46,6 @@ export function* createRightMatchingColumnDefs() {
         }
     } catch (error) {
         throw new Error();
-    }
-}
-
-function* fetchAndStoreRightMatchingSearchCriteria() {
-    // wait to store update with focused right
-    // TODO: improve this
-    const focusedRightActionResult = yield take(actionTypes.FETCH_FOCUSED_RIGHT_SUCCESS);
-    const {payload = {}} = focusedRightActionResult || {};
-    const error = 'Provider is undefined';
-    const {availSource = {}} = payload || {};
-    const {provider} = availSource || {};
-
-    try {
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_REQUEST,
-            payload,
-        });
-        if (!provider) {
-            throw new Error(error);
-        }
-        const data = yield call(getRightMatchingFieldSearchCriteria, payload);
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_SUCCESS,
-            payload: data,
-        });
-    } catch (error) {
-        yield put({
-            type: actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_ERROR,
-            payload: error,
-        });
     }
 }
 
@@ -322,10 +286,6 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
         takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
         takeEvery(actionTypes.STORE_MATCHED_RIGHTS, storeMatchedRights),
-        takeLatest(
-            actionTypes.FETCH_AND_STORE_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA,
-            fetchAndStoreRightMatchingSearchCriteria
-        ),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),

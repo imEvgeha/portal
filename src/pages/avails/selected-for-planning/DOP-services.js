@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from 'moment';
 import config from 'react-global-configuration';
 import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
@@ -10,7 +10,9 @@ const username = getUsername(store.getState());
 
 const DOPService = {
     getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
-        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}/search`;
+        const url = `${config.get('gateway.DOPUrl')}${config.get(
+            'gateway.service.DOPProjectManagementProject'
+        )}/search`;
         const body = getSearchPayload(username, offset, limit);
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
     },
@@ -39,21 +41,24 @@ const DOPService = {
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)});
     },
     createProjectRequestData: (data = []) => {
-        const selectedRightArray = !!data.length && data.map((right, index) => {
-            return {code: `selectedRightID[${index}]`, value: right.id}
-        });
+        const selectedRightArray =
+            !!data.length &&
+            data.map((right, index) => {
+                return {code: `selectedRightID[${index}]`, value: right.id};
+            });
 
         const selectedTerritoryArray = () => {
             const arr = [];
 
-            !!data.length && data.forEach(right => {
-                right.territory.forEach((territory, territoryIndex) => {
-                    arr.push({
-                        code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
-                        value: territory.country
+            !!data.length &&
+                data.forEach(right => {
+                    right.territory.forEach((territory, territoryIndex) => {
+                        arr.push({
+                            code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
+                            value: territory.country,
+                        });
                     });
                 });
-            });
 
             return arr;
         };
@@ -69,7 +74,7 @@ const DOPService = {
             projectAttribute: [
                 {
                     code: 'rightsPreSelected',
-                    value: true
+                    value: true,
                 },
                 ...selectedRightArray,
                 ...selectedTerritoryArray(),
@@ -78,7 +83,7 @@ const DOPService = {
 
         return req;
     },
-    createProject: (data) => {
+    createProject: data => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
         return nexusFetch(url, {
             method: 'POST',

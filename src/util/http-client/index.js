@@ -12,7 +12,7 @@ const fetchAPI = async (url, options = {}, abortAfter = DEFAULT_TIMEOUT, fetchHe
     const allOptions = {
         headers: {
             'Content-Type': 'application/json',
-            ...(token ? {'Authorization': `Bearer ${token}`} : {}),
+            ...(token ? {Authorization: `Bearer ${token}`} : {}),
         },
         signal,
         method: 'get',

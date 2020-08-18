@@ -2,14 +2,12 @@ import * as actionTypes from './rightMatchingActionTypes';
 
 const initialState = {
     columnDefs: [],
-    fieldSearchCriteria: null,
     focusedRight: {},
     pendingRight: {},
     rightMatchPageData: {},
     matchedRights: [],
     rightsForMatching: [],
     combinedRight: {},
-    foundFocusRightInRightsRepository: false,
     mergeRights: false,
 };
 
@@ -17,14 +15,12 @@ const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
     const {
         columnDefs,
-        fieldSearchCriteria,
         focusedRight,
         rightMatchPageData,
         matchedRights,
         rightsForMatching,
         combinedRight,
         pendingRight,
-        foundFocusRightInRightsRepository,
     } = payload || {};
 
     switch (type) {
@@ -33,16 +29,10 @@ const rightMatchingReducer = (state = initialState, action) => {
                 ...state,
                 columnDefs,
             };
-        case actionTypes.FETCH_RIGHT_MATCHING_FIELD_SEARCH_CRITERIA_SUCCESS:
-            return {
-                ...state,
-                fieldSearchCriteria,
-            };
         case actionTypes.STORE_FOCUSED_RIGHT:
             return {
                 ...state,
                 focusedRight,
-                foundFocusRightInRightsRepository: false,
             };
         case actionTypes.STORE_PENDING_RIGHT_SUCCESS:
             return {
@@ -78,11 +68,6 @@ const rightMatchingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 rightMatchPageData: {},
-            };
-        case actionTypes.FOUND_FOCUS_RIGHT_IN_RIGHTS_REPOSITORY:
-            return {
-                ...state,
-                foundFocusRightInRightsRepository,
             };
         default:
             return state;
