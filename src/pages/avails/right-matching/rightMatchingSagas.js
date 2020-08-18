@@ -191,7 +191,7 @@ export function* saveCombinedRight(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE,
-                actions: URL.isEmbedded
+                actions: URL.isEmbedded()
                     ? []
                     : [
                           {
