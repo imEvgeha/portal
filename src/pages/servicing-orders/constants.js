@@ -12,10 +12,10 @@ export const readinessStatus = {
 export const EXPORT_WARNING_MESSAGE = 'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
 
 export const REPORT = {
-    notStarted: {label: 'Not Started', value: 'Not Started'},
-    inProgress: {label: 'In Progress', value: 'In Progress'},
-    onHold: {label: 'On Hold', value: 'On Hold'},
-    completed: {label: 'Completed', value: 'Completed'},
-    canceled: {label: 'Canceled', value: 'Canceled'},
-    failed: {label: 'Failed', value: 'Failed'},
+    NOT_STARTED: {label: 'Not Started', value: 'Not Started'},
+    IN_PROGRESS: {label: 'In Progress', value: 'In Progress'},
+    ON_HOLD: {label: 'On Hold', value: 'On Hold'},
+    COMPLETE: {label: 'Complete', value: 'Complete'},
+    CANCELLED: {label: 'Canceled', value: 'Canceled'},
+    FAILED: {label: 'Failed', value: 'Failed'},
 };

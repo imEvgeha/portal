@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import TooltipCellRenderer from './TooltipCellRenderer';
 import NexusTooltip from "../../../../nexus-tooltip/NexusTooltip";
+import TooltipCellRenderer from './TooltipCellRenderer';
 
 describe('TooltipCellRenderer', () => {
     let wrapper = null;
