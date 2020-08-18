@@ -21,7 +21,6 @@ class RightTerritoryForm extends React.Component {
     };
 
     render() {
-
         return (
             <ModalTransition>
                 {this.props.isOpen && (

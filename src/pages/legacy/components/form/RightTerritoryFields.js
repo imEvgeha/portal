@@ -4,7 +4,6 @@ import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
-import {CreatableSelect} from '@atlaskit/select';
 
 const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
