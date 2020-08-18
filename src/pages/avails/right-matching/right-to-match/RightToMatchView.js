@@ -86,8 +86,9 @@ const RightToMatchView = ({
             false;
         (focusedRight.id || newPendingRight.length) &&
             getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
-                setTotalCount(response.length);
-                setMatchingCandidates(response);
+                const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+                setTotalCount(rights.length);
+                setMatchingCandidates(rights);
             });
     }, [focusedRight.id, newPendingRight]);
 
@@ -155,8 +156,8 @@ const RightToMatchView = ({
     const handleMatchClick = () => {
         if (Array.isArray(selectedRows) && selectedRows.length > 0) {
             const matchedRightIds = selectedRows.map(el => el.id).join();
+            storeMatchedRights({rightsForMatching: selectedRows});
             if (mergeRights) {
-                storeMatchedRights({rightsForMatching: selectedRows});
                 return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
             }
             history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));

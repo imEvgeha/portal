@@ -13,15 +13,8 @@ const initialState = {
 
 const rightMatchingReducer = (state = initialState, action) => {
     const {type, payload = {}} = action || {};
-    const {
-        columnDefs,
-        focusedRight,
-        rightMatchPageData,
-        matchedRights,
-        rightsForMatching,
-        combinedRight,
-        pendingRight,
-    } = payload || {};
+    const {columnDefs, focusedRight, rightMatchPageData, rightsForMatching, combinedRight, pendingRight} =
+        payload || {};
 
     switch (type) {
         case actionTypes.STORE_RIGHT_MATCHING_COLUMN_DEFS:
@@ -32,23 +25,20 @@ const rightMatchingReducer = (state = initialState, action) => {
         case actionTypes.STORE_FOCUSED_RIGHT:
             return {
                 ...state,
+                pendingRight: {},
                 focusedRight,
             };
         case actionTypes.STORE_PENDING_RIGHT_SUCCESS:
             return {
                 ...state,
                 pendingRight,
+                focusedRight: {},
                 mergeRights: true,
             };
         case actionTypes.STORE_MATCHED_RIGHTS_SUCCESS:
             return {
                 ...state,
                 rightsForMatching,
-            };
-        case actionTypes.FETCH_MATCHED_RIGHT_SUCCESS:
-            return {
-                ...state,
-                matchedRights,
             };
         case actionTypes.FETCH_COMBINED_RIGHT_SUCCESS:
         case actionTypes.FETCH_COMBINED_RIGHT_ERROR:
