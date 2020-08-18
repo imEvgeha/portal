@@ -9,20 +9,30 @@ describe('StatusCheck', () => {
     const props = {
         nonEligibleTitles: [
             {
-                key: 1,
-                cells: [
+                id: 1,
+                title: 'title1',
+                status: 'Merged',
+                rightStatus: 'Pending',
+                licensed: true,
+                territory: [
                     {
-                        key: 11,
-                        content: 'Title',
+                        selected: true,
                     },
+                ],
+            },
+            {
+                id: 2,
+                title: 'title12',
+                status: 'ReadyNew',
+                rightStatus: 'Pending',
+                licensed: false,
+                territory: [
                     {
-                        key: 22,
-                        content: 'Status',
+                        selected: false,
                     },
                 ],
             },
         ],
-        message: 'Status Check Message',
     };
 
     beforeEach(() => {
@@ -33,12 +43,20 @@ describe('StatusCheck', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render status check message', () => {
-        expect(wrapper.find('.nexus-c-status-check__message').text()).toEqual('Status Check Message');
-    });
-
     it('renders Dynamic Table', () => {
         expect(wrapper.find('DynamicTable')).toHaveLength(1);
+    });
+
+    it('renders 2 rows in Dynamic Table', () => {
+        expect(wrapper.find('DynamicTable').props().rows).toHaveLength(2);
+    });
+
+    it('renders None in territories column for row 1', () => {
+        expect(wrapper.find('DynamicTable').props().rows[0].cells[4].content.props.data).toEqual('NONE');
+    });
+
+    it('renders No in licensed column for row 2', () => {
+        expect(wrapper.find('DynamicTable').props().rows[1].cells[3].content.props.data).toEqual('NO');
     });
 
     it('renders OK button', () => {
