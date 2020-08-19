@@ -345,7 +345,7 @@ class RightsCreateFromAttachment extends React.Component {
                                     columnDefs={this.getAttachmentsColumnDefs(attachmentsColumnDefs)}
                                     rowData={this.getAttachmentsRowData(attachments)}
                                     headerHeight="52"
-                                    rowHeight="80"
+                                    rowHeight="75"
                                     frameworkComponents={{
                                         status: this.cellRenderers['status'],
                                         attachment: this.cellRenderers['attachment'],
