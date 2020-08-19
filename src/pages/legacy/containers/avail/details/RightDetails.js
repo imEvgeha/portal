@@ -419,6 +419,7 @@ class RightDetails extends React.Component {
                 this.setState({
                     errorMessage: 'Editing right failed',
                 });
+                onError();
                 this.props.handleMatchingRights({
                     error,
                     right: updatedRight,
