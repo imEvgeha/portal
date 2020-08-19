@@ -11,19 +11,13 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
-import {AVAILS_PATH} from '../../../../avails/availsRoutes';
-import {momentToISO, safeTrim, URL} from '../../../../../util/Common';
+import {safeTrim, URL} from '../../../../../util/Common';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {
     SUCCESS_TITLE,
-    ERROR_ICON,
     SUCCESS_ICON,
     CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-    CREATE_NEW_RIGHT_ERROR_TITLE,
-    CREATE_NEW_RIGHT_ERROR_MSG_UNMERGED,
-    CREATE_NEW_RIGHT_ERROR_MSG_MERGED,
 } from '../../../../../ui/elements/nexus-toast-notification/constants';
-import {storePendingRight} from '../../../../avails/right-matching/rightMatchingActions';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
@@ -39,6 +33,7 @@ import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
+import {handleMatchingRightsAction} from '../availActions';
 
 const mapStateToProps = state => {
     return {
@@ -49,7 +44,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-    storePendingRight: payload => dispatch(storePendingRight(payload)),
+    handleMatchingRights: payload => dispatch(handleMatchingRightsAction(payload)),
 });
 
 const excludedFields = ['status', 'originalRightIds', 'sourceRightId'];
@@ -288,16 +283,6 @@ class RightCreate extends React.Component {
         return this.anyInvalidField();
     }
 
-    goToRightDetailsPage(right) {
-        this.props.removeToast();
-        window.open(RightsURL.getRightUrl(right), '_blank');
-    }
-
-    goToRightToRightMatching() {
-        this.props.removeToast();
-        this.context.router.history.push(URL.keepEmbedded('/avails/right-matching'));
-    }
-
     confirm() {
         if (this.validateFields()) {
             this.setState({errorMessage: 'Not all mandatory fields are filled or not all filled fields are valid'});
@@ -337,49 +322,11 @@ class RightCreate extends React.Component {
             })
             .catch(error => {
                 this.setState({errorMessage: 'Right creation Failed'});
-                store.dispatch(blockUI(false));
-                const {message: responseMessage = {}, status} = error || {};
-                const {mergeRights, message, rightIDs} = responseMessage;
-
-                if (status === 409 && !mergeRights) {
-                    this.context.router.history.push(URL.keepEmbedded(AVAILS_PATH));
-                    return this.props.addToast({
-                        title: CREATE_NEW_RIGHT_ERROR_TITLE,
-                        description: CREATE_NEW_RIGHT_ERROR_MSG_UNMERGED(message),
-                        icon: ERROR_ICON,
-                        isAutoDismiss: false,
-                        isWithOverlay: false,
-                        actions: rightIDs.map(right => ({
-                            content: right,
-                            onClick: () => this.goToRightDetailsPage(right),
-                        })),
-                    });
-                }
-                if (status === 409 && mergeRights) {
-                    const pendingRightNoId = this.right;
-                    pendingRightNoId.id = null;
-                    this.props.storePendingRight({pendingRight: pendingRightNoId});
-                    this.context.router.history.push(URL.keepEmbedded(AVAILS_PATH));
-                    return this.props.addToast({
-                        title: CREATE_NEW_RIGHT_ERROR_TITLE,
-                        description: CREATE_NEW_RIGHT_ERROR_MSG_MERGED,
-                        icon: ERROR_ICON,
-                        isAutoDismiss: false,
-                        isWithOverlay: false,
-                        actions: [
-                            {
-                                content: 'review and merge rights?',
-                                onClick: () => this.goToRightToRightMatching(),
-                            },
-                        ],
-                    });
-                }
-                return this.props.addToast({
-                    title: CREATE_NEW_RIGHT_ERROR_TITLE,
-                    description: message,
-                    icon: ERROR_ICON,
-                    isAutoDismiss: true,
-                    isWithOverlay: false,
+                this.props.handleMatchingRights({
+                    error,
+                    right: this.right,
+                    isEdit: false,
+                    push: this.context.router.history.push,
                 });
             });
     }
@@ -1309,12 +1256,12 @@ RightCreate.propTypes = {
     blocking: PropTypes.bool,
     match: PropTypes.object,
     addToast: PropTypes.func,
-    removeToast: PropTypes.func,
+    handleMatchingRights: PropTypes.func,
 };
 
 RightCreate.defaultProps = {
     addToast: () => null,
-    removeToast: () => null,
+    handleMatchingRights: () => null,
 };
 
 RightCreate.contextTypes = {

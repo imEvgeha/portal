@@ -27,8 +27,9 @@ const rightMatchingReducer = (state = initialState, action) => {
                 ...state,
                 pendingRight: {},
                 focusedRight,
+                mergeRights: false,
             };
-        case actionTypes.STORE_PENDING_RIGHT_SUCCESS:
+        case actionTypes.STORE_PENDING_RIGHT:
             return {
                 ...state,
                 pendingRight,
