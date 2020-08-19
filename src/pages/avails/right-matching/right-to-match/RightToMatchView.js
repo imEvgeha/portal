@@ -80,6 +80,10 @@ const RightToMatchView = ({
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
+        removeToast();
+    }, []);
+
+    useEffect(() => {
         const tpr =
             get(newPendingRight, '[0].temporaryPriceReduction', false) ||
             get(focusedRight, 'temporaryPriceReduction', false) ||
@@ -282,13 +286,14 @@ const createMapStateToProps = () => {
     const availsMappingSelector = selectors.createAvailsMappingSelector();
     const focusedRightSelector = selectors.createFocusedRightSelector();
     const pendingRightSelector = selectors.createPendingRightSelector();
+    const mergeRightsSelector = selectors.createMergeRightsSelector();
 
     return state => ({
         columnDefs: rightMatchingColumnDefsSelector(state),
         mapping: availsMappingSelector(state),
         focusedRight: focusedRightSelector(state),
         pendingRight: pendingRightSelector(state),
-        mergeRights: state.avails.rightMatching.mergeRights,
+        mergeRights: mergeRightsSelector(state),
     });
 };
 

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {debounce} from 'lodash';
 import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';
 import Ingest from './components/ingest/Ingest';
@@ -9,9 +10,11 @@ import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
 import {getFiltersToSend} from './utils';
 import './IngestPanel.scss';
-import Constants from './constants';
+import Constants, {DEBOUNCE_TIMEOUT} from './constants';
 
-const {attachmentTypes: {EXCEL}} = Constants;
+const {
+    attachmentTypes: {EXCEL},
+} = Constants;
 
 const IngestPanel = ({
     onFiltersChange,
@@ -21,6 +24,7 @@ const IngestPanel = ({
     selectedIngest,
     selectedAttachmentId,
     ingestClick,
+    isTableDataLoading,
 }) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -34,7 +38,7 @@ const IngestPanel = ({
 
     const onScroll = e => {
         const {target: {scrollHeight, scrollTop, clientHeight} = {}} = e || {};
-        if ((scrollHeight - scrollTop - clientHeight < 1) && (ingests.length < totalIngests)) {
+        if (scrollHeight - scrollTop - clientHeight < 1 && ingests.length < totalIngests) {
             fetchNextPage();
         }
     };
@@ -48,56 +52,50 @@ const IngestPanel = ({
 
     return (
         <div className="ingest-panel">
-            <PanelHeader
-                isShowingFilters={showFilters}
-                toggleFilters={toggleFilters}
-                onFiltersChange={filtersChange}
-            />
-            <div
-                className="ingest-panel__list"
-                onScroll={onScroll}
-                ref={panelRef}
-            >
-                {
-                    ingests.map(({id, attachments, received, licensor, ingestType}) => {
-                        const excelAttachments = attachments.filter(
-                            ({attachmentType}) => attachmentType && attachmentType === EXCEL
-                        );
+            <PanelHeader isShowingFilters={showFilters} toggleFilters={toggleFilters} onFiltersChange={filtersChange} />
+            <div className="ingest-panel__list" onScroll={onScroll} ref={panelRef}>
+                {ingests.map(({id, attachments, received, licensor, ingestType}) => {
+                    const excelAttachments = attachments.filter(
+                        ({attachmentType}) => attachmentType && attachmentType === EXCEL
+                    );
 
-                        const handleIngestClick = () => ingestClick({
+                    const handleIngestClick = () =>
+                        ingestClick({
                             availHistoryId: id,
                             attachmentId: excelAttachments[0].id,
                             selectedAttachmentId,
                         });
 
-                        return (excelAttachments.length > 1)
-                            ? (
-                                <Bundle
-                                    key={id}
-                                    id={id}
-                                    attachments={excelAttachments}
-                                    received={received}
-                                    licensor={licensor}
-                                    ingestType={ingestType}
-                                    ingestClick={ingestClick}
-                                    selectedAttachmentId={selectedAttachmentId}
-                                />
-                            )
-                            : (excelAttachments.length === 1)
-                                && (
-                                    <Ingest
-                                        key={id}
-                                        attachment={excelAttachments[0]}
-                                        received={received}
-                                        licensor={licensor}
-                                        ingestType={ingestType}
-                                        ingestClick={handleIngestClick}
-                                        isSelected={selectedIngest && (selectedIngest.id === id)}
-                                        ingestId={id}
-                                    />
-                                );
-                    })
-                }
+                    return excelAttachments.length > 1 ? (
+                        <Bundle
+                            key={id}
+                            id={id}
+                            attachments={excelAttachments}
+                            received={received}
+                            licensor={licensor}
+                            ingestType={ingestType}
+                            ingestClick={ingestClick}
+                            selectedAttachmentId={selectedAttachmentId}
+                        />
+                    ) : (
+                        excelAttachments.length === 1 && (
+                            <Ingest
+                                key={id}
+                                attachment={excelAttachments[0]}
+                                received={received}
+                                licensor={licensor}
+                                ingestType={ingestType}
+                                ingestClick={
+                                    !isTableDataLoading
+                                        ? debounce(handleIngestClick, DEBOUNCE_TIMEOUT, {leading: true})
+                                        : null
+                                }
+                                isSelected={selectedIngest && selectedIngest.id === id}
+                                ingestId={id}
+                            />
+                        )
+                    );
+                })}
             </div>
             <UploadIngestButton />
         </div>
@@ -112,6 +110,7 @@ IngestPanel.propTypes = {
     onFiltersChange: PropTypes.func,
     fetchNextPage: PropTypes.func,
     ingestClick: PropTypes.func,
+    isTableDataLoading: PropTypes.bool,
 };
 
 IngestPanel.defaultProps = {
@@ -122,6 +121,7 @@ IngestPanel.defaultProps = {
     onFiltersChange: () => null,
     fetchNextPage: () => null,
     ingestClick: () => null,
+    isTableDataLoading: false,
 };
 
 const mapStateToProps = () => {

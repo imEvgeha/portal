@@ -75,6 +75,8 @@ const RightsRepository = ({
     downloadIngestEmail,
     downloadIngestFile,
     location,
+    isTableDataLoading,
+    setIsTableDataLoading,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -85,7 +87,6 @@ const RightsRepository = ({
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
-    const [isRepositoryDataLoading, setIsRepositoryDataLoading] = useState(false);
     const {search} = location;
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
@@ -162,18 +163,18 @@ const RightsRepository = ({
         }
 
         setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-    }, [search, selectedRights, selectedIngest, gridApi, isRepositoryDataLoading]);
+    }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
     useEffect(() => {
         if (selectedGridApi) {
-            if (isRepositoryDataLoading) {
+            if (isTableDataLoading) {
                 selectedGridApi.clearFocusedCell();
                 selectedGridApi.showLoadingOverlay();
             } else {
                 selectedGridApi.hideOverlay();
             }
         }
-    }, [isRepositoryDataLoading, selectedGridApi]);
+    }, [isTableDataLoading, selectedGridApi]);
 
     useEffect(() => {
         if (selectedGridApi && selectedRepoRights.length > 0) {
@@ -372,6 +373,7 @@ const RightsRepository = ({
         // Otherwise return all selected rights.
         return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
     };
+
     return (
         <div className="nexus-c-rights-repository">
             <RightsRepositoryHeader />
@@ -419,7 +421,7 @@ const RightsRepository = ({
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
-                setDataLoading={setIsRepositoryDataLoading}
+                setDataLoading={setIsTableDataLoading}
             />
             <SelectedRightsRepositoryTable
                 id="selectedRightsRepo"
@@ -464,6 +466,8 @@ RightsRepository.propTypes = {
     selectedRights: PropTypes.array,
     prePlanRights: PropTypes.array,
     rightsFilter: PropTypes.object,
+    isTableDataLoading: PropTypes.bool,
+    setIsTableDataLoading: PropTypes.func,
 };
 
 RightsRepository.defaultProps = {
@@ -473,6 +477,8 @@ RightsRepository.defaultProps = {
     selectedRights: [],
     prePlanRights: [],
     rightsFilter: {},
+    isTableDataLoading: false,
+    setIsTableDataLoading: () => null,
 };
 
 const mapStateToProps = () => {
