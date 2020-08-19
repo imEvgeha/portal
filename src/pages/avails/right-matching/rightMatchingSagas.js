@@ -88,14 +88,6 @@ function* fetchAndStoreFocusedRight(action) {
     }
 }
 
-function* storePendingRight({payload}) {
-    const {pendingRight} = payload;
-    yield put({
-        type: actionTypes.STORE_PENDING_RIGHT_SUCCESS,
-        payload: {pendingRight: {...pendingRight, status: 'Pending'}},
-    });
-}
-
 function* storeMatchedRights({payload}) {
     const {rightsForMatching} = payload;
     yield put({
@@ -292,7 +284,6 @@ export function* rightMatchingWatcher() {
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
         takeLatest(SET_LOCALE, createRightMatchingColumnDefs),
         takeEvery(actionTypes.FETCH_AND_STORE_FOCUSED_RIGHT, fetchAndStoreFocusedRight),
-        takeEvery(actionTypes.STORE_PENDING_RIGHT, storePendingRight),
         takeEvery(actionTypes.STORE_MATCHED_RIGHTS, storeMatchedRights),
         takeEvery(actionTypes.FETCH_MATCHED_RIGHT, fetchMatchedRights, rightsService.get),
         takeEvery(actionTypes.FETCH_COMBINED_RIGHT, fetchCombinedRight, getCombinedRight),

@@ -1,51 +1,54 @@
-.editable-field{
-  padding-left: 0px;
+.editable-field {
+    padding-left: 0px;
 
-  &:not(.disabled){
-    transition: box-shadow 150ms ease-in 0ms;
-    box-shadow: 0 0 0 0 transparent;
+    &:not(.disabled) {
+        transition: box-shadow 150ms ease-in 0ms;
+        box-shadow: 0 0 0 0 transparent;
 
-    &-content{
+        &-content {
+        }
 
+        .edit-icon {
+            transition: opacity 150ms ease-in 0ms;
+            opacity: 0;
+            display: inline-block;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        a,
+        span,
+        .displayDate {
+            cursor: text !important;
+        }
+
+        &:not(.no-border):hover {
+            box-shadow: 0 0 0 1px #ccc;
+            .edit-icon {
+                opacity: 1;
+            }
+        }
     }
 
-    .edit-icon {
-      transition: opacity 150ms ease-in 0ms;
-      opacity: 0;
-      display: inline-block;
-      position: absolute;
-      right: 0;
-      top: 0;
+    &.disabled {
+        .displayDate:hover {
+            color: #000000;
+        }
+
+        a,
+        span,
+        .displayDate {
+            cursor: default !important;
+            color: #000000;
+        }
+
+        .edit-icon {
+            display: none;
+        }
     }
 
-    a, span, .displayDate {
-      cursor: text !important;
+    form > div:first-of-type {
+        margin-top: 0 !important;
     }
-
-    &:not(.no-border):hover{
-      box-shadow: 0 0 0 1px #ccc;
-      .edit-icon {
-        opacity: 1;
-      }
-    }
-  }
-
-  &.disabled{
-    .displayDate:hover {
-      color: #000000;
-    }
-
-    a, span, .displayDate {
-      cursor: default !important;
-      color: #000000;
-    }
-
-    .edit-icon {
-      display:none;
-    }
-  }
-
-  form > div:first-of-type {
-    margin-top: 0 !important;
-  }
 }

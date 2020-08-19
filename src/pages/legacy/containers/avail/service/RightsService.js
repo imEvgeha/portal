@@ -233,6 +233,7 @@ export const rightsService = {
         return nexusFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
+            isWithErrorHandling: false,
         });
     },
 };

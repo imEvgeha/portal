@@ -40,6 +40,8 @@ import {rightsService} from '../service/RightsService';
 import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG} from './RightConstants';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import './RightDetails.scss';
+import withToasts from '../../../../../ui/toast/hoc/withToasts';
+import {handleMatchingRightsAction} from '../availActions';
 
 const mapStateToProps = state => {
     return {
@@ -48,6 +50,10 @@ const mapStateToProps = state => {
         blocking: state.root.blocking,
     };
 };
+
+const mapDispatchToProps = dispatch => ({
+    handleMatchingRights: payload => dispatch(handleMatchingRightsAction(payload)),
+});
 
 class RightDetails extends React.Component {
     refresh = null;
@@ -409,12 +415,16 @@ class RightDetails extends React.Component {
                     return {editedRight};
                 });
             })
-            .catch(() => {
+            .catch(error => {
                 this.setState({
                     errorMessage: 'Editing right failed',
                 });
-                store.dispatch(blockUI(false));
-                onError();
+                this.props.handleMatchingRights({
+                    error,
+                    right: updatedRight,
+                    isEdit: true,
+                    push: this.context.router.history.push,
+                });
             });
     }
 
@@ -682,9 +692,10 @@ class RightDetails extends React.Component {
                 highlighted,
                 null,
                 ref,
-                readOnly
-                    ? value
-                    : (<InlineEdit
+                readOnly ? (
+                    value
+                ) : (
+                    <InlineEdit
                         placeholder={`${this.emptyValueText} ${displayName}`}
                         defaultValue={value}
                         hideActionButtons={!!sourceRightId || readOnly}
@@ -708,7 +719,8 @@ class RightDetails extends React.Component {
                         )}
                         validate={value => this.validateTextField(name, value)}
                         onConfirm={value => onSubmit(name, value)}
-                    />)
+                    />
+                )
             );
         };
 
@@ -2165,6 +2177,7 @@ RightDetails.propTypes = {
     location: PropTypes.any,
     blocking: PropTypes.bool,
     history: PropTypes.object,
+    handleMatchingRights: PropTypes.func,
 };
 
 RightDetails.defaultProps = {
@@ -2174,10 +2187,11 @@ RightDetails.defaultProps = {
     location: {},
     blocking: null,
     history: null,
+    handleMatchingRights: () => null,
 };
 
 RightDetails.contextTypes = {
     router: PropTypes.object,
 };
 
-export default connect(mapStateToProps)(RightDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(withToasts(RightDetails));

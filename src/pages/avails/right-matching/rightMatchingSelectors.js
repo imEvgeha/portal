@@ -23,6 +23,11 @@ const getPendingRight = state => {
     return rightMatching.pendingRight;
 };
 
+const getMergeRights = state => {
+    const rightMatching = getRightMatching(state);
+    return rightMatching.mergeRights;
+};
+
 const getRightsForMatching = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.rightsForMatching;
@@ -55,3 +60,4 @@ export const createRightMatchPageDataSelector = () =>
 export const createPendingRightSelector = () => createSelector(getPendingRight, pendingRight => pendingRight);
 export const createRightsForMatchingSelector = () =>
     createSelector(getRightsForMatching, rightsForMatching => rightsForMatching);
+export const createMergeRightsSelector = () => createSelector(getMergeRights, mergeRights => mergeRights);
