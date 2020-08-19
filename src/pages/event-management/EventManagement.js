@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {get} from 'lodash';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
+import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {TITLE} from './eventManagementConstants';
@@ -25,12 +26,16 @@ const EventManagement = () => {
                 setGridApi(api);
                 break;
             case SELECTION_CHANGED:
-                selectedRow = get(api.getSelectedRows(), '[0]', null);
-                // Call api to get event by ID
-                if (selectedRow) {
-                    getEventById(selectedRow.id).then(evt => {
-                        setSelectedEvent({...get(evt, 'event', null), id:selectedRow.id});
-                    });
+                if (URL.isLocalOrDevOrQA()) {
+                    selectedRow = get(api.getSelectedRows(), '[0]', null);
+                    // Call api to get event by ID
+                    if (selectedRow) {
+                        getEventById(selectedRow.id).then(evt => {
+                            setSelectedEvent({...get(evt, 'event', null), id: selectedRow.id});
+                        });
+                    }
+                } else {
+                    setSelectedEvent(get(api.getSelectedRows(), '[0]', null));
                 }
                 break;
             default:
@@ -40,18 +45,11 @@ const EventManagement = () => {
 
     return (
         <div className="nexus-c-event-management">
-            <div className="nexus-c-event-management__title">
-                {TITLE}
-            </div>
+            <div className="nexus-c-event-management__title">{TITLE}</div>
             <div className="nexus-c-event-management__table">
                 <EventManagementTable onGridEvent={onGridEvent} />
             </div>
-            {selectedEvent && (
-                <EventDrawer
-                    event={selectedEvent}
-                    onDrawerClose={closeEventDrawer}
-                />
-            )}
+            {selectedEvent && <EventDrawer event={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>
     );
 };
