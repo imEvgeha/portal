@@ -365,7 +365,7 @@
             "displayName": "Platform Category",
             "dataType": "multiselect",
             "searchDataType": "multiselect",
-            "options": ["Residential", "Hotel Avails"],
+            "options": ["Residential", "Hotel"],
             "queryParamName": "platformCategory",
             "readOnly": false,
             "enableSearch": true,
