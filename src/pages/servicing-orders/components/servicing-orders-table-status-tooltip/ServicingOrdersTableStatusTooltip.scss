@@ -17,12 +17,6 @@
         align-items: center;
         color: map-get($dark-neutral-colors, dark-neutral-5);
         @include addSpacing(height, 10);
-        // @include addSpacing(margin-right, 2);
-
-        // &:last-of-type {
-        //     @include addSpacing(margin-right, 0);
-        // }
-
         line-height: initial;
 
         &--label {
