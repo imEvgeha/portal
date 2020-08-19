@@ -6,6 +6,7 @@ import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload'
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
+import {URL} from '../../../../util/Common';
 import {
     DRAWER_TITLE,
     EVENT_MESSAGE,
@@ -25,7 +26,7 @@ import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
-    const headers = {...get(event, 'headers', {}), id: (event && event.id) || ''};
+    const headers = URL.isLocalOrDevOrQA() ? {...get(event, 'headers', {}), id: get(event, 'id', '')} : event;
     const attachments = get(message, 'attachments', {});
 
     const decodeBase64 = (data, mimeType) => {
