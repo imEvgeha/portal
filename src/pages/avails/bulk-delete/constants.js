@@ -1,4 +1,4 @@
-export const header = {
+export const HEADER = {
     cells: [
         {
             key: 1,

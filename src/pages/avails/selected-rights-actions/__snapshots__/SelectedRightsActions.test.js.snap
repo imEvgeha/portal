@@ -88,6 +88,21 @@ empty Source Right IDs and Status is Ready/ReadyNew"
           </div>
         </NexusTooltip>
       </div>
+      <div
+        className="nexus-c-selected-rights-actions__menu-item"
+        data-test-id="mark-as-deleted"
+        onClick={[Function]}
+      >
+        <NexusTooltip
+          content="This option will mark a right as deleted and can no longer be used. Alternatively you may withdraw a right which can be re-instantiated later."
+          hasWhiteBackground={false}
+          isDisabled={false}
+        >
+          <div>
+            Mark Rights as Deleted
+          </div>
+        </NexusTooltip>
+      </div>
     </div>
   </div>
   <NexusDrawer

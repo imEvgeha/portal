@@ -54,6 +54,11 @@ describe('SelectedRightsActions', () => {
             const addToPreplan = wrapper.find('[data-test-id="add-to-preplan"]');
             expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
+
+        it('should disable "Mark Rights as Deleted" option when no rights are selected', () => {
+            const markAsDeleted = wrapper.find('[data-test-id="mark-as-deleted"]');
+            expect(markAsDeleted.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
     });
 
     describe('Bulk Unmatch', () => {
@@ -431,6 +436,67 @@ describe('SelectedRightsActions', () => {
                 },
             ]);
             expect(addToPreplan.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+        });
+    });
+
+    describe('Mark Rights as Deleted', () => {
+        let markAsDeleted = null;
+
+        const init = selectedRights => {
+            mockStore = configureStore();
+            store = mockStore({ui: {toast: {list: []}}});
+            withHooks(() => {
+                wrapper = shallow(
+                    <SelectedRightsActions
+                        selectedRights={selectedRights}
+                        store={store}
+                        toggleRefreshGridData={() => null}
+                        selectedRightGridApi={{}}
+                    />
+                );
+                markAsDeleted = wrapper.find('[data-test-id="mark-as-deleted"]');
+            });
+        };
+
+        afterEach(() => {
+            wrapper = null;
+            markAsDeleted = null;
+        });
+
+        it('Mark Rights as Deleted option should be active when none of the rights has status Deleted', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'ReadyNew',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(markAsDeleted.hasClass(`${menuItemClass}--is-active`)).toBe(true);
+        });
+
+        it('Mark Rights as Deleted option should not be active when some rights have status Deleted', () => {
+            init([
+                {
+                    coreTitleId: '1',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Deleted',
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                },
+            ]);
+            expect(markAsDeleted.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
     });
 });

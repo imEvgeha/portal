@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DynamicTable from '@atlaskit/dynamic-table';
 import {
-    header,
+    HEADER,
     BULK_DELETE_WARNING_MSG,
     BULK_DELETE_LINKED_RIGHT_MSG,
     BULK_DELETE_CONTINUE_MSG,
@@ -49,7 +49,7 @@ const BulkDelete = ({bonusRights, onClose}) => {
             {!!dataRows.length && (
                 <div className="nexus-c-bulk-delete__table">
                     <DynamicTable
-                        head={header}
+                        head={HEADER}
                         rows={dataRows}
                         rowsPerPage={5}
                         defaultPage={1}
