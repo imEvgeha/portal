@@ -14,8 +14,8 @@ export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when rights a
 have the same Core Title IDs (not blank),
 empty Source Right IDs and Status is Ready/ReadyNew`;
 export const PREPLAN_TOOLTIP = 'Select Right to enable this feature';
-export const BULK_DELETE_TOOLTIP =
-    'This option will mark a right as deleted and can no longer be used. Alternatively you may withdraw a right which can be re-instantiated later.';
+export const BULK_DELETE_TOOLTIP = `This option will mark a right as deleted and can no longer be used.
+Alternatively you may withdraw a right which can be re-instantiated later.`;
 export const HEADER_TITLE = 'Title Matching';
 export const HEADER_TITLE_BONUS_RIGHT = 'Title Matching for Creating Bonus Rights';
 export const ADD_TO_PREPLAN = 'Add to Pre-Plan';

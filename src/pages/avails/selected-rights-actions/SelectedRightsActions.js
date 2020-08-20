@@ -39,6 +39,7 @@ import {
     VIEW_AUDIT_HISTORY,
     BULK_DELETE_TOOLTIP,
     MARK_DELETED,
+    BULK_DELETE_HEADER,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -177,6 +178,10 @@ export const SelectedRightsActions = ({
         );
     };
 
+    const openBulkDeleteModal = () => {
+        setModalContentAndTitle(<BulkDelete bonusRights={selectedRights} onClose={close} />, BULK_DELETE_HEADER);
+    };
+
     const openAuditHistoryModal = () => {
         const ids = selectedRights.map(e => e.id);
         const title = `Audit History (${selectedRights.length})`;
@@ -313,7 +318,7 @@ export const SelectedRightsActions = ({
                                     isDeletable && 'nexus-c-selected-rights-actions__menu-item--is-active'
                                 )}
                                 data-test-id="mark-as-deleted"
-                                onClick={() => null}
+                                onClick={openBulkDeleteModal}
                             >
                                 <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
                                     <div>{MARK_DELETED}</div>

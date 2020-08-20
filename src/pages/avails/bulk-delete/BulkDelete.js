@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DynamicTable from '@atlaskit/dynamic-table';
@@ -12,10 +12,11 @@ import {
 } from './constants';
 import './BulkDelete.scss';
 
-const BulkDelete = ({bonusRights, onClose}) => {
+export const BulkDelete = ({rights, onClose}) => {
+    console.log(rights);
     const dataRows =
-        bonusRights &&
-        bonusRights.map(content => {
+        rights &&
+        rights.map(content => {
             const {id, title, status, rightStatus, licensed, territory} = content;
             return {
                 key: id,
@@ -48,22 +49,23 @@ const BulkDelete = ({bonusRights, onClose}) => {
             <div className="nexus-c-bulk-delete__message">{BULK_DELETE_WARNING_MSG}</div>
             {!!dataRows.length && (
                 <div className="nexus-c-bulk-delete__table">
+                    <div className="nexus-c-bulk-delete__table-header">{BULK_DELETE_LINKED_RIGHT_MSG}</div>
                     <DynamicTable
                         head={HEADER}
                         rows={dataRows}
-                        rowsPerPage={5}
+                        // rowsPerPage={1}
                         defaultPage={1}
                         loadingSpinnerSize="large"
                         isLoading={false}
                     />
                 </div>
             )}
-
+            <div className="nexus-c-bulk-delete__continue">{BULK_DELETE_CONTINUE_MSG}</div>
             <div className="nexus-c-bulk-delete__btn-wrapper">
                 <Button
-                    appearance="primary"
-                    onClick={() => null}
-                    className="nexus-c-bulk-delete__button"
+                    appearance="subtle"
+                    onClick={onClose}
+                    className="nexus-c-bulk-delete__cancel-btn"
                     isDisabled={false}
                 >
                     {BULK_DELETE_BTN_CANCEL}
@@ -71,7 +73,7 @@ const BulkDelete = ({bonusRights, onClose}) => {
                 <Button
                     appearance="primary"
                     onClick={() => null}
-                    className="nexus-c-bulk-delete__button"
+                    className="nexus-c-bulk-delete__delete-btn"
                     isDisabled={false}
                 >
                     {BULK_DELETE_BTN_DELETE}
@@ -82,13 +84,13 @@ const BulkDelete = ({bonusRights, onClose}) => {
 };
 
 BulkDelete.propTypes = {
-    bonusRights: PropTypes.array,
+    rights: PropTypes.array,
     onClose: PropTypes.func,
 };
 
 BulkDelete.defaultProps = {
-    bonusRights: [],
+    rights: [],
     onClose: () => null,
 };
 
-export default BulkDelete;
+export default memo(BulkDelete);
