@@ -1068,7 +1068,6 @@
             "searchDataType": "boolean",
             "queryParamName": "temporaryPriceReduction",
             "readOnly": false,
-            "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
             "required": false
