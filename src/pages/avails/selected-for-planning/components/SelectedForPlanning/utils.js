@@ -1,5 +1,5 @@
 import DOPService from '../../DOP-services';
-import {EXCLUDED_ATTRIBUTES, EXCLUDED_STATUSES} from './constants';
+import {EXCLUDED_STATUSES} from '../../constants';
 
 export const prepareSelectForPlanningData = async (sort, offset, limit) => {
     // Using object for easier parsing of getProjectAttributes response
@@ -23,13 +23,10 @@ export const prepareSelectForPlanningData = async (sort, offset, limit) => {
     const projectAttributes = await DOPService.getProjectAttributes(projectIds);
 
     projectAttributes.forEach(({code, value, projectId}) => {
-        // Filter out unwanted fields
-        if (!EXCLUDED_ATTRIBUTES.includes(code)) {
-            data[projectId][code] = value;
-            // Adding projectId to be used for starting DOP project
-            // in cellRenderer's onClick
-            data[projectId]['projectId'] = projectId;
-        }
+        data[projectId][code] = value;
+        // Adding projectId to be used for starting DOP project
+        // in cellRenderer's onClick
+        data[projectId]['projectId'] = projectId;
     });
 
     // Convert object to an array
