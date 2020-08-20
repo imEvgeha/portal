@@ -13,7 +13,6 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     const errors = (currentTerritory && currentTerritory.errors) || [];
     const {dateSelected = '', selected = false, dateWithdrawn = ''} =
         (typeof territoryIndex === 'number' && territoryIndex >= 0) ? existingTerritoryList[territoryIndex] : {};
-    const [selectedDateWithdrawn, setSelectedDateWithdrawn] = useState(getValidDate(dateWithdrawn));
     const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
@@ -64,10 +63,12 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
     const onChangeDateWithdrawn = (val, restOnChange) => {
         const today = new Date();
         const updatedDate =  getValidDate(val) !== getValidDate(today) ?  '' :  val;
-        setSelectedDateWithdrawn(getValidDate(updatedDate));
-        // show error
         setShowErrorDateWithdrawn(updatedDate === '')
-        restOnChange(updatedDate);
+        if(updatedDate === ''){
+            return false;
+        } else {
+            restOnChange(updatedDate);
+        }
     };
 
     return (
@@ -213,7 +214,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         locale={locale}
                         placeholder={dateFormat}
                         id="dateWithdrawn"
-                        value={selectedDateWithdrawn}
+                        value={value}
                         onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
                         isReturningTime={false}
                         isDisabled={!isEdit}
