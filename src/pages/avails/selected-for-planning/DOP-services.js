@@ -6,14 +6,13 @@ import {nexusFetch} from '../../../util/http-client/index';
 import {PAGE_SIZE, getSearchPayload, PROJECT_ID} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;
-const username = getUsername(store.getState());
 
 const DOPService = {
     getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(
             'gateway.service.DOPProjectManagementProject'
         )}/search`;
-        const body = getSearchPayload(username, offset, limit);
+        const body = getSearchPayload(getUsername(store.getState()), offset, limit);
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
     },
     getProjectAttributes: (projectIds = []) => {
@@ -65,8 +64,8 @@ const DOPService = {
         };
 
         const utc = moment().utc();
-
-        const req = {
+        const username = getUsername(store.getState());
+        return {
             name: `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
             projectType: {id: PROJECT_ID},
             action: 'Provide',
@@ -81,8 +80,6 @@ const DOPService = {
                 ...selectedTerritoryArray(),
             ],
         };
-
-        return req;
     },
     createProject: data => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;

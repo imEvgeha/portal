@@ -35,6 +35,8 @@ const NexusTableToolbar = ({
     selectedPrePlanRights,
     setSelectedPrePlanRights,
     setPreplanRights,
+    isPlanningTabRefreshed,
+    setIsPlanningTabRefreshed,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
@@ -58,12 +60,14 @@ const NexusTableToolbar = ({
                 />
             )}
             <NexusTab title={RIGHTS_TAB} totalRows={totalRows} activeTab={activeTab} setActiveTab={setActiveTab} />
-            <NexusTab
-                title={PRE_PLAN_TAB}
-                totalRows={prePlanRightsCount}
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-            />
+            {URL.isLocalOrDevOrQA() && (
+                <NexusTab
+                    title={PRE_PLAN_TAB}
+                    totalRows={prePlanRightsCount}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                />
+            )}
             {URL.isLocalOrDevOrQA() && (
                 <NexusTab
                     title={SELECTED_FOR_PLANNING_TAB}
@@ -71,6 +75,7 @@ const NexusTableToolbar = ({
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                     tooltip="Click to refresh"
+                    onClick={() => setIsPlanningTabRefreshed(!isPlanningTabRefreshed)}
                 />
             )}
 
@@ -117,6 +122,8 @@ NexusTableToolbar.propTypes = {
     selectedPrePlanRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
+    isPlanningTabRefreshed: PropTypes.bool.isRequired,
+    setIsPlanningTabRefreshed: PropTypes.func.isRequired,
 };
 
 NexusTableToolbar.defaultProps = {
