@@ -92,6 +92,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
         },
         Object {
           "cellRenderer": "tooltipCellRenderer",
+          "cellRendererParams": [Function],
           "colId": "status",
           "dataType": "select",
           "enableSearch": true,

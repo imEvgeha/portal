@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '@atlaskit/spinner';
-import './ServicingOrdersTableStatusTooltip.scss';
 import {URL} from '../../../../util/Common';
 import {REPORT} from '../../constants';
 import {servicingOrdersService} from '../../servicingOrdersService';
+import './ServicingOrdersTableStatusTooltip.scss';
 
 const ServicingOrdersTableStatusTooltip = ({soNumber}) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -12,9 +12,9 @@ const ServicingOrdersTableStatusTooltip = ({soNumber}) => {
     const [isError, setIsError] = useState(false);
 
     const fetchFulfillmentOrderStatusReport = async soNumber => {
+        let fulfillmentOrders = [];
         setIsLoading(true);
         try {
-            let fulfillmentOrders = null;
             if (URL.isLocalOrDevOrQA()) {
                 const {fulfillmentOrders: fo} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                     soNumber
@@ -23,24 +23,24 @@ const ServicingOrdersTableStatusTooltip = ({soNumber}) => {
             } else {
                 fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(soNumber);
             }
-
-            const statusReport = fulfillmentOrders.reduce((acc, fulfillmentOrder) => {
-                return {
-                    ...acc,
-                    [fulfillmentOrder.status]: !acc[fulfillmentOrder.status] ? 1 : acc[fulfillmentOrder.status] + 1,
-                };
-            }, {});
-
-            setReport(statusReport);
         } catch (e) {
             setIsError(true);
         }
+
+        const statusReport = fulfillmentOrders.reduce((acc, fulfillmentOrder) => {
+            return {
+                ...acc,
+                [fulfillmentOrder.status]: !acc[fulfillmentOrder.status] ? 1 : acc[fulfillmentOrder.status] + 1,
+            };
+        }, {});
+        setReport(statusReport);
+
         setIsLoading(false);
     };
 
     useEffect(() => {
         fetchFulfillmentOrderStatusReport(soNumber);
-    }, [soNumber]);
+    }, []);
 
     const baseClassName = 'nexus-c-servicing-orders-table-status-tooltip';
 

@@ -4,8 +4,8 @@ import Popup from '@atlaskit/popup';
 import ServicingOrdersTableStatusTooltip from '../../../../../../pages/servicing-orders/components/servicing-orders-table-status-tooltip/ServicingOrdersTableStatusTooltip';
 import StatusTag from '../../../../nexus-status-tag/StatusTag';
 
-const TooltipCellRenderer = data => {
-    const {value, soNumber} = data;
+const TooltipCellRenderer = props => {
+    const {value, soNumber} = props;
     const [isOpen, setIsOpen] = useState(false);
     return (
         <Popup
@@ -24,10 +24,12 @@ const TooltipCellRenderer = data => {
 
 TooltipCellRenderer.propTypes = {
     value: PropTypes.string,
+    soNumber: PropTypes.string,
 };
 
 TooltipCellRenderer.defaultProps = {
     value: '',
+    soNumber: '',
 };
 
 export default TooltipCellRenderer;
