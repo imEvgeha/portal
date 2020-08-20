@@ -32,6 +32,11 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
                 ? existingTerritoryList[territoryIndex]['vuContractId']
                 : '',
             comment: data.comment || ' ',
+            dateWithdrawn: data.dateWithdrawn
+                ? momentToISO(moment(data.dateWithdrawn).utcOffset(0, true))
+                : isEdit
+                    ? existingTerritoryList[territoryIndex]['dateWithdrawn']
+                    : '',
         };
         const updatedObject = {};
         for (const objectField in newObject) {

@@ -61,12 +61,13 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
         );
     };
 
-    const onChangeDateWithdrawn = val => {
+    const onChangeDateWithdrawn = (val, restOnChange) => {
         const today = new Date();
         const updatedDate =  getValidDate(val) !== getValidDate(today) ?  '' :  val;
         setSelectedDateWithdrawn(getValidDate(updatedDate));
         // show error
         setShowErrorDateWithdrawn(updatedDate === '')
+        restOnChange(updatedDate);
     };
 
     return (
@@ -205,15 +206,15 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     />
                 )}
             </Field>
-            <Field name="date Withdrawn" defaultValue="" label="DATE WITHDRAWN">
-                {() => (
+            <Field name="dateWithdrawn" defaultValue="" label="DATE WITHDRAWN">
+                {({fieldProps: {id, value, ...rest}}) => (
                     <DatePicker
-                        name="date Withdrawn"
+                        name="dateWithdrawn"
                         locale={locale}
                         placeholder={dateFormat}
-                        id="date Withdrawn"
+                        id="dateWithdrawn"
                         value={selectedDateWithdrawn}
-                        onChange={val => onChangeDateWithdrawn(val)}
+                        onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
                         isReturningTime={false}
                         isDisabled={!isEdit}
                     />
@@ -235,7 +236,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         isReadOnly={false}
                         defaultValue={value}
                         style={{height: '40px'}}
-                        {...rest}
+                        onChange={rest.onChange}
                     />
                 )}
             </Field>
