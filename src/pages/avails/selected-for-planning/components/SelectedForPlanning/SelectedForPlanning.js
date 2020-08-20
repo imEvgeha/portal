@@ -25,7 +25,7 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
                 ...mapping,
                 cellRenderer: 'clickableCellRenderer',
                 cellRendererParams: {
-                    onClick: DOPService.startProject,
+                    onClick: params => window.open(DOPService.getDOPProjectURL(params.projectId), '_blank'),
                     keyToDisplay: 'status',
                 },
             };
