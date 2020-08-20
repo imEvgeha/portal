@@ -53,10 +53,11 @@ const DOPService = {
             !!data.length &&
                 data.forEach(right => {
                     right.territory.forEach((territory, territoryIndex) => {
-                        arr.push({
-                            code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
-                            value: territory.country,
-                        });
+                        territory.selected &&
+                            arr.push({
+                                code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
+                                value: territory.country,
+                            });
                     });
                 });
 
@@ -90,7 +91,7 @@ const DOPService = {
             body: JSON.stringify(data),
         });
     },
-    startProject: ({projectId}) => {
+    startProject: projectId => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
         // TODO: Error handling if necessary
         return nexusFetch(`${url}/${projectId}/start`, {method: 'post'});

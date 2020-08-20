@@ -1,32 +1,33 @@
 {
-  "gateway": {
-    "url": "https://availsapi.qa.vubiquity.com",
-    "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
-    "titleUrl": "https://titlesapi.qa.vubiquity.com",
-    "configuration": "https://configapi.qa.vubiquity.com",
-    "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
-    "eventApiUrl": "https://eventapi.qa.vubiquity.com",
-    "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
-    "DOPUrl": "https://dop.qa.vubiquity.com:8045",
-    "service": {
-      "avails": "/avails-api/v1",
-      "availsParser": "/avails-parser/v1",
-      "title": "/titles-api/v1",
-      "titleV2": "/titles-api/v2",
-      "configuration": "/configuration-api/v1",
-      "assetManagement": "/api/asset-management/v1",
-      "eventApi": "/api/event-api/v1",
-      "eventApiV2": "/api/event-api/v2",
-      "servicingOrder": "",
-      "DOPProjectManagement": "/dop/be-services/projectManagement/project"
+    "gateway": {
+        "url": "https://availsapi.qa.vubiquity.com",
+        "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
+        "titleUrl": "https://titlesapi.qa.vubiquity.com",
+        "configuration": "https://configapi.qa.vubiquity.com",
+        "assetManagementURL": "https://asset-management-api.qa.vubiquity.com",
+        "eventApiUrl": "https://eventapi.qa.vubiquity.com",
+        "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
+        "DOPUrl": "https://dop.qa.vubiquity.com:8045",
+        "service": {
+            "avails": "/avails-api/v1",
+            "availsParser": "/avails-parser/v1",
+            "title": "/titles-api/v1",
+            "titleV2": "/titles-api/v2",
+            "configuration": "/configuration-api/v1",
+            "assetManagement": "/api/asset-management/v1",
+            "eventApi": "/api/event-api/v1",
+            "eventApiV2": "/api/event-api/v2",
+            "servicingOrder": "",
+            "DOPProjectManagementBase": "/dop/be-services/projectManagement",
+            "DOPProjectManagementProject": "/dop/be-services/projectManagement/project"
+        }
+    },
+    "keycloak": {
+        "clientId": "portalapp-public",
+        "realm": "Vubiquity",
+        "url": "https://auth.qa.vubiquity.com/auth"
+    },
+    "googleAnalytics": {
+        "propertyId": "UA-165264495-2"
     }
-  },
-  "keycloak": {
-    "clientId": "portalapp-public",
-    "realm": "Vubiquity",
-    "url": "https://auth.qa.vubiquity.com/auth"
-  },
-  "googleAnalytics": {
-    "propertyId": "UA-165264495-2"
-  }
 }
