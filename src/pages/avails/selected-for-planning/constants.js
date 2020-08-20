@@ -22,7 +22,7 @@ export const getSearchPayload = (user, offset, limit) => ({
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: 'Select_Rights_for_Planning',
+            value: 'Rights_Planning',
         },
     ],
     sortCriterion: [

@@ -78,6 +78,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   }
   id="selectedForPlanningRepo"
   isGridHidden={true}
+  key="planning_table_undefined"
   rowSelection="multiple"
   suppressRowClickSelection={true}
 />
