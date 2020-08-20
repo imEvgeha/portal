@@ -1,21 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
+import {DatePicker} from '@atlaskit/datetime-picker';
+import {useIntl} from 'react-intl';
 import Select from '@atlaskit/select/Select';
-import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
+import {getValidDate} from '../../../../util/utils';
 
 const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    const {dateSelected = '', selected = false} =
+    const {dateSelected = '', selected = false, dateWithdrawn = ''} =
         (typeof territoryIndex === 'number' && territoryIndex >= 0) ? existingTerritoryList[territoryIndex] : {};
+    const [selectedDateWithdrawn, setSelectedDateWithdrawn] = useState(getValidDate(dateWithdrawn));
+    const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
             return error;
         }
     };
+
+    // Get locale provided by intl
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl || {};
+
+    // Create date placeholder based on locale
+    const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
     const removeExistingOptions = () => {
         return existingTerritoryList
@@ -47,6 +59,14 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
             existingTerritoryList[territoryIndex][data] &&
             existingTerritoryList[territoryIndex][data] !== null
         );
+    };
+
+    const onChangeDateWithdrawn = val => {
+        const today = new Date();
+        const updatedDate =  getValidDate(val) !== getValidDate(today) ?  '' :  val;
+        setSelectedDateWithdrawn(getValidDate(updatedDate));
+        // show error
+        setShowErrorDateWithdrawn(updatedDate === '')
     };
 
     return (
@@ -185,6 +205,21 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     />
                 )}
             </Field>
+            <Field name="date Withdrawn" defaultValue="" label="DATE WITHDRAWN">
+                {() => (
+                    <DatePicker
+                        name="date Withdrawn"
+                        locale={locale}
+                        placeholder={dateFormat}
+                        id="date Withdrawn"
+                        value={selectedDateWithdrawn}
+                        onChange={val => onChangeDateWithdrawn(val)}
+                        isReturningTime={false}
+                        isDisabled={!isEdit}
+                    />
+                )}
+            </Field>
+            {showErrorDateWithdrawn && <ErrorMessage> Only the current date can be selected </ErrorMessage>}
             <Field
                 label="COMMENTS"
                 name="comment"
