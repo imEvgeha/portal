@@ -226,14 +226,14 @@ export const rightsService = {
         });
     },
 
-    updateRightWithFullData: (right, id, isFormatted = false) => {
+    updateRightWithFullData: (right, id, isFormatted = false, isWithErrorHandling = false) => {
         const url =
             config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}` + '?updateHistory=true';
         const data = isFormatted ? right : prepareRight(right, true);
         return nexusFetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
-            isWithErrorHandling: false,
+            isWithErrorHandling,
         });
     },
 };

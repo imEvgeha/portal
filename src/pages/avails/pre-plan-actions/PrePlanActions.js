@@ -5,7 +5,12 @@ import classNames from 'classnames';
 import {uniq} from 'lodash';
 import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+    WARNING_ICON,
+    WARNING_TITLE,
+} from '../../../ui/elements/nexus-toast-notification/constants';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';
@@ -13,7 +18,7 @@ import './PrePlanActions.scss';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import DOPService from '../selected-for-planning/DOP-services';
 import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
-import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg} from './constants';
+import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg, NO_TERRITORIES_SELECTED} from './constants';
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
@@ -37,6 +42,19 @@ export const PrePlanActions = ({
     };
 
     const addToSelectedForPlanning = () => {
+        const selectedList = selectedPrePlanRights.every(right => {
+            return right['territory'].some(t => t.selected);
+        });
+        if (!selectedList) {
+            addToast({
+                title: WARNING_TITLE,
+                description: NO_TERRITORIES_SELECTED,
+                icon: WARNING_ICON,
+                isAutoDismiss: true,
+                isWithOverlay: false,
+            });
+            return;
+        }
         setIsFetchDOP(true);
         Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true})))
             .then(result => {
@@ -52,42 +70,43 @@ export const PrePlanActions = ({
                     );
                 }
                 if (eligibleRights && eligibleRights.length) {
-                    const requestData = DOPService.createProjectRequestData(eligibleRights);
                     const mergedWithSelectedRights = eligibleRights.map(right => {
                         const previousRight = selectedPrePlanRights.find(obj => obj.id === right.id);
-                        const prevKeywords = Array.isArray(previousRight['keywords']) ?
-                            previousRight['keywords'] : previousRight['keywords'].split(',');
+                        const prevKeywords = Array.isArray(previousRight['keywords'])
+                            ? previousRight['keywords']
+                            : previousRight['keywords'].split(',');
                         const keywords = uniq(prevKeywords.concat(right['keywords']));
-                        const modifiedRight =  {
-                        ...right,
+                        return {
+                            ...right,
                             keywords,
-                            territory:  previousRight['territory'].map(territory => {
-                                const selected = right['territory'].find(
+                            territory: right['territory'].map(territory => {
+                                const selected = previousRight['territory'].find(
                                     obj => obj.country === territory.country && obj.selected
                                 );
                                 return selected || territory;
                             }),
-                        }
-                        return modifiedRight;
+                        };
                     });
+                    const requestData = DOPService.createProjectRequestData(mergedWithSelectedRights);
                     DOPService.createProject(requestData)
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
                                 Promise.all(
                                     mergedWithSelectedRights.map(right => {
-                                        return rightsService.updateRightWithFullData(
-                                            right,
-                                            right.id,
-                                            true
-                                        );
+                                        return rightsService.updateRightWithFullData(right, right.id, true, true);
                                     })
                                 )
                                     .then(() => {
-                                        DOPService.startProject(projectId);
-                                        dispatchSuccessToast(eligibleRights.length);
-                                        removeRightsFromPrePlan();
-                                        setIsFetchDOP(false);
+                                        DOPService.startProject(projectId)
+                                            .then(() => {
+                                                dispatchSuccessToast(eligibleRights.length);
+                                                removeRightsFromPrePlan();
+                                                setIsFetchDOP(false);
+                                            })
+                                            .catch(() => {
+                                                setIsFetchDOP(false);
+                                            });
                                     })
                                     .catch(() => setIsFetchDOP(false));
                             }
@@ -121,7 +140,9 @@ export const PrePlanActions = ({
                     <div
                         className={classNames(
                             'nexus-c-selected-rights-actions__menu-item',
-                            selectedPrePlanRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            selectedPrePlanRights.length &&
+                                isFetchDOP === false &&
+                                'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="add-to-pre-plan"
                         onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
@@ -139,7 +160,9 @@ export const PrePlanActions = ({
                     <div
                         className={classNames(
                             'nexus-c-selected-rights-actions__menu-item',
-                            selectedPrePlanRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                            selectedPrePlanRights.length &&
+                                isFetchDOP === false &&
+                                'nexus-c-selected-rights-actions__menu-item--is-active'
                         )}
                         data-test-id="remove-pre-plan"
                         onClick={selectedPrePlanRights.length ? removeRightsFromPrePlan : null}
