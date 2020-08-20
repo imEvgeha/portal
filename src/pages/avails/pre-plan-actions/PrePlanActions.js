@@ -98,10 +98,15 @@ export const PrePlanActions = ({
                                     })
                                 )
                                     .then(() => {
-                                        DOPService.startProject(projectId);
-                                        dispatchSuccessToast(eligibleRights.length);
-                                        removeRightsFromPrePlan();
-                                        setIsFetchDOP(false);
+                                        DOPService.startProject(projectId)
+                                            .then(() => {
+                                                dispatchSuccessToast(eligibleRights.length);
+                                                removeRightsFromPrePlan();
+                                                setIsFetchDOP(false);
+                                            })
+                                            .catch(() => {
+                                                setIsFetchDOP(false);
+                                            });
                                     })
                                     .catch(() => setIsFetchDOP(false));
                             }
