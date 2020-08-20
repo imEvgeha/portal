@@ -8,9 +8,9 @@ const AG_GRID_DEF_COL_DEF = {
     resizable: true,
 };
 
-const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF} = {}) => WrappedComponent => {
+const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF, defaultColDef} = {}) => WrappedComponent => {
     const ComposedComponent = props => {
-        const {columnDefs, id, existingColumnsSize, updateGridColumnsSize} = props;
+        const {columnDefs, id, existingColumnsSize, updateGridColumnsSize, defaultColDef} = props;
         const existingTableColumnsSize = existingColumnsSize[id] || {};
         let columnDefsWithSizes = columnDefs;
         if (existingTableColumnsSize) {
@@ -31,7 +31,10 @@ const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF} = {}) => WrappedComp
         return (
             <WrappedComponent
                 {...props}
-                defaultColDef={colDef}
+                defaultColDef={{
+                    ...colDef,
+                    ...defaultColDef,
+                }}
                 onColumnResized={handleColumnResized}
                 columnDefs={columnDefsWithSizes}
             />

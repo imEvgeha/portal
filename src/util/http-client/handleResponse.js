@@ -9,16 +9,12 @@ export default async (response, fetchHeaders) => {
 
             // BE issue: empty response headers workaround
             if (!contentType) {
-                return fetchHeaders
-                    ? [response.body, response.headers]
-                    : response.body;
+                return fetchHeaders ? [response.body, response.headers] : response.body;
             }
 
             const responseBody = await parseResponse(response, contentType);
 
-            return fetchHeaders
-                ? [responseBody, response.headers]
-                : responseBody;
+            return fetchHeaders ? [responseBody, response.headers] : responseBody;
         }
 
         let errorBody = '';

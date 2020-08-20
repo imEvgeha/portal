@@ -6,6 +6,7 @@ import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload'
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
+import {URL} from '../../../../util/Common';
 import {
     DRAWER_TITLE,
     EVENT_MESSAGE,
@@ -25,7 +26,7 @@ import './EventDrawer.scss';
 
 const EventDrawer = ({event, onDrawerClose}) => {
     const message = get(event, 'message', {});
-    const headers = { ...get(event, 'headers', {}), id: (event && event.id) || '' };
+    const headers = URL.isLocalOrDevOrQA() ? {...get(event, 'headers', {}), id: get(event, 'id', '')} : event;
     const attachments = get(message, 'attachments', {});
 
     const decodeBase64 = (data, mimeType) => {
@@ -39,9 +40,7 @@ const EventDrawer = ({event, onDrawerClose}) => {
         try {
             decode = atob(data);
         } catch (e) {
-            mimeType === XML_MIME_TYPE
-                ? decode = XML_DECODING_ERR_MSG
-                : decode = JSON_DECODING_ERR_MSG;
+            mimeType === XML_MIME_TYPE ? (decode = XML_DECODING_ERR_MSG) : (decode = JSON_DECODING_ERR_MSG);
         }
         return decode;
     };
@@ -66,78 +65,69 @@ const EventDrawer = ({event, onDrawerClose}) => {
                 isOpen={!!(headers && headers.eventId)}
                 title={DRAWER_TITLE}
                 width="wide"
-                headerContent={headers && (
-                    <EventDrawerHeader
-                        event={headers}
-                    />
-                )}
+                headerContent={headers && <EventDrawerHeader event={headers} />}
             >
                 <div className="nexus-c-event-drawer__content">
-                    <EventSectionCollapsible
-                        title={EVENT_HEADER}
-                    >
+                    <EventSectionCollapsible title={EVENT_HEADER}>
                         <EventHeader event={headers} />
                     </EventSectionCollapsible>
                     <EventSectionCollapsible
                         title={EVENT_MESSAGE}
-                        header={(
+                        header={
                             <NexusDownload
                                 data={message}
                                 filename={`${get(headers, 'eventId', '')} - message`}
                                 mimeType={JSON_MIME_TYPE}
                             />
-                        )}
+                        }
                     >
-                        <NexusJsonView
-                            src={message}
-                        />
+                        <NexusJsonView src={message} />
                     </EventSectionCollapsible>
                     <EventSectionCollapsible
                         title={`${EVENT_ATTACHMENTS}(${Object.keys(attachments || {}).length})`}
                         isDefaultOpened
                     >
-                        {isObject(attachments) && Object.keys(attachments).map((key, index) => {
-                            const {rawData = '', base64Encoded = false, mimeType = ''} = attachments[key];
-                            return (
-                                <EventSectionCollapsible
-                                    key={uid(key, index)}
-                                    title={<span className="nexus-c-event-drawer__attachment-name">{key}</span>}
-                                    header={(
-                                        <>
-                                            <span className="nexus-c-event-drawer__attachment-mimetype">
-                                                MIME type: {mimeType}
-                                            </span>
-                                            <span className="nexus-c-event-drawer__attachment-base64">
-                                                base64 encoded: {base64Encoded.toString()}
-                                            </span>
-                                            <NexusDownload
-                                                data={base64Encoded
-                                                    ? decodeBase64(rawData, mimeType)
-                                                    : rawData}
-                                                filename={`${get(headers, 'eventId', '')} - ${key}`}
-                                                mimeType={mimeType}
+                        {isObject(attachments) &&
+                            Object.keys(attachments).map((key, index) => {
+                                const {rawData = '', base64Encoded = false, mimeType = ''} = attachments[key];
+                                return (
+                                    <EventSectionCollapsible
+                                        key={uid(key, index)}
+                                        title={<span className="nexus-c-event-drawer__attachment-name">{key}</span>}
+                                        header={
+                                            <>
+                                                <span className="nexus-c-event-drawer__attachment-mimetype">
+                                                    MIME type: {mimeType}
+                                                </span>
+                                                <span className="nexus-c-event-drawer__attachment-base64">
+                                                    base64 encoded: {base64Encoded.toString()}
+                                                </span>
+                                                <NexusDownload
+                                                    data={base64Encoded ? decodeBase64(rawData, mimeType) : rawData}
+                                                    filename={`${get(headers, 'eventId', '')} - ${key}`}
+                                                    mimeType={mimeType}
+                                                />
+                                            </>
+                                        }
+                                        isDefaultOpened
+                                    >
+                                        {mimeType === XML_MIME_TYPE ? (
+                                            <NexusXMLView
+                                                xml={base64Encoded ? decodeBase64(rawData, mimeType) : rawData}
+                                                indentSize={4}
                                             />
-                                        </>
-                                )}
-                                    isDefaultOpened
-                                >
-                                    {mimeType === XML_MIME_TYPE ? (
-                                        <NexusXMLView
-                                            xml={base64Encoded
-                                                ? decodeBase64(rawData, mimeType)
-                                                : rawData}
-                                            indentSize={4}
-                                        />
-                                    ) : (
-                                        <NexusJsonView
-                                            src={base64Encoded
-                                                ? parseJSON(decodeBase64(rawData, mimeType))
-                                                : parseJSON(rawData)}
-                                        />
-                                    )}
-                                </EventSectionCollapsible>
-                            );
-                        })}
+                                        ) : (
+                                            <NexusJsonView
+                                                src={
+                                                    base64Encoded
+                                                        ? parseJSON(decodeBase64(rawData, mimeType))
+                                                        : parseJSON(rawData)
+                                                }
+                                            />
+                                        )}
+                                    </EventSectionCollapsible>
+                                );
+                            })}
                     </EventSectionCollapsible>
                 </div>
             </NexusDrawer>

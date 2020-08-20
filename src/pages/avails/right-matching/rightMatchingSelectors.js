@@ -13,11 +13,6 @@ const getAvailsMapping = state => {
     return root && root.availsMapping;
 };
 
-const getFieldSearchCriteria = state => {
-    const rightMatching = getRightMatching(state);
-    return rightMatching.fieldSearchCriteria;
-};
-
 const getFocusedRight = state => {
     const rightMatching = getRightMatching(state);
     return rightMatching.focusedRight;
@@ -28,9 +23,9 @@ const getPendingRight = state => {
     return rightMatching.pendingRight;
 };
 
-const getMatchedRights = state => {
+const getMergeRights = state => {
     const rightMatching = getRightMatching(state);
-    return rightMatching.matchedRights;
+    return rightMatching.mergeRights;
 };
 
 const getRightsForMatching = state => {
@@ -55,12 +50,7 @@ export const createAvailsMappingSelector = () =>
         return availsMapping && availsMapping.mappings;
     });
 
-export const createFieldSearchCriteriaSelector = () =>
-    createSelector(getFieldSearchCriteria, fieldSearchCriteria => fieldSearchCriteria);
-
 export const createFocusedRightSelector = () => createSelector(getFocusedRight, focusedRight => focusedRight);
-
-export const createMatchedRightsSelector = () => createSelector(getMatchedRights, matchedRights => matchedRights);
 
 export const createCombinedRightSelector = () => createSelector(getCombinedRight, combinedRight => combinedRight);
 
@@ -70,3 +60,4 @@ export const createRightMatchPageDataSelector = () =>
 export const createPendingRightSelector = () => createSelector(getPendingRight, pendingRight => pendingRight);
 export const createRightsForMatchingSelector = () =>
     createSelector(getRightsForMatching, rightsForMatching => rightsForMatching);
+export const createMergeRightsSelector = () => createSelector(getMergeRights, mergeRights => mergeRights);

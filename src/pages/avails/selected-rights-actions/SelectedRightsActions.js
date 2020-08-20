@@ -35,7 +35,6 @@ import {
     ADD_TO_PREPLAN,
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
-    STATUS_CHECK_MSG,
     VIEW_AUDIT_HISTORY,
 } from './constants';
 import './SelectedRightsActions.scss';
@@ -192,13 +191,11 @@ export const SelectedRightsActions = ({
         });
     };
 
-
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
         toggleRefreshGridData(true);
         close();
     };
-
 
     const prepareRightsForPrePlan = () => {
         if (isPreplanEligible) {
@@ -214,13 +211,9 @@ export const SelectedRightsActions = ({
 
         setSelectedRights(nonEligibleRights);
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
-
+        setModalStyle({width: 'large'});
         setModalContentAndTitle(
-            <StatusCheck
-                message={STATUS_CHECK_MSG}
-                nonEligibleTitles={nonEligibleRights}
-                onClose={onCloseStatusCheckModal}
-            />,
+            <StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />,
             STATUS_CHECK_HEADER
         );
     };
