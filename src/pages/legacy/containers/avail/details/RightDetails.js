@@ -1038,6 +1038,9 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            if (name === 'temporaryPriceReduction') {
+                readOnly = value || this.state.right.status !== 'Pending';
+            }
             return renderFieldTemplate(
                 name,
                 displayName,

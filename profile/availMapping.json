@@ -365,7 +365,7 @@
             "displayName": "Platform Category",
             "dataType": "multiselect",
             "searchDataType": "multiselect",
-            "options": ["Residential", "Hotel Avails"],
+            "options": ["Residential", "Hotel"],
             "queryParamName": "platformCategory",
             "readOnly": false,
             "enableSearch": true,
@@ -1068,7 +1068,6 @@
             "searchDataType": "boolean",
             "queryParamName": "temporaryPriceReduction",
             "readOnly": false,
-            "readOnlyInDetails": true,
             "enableSearch": true,
             "enableEdit": true,
             "required": false
