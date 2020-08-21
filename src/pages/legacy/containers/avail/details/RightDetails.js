@@ -1516,9 +1516,10 @@ class RightDetails extends React.Component {
                 return mappedTerritory;
             });
 
+            let territoriesWithError = [];
             if (options.length) {
                 // If there are validation errors, pack them inside the territory object to be displayed in tooltip
-                let territoriesWithError = territories.map(({errors, ...restProps}) => {
+                territoriesWithError = territories.map(({errors, ...restProps}) => {
                     const error = errors && errors.length ? errors.map(error => {
                         const {severityType='', fieldName='', message=''} = error || {};
                         return `${fieldName.split('.').pop()} ${message} (${severityType})`;
