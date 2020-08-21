@@ -13,32 +13,31 @@ import {
 import './BulkDelete.scss';
 
 export const BulkDelete = ({rights, onClose}) => {
-    console.log(rights);
     const dataRows =
         rights &&
         rights.map(content => {
-            const {id, title, status, rightStatus, licensed, territory} = content;
+            const {id, title} = content;
             return {
                 key: id,
                 cells: [
                     {
-                        key: `${id}-title`,
+                        key: `${id}-linkedRights`,
                         content: title,
                     },
                     {
-                        key: `${id}-status`,
+                        key: `${id}-rightID`,
                         content: '',
                     },
                     {
-                        key: `${id}-rightStatus`,
+                        key: `${id}-type`,
                         content: '',
                     },
                     {
-                        key: `${id}-licensed`,
+                        key: `${id}-originalRight`,
                         content: '',
                     },
                     {
-                        key: `${id}-territory`,
+                        key: `${id}-sourceRight`,
                         content: '',
                     },
                 ],
@@ -53,7 +52,6 @@ export const BulkDelete = ({rights, onClose}) => {
                     <DynamicTable
                         head={HEADER}
                         rows={dataRows}
-                        // rowsPerPage={1}
                         defaultPage={1}
                         loadingSpinnerSize="large"
                         isLoading={false}
