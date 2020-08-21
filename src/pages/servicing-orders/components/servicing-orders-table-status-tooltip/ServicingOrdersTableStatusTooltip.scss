@@ -1,24 +1,35 @@
+@import '../../../../styles/atlaskit/mixins.scss';
+
 .nexus-c-servicing-orders-table-status-tooltip {
-    width: 380px;
     display: inline-flex;
     flex-direction: column;
+    @include padding(3);
+
     &__fields {
-        display: inline-flex;
+        display: flex;
+        justify-content: space-between;
     }
+
     &__field {
+        @include addSpacing(width, 15);
         display: flex;
         flex-direction: column;
         align-items: center;
-        color: #42526E;
-        font-size: 11px;
-        width: 70px;
-        height: 45px;
+        color: map-get($dark-neutral-colors, dark-neutral-5);
+        @include addSpacing(height, 10);
         line-height: initial;
+
         &--label {
-            margin-bottom: 5px;
+            @include heading(h100);
+            @include margin(0, 0, 1, 0);
         }
+
         &--value {
-            background: #A5ADBA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: map-get($dark-neutral-colors, dark-neutral-1);
+            background: map-get($light-neutral-colors, light-neutral-1);
             border-radius: 32px;
             padding: 2px 8px;
             text-align: center;

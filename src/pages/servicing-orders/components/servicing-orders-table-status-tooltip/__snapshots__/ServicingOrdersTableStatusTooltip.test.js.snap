@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
+exports[`ServicingOrdersTableStatusTooltip should match the StatusTooltip snapshot - should have tooltip 1`] = `
 <div
   className="nexus-c-servicing-orders-table-status-tooltip"
 >
@@ -9,7 +9,7 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
   >
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="notStarted"
+      key="NOT_STARTED"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
@@ -19,12 +19,12 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        20001
+        0
       </span>
     </div>
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="inProgress"
+      key="IN_PROGRESS"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
@@ -34,12 +34,12 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        1000
+        0
       </span>
     </div>
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="onHold"
+      key="ON_HOLD"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
@@ -49,27 +49,27 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        1001
+        0
       </span>
     </div>
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="completed"
+      key="COMPLETE"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
       >
-        Completed
+        Complete
       </span>
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        19999
+        0
       </span>
     </div>
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="canceled"
+      key="CANCELLED"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
@@ -79,12 +79,12 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        3
+        0
       </span>
     </div>
     <div
       className="nexus-c-servicing-orders-table-status-tooltip__field"
-      key="failed"
+      key="FAILED"
     >
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--label"
@@ -94,9 +94,23 @@ exports[`ServicingOrdersTableStatusTooltip should match snapshot 1`] = `
       <span
         className="nexus-c-servicing-orders-table-status-tooltip__field--value"
       >
-        2
+        0
       </span>
     </div>
   </div>
+</div>
+`;
+
+exports[`ServicingOrdersTableStatusTooltip should match the loading snapshot - should have spinner 1`] = `
+<div
+  className="nexus-c-servicing-orders-table-status-tooltip"
+>
+  <Spinner
+    delay={100}
+    invertColor={false}
+    isCompleting={false}
+    onComplete={[Function]}
+    size="medium"
+  />
 </div>
 `;
