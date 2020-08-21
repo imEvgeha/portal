@@ -37,15 +37,14 @@ import {
     CONFLICTING_RIGHTS,
     CANCEL_BUTTON,
     MATCH_BUTTON,
+    STATUS_FOR_MATCHING,
+    SECTION_MESSAGE,
 } from '../rightMatchingConstants';
 import * as selectors from '../rightMatchingSelectors';
 import {getMatchingCandidates} from '../rightMatchingService';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import './RightToMatchView.scss';
-
-const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right
-from the action menu above.`;
 
 const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(NexusGrid);
 
@@ -68,7 +67,7 @@ const RightToMatchView = ({
     storeMatchedRights,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
-    const [isMatchDisabled, setIsMatchDisabled] = useState(true);
+    const [isMatchEnabled, setIsMatchEnabled] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
     const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
@@ -153,7 +152,9 @@ const RightToMatchView = ({
         if (type === SELECTION_CHANGED) {
             const selectedRows = api.getSelectedRows();
             setSelectedRows(selectedRows);
-            setIsMatchDisabled(!selectedRows.length);
+            setIsMatchEnabled(
+                selectedRows.length && selectedRows.some(right => STATUS_FOR_MATCHING.includes(right.status))
+            );
         }
     };
 
@@ -237,7 +238,7 @@ const RightToMatchView = ({
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={handleMatchClick}
-                        isDisabled={isMatchDisabled}
+                        isDisabled={!isMatchEnabled}
                     >
                         {MATCH_BUTTON}
                     </Button>
