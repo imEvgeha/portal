@@ -8,13 +8,13 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "colId": "id",
         "field": "rightID",
         "headerName": "Right ID",
-        "width": 120,
+        "width": 150,
       },
       Object {
         "colId": "title",
         "field": "title",
         "headerName": "Title",
-        "width": 120,
+        "width": 180,
       },
       Object {
         "colId": "territory",
@@ -63,12 +63,6 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "headerName": "License type",
         "width": 120,
       },
-      Object {
-        "colId": "transactionType",
-        "field": "transactionType",
-        "headerName": "Transaction type",
-        "width": 120,
-      },
     ]
   }
   frameworkComponents={
@@ -78,6 +72,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   }
   id="selectedForPlanningRepo"
   isGridHidden={true}
+  key="planning_table_undefined"
   rowSelection="multiple"
   suppressRowClickSelection={true}
 />

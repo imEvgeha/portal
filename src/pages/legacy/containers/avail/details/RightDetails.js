@@ -37,11 +37,11 @@ import ManualRightsEntryDOPConnector from '../create/ManualRightsEntry/component
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import {profileService} from '../service/ProfileService';
 import {rightsService} from '../service/RightsService';
-import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG} from './RightConstants';
+import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG, CUSTOM_ERROR_HANDLING_FIELDS} from './RightConstants';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
-import './RightDetails.scss';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {handleMatchingRightsAction} from '../availActions';
+import './RightDetails.scss';
 
 const mapStateToProps = state => {
     return {
@@ -609,7 +609,8 @@ class RightDetails extends React.Component {
             ref,
             content
         ) => {
-            const hasValidationError = name !== 'pricing' && (Array.isArray(error) ? error.length > 0 : error);
+            const hasValidationError = !CUSTOM_ERROR_HANDLING_FIELDS.includes(name)
+                && (Array.isArray(error) ? error.length > 0 : error);
             return (
                 <div
                     key={name}
@@ -1488,9 +1489,10 @@ class RightDetails extends React.Component {
 
             const removeTerritoryNotOriginalFields = (list = []) => {
                 const {mappings} = this.props.availsMapping || [];
-                const originalFieldNames = mappings
+                let originalFieldNames = mappings
                     .filter(el => el.javaVariableName.startsWith('territory.'))
-                    .map(mapping => mapping.javaVariableName.split('.')[1]);
+                    .map(mapping => mapping.javaVariableName.split('.')[1])
+                    .concat('errors'); // Remove the `errors` field that was used for custom error handling
 
                 const formattedList = [];
                 list.forEach(el => {
@@ -1514,6 +1516,22 @@ class RightDetails extends React.Component {
                 return mappedTerritory;
             });
 
+            let territoriesWithError = [];
+            if (options.length) {
+                // If there are validation errors, pack them inside the territory object to be displayed in tooltip
+                territoriesWithError = territories.map(({errors, ...restProps}) => {
+                    const error = errors && errors.length ? errors.map(error => {
+                        const {severityType='', fieldName='', message=''} = error || {};
+                        return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                    }).join(' ; ') : '';
+
+                    return {
+                        ...restProps,
+                        error,
+                    }
+                })
+            }
+
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -1527,7 +1545,7 @@ class RightDetails extends React.Component {
                 <EditableBaseComponent
                     ref={ref}
                     value={value}
-                    originalFieldList={territories}
+                    originalFieldList={territoriesWithError}
                     name={name}
                     disabled={readOnly}
                     isArrayOfObject={true}
@@ -1538,7 +1556,7 @@ class RightDetails extends React.Component {
                     showError={false}
                     helperComponent={
                         <TerritoryField
-                            territory={territories}
+                            territory={territoriesWithError}
                             name={name}
                             onRemoveClick={territory => (!sourceRightId ? deleteTerritory(territory) : null)}
                             onAddClick={this.toggleAddRightTerritoryForm}
@@ -1638,7 +1656,8 @@ class RightDetails extends React.Component {
                 const {mappings} = this.props.availsMapping || [];
                 const originalFieldNames = mappings
                     .filter(el => el.javaVariableName.startsWith('languageAudioTypes.'))
-                    .map(mapping => mapping.javaVariableName.split('.')[1]);
+                    .map(mapping => mapping.javaVariableName.split('.')[1])
+                    .concat('errors'); // Remove the `errors` field that was used for custom error handling
 
                 const formattedList = [];
                 list.forEach(el => {
@@ -1657,15 +1676,20 @@ class RightDetails extends React.Component {
             });
             let languagesWithLabel = [];
             if (options.length) {
-                languagesWithLabel = languages.map(({language, audioType}) => ({
-                    language: language,
-                    audioType: audioType,
-                    label: get(
-                        options.find(o => o.value === language),
-                        'label',
-                        ''
-                    ),
-                }));
+                languagesWithLabel = languages.map(({language, audioType, errors}) => {
+                    // If there are validation errors, pack them inside the language object to be displayed in tooltip
+                    const error = (errors && errors.length) ? errors.map(error => {
+                        const {severityType='', fieldName='', message=''} = error || {};
+                        return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                    }).join(' ; ') : '';
+
+                    return ({
+                        language: language,
+                        audioType: audioType,
+                        label: get(options.find(o => o.value === language), 'label', ''),
+                        error,
+                    })
+                });
             }
 
             return renderFieldTemplate(

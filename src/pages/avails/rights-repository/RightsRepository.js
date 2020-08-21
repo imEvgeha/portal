@@ -91,6 +91,7 @@ const RightsRepository = ({
     const [selectedFilter, setSelectedFilter] = useState({});
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
+    const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -407,6 +408,8 @@ const RightsRepository = ({
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
                 prePlanRepoRights={prePlanRights}
                 setPreplanRights={setPreplanRights}
+                isPlanningTabRefreshed={isPlanningTabRefreshed}
+                setIsPlanningTabRefreshed={setIsPlanningTabRefreshed}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -443,7 +446,9 @@ const RightsRepository = ({
                 setPreplanRights={setPreplanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
             />
-            {activeTab === SELECTED_FOR_PLANNING_TAB && <SelectedForPlanning activeTab={activeTab} />}
+            {activeTab === SELECTED_FOR_PLANNING_TAB && (
+                <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
+            )}
         </div>
     );
 };

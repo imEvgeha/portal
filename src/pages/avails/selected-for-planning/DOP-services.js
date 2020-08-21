@@ -3,17 +3,16 @@ import config from 'react-global-configuration';
 import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
-import {PAGE_SIZE, getSearchPayload, PROJECT_ID} from './constants';
+import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS, DOP_PROJECT_URL} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;
-const username = getUsername(store.getState());
 
 const DOPService = {
     getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(
             'gateway.service.DOPProjectManagementProject'
         )}/search`;
-        const body = getSearchPayload(username, offset, limit);
+        const body = getSearchPayload(getUsername(store.getState()), offset, limit);
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
     },
     getProjectAttributes: (projectIds = []) => {
@@ -31,8 +30,7 @@ const DOPService = {
                 {
                     fieldName: 'code',
                     operator: 'in',
-                    value:
-                        'PROJECT_NAME,format,licensee,licensor,platformCategory,releaseYear,rightID,title,transactionType',
+                    value: TABLE_FIELDS,
                     logicalAnd: true,
                 },
             ],
@@ -65,8 +63,8 @@ const DOPService = {
         };
 
         const utc = moment().utc();
-
-        const req = {
+        const username = getUsername(store.getState());
+        return {
             name: `Rights Planning (${username}) ${utc.format('YYYYMMDDHHmmSS')}`,
             projectType: {id: PROJECT_ID},
             action: 'Provide',
@@ -81,8 +79,6 @@ const DOPService = {
                 ...selectedTerritoryArray(),
             ],
         };
-
-        return req;
     },
     createProject: data => {
         const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPProjectManagementProject')}`;
@@ -96,6 +92,7 @@ const DOPService = {
         // TODO: Error handling if necessary
         return nexusFetch(`${url}/${projectId}/start`, {method: 'post'});
     },
+    getDOPProjectURL: projectId => `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}${projectId}`,
 };
 
 export default DOPService;

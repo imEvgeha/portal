@@ -1,3 +1,7 @@
+export const DOP_PROJECT_STATUS_COMPLETED = 'COMPLETED';
+export const DOP_PROJECT_STATUS_IN_PROGRESS = 'CIN PROGRESS';
+export const DOP_PROJECT_STATUS_CANCELLED = 'CANCELLED';
+export const EXCLUDED_STATUSES = [DOP_PROJECT_STATUS_CANCELLED, DOP_PROJECT_STATUS_COMPLETED];
 export const SELECTED_FOR_PLANNING_TAB = 'Selected for Planning';
 export const PAGE_SIZE = 100;
 export const PROJECT_ID = '5bbe8921-ab75-469b-b410-30955a0589d3';
@@ -15,14 +19,14 @@ export const getSearchPayload = (user, offset, limit) => ({
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: 'CIN PROGRESS',
+            value: DOP_PROJECT_STATUS_IN_PROGRESS,
         },
         {
             fieldName: 'TYPE',
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
-            value: 'Select_Rights_for_Planning',
+            value: 'Rights_Planning',
         },
     ],
     sortCriterion: [
@@ -40,13 +44,13 @@ export const COLUMN_MAPPINGS = [
         colId: 'id',
         field: 'rightID',
         headerName: 'Right ID',
-        width: 120,
+        width: 150,
     },
     {
         colId: 'title',
         field: 'title',
         headerName: 'Title',
-        width: 120,
+        width: 180,
     },
     {
         colId: 'territory',
@@ -90,10 +94,6 @@ export const COLUMN_MAPPINGS = [
         headerName: 'License type',
         width: 120,
     },
-    {
-        colId: 'transactionType',
-        field: 'transactionType',
-        headerName: 'Transaction type',
-        width: 120,
-    },
 ];
+export const TABLE_FIELDS = 'rightID,title,territory,keywords,format,licensor,licensee,licenseType';
+export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';

@@ -5,7 +5,7 @@ import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import './NexusTag.scss';
 
 const NexusTag = ({value = {}, text, tagState, onClick, onRemove}) => {
-    const [defaultTooltipContent, setDefaultContent] = useState();
+    const [defaultTooltipContent, setDefaultContent] = useState(null);
 
     useEffect(() => {
         if (value) {
