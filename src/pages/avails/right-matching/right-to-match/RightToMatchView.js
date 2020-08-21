@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import {get, isEmpty} from 'lodash';
+import {cloneDeep, get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -110,8 +110,18 @@ const RightToMatchView = ({
         }
     }, [availHistoryIds, fetchFocusedRight, rightId]);
 
+    const columnDefWithRedirectRightId = columnDefs.length ? cloneDeep(columnDefs).map(columnDef => {
+        if (columnDef.field === 'id') {
+            columnDef.cellRendererParams = {
+                link: '/avails/rights/',
+                newTab: false,
+            };
+        }
+        return columnDef;
+    }): [];
+
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+    const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefWithRedirectRightId];
 
     const onDeclareNewRight = () => {
         removeToast();
@@ -144,7 +154,7 @@ const RightToMatchView = ({
     const actionNewButtonColumnDef = defineActionButtonColumn({
         cellRendererFramework: createNewButtonCellRenderer,
     });
-    const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
+    const updatedFocusedRightColumnDefs = [actionNewButtonColumnDef, ...columnDefWithRedirectRightId];
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleGridEvent = ({type, api}) => {
