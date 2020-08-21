@@ -218,7 +218,7 @@ export const rightsService = {
 
     update: (rightDiff, id) => {
         const url =
-            config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}` + '?updateHistory=true';
+            config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
         const data = prepareRight(rightDiff, true);
         return nexusFetch(url, {
             method: 'PATCH',
@@ -228,7 +228,7 @@ export const rightsService = {
 
     updateRightWithFullData: (right, id, isFormatted = false) => {
         const url =
-            config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}` + '?updateHistory=true';
+            config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
         const data = isFormatted ? right : prepareRight(right, true);
         return nexusFetch(url, {
             method: 'PUT',
