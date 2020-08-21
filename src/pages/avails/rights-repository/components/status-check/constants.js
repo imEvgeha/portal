@@ -11,17 +11,17 @@ export const header = {
             width: 15,
         },
         {
-            key: 1,
+            key: 3,
             content: 'Right Status',
             width: 15,
         },
         {
-            key: 2,
+            key: 4,
             content: 'Licensed',
             width: 10,
         },
         {
-            key: 2,
+            key: 5,
             content: 'Unplanned Territories',
             width: 25,
         },
