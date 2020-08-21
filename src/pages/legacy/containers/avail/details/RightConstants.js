@@ -20,3 +20,5 @@ export const NoteMerged = {
 };
 
 export const PLATFORM_INFORM_MSG = 'Required for US Licensee';
+
+export const CUSTOM_ERROR_HANDLING_FIELDS = ['territory', 'pricing', 'languageAudioTypes'];
