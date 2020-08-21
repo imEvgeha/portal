@@ -94,7 +94,8 @@ empty Source Right IDs and Status is Ready/ReadyNew"
         onClick={[Function]}
       >
         <NexusTooltip
-          content="This option will mark a right as deleted and can no longer be used. Alternatively you may withdraw a right which can be re-instantiated later."
+          content="This option will mark a right as deleted and can no longer be used.
+Alternatively you may withdraw a right which can be re-instantiated later."
           hasWhiteBackground={false}
           isDisabled={false}
         >

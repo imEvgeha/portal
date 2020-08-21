@@ -62,23 +62,23 @@ exports[`BulkDelete should match snapshot 1`] = `
             "cells": Array [
               Object {
                 "content": "title1",
-                "key": "1-title",
+                "key": "1-linkedRights",
               },
               Object {
                 "content": "",
-                "key": "1-status",
+                "key": "1-rightID",
               },
               Object {
                 "content": "",
-                "key": "1-rightStatus",
+                "key": "1-type",
               },
               Object {
                 "content": "",
-                "key": "1-licensed",
+                "key": "1-originalRight",
               },
               Object {
                 "content": "",
-                "key": "1-territory",
+                "key": "1-sourceRight",
               },
             ],
             "key": 1,
@@ -87,23 +87,23 @@ exports[`BulkDelete should match snapshot 1`] = `
             "cells": Array [
               Object {
                 "content": "title12",
-                "key": "2-title",
+                "key": "2-linkedRights",
               },
               Object {
                 "content": "",
-                "key": "2-status",
+                "key": "2-rightID",
               },
               Object {
                 "content": "",
-                "key": "2-rightStatus",
+                "key": "2-type",
               },
               Object {
                 "content": "",
-                "key": "2-licensed",
+                "key": "2-originalRight",
               },
               Object {
                 "content": "",
-                "key": "2-territory",
+                "key": "2-sourceRight",
               },
             ],
             "key": 2,
