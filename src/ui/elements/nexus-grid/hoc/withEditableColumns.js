@@ -164,7 +164,14 @@ const withEditableColumns = ({
 
         const propsWithoutHocProps = omit(props, hocProps);
 
-        return <WrappedComponent {...propsWithoutHocProps} singleClickEdit={true} columnDefs={editableColumnDefs} />;
+        return (
+            <WrappedComponent
+                {...propsWithoutHocProps}
+                stopEditingWhenGridLosesFocus={true}
+                singleClickEdit={true}
+                columnDefs={editableColumnDefs}
+            />
+        );
     };
 
     const createMapStateToProps = () => {
