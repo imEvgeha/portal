@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import {get, isEmpty} from 'lodash';
+import {cloneDeep, get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -37,8 +37,6 @@ import {
     CONFLICTING_RIGHTS,
     CANCEL_BUTTON,
     MATCH_BUTTON,
-    STATUS_FOR_MATCHING,
-    SECTION_MESSAGE,
 } from '../rightMatchingConstants';
 import * as selectors from '../rightMatchingSelectors';
 import {getMatchingCandidates} from '../rightMatchingService';
@@ -46,28 +44,31 @@ import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
 import './RightToMatchView.scss';
 
+const SECTION_MESSAGE = `Select rights from the repository that match the focused right or declare it as a NEW right
+from the action menu above.`;
+
 const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(NexusGrid);
 
 const IncomingRightNexusGrid = withColumnsResizing()(NexusGrid);
 
 const RightToMatchView = ({
-    match,
-    columnDefs,
-    mapping,
-    createRightMatchingColumnDefs,
-    fetchFocusedRight,
-    focusedRight,
-    history,
-    location,
-    createNewRight,
-    addToast,
-    removeToast,
-    pendingRight,
-    mergeRights,
-    storeMatchedRights,
-}) => {
+                              match,
+                              columnDefs,
+                              mapping,
+                              createRightMatchingColumnDefs,
+                              fetchFocusedRight,
+                              focusedRight,
+                              history,
+                              location,
+                              createNewRight,
+                              addToast,
+                              removeToast,
+                              pendingRight,
+                              mergeRights,
+                              storeMatchedRights,
+                          }) => {
     const [totalCount, setTotalCount] = useState(0);
-    const [isMatchEnabled, setIsMatchEnabled] = useState(false);
+    const [isMatchDisabled, setIsMatchDisabled] = useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
     const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
@@ -88,11 +89,11 @@ const RightToMatchView = ({
             get(focusedRight, 'temporaryPriceReduction', false) ||
             false;
         (focusedRight.id || newPendingRight.length) &&
-            getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
-                const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
-                setTotalCount(rights.length);
-                setMatchingCandidates(rights);
-            });
+        getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
+            const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+            setTotalCount(rights.length);
+            setMatchingCandidates(rights);
+        });
     }, [focusedRight.id, newPendingRight]);
 
     useEffect(() => {
@@ -110,8 +111,18 @@ const RightToMatchView = ({
         }
     }, [availHistoryIds, fetchFocusedRight, rightId]);
 
+    const columnDefWithRedirectRightId = columnDefs.length ? cloneDeep(columnDefs).map(columnDef => {
+        if (columnDef.field === 'id') {
+            columnDef.cellRendererParams = {
+                link: '/avails/rights/',
+                newTab: false,
+            };
+        }
+        return columnDef;
+    }): [];
+
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const updatedColumnDefs = columnDefs.length ? [checkboxSelectionColumnDef, ...columnDefs] : columnDefs;
+    const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefWithRedirectRightId];
 
     const onDeclareNewRight = () => {
         removeToast();
@@ -144,7 +155,7 @@ const RightToMatchView = ({
     const actionNewButtonColumnDef = defineActionButtonColumn({
         cellRendererFramework: createNewButtonCellRenderer,
     });
-    const updatedFocusedRightColumnDefs = columnDefs.length ? [actionNewButtonColumnDef, ...columnDefs] : columnDefs;
+    const updatedFocusedRightColumnDefs = [actionNewButtonColumnDef, ...columnDefWithRedirectRightId];
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleGridEvent = ({type, api}) => {
@@ -152,9 +163,7 @@ const RightToMatchView = ({
         if (type === SELECTION_CHANGED) {
             const selectedRows = api.getSelectedRows();
             setSelectedRows(selectedRows);
-            setIsMatchEnabled(
-                selectedRows.length && selectedRows.some(right => STATUS_FOR_MATCHING.includes(right.status))
-            );
+            setIsMatchDisabled(!selectedRows.length);
         }
     };
 
@@ -238,7 +247,7 @@ const RightToMatchView = ({
                         className="nexus-c-button"
                         appearance="primary"
                         onClick={handleMatchClick}
-                        isDisabled={!isMatchEnabled}
+                        isDisabled={isMatchDisabled}
                     >
                         {MATCH_BUTTON}
                     </Button>
