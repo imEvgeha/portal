@@ -13,7 +13,7 @@ describe('TooltipCellRenderer', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render a ServicingOrdersTableStatusTooltip', async () => {
+    it('should render a ServicingOrdersTableStatusTooltip', () => {
         const tooltip = wrapper.props().content();
         expect(tooltip).toBeTruthy();
         expect(tooltip.props.soNumber).toEqual('ABC123');
