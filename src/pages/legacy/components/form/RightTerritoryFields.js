@@ -237,7 +237,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         isReadOnly={false}
                         defaultValue={value}
                         style={{height: '40px'}}
-                        onChange={rest.onChange}
+                        {...rest}
                     />
                 )}
             </Field>
