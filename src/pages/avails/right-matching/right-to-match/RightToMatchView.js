@@ -51,21 +51,21 @@ const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(N
 const IncomingRightNexusGrid = withColumnsResizing()(NexusGrid);
 
 const RightToMatchView = ({
-     match,
-     columnDefs,
-     mapping,
-     createRightMatchingColumnDefs,
-     fetchFocusedRight,
-     focusedRight,
-     history,
-     location,
-     createNewRight,
-     addToast,
-     removeToast,
-     pendingRight,
-     mergeRights,
-     storeMatchedRights,
-   }) => {
+    match,
+    columnDefs,
+    mapping,
+    createRightMatchingColumnDefs,
+    fetchFocusedRight,
+    focusedRight,
+    history,
+    location,
+    createNewRight,
+    addToast,
+    removeToast,
+    pendingRight,
+    mergeRights,
+    storeMatchedRights,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [isMatchEnabled, setIsMatchEnabled] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
