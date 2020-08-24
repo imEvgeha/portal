@@ -27,13 +27,15 @@ const FulfillmentOrderPanel = ({
                 <div className="nexus-c-fulfillment-order-panel__servicer">
                     <span className="nexus-c-fulfillment-order-panel__servicer-label">{SERVICERS[servicer]}</span>
                 </div>
-                <div className="nexus-c-fulfillment-order-panel__title-container">
-                    <File className="nexus-c-fulfillment-order-panel__file-icon" />
-                    <span title={id} className="nexus-c-fulfillment-order-panel__title">
-                        {externalId}
-                    </span>
+                <div className="nexus-c-fulfillment-order-panel__order-info">
+                    <div className="nexus-c-fulfillment-order-panel__title-container">
+                        <File className="nexus-c-fulfillment-order-panel__file-icon" />
+                        <span title={id} className="nexus-c-fulfillment-order-panel__title">
+                            {externalId}
+                        </span>
+                    </div>
+                    <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
                 </div>
-                <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
             </div>
             <div className="nexus-c-fulfillment-order-panel__description-and-status">
                 <span className="nexus-c-fulfillment-order-panel__description">{productDescription}</span>

@@ -35,7 +35,7 @@
     &__title-and-date {
         width: 100%;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -64,7 +64,7 @@
     &__description-and-status {
         width: 100%;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: center;
         padding-left: 30px;
     }
@@ -94,5 +94,13 @@
             color: map-get($primary-colors, white);
             text-align: center;
         }
+    }
+
+    &__order-info {
+        margin-left: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1 0 auto;
     }
 }
