@@ -78,4 +78,21 @@
         flex-shrink: 0;
         margin-left: 10px;
     }
+
+    &__servicer {
+        width: 44px;
+        height: 44px;
+        background-color: map-get($mid-neutral-colors, mid-neutral-6);
+        border-radius: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-label {
+            font-size: 10px;
+            font-weight: bold;
+            color: map-get($primary-colors, white);
+            text-align: center;
+        }
+    }
 }

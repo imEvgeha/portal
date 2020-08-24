@@ -63,6 +63,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             externalId={info.external_id}
             status={info.status}
             dueDate={ISODateToView(get(info, 'definition.dueDate'), 'regionalMidnight')}
+            servicer={info.fs}
             selected={selectedFulfillmentOrder === info.id}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
             productDescription={info.product_description}

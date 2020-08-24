@@ -9,7 +9,8 @@ export const readinessStatus = {
     NEW: 'NEW',
 };
 
-export const EXPORT_WARNING_MESSAGE = 'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
+export const EXPORT_WARNING_MESSAGE =
+    'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
 
 export const REPORT = {
     NOT_STARTED: {label: 'Not Started', value: 'Not Started'},
@@ -18,4 +19,10 @@ export const REPORT = {
     COMPLETE: {label: 'Complete', value: 'Complete'},
     CANCELLED: {label: 'Canceled', value: 'Canceled'},
     FAILED: {label: 'Failed', value: 'Failed'},
+};
+
+export const SERVICERS = {
+    JUICEBOX: 'JUICE BOX',
+    CHOP: 'CHOP',
+    DETE: 'DETE',
 };
