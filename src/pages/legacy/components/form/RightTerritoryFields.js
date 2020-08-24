@@ -23,7 +23,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
 
     // Get locale provided by intl
     const intl = useIntl();
-    const {locale = 'en-US'} = intl || {};
+    const {locale = 'en-US'} = intl;
 
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
