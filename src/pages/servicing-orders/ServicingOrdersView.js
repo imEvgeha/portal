@@ -27,9 +27,7 @@ const ServicingOrdersView = () => {
     const [isRefreshData, setIsRefreshData] = useState(false);
     const ModalContent = (
         <>
-            <p>
-                {EXPORT_WARNING_MESSAGE}
-            </p>
+            <p>{EXPORT_WARNING_MESSAGE}</p>
             <p>Do you wish to continue?</p>
         </>
     );
@@ -39,33 +37,27 @@ const ServicingOrdersView = () => {
     };
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    useEffect(
-        () => {
-            setFixedFilter({
-                status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
-                readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined,
-            });
-        },
-        [isHideReady, isHideCompleted]
-    );
+    useEffect(() => {
+        setFixedFilter({
+            status: isHideCompleted ? ['NOT_STARTED', 'IN_PROGRESS', 'CANCELLED', 'FAILED'] : undefined,
+            readiness: isHideReady ? [readinessStatus.NEW, readinessStatus.ON_HOLD] : undefined,
+        });
+    }, [isHideReady, isHideCompleted]);
 
-    useEffect(
-        () => {
-            setExternalFilter({
-                ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
-            });
-        },
-        [customerFilter]
-    );
+    useEffect(() => {
+        setExternalFilter({
+            ...(customerFilter && customerFilter.value && {tenant: customerFilter.value}),
+        });
+    }, [customerFilter]);
 
     /**
      * Handle export button onClick
      */
     const handleExportRequest = () => {
         // Show warning modal if selected export contains a readiness of ON HOLD
-        selectedServicingOrders.filter(so => (
-            so.readiness === readinessStatus.ON_HOLD
-        )).length ? openWarningModal() : exportSelectedServicingOrders();
+        selectedServicingOrders.filter(so => so.readiness === readinessStatus.ON_HOLD).length
+            ? openWarningModal()
+            : exportSelectedServicingOrders();
     };
 
     /**
@@ -73,11 +65,14 @@ const ServicingOrdersView = () => {
      */
     const exportSelectedServicingOrders = () => {
         setIsExporting(true);
-        exportServicingOrders(selectedServicingOrders.map(so => (so.so_number)))
+        exportServicingOrders(selectedServicingOrders.map(so => so.so_number))
             .then(response => {
                 downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
                 setIsExporting(false);
                 setIsRefreshData(true);
+            })
+            .catch(() => {
+                setIsExporting(false);
             });
     };
 
