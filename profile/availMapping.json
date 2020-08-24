@@ -1864,7 +1864,7 @@
             "dataType": "timestamp",
             "searchDataType": "timestamp",
             "queryParamName": "updatedCatalogReceivedAt",
-            "readOnly": false,
+            "readOnly": true,
             "readOnlyInDetails": false,
             "enableSearch": true,
             "enableEdit": true,
