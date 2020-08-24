@@ -31,12 +31,6 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           "headerName": "Core Title Id",
         },
         Object {
-          "colId": "totalRuntime",
-          "field": "totalRuntime",
-          "headerName": "Runtime",
-          "width": 120,
-        },
-        Object {
           "colId": "rightStatus",
           "field": "rightStatus",
           "headerName": "Right Status",

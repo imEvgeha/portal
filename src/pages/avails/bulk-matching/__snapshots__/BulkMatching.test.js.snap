@@ -4,60 +4,50 @@ exports[`BulkMatching should match snapshot 1`] = `
 <div
   className="nexus-c-bulk-matching"
 >
-  <div
-    className="nexus-c-bulk-matching__header"
-  >
-    <div
-      className="nexus-c-bulk-matching__rights-tab nexus-c-bulk-matching__rights-tab--active"
-      onClick={[Function]}
+  <div>
+    <HeaderSection
+      activeTab="Selected Rights"
+      affectedRights={0}
+      changeActiveTab={[Function]}
+      existingBonusRights={0}
+      isBonusRight={false}
+      isNewTitleDisabled={false}
+      selectedRights={0}
+      showModal={[Function]}
+    />
+    <TitleMatchingRightsTable
+      data={Array []}
+    />
+    <SectionMessage
+      appearance="info"
     >
-      Selected Rights
-       (
-      0
-      )
-    </div>
-    <div
-      className="nexus-c-bulk-matching__rights-tab"
-      onClick={[Function]}
-    >
-      Affected Rights
-       (
-      0
-      )
-    </div>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      className="nexus-c-bulk-matching__btn"
-      isDisabled={false}
-      onClick={[Function]}
-    >
-      New Title
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  </div>
-  <TitleMatchingRightsTable
-    data={Array []}
-  />
-  <SectionMessage
-    appearance="info"
-  >
-    Select titles from the repositories that match the incoming right or declare a 
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      appearance="link"
-      isDisabled={false}
-      onClick={[Function]}
-      spacing="none"
-    >
-      New Title
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  </SectionMessage>
-  <div
-    className="nexus-c-bulk-matching__spinner"
-  >
-    <Spinner
-      delay={100}
-      invertColor={false}
-      isCompleting={false}
-      onComplete={[Function]}
-      size="large"
+      Select titles from the repositories that match the incoming right or declare a 
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        appearance="link"
+        isDisabled={false}
+        onClick={[Function]}
+        spacing="none"
+      >
+        New Title
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </SectionMessage>
+    <TitlesSection
+      closeDrawer={[Function]}
+      contentType=""
+      isMatchAndCreateLoading={false}
+      isMatchLoading={false}
+      isTitlesTableLoading={true}
+      onMatch={[Function]}
+      onMatchAndCreate={[Function]}
+      restrictedCoreTitleIds={Array []}
+      selectionList={
+        Object {
+          "duplicateList": Object {},
+          "handleDuplicateClick": [Function],
+          "handleMatchClick": [Function],
+          "matchList": Object {},
+        }
+      }
     />
   </div>
 </div>

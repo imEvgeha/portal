@@ -31,7 +31,7 @@ import {
     CREATE_BONUS_RIGHT_TOOLTIP,
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
-    HEADER_TITLE,
+    HEADER_TITLE_TITLE_MATCHING,
     ADD_TO_PREPLAN,
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
@@ -57,7 +57,7 @@ export const SelectedRightsActions = ({
     const [isPreplanEligible, setIsPreplanEligible] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
-    const [headerText, setHeaderText] = useState(HEADER_TITLE);
+    const [headerText, setHeaderText] = useState('');
     const node = useRef();
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -146,6 +146,7 @@ export const SelectedRightsActions = ({
 
     const openDrawer = () => {
         setDrawerOpen(true);
+        setHeaderText(HEADER_TITLE_TITLE_MATCHING);
     };
 
     const closeDrawer = () => {
@@ -310,6 +311,7 @@ export const SelectedRightsActions = ({
                     closeDrawer={closeDrawer}
                     isBonusRight={isBonusRight}
                     setHeaderText={setHeaderText}
+                    headerText={headerText}
                 />
             </NexusDrawer>
         </>

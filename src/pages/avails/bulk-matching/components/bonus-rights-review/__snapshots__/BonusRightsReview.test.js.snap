@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BonusRightsReview should match snapshot 1`] = `
+<div
+  className="nexus-c-bonus-rights-review"
+>
+  <div
+    className="nexus-c-bonus-rights-review__tabs"
+  >
+    <Tab
+      key="bonusRights"
+      tab="bonusRights"
+    />
+    <Tab
+      key="existingBonusRights"
+      tab="existingBonusRights"
+    />
+  </div>
+  <TitleMatchingRightsTable
+    data={Array []}
+  />
+</div>
+`;

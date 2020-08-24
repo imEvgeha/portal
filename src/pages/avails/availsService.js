@@ -44,3 +44,10 @@ export const getRightsHistory = searchIds => {
         body: JSON.stringify(body),
     });
 };
+
+export const createBonusRights = ({rightIds, coreTitleId = ''}) => {
+    const url = `${config.get('gateway.url')}${config.get(
+        'gateway.service.avails'
+    )}/rights/bonusRights?coreTitleId=${coreTitleId}&rightIds=${rightIds}`;
+    return nexusFetch(url, {method: 'POST'});
+};

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
+import TitleSystems from '../../../../legacy/constants/metadata/systems';
 import './BulkMatchingActionsBar.scss';
 
 const BulkMatchingActionsBar = ({

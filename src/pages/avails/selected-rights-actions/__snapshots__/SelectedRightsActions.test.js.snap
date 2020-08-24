@@ -96,12 +96,13 @@ empty Source Right IDs and Status is Ready/ReadyNew"
     isClosedOnBlur={false}
     isOpen={false}
     onClose={[Function]}
-    title="Title Matching"
+    title=""
     width="wider"
   >
     <Connect(Connect(ComposedComponent))
       closeDrawer={[Function]}
       data={Array []}
+      headerText=""
       isBonusRight={false}
       setHeaderText={[Function]}
     />
