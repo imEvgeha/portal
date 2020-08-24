@@ -1005,6 +1005,7 @@ class RightCreate extends React.Component {
                                 onClose={this.toggleRightTerritoryForm}
                                 data={val}
                                 options={options}
+                                isFromCreatePage
                             />
                         </>
                     )}

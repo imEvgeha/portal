@@ -8,7 +8,7 @@ import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-t
 import Textfield from '@atlaskit/textfield';
 import {getValidDate} from '../../../../util/utils';
 
-const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
+const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, territoryIndex, options}) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
     const {dateSelected = '', selected = false, dateWithdrawn = ''} =
@@ -217,7 +217,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                         value={value}
                         onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
                         isReturningTime={false}
-                        isDisabled={!isEdit}
+                        isDisabled={isFromCreatePage}
                     />
                 )}
             </Field>
@@ -247,6 +247,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
 
 RightTerritoryFields.propTypes = {
     isEdit: PropTypes.bool,
+    isFromCreatePage: PropTypes.bool,
     existingTerritoryList: PropTypes.array,
     territoryIndex: PropTypes.number,
     options: PropTypes.array,
@@ -254,6 +255,7 @@ RightTerritoryFields.propTypes = {
 
 RightTerritoryFields.defaultProps = {
     isEdit: false,
+    isFromCreatePage: false,
     existingTerritoryList: [],
     territoryIndex: null,
     options: [],
