@@ -29,7 +29,6 @@ const FulfillmentOrderPanel = ({
                 </div>
                 <div className="nexus-c-fulfillment-order-panel__order-info">
                     <div className="nexus-c-fulfillment-order-panel__title-container">
-                        <File className="nexus-c-fulfillment-order-panel__file-icon" />
                         <span title={id} className="nexus-c-fulfillment-order-panel__title">
                             {externalId}
                         </span>
