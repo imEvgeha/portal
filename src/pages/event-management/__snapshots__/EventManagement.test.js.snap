@@ -14,6 +14,7 @@ exports[`EventManagement should match snapshot 1`] = `
   >
     <Connect(EventManagementTable)
       onGridEvent={[Function]}
+      onSortChanged={[Function]}
     />
   </div>
 </div>
