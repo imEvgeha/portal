@@ -14,9 +14,9 @@ import { configFields, searchPerson } from '../../../service/ConfigService';
 import {titleService} from '../../../service/TitleService';
 import {
     CAST,
-    getFilteredCrewList, 
-    getFilteredCastList, 
-    getFormatTypeName, 
+    getFilteredCrewList,
+    getFilteredCastList,
+    getFormatTypeName,
     CREW,
     PERSONS_PER_REQUEST
 } from '../../../../../constants/metadata/configAPI';
@@ -592,7 +592,8 @@ CoreMetadataEditMode.propTypes = {
     ratingObjectForCreate: PropTypes.object,
     areRatingFieldsRequired: PropTypes.bool,
     castAndCrewReorder: PropTypes.func,
-    handleAddCharacterName: PropTypes.func
+    handleAddCharacterName: PropTypes.func,
+    externalIDs: PropTypes.object.isRequired,
 };
 
 

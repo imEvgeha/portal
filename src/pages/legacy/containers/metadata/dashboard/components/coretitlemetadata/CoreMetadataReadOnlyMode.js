@@ -332,7 +332,8 @@ class CoreMetadataReadOnlyMode extends Component {
 CoreMetadataReadOnlyMode.propTypes = {
     data: PropTypes.object,
     toggleTitleRating: PropTypes.func,
-    activeTab: PropTypes.any
+    activeTab: PropTypes.any,
+    externalIDs: PropTypes.object.isRequired,
 };
 
 export default CoreMetadataReadOnlyMode;
