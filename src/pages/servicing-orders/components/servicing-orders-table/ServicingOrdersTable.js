@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag';
-import {camelCase, startCase} from 'lodash';
+import {camelCase, get, startCase} from 'lodash';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -60,7 +60,9 @@ const ServicingOrdersTable = ({
                     ...columnDef,
                     valueFormatter: valueFormatter(columnDef),
                     cellRendererFramework: params => {
-                        return params.value === 'Y' || params.value === true ? <Tag text="Rush" color="yellowLight" /> : null;
+                        return params.value === 'Y' || params.value === true ? (
+                            <Tag text="Rush" color="yellowLight" />
+                        ) : null;
                     },
                 };
             }
@@ -71,7 +73,7 @@ const ServicingOrdersTable = ({
                     valueFormatter: valueFormatter(columnDef),
                     cellRenderer: 'tooltipCellRenderer',
                     cellRendererParams: params => {
-                        return {soNumber: params.data.so_number};
+                        return {soNumber: get(params, 'data.so_number', '')};
                     },
                 };
             }
