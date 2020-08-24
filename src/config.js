@@ -1,6 +1,6 @@
 import config from 'react-global-configuration';
 import {isObject, mergeDeep} from './util/Common';
-import {nexusFetch} from "./util/http-client";
+import {nexusFetch} from './util/http-client';
 
 export const defaultConfiguration = {
     gateway: {
