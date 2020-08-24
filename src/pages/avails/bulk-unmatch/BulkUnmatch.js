@@ -5,42 +5,49 @@ import {connect} from 'react-redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
-import {getAffectedRights, setCoreTitleId} from '../availsService';
-import {
-    createRightMatchingColumnDefsSelector,
-} from '../right-matching/rightMatchingSelectors';
+import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
+import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatchingSelectors';
 import {BULK_UNMATCH_SUCCESS_TOAST} from '../selected-rights-actions/constants';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';
 
-const BulkUnmatch = ({selectedRights = [], columnDefs = [],
-    removeToast, addToast, selectedRightGridApi, toggleRefreshGridData}) => {
+const BulkUnmatch = ({
+    selectedRights = [],
+    columnDefs = [],
+    removeToast,
+    addToast,
+    selectedRightGridApi,
+    toggleRefreshGridData,
+}) => {
     const [affectedRights, setAffectedRights] = useState([]);
     const {setModalActions, setModalStyle, close} = useContext(NexusModalContext);
 
-    const unMatchHandler = useCallback(rightIds => {
-        setCoreTitleId({rightIds}).then(unmatchedRights => {
-            // Fetch fresh data from back-end
-            toggleRefreshGridData(true);
+    const unMatchHandler = useCallback(
+        rightIds => {
+            setCoreTitleId({rightIds}).then(unmatchedRights => {
+                // Fetch fresh data from back-end
+                toggleRefreshGridData(true);
 
-            // Response is returning updated rights, so we can feed that to SelectedRights table
-            selectedRightGridApi.setRowData(unmatchedRights.filter(right => selectedRights.includes(right.id)));
-            // Refresh changes
-            selectedRightGridApi.refreshCells();
+                // Response is returning updated rights, so we can feed that to SelectedRights table
+                selectedRightGridApi.setRowData(unmatchedRights.filter(right => selectedRights.includes(right.id)));
+                // Refresh changes
+                selectedRightGridApi.refreshCells();
 
-            // Close modal
-            close();
+                // Close modal
+                close();
 
-            // Show success toast
-            addToast({
-                title: BULK_UNMATCH_SUCCESS_TOAST,
-                description: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                // Show success toast
+                addToast({
+                    title: BULK_UNMATCH_SUCCESS_TOAST,
+                    description: `You have successfully unmatched ${unmatchedRights.length} right(s).
                          Please validate title fields.`,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                });
             });
-        });
-    }, [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]);
+        },
+        [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]
+    );
 
     useEffect(
         () => {
@@ -78,10 +85,7 @@ const BulkUnmatch = ({selectedRights = [], columnDefs = [],
                     <SectionMessage appearance="warning">
                         <p>{BULK_UNMATCH_WARNING}</p>
                     </SectionMessage>
-                    <NexusGrid
-                        rowData={affectedRights}
-                        columnDefs={columnDefs}
-                    />
+                    <NexusGrid rowData={affectedRights} columnDefs={columnDefs} />
                 </>
             )}
         </div>

@@ -12,3 +12,4 @@ export const TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE = (count, existing) => `
 ${count ? `You have successfully created ${count} bonus rights.` : 'No bonus rights were created.'} 
 ${existing ? `${existing} bonus rights already exists.` : ''}
 `;
+export const EXISTING_BONUS_RIGHTS_PAGE_SIZE = 200;

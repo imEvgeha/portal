@@ -17,17 +17,17 @@ import withToasts from '../../../ui/toast/hoc/withToasts';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
+import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
+import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
+import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
+import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
 import {
     getAffectedRights,
     getRestrictedTitles,
     setCoreTitleId,
     getExistingBonusRights,
     createBonusRights,
-} from '../availsService';
-import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
-import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
-import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
-import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
+} from './bulkMatchingService';
 import BonusRightsReview from './components/bonus-rights-review/BonusRightsReview';
 import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -82,12 +82,10 @@ export const BulkMatching = ({
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
             if (isBonusRight) {
-                getExistingBonusRights(rightIds).then(res => {
-                    if (Array.isArray(res) && res.length) {
-                        setExistingBonusRights(res);
-                        setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
-                        setLoadTitlesTable(true);
-                    }
+                getExistingBonusRights(rightIds).then(({data}) => {
+                    setExistingBonusRights(data);
+                    setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
+                    setLoadTitlesTable(true);
                 });
             } else {
                 getAffectedRights(rightIds).then(res => {
@@ -97,7 +95,7 @@ export const BulkMatching = ({
                 });
             }
         }
-    }, [selectedTableData, isBonusRight]);
+    }, [selectedTableData.length, isBonusRight]);
 
     useEffect(() => {
         if (affectedTableData.length) {
@@ -119,27 +117,37 @@ export const BulkMatching = ({
     const bulkTitleMatch = (coreTitleId, isNewTitle = false) => {
         const action = isBonusRight ? createBonusRights : setCoreTitleId;
         const rights = isBonusRight ? selectedTableData : affectedTableData;
-        action({
-            rightIds: rights.map(right => right.id),
-            coreTitleId,
-        })
-            .then(response => {
-                setLoadTitlesTable(false);
-                disableLoadingState();
-                dispatchSuccessToast(response.length);
-                setBonusRights(response);
-                if (isNewTitle || matchList[NEXUS]) {
-                    setHeaderText(BONUS_RIGHTS_REVIEW_HEADER);
-                    toggleRefreshGridData(true);
-                    return !isBonusRight && closeDrawer();
-                }
-                //  handle matched titles (ignore updated affected rights from response)
-                const matchedTitlesList = Object.values(matchList);
-                setMatchedTitles(matchedTitlesList);
-                setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+        getExistingBonusRights(
+            selectedTableData.map(right => right.id),
+            coreTitleId
+        )
+            .then(res => {
+                setExistingBonusRights(res.data);
+                action({
+                    rightIds: rights.map(right => right.id),
+                    coreTitleId,
+                })
+                    .then(response => {
+                        setLoadTitlesTable(false);
+                        disableLoadingState();
+                        dispatchSuccessToast(response.length);
+                        setBonusRights(response);
+                        if (isNewTitle || matchList[NEXUS]) {
+                            setHeaderText(BONUS_RIGHTS_REVIEW_HEADER);
+                            toggleRefreshGridData(true);
+                            return !isBonusRight && closeDrawer();
+                        }
+                        //  handle matched titles (ignore updated affected rights from response)
+                        const matchedTitlesList = Object.values(matchList);
+                        setMatchedTitles(matchedTitlesList);
+                        setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+                    })
+                    .catch(() => {
+                        // nexusFetch handles error toast
+                        disableLoadingState();
+                    });
             })
             .catch(() => {
-                // nexusFetch handles error toast
                 disableLoadingState();
             });
     };

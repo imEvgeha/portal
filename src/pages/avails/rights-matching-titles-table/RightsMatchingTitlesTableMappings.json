@@ -19,11 +19,11 @@
         "displayName": "Title ID",
         "dataType": "string",
         "searchDataType": "string",
-        "queryParamName": "displayName",
+        "queryParamName": "id",
         "readOnly": false,
         "enableSearch": false,
-        "enableEdit": false,
-        "required": false
+        "enableEdit": true,
+        "required": true
     },
     {
         "colId": "title",
