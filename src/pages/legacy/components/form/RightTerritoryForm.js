@@ -45,6 +45,7 @@ class RightTerritoryForm extends React.Component {
                         <RightTerritoryFields
                             options={this.props.options}
                             isEdit={this.props.isEdit}
+                            isFromCreatePage={this.props.isFromCreatePage}
                             existingTerritoryList={this.props.existingTerritoryList || this.props.data}
                             territoryIndex={this.props.territoryIndex}
                         />
@@ -69,11 +70,13 @@ RightTerritoryForm.propTypes = {
     options: PropTypes.array,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
+    isFromCreatePage: PropTypes.bool,
     existingTerritoryList: PropTypes.array
 };
 
 RightTerritoryForm.defaultProps = {
     isEdit: false,
+    isFromCreatePage: false,
 };
 
 export default RightTerritoryForm;
