@@ -13,6 +13,7 @@ import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
 import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
 import {getRightsHistory} from '../availsService';
+import BulkDelete from '../bulk-delete/BulkDelete';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
@@ -36,6 +37,9 @@ import {
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
     VIEW_AUDIT_HISTORY,
+    BULK_DELETE_TOOLTIP,
+    MARK_DELETED,
+    BULK_DELETE_HEADER,
 } from './constants';
 import './SelectedRightsActions.scss';
 
@@ -55,6 +59,7 @@ export const SelectedRightsActions = ({
     const [isUnmatchable, setIsUnmatchable] = useState(false);
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
     const [isPreplanEligible, setIsPreplanEligible] = useState(false);
+    const [isDeletable, setIsDeletable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState('');
@@ -78,6 +83,9 @@ export const SelectedRightsActions = ({
             selectedRights.length === uniqBy(selectedRights, 'sourceRightId').length;
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
+
+    // None of the rights has status 'Deleted'
+    const noRightsWithDeletedStatus = () => selectedRights.every(({status}) => status !== 'Deleted');
 
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
@@ -127,11 +135,15 @@ export const SelectedRightsActions = ({
 
             // PrePlan criteria
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
+
+            // Deletion criteria
+            setIsDeletable(noRightsWithDeletedStatus());
         } else {
             setIsMatchable(false);
             setIsUnmatchable(false);
             setIsBonusRightCreatable(false);
             setIsPreplanEligible(false);
+            setIsDeletable(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
@@ -165,6 +177,11 @@ export const SelectedRightsActions = ({
             />,
             BULK_UNMATCH_TITLE
         );
+    };
+
+    const openBulkDeleteModal = () => {
+        // to do - pass rights for deletion when api is ready
+        setModalContentAndTitle(<BulkDelete rights={[]} onClose={close} />, BULK_DELETE_HEADER);
     };
 
     const openAuditHistoryModal = () => {
@@ -284,18 +301,32 @@ export const SelectedRightsActions = ({
                         </div>
                     )}
                     {activeTab !== PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
-                        <div
-                            className={classNames(
-                                'nexus-c-selected-rights-actions__menu-item',
-                                !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                            )}
-                            data-test-id="add-to-preplan"
-                            onClick={selectedRights.length ? prepareRightsForPrePlan : null}
-                        >
-                            <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
-                                <div>{ADD_TO_PREPLAN}</div>
-                            </NexusTooltip>
-                        </div>
+                        <>
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="add-to-preplan"
+                                onClick={selectedRights.length ? prepareRightsForPrePlan : null}
+                            >
+                                <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
+                                    <div>{ADD_TO_PREPLAN}</div>
+                                </NexusTooltip>
+                            </div>
+                            <div
+                                className={classNames(
+                                    'nexus-c-selected-rights-actions__menu-item',
+                                    isDeletable && 'nexus-c-selected-rights-actions__menu-item--is-active'
+                                )}
+                                data-test-id="mark-as-deleted"
+                                onClick={openBulkDeleteModal}
+                            >
+                                <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
+                                    <div>{MARK_DELETED}</div>
+                                </NexusTooltip>
+                            </div>
+                        </>
                     )}
                 </div>
             </div>

@@ -1,21 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {ErrorMessage, Field} from '@atlaskit/form';
+import {DatePicker} from '@atlaskit/datetime-picker';
+import {useIntl} from 'react-intl';
 import Select from '@atlaskit/select/Select';
-import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
+import {getValidDate} from '../../../../util/utils';
 
-const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, options}) => {
+const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, territoryIndex, options}) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
-    const {dateSelected = '', selected = false} =
-        (typeof territoryIndex === 'number' && territoryIndex >= 0) ? existingTerritoryList[territoryIndex] : {};
+    const {dateSelected = '', selected = false, dateWithdrawn = ''} =
+        typeof territoryIndex === 'number' && territoryIndex >= 0 ? existingTerritoryList[territoryIndex] : {};
+    const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
             return error;
         }
     };
+
+    // Get locale provided by intl
+    const intl = useIntl();
+    const {locale = 'en-US'} = intl;
+
+    // Create date placeholder based on locale
+    const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
     const removeExistingOptions = () => {
         return existingTerritoryList
@@ -47,6 +58,17 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
             existingTerritoryList[territoryIndex][data] &&
             existingTerritoryList[territoryIndex][data] !== null
         );
+    };
+
+    const onChangeDateWithdrawn = (val, restOnChange) => {
+        const today = new Date();
+        const updatedDate = getValidDate(val) !== getValidDate(today) ? '' : val;
+        setShowErrorDateWithdrawn(updatedDate === '');
+        if (updatedDate === '') {
+            return false;
+        } else {
+            restOnChange(updatedDate);
+        }
     };
 
     return (
@@ -93,14 +115,13 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
             </Field>
             <Field name="selected" defaultValue="False" label="SELECTED">
                 {() => (
-                        <Textfield
-                            name="readOnly"
-                            isReadOnly={true}
-                            defaultValue={selected.toString()}
-                            style={{height: '40px'}}
-                        />
-                    )
-                }
+                    <Textfield
+                        name="readOnly"
+                        isReadOnly={true}
+                        defaultValue={selected.toString()}
+                        style={{height: '40px'}}
+                    />
+                )}
             </Field>
             {isEdit && dateSelected && (
                 <Field name="date selected" defaultValue="" label="DATE SELECTED">
@@ -185,6 +206,21 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
                     />
                 )}
             </Field>
+            <Field name="dateWithdrawn" defaultValue="" label="DATE WITHDRAWN">
+                {({fieldProps: {id, value, ...rest}}) => (
+                    <DatePicker
+                        name="dateWithdrawn"
+                        locale={locale}
+                        placeholder={dateFormat}
+                        id="dateWithdrawn"
+                        value={value}
+                        onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
+                        isReturningTime={false}
+                        isDisabled={isFromCreatePage}
+                    />
+                )}
+            </Field>
+            {showErrorDateWithdrawn && <ErrorMessage> Only the current date can be selected </ErrorMessage>}
             <Field
                 label="COMMENTS"
                 name="comment"
@@ -210,6 +246,7 @@ const RightTerritoryFields = ({isEdit, existingTerritoryList, territoryIndex, op
 
 RightTerritoryFields.propTypes = {
     isEdit: PropTypes.bool,
+    isFromCreatePage: PropTypes.bool,
     existingTerritoryList: PropTypes.array,
     territoryIndex: PropTypes.number,
     options: PropTypes.array,
@@ -217,6 +254,7 @@ RightTerritoryFields.propTypes = {
 
 RightTerritoryFields.defaultProps = {
     isEdit: false,
+    isFromCreatePage: false,
     existingTerritoryList: [],
     territoryIndex: null,
     options: [],

@@ -1,11 +1,11 @@
-export default (countryItems) => ([
+export default countryItems => [
     {
         id: 'create',
         name: 'create',
         type: 'checkbox',
         visible: false,
         omitWhenHidden: true,
-        defaultValue: false
+        defaultValue: false,
     },
     {
         id: 'country',
@@ -17,15 +17,13 @@ export default (countryItems) => ([
         disabledWhen: [
             {
                 field: 'create',
-                is: [
-                    {value: false}
-                ]
-            }
+                is: [{value: false}],
+            },
         ],
         options: [
             {
-                items: countryItems
-            }
+                items: countryItems,
+            },
         ],
     },
     {
@@ -36,10 +34,10 @@ export default (countryItems) => ([
         options: [
             {
                 items: [
-                    { label: 'true', value: true },
-                    { label: 'false', value: false },
+                    {label: 'true', value: true},
+                    {label: 'false', value: false},
                 ],
-            }
+            },
         ],
     },
     {
@@ -58,11 +56,11 @@ export default (countryItems) => ([
         options: [
             {
                 items: [
-                    { label: 'Pending', value: 'Pending' },
-                    { label: 'Pending Manual', value: 'PendingManual' },
-                    { label: 'Matched Once', value: 'MatchedOnce' }
+                    {label: 'Pending', value: 'Pending'},
+                    {label: 'Pending Manual', value: 'PendingManual'},
+                    {label: 'Matched Once', value: 'MatchedOnce'},
                 ],
-            }
+            },
         ],
     },
     {
@@ -80,11 +78,18 @@ export default (countryItems) => ([
         options: [
             {
                 items: [
-                    { label: 'true', value: true },
-                    { label: 'false', value: false },
+                    {label: 'true', value: true},
+                    {label: 'false', value: false},
                 ],
-            }
+            },
         ],
+    },
+    {
+        id: 'dateWithdrawn',
+        label: 'Date Withdrawn',
+        name: 'dateWithdrawn',
+        type: 'date',
+        shouldFitContainer: true,
     },
     {
         id: 'comment',
@@ -93,4 +98,4 @@ export default (countryItems) => ([
         type: 'text',
         shouldFitContainer: true,
     },
-]);
+];
