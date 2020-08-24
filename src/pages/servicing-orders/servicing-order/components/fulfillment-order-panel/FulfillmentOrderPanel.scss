@@ -97,7 +97,7 @@
     }
 
     &__order-info {
-        margin-left: 12px;
+        @include addSpacing(margin-left, 3);
         display: flex;
         justify-content: space-between;
         align-items: center;
