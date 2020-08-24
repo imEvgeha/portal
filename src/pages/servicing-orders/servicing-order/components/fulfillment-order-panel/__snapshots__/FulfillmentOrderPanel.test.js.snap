@@ -13,7 +13,9 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
     >
       <span
         className="nexus-c-fulfillment-order-panel__servicer-label"
-      />
+      >
+        DETE
+      </span>
     </div>
     <div
       className="nexus-c-fulfillment-order-panel__order-info"
@@ -24,7 +26,9 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
         <span
           className="nexus-c-fulfillment-order-panel__title"
           title="VU000134567-001"
-        />
+        >
+          COVFEFE
+        </span>
       </div>
       <span
         className="nexus-c-fulfillment-order-panel__date"

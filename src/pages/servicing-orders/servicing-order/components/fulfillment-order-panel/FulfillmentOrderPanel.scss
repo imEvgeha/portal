@@ -80,16 +80,16 @@
     }
 
     &__servicer {
-        width: 44px;
-        height: 44px;
+        @include addSpacing(border-radius, 11);
+        @include addSpacing(height, 11);
+        @include addSpacing(width, 11);
         background-color: map-get($mid-neutral-colors, mid-neutral-6);
-        border-radius: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
 
         &-label {
-            font-size: 10px;
+            @include addSpacing(font-size, 2.5);
             font-weight: bold;
             color: map-get($primary-colors, white);
             text-align: center;

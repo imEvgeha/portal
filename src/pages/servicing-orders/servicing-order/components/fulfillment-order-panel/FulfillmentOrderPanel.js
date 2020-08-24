@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import File from '../../../../../assets/file.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import {SERVICERS} from '../../../constants';
 import './FulfillmentOrderPanel.scss';
