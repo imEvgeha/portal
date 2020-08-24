@@ -29,17 +29,17 @@ exports[`StatusCheck should match snapshot 1`] = `
             },
             Object {
               "content": "Right Status",
-              "key": 1,
+              "key": 3,
               "width": 15,
             },
             Object {
               "content": "Licensed",
-              "key": 2,
+              "key": 4,
               "width": 10,
             },
             Object {
               "content": "Unplanned Territories",
-              "key": 2,
+              "key": 5,
               "width": 25,
             },
           ],

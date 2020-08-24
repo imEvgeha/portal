@@ -609,8 +609,8 @@ class RightDetails extends React.Component {
             ref,
             content
         ) => {
-            const hasValidationError = !CUSTOM_ERROR_HANDLING_FIELDS.includes(name)
-                && (Array.isArray(error) ? error.length > 0 : error);
+            const hasValidationError =
+                !CUSTOM_ERROR_HANDLING_FIELDS.includes(name) && (Array.isArray(error) ? error.length > 0 : error);
             return (
                 <div
                     key={name}
@@ -942,6 +942,10 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            if (name === 'temporaryPriceReduction') {
+                readOnly = value || this.state.right.status !== 'Pending';
+            }
+
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -1039,9 +1043,6 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
-            if (name === 'temporaryPriceReduction') {
-                readOnly = value || this.state.right.status !== 'Pending';
-            }
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -1520,16 +1521,21 @@ class RightDetails extends React.Component {
             if (options.length) {
                 // If there are validation errors, pack them inside the territory object to be displayed in tooltip
                 territoriesWithError = territories.map(({errors, ...restProps}) => {
-                    const error = errors && errors.length ? errors.map(error => {
-                        const {severityType='', fieldName='', message=''} = error || {};
-                        return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                    }).join(' ; ') : '';
+                    const error =
+                        errors && errors.length
+                            ? errors
+                                  .map(error => {
+                                      const {severityType = '', fieldName = '', message = ''} = error || {};
+                                      return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                                  })
+                                  .join(' ; ')
+                            : '';
 
                     return {
                         ...restProps,
                         error,
-                    }
-                })
+                    };
+                });
             }
 
             return renderFieldTemplate(
@@ -1678,17 +1684,26 @@ class RightDetails extends React.Component {
             if (options.length) {
                 languagesWithLabel = languages.map(({language, audioType, errors}) => {
                     // If there are validation errors, pack them inside the language object to be displayed in tooltip
-                    const error = (errors && errors.length) ? errors.map(error => {
-                        const {severityType='', fieldName='', message=''} = error || {};
-                        return `${fieldName.split('.').pop()} ${message} (${severityType})`;
-                    }).join(' ; ') : '';
+                    const error =
+                        errors && errors.length
+                            ? errors
+                                  .map(error => {
+                                      const {severityType = '', fieldName = '', message = ''} = error || {};
+                                      return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                                  })
+                                  .join(' ; ')
+                            : '';
 
-                    return ({
+                    return {
                         language: language,
                         audioType: audioType,
-                        label: get(options.find(o => o.value === language), 'label', ''),
+                        label: get(
+                            options.find(o => o.value === language),
+                            'label',
+                            ''
+                        ),
                         error,
-                    })
+                    };
                 });
             }
 

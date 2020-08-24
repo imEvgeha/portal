@@ -70,6 +70,9 @@ const ServicingOrdersTable = ({
                     ...columnDef,
                     valueFormatter: valueFormatter(columnDef),
                     cellRenderer: 'tooltipCellRenderer',
+                    cellRendererParams: params => {
+                        return {soNumber: params.data.so_number};
+                    },
                 };
             }
 

@@ -13,3 +13,6 @@ export const CANCEL_BUTTON = 'Cancel';
 export const NEW_BUTTON = 'New';
 export const SAVE_BUTTON = 'Save';
 export const RIGHT_MATCHING_DOP_STORAGE = 'rightMatchingDOP';
+export const STATUS_FOR_MATCHING = ['Ready', 'ReadyNew'];
+export const SECTION_MESSAGE =
+    'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';

@@ -87,6 +87,13 @@ export default (countryItems) => ([
         ],
     },
     {
+        id: 'dateWithdrawn',
+        label: 'Date Withdrawn',
+        name: 'dateWithdrawn',
+        type: 'date',
+        shouldFitContainer: true,
+    },
+    {
         id: 'comment',
         label: 'Comment',
         name: 'comment',
