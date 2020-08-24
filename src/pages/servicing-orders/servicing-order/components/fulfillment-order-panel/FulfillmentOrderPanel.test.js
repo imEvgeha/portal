@@ -29,5 +29,9 @@ describe('FulfillmentOrderPanel', () => {
         fulfillmentOrderPanel.simulate('click');
         expect(handleFulfillmentOrderChange).toHaveBeenCalled();
     });
-});
 
+    it('should have a servicer indicator', () => {
+        const servicerElement = wrapper.find('.nexus-c-fulfillment-order-panel__servicer');
+        expect(servicerElement).toHaveLength(1);
+    });
+});

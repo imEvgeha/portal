@@ -9,22 +9,33 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
     className="nexus-c-fulfillment-order-panel__title-and-date"
   >
     <div
-      className="nexus-c-fulfillment-order-panel__title-container"
+      className="nexus-c-fulfillment-order-panel__servicer"
     >
-      <[object Object]
-        className="nexus-c-fulfillment-order-panel__file-icon"
-      />
       <span
-        className="nexus-c-fulfillment-order-panel__title"
-        title="VU000134567-001"
+        className="nexus-c-fulfillment-order-panel__servicer-label"
       />
     </div>
-    <span
-      className="nexus-c-fulfillment-order-panel__date"
+    <div
+      className="nexus-c-fulfillment-order-panel__order-info"
     >
-      Due Date: 
-      10/05/2021
-    </span>
+      <div
+        className="nexus-c-fulfillment-order-panel__title-container"
+      >
+        <[object Object]
+          className="nexus-c-fulfillment-order-panel__file-icon"
+        />
+        <span
+          className="nexus-c-fulfillment-order-panel__title"
+          title="VU000134567-001"
+        />
+      </div>
+      <span
+        className="nexus-c-fulfillment-order-panel__date"
+      >
+        Due Date: 
+        10/05/2021
+      </span>
+    </div>
   </div>
   <div
     className="nexus-c-fulfillment-order-panel__description-and-status"
