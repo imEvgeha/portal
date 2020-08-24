@@ -38,12 +38,12 @@ describe('BulkMatchingReview', () => {
     });
 
     it('should render bonus rights review', () => {
-        wrapper.setProps({isBonusRight: true});
+        wrapper.setProps({bonusRights: []});
         expect(wrapper.find('BonusRightsReview')).toHaveLength(1);
     });
 
     it('should not render bonus rights review', () => {
-        wrapper.setProps({isBonusRight: false});
+        wrapper.setProps({bonusRights: null});
         expect(wrapper.find('BonusRightsReview')).toHaveLength(0);
     });
 });

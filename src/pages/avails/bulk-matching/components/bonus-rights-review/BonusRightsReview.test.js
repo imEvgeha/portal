@@ -18,17 +18,7 @@ describe('BonusRightsReview', () => {
     });
 
     it('should render created tab at first', () => {
-        const firstActiveTab = wrapper
-            .find('Tab')
-            .at(0)
-            .shallow()
-            .find('.nexus-c-bonus-rights-review__tabs--tab.active-tab');
-        expect(firstActiveTab.text().includes('Created')).toBe(true);
-    });
-
-    it('should render existing tab', () => {
-        const secondTab = wrapper.find('Tab').at(1).shallow().find('.nexus-c-bonus-rights-review__tabs--tab');
-        secondTab.props().onClick();
-        expect(secondTab.hasClass('active-tab')).toBe(true);
+        const firstTab = wrapper.find('Tab').at(0).shallow().find('.nexus-c-bonus-rights-review__tabs--tab');
+        expect(firstTab.hasClass('active-tab')).toBe(true);
     });
 });
