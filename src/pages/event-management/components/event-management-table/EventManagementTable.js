@@ -24,23 +24,19 @@ const EventManagementGrid = compose(
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
-const EventManagementTable = ({onGridEvent, toggleRefreshGridData}) => {
+const EventManagementTable = ({onGridEvent, toggleRefreshGridData, ...props}) => {
     const updateColumnDefs = columnDefs => {
-        return columnDefs.map(columnDef => (
-            {
-                ...columnDef,
-                valueFormatter: createValueFormatter(columnDef),
-                cellRenderer: 'loadingCellRenderer',
-            }
-        ));
+        return columnDefs.map(columnDef => ({
+            ...columnDef,
+            valueFormatter: createValueFormatter(columnDef),
+            cellRenderer: 'loadingCellRenderer',
+        }));
     };
 
     return (
         <div className="nexus-c-event-management-table">
             <div className="nexus-c-event-management-table__refresh-button">
-                <Button onClick={() => toggleRefreshGridData(true)}>
-                    {REFRESH_BTN}
-                </Button>
+                <Button onClick={() => toggleRefreshGridData(true)}>{REFRESH_BTN}</Button>
             </div>
             <EventManagementGrid
                 className="nexus-c-event-management-grid"
@@ -49,6 +45,7 @@ const EventManagementTable = ({onGridEvent, toggleRefreshGridData}) => {
                 onGridEvent={onGridEvent}
                 mapping={columnDefs}
                 notFilterableColumns={NOT_FILTERABLE_FIELDS}
+                {...props}
             />
         </div>
     );
