@@ -11,6 +11,17 @@ export const prepareSelectForPlanningData = async (sort, offset, limit) => {
     const [projectsList, headers] = await DOPService.getUsersProjectsList(offset + 1, limit);
     const projectIds = [];
 
+    if (!projectsList) {
+        return new Promise(res => {
+            res({
+                page: 0,
+                size: 0,
+                total: 0,
+                data: [],
+            });
+        });
+    }
+
     // Extract project IDs for incomplete projects to display in SelectForPlanning table
     projectsList.forEach(({id, status}) => {
         if (!EXCLUDED_STATUSES.includes(status)) {
