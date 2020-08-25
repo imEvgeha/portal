@@ -425,6 +425,7 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
+                rowClassRules={{'nexus-c-rights-repository__row': params => params.data.status === "Merged"}}
             />
             <SelectedRightsRepositoryTable
                 id="selectedRightsRepo"
