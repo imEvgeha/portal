@@ -3,18 +3,36 @@ import PropTypes from 'prop-types';
 import {NexusTag} from '../../../../../ui/elements/';
 import {uid} from 'react-uid';
 import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents';
+import {TERRITORY_REMOVE_CONFIRMATION_MESSAGE, TERRITORY_REMOVE_CONFIRMATION_SUB_MESSAGE} from './constants';
 import './TerritoryField.scss';
 
-const TerritoryField = ({name, territory, onRemoveClick, onAddClick, onTagClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
+const REMOVE_TERRITORY_CONFIRMATION_CONTENT = (
+    <>
+        <div>{TERRITORY_REMOVE_CONFIRMATION_MESSAGE}</div>
+        <div>{TERRITORY_REMOVE_CONFIRMATION_SUB_MESSAGE}</div>
+    </>
+);
+
+const TerritoryField = ({
+    name,
+    territory,
+    onRemoveClick,
+    onAddClick,
+    onTagClick,
+    renderChildren,
+    mappingErrorMessage,
+    isTableMode = false,
+}) => {
     const getTerritories = () => {
         return territory.map((terr, i) => (
             <NexusTag
                 key={uid(terr)}
                 text={terr.country}
                 value={terr}
-                removeButtonText='Remove'
+                removeButtonText="Remove"
                 onRemove={() => onRemoveClick(terr)}
                 onClick={() => onTagClick(i)}
+                confirmationContent={REMOVE_TERRITORY_CONFIRMATION_CONTENT}
             />
         ));
     };
