@@ -2,186 +2,26 @@
 
 exports[`PartnerRequest should match snapshot 1`] = `
 <div
-  className="nexus-c-partner-request"
+  className="nexus-c-partner-request__json"
 >
-  <AkPage
-    bannerHeight={52}
-    isBannerOpen={false}
+  <div
+    className="nexus-c-partner-request__info-section"
   >
-    <WithTheme(AkGrid)
-      layout="fluid"
+    <h6>
+      Studio
+    </h6>
+    <p
+      className="nexus-c-partner-request__info-field"
     >
-      <WithTheme(AkGridColumn)>
-        <WithTheme(AkGrid)
-          layout="fluid"
-        >
-          <WithTheme(AkGridColumn)
-            medium={2}
-          >
-            <div
-              className="nexus-c-partner-request__info-section"
-            >
-              <h6>
-                Studio
-              </h6>
-              <p
-                className="nexus-c-partner-request__info-field"
-              >
-                N/A
-              </p>
-            </div>
-            <div
-              className="nexus-c-partner-request__info-section"
-            >
-              <h6>
-                MSS Order Details
-              </h6>
-              <p
-                className="nexus-c-partner-request__info-field"
-              >
-                345
-              </p>
-            </div>
-          </WithTheme(AkGridColumn)>
-          <WithTheme(AkGridColumn)>
-            <div
-              className="nexus-c-partner-request__info-section"
-            >
-              <h6>
-                Created Date
-              </h6>
-              <p
-                className="nexus-c-partner-request__info-field"
-              >
-                N/A
-              </p>
-            </div>
-            <div
-              className="nexus-c-partner-request__info-section"
-            >
-              <h6>
-                Created By
-              </h6>
-              <p
-                className="nexus-c-partner-request__info-field"
-              >
-                N/A
-              </p>
-            </div>
-          </WithTheme(AkGridColumn)>
-        </WithTheme(AkGrid)>
-      </WithTheme(AkGridColumn)>
-    </WithTheme(AkGrid)>
-    <div
-      className="nexus-c-partner-request__table-wrapper"
-    >
-      <NexusGrid
-        columnDefs={
-          Array [
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "productDesc",
-              "field": "productDesc",
-              "headerName": "Title",
-              "maxWidth": 150,
-              "minWidth": 100,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "version",
-              "field": "version",
-              "headerName": "Version",
-              "minWidth": 150,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "srdueDate",
-              "field": "srdueDate",
-              "headerName": "Due Date",
-              "minWidth": 150,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "materialNotes",
-              "field": "materialNotes",
-              "headerName": "Notes",
-              "maxWidth": 500,
-              "minWidth": 80,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "primaryVideo",
-              "field": "primaryVideo",
-              "headerName": "Primary Video",
-              "minWidth": 100,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "secondaryAudio",
-              "field": "secondaryAudio",
-              "headerName": "Secondary Audio",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "subtitlesFull",
-              "field": "subtitlesFull",
-              "headerName": "Subtitles Full",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "subtitlesForced",
-              "field": "subtitlesForced",
-              "headerName": "Subtitles Forced",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "trailer",
-              "field": "trailer",
-              "headerName": "Trailer",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "metaData",
-              "field": "metaData",
-              "headerName": "Metadata",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-            Object {
-              "cellRendererFramework": [Function],
-              "colId": "artWork",
-              "field": "artWork",
-              "headerName": "Artwork",
-              "minWidth": 150,
-              "suppressSizeToFit": true,
-            },
-          ]
-        }
-        defaultColDef={
-          Object {
-            "autoHeight": true,
-            "cellClass": "cell",
-            "resizable": true,
-            "suppressMovable": true,
-          }
-        }
-        frameworkComponents={Object {}}
-        isGridHidden={false}
-        onFirstDataRendered={[Function]}
-        onGridEvent={null}
-        rowData={Array []}
-        setRowData={null}
-      />
-    </div>
-  </AkPage>
+      N/A
+    </p>
+  </div>
+  <div>
+    <NexusJsonView
+      defaultHeight="calc(100vh - 142px"
+      defaultWidth="100%"
+      src=""
+    />
+  </div>
 </div>
 `;
