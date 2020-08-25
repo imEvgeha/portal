@@ -20,7 +20,7 @@ exports[`PartnerRequest should match snapshot 1`] = `
     <NexusJsonView
       defaultHeight="calc(100vh - 142px"
       defaultWidth="100%"
-      src=""
+      src={Object {}}
     />
   </div>
 </div>

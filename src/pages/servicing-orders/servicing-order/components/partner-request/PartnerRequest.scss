@@ -40,8 +40,6 @@
     }
 
     &__json {
-        @include addSpacing(margin-left, 4);
-        @include addSpacing(margin-right, 4);
-        @include addSpacing(margin-bottom, 4);
+        @include margin(0, 4, 4);
     }
 }
