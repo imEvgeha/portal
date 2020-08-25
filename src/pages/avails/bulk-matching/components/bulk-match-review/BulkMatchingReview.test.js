@@ -36,4 +36,14 @@ describe('BulkMatchingReview', () => {
     it('renders Done button', () => {
         expect(wrapper.find(Button)).toHaveLength(1);
     });
+
+    it('should render bonus rights review', () => {
+        wrapper.setProps({bonusRights: []});
+        expect(wrapper.find('BonusRightsReview')).toHaveLength(1);
+    });
+
+    it('should not render bonus rights review', () => {
+        wrapper.setProps({bonusRights: null});
+        expect(wrapper.find('BonusRightsReview')).toHaveLength(0);
+    });
 });

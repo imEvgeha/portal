@@ -112,12 +112,13 @@ Alternatively you may withdraw a right which can be re-instantiated later."
     isClosedOnBlur={false}
     isOpen={false}
     onClose={[Function]}
-    title="Title Matching"
+    title=""
     width="wider"
   >
     <Connect(Connect(ComposedComponent))
       closeDrawer={[Function]}
       data={Array []}
+      headerText=""
       isBonusRight={false}
       setHeaderText={[Function]}
     />

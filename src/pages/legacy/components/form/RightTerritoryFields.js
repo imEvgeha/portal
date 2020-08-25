@@ -12,7 +12,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
     const {dateSelected = '', selected = false, dateWithdrawn = ''} =
-        (typeof territoryIndex === 'number' && territoryIndex >= 0) ? existingTerritoryList[territoryIndex] : {};
+        typeof territoryIndex === 'number' && territoryIndex >= 0 ? existingTerritoryList[territoryIndex] : {};
     const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
@@ -62,9 +62,9 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
 
     const onChangeDateWithdrawn = (val, restOnChange) => {
         const today = new Date();
-        const updatedDate =  getValidDate(val) !== getValidDate(today) ?  '' :  val;
-        setShowErrorDateWithdrawn(updatedDate === '')
-        if(updatedDate === ''){
+        const updatedDate = getValidDate(val) !== getValidDate(today) ? '' : val;
+        setShowErrorDateWithdrawn(updatedDate === '');
+        if (updatedDate === '') {
             return false;
         } else {
             restOnChange(updatedDate);
@@ -115,14 +115,13 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
             </Field>
             <Field name="selected" defaultValue="False" label="SELECTED">
                 {() => (
-                        <Textfield
-                            name="readOnly"
-                            isReadOnly={true}
-                            defaultValue={selected.toString()}
-                            style={{height: '40px'}}
-                        />
-                    )
-                }
+                    <Textfield
+                        name="readOnly"
+                        isReadOnly={true}
+                        defaultValue={selected.toString()}
+                        style={{height: '40px'}}
+                    />
+                )}
             </Field>
             {isEdit && dateSelected && (
                 <Field name="date selected" defaultValue="" label="DATE SELECTED">

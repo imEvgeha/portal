@@ -35,8 +35,8 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
             dateWithdrawn: data.dateWithdrawn
                 ? momentToISO(moment(data.dateWithdrawn).utcOffset(0, true))
                 : isEdit
-                    ? existingTerritoryList[territoryIndex]['dateWithdrawn']
-                    : '',
+                ? existingTerritoryList[territoryIndex]['dateWithdrawn']
+                : '',
         };
         const updatedObject = {};
         for (const objectField in newObject) {

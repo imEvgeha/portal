@@ -23,12 +23,6 @@ const columnDefinitions = [
         headerName: 'Core Title Id',
     },
     {
-        colId: 'totalRuntime',
-        field: 'totalRuntime',
-        headerName: 'Runtime',
-        width: 120,
-    },
-    {
         colId: 'rightStatus',
         field: 'rightStatus',
         headerName: 'Right Status',

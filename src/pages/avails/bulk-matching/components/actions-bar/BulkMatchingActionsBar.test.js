@@ -27,4 +27,3 @@ describe('BulkMatchingActionsBar', () => {
         expect(wrapper.find(Button)).toHaveLength(3);
     });
 });
-

@@ -1,19 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
+import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
 import Button from '@atlaskit/button';
-import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
-import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
+import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import RightTerritoryFields from './RightTerritoryFields';
 import {getProperTerritoryFormValues} from './utils';
 
 // TODO: write this from scratch
 // component rerender 11 times
 class RightTerritoryForm extends React.Component {
-
     onSubmit = data => {
-        const properValues = getProperTerritoryFormValues(data, this.props.isEdit, this.props.existingTerritoryList, this.props.territoryIndex);
+        const properValues = getProperTerritoryFormValues(
+            data,
+            this.props.isEdit,
+            this.props.existingTerritoryList,
+            this.props.territoryIndex
+        );
         if (properValues) {
             this.props.onSubmit(properValues);
             this.props.onClose();
@@ -28,9 +32,9 @@ class RightTerritoryForm extends React.Component {
                         width="medium"
                         onClose={this.props.onClose}
                         components={{
-                            Container: ({ children, className }) => (
+                            Container: ({children, className}) => (
                                 <Form onSubmit={data => this.onSubmit(data)}>
-                                    {({ formProps }) => (
+                                    {({formProps}) => (
                                         <ModalBody>
                                             <form {...formProps} className={className}>
                                                 {children}
@@ -38,10 +42,15 @@ class RightTerritoryForm extends React.Component {
                                         </ModalBody>
                                     )}
                                 </Form>
-                            )
+                            ),
                         }}
                     >
-                        <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Territory Data</ModalHeader>
+                        <ModalHeader>
+                            <p style={{color: '#999', fontWeight: 'bold', fontSize: '11px'}}>
+                                {this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}
+                            </p>
+                            Territory Data
+                        </ModalHeader>
                         <RightTerritoryFields
                             options={this.props.options}
                             isEdit={this.props.isEdit}
@@ -71,7 +80,7 @@ RightTerritoryForm.propTypes = {
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
     isFromCreatePage: PropTypes.bool,
-    existingTerritoryList: PropTypes.array
+    existingTerritoryList: PropTypes.array,
 };
 
 RightTerritoryForm.defaultProps = {

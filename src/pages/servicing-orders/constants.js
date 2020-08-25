@@ -9,7 +9,8 @@ export const readinessStatus = {
     NEW: 'NEW',
 };
 
-export const EXPORT_WARNING_MESSAGE = 'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
+export const EXPORT_WARNING_MESSAGE =
+    'One or more of the selected orders has a readiness status of ON HOLD and was previously exported.';
 
 export const REPORT = {
     NOT_STARTED: {label: 'Not Started', value: 'Not Started'},

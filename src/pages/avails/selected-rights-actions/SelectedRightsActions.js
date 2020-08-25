@@ -32,7 +32,7 @@ import {
     CREATE_BONUS_RIGHT_TOOLTIP,
     CREATE_BONUS_RIGHT,
     HEADER_TITLE_BONUS_RIGHT,
-    HEADER_TITLE,
+    HEADER_TITLE_TITLE_MATCHING,
     ADD_TO_PREPLAN,
     PREPLAN_TOOLTIP,
     STATUS_CHECK_HEADER,
@@ -62,7 +62,7 @@ export const SelectedRightsActions = ({
     const [isDeletable, setIsDeletable] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
-    const [headerText, setHeaderText] = useState(HEADER_TITLE);
+    const [headerText, setHeaderText] = useState('');
     const node = useRef();
 
     const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
@@ -90,11 +90,12 @@ export const SelectedRightsActions = ({
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
         return selectedRights.every(
-            ({coreTitleId, sourceRightId, licensed, status}) =>
+            ({coreTitleId, sourceRightId, licensed, status, updatedCatalogReceived}) =>
                 licensed &&
                 !!coreTitleId &&
                 coreTitleId === get(selectedRights, '[0].coreTitleId', '') &&
                 !sourceRightId &&
+                !updatedCatalogReceived &&
                 ['ReadyNew', 'Ready'].includes(status)
         );
     };
@@ -158,6 +159,7 @@ export const SelectedRightsActions = ({
 
     const openDrawer = () => {
         setDrawerOpen(true);
+        setHeaderText(HEADER_TITLE_TITLE_MATCHING);
     };
 
     const closeDrawer = () => {
@@ -341,6 +343,7 @@ export const SelectedRightsActions = ({
                     closeDrawer={closeDrawer}
                     isBonusRight={isBonusRight}
                     setHeaderText={setHeaderText}
+                    headerText={headerText}
                 />
             </NexusDrawer>
         </>

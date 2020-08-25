@@ -2,8 +2,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
-import Spinner from '@atlaskit/spinner';
-import classNames from 'classnames';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
@@ -13,67 +12,69 @@ import {
     SUCCESS_ICON,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import {
-    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
-} from '../../../ui/toast/constants';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '../../../ui/toast/constants';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
-import {getAffectedRights, getRestrictedTitles, setCoreTitleId, getExistingBonusRights} from '../availsService';
-import MatchedCombinedTitlesTable from '../matched-combined-titles-table/MatchedCombinedTitlesTable';
-import RightsMatchingTitlesTable from '../rights-matching-titles-table/RightsMatchingTitlesTable';
+import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
 import NewTitleConstants from '../title-matching/components/create-title-form/CreateTitleFormConstants';
-import BulkMatchingActionsBar from './components/BulkMatchingActionsBar';
-import BulkMatchingReview from './components/BulkMatchingReview';
+import {
+    getAffectedRights,
+    getRestrictedTitles,
+    setCoreTitleId,
+    getExistingBonusRights,
+    createBonusRights,
+} from './bulkMatchingService';
+import BonusRightsReview from './components/bonus-rights-review/BonusRightsReview';
+import BulkMatchingReview from './components/bulk-match-review/BulkMatchingReview';
+import HeaderSection from './components/header-section/HeaderSection';
+import TitlesSection from './components/titles-section/TitlesSection';
 import {
     TITLE_MATCHING_MSG,
     TITLE_MATCHING_REVIEW_HEADER,
     RIGHT_TABS,
     EXISTING_CORE_TITLE_ID_WARNING,
+    BONUS_RIGHTS_REVIEW_HEADER,
+    TITLE_BULK_MATCH_SUCCESS_MESSAGE,
+    TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE,
 } from './constants';
 import './BulkMatching.scss';
 
-export const BulkMatching = (
-    {
-        data,
-        closeDrawer,
-        addToast,
-        removeToast,
-        toggleRefreshGridData,
-        isBonusRight,
-        setHeaderText,
-    }
-) => {
+export const BulkMatching = ({
+    data,
+    closeDrawer,
+    addToast,
+    removeToast,
+    toggleRefreshGridData,
+    isBonusRight,
+    setHeaderText,
+    headerText,
+}) => {
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
-    const [bonusRightsTableData, setBonusRightsTableData] = useState([]);
-    const [contentType, setContentType] = useState(null);
+    const [existingBonusRights, setExistingBonusRights] = useState([]);
     const [restrictedCoreTitleIds, setRestrictedCoreTitleIds] = useState([]);
     const [loadTitlesTable, setLoadTitlesTable] = useState(false);
     const [activeTab, setActiveTab] = useState(RIGHT_TABS.SELECTED);
-    const [titlesTableIsReady, setTitlesTableIsReady] = useState(false);
-    const [totalCount, setTotalCount] = useState(0);
     const [isMatchLoading, setMatchIsLoading] = useState(false);
     const [isMatchAndCreateLoading, setMatchAndCreateIsLoading] = useState(false);
     const [combinedTitle, setCombinedTitle] = useState([]);
     const [matchedTitles, setMatchedTitles] = useState([]);
-    const [selectedActive, setSelectedActive] = useState(false);
+    const [bonusRights, setBonusRights] = useState([]);
 
-    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+    const selectionList = useMatchAndDuplicateList();
+    const {matchList, duplicateList} = selectionList;
     const {setModalContentAndTitle, close} = useContext(NexusModalContext);
     const {NEXUS} = TitleSystems;
 
-    const changeActiveTab = tab => (tab !== activeTab) && setActiveTab(tab);
+    const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
 
     useEffect(() => {
         if (data.length) {
             setSelectedTableData(data);
-            const {contentType} = data[0] || {};
-            setContentType(contentType);
         }
     }, [data]);
 
@@ -81,12 +82,10 @@ export const BulkMatching = (
         if (selectedTableData.length) {
             const rightIds = selectedTableData.map(right => right.id);
             if (isBonusRight) {
-                getExistingBonusRights(rightIds).then(res => {
-                    if (Array.isArray(res) && res.length) {
-                        setBonusRightsTableData(res);
-                        setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
-                        setLoadTitlesTable(true);
-                    }
+                getExistingBonusRights(rightIds).then(({data}) => {
+                    setExistingBonusRights(data);
+                    setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
+                    setLoadTitlesTable(true);
                 });
             } else {
                 getAffectedRights(rightIds).then(res => {
@@ -96,7 +95,7 @@ export const BulkMatching = (
                 });
             }
         }
-    }, [selectedTableData, isBonusRight]);
+    }, [selectedTableData.length, isBonusRight]);
 
     useEffect(() => {
         if (affectedTableData.length) {
@@ -112,34 +111,43 @@ export const BulkMatching = (
 
     const onMatch = () => {
         setMatchIsLoading(true);
-        const coreTitleId = matchList[NEXUS].id;
-        if (isBonusRight) {
-            // call create bonus rights api here
-        } else {
-            bulkTitleMatch(coreTitleId);
-        }
+        bulkTitleMatch(matchList[NEXUS].id);
     };
 
     const bulkTitleMatch = (coreTitleId, isNewTitle = false) => {
-        setCoreTitleId({
-            rightIds: affectedTableData.map(right => right.id),
-            coreTitleId,
-        })
-            .then(() => {
-                //  handle matched titles (ignore updated affected rights from response)
-                const matchedTitlesList = Object.values(matchList);
-                setMatchedTitles(matchedTitlesList);
-                setLoadTitlesTable(false);
-                if (isNewTitle || matchList[NEXUS]) {
-                    dispatchSuccessToast();
-                    toggleRefreshGridData(true);
-                    return closeDrawer();
-                }
-                disableLoadingState();
-                setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+        const action = isBonusRight ? createBonusRights : setCoreTitleId;
+        const rights = isBonusRight ? selectedTableData : affectedTableData;
+        getExistingBonusRights(
+            selectedTableData.map(right => right.id),
+            coreTitleId
+        )
+            .then(res => {
+                setExistingBonusRights(res.data);
+                action({
+                    rightIds: rights.map(right => right.id),
+                    coreTitleId,
+                })
+                    .then(response => {
+                        setLoadTitlesTable(false);
+                        disableLoadingState();
+                        dispatchSuccessToast(response.length);
+                        setBonusRights(response);
+                        if (isNewTitle || matchList[NEXUS]) {
+                            setHeaderText(BONUS_RIGHTS_REVIEW_HEADER);
+                            toggleRefreshGridData(true);
+                            return !isBonusRight && closeDrawer();
+                        }
+                        //  handle matched titles (ignore updated affected rights from response)
+                        const matchedTitlesList = Object.values(matchList);
+                        setMatchedTitles(matchedTitlesList);
+                        setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
+                    })
+                    .catch(() => {
+                        // nexusFetch handles error toast
+                        disableLoadingState();
+                    });
             })
             .catch(() => {
-                // nexusFetch handles error toast
                 disableLoadingState();
             });
     };
@@ -148,10 +156,11 @@ export const BulkMatching = (
         const extractTitleIds = Object.values(matchList).reduce((acc, curr) => {
             return [...acc, curr.id];
         }, []);
-        titleService.bulkMergeTitles({
-            idsToMerge: extractTitleIds,
-            idsToHide: Object.values(duplicateList).map(title => title.id),
-        })
+        titleService
+            .bulkMergeTitles({
+                idsToMerge: extractTitleIds,
+                idsToHide: Object.values(duplicateList).map(title => title.id),
+            })
             .then(res => {
                 setCombinedTitle([...combinedTitle, res]);
                 const {id} = res || {};
@@ -177,14 +186,12 @@ export const BulkMatching = (
         setMatchAndCreateIsLoading(false);
     };
 
-    const getMatchAndDuplicateItems = () => {
-        return [...Object.values(matchList), ...Object.values(duplicateList)];
-    };
-
-    const dispatchSuccessToast = () => {
+    const dispatchSuccessToast = count => {
         addToast({
             title: SUCCESS_TITLE,
-            description: TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
+            description: isBonusRight
+                ? TITLE_BONUS_RIGHTS_SUCCESS_MESSAGE(count, selectedTableData.length - count)
+                : TITLE_BULK_MATCH_SUCCESS_MESSAGE(affectedTableData.length),
             icon: SUCCESS_ICON,
             isAutoDismiss: true,
             isWithOverlay: false,
@@ -197,29 +204,28 @@ export const BulkMatching = (
             description: TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
             icon: WARNING_ICON,
             actions: [
-                {content: 'Cancel',
+                {
+                    content: 'Cancel',
                     onClick: () => {
                         removeToast();
                         disableLoadingState();
-                    }},
-                {content: 'Ok',
+                    },
+                },
+                {
+                    content: 'Ok',
                     onClick: () => {
                         removeToast();
                         mergeTitles(matchList);
-                    }},
+                    },
+                },
             ],
             isWithOverlay: true,
         });
     };
 
     const onMatchAndCreateDone = () => {
-        dispatchSuccessToast();
         toggleRefreshGridData(true);
         closeDrawer();
-    };
-
-    const isSummaryReady = () => {
-        return !loadTitlesTable && (combinedTitle.length || matchedTitles.length);
     };
 
     const showModal = () => {
@@ -228,7 +234,7 @@ export const BulkMatching = (
                 <CreateTitleForm
                     close={close}
                     bulkTitleMatch={bulkTitleMatch}
-                    focusedRight={{contentType}}
+                    focusedRight={get(selectedTableData, '[0].contentType', '')}
                 />
             ),
             NewTitleConstants.NEW_TITLE_MODAL_TITLE
@@ -240,148 +246,74 @@ export const BulkMatching = (
             case RIGHT_TABS.AFFECTED:
                 return affectedTableData;
             case RIGHT_TABS.BONUS_RIGHTS:
-                return bonusRightsTableData;
+                return existingBonusRights;
             default:
                 return selectedTableData;
         }
     };
 
     const hasExistingCoreTitleIds = affectedTableData.some(({coreTitleId}) => coreTitleId);
-
+    const isDisabled = isMatchAndCreateLoading || isMatchLoading;
     return (
         <div className="nexus-c-bulk-matching">
-            <div className="nexus-c-bulk-matching__header">
-                <div
-                    className={classNames(
-                        'nexus-c-bulk-matching__rights-tab',
-                        (activeTab === RIGHT_TABS.SELECTED) && 'nexus-c-bulk-matching__rights-tab--active'
-                    )}
-                    onClick={() => changeActiveTab(RIGHT_TABS.SELECTED)}
-                >
-                    {RIGHT_TABS.SELECTED} ({selectedTableData.length})
-                </div>
-                {
-                    isBonusRight ? (
-                        <div
-                            className={classNames(
-                                'nexus-c-bulk-matching__rights-tab',
-                                (activeTab === RIGHT_TABS.BONUS_RIGHTS) && 'nexus-c-bulk-matching__rights-tab--active'
-                            )}
-                            onClick={() => changeActiveTab(RIGHT_TABS.BONUS_RIGHTS)}
-                        >
-                            {RIGHT_TABS.BONUS_RIGHTS} ({bonusRightsTableData.length})
-                        </div>
-                    ) : (
-                        <div
-                            className={classNames(
-                                'nexus-c-bulk-matching__rights-tab',
-                                (activeTab === RIGHT_TABS.AFFECTED) && 'nexus-c-bulk-matching__rights-tab--active'
-                            )}
-                            onClick={() => changeActiveTab(RIGHT_TABS.AFFECTED)}
-                        >
-                            {RIGHT_TABS.AFFECTED} ({affectedTableData.length})
-                        </div>
-                    )
-                }
-                {!isSummaryReady() && (
-                    <Button
-                        className="nexus-c-bulk-matching__btn"
-                        onClick={showModal}
-                        isDisabled={isMatchAndCreateLoading || isMatchLoading}
-                    >
-                        New Title
-                    </Button>
-                )}
-            </div>
-            <TitleMatchingRightsTable data={getRightsTableData()} />
-            {!isSummaryReady() && (
-                <SectionMessage>
-                    {TITLE_MATCHING_MSG}
-                    <Button
-                        spacing="none"
-                        appearance="link"
-                        onClick={showModal}
-                        isDisabled={isMatchAndCreateLoading || isMatchLoading}
-                    >
-                        New Title
-                    </Button>
-                    {
-                        hasExistingCoreTitleIds && (
-                            <div className="nexus-c-bulk-matching__warning">
-                                {EXISTING_CORE_TITLE_ID_WARNING}
-                            </div>
-                        )
-                    }
-                </SectionMessage>
-            )}
-            {loadTitlesTable && (
-                <div
-                    className={classNames(
-                        'nexus-c-bulk-matching__titles-wrapper',
-                        titlesTableIsReady && 'nexus-c-bulk-matching__titles-wrapper--is-active'
-                    )}
-                >
-                    <div className="nexus-c-bulk-matching__titles-table-header">
-                        <div className="nexus-c-bulk-matching__titles-table-header-title">
-                            Titles ({totalCount})
-                        </div>
+            {(headerText === HEADER_TITLE_TITLE_MATCHING || headerText === HEADER_TITLE_BONUS_RIGHT) && (
+                <div>
+                    <HeaderSection
+                        activeTab={activeTab}
+                        affectedRights={affectedTableData.length}
+                        changeActiveTab={changeActiveTab}
+                        existingBonusRights={existingBonusRights.length}
+                        isBonusRight={isBonusRight}
+                        isNewTitleDisabled={isDisabled}
+                        selectedRights={selectedTableData.length}
+                        showModal={showModal}
+                    />
+                    <TitleMatchingRightsTable data={getRightsTableData()} />
+                    <SectionMessage>
+                        {TITLE_MATCHING_MSG}
                         <Button
-                            className="nexus-c-bulk-matching__titles-table-selected-btn"
-                            onClick={() => setSelectedActive(!selectedActive)}
-                            isSelected={selectedActive}
+                            spacing="none"
+                            appearance="link"
+                            onClick={showModal}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}
                         >
-                            Selected ({getMatchAndDuplicateItems().length})
+                            New Title
                         </Button>
-                    </div>
-                    <div
-                        className={classNames(
-                            'nexus-c-bulk-matching__titles-table',
-                            !selectedActive && 'nexus-c-bulk-matching__titles-table--active'
+                        {hasExistingCoreTitleIds && (
+                            <div className="nexus-c-bulk-matching__warning">{EXISTING_CORE_TITLE_ID_WARNING}</div>
                         )}
-                    >
-                        <RightsMatchingTitlesTable
-                            restrictedCoreTitleIds={restrictedCoreTitleIds}
-                            setTotalCount={setTotalCount}
-                            contentType={contentType}
-                            matchList={matchList}
-                            handleMatchClick={handleMatchClick}
-                            handleDuplicateClick={handleDuplicateClick}
-                            duplicateList={duplicateList}
-                            setTitlesTableIsReady={setTitlesTableIsReady}
-                            isDisabled={isMatchAndCreateLoading || isMatchLoading}
-                        />
-                    </div>
-                    <div
-                        className={classNames(
-                            'nexus-c-bulk-matching__selected-table',
-                            selectedActive && 'nexus-c-bulk-matching__selected-table--active'
-                        )}
-                    >
-                        <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
-                    </div>
-                    <BulkMatchingActionsBar
-                        matchList={matchList}
-                        onMatch={onMatch}
+                    </SectionMessage>
+                    <TitlesSection
                         onMatchAndCreate={onMatchAndCreate}
-                        onCancel={closeDrawer}
-                        isMatchLoading={isMatchLoading}
                         isMatchAndCreateLoading={isMatchAndCreateLoading}
+                        isMatchLoading={isMatchLoading}
+                        contentType={get(selectedTableData, '[0].contentType', '')}
+                        restrictedCoreTitleIds={restrictedCoreTitleIds}
+                        isTitlesTableLoading={!loadTitlesTable}
+                        closeDrawer={closeDrawer}
+                        onMatch={onMatch}
+                        selectionList={selectionList}
                     />
                 </div>
             )}
-            {!loadTitlesTable && !isSummaryReady() && (
-                <div className="nexus-c-bulk-matching__spinner">
-                    <Spinner size="large" />
-                </div>
+            {headerText === TITLE_MATCHING_REVIEW_HEADER && (
+                <>
+                    <BulkMatchingReview
+                        combinedTitle={combinedTitle}
+                        matchedTitles={matchedTitles}
+                        onDone={onMatchAndCreateDone}
+                        bonusRights={isBonusRight ? bonusRights : null}
+                        existingBonusRights={existingBonusRights}
+                    />
+                </>
             )}
-            {isSummaryReady() ? (
-                <BulkMatchingReview
-                    combinedTitle={combinedTitle}
-                    matchedTitles={matchedTitles}
-                    onDone={onMatchAndCreateDone}
+            {headerText === BONUS_RIGHTS_REVIEW_HEADER && (
+                <BonusRightsReview
+                    closeDrawer={closeDrawer}
+                    bonusRights={bonusRights}
+                    existingBonusRights={existingBonusRights}
                 />
-            ) : null}
+            )}
         </div>
     );
 };
@@ -394,6 +326,7 @@ BulkMatching.propTypes = {
     toggleRefreshGridData: PropTypes.func,
     setHeaderText: PropTypes.func,
     isBonusRight: PropTypes.bool,
+    headerText: PropTypes.string,
 };
 
 BulkMatching.defaultProps = {
@@ -403,6 +336,7 @@ BulkMatching.defaultProps = {
     toggleRefreshGridData: () => null,
     setHeaderText: () => null,
     isBonusRight: false,
+    headerText: '',
 };
 
 const mapDispatchToProps = dispatch => ({

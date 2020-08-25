@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitlesSection should match snapshot 1`] = `
+<Fragment>
+  <div
+    className="nexus-c-bulk-matching__titles-wrapper"
+  >
+    <div
+      className="nexus-c-bulk-matching__titles-table-header"
+    >
+      <div
+        className="nexus-c-bulk-matching__titles-table-header-title"
+      >
+        Titles (
+        0
+        )
+      </div>
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-bulk-matching__titles-table-selected-btn"
+        isDisabled={false}
+        isSelected={false}
+        onClick={[Function]}
+      >
+        Selected (
+        0
+        )
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </div>
+    <div
+      className="nexus-c-bulk-matching__titles-table nexus-c-bulk-matching__titles-table--active"
+    >
+      <RightsMatchingTitlesTable
+        contentType=""
+        duplicateList={Array []}
+        handleDuplicateClick={[Function]}
+        handleMatchClick={[Function]}
+        isDisabled={false}
+        matchList={Array []}
+        restrictedCoreTitleIds={Array []}
+        setTitlesTableIsReady={[Function]}
+        setTotalCount={[Function]}
+      />
+    </div>
+    <div
+      className="nexus-c-bulk-matching__selected-table"
+    >
+      <MatchedCombinedTitlesTable
+        data={Array []}
+        isFullHeight={false}
+      />
+    </div>
+    <BulkMatchingActionsBar
+      isMatchAndCreateLoading={false}
+      isMatchLoading={false}
+      matchList={Array []}
+      onCancel={[Function]}
+      onMatch={[Function]}
+      onMatchAndCreate={[Function]}
+    />
+  </div>
+</Fragment>
+`;
