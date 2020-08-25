@@ -631,7 +631,7 @@ class RightDetails extends React.Component {
                             {required ? <span className="text-danger">*</span> : ''}:
                             {highlighted ? (
                                 <span
-                                    title="* fields in bold are original values provided by the studios"
+                                    title="Fields in bold are original values provided by the studios"
                                     style={{color: 'grey'}}
                                 >
                                     &nbsp;&nbsp;
