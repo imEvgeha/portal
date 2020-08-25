@@ -106,19 +106,23 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
                 </Page>
             </div>
         );
-    } 
-        return (
-            <div className="nexus-c-partner-request__json">
-                <div className="nexus-c-partner-request__info-section">
-                    <h6>{STUDIO}</h6>
-                    <p className="nexus-c-partner-request__info-field">{data.tenant || 'N/A'}</p>
-                </div>
-                <div>
-                    <NexusJsonView defaultHeight="calc(100vh - 142px" src={data.tenant ? data : ''} />
-                </div>
+    }
+
+    if (!data.tenant) {
+        return null;
+    }
+
+    return (
+        <div className="nexus-c-partner-request__json">
+            <div className="nexus-c-partner-request__info-section">
+                <h6>{STUDIO}</h6>
+                <p className="nexus-c-partner-request__info-field">{data.tenant || 'N/A'}</p>
             </div>
-        );
-    
+            <div>
+                <NexusJsonView defaultHeight="calc(100vh - 142px" src={data.tenant ? data : ''} />
+            </div>
+        </div>
+    );
 };
 
 PartnerRequest.propTypes = {
