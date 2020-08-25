@@ -294,12 +294,14 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                     licensed: true,
                     status: 'ReadyNew',
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
@@ -312,12 +314,14 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '1',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -330,12 +334,14 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                     status: 'ReadyNew',
                     licensed: true,
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '1',
                     sourceRightId: '',
                     status: 'Pending',
                     licensed: true,
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -348,12 +354,14 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -366,12 +374,14 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -384,12 +394,34 @@ describe('SelectedRightsActions', () => {
                     sourceRightId: '',
                     licensed: false,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
                     licensed: true,
                     status: 'Ready',
+                    updatedCatalogReceived: false,
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when updatedCatalogReceived is true', () => {
+            init([
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: false,
+                    status: 'Ready',
+                    updatedCatalogReceived: true,
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                    updatedCatalogReceived: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
