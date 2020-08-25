@@ -77,7 +77,7 @@ export const PrePlanActions = ({
                             : previousRight['keywords'].split(',');
                         const keywords = uniq(prevKeywords.concat(right['keywords']));
                         return {
-                            ...right,
+                            id: right.id,
                             keywords,
                             territory: right['territory'].map(territory => {
                                 const selected = previousRight['territory'].find(
@@ -94,7 +94,7 @@ export const PrePlanActions = ({
                                 const projectId = res.id;
                                 Promise.all(
                                     mergedWithSelectedRights.map(right => {
-                                        return rightsService.updateRightWithFullData(right, right.id, true, true);
+                                        return rightsService.update(right, right.id);
                                     })
                                 )
                                     .then(() => {

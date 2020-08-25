@@ -192,7 +192,7 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab]);
+    }, [activeTab, prePlanRights.length]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
