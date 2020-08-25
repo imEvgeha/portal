@@ -395,6 +395,7 @@ class RightDetails extends React.Component {
             ingestHistoryAttachmentId,
             ingestHistoryAttachmentIds,
             [name]: value,
+            ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
         };
 
         store.dispatch(blockUI(true));
@@ -1791,10 +1792,8 @@ class RightDetails extends React.Component {
                     },
                 }));
             };
-
             const valError = validate(value);
             const error = priorityError || valError;
-
             const props = {
                 id: displayName,
                 label: displayName,
@@ -1812,10 +1811,11 @@ class RightDetails extends React.Component {
                 value: editedRight[name] !== undefined ? editedRight[name] : value,
                 error,
                 isRequired: required,
-                isReadOnly: !!sourceRightId || isReadOnly,
+                isReadOnly: name === 'updatedCatalogReceivedAt' ? false : !!sourceRightId || isReadOnly,
                 isTimestamp,
                 isWithInlineEdit: true,
                 isClearable: !required,
+                isClearableOnly: name === 'updatedCatalogReceivedAt',
             };
 
             const component = showTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;
@@ -2097,7 +2097,8 @@ class RightDetails extends React.Component {
                                         error,
                                         readOnly,
                                         required,
-                                        highlighted
+                                        highlighted,
+                                        mapping.javaVariableName === 'updatedCatalogReceived'
                                     )
                                 );
                                 break;

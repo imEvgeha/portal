@@ -29,12 +29,12 @@ const NexusDateTimePicker = ({
     value,
     label,
     isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
+    isClearableOnly,
     ...restProps
 }) => {
     const [isSimulcast, setIsSimulcast] = useState(false);
     const [date, setDate] = useState(value);
     const [firstRun, setFirstRun] = useState(true);
-
     // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
     useEffect(() => {
         typeof value === 'string' && setIsSimulcast(isUtc(value));
@@ -85,6 +85,7 @@ const NexusDateTimePicker = ({
                                 isSimulcast={isSimulcast}
                                 isTimestamp={isTimestamp}
                                 defaultValue={isSimulcast ? value : moment(value).local().format(dateFormat)}
+                                isClearableOnly={isClearableOnly}
                                 {...restProps}
                             />
                         </div>
@@ -153,6 +154,7 @@ NexusDateTimePicker.propTypes = {
     value: PropTypes.string,
     isWithInlineEdit: PropTypes.bool,
     isReadOnly: PropTypes.bool,
+    isClearableOnly: PropTypes.bool,
     isViewModeDisabled: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     isLabelHidden: PropTypes.bool,
@@ -166,6 +168,7 @@ NexusDateTimePicker.defaultProps = {
     value: '',
     isWithInlineEdit: false,
     isReadOnly: false,
+    isClearableOnly: false,
     isViewModeDisabled: false,
     isTimestamp: false,
     isLabelHidden: false,

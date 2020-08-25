@@ -43,6 +43,22 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         .join(', ');
                 }
             };
+        case 'boolean':
+            return ({value}) => {
+                if (javaVariableName === 'updatedCatalogReceived') {
+                    switch (value) {
+                        case true:
+                        case 'true':
+                            return 'Yes';
+                        case false:
+                        case 'false':
+                            return 'No';
+                        default:
+                            return value;
+                    }
+                }
+                return value;
+            };
         case 'territoryType':
         case 'audioLanguageType':
             return params => {

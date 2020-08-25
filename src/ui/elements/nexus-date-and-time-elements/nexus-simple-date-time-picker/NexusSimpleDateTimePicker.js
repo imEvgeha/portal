@@ -7,13 +7,7 @@ import {useIntl} from 'react-intl';
 import styled from 'styled-components';
 import {getDateFormatBasedOnLocale} from '../../../../util/date-time/DateTimeUtils';
 import ClearButton from '../clear-button/ClearButton';
-import {
-    TIME_PLACEHOLDER,
-    ATLASKIT_DATE_FORMAT,
-    SIMULCAST_DATE_FORMAT,
-    RELATIVE_DATE_FORMAT,
-    TIMES,
-} from '../constants';
+import {TIME_PLACEHOLDER, ATLASKIT_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT, TIMES} from '../constants';
 
 const MIN_DATE_LENGTH = 10;
 
@@ -27,6 +21,7 @@ const NexusSimpleDateTimePicker = ({
     isSimulcast,
     isTimestamp,
     isClearable,
+    isClearableOnly,
     ...restProps
 }) => {
     const [date, setDate] = useState(value);
@@ -34,10 +29,8 @@ const NexusSimpleDateTimePicker = ({
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
-
     useEffect(() => setStrippedDate(date), [isSimulcast]);
     useEffect(() => setStrippedDate(value), [value]);
-
     const setStrippedDate = value => {
         if (!value) {
             setDate('');
@@ -93,6 +86,7 @@ const NexusSimpleDateTimePicker = ({
                         locale={locale}
                         id={id}
                         defaultValue={defaultValue}
+                        isDisabled={isClearableOnly}
                         value={date}
                         onChange={onDateChange}
                         datePickerProps={{
@@ -119,14 +113,17 @@ const NexusSimpleDateTimePicker = ({
                         times={TIMES}
                         {...restProps}
                     />
-                    {isClearable && <ClearButton onClear={() => { setDate(''); onDateChange(''); }} />}
+                    {isClearable && (
+                        <ClearButton
+                            onClear={() => {
+                                setDate('');
+                                onDateChange('');
+                            }}
+                        />
+                    )}
                 </div>
             </TemporaryErrorBorder>
-            {error && (
-                <ErrorMessage>
-                    {error}
-                </ErrorMessage>
-            )}
+            {error && <ErrorMessage>{error}</ErrorMessage>}
         </>
     );
 };
@@ -139,6 +136,7 @@ NexusSimpleDateTimePicker.propTypes = {
     isSimulcast: PropTypes.bool,
     isTimestamp: PropTypes.bool,
     isClearable: PropTypes.bool,
+    isClearableOnly: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
 };
@@ -151,6 +149,7 @@ NexusSimpleDateTimePicker.defaultProps = {
     isSimulcast: true,
     isTimestamp: false,
     isClearable: false,
+    isClearableOnly: false,
 };
 
 export default NexusSimpleDateTimePicker;
