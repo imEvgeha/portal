@@ -16,6 +16,7 @@ const PreplanRightsTable = ({
     mapping,
     prePlanRepoRights,
     activeTab,
+    username,
     setPreplanRights,
     setSelectedPrePlanRights,
 }) => {
@@ -52,7 +53,7 @@ const PreplanRightsTable = ({
                     const {territory} = data || {};
                     territory ? result.push({...data, territory}) : result.push(data);
                 });
-                setPreplanRights(result);
+                setPreplanRights({[username]: result});
                 break;
             case GRID_EVENTS.SELECTION_CHANGED:
                 setSelectedPrePlanRights(api.getSelectedRows());
@@ -84,6 +85,7 @@ PreplanRightsTable.propTypes = {
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
 };
 
