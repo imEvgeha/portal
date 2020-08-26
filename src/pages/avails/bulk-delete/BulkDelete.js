@@ -18,6 +18,8 @@ import './BulkDelete.scss';
 
 export const BulkDelete = ({rights, onClose}) => {
     const [dependentRights, setDependentRights] = useState([]);
+    const [tableData, setTableData] = useState([]);
+
     useEffect(() => {
         const rightIds = rights.map(right => right.id);
         const fetchData = async () => {
@@ -34,85 +36,103 @@ export const BulkDelete = ({rights, onClose}) => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (dependentRights.length) {
+            setTableData(prepareTableData(dependentRights));
+        }
+    }, [dependentRights]);
+
     const renderLinkableRightId = id => (
         <Button appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
             {id}
         </Button>
     );
 
-    const prepareDataRows = dependentRights => {
-        return rights.map(right => {
-            const rows = [];
-            const foundDependency = dependentRights.filter(
-                dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
-            );
-            console.log(right.id, foundDependency);
-            if (foundDependency && foundDependency.length) {
-                foundDependency.map(item => {
-                    const {title, id, originalRightIds, sourceRightId} = item || {};
-                    return rows.push({
-                        key: id,
-                        cells: [
-                            {
-                                key: `${id}-linkedRights`,
-                                content: title,
-                                width: 30,
-                            },
-                            {
-                                key: `${id}-rightID`,
-                                content: renderLinkableRightId(id),
-                                width: 15,
-                            },
-                            {
-                                key: `${id}-type`,
-                                content: sourceRightId ? (
-                                    <Tag text="Bonus" color="greyLight" />
-                                ) : (
-                                    <Tag text="TPR" color="greyLight" />
-                                ),
-                                width: 10,
-                            },
-                            {
-                                key: `${id}-originalRight`,
-                                content: originalRightIds.map(item => renderLinkableRightId(item)),
-                                width: 25,
-                            },
-                            {
-                                key: `${id}-sourceRight`,
-                                content: renderLinkableRightId(sourceRightId),
-                                width: 20,
-                            },
-                        ],
-                    });
-                });
-                return (
-                    <div className="nexus-c-bulk-delete__table-data" key={right.id}>
-                        <div>
-                            {right.title} {renderLinkableRightId(right.id)}
-                        </div>
-                        <DynamicTable
-                            head={HEADER}
-                            rows={rows}
-                            defaultPage={1}
-                            loadingSpinnerSize="large"
-                            isLoading={false}
-                        />
-                    </div>
-                );
-            }
-            console.log('null');
-            return null;
+    const getDependentRows = foundDeps => {
+        return foundDeps.map(item => {
+            const {title, id, originalRightIds, sourceRightId} = item || {};
+            return {
+                key: `${id}-${title}`,
+                cells: [
+                    {
+                        key: `${id}-linkedRights`,
+                        content: title,
+                        width: 30,
+                    },
+                    {
+                        key: `${id}-rightID`,
+                        content: renderLinkableRightId(id),
+                        width: 15,
+                    },
+                    {
+                        key: `${id}-type`,
+                        content: sourceRightId ? (
+                            <Tag text="Bonus" color="greyLight" />
+                        ) : (
+                            <Tag text="TPR" color="greyLight" />
+                        ),
+                        width: 10,
+                    },
+                    {
+                        key: `${id}-originalRight`,
+                        content: originalRightIds.map(item => renderLinkableRightId(item)),
+                        width: 25,
+                    },
+                    {
+                        key: `${id}-sourceRight`,
+                        content: renderLinkableRightId(sourceRightId),
+                        width: 20,
+                    },
+                ],
+            };
         });
     };
 
+    const prepareTableData = dependentRights => {
+        const dependencyRights = [];
+        rights.map(right => {
+            const foundDependency = dependentRights.filter(
+                dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
+            );
+            if (foundDependency && foundDependency.length) {
+                return dependencyRights.push({
+                    [right.id]: {
+                        original: right,
+                        dependencies: [...foundDependency],
+                        isSelected: true,
+                        rows: getDependentRows(foundDependency),
+                    },
+                });
+            }
+            return null;
+        });
+        return dependencyRights;
+    };
     return (
         <div className="nexus-c-bulk-delete">
             <div className="nexus-c-bulk-delete__message">{BULK_DELETE_WARNING_MSG}</div>
             <div className="nexus-c-bulk-delete__container">
-                {!!dependentRights.length && (
+                {!!tableData.length && (
                     <div className="nexus-c-bulk-delete__table">
                         <div className="nexus-c-bulk-delete__table-header">{BULK_DELETE_LINKED_RIGHT_MSG}</div>
-                        {prepareDataRows(dependentRights)}
+                        {tableData.map(entry => {
+                            return Object.entries(entry).map(([key, value]) => {
+                                return (
+                                    <div className="nexus-c-bulk-delete__table-data" key={value.original.id}>
+                                        <div>
+                                            {value.original.title} {renderLinkableRightId(value.original.id)}
+                                        </div>
+                                        <DynamicTable
+                                            head={HEADER}
+                                            rows={value.rows}
+                                            defaultPage={1}
+                                            loadingSpinnerSize="large"
+                                            isLoading={false}
+                                        />
+                                    </div>
+                                );
+                            });
+                        })}
                     </div>
                 )}
             </div>
