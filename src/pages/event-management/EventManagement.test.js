@@ -1,5 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import {withHooks} from 'jest-react-hooks-shallow';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
 import * as service from './eventManagementService';
@@ -33,7 +34,7 @@ describe('EventManagement', () => {
 
     describe('EventDrawer (gridApi)', () => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
-        const event = {eventId: '123'};
+        const event = {eventId: '123', id: 'abc'};
         const filter = {
             tenantId: {
                 filter: 'WB',
@@ -66,6 +67,17 @@ describe('EventManagement', () => {
             return Promise.resolve({id: '123'});
         });
 
+        const afterUseEffectWrapper = () => {
+            withHooks(() => {
+                wrapper = shallow(
+                    <EventManagement
+                        history={{push: historyPushMockFn}}
+                        location={{search: {substring: substringMockFn}}}
+                    />
+                );
+            });
+        };
+
         beforeEach(() => {
             eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
             eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
@@ -74,6 +86,9 @@ describe('EventManagement', () => {
 
         afterEach(() => {
             deselectAllMock.mockReset();
+            setFilterModelMock.mockReset();
+            setSortModelMock.mockReset();
+            serviceMock.mockReset();
         });
 
         it('should render EventDrawer', async () => {
@@ -123,6 +138,21 @@ describe('EventManagement', () => {
             wrapper.update();
             expect(setFilterModelMock).toHaveBeenCalledWith(filter);
             expect(setSortModelMock).toHaveBeenCalledWith(sort);
+        });
+
+        it('should correctly set the selectedEventId as a URL param', async () => {
+            eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
+            wrapper.update();
+            expect(historyPushMockFn).toHaveBeenCalledWith({
+                search: '?selectedEventId=%22abc%22',
+            });
+        });
+
+        it('opens the event drawer given a selectedEventId in the URL search params', async () => {
+            substringMockFn.mockImplementationOnce(() => 'selectedEventId=%22test_event_id%22');
+            serviceMock.mockImplementation(evt => Promise.resolve({event: {id: evt}}));
+            await afterUseEffectWrapper();
+            expect(serviceMock).toHaveBeenCalledWith('test_event_id');
         });
     });
 });
