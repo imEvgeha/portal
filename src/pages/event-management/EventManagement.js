@@ -75,8 +75,13 @@ const EventManagement = props => {
                 const params = new URLSearchParams(props.location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
                 const sortModel = JSON.parse(params.get('sort'));
-                api.setFilterModel(filterModel);
-                api.setSortModel(sortModel);
+
+                if (filterModel) {
+                    api.setFilterModel(filterModel);
+                }
+                if (sortModel) {
+                    api.setSortModel(sortModel);
+                }
                 break;
             }
 
