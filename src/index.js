@@ -27,8 +27,8 @@ const AG_GRID_LICENSE_KEY =
     'QBS_Software_Ltd_on_behalf_of_Vubiquity_Management_Limited_MultiApp_4Devs25_October_2020__MTYwMzU4MDQwMDAwMA==3193ab7c187172f4a2aac1064f3d8074';
 LicenseManager.setLicenseKey(AG_GRID_LICENSE_KEY);
 
-// setEnvConfiguration('qa')
-setEnvConfiguration()
+setEnvConfiguration('qa')
+    // setEnvConfiguration()
     .then(() => renderApp())
     .catch(error => {
         // eslint-disable-next-line

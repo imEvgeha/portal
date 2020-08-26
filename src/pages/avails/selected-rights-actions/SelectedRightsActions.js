@@ -182,7 +182,7 @@ export const SelectedRightsActions = ({
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        setModalContentAndTitle(<BulkDelete rights={[]} onClose={close} />, BULK_DELETE_HEADER);
+        setModalContentAndTitle(<BulkDelete rights={selectedRights} onClose={close} />, BULK_DELETE_HEADER);
     };
 
     const openAuditHistoryModal = () => {
