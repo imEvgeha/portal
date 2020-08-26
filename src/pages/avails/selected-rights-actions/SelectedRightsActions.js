@@ -90,13 +90,14 @@ export const SelectedRightsActions = ({
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
         return selectedRights.every(
-            ({coreTitleId, sourceRightId, licensed, status, updatedCatalogReceived}) =>
+            ({coreTitleId, sourceRightId, licensed, status, updatedCatalogReceived, temporaryPriceReduction}) =>
                 licensed &&
                 !!coreTitleId &&
                 coreTitleId === get(selectedRights, '[0].coreTitleId', '') &&
                 !sourceRightId &&
                 !updatedCatalogReceived &&
-                ['ReadyNew', 'Ready'].includes(status)
+                ['ReadyNew', 'Ready'].includes(status) &&
+                !temporaryPriceReduction
         );
     };
 
