@@ -12,3 +12,6 @@ export const createPreplanRightsSelector = () =>
     createSelector(getRightsReducer, rights => Object.values(rights.prePlanRights || {}));
 
 export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights.filter || {});
+
+export const createRightsWithDependenciesSelector = () =>
+    createSelector(getRightsReducer, rights => rights.rightsWithDependencies || {});

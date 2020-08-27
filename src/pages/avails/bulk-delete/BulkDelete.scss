@@ -10,7 +10,7 @@
 }
 
 .nexus-c-bulk-delete__container {
-    height: 220px;
+    @include addSpacing('max-height', 100);
     overflow: auto;
 }
 
@@ -21,6 +21,10 @@
 .nexus-c-bulk-delete__table-entry-header {
     display: flex;
     align-items: center;
+
+    label {
+        margin: 0;
+    }
 }
 
 .nexus-c-bulk-delete__table-entry-title {
@@ -34,4 +38,14 @@
 
 .nexus-c-bulk-delete__cancel-btn {
     @include margin(0, 2, 0, auto);
+}
+
+.nexus-c-bulk-delete__link {
+    margin: 0;
+    padding: 0;
+
+    span {
+        margin: 0;
+        padding: 0;
+    }
 }

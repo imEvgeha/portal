@@ -5,8 +5,10 @@ import {Checkbox} from '@atlaskit/checkbox';
 import DynamicTable from '@atlaskit/dynamic-table';
 import Tag from '@atlaskit/tag';
 import {isEmpty} from 'lodash';
+import {connect} from 'react-redux';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
-import {getLinkedToOriginalRights} from '../availsService';
+import {getLinkedRights, clearLinkedRights} from '../rights-repository/rightsActions';
+import * as selectors from '../rights-repository/rightsSelectors';
 import {
     HEADER,
     BULK_DELETE_WARNING_MSG,
@@ -14,38 +16,40 @@ import {
     BULK_DELETE_CONTINUE_MSG,
     BULK_DELETE_BTN_DELETE,
     BULK_DELETE_BTN_CANCEL,
-    DEFAULT_PAGE_SIZE,
 } from './constants';
 import './BulkDelete.scss';
 
-export const BulkDelete = ({rights, onClose}) => {
+export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, clearLinkedRights}) => {
     const [tableData, setTableData] = useState({});
 
     useEffect(() => {
-        const rightIds = rights.map(right => right.id);
-        const fetchData = async () => {
-            const rightsWithSourceRightId = await getLinkedToOriginalRights(
-                {sourceRightId: rightIds},
-                DEFAULT_PAGE_SIZE
-            );
-            const rightsWithOriginalRightIds = await getLinkedToOriginalRights(
-                {originalRightIds: rightIds},
-                DEFAULT_PAGE_SIZE
-            );
-            const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
-            setTableData(prepareTableData(mergedDependencies));
+        if (rights.length) {
+            getLinkedRights({rights});
+        }
+        return () => {
+            clearLinkedRights();
         };
-        fetchData();
-    }, []);
+    }, [rights, getLinkedRights]);
+
+    useEffect(() => {
+        if (!isEmpty(rightsWithDeps)) {
+            insertTableRowsData(rightsWithDeps);
+        }
+    }, [rightsWithDeps]);
 
     const renderLinkableRightId = id => (
-        <Button appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
+        <Button
+            className="nexus-c-bulk-delete__link"
+            key={id}
+            appearance="link"
+            onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}
+        >
             {id}
         </Button>
     );
 
-    const getDependentRows = foundDeps => {
-        return foundDeps.map(item => {
+    const getDependentRows = dependencies => {
+        return dependencies.map(item => {
             const {title, id, originalRightIds, sourceRightId} = item || {};
             return {
                 key: `${id}-${title}`,
@@ -63,9 +67,9 @@ export const BulkDelete = ({rights, onClose}) => {
                     {
                         key: `${id}-type`,
                         content: sourceRightId ? (
-                            <Tag text="Bonus" color="greyLight" />
+                            <Tag className="nexus-c-bulk-delete__tag" text="Bonus" color="greyLight" />
                         ) : (
-                            <Tag text="TPR" color="greyLight" />
+                            <Tag className="nexus-c-bulk-delete__tag" text="TPR" color="greyLight" />
                         ),
                         width: 10,
                     },
@@ -90,25 +94,15 @@ export const BulkDelete = ({rights, onClose}) => {
         setTableData({...tableData});
     };
 
-    const prepareTableData = dependentRights => {
-        const dependencyRights = {};
-        rights.map(right => {
-            const foundDependency = dependentRights.filter(
-                dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
-            );
-            if (foundDependency && foundDependency.length) {
-                dependencyRights[right.id] = {
-                    original: right,
-                    dependencies: [...foundDependency],
-                    isSelected: true,
-                    rows: getDependentRows(foundDependency),
-                };
-            }
-            return null;
+    const insertTableRowsData = rightsWithDeps => {
+        const rightsKeys = Object.keys(rightsWithDeps);
+        const rightsWithRows = {...rightsWithDeps};
+        rightsKeys.forEach(key => {
+            rightsWithRows[key].rows = getDependentRows(rightsWithRows[key].dependencies);
         });
-        return dependencyRights;
+        setTableData(rightsWithRows);
     };
-    console.log(tableData);
+
     return (
         <div className="nexus-c-bulk-delete">
             <div className="nexus-c-bulk-delete__message">{BULK_DELETE_WARNING_MSG}</div>
@@ -167,12 +161,31 @@ export const BulkDelete = ({rights, onClose}) => {
 
 BulkDelete.propTypes = {
     rights: PropTypes.array,
+    rightsWithDeps: PropTypes.object,
     onClose: PropTypes.func,
+    getLinkedRights: PropTypes.func,
+    clearLinkedRights: PropTypes.func,
 };
 
 BulkDelete.defaultProps = {
     rights: [],
+    rightsWithDeps: {},
     onClose: () => null,
+    getLinkedRights: () => null,
+    clearLinkedRights: () => null,
 };
 
-export default memo(BulkDelete);
+const mapStateToProps = () => {
+    const rightsWithDependenciesSelector = selectors.createRightsWithDependenciesSelector();
+
+    return (state, props) => ({
+        rightsWithDeps: rightsWithDependenciesSelector(state, props),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    getLinkedRights: payload => dispatch(getLinkedRights(payload)),
+    clearLinkedRights: () => dispatch(clearLinkedRights()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(BulkDelete));

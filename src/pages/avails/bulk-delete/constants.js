@@ -35,5 +35,3 @@ export const BULK_DELETE_LINKED_RIGHT_MSG = 'The following linked TPR/Bonus righ
 export const BULK_DELETE_CONTINUE_MSG = 'How would you like to continue?';
 export const BULK_DELETE_BTN_DELETE = 'Mark as Deleted';
 export const BULK_DELETE_BTN_CANCEL = 'Cancel';
-
-export const DEFAULT_PAGE_SIZE = 200;
