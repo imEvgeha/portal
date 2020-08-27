@@ -29,11 +29,13 @@ const rightsReducer = (state = initialState, action = {}) => {
                 ...state,
                 selected: payload,
             };
-        case actionTypes.SET_PREPLAN_RIGHTS:
+        case actionTypes.SET_PREPLAN_RIGHTS: {
+            const {prePlanRights = {}} = state;
             return {
                 ...state,
-                prePlanRights: payload,
+                prePlanRights: {...prePlanRights, ...payload},
             };
+        }
         case actionTypes.ADD_RIGHTS_FILTER_SUCCESS: {
             const {external, column} = state.filter || {};
             return {

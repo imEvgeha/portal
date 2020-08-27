@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {cloneDeep, isEmpty, isEqual, get} from 'lodash';
+import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {getUsername} from '../../../auth/authSelectors';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {
@@ -77,6 +78,7 @@ const RightsRepository = ({
     location,
     isTableDataLoading,
     setIsTableDataLoading,
+    username,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -92,6 +94,7 @@ const RightsRepository = ({
     const [planningRightsCount, setPlanningRightsCount] = useState(0);
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
+    const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -183,6 +186,7 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights, selectedGridApi]);
 
+    // Fetch and set DOP projects count for current user
     useEffect(() => {
         DOPService.getUsersProjectsList(1, 1)
             .then(([response, headers]) => {
@@ -192,7 +196,14 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab, prePlanRights.length]);
+    }, [activeTab, prePlanRights.length, isPlanningTabRefreshed]);
+
+    // Fetch only pre-plan rights from the current user
+    useEffect(() => {
+        if (isObject(prePlanRights) && username) {
+            setCurrentUserPrePlanRights(prePlanRights[username] || []);
+        }
+    }, [prePlanRights, username]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
@@ -320,9 +331,9 @@ const RightsRepository = ({
     };
     // add only new selected rights to pre-plan
     const addRightsToPrePlan = rights => {
-        const prePlanIds = prePlanRights.map(right => right.id);
+        const prePlanIds = currentUserPrePlanRights.map(right => right.id);
         const newSelectedRights = rights.filter(right => !prePlanIds.includes(right.id));
-        setPreplanRights([...prePlanRights, ...newSelectedRights]);
+        setPreplanRights({[username]: [...(currentUserPrePlanRights || []), ...newSelectedRights]});
     };
 
     const onSelectedRightsRepositoryGridEvent = ({type, api, columnApi}) => {
@@ -391,7 +402,7 @@ const RightsRepository = ({
             <NexusTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={selectedRepoRights.length}
-                prePlanRightsCount={prePlanRights.length}
+                prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={selectedRights}
@@ -406,10 +417,11 @@ const RightsRepository = ({
                 planningRightsCount={planningRightsCount}
                 selectedPrePlanRights={selectedPrePlanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
-                prePlanRepoRights={prePlanRights}
+                prePlanRepoRights={currentUserPrePlanRights}
                 setPreplanRights={setPreplanRights}
                 isPlanningTabRefreshed={isPlanningTabRefreshed}
                 setIsPlanningTabRefreshed={setIsPlanningTabRefreshed}
+                username={username}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -440,11 +452,12 @@ const RightsRepository = ({
             />
             <PreplanRightsTable
                 columnDefs={updatedColumnDefsCheckBoxHeader}
-                prePlanRepoRights={prePlanRights}
+                prePlanRepoRights={currentUserPrePlanRights}
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
+                username={username}
             />
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
                 <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
@@ -465,11 +478,12 @@ RightsRepository.propTypes = {
     downloadIngestFile: PropTypes.func.isRequired,
     deselectIngest: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
+    username: PropTypes.string.isRequired,
     mapping: PropTypes.array,
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
-    prePlanRights: PropTypes.array,
+    prePlanRights: PropTypes.object,
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
@@ -480,7 +494,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
-    prePlanRights: [],
+    prePlanRights: {},
     rightsFilter: {},
     isTableDataLoading: false,
     setIsTableDataLoading: () => null,
@@ -501,6 +515,7 @@ const mapStateToProps = () => {
         selectedRights: selectedRightsSelector(state, props),
         prePlanRights: preplanRightsSelector(state, props),
         rightsFilter: rightsFilterSelector(state, props),
+        username: getUsername(state),
     });
 };
 
