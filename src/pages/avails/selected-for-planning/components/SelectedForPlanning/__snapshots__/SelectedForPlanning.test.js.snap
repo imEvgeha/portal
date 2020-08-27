@@ -29,14 +29,14 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "width": 150,
       },
       Object {
-        "cellRenderer": "clickableCellRenderer",
+        "cellRenderer": "loadingCellRenderer",
         "cellRendererParams": Object {
-          "keyToDisplay": "status",
-          "onClick": [Function],
+          "link": "null/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=",
         },
-        "colId": "status",
+        "colId": "projectId",
         "field": "status",
         "headerName": "DOP Status",
+        "valueFormatter": [Function],
         "width": 180,
       },
       Object {
@@ -64,11 +64,6 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
         "width": 120,
       },
     ]
-  }
-  frameworkComponents={
-    Object {
-      "clickableCellRenderer": [Function],
-    }
   }
   id="selectedForPlanningRepo"
   isGridHidden={true}

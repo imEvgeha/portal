@@ -10,9 +10,13 @@ All selected rights have Core Title IDs populated,
 either all are bonus rights(with unique sourceRightId) or none`;
 export const BULK_UNMATCH_SUCCESS_TOAST = 'Bulk Unmatch Successful!';
 export const CREATE_BONUS_RIGHT = 'Create Bonus Rights';
-export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when rights are licensed,
+export const CREATE_BONUS_RIGHT_TOOLTIP = `This feature is enabled when selected
+rights are licensed,
 have the same Core Title IDs (not blank),
-empty Source Right IDs and Status is Ready/ReadyNew`;
+empty Source Right IDs,
+Status is Ready/ReadyNew,
+Removed from Catalogue = No
+and Temporary Price Reduction = false`;
 export const PREPLAN_TOOLTIP = 'Select Right to enable this feature';
 export const BULK_DELETE_TOOLTIP = `This option will mark a right as deleted and can no longer be used.
 Alternatively you may withdraw a right which can be re-instantiated later.`;
