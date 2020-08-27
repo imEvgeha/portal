@@ -76,7 +76,7 @@
             "displayName": "Status",
             "dataType": "select",
             "searchDataType": "multiselect",
-            "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged"],
+            "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged", "Deleted"],
             "queryParamName": "status",
             "readOnly": false,
             "enableSearch": true,
