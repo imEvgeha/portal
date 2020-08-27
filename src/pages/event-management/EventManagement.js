@@ -105,7 +105,7 @@ const EventManagement = props => {
         <div className="nexus-c-event-management">
             <div className="nexus-c-event-management__title">{TITLE}</div>
             <div className="nexus-c-event-management__table">
-                <EventManagementTable onGridEvent={onGridEvent} onSortChanged={onSortChanged} />
+                <EventManagementTable gridApi={gridApi} onGridEvent={onGridEvent} onSortChanged={onSortChanged} />
             </div>
             {selectedEvent && <EventDrawer event={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>
