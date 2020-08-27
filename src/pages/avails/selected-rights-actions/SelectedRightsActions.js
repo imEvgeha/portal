@@ -256,26 +256,23 @@ export const SelectedRightsActions = ({
             <div className="nexus-c-selected-rights-actions" ref={node}>
                 <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
                 <div
-                    className={classNames(
-                        'nexus-c-selected-rights-actions__menu',
-                        menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
-                    )}
+                    className={classNames('nexus-c-selected-rights-actions__menu', {
+                        'nexus-c-selected-rights-actions__menu--is-open': menuOpened,
+                    })}
                 >
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
+                        })}
                         data-test-id="view-history"
                         onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
                         <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            (isMatchable && !statusDeleteMerged) && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,
+                        })}
                         data-test-id="bulk-match"
                         onClick={isMatchable ? openDrawer : null}
                     >
@@ -284,10 +281,9 @@ export const SelectedRightsActions = ({
                         </NexusTooltip>
                     </div>
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            (isUnmatchable && !statusDeleteMerged) && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': isUnmatchable && !statusDeleteMerged,
+                        })}
                         data-test-id="bulk-unmatch"
                         onClick={isUnmatchable ? openBulkUnmatchModal : null}
                     >
@@ -297,10 +293,9 @@ export const SelectedRightsActions = ({
                     </div>
                     {URL.isLocalOrDevOrQA() && (
                         <div
-                            className={classNames(
-                                'nexus-c-selected-rights-actions__menu-item',
-                                (isBonusRightCreatable && !statusDeleteMerged) && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                            )}
+                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                'nexus-c-selected-rights-actions__menu-item--is-active': isBonusRightCreatable && !statusDeleteMerged,
+                            })}
                             data-test-id="bonus-rights"
                             onClick={isBonusRightCreatable ? createBonusRights : null}
                         >
@@ -312,10 +307,9 @@ export const SelectedRightsActions = ({
                     {activeTab !== PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
                         <>
                             <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    (!!selectedRights.length && !statusDeleteMerged) && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
+                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                    'nexus-c-selected-rights-actions__menu-item--is-active': !!selectedRights.length && !statusDeleteMerged,
+                                })}
                                 data-test-id="add-to-preplan"
                                 onClick={selectedRights.length ? prepareRightsForPrePlan : null}
                             >
@@ -324,10 +318,9 @@ export const SelectedRightsActions = ({
                                 </NexusTooltip>
                             </div>
                             <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isDeletable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
+                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                    'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable
+                                })}
                                 data-test-id="mark-as-deleted"
                                 onClick={openBulkDeleteModal}
                             >
