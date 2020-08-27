@@ -112,6 +112,30 @@ class TitleEdit extends Component {
                 externalIDs: response,
             });
         }).catch(() => {
+            // TODO: Remove mock data
+            const mockResponse = [
+                {
+                    titleId: 'titl_igrkn',
+                    externalSystem: 'MOVIDA',
+                    externalId: 'MOV_igrkn',
+                    externalTitleId: '2761109',
+                    publishedAt: '2020-08-27T13:14:10.427Z',
+                    status: 'success',
+                    publishErrors: [],
+                },
+                {
+                    titleId: 'titl_igrkn',
+                    externalSystem: 'VZ',
+                    externalId: 'VZ_igrkn',
+                    externalTitleId: '523318',
+                    publishedAt: '2020-08-27T13:14:10.427Z',
+                    status: 'success',
+                    publishErrors: [],
+                }
+            ];
+            this.setState({
+                externalIDs: mockResponse,
+            });
             console.error('Unable to load Extrernal IDs data');
         });
     }
