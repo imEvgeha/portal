@@ -241,7 +241,7 @@ export const SelectedRightsActions = ({
     const createBonusRights = () => {
         setIsBonusRight(true);
         setHeaderText(HEADER_TITLE_BONUS_RIGHT);
-        openDrawer();
+        setDrawerOpen(true);
     };
 
     return (
