@@ -1,4 +1,4 @@
-@import '../../../styles/config';
+@import '../../../styles/atlaskit/colors';
 
 .nexus-c-rights-repository {
   display: flex;
@@ -27,5 +27,5 @@
 }
 
 .nexus-c-rights-repository__row{
-    background-color: map-get($colors, nexus-lighter-grey) !important;
+    background-color: map-get($neutrals, N30) !important;
 }
