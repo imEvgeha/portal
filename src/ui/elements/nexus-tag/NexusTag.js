@@ -1,27 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import {NexusModalContext} from '../nexus-modal/NexusModal';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
+import {CANCEL, DELETE, REMOVE_TITLE} from './constants';
 import './NexusTag.scss';
 
-const NexusTag = ({value = {}, text, tagState, onClick, onRemove}) => {
+const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationContent = null}) => {
     const [defaultTooltipContent, setDefaultContent] = useState(null);
+    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+
+    const handleRemove = event => {
+        if (confirmationContent) {
+            setModalActions([
+                {
+                    text: CANCEL,
+                    onClick: close,
+                    appearance: 'default',
+                },
+                {
+                    text: DELETE,
+                    onClick: () => {
+                        onRemove(event);
+                        close();
+                    },
+                    appearance: 'danger',
+                },
+            ]);
+            setModalContentAndTitle(confirmationContent, REMOVE_TITLE);
+            setModalStyle({width: '30%'});
+        } else {
+            onRemove(event);
+        }
+    };
 
     useEffect(() => {
         if (value) {
             const defaultTooltipContent = Object.keys(value || {}).map((key, index) => {
                 return (
-                    value[key]
-                    && key !== 'state'
-                    && !Array.isArray(value[key])
-                    && typeof value[key] !== 'object'
-                    && value[key] !== null
-                    && (
-                        <li className={`nexus-c-tag__tooltip-prop ${key === 'error' ? 'nexus-c-tag__tooltip-prop--error' : ''}`} key={index}>
-                            {key}:
-                            <span className="nexus-c-tag__tooltip-prop-value">
-                                { getValidValue(value[key]) }
-                            </span>
+                    value[key] &&
+                    key !== 'state' &&
+                    !Array.isArray(value[key]) &&
+                    typeof value[key] !== 'object' &&
+                    value[key] !== null && (
+                        <li
+                            className={`nexus-c-tag__tooltip-prop ${
+                                key === 'error' ? 'nexus-c-tag__tooltip-prop--error' : ''
+                            }`}
+                            key={index}
+                        >
+                            {key}:<span className="nexus-c-tag__tooltip-prop-value">{getValidValue(value[key])}</span>
                         </li>
                     )
                 );
@@ -39,15 +67,17 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove}) => {
 
     const tooltip = (
         <div className="nexus-c-tag__tooltip">
-            <ul className="nexus-c-tag__tooltip-list">
-                {defaultTooltipContent}
-            </ul>
+            <ul className="nexus-c-tag__tooltip-list">{defaultTooltipContent}</ul>
         </div>
     );
 
     return (
         <NexusTooltip content={tooltip}>
-            <span className={`nexus-c-tag ${value.error ? 'nexus-c-tag--error' : ''} ${(tagState && `nexus-c-tag--is-${tagState}`) || ''}`}>
+            <span
+                className={`nexus-c-tag ${value.error ? 'nexus-c-tag--error' : ''} ${
+                    (tagState && `nexus-c-tag--is-${tagState}`) || ''
+                }`}
+            >
                 <div
                     className={`nexus-c-tag__label ${onClick && 'nexus-c-tag__label--is-clickable'}`}
                     onClick={onClick}
@@ -55,7 +85,7 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove}) => {
                     {text}
                 </div>
                 {onRemove && (
-                    <div className="nexus-c-tag__remove-button" onClick={onRemove}>
+                    <div className="nexus-c-tag__remove-button" onClick={handleRemove}>
                         <EditorCloseIcon size="medium" />
                     </div>
                 )}
@@ -68,12 +98,14 @@ NexusTag.propTypes = {
     value: PropTypes.object.isRequired,
     text: PropTypes.string.isRequired,
     tagState: PropTypes.string,
+    confirmationContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onClick: PropTypes.func,
     onRemove: PropTypes.func,
 };
 
 NexusTag.defaultProps = {
     tagState: '',
+    confirmationContent: null,
     onRemove: () => null,
     onClick: () => null,
 };

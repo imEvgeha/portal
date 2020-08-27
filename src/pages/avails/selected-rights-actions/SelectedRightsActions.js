@@ -60,6 +60,7 @@ export const SelectedRightsActions = ({
     const [isBonusRightCreatable, setIsBonusRightCreatable] = useState(false);
     const [isPreplanEligible, setIsPreplanEligible] = useState(false);
     const [isDeletable, setIsDeletable] = useState(false);
+    const [statusDeleteMerged, setStatusDeleteMerged] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState('');
@@ -87,16 +88,21 @@ export const SelectedRightsActions = ({
     // None of the rights has status 'Deleted'
     const noRightsWithDeletedStatus = () => selectedRights.every(({status}) => status !== 'Deleted');
 
+    // At least one of the selected rights has status 'Deleted' or 'Merged'
+    const checkStatusDeleteMerged = () =>
+        selectedRights.some(({status}) => status === 'Deleted' || status === 'Merged');
+
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
         return selectedRights.every(
-            ({coreTitleId, sourceRightId, licensed, status, updatedCatalogReceived}) =>
+            ({coreTitleId, sourceRightId, licensed, status, updatedCatalogReceived, temporaryPriceReduction}) =>
                 licensed &&
                 !!coreTitleId &&
                 coreTitleId === get(selectedRights, '[0].coreTitleId', '') &&
                 !sourceRightId &&
                 !updatedCatalogReceived &&
-                ['ReadyNew', 'Ready'].includes(status)
+                ['ReadyNew', 'Ready'].includes(status) &&
+                !temporaryPriceReduction
         );
     };
 
@@ -139,12 +145,16 @@ export const SelectedRightsActions = ({
 
             // Deletion criteria
             setIsDeletable(noRightsWithDeletedStatus());
+
+            // Set status deleted/merged criteria
+            setStatusDeleteMerged(checkStatusDeleteMerged());
         } else {
             setIsMatchable(false);
             setIsUnmatchable(false);
             setIsBonusRightCreatable(false);
             setIsPreplanEligible(false);
             setIsDeletable(false);
+            setStatusDeleteMerged(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
@@ -241,7 +251,7 @@ export const SelectedRightsActions = ({
     const createBonusRights = () => {
         setIsBonusRight(true);
         setHeaderText(HEADER_TITLE_BONUS_RIGHT);
-        openDrawer();
+        setDrawerOpen(true);
     };
 
     return (
@@ -249,55 +259,61 @@ export const SelectedRightsActions = ({
             <div className="nexus-c-selected-rights-actions" ref={node}>
                 <MoreIcon fill="#A5ADBA" onClick={clickHandler} />
                 <div
-                    className={classNames(
-                        'nexus-c-selected-rights-actions__menu',
-                        menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
-                    )}
+                    className={classNames('nexus-c-selected-rights-actions__menu', {
+                        'nexus-c-selected-rights-actions__menu--is-open': menuOpened,
+                    })}
                 >
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
+                        })}
                         data-test-id="view-history"
                         onClick={selectedRights.length ? openAuditHistoryModal : null}
                     >
                         <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            isMatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,
+                        })}
                         data-test-id="bulk-match"
                         onClick={isMatchable ? openDrawer : null}
                     >
-                        <NexusTooltip content={BULK_MATCH_DISABLED_TOOLTIP} isDisabled={isMatchable}>
+                        <NexusTooltip
+                            content={BULK_MATCH_DISABLED_TOOLTIP}
+                            isDisabled={isMatchable && !statusDeleteMerged}
+                        >
                             <div>{BULK_MATCH}</div>
                         </NexusTooltip>
                     </div>
                     <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            isUnmatchable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active':
+                                isUnmatchable && !statusDeleteMerged,
+                        })}
                         data-test-id="bulk-unmatch"
                         onClick={isUnmatchable ? openBulkUnmatchModal : null}
                     >
-                        <NexusTooltip content={BULK_UNMATCH_DISABLED_TOOLTIP} isDisabled={isUnmatchable}>
+                        <NexusTooltip
+                            content={BULK_UNMATCH_DISABLED_TOOLTIP}
+                            isDisabled={isUnmatchable && !statusDeleteMerged}
+                        >
                             <div>{BULK_UNMATCH}</div>
                         </NexusTooltip>
                     </div>
                     {URL.isLocalOrDevOrQA() && (
                         <div
-                            className={classNames(
-                                'nexus-c-selected-rights-actions__menu-item',
-                                isBonusRightCreatable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                            )}
+                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                'nexus-c-selected-rights-actions__menu-item--is-active':
+                                    isBonusRightCreatable && !statusDeleteMerged,
+                            })}
                             data-test-id="bonus-rights"
                             onClick={isBonusRightCreatable ? createBonusRights : null}
                         >
-                            <NexusTooltip content={CREATE_BONUS_RIGHT_TOOLTIP} isDisabled={isBonusRightCreatable}>
+                            <NexusTooltip
+                                content={CREATE_BONUS_RIGHT_TOOLTIP}
+                                isDisabled={isBonusRightCreatable && !statusDeleteMerged}
+                            >
                                 <div>{CREATE_BONUS_RIGHT}</div>
                             </NexusTooltip>
                         </div>
@@ -305,22 +321,24 @@ export const SelectedRightsActions = ({
                     {activeTab !== PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
                         <>
                             <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    !!selectedRights.length && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
+                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                    'nexus-c-selected-rights-actions__menu-item--is-active':
+                                        !!selectedRights.length && !statusDeleteMerged,
+                                })}
                                 data-test-id="add-to-preplan"
                                 onClick={selectedRights.length ? prepareRightsForPrePlan : null}
                             >
-                                <NexusTooltip content={PREPLAN_TOOLTIP} isDisabled={!!selectedRights.length}>
+                                <NexusTooltip
+                                    content={PREPLAN_TOOLTIP}
+                                    isDisabled={!!selectedRights.length && !statusDeleteMerged}
+                                >
                                     <div>{ADD_TO_PREPLAN}</div>
                                 </NexusTooltip>
                             </div>
                             <div
-                                className={classNames(
-                                    'nexus-c-selected-rights-actions__menu-item',
-                                    isDeletable && 'nexus-c-selected-rights-actions__menu-item--is-active'
-                                )}
+                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                    'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
+                                })}
                                 data-test-id="mark-as-deleted"
                                 onClick={openBulkDeleteModal}
                             >

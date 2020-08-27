@@ -8,8 +8,7 @@ const getRightsReducer = state => {
 export const createSelectedRightsSelector = () =>
     createSelector(getRightsReducer, rights => Object.values(rights.selected || {}));
 
-export const createPreplanRightsSelector = () =>
-    createSelector(getRightsReducer, rights => Object.values(rights.prePlanRights || {}));
+export const createPreplanRightsSelector = () => createSelector(getRightsReducer, rights => rights.prePlanRights || {});
 
 export const createRightsFilterSelector = () => createSelector(getRightsReducer, rights => rights.filter || {});
 

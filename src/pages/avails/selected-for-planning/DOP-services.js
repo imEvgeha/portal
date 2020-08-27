@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
-import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS, DOP_PROJECT_URL} from './constants';
+import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;
 
@@ -92,7 +92,6 @@ const DOPService = {
         // TODO: Error handling if necessary
         return nexusFetch(`${url}/${projectId}/start`, {method: 'post'});
     },
-    getDOPProjectURL: projectId => `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}${projectId}`,
 };
 
 export default DOPService;

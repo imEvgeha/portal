@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import 'ag-grid-enterprise';
 import {NexusGrid} from '../../../../../ui/elements';
+import NexusJsonView from '../../../../../ui/elements/nexus-json-view/NexusJsonView';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {getServiceRequest} from '../../../servicingOrdersService';
 import {
@@ -35,25 +36,22 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         });
     }, [configuredPrId, externalId]);
 
-    const rowData = data.list.map(order => Object.keys(order).reduce(
-        (currRowData, key) => (COLUMN_KEYS.includes(key)
-            ? {
-                ...currRowData,
-                [key]: order[key],
-            }
-            : currRowData),
+    const rowData = data.list.map(order =>
+        Object.keys(order).reduce(
+            (currRowData, key) =>
+                COLUMN_KEYS.includes(key)
+                    ? {
+                          ...currRowData,
+                          [key]: order[key],
+                      }
+                    : currRowData,
 
-        {}
-    ));
+            {}
+        )
+    );
 
     const onFirstDataRendered = params => {
-        const columnsToResize = [
-            'productDesc',
-            'primaryVideo',
-            'version',
-            'srdueDate',
-            'materialNotes',
-        ];
+        const columnsToResize = ['productDesc', 'primaryVideo', 'version', 'srdueDate', 'materialNotes'];
         params.api.sizeColumnsToFit();
         window.setTimeout(() => {
             const colIds = params.columnApi
@@ -65,48 +63,60 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
         }, TIMEOUT);
     };
 
+    if (data.tenant && data.tenant === 'MGM') {
+        return (
+            <div className="nexus-c-partner-request">
+                <Page>
+                    <Grid layout="fluid">
+                        <GridColumn>
+                            <Grid layout="fluid">
+                                <GridColumn medium={2}>
+                                    <div className="nexus-c-partner-request__info-section">
+                                        <h6>{STUDIO}</h6>
+                                        <p className="nexus-c-partner-request__info-field">{data.tenant || 'N/A'}</p>
+                                    </div>
+                                    <div className="nexus-c-partner-request__info-section">
+                                        <h6>{MSS_ORDER_DETAILS}</h6>
+                                        <p className="nexus-c-partner-request__info-field">{externalId || 'N/A'}</p>
+                                    </div>
+                                </GridColumn>
+                                <GridColumn>
+                                    <div className="nexus-c-partner-request__info-section">
+                                        <h6>{CREATED_DATE}</h6>
+                                        <p className="nexus-c-partner-request__info-field">
+                                            {data.createdAt ? parseSimulcast(data.createdAt, DATE_FORMAT) : 'N/A'}
+                                        </p>
+                                    </div>
+                                    <div className="nexus-c-partner-request__info-section">
+                                        <h6>{CREATED_BY}</h6>
+                                        <p className="nexus-c-partner-request__info-field">{data.createdBy || 'N/A'}</p>
+                                    </div>
+                                </GridColumn>
+                            </Grid>
+                        </GridColumn>
+                    </Grid>
+                    <div className="nexus-c-partner-request__table-wrapper">
+                        <NexusGrid
+                            defaultColDef={defaultColDef}
+                            columnDefs={columnDefs}
+                            rowData={rowData}
+                            onFirstDataRendered={onFirstDataRendered}
+                        />
+                    </div>
+                </Page>
+            </div>
+        );
+    }
+
     return (
-        <div className="nexus-c-partner-request">
-            <Page>
-                <Grid layout="fluid">
-                    <GridColumn>
-                        <Grid layout="fluid">
-                            <GridColumn medium={2}>
-                                <div className="nexus-c-partner-request__info-section">
-                                    <h6>{STUDIO}</h6>
-                                    <p className="nexus-c-partner-request__info-field">{data.tenant || 'N/A'}</p>
-                                </div>
-                                <div className="nexus-c-partner-request__info-section">
-                                    <h6>{MSS_ORDER_DETAILS}</h6>
-                                    <p className="nexus-c-partner-request__info-field">{externalId || 'N/A'}</p>
-                                </div>
-                            </GridColumn>
-                            <GridColumn>
-                                <div className="nexus-c-partner-request__info-section">
-                                    <h6>{CREATED_DATE}</h6>
-                                    <p className="nexus-c-partner-request__info-field">
-                                        {data.createdAt
-                                            ? parseSimulcast(data.createdAt, DATE_FORMAT)
-                                            : 'N/A'}
-                                    </p>
-                                </div>
-                                <div className="nexus-c-partner-request__info-section">
-                                    <h6>{CREATED_BY}</h6>
-                                    <p className="nexus-c-partner-request__info-field">{data.createdBy || 'N/A'}</p>
-                                </div>
-                            </GridColumn>
-                        </Grid>
-                    </GridColumn>
-                </Grid>
-                <div className="nexus-c-partner-request__table-wrapper">
-                    <NexusGrid
-                        defaultColDef={defaultColDef}
-                        columnDefs={columnDefs}
-                        rowData={rowData}
-                        onFirstDataRendered={onFirstDataRendered}
-                    />
-                </div>
-            </Page>
+        <div className="nexus-c-partner-request__json">
+            <div className="nexus-c-partner-request__info-section">
+                <h6>{STUDIO}</h6>
+                <p className="nexus-c-partner-request__info-field">{data.tenant || 'N/A'}</p>
+            </div>
+            <div>
+                <NexusJsonView defaultHeight="calc(100vh - 142px" src={data.tenant ? data : {}} />
+            </div>
         </div>
     );
 };

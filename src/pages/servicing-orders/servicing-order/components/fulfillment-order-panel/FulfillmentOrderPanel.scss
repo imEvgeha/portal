@@ -35,7 +35,7 @@
     &__title-and-date {
         width: 100%;
         display: inline-flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -62,11 +62,11 @@
     }
 
     &__description-and-status {
+        @include addSpacing(padding-left, 14.5);
         width: 100%;
         display: inline-flex;
         justify-content: space-between;
         align-items: center;
-        padding-left: 30px;
     }
 
     &__description {
@@ -77,5 +77,30 @@
     &__status {
         flex-shrink: 0;
         margin-left: 10px;
+    }
+
+    &__servicer {
+        @include addSpacing(border-radius, 11);
+        @include addSpacing(height, 11);
+        @include addSpacing(width, 11);
+        background-color: map-get($mid-neutral-colors, mid-neutral-6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-label {
+            @include addSpacing(font-size, 2.5);
+            font-weight: bold;
+            color: map-get($primary-colors, white);
+            text-align: center;
+        }
+    }
+
+    &__order-info {
+        @include addSpacing(margin-left, 3);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1 0 auto;
     }
 }

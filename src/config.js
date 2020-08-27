@@ -1,6 +1,6 @@
-import axios from 'axios';
 import config from 'react-global-configuration';
 import {isObject, mergeDeep} from './util/Common';
+import {nexusFetch} from './util/http-client';
 
 export const defaultConfiguration = {
     gateway: {
@@ -49,15 +49,15 @@ export const defaultConfiguration = {
         },
     },
     keycloak: {
-        'clientId': 'temportalapp-dev',
-        'realm': 'Vubiquity',
-        'url': 'https://auth.dev.vubiquity.com/auth',
+        clientId: 'temportalapp-dev',
+        realm: 'Vubiquity',
+        url: 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0,
     },
     googleAnalytics: {
-        'propertyId': 'UA-165264495-2',
+        propertyId: 'UA-165264495-2',
     },
 };
 
@@ -75,9 +75,10 @@ export async function setEnvConfiguration(env) {
     };
     try {
         config.set(defaultConfiguration, {freeze: false});
+
         const configFile = getConfigFile(env);
-        // TODO: Remove axios
-        const {data} = await axios.get(configFile);
+        const data = await nexusFetch(configFile);
+
         if (isObject(data)) {
             config.set(mergeDeep(JSON.parse(config.serialize()), data), {freeze: false});
             return true;

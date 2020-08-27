@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import File from '../../../../../assets/file.svg';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {SERVICERS} from '../../../constants';
 import './FulfillmentOrderPanel.scss';
 
 const FulfillmentOrderPanel = ({
@@ -10,6 +10,7 @@ const FulfillmentOrderPanel = ({
     externalId,
     status,
     dueDate,
+    servicer,
     selected,
     handleFulfillmentOrderChange,
     productDescription,
@@ -22,13 +23,17 @@ const FulfillmentOrderPanel = ({
     return (
         <div className={panelClassNames} onClick={() => handleFulfillmentOrderChange(id)}>
             <div className="nexus-c-fulfillment-order-panel__title-and-date">
-                <div className="nexus-c-fulfillment-order-panel__title-container">
-                    <File className="nexus-c-fulfillment-order-panel__file-icon" />
-                    <span title={id} className="nexus-c-fulfillment-order-panel__title">
-                        {externalId}
-                    </span>
+                <div className="nexus-c-fulfillment-order-panel__servicer">
+                    <span className="nexus-c-fulfillment-order-panel__servicer-label">{SERVICERS[servicer]}</span>
                 </div>
-                <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
+                <div className="nexus-c-fulfillment-order-panel__order-info">
+                    <div className="nexus-c-fulfillment-order-panel__title-container">
+                        <span title={id} className="nexus-c-fulfillment-order-panel__title">
+                            {externalId}
+                        </span>
+                    </div>
+                    <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
+                </div>
             </div>
             <div className="nexus-c-fulfillment-order-panel__description-and-status">
                 <span className="nexus-c-fulfillment-order-panel__description">{productDescription}</span>
@@ -43,6 +48,7 @@ FulfillmentOrderPanel.propTypes = {
     handleFulfillmentOrderChange: PropTypes.func,
     status: PropTypes.string,
     dueDate: PropTypes.string,
+    servicer: PropTypes.string,
     // eslint-disable-next-line react/boolean-prop-naming
     selected: PropTypes.bool,
     productDescription: PropTypes.string,
@@ -55,6 +61,7 @@ FulfillmentOrderPanel.defaultProps = {
     handleFulfillmentOrderChange: () => null,
     status: '',
     dueDate: '',
+    servicer: '',
     selected: false,
     productDescription: '',
     externalId: '',

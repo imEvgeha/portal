@@ -295,6 +295,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'ReadyNew',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '1',
@@ -302,6 +303,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
@@ -315,6 +317,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '1',
@@ -322,6 +325,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -335,6 +339,7 @@ describe('SelectedRightsActions', () => {
                     status: 'ReadyNew',
                     licensed: true,
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '1',
@@ -342,6 +347,7 @@ describe('SelectedRightsActions', () => {
                     status: 'Pending',
                     licensed: true,
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -355,6 +361,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '2',
@@ -362,6 +369,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -375,6 +383,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '2',
@@ -382,6 +391,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -395,6 +405,7 @@ describe('SelectedRightsActions', () => {
                     licensed: false,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '2',
@@ -402,6 +413,7 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
@@ -412,9 +424,10 @@ describe('SelectedRightsActions', () => {
                 {
                     coreTitleId: '2',
                     sourceRightId: '',
-                    licensed: false,
+                    licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: true,
+                    temporaryPriceReduction: false,
                 },
                 {
                     coreTitleId: '2',
@@ -422,6 +435,29 @@ describe('SelectedRightsActions', () => {
                     licensed: true,
                     status: 'Ready',
                     updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
+                },
+            ]);
+            expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should be disabled when it is a TPR right', () => {
+            init([
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                    updatedCatalogReceived: false,
+                    temporaryPriceReduction: true,
+                },
+                {
+                    coreTitleId: '2',
+                    sourceRightId: '',
+                    licensed: true,
+                    status: 'Ready',
+                    updatedCatalogReceived: false,
+                    temporaryPriceReduction: false,
                 },
             ]);
             expect(createBonusRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);

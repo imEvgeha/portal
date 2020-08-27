@@ -25,7 +25,8 @@ export const PrePlanActions = ({
     addToast,
     setSelectedPrePlanRights,
     setPreplanRights,
-    prePlanRepoRights,
+    prePlanRepoRights = [],
+    username,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
@@ -36,7 +37,7 @@ export const PrePlanActions = ({
     const removeRightsFromPrePlan = () => {
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => right.id);
         const notSelectedRights = prePlanRepoRights.filter(right => !selectedPrePlanRightsId.includes(right.id));
-        setPreplanRights([...notSelectedRights]);
+        setPreplanRights({[username]: [...(notSelectedRights || [])]});
         setSelectedPrePlanRights([]);
         clickHandler();
     };
@@ -77,7 +78,7 @@ export const PrePlanActions = ({
                             : previousRight['keywords'].split(',');
                         const keywords = uniq(prevKeywords.concat(right['keywords']));
                         return {
-                            ...right,
+                            id: right.id,
                             keywords,
                             territory: right['territory'].map(territory => {
                                 const selected = previousRight['territory'].find(
@@ -94,7 +95,7 @@ export const PrePlanActions = ({
                                 const projectId = res.id;
                                 Promise.all(
                                     mergedWithSelectedRights.map(right => {
-                                        return rightsService.updateRightWithFullData(right, right.id, true, true);
+                                        return rightsService.update(right, right.id);
                                     })
                                 )
                                     .then(() => {
@@ -181,6 +182,7 @@ PrePlanActions.propTypes = {
     setSelectedPrePlanRights: PropTypes.func.isRequired,
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
+    username: PropTypes.string.isRequired,
 };
 
 PrePlanActions.defaultProps = {

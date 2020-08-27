@@ -20,3 +20,9 @@ export const REPORT = {
     CANCELLED: {label: 'Canceled', value: 'Canceled'},
     FAILED: {label: 'Failed', value: 'Failed'},
 };
+
+export const SERVICERS = {
+    JUICEBOX: 'JUICE BOX',
+    CHOP: 'CHOP',
+    DETE: 'DETE',
+};
