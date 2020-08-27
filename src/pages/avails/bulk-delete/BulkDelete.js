@@ -1,8 +1,10 @@
 import React, {useState, useEffect, memo} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {Checkbox} from '@atlaskit/checkbox';
 import DynamicTable from '@atlaskit/dynamic-table';
 import Tag from '@atlaskit/tag';
+import {isEmpty} from 'lodash';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import {getLinkedToOriginalRights} from '../availsService';
 import {
@@ -17,8 +19,7 @@ import {
 import './BulkDelete.scss';
 
 export const BulkDelete = ({rights, onClose}) => {
-    const [dependentRights, setDependentRights] = useState([]);
-    const [tableData, setTableData] = useState([]);
+    const [tableData, setTableData] = useState({});
 
     useEffect(() => {
         const rightIds = rights.map(right => right.id);
@@ -31,16 +32,11 @@ export const BulkDelete = ({rights, onClose}) => {
                 {originalRightIds: rightIds},
                 DEFAULT_PAGE_SIZE
             );
-            setDependentRights([...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data]);
+            const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
+            setTableData(prepareTableData(mergedDependencies));
         };
         fetchData();
     }, []);
-
-    useEffect(() => {
-        if (dependentRights.length) {
-            setTableData(prepareTableData(dependentRights));
-        }
-    }, [dependentRights]);
 
     const renderLinkableRightId = id => (
         <Button appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
@@ -88,50 +84,60 @@ export const BulkDelete = ({rights, onClose}) => {
         });
     };
 
+    const deselectRightForDeletion = key => {
+        const selectedRight = tableData[key];
+        selectedRight.isSelected = !selectedRight.isSelected;
+        setTableData({...tableData});
+    };
+
     const prepareTableData = dependentRights => {
-        const dependencyRights = [];
+        const dependencyRights = {};
         rights.map(right => {
             const foundDependency = dependentRights.filter(
                 dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
             );
             if (foundDependency && foundDependency.length) {
-                return dependencyRights.push({
-                    [right.id]: {
-                        original: right,
-                        dependencies: [...foundDependency],
-                        isSelected: true,
-                        rows: getDependentRows(foundDependency),
-                    },
-                });
+                dependencyRights[right.id] = {
+                    original: right,
+                    dependencies: [...foundDependency],
+                    isSelected: true,
+                    rows: getDependentRows(foundDependency),
+                };
             }
             return null;
         });
         return dependencyRights;
     };
+    console.log(tableData);
     return (
         <div className="nexus-c-bulk-delete">
             <div className="nexus-c-bulk-delete__message">{BULK_DELETE_WARNING_MSG}</div>
             <div className="nexus-c-bulk-delete__container">
-                {!!tableData.length && (
+                {!isEmpty(tableData) && (
                     <div className="nexus-c-bulk-delete__table">
                         <div className="nexus-c-bulk-delete__table-header">{BULK_DELETE_LINKED_RIGHT_MSG}</div>
-                        {tableData.map(entry => {
-                            return Object.entries(entry).map(([key, value]) => {
-                                return (
-                                    <div className="nexus-c-bulk-delete__table-data" key={value.original.id}>
-                                        <div>
-                                            {value.original.title} {renderLinkableRightId(value.original.id)}
-                                        </div>
-                                        <DynamicTable
-                                            head={HEADER}
-                                            rows={value.rows}
-                                            defaultPage={1}
-                                            loadingSpinnerSize="large"
-                                            isLoading={false}
+                        {Object.entries(tableData).map(([key, value]) => {
+                            return (
+                                <div className="nexus-c-bulk-delete__table-data" key={value.original.id}>
+                                    <div className="nexus-c-bulk-delete__table-entry-header">
+                                        <Checkbox
+                                            isChecked={value.isSelected}
+                                            onChange={() => deselectRightForDeletion(key)}
                                         />
+                                        <div className="nexus-c-bulk-delete__table-entry-title">
+                                            {value.original.title}
+                                        </div>
+                                        {renderLinkableRightId(value.original.id)}
                                     </div>
-                                );
-                            });
+                                    <DynamicTable
+                                        head={HEADER}
+                                        rows={value.rows}
+                                        defaultPage={1}
+                                        loadingSpinnerSize="large"
+                                        isLoading={false}
+                                    />
+                                </div>
+                            );
                         })}
                     </div>
                 )}

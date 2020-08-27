@@ -18,6 +18,15 @@
     @include margin(0, 0, 5, 0);
 }
 
+.nexus-c-bulk-delete__table-entry-header {
+    display: flex;
+    align-items: center;
+}
+
+.nexus-c-bulk-delete__table-entry-title {
+    @include margin(0, 5, 0, 0);
+}
+
 .nexus-c-bulk-delete__btn-wrapper {
     width: 100%;
     display: flex;
