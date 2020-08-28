@@ -137,11 +137,8 @@ const ServicingOrdersTable = ({
 
     const addRowSelection = (params, total) => {
         selectedItems.push(params.data);
-        console.log(params.api);
         setSelectedServicingOrders(selectedItems);
         setStatusBarInfo({selectedRows: selectedItems.length, totalRows: total});
-
-        console.log(selectedItems);
     };
 
     const removeRowSelection = (params, total) => {
@@ -149,8 +146,6 @@ const ServicingOrdersTable = ({
         setSelectedServicingOrders(filteredItems);
         setStatusBarInfo({selectedRows: filteredItems.length, totalRows: total});
         selectedItems = filteredItems;
-
-        console.log(selectedItems);
     };
 
     const isAlreadySelected = params => {
