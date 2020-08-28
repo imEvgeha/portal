@@ -21,7 +21,7 @@ const EventManagement = props => {
 
     const setSearchParams = (key, value) => {
         const existingParams = new URLSearchParams(props.location.search.substring(1));
-        if (!isEmpty(value)) {
+        if (!isEmpty(value) || key === 'sort') {
             existingParams.set(key, JSON.stringify(value));
         } else {
             existingParams.delete(key);
@@ -57,6 +57,10 @@ const EventManagement = props => {
         });
     };
 
+    const isFilterModelEmpty = filterModel => {
+        return Object.keys(filterModel).every(filter => isEmpty(filterModel[filter].filter));
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(props.location.search.substring(1));
         const selectedEventId = JSON.parse(params.get('selectedEventId'));
@@ -74,16 +78,20 @@ const EventManagement = props => {
 
                 const params = new URLSearchParams(props.location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
-                const sortModel = JSON.parse(params.get('sort'));
 
-                if (!isEmpty(filterModel)) {
+                const sortModelParam = params.get('sort');
+                const sortModel = JSON.parse(sortModelParam);
+
+                if (!isFilterModelEmpty(filterModel)) {
                     api.setFilterModel(filterModel);
                 }
 
-                if (sortModel && sortModel.length > 0) {
+                // check is there is a sort param in the URL
+                if (sortModelParam) {
                     api.setSortModel(sortModel);
                 } else {
-                    const sortModel = api.getSortModel ? api.getSortModel() : [];
+                    // otherwise set the initial sort
+                    const sortModel = api.getSortModel() || [];
                     api.setSortModel([...sortModel, INITIAL_SORT]);
                 }
 
