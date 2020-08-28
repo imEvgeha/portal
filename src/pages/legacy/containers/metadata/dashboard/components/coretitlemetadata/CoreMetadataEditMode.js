@@ -31,17 +31,14 @@ import {
     CREW_HEADER,
     MSV_ASSOCIATION_BTN
 } from '../../../../../constants/metadata/constant-variables';
+import TitleSystems from "../../../../../constants/metadata/systems";
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
 import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
 import Button from "@atlaskit/button";
-import {getDomainName} from "../../../../../../../util/Common";
-import {
-    ERROR_ICON,
-    ERROR_TITLE,
-    TITLE_MATCH_AND_CREATE_ERROR_MESSAGE
-} from "../../../../../../../ui/elements/nexus-toast-notification/constants";
 import Tooltip from "@material-ui/core/Tooltip";
+
+const {MOVIDA, VZ} = TitleSystems;
 
 const mapStateToProps = state => {
     return {
@@ -74,16 +71,6 @@ class CoreMetadataEditMode extends Component {
             ratings: newRatings
         });
     };
-
-    handleMovidaLegacyIds(e) {
-        const movidaLegacyId = { movida: { [e.target.name]: e.target.value } };
-        this.props.handleOnLegacyIds(movidaLegacyId);
-    }
-
-    handleVzLegacyIds(e) {
-        const vzLegacyId = { vz: { [e.target.name]: e.target.value } };
-        this.props.handleOnLegacyIds(vzLegacyId);
-    }
 
     loadOptionsPerson = (searchPersonText, type) => {
         if (searchPersonText.length < 2) return [];
@@ -150,7 +137,10 @@ class CoreMetadataEditMode extends Component {
         return !(this.state.msvLicensor && this.state.msvLicensee);
     }
 
+
     render() {
+        const vzExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === VZ);
+        const movidaExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === MOVIDA);
         return (
             <>
                 <Row>
@@ -409,15 +399,15 @@ class CoreMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField
+                                readOnly
                                 type='text'
-                                onChange={e => this.handleVzLegacyIds(e)}
                                 name='vzTitleId'
                                 id='vzTitleId'
-                                value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzTitleId : ''}
+                                value={vzExternalID && vzExternalID.externalTitleId ? vzExternalID.externalTitleId : ''}
                                 placeholder='VZ ID'
                                 validate={{
-                      maxLength: { value: 200 }
-                    }}
+                                  maxLength: { value: 200 }
+                                }}
                             />
                         </Col>
                     </Row>
@@ -443,11 +433,11 @@ class CoreMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField
+                                readOnly
                                 type='text'
-                                onChange={e => this.handleMovidaLegacyIds(e)}
                                 name='movidaId'
                                 id='movidaId'
-                                value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaId : ''}
+                                value={movidaExternalID && movidaExternalID.externalId ? movidaExternalID.externalId : ''}
                                 placeholder='Movie ID'
                                 validate={{
                       maxLength: { value: 200 }
@@ -482,7 +472,7 @@ class CoreMetadataEditMode extends Component {
                                 type='text'
                                 name='movidaTitleId'
                                 id='movidaTitleId'
-                                value={this.props.data.legacyIds && this.props.data.legacyIds.movida ? this.props.data.legacyIds.movida.movidaTitleId : ''}
+                                value={movidaExternalID && movidaExternalID.externalTitleId ? movidaExternalID.externalTitleId : ''}
                                 placeholder='Movida Title ID'
                             />
                         </Col>
@@ -493,11 +483,11 @@ class CoreMetadataEditMode extends Component {
                         </Col>
                         <Col>
                             <AvField
+                                readOnly
                                 type='text'
-                                onChange={e => this.handleVzLegacyIds(e)}
                                 name='vzId'
                                 id='vzId'
-                                value={this.props.data.legacyIds && this.props.data.legacyIds.vz ? this.props.data.legacyIds.vz.vzId : ''}
+                                value={vzExternalID && vzExternalID.externalId ? vzExternalID.externalId : ''}
                                 placeholder='VZ ID'
                                 validate={{
                                     maxLength: { value: 200 }

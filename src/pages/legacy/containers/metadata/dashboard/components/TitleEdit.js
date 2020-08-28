@@ -29,6 +29,7 @@ import {
     SUCCESS_ICON,
     WARNING_ICON
 } from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import {URL} from "../../../../../../util/Common";
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -91,7 +92,7 @@ class TitleEdit extends Component {
         configService.initConfigMapping();
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
-        this.loadExternalIds(titleId);
+        URL.isLocalOrDev() && this.loadExternalIds(titleId);
         this.loadTerritoryMetadata(titleId);
         this.loadEditorialMetadata();
     }
@@ -116,16 +117,16 @@ class TitleEdit extends Component {
             const mockResponse = [
                 {
                     titleId: 'titl_igrkn',
-                    externalSystem: 'MOVIDA',
+                    externalSystem: 'movida',
                     externalId: 'MOV_igrkn',
-                    externalTitleId: '2761109',
+                    externalTitleId: '27611099',
                     publishedAt: '2020-08-27T13:14:10.427Z',
                     status: 'success',
                     publishErrors: [],
                 },
                 {
                     titleId: 'titl_igrkn',
-                    externalSystem: 'VZ',
+                    externalSystem: 'vz',
                     externalId: 'VZ_igrkn',
                     externalTitleId: '523318',
                     publishedAt: '2020-08-27T13:14:10.427Z',
