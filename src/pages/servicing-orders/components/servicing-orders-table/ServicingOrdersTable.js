@@ -29,7 +29,7 @@ const ServicingOrdersTable = ({
     isRefreshData,
     dataRefreshComplete,
 }) => {
-    const selectedItems = [];
+    let selectedItems = [];
 
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
@@ -80,18 +80,17 @@ const ServicingOrdersTable = ({
                                     </Tooltip>
                                 </>
                             );
-                        } 
-                            // provide a cell checkbox using atlaskit
-                            return (
-                                <>
-                                    <Checkbox
-                                        value={params.data.soNumber}
-                                        onChange={() => onCheckboxChange(params)}
-                                        isDisabled={params.data.tenant !== 'MGM'}
-                                    />
-                                </>
-                            );
-                        
+                        }
+                        // provide a cell checkbox using atlaskit
+                        return (
+                            <>
+                                <Checkbox
+                                    value={params.data.soNumber}
+                                    onChange={() => onCheckboxChange(params)}
+                                    isDisabled={params.data.tenant !== 'MGM'}
+                                />
+                            </>
+                        );
                     },
                 };
             }
@@ -130,22 +129,28 @@ const ServicingOrdersTable = ({
     const onCheckboxChange = params => {
         const totalRows = params.api.getVirtualRowCount();
         if (event.target.checked) {
-            addRowSelection(params.data, totalRows);
+            addRowSelection(params, totalRows);
         } else {
-            removeRowSelection(params.data, totalRows);
+            removeRowSelection(params, totalRows);
         }
     };
 
-    const addRowSelection = (data, total) => {
-        selectedItems.push(data);
+    const addRowSelection = (params, total) => {
+        selectedItems.push(params.data);
+        console.log(params.api);
         setSelectedServicingOrders(selectedItems);
         setStatusBarInfo({selectedRows: selectedItems.length, totalRows: total});
+
+        console.log(selectedItems);
     };
 
-    const removeRowSelection = (data, total) => {
-        selectedItems.pop(data);
-        setSelectedServicingOrders(selectedItems);
-        setStatusBarInfo({selectedRows: selectedItems.length, totalRows: total});
+    const removeRowSelection = (params, total) => {
+        const filteredItems = selectedItems.filter(item => item.so_number !== params.data.so_number);
+        setSelectedServicingOrders(filteredItems);
+        setStatusBarInfo({selectedRows: filteredItems.length, totalRows: total});
+        selectedItems = filteredItems;
+
+        console.log(selectedItems);
     };
 
     /**
@@ -191,8 +196,6 @@ const ServicingOrdersTable = ({
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
                 customDateFilterParamSuffixes={['Start', 'End']}
-                // lets users deselect a row with cmd/ctrl + click
-                rowDeselection={true}
                 setTotalCount={setTotalCount}
             />
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
