@@ -1,13 +1,33 @@
-.nexus-c-servicing-orders-table {
-  width: 100%;
-  height: calc(100vh - 205px);
-  position: relative;
+@import '../../../../styles/atlaskit/reset.scss';
+@import '../../../../styles/atlaskit/colors';
+@import '../../../../styles/atlaskit/mixins';
 
-  .nexus-c-nexus-grid {
-    height: 100%;
-  }
-  .ag-react-container a {
-    color: #0065ff;
-    text-decoration: underline;
-  }
+.nexus-c-servicing-orders-table {
+    width: 100%;
+    height: calc(100vh - 205px);
+    position: relative;
+
+    .nexus-c-nexus-grid {
+        height: 100%;
+    }
+    .ag-react-container a {
+        color: #0065ff;
+        text-decoration: underline;
+    }
+
+    &__checkbox-cell {
+        width: 45px;
+        margin-left: 0 !important;
+        padding-left: 4px !important;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    &__checkbox--disabled {
+        height: 13px;
+        width: 13px;
+        margin: 6px 0 0 6px;
+        background-color: map-get($mid-neutral-colors, mid-neutral-8);
+        border-radius: 2px;
+    }
 }
