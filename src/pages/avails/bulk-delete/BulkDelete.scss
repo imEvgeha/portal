@@ -17,35 +17,3 @@
 .nexus-c-bulk-delete__table-header {
     @include margin(0, 0, 5, 0);
 }
-
-.nexus-c-bulk-delete__table-entry-header {
-    display: flex;
-    align-items: center;
-
-    label {
-        margin: 0;
-    }
-}
-
-.nexus-c-bulk-delete__table-entry-title {
-    @include margin(0, 5, 0, 0);
-}
-
-.nexus-c-bulk-delete__btn-wrapper {
-    width: 100%;
-    display: flex;
-}
-
-.nexus-c-bulk-delete__cancel-btn {
-    @include margin(0, 2, 0, auto);
-}
-
-.nexus-c-bulk-delete__link {
-    margin: 0;
-    padding: 0;
-
-    span {
-        margin: 0;
-        padding: 0;
-    }
-}

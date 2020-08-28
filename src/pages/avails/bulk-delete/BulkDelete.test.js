@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@atlaskit/button';
 import {shallow} from 'enzyme';
 import {BulkDelete} from './BulkDelete';
 
@@ -34,6 +33,6 @@ describe('BulkDelete', () => {
     });
 
     it('renders Cancel nad Mark as Deleted buttons', () => {
-        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find('BulkDeleteActions')).toHaveLength(1);
     });
 });

@@ -1,0 +1,14 @@
+@import '../../../../../styles/atlaskit/mixins';
+
+.nexus-c-bulk-delete-actions__wrapper {
+    @include margin(5, 0, 0, 0);
+}
+
+.nexus-c-bulk-delete-actions__btn-wrapper {
+    width: 100%;
+    display: flex;
+}
+
+.nexus-c-bulk-delete-actions__cancel-btn {
+    @include margin(0, 2, 0, auto);
+}

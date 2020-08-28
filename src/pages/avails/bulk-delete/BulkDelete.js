@@ -1,22 +1,15 @@
 import React, {useState, useEffect, memo} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {Checkbox} from '@atlaskit/checkbox';
-import DynamicTable from '@atlaskit/dynamic-table';
 import Tag from '@atlaskit/tag';
 import {isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import {getLinkedRights, clearLinkedRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
-import {
-    HEADER,
-    BULK_DELETE_WARNING_MSG,
-    BULK_DELETE_LINKED_RIGHT_MSG,
-    BULK_DELETE_CONTINUE_MSG,
-    BULK_DELETE_BTN_DELETE,
-    BULK_DELETE_BTN_CANCEL,
-} from './constants';
+import BulkDeleteActions from './components/bulk-delete-actions/BulkDeleteActions';
+import BulkDeleteTable from './components/bulk-delete-table/BulkDeleteTable';
+import {HEADER, BULK_DELETE_WARNING_MSG, BULK_DELETE_LINKED_RIGHT_MSG} from './constants';
 import './BulkDelete.scss';
 
 export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, clearLinkedRights}) => {
@@ -38,12 +31,7 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
     }, [rightsWithDeps]);
 
     const renderLinkableRightId = id => (
-        <Button
-            className="nexus-c-bulk-delete__link"
-            key={id}
-            appearance="link"
-            onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}
-        >
+        <Button key={id} appearance="link" onClick={() => window.open(RightsURL.getRightUrl(id), '_blank')}>
             {id}
         </Button>
     );
@@ -112,49 +100,23 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
                         <div className="nexus-c-bulk-delete__table-header">{BULK_DELETE_LINKED_RIGHT_MSG}</div>
                         {Object.entries(tableData).map(([key, value]) => {
                             return (
-                                <div className="nexus-c-bulk-delete__table-data" key={value.original.id}>
-                                    <div className="nexus-c-bulk-delete__table-entry-header">
-                                        <Checkbox
-                                            isChecked={value.isSelected}
-                                            onChange={() => deselectRightForDeletion(key)}
-                                        />
-                                        <div className="nexus-c-bulk-delete__table-entry-title">
-                                            {value.original.title}
-                                        </div>
-                                        {renderLinkableRightId(value.original.id)}
-                                    </div>
-                                    <DynamicTable
-                                        head={HEADER}
-                                        rows={value.rows}
-                                        defaultPage={1}
-                                        loadingSpinnerSize="large"
-                                        isLoading={false}
-                                    />
-                                </div>
+                                <BulkDeleteTable
+                                    key={key}
+                                    rightKey={key}
+                                    rightId={value.original.id}
+                                    title={value.original.title}
+                                    tableHeader={HEADER}
+                                    rows={value.rows}
+                                    isSelected={value.isSelected}
+                                    deselectRightForDeletion={deselectRightForDeletion}
+                                    renderLinkableRightId={renderLinkableRightId}
+                                />
                             );
                         })}
                     </div>
                 )}
             </div>
-            <div className="nexus-c-bulk-delete__continue">{BULK_DELETE_CONTINUE_MSG}</div>
-            <div className="nexus-c-bulk-delete__btn-wrapper">
-                <Button
-                    appearance="subtle"
-                    onClick={onClose}
-                    className="nexus-c-bulk-delete__cancel-btn"
-                    isDisabled={false}
-                >
-                    {BULK_DELETE_BTN_CANCEL}
-                </Button>
-                <Button
-                    appearance="primary"
-                    onClick={() => null}
-                    className="nexus-c-bulk-delete__delete-btn"
-                    isDisabled={false}
-                >
-                    {BULK_DELETE_BTN_DELETE}
-                </Button>
-            </div>
+            <BulkDeleteActions onClose={onClose} onSubmit={() => null} />
         </div>
     );
 };
