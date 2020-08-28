@@ -186,6 +186,7 @@ const RightsRepository = ({
         }
     }, [selectedRepoRights, selectedGridApi]);
 
+    // Fetch and set DOP projects count for current user
     useEffect(() => {
         DOPService.getUsersProjectsList(1, 1)
             .then(([response, headers]) => {
@@ -195,7 +196,7 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab, prePlanRights.length]);
+    }, [activeTab, prePlanRights.length, isPlanningTabRefreshed]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
@@ -436,6 +437,9 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
+                rowClassRules={{'nexus-c-rights-repository__row': params => params &&  params.data && params.data.status
+                        && (params.data.status === "Merged" || params.data.status === "Deleted")
+                }}
             />
             <SelectedRightsRepositoryTable
                 id="selectedRightsRepo"
@@ -482,7 +486,7 @@ RightsRepository.propTypes = {
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
     selectedRights: PropTypes.array,
-    prePlanRights: PropTypes.array,
+    prePlanRights: PropTypes.object,
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
@@ -493,7 +497,7 @@ RightsRepository.defaultProps = {
     selectedIngest: {},
     selectedAttachmentId: '',
     selectedRights: [],
-    prePlanRights: [],
+    prePlanRights: {},
     rightsFilter: {},
     isTableDataLoading: false,
     setIsTableDataLoading: () => null,

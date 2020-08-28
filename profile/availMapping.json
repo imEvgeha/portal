@@ -76,7 +76,7 @@
             "displayName": "Status",
             "dataType": "select",
             "searchDataType": "multiselect",
-            "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged"],
+            "options": ["Error", "Pending", "ReadyNew", "Ready", "Merged", "Deleted"],
             "queryParamName": "status",
             "readOnly": false,
             "enableSearch": true,
@@ -497,6 +497,15 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
+            "required": false
+        },
+        {
+            "javaVariableName": "bonusRight",
+            "displayName": "Bonus Right",
+            "dataType": "boolean",
+            "readOnly": true,
+            "enableSearch": true,
+            "enableEdit": false,
             "required": false
         },
         {

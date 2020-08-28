@@ -1,10 +1,16 @@
+import config from 'react-global-configuration';
+
 export const DOP_PROJECT_STATUS_COMPLETED = 'COMPLETED';
-export const DOP_PROJECT_STATUS_IN_PROGRESS = 'IN PROGRESS';
+export const DOP_PROJECT_STATUS_IN_PROGRESS = 'CIN PROGRESS';
+export const DOP_PROJECT_STATUS_IN_PROGRESS_DISPLAY = 'IN PROGRESS';
 export const DOP_PROJECT_STATUS_CANCELLED = 'CANCELLED';
 export const EXCLUDED_STATUSES = [DOP_PROJECT_STATUS_CANCELLED, DOP_PROJECT_STATUS_COMPLETED];
 export const SELECTED_FOR_PLANNING_TAB = 'Selected for Planning';
 export const PAGE_SIZE = 100;
 export const PROJECT_ID = '5bbe8921-ab75-469b-b410-30955a0589d3';
+export const DOP_PROJECT_URL = `${config.get(
+    'gateway.DOPUrl'
+)}/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=`;
 export const getSearchPayload = (user, offset, limit) => ({
     filterCriterion: [
         {
@@ -65,10 +71,15 @@ export const COLUMN_MAPPINGS = [
         width: 150,
     },
     {
-        colId: 'status',
+        colId: 'projectId',
         field: 'status',
         headerName: 'DOP Status',
         width: 180,
+        cellRenderer: 'loadingCellRenderer',
+        cellRendererParams: {
+            link: DOP_PROJECT_URL,
+        },
+        valueFormatter: () => DOP_PROJECT_STATUS_IN_PROGRESS_DISPLAY,
     },
     {
         colId: 'format',
@@ -96,4 +107,3 @@ export const COLUMN_MAPPINGS = [
     },
 ];
 export const TABLE_FIELDS = 'rightID,title,territory,keywords,format,licensor,licensee,licenseType';
-export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';
