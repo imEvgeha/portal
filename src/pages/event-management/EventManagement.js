@@ -5,7 +5,7 @@ import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
-import {TITLE} from './eventManagementConstants';
+import {TITLE, INITIAL_SORT} from './eventManagementConstants';
 import './EventManagement.scss';
 import {getEventById} from './eventManagementService';
 
@@ -84,7 +84,7 @@ const EventManagement = props => {
                     api.setSortModel(sortModel);
                 } else {
                     const sortModel = api.getSortModel ? api.getSortModel() : [];
-                    api.setSortModel([...sortModel, {colId: 'createdTimeStamp', sort: 'desc'}]);
+                    api.setSortModel([...sortModel, INITIAL_SORT]);
                 }
 
                 break;
