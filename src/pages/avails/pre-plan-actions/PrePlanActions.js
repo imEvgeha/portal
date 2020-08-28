@@ -35,9 +35,18 @@ export const PrePlanActions = ({
     const clickHandler = () => setMenuOpened(!menuOpened);
 
     const removeRightsFromPrePlan = () => {
-        const selectedPrePlanRightsId = selectedPrePlanRights.map(right => right.id);
-        const notSelectedRights = prePlanRepoRights.filter(right => !selectedPrePlanRightsId.includes(right.id));
-        setPreplanRights({[username]: [...(notSelectedRights || [])]});
+        const selectedRights = [];
+        const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
+            const unselectedTerritory = right.territory.filter(t => !t.selected);
+            unselectedTerritory.length &&
+                selectedRights.push({
+                    ...right,
+                    territory: unselectedTerritory,
+                });
+            return right.id;
+        });
+        const notSelectedRights = prePlanRepoRights.filter(right => !selectedPrePlanRightsId.includes(right.id)) || [];
+        setPreplanRights({[username]: [...notSelectedRights, ...selectedRights]});
         setSelectedPrePlanRights([]);
         clickHandler();
     };
@@ -60,6 +69,7 @@ export const PrePlanActions = ({
         Promise.all(selectedPrePlanRights.map(right => rightsService.get(right.id, {isWithErrorHandling: true})))
             .then(result => {
                 const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
+                const DOPRequestRights = [];
                 if (nonEligibleRights && nonEligibleRights.length) {
                     setModalContentAndTitle(
                         <StatusCheck
@@ -76,19 +86,25 @@ export const PrePlanActions = ({
                         const prevKeywords = Array.isArray(previousRight['keywords'])
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
-                        const keywords = uniq(prevKeywords.concat(right['keywords']));
-                        return {
+                        const prevTerritory = [];
+                        const updatedRight = {
                             id: right.id,
-                            keywords,
+                            keywords: uniq(prevKeywords.concat(right['keywords'])),
                             territory: right['territory'].map(territory => {
                                 const selected = previousRight['territory'].find(
                                     obj => obj.country === territory.country && obj.selected
                                 );
+                                selected && prevTerritory.push(selected);
                                 return selected || territory;
                             }),
                         };
+                        DOPRequestRights.push({
+                            id: right.id,
+                            territory: prevTerritory,
+                        });
+                        return updatedRight;
                     });
-                    const requestData = DOPService.createProjectRequestData(mergedWithSelectedRights);
+                    const requestData = DOPService.createProjectRequestData(DOPRequestRights);
                     DOPService.createProject(requestData)
                         .then(res => {
                             if (res.id) {

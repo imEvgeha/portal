@@ -12,6 +12,12 @@ describe('PrePlanActions', () => {
         {
             id: '1',
             title: 'Awesome Right',
+            territory: [
+                {
+                    selected: true,
+                    countryName: 'US',
+                },
+            ],
         },
     ];
 
@@ -19,13 +25,24 @@ describe('PrePlanActions', () => {
         {
             id: '1',
             title: 'Awesome Right',
+            territory: [
+                {
+                    selected: true,
+                    countryName: 'US',
+                },
+            ],
         },
         {
             id: '2',
             title: 'Awesome Right 2',
+            territory: [
+                {
+                    selected: true,
+                    countryName: 'US',
+                },
+            ],
         },
     ];
-
 
     beforeEach(() => {
         mockStore = configureStore();
@@ -38,12 +55,7 @@ describe('PrePlanActions', () => {
 
     describe('Remove Rights Action', () => {
         beforeEach(() => {
-            wrapper = shallow(
-                <PrePlanActions
-                    selectedPrePlanRights={[]}
-                    store={store}
-                />
-            );
+            wrapper = shallow(<PrePlanActions selectedPrePlanRights={[]} store={store} />);
         });
 
         it('should match snapshot', () => {
@@ -71,6 +83,7 @@ describe('PrePlanActions', () => {
                     prePlanRepoRights={prePlanRepoRights}
                     store={store}
                     setSelectedPrePlanRights={setSelectedPrePlanRights}
+                    username="user1"
                 />
             );
             const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
@@ -82,5 +95,4 @@ describe('PrePlanActions', () => {
             expect(setSelectedPrePlanRights).toHaveBeenCalled();
         });
     });
-
 });
