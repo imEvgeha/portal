@@ -500,6 +500,15 @@
             "required": false
         },
         {
+            "javaVariableName": "bonusRight",
+            "displayName": "Bonus Right",
+            "dataType": "boolean",
+            "readOnly": true,
+            "enableSearch": true,
+            "enableEdit": false,
+            "required": false
+        },
+        {
             "javaVariableName": "affiliate",
             "displayName": "Affiliate",
             "dataType": "multiselect",
