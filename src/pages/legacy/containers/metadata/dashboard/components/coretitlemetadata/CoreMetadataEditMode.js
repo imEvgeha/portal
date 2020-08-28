@@ -31,7 +31,7 @@ import {
     CREW_HEADER,
     MSV_ASSOCIATION_BTN
 } from '../../../../../constants/metadata/constant-variables';
-import TitleSystems from "../../../../../constants/metadata/systems";
+import TitleSystems from '../../../../../constants/metadata/systems';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
 import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';

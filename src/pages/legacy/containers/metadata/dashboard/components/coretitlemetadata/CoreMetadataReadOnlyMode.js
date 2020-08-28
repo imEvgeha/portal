@@ -16,15 +16,20 @@ import {
     getFilteredCastList,
     getFilteredCrewList, getFormatTypeName,
 } from '../../../../../constants/metadata/configAPI';
+import TitleSystems from '../../../../../constants/metadata/systems';
 import Rating from './rating/Rating';
 import PersonListReadOnly from './PersonListReadOnly';
 import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
 import './CoreMetadata.scss';
 
+const {MOVIDA, VZ} = TitleSystems;
+
 class CoreMetadataReadOnlyMode extends Component {
 
     render() {
-        const {legacyIds, externalIds} = this.props.data;
+        const {externalIds} = this.props.data;
+        const vzExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === VZ);
+        const movidaExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === MOVIDA);
         return (
             <>
                 {
@@ -123,7 +128,7 @@ class CoreMetadataReadOnlyMode extends Component {
                             : null
                     }
                 </Row>
-                {externalIds || legacyIds ? (
+                {externalIds || this.props.externalIDs ? (
                     <>
                         <hr />
                         <h4>External IDs</h4>
@@ -226,7 +231,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                       )}
                                 </>
                               )}
-                            {((externalIds && externalIds.alid) || (legacyIds && legacyIds.vz)) && (
+                            {((externalIds && externalIds.alid) || (vzExternalID && vzExternalID.externalTitleId)) && (
                                 <Row style={{ marginTop: '10px' }}>
                                     {
                                         externalIds && externalIds.alid ? (
@@ -236,15 +241,15 @@ class CoreMetadataReadOnlyMode extends Component {
                                           ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.vz ? (
+                                        vzExternalID && vzExternalID.externalTitleId  ? (
                                             <Col>
-                                                <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {legacyIds.vz.vzTitleId ? legacyIds.vz.vzTitleId : null}</Alert>
+                                                <Alert color='light'><b style={{ color: '#000' }}>VZ Title ID: </b> {vzExternalID.externalTitleId}</Alert>
                                             </Col>
                                           ) : null
                                     }
                                 </Row>
                               )}
-                            {((externalIds && externalIds.cid) || (legacyIds && legacyIds.movida)) && (
+                            {((externalIds && externalIds.cid) || (movidaExternalID && movidaExternalID.externalId)) && (
                                 <Row style={{marginTop: '10px'}}>
                                     {
                                         externalIds && externalIds.cid ? (
@@ -258,19 +263,19 @@ class CoreMetadataReadOnlyMode extends Component {
                                           ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaId ? (
+                                        movidaExternalID && movidaExternalID.externalId ? (
                                             <Col>
                                                 <Alert color='light'>
                                                     <b style={{color: '#000'}}>
                                                         Movida ID:
-                                                    </b> {legacyIds.movida.movidaId ? legacyIds.movida.movidaId : null}
+                                                    </b> {movidaExternalID.externalId}
                                                 </Alert>
                                             </Col>
                                           ) : null
                                     }
                                 </Row>
                               )}
-                            {((externalIds && externalIds.isrc) || (legacyIds && legacyIds.movida)) && (
+                            {((externalIds && externalIds.isrc) || (movidaExternalID && movidaExternalID.externalTitleId)) && (
                                 <Row style={{marginTop: '10px'}}>
                                     {
                                         externalIds && externalIds.isrc ? (
@@ -285,25 +290,25 @@ class CoreMetadataReadOnlyMode extends Component {
                                           ) : null
                                     }
                                     {
-                                        legacyIds && legacyIds.movida && legacyIds.movida.movidaTitleId ? (
+                                        movidaExternalID && movidaExternalID.externalTitleId ? (
                                             <Col>
                                                 <Alert color='light'>
                                                     <b style={{color: '#000'}}>
                                                         Movida Title ID:
-                                                    </b> {legacyIds.movida.movidaTitleId ? legacyIds.movida.movidaTitleId : null}
+                                                    </b> {movidaExternalID.externalTitleId}
                                                 </Alert>
                                             </Col>
                                           ) : null
                                     }
                                 </Row>
                               )}
-                            {((legacyIds && legacyIds.vz && legacyIds.vz.vzId )) && (
+                            {((vzExternalID && vzExternalID.externalId )) && (
                                 <Row style={{marginTop: '10px'}}>
                                     <Col>
                                         <Alert color='light'>
                                             <b style={{color: '#000'}}>
                                                 VZ Vendor ID:
-                                            </b> {legacyIds.vz.vzId}
+                                            </b> {vzExternalID.externalId}
                                         </Alert>
                                     </Col>
                                 </Row>
