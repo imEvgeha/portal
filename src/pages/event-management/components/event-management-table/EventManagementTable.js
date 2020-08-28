@@ -1,9 +1,10 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {NexusDateTimeContext} from '../../../../ui/elements/nexus-date-time-provider/NexusDateTimeProvider';
+import DateTimeConsumer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeConsumer';
+import {NexusDateTimeContext} from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeProvider';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -27,13 +28,7 @@ const EventManagementGrid = compose(
 )(NexusGrid);
 
 const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...props}) => {
-    const {renderDateTime, setIsLocal, isLocal} = useContext(NexusDateTimeContext);
-
-    useEffect(() => {
-        console.log({isLocal});
-
-        gridApi && gridApi.refreshCells({force: true});
-    }, [isLocal, gridApi]);
+    const {setIsLocal, isLocal} = useContext(NexusDateTimeContext);
 
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => {
@@ -51,13 +46,9 @@ const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...p
             ) {
                 return {
                     ...defaultColDef,
-                    valueFormatter: params => {
-                        console.log('-----------------');
-                        console.log(params.value);
-                        const newDateString = renderDateTime(params.value, DATETIME_FIELDS.BUSINESS_DATETIME);
-                        console.log(newDateString);
-                        console.log('-----------------');
-                        return newDateString;
+                    cellRenderer: null,
+                    cellRendererFramework: params => {
+                        return <DateTimeConsumer dateTime={params.value} />;
                     },
                 };
             }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {PersistGate} from 'redux-persist/integration/react';
 import AuthProvider from './auth/AuthProvider';
-import NexusDateTimeProvider from './ui/elements/nexus-date-time-provider/NexusDateTimeProvider';
+import NexusDateTimeProvider from './ui/elements/nexus-date-time-context/NexusDateTimeProvider';
 import CustomIntlProvider from './ui/elements/nexus-layout/CustomIntlProvider';
 import {NexusModalProvider} from './ui/elements/nexus-modal/NexusModal';
 import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
