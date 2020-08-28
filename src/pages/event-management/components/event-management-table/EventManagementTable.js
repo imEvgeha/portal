@@ -12,19 +12,19 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '../../../../ui/grid/gridActions';
 import columnDefs from '../../columnMappings.json';
-import {INITIAL_SORT, NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
+import {NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
 import {getEventSearch} from '../../eventManagementService';
 import './EventManagementTable.scss';
 
 const EventManagementGrid = compose(
     withSideBar(),
     withColumnsResizing(),
-    withSorting(INITIAL_SORT),
+    withSorting(),
     withFilterableColumns({useDatesWithTime: true}),
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
-const EventManagementTable = ({onGridEvent, toggleRefreshGridData, ...props}) => {
+const EventManagementTable = ({toggleRefreshGridData, ...props}) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => ({
             ...columnDef,
@@ -42,7 +42,6 @@ const EventManagementTable = ({onGridEvent, toggleRefreshGridData, ...props}) =>
                 className="nexus-c-event-management-grid"
                 columnDefs={updateColumnDefs(columnDefs)}
                 rowSelection="single"
-                onGridEvent={onGridEvent}
                 mapping={columnDefs}
                 notFilterableColumns={NOT_FILTERABLE_FIELDS}
                 {...props}
@@ -52,12 +51,7 @@ const EventManagementTable = ({onGridEvent, toggleRefreshGridData, ...props}) =>
 };
 
 EventManagementTable.propTypes = {
-    onGridEvent: PropTypes.func,
     toggleRefreshGridData: PropTypes.func.isRequired,
-};
-
-EventManagementTable.defaultProps = {
-    onGridEvent: () => null,
 };
 
 const mapDispatchToProps = dispatch => ({

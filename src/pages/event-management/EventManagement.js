@@ -76,12 +76,17 @@ const EventManagement = props => {
                 const filterModel = JSON.parse(params.get('filter'));
                 const sortModel = JSON.parse(params.get('sort'));
 
-                if (filterModel) {
+                if (!isEmpty(filterModel)) {
                     api.setFilterModel(filterModel);
                 }
-                if (sortModel) {
+
+                if (sortModel && sortModel.length > 0) {
                     api.setSortModel(sortModel);
+                } else {
+                    const sortModel = api.getSortModel ? api.getSortModel() : [];
+                    api.setSortModel([...sortModel, {colId: 'createdTimeStamp', sort: 'desc'}]);
                 }
+
                 break;
             }
 
