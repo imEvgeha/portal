@@ -36,6 +36,12 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
         </Button>
     );
 
+    const renderCustomTypeTag = text => (
+        <div className="nexus-c-bulk-delete__tag">
+            <Tag text={text} color="greyLight" />
+        </div>
+    );
+
     const getDependentRows = dependencies => {
         return dependencies.map(item => {
             const {title, id, originalRightIds, sourceRightId} = item || {};
@@ -54,11 +60,7 @@ export const BulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRights, cl
                     },
                     {
                         key: `${id}-type`,
-                        content: sourceRightId ? (
-                            <Tag className="nexus-c-bulk-delete__tag" text="Bonus" color="greyLight" />
-                        ) : (
-                            <Tag className="nexus-c-bulk-delete__tag" text="TPR" color="greyLight" />
-                        ),
+                        content: renderCustomTypeTag(sourceRightId ? 'Bonus' : 'TPR'),
                         width: 10,
                     },
                     {

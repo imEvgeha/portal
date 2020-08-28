@@ -17,3 +17,17 @@
 .nexus-c-bulk-delete__table-header {
     @include margin(0, 0, 5, 0);
 }
+
+.nexus-c-bulk-delete__tag {
+    div {
+        margin-left: -10px;
+        width: 100%;
+    }
+    span {
+        margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
