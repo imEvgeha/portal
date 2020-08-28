@@ -58,6 +58,9 @@ const EventManagement = props => {
     };
 
     const isFilterModelEmpty = filterModel => {
+        if (!filterModel) {
+            return true;
+        }
         return Object.keys(filterModel).every(filter => isEmpty(filterModel[filter].filter));
     };
 
@@ -82,6 +85,7 @@ const EventManagement = props => {
                 const sortModelParam = params.get('sort');
                 const sortModel = JSON.parse(sortModelParam);
 
+                // only set the filter model if there is an active filter in the filter model
                 if (!isFilterModelEmpty(filterModel)) {
                     api.setFilterModel(filterModel);
                 }
