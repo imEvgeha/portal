@@ -67,8 +67,7 @@ const ServicingOrdersTable = ({
                     ...columnDef,
                     cellClass: 'nexus-c-servicing-orders-table__checkbox-cell',
                     cellRendererFramework: params => {
-                        const temp = Math.floor(Math.random() * 1 + 0.5);
-                        params.data.tenant = temp === 1 ? 'MGM' : 'BobCo';
+                        const defaultSelected = isAlreadySelected(params);
 
                         if (params.data.tenant !== 'MGM') {
                             // provide a faux checkbox that a user can mouse to receive a tooltip.  The
@@ -87,6 +86,7 @@ const ServicingOrdersTable = ({
                                 <Checkbox
                                     value={params.data.soNumber}
                                     onChange={() => onCheckboxChange(params)}
+                                    defaultChecked={defaultSelected}
                                     isDisabled={params.data.tenant !== 'MGM'}
                                 />
                             </>
@@ -151,6 +151,11 @@ const ServicingOrdersTable = ({
         selectedItems = filteredItems;
 
         console.log(selectedItems);
+    };
+
+    const isAlreadySelected = params => {
+        const foundItem = selectedItems.filter(item => item.so_number === params.data.so_number);
+        return foundItem && foundItem.length > 0;
     };
 
     /**
