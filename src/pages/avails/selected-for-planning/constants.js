@@ -8,9 +8,7 @@ export const EXCLUDED_STATUSES = [DOP_PROJECT_STATUS_CANCELLED, DOP_PROJECT_STAT
 export const SELECTED_FOR_PLANNING_TAB = 'Selected for Planning';
 export const PAGE_SIZE = 100;
 export const PROJECT_ID = '5bbe8921-ab75-469b-b410-30955a0589d3';
-export const DOP_PROJECT_URL = `${config.get(
-    'gateway.DOPUrl'
-)}/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=`;
+export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';
 export const getSearchPayload = (user, offset, limit) => ({
     filterCriterion: [
         {
@@ -77,7 +75,7 @@ export const COLUMN_MAPPINGS = [
         width: 180,
         cellRenderer: 'loadingCellRenderer',
         cellRendererParams: {
-            link: DOP_PROJECT_URL,
+            link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
         },
         valueFormatter: () => DOP_PROJECT_STATUS_IN_PROGRESS_DISPLAY,
     },
