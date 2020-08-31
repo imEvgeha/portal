@@ -16,6 +16,7 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {
@@ -79,6 +80,7 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
+    toggleRefreshGridData,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -196,12 +198,15 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab, prePlanRights.length, isPlanningTabRefreshed]);
+    }, [activeTab, get(prePlanRights, `[${username}].length`, 0), isPlanningTabRefreshed]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
         if (isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
+        }
+        if (activeTab !== RIGHTS_TAB) {
+            toggleRefreshGridData(true);
         }
     }, [prePlanRights, username]);
 
@@ -494,6 +499,7 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 RightsRepository.defaultProps = {
@@ -536,6 +542,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
