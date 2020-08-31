@@ -198,7 +198,7 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab, prePlanRights.length, isPlanningTabRefreshed]);
+    }, [activeTab, get(prePlanRights, `[${username}].length`, 0), isPlanningTabRefreshed]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
