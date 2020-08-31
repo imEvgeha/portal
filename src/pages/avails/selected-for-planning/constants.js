@@ -1,5 +1,3 @@
-import config from 'react-global-configuration';
-
 export const DOP_PROJECT_STATUS_COMPLETED = 'COMPLETED';
 export const DOP_PROJECT_STATUS_IN_PROGRESS = 'CIN PROGRESS';
 export const DOP_PROJECT_STATUS_IN_PROGRESS_DISPLAY = 'IN PROGRESS';
@@ -74,9 +72,6 @@ export const COLUMN_MAPPINGS = [
         headerName: 'DOP Status',
         width: 180,
         cellRenderer: 'loadingCellRenderer',
-        cellRendererParams: {
-            link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
-        },
         valueFormatter: () => DOP_PROJECT_STATUS_IN_PROGRESS_DISPLAY,
     },
     {
