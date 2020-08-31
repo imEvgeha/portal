@@ -25,11 +25,13 @@ const rightsReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
-        case actionTypes.SET_SELECTED_RIGHTS:
+        case actionTypes.SET_SELECTED_RIGHTS: {
+            const {selected = {}} = state;
             return {
                 ...state,
-                selected: payload,
+                selected: {...selected, ...payload},
             };
+        }
         case actionTypes.SET_PREPLAN_RIGHTS: {
             const {prePlanRights = {}} = state;
             return {
