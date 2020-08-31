@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
+import {Checkbox} from '@atlaskit/checkbox';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import Tooltip from '@atlaskit/tooltip';
@@ -15,6 +16,7 @@ import './InputForm.scss';
 const {
     ingestTypes: {EMAIL},
     SERVICE_REGIONS,
+    CATALOG_TYPES,
     TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
     LICENSEE_TOOLTIP,
     LICENSEE_WARNING,
@@ -64,6 +66,9 @@ const InputForm = ({
     const [serviceRegion, setServiceRegion] = useState(
         ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
     );
+    const [isShowingCatalogType, setIsShowingCatalogType] = useState(false);
+    const [catalogType, setCatalogType] = useState('');
+    const [isLicensed, setIsLicensed] = useState(false);
 
     useEffect(() => {
         if (template === STUDIO && !ingestData) {
@@ -147,7 +152,13 @@ const InputForm = ({
                 </Button>
             </div>
             <div className="manual-ingest-config__templates">
-                <RadioGroup options={templates} onChange={onTemplateChange} defaultValue={initialTemplate.value} />
+                <label>Template</label>
+                <RadioGroup
+                    label="Template"
+                    options={templates}
+                    onChange={onTemplateChange}
+                    defaultValue={initialTemplate.value}
+                />
             </div>
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--licensor">
@@ -190,6 +201,38 @@ const InputForm = ({
                     />
                 </Tooltip>
                 <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
+            </div>
+            <div className="manual-ingest-config__catalog">
+                <Checkbox
+                    id="catalog"
+                    label="Catalog"
+                    onChange={() => setIsShowingCatalogType(!isShowingCatalogType)}
+                    isChecked={isShowingCatalogType}
+                />
+                {isShowingCatalogType && (
+                    <div className="manual-ingest-config__catalog-options">
+                        <div className="manual-ingest-config__catalog-select">
+                            <label>Catalog Type</label>
+                            <Select
+                                id="manual-upload-catalog-type"
+                                onChange={val => setCatalogType(val)}
+                                value={catalogType}
+                                options={CATALOG_TYPES}
+                                isDisabled={false}
+                                placeholder="Select"
+                                {...selectProps}
+                            />
+                        </div>
+                        <div className="manual-ingest-config__catalog-checkbox">
+                            <Checkbox
+                                id="licensed-checkbox"
+                                label="Licensed"
+                                onChange={() => setIsLicensed(!isLicensed)}
+                                isChecked={isLicensed}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="manual-ingest-config__grid">
                 <Button isDisabled={isUploading} onClick={closeModal}>

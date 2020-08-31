@@ -39,6 +39,10 @@ export default {
         {label: 'US', value: 'US'},
         {label: 'UK', value: 'UK'},
     ],
+    CATALOG_TYPES: [
+        {label: 'Full Catalog', value: 'Full Catalog'},
+        {label: 'Title Catalog', value: 'Title Catalog'},
+    ],
     TEMPLATES: {
         STUDIO: 'Studio',
         USMASTER: 'US Master',

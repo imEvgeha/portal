@@ -49,7 +49,7 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationCo
                             }`}
                             key={index}
                         >
-                            {key}:<span className="nexus-c-tag__tooltip-prop-value">{getValidValue(value[key])}</span>
+                            {key}: <span className="nexus-c-tag__tooltip-prop-value">{getValidValue(value[key])}</span>
                         </li>
                     )
                 );
