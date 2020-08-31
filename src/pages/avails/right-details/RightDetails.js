@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import SectionTab from './components/SectionTab';
 import mapping from './structureMapping.json';
 import {parseField} from './utils';
