@@ -4,7 +4,7 @@ import NexusDynamicForm from './NexusDynamicForm';
 
 describe('NexusDynamicForm', () => {
     let wrapper = null;
-    const mapping = [
+    const schema = [
         {
             title: 'Amazing Tab',
             sections: [
@@ -22,7 +22,7 @@ describe('NexusDynamicForm', () => {
     ];
 
     beforeEach(() => {
-        wrapper = shallow(<NexusDynamicForm mapping={mapping}/>);
+        wrapper = shallow(<NexusDynamicForm schema={schema}/>);
     });
 
     it('should match snapshot', () => {
@@ -30,7 +30,7 @@ describe('NexusDynamicForm', () => {
     });
 
     it('should render tab container and all tabs within', () => {
-        const tabs = mapping.map(({title = ''}) => title);
+        const tabs = schema.map(({title = ''}) => title);
         const tabContainer = wrapper.find('.nexus-c-dynamic-form__tab-container');
         expect(tabContainer.length).toEqual(1); // Container exists
 

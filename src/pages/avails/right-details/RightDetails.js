@@ -1,13 +1,13 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
-import mapping from './structureMapping.json';
+import schema from './schema.json';
 import './RightDetails.scss';
 
 const RightDetails = () => {
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm mapping={mapping}/>
+            <NexusDynamicForm schema={schema}/>
         </div>
     );
 };

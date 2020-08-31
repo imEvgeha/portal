@@ -4,9 +4,9 @@ import SectionTab from './components/SectionTab';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
-    mapping = [],
+    schema = [],
 }) => {
-    const tabs = mapping.map(({title = ''}) => title);
+    const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
     const parseField = (field = {}) => {
@@ -46,8 +46,8 @@ const NexusDynamicForm = ({
                 ))}
             </div>
             <div className="nexus-c-dynamic-form__tab-content">
-                {mapping.map(({title = '', sections = []}) => (
-                    <Fragment key={title}>
+                {schema.map(({title = '', sections = []}) => (
+                    <Fragment key={`tab-${title}`}>
                         {sections.map(({title: sectionTitle = '', fields = []}) => (
                             <Fragment key={`section-${sectionTitle}`}>
                                 <h3
@@ -67,7 +67,7 @@ const NexusDynamicForm = ({
 };
 
 NexusDynamicForm.propTypes = {
-    mapping: PropTypes.array.isRequired,
+    schema: PropTypes.array.isRequired,
 };
 
 NexusDynamicForm.defaultProps = {};

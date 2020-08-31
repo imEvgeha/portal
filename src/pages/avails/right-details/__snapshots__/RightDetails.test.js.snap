@@ -5,7 +5,7 @@ exports[`RightDetails should match snapshot 1`] = `
   className="nexus-c-right-details"
 >
   <NexusDynamicForm
-    mapping={
+    schema={
       Array [
         Object {
           "sections": Array [
