@@ -5,13 +5,28 @@ exports[`EventManagementTable should match snapshot 1`] = `
   className="nexus-c-event-management-table"
 >
   <div
-    className="nexus-c-event-management-table__refresh-button"
+    className="nexus-c-event-management-table__toolbar"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      onClick={[Function]}
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content="Clear Active Column Filters"
     >
-      Refresh
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-event-management-table__toolbar-button"
+        onClick={[MockFunction]}
+      >
+        Clear Filters
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content="Refresh Grid Data"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-event-management-table__toolbar-button"
+        onClick={[Function]}
+      >
+        Refresh
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   </div>
   <Component
     className="nexus-c-event-management-grid"
