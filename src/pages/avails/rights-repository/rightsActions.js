@@ -14,3 +14,12 @@ export const setRightsFilter = payload => ({
     type: actionTypes.SET_RIGHTS_FILTER,
     payload,
 });
+
+export const getLinkedRights = payload => ({
+    type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS,
+    payload,
+});
+
+export const clearLinkedRights = () => ({
+    type: actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS,
+});

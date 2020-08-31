@@ -1,0 +1,25 @@
+@import '../../../../../styles/atlaskit/mixins';
+
+.nexus-c-bulk-delete-table__data {
+    button {
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+
+        span {
+            margin: 0;
+        }
+    }
+}
+.nexus-c-bulk-delete-table__entry-header {
+    display: flex;
+    align-items: center;
+
+    label {
+        margin: 0;
+    }
+}
+
+.nexus-c-bulk-delete-table__entry-title {
+    @include margin(0, 5, 0, 0);
+}

@@ -1,0 +1,30 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-section-tab {
+    display: flex;
+    justify-content: center;
+    flex-basis: 100%;
+    @include padding(1, 6);
+    border-bottom: 1px solid map-get($neutrals, N40);
+    cursor: pointer;
+    color: map-get($neutrals, N800);
+    transition: color 0.2s ease-in;
+
+    &:hover {
+        color: map-get($blues, B400);
+        text-decoration: none;
+    }
+
+    // remove the blue border around active links (browser default)
+    &:active,
+    &:focus {
+        outline: none;
+    }
+
+    &--is-active {
+        color: map-get($blues, B400);
+        border-bottom: 2px solid map-get($blues, B400);
+        cursor: default;
+    }
+}

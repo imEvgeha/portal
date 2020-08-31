@@ -49,15 +49,15 @@ export const defaultConfiguration = {
         },
     },
     keycloak: {
-        'clientId': 'temportalapp-dev',
-        'realm': 'Vubiquity',
-        'url': 'https://auth.dev.vubiquity.com/auth',
+        clientId: 'temportalapp-dev',
+        realm: 'Vubiquity',
+        url: 'https://auth.dev.vubiquity.com/auth',
         'ssl-required': 'external',
         'use-resource-role-mappings': true,
         'confidential-port': 0,
     },
     googleAnalytics: {
-        'propertyId': 'UA-165264495-2',
+        propertyId: 'UA-165264495-2',
     },
 };
 

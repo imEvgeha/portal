@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
-import Tooltip from '@atlaskit/tooltip';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelectors';
@@ -16,7 +15,6 @@ const {
     ingestTypes: {EMAIL},
     SERVICE_REGIONS,
     TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
-    LICENSEE_TOOLTIP,
     LICENSEE_WARNING,
 } = constants;
 const US = 'US';
@@ -177,18 +175,16 @@ const InputForm = ({
             </div>
             <div className="manual-ingest-config__licensee">
                 <label>Licensee</label>
-                <Tooltip content={LICENSEE_TOOLTIP}>
-                    <Select
-                        id="manual-upload-licensee"
-                        onChange={setSelectedLicensees}
-                        value={selectedLicensees}
-                        options={licenseesOptions}
-                        isDisabled={!serviceRegion || [USMASTER, INTERNATIONAL].includes(template)}
-                        placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
-                        isMulti
-                        {...selectProps}
-                    />
-                </Tooltip>
+                <Select
+                    id="manual-upload-licensee"
+                    onChange={setSelectedLicensees}
+                    value={selectedLicensees}
+                    options={licenseesOptions}
+                    isDisabled={!serviceRegion || [USMASTER, INTERNATIONAL].includes(template)}
+                    placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
+                    isMulti
+                    {...selectProps}
+                />
                 <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
             </div>
             <div className="manual-ingest-config__grid">

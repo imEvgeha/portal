@@ -18,11 +18,8 @@ const RightDetails = React.lazy(() =>
 const RightCreate = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate')
 );
-const RightDetailsV2 = React.lazy(() => RightCreateV2Import);
-const RightCreateV2Import = import(
-    /* webpackChunkName: "RightCreateV2" */ '../legacy/containers/avail/create/RightCreateV2'
-);
-const RightCreateV2 = React.lazy(() => RightCreateV2Import);
+const RightDetailsV2 = React.lazy(() => RightDetailsV2Import);
+const RightDetailsV2Import = import(/* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails');
 const SelectRightsPlanning = React.lazy(() =>
     import(
         /* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'
@@ -88,10 +85,6 @@ const routes = [
     {
         path: `${BASE_PATH}/rights/create`,
         component: canRender(RightCreate, 'create', 'Avail'),
-    },
-    {
-        path: `${BASE_PATH}/rights/create/v2`,
-        component: canRender(RightCreateV2, 'create', 'Avail'),
     },
     {
         path: `${BASE_PATH}/rights/:id`,

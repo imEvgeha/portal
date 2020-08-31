@@ -1,5 +1,7 @@
-import {put, all, takeEvery} from 'redux-saga/effects';
+import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {getLinkedToOriginalRights} from '../availsService';
 import * as actionTypes from './rightsActionTypes';
+import {DEFAULT_PAGE_SIZE} from './constants';
 
 export function* storeRightsFilter({payload}) {
     try {
@@ -15,8 +17,47 @@ export function* storeRightsFilter({payload}) {
     }
 }
 
+export function* storeLinkedToOriginalRights({payload}) {
+    const {rights} = payload || {};
+
+    try {
+        const rightIds = rights.map(right => right.id);
+        const [rightsWithSourceRightId, rightsWithOriginalRightIds] = yield all([
+            call(getLinkedToOriginalRights, {sourceRightId: rightIds}, DEFAULT_PAGE_SIZE),
+            call(getLinkedToOriginalRights, {originalRightIds: rightIds}, DEFAULT_PAGE_SIZE),
+        ]);
+        const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
+        const dependencyRights = {};
+        rights.map(right => {
+            const foundDependencies = mergedDependencies.filter(
+                dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
+            );
+            if (foundDependencies && foundDependencies.length) {
+                dependencyRights[right.id] = {
+                    original: right,
+                    dependencies: [...foundDependencies],
+                    isSelected: true,
+                };
+            }
+            return null;
+        });
+
+        yield put({
+            type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
+            payload: dependencyRights,
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR,
+            payload: error,
+            error: true,
+        });
+    }
+}
+
 export function* rightsWatcher() {
     yield all([
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
+        takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, storeLinkedToOriginalRights),
     ]);
 }
