@@ -1,18 +1,18 @@
 @import '../../../styles/atlaskit/colors';
 
 .nexus-c-rights-repository {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
-  min-height: 400px;
-  padding: 24px;
-  padding-bottom: 0;
-  overflow: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    height: 100%;
+    min-height: 400px;
+    padding: 24px;
+    padding-bottom: 0;
+    overflow: auto;
 
-  .nexus-c-custom-actions-cell-renderer svg {
-    max-width: initial;
-  }
+    .nexus-c-custom-actions-cell-renderer svg {
+        max-width: initial;
+    }
 }
 
 .nexus-c-button {
@@ -26,6 +26,6 @@
     }
 }
 
-.nexus-c-rights-repository__row{
+.nexus-c-rights-repository__row {
     background-color: map-get($neutrals, N30) !important;
 }

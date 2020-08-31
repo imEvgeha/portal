@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkDeleteActions should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete-actions__wrapper"
+>
+  <div
+    className="nexus-c-bulk-delete-actions__continue"
+  >
+    How would you like to continue?
+  </div>
+  <div
+    className="nexus-c-bulk-delete-actions__btn-wrapper"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="subtle"
+      className="nexus-c-bulk-delete-actions__cancel-btn"
+      isDisabled={false}
+      onClick={[Function]}
+    >
+      Cancel
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      className="nexus-c-bulk-delete-actions__delete-btn"
+      isDisabled={false}
+      onClick={[Function]}
+    >
+      Mark as Deleted
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+</div>
+`;
