@@ -83,7 +83,6 @@ const EventManagement = props => {
                 const filterModel = JSON.parse(params.get('filter'));
 
                 const sortModelParam = params.get('sort');
-                const sortModel = JSON.parse(sortModelParam);
 
                 // only set the filter model if there is an active filter in the filter model
                 if (!isFilterModelEmpty(filterModel)) {
@@ -92,6 +91,7 @@ const EventManagement = props => {
 
                 // check is there is a sort param in the URL
                 if (sortModelParam) {
+                    const sortModel = JSON.parse(sortModelParam);
                     api.setSortModel(sortModel);
                 } else {
                     // otherwise set the initial sort
