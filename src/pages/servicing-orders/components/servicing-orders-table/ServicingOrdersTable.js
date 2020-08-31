@@ -69,7 +69,7 @@ const ServicingOrdersTable = ({
                     cellRendererFramework: params => {
                         const defaultSelected = isAlreadySelected(params);
 
-                        if (params.data.tenant !== 'MGM') {
+                        if (get(params, 'data.tenant', '') !== 'MGM') {
                             // provide a faux checkbox that a user can mouse to receive a tooltip.  The
                             // tooltip as presented lets the user know that the given SO cannot be exported.
                             return (
@@ -85,7 +85,7 @@ const ServicingOrdersTable = ({
                             <>
                                 <Checkbox
                                     value={params.data.soNumber}
-                                    onChange={() => onCheckboxChange(params)}
+                                    onChange={e => onCheckboxChange(e, params)}
                                     defaultChecked={defaultSelected}
                                     isDisabled={params.data.tenant !== 'MGM'}
                                 />
@@ -126,9 +126,9 @@ const ServicingOrdersTable = ({
         });
     }, []);
 
-    const onCheckboxChange = params => {
-        const totalRows = params.api.getVirtualRowCount();
-        if (event.target.checked) {
+    const onCheckboxChange = (e, params) => {
+        const totalRows = params.api.getInfiniteRowCount();
+        if (e.target.checked) {
             addRowSelection(params, totalRows);
         } else {
             removeRowSelection(params, totalRows);
@@ -149,8 +149,12 @@ const ServicingOrdersTable = ({
     };
 
     const isAlreadySelected = params => {
-        const foundItem = selectedItems.filter(item => item.so_number === params.data.so_number);
+        const foundItem = params.data ? selectedItems.filter(item => item.so_number === params.data.so_number) : [];
         return foundItem && foundItem.length > 0;
+    };
+
+    const resetSelectedItems = () => {
+        selectedItems = [];
     };
 
     /**
@@ -176,13 +180,14 @@ const ServicingOrdersTable = ({
 
     useEffect(() => {
         if (isRefreshData) {
+            resetSelectedItems();
+
             // Refresh data
             gridApi.purgeInfiniteCache();
 
             // Remove all selections
             gridApi.deselectAll();
             setSelectedServicingOrders([]);
-
             dataRefreshComplete();
         }
     }, [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]);
