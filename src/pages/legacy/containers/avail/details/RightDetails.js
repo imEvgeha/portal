@@ -2098,7 +2098,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        mapping.javaVariableName === 'updatedCatalogReceived'
+                                        mapping.javaVariableName === 'updatedCatalogReceived' ||
+                                            mapping.javaVariableName === 'bonusRight'
                                     )
                                 );
                                 break;
