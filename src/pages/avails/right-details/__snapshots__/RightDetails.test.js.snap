@@ -4,136 +4,105 @@ exports[`RightDetails should match snapshot 1`] = `
 <div
   className="nexus-c-right-details"
 >
-  <div
-    className="nexus-c-right-details__tab-container"
-  >
-    <SectionTab
-      isActive={true}
-      key="Basic Info"
-      onClick={[Function]}
-      section="Basic Info"
-    />
-    <SectionTab
-      isActive={false}
-      key="Title"
-      onClick={[Function]}
-      section="Title"
-    />
-    <SectionTab
-      isActive={false}
-      key="Localization"
-      onClick={[Function]}
-      section="Localization"
-    />
-    <SectionTab
-      isActive={false}
-      key="Series"
-      onClick={[Function]}
-      section="Series"
-    />
-    <SectionTab
-      isActive={false}
-      key="Rating"
-      onClick={[Function]}
-      section="Rating"
-    />
-    <SectionTab
-      isActive={false}
-      key="Pricing"
-      onClick={[Function]}
-      section="Pricing"
-    />
-    <SectionTab
-      isActive={false}
-      key="Branding"
-      onClick={[Function]}
-      section="Branding"
-    />
-    <SectionTab
-      isActive={false}
-      key="Package"
-      onClick={[Function]}
-      section="Package"
-    />
-    <SectionTab
-      isActive={false}
-      key="Change Log"
-      onClick={[Function]}
-      section="Change Log"
-    />
-  </div>
-  <div
-    className="nexus-c-right-details__tab-content"
-  >
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Basic Info"
-    >
-      Basic Info
-    </h3>
-    <div>
-      Right ID
-    </div>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Territory"
-    >
-      Territory
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Content"
-    >
-      Content
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Title"
-    >
-      Title
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Localization"
-    >
-      Localization
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Series"
-    >
-      Series
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Rating"
-    >
-      Rating
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Pricing"
-    >
-      Pricing
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Branding"
-    >
-      Branding
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Package"
-    >
-      Package
-    </h3>
-    <h3
-      className="nexus-c-right-details__section-title"
-      id="Change Log"
-    >
-      Change Log
-    </h3>
-  </div>
+  <NexusDynamicForm
+    mapping={
+      Array [
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [
+                Object {
+                  "label": "Right ID",
+                  "type": "text",
+                },
+              ],
+              "title": "Basic Info",
+            },
+            Object {
+              "fields": Array [],
+              "title": "Territory",
+            },
+            Object {
+              "fields": Array [],
+              "title": "Content",
+            },
+          ],
+          "title": "Basic Info",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Title",
+            },
+          ],
+          "title": "Title",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Localization",
+            },
+          ],
+          "title": "Localization",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Series",
+            },
+          ],
+          "title": "Series",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Rating",
+            },
+          ],
+          "title": "Rating",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Pricing",
+            },
+          ],
+          "title": "Pricing",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Branding",
+            },
+          ],
+          "title": "Branding",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Package",
+            },
+          ],
+          "title": "Package",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Change Log",
+            },
+          ],
+          "title": "Change Log",
+        },
+      ]
+    }
+  />
 </div>
 `;

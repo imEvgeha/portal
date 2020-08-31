@@ -1,43 +1,4 @@
-@import '../../../styles/atlaskit/mixins';
-@import '../../../styles/atlaskit/colors';
-
 .nexus-c-right-details {
     width: 80%;
     margin: auto;
-}
-
-.nexus-c-right-details__tab-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    position: sticky;
-    top: 0;
-    // TODO: Change background color for the app.
-    // (Not part of atlaskit's colors, but used as default background)
-    background-color: #f2f2f2;
-}
-
-.nexus-c-right-details__tab {
-    display: flex;
-    justify-content: center;
-    @include padding(1, 6);
-    border-bottom: 1px solid map-get($neutrals, N40);
-    cursor: pointer;
-    transition: color .2s ease-in;
-
-    &:hover {
-        color: map-get($blues, B400);
-    }
-
-    &--is-active {
-        color: map-get($blues, B400);
-        border-bottom: 2px solid map-get($blues, B400);
-        cursor: default;
-    }
-}
-
-.nexus-c-right-details__section-title {
-    @include padding(13, 0, 2);
-    font-weight: bold;
-    border-bottom: 2px solid map-get($neutrals, N40);
 }
