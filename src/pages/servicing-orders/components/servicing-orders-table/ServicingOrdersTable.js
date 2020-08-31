@@ -143,7 +143,13 @@ const ServicingOrdersTable = ({
 
     const removeRowSelection = (params, total) => {
         const filteredItems = selectedItems.filter(item => item.so_number !== params.data.so_number);
-        setSelectedServicingOrders(filteredItems);
+
+        if (filteredItems.length < 1) {
+            setSelectedServicingOrders(prevState => (prevState.length = 0));
+        } else {
+            setSelectedServicingOrders(filteredItems);
+        }
+
         setStatusBarInfo({selectedRows: filteredItems.length, totalRows: total});
         selectedItems = filteredItems;
     };
@@ -187,7 +193,7 @@ const ServicingOrdersTable = ({
 
             // Remove all selections
             gridApi.deselectAll();
-            setSelectedServicingOrders([]);
+            setSelectedServicingOrders(prevState => (prevState.length = 0));
             dataRefreshComplete();
         }
     }, [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]);
