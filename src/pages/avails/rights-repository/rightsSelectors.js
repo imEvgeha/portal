@@ -6,7 +6,7 @@ const getRightsReducer = state => {
 };
 
 export const createSelectedRightsSelector = () =>
-    createSelector(getRightsReducer, rights => Object.values(rights.selected || {}));
+    createSelector(getRightsReducer, rights => rights.selected || {});
 
 export const createPreplanRightsSelector = () =>
     createSelector(getRightsReducer, rights => rights.prePlanRights || {});

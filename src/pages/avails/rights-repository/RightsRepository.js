@@ -95,6 +95,7 @@ const RightsRepository = ({
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
+    const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -149,7 +150,7 @@ const RightsRepository = ({
     }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
     useEffect(() => {
-        let newSelectedRepoRights = cloneDeep(selectedRights);
+        let newSelectedRepoRights = cloneDeep(currentUserSelectedRights);
 
         if (gridApi) {
             const selectedIds = newSelectedRepoRights.map(({id}) => id);
@@ -167,7 +168,7 @@ const RightsRepository = ({
         }
 
         setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-    }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
+    }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
     useEffect(() => {
         if (selectedGridApi) {
@@ -204,6 +205,14 @@ const RightsRepository = ({
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
     }, [prePlanRights, username]);
+
+    // Fetch only selected rights from the current user
+    useEffect(() => {
+        if (isObject(selectedRights) && username) {
+            const usersSelectedRights = get(selectedRights, username, {});
+            setCurrentUserSelectedRights(Object.values(usersSelectedRights) || []);
+        }
+    }, [selectedRights, username]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
@@ -246,7 +255,7 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                const clonedSelectedRights = cloneDeep(selectedRights);
+                const clonedSelectedRights = cloneDeep(currentUserSelectedRights);
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api.getSelectedRows() || [];
@@ -283,7 +292,7 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    setSelectedRights(payload);
+                    setSelectedRights({[username]: payload});
                     break;
                 }
 
@@ -311,7 +320,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                setSelectedRights(payload);
+                setSelectedRights({[username]: payload});
                 break;
             }
             case FILTER_CHANGED: {
@@ -360,7 +369,7 @@ const RightsRepository = ({
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
                 // onRightsRepositoryGridEvent handler
                 if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
-                    setSelectedRights(selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)));
+                    setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
                 } else {
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
@@ -405,8 +414,8 @@ const RightsRepository = ({
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
-                selectedRows={selectedRights}
-                setSelectedRights={setSelectedRights}
+                selectedRows={currentUserSelectedRights}
+                setSelectedRights={(payload) => setSelectedRights({[username]: payload})}
                 gridApi={gridApi}
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}
@@ -429,7 +438,7 @@ const RightsRepository = ({
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
                 singleClickEdit
-                context={{selectedRows: selectedRights}}
+                context={{selectedRows: currentUserSelectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={onRightsRepositoryGridEvent}
@@ -485,7 +494,7 @@ RightsRepository.propTypes = {
     mapping: PropTypes.array,
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
-    selectedRights: PropTypes.array,
+    selectedRights: PropTypes.object,
     prePlanRights: PropTypes.object,
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
@@ -496,7 +505,7 @@ RightsRepository.defaultProps = {
     mapping: [],
     selectedIngest: {},
     selectedAttachmentId: '',
-    selectedRights: [],
+    selectedRights: {},
     prePlanRights: {},
     rightsFilter: {},
     isTableDataLoading: false,
