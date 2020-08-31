@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {get, isEmpty} from 'lodash';
+import {NexusDateTimeContext} from '../../ui/elements/nexus-date-time-context/NexusDateTimeProvider';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
@@ -12,6 +14,7 @@ import {getEventById} from './eventManagementService';
 const EventManagement = props => {
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [gridApi, setGridApi] = useState(null);
+    const {isLocal, setIsLocal} = useContext(NexusDateTimeContext);
 
     const closeEventDrawer = () => {
         setSelectedEvent(null);
@@ -104,6 +107,9 @@ const EventManagement = props => {
     return (
         <div className="nexus-c-event-management">
             <div className="nexus-c-event-management__title">{TITLE}</div>
+            <div className="nexus-c-event-management__time-toggle">
+                <Button onClick={() => setIsLocal(prev => !prev)}>Set to {isLocal ? 'UTC' : 'Local'} Time</Button>
+            </div>
             <div className="nexus-c-event-management__table">
                 <EventManagementTable gridApi={gridApi} onGridEvent={onGridEvent} onSortChanged={onSortChanged} />
             </div>

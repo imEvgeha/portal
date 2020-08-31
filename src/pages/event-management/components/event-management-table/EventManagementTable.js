@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import DateTimeConsumer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeConsumer';
-import {NexusDateTimeContext} from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeProvider';
+import DateTimeRenderer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeRenderer';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
@@ -28,8 +27,6 @@ const EventManagementGrid = compose(
 )(NexusGrid);
 
 const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...props}) => {
-    const {setIsLocal, isLocal} = useContext(NexusDateTimeContext);
-
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => {
             const defaultColDef = {
@@ -48,7 +45,7 @@ const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...p
                     ...defaultColDef,
                     cellRenderer: null,
                     cellRendererFramework: params => {
-                        return <DateTimeConsumer dateTime={params.value} />;
+                        return <DateTimeRenderer value={params.value}>{value => <p>{value}</p>}</DateTimeRenderer>;
                     },
                 };
             }
@@ -59,7 +56,6 @@ const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...p
     return (
         <div className="nexus-c-event-management-table">
             <div className="nexus-c-event-management-table__refresh-button">
-                <Button onClick={() => setIsLocal(!isLocal)}>Set to {isLocal ? 'UTC' : 'Local'}</Button>
                 <Button onClick={() => toggleRefreshGridData(true)}>{REFRESH_BTN}</Button>
             </div>
             <EventManagementGrid
