@@ -403,7 +403,7 @@ class CoreMetadataEditMode extends Component {
                                 type='text'
                                 name='vzTitleId'
                                 id='vzTitleId'
-                                value={vzExternalID && vzExternalID.externalTitleId ? vzExternalID.externalTitleId : ''}
+                                value={get(vzExternalID, 'externalTitleId', '')}
                                 placeholder='VZ ID'
                                 validate={{
                                   maxLength: { value: 200 }
@@ -437,7 +437,7 @@ class CoreMetadataEditMode extends Component {
                                 type='text'
                                 name='movidaId'
                                 id='movidaId'
-                                value={movidaExternalID && movidaExternalID.externalId ? movidaExternalID.externalId : ''}
+                                value={get(movidaExternalID, 'externalId', '')}
                                 placeholder='Movie ID'
                                 validate={{
                       maxLength: { value: 200 }
@@ -472,7 +472,7 @@ class CoreMetadataEditMode extends Component {
                                 type='text'
                                 name='movidaTitleId'
                                 id='movidaTitleId'
-                                value={movidaExternalID && movidaExternalID.externalTitleId ? movidaExternalID.externalTitleId : ''}
+                                value={get(movidaExternalID, 'externalTitleId', '')}
                                 placeholder='Movida Title ID'
                             />
                         </Col>
@@ -487,7 +487,7 @@ class CoreMetadataEditMode extends Component {
                                 type='text'
                                 name='vzId'
                                 id='vzId'
-                                value={vzExternalID && vzExternalID.externalId ? vzExternalID.externalId : ''}
+                                value={get(vzExternalID, 'externalId', '')}
                                 placeholder='VZ ID'
                                 validate={{
                                     maxLength: { value: 200 }
