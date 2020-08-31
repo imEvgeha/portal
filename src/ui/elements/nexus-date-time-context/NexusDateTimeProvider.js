@@ -3,6 +3,10 @@ import {ISODateToView} from '../../../util/date-time/DateTimeUtils';
 
 export const NexusDateTimeContext = createContext({});
 
+/**
+ * An app context provider which passes down the user preference of
+ * wanting to see timestamps in UTC or in their local time.
+ */
 const NexusDateTimeProvider = ({children}) => {
     const [isLocal, setIsLocal] = useState(false);
 
@@ -11,14 +15,16 @@ const NexusDateTimeProvider = ({children}) => {
      * @param {string} timestamp the timestamp to render
      * @param {DATETIME_FIELDS} format a `DATETIME_FIELDS` enum value from `src/util/date-time/constants`
      * @param {boolean} shouldDisplayTime set `false` if you don't want to display the time, default true
+     * @param {boolean} [isLocalTime=false] set `true` if time should be rendered in local time
      */
     const renderDateTime = useCallback(
-        (timestamp, format, shouldDisplayTime) => {
-            return ISODateToView(timestamp, format, isLocal, shouldDisplayTime);
+        (timestamp, format, shouldDisplayTime, isLocalTime = isLocal) => {
+            return ISODateToView(timestamp, format, isLocalTime, shouldDisplayTime);
         },
         [isLocal]
     );
 
+    // the context that will be made available to any context consumers
     const context = {
         isLocal,
         setIsLocal,
