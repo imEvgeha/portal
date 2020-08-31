@@ -16,6 +16,7 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {
@@ -79,6 +80,7 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
+    toggleRefreshGridData,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -202,6 +204,9 @@ const RightsRepository = ({
     useEffect(() => {
         if (isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
+        }
+        if (activeTab !== RIGHTS_TAB) {
+            toggleRefreshGridData(true);
         }
     }, [prePlanRights, username]);
 
@@ -437,8 +442,12 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
-                rowClassRules={{'nexus-c-rights-repository__row': params => params &&  params.data && params.data.status
-                        && (params.data.status === "Merged" || params.data.status === "Deleted")
+                rowClassRules={{
+                    'nexus-c-rights-repository__row': params =>
+                        params &&
+                        params.data &&
+                        params.data.status &&
+                        (params.data.status === 'Merged' || params.data.status === 'Deleted'),
                 }}
             />
             <SelectedRightsRepositoryTable
@@ -490,6 +499,7 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 RightsRepository.defaultProps = {
@@ -532,6 +542,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);
