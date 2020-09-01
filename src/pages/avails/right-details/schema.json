@@ -1,0 +1,96 @@
+[
+    {
+        "title": "Basic Info",
+        "sections": [
+            {
+                "title": "Basic Info",
+                "fields": [
+                    {
+                        "label": "Right ID",
+                        "type": "text"
+                    }
+                ]
+            },
+            {
+                "title": "Territory",
+                "fields": []
+            },
+            {
+                "title": "Content",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Title",
+        "sections": [
+            {
+                "title": "Title",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Localization",
+        "sections": [
+            {
+                "title": "Localization",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Series",
+        "sections": [
+            {
+                "title": "Series",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Rating",
+        "sections": [
+            {
+                "title": "Rating",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Pricing",
+        "sections": [
+            {
+                "title": "Pricing",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Branding",
+        "sections": [
+            {
+                "title": "Branding",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Package",
+        "sections": [
+            {
+                "title": "Package",
+                "fields": []
+            }
+        ]
+    },
+    {
+        "title": "Change Log",
+        "sections": [
+            {
+                "title": "Change Log",
+                "fields": []
+            }
+        ]
+    }
+]

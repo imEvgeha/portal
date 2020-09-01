@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RightDetails should match snapshot 1`] = `
+<div
+  className="nexus-c-right-details"
+>
+  <NexusDynamicForm
+    schema={
+      Array [
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [
+                Object {
+                  "label": "Right ID",
+                  "type": "text",
+                },
+              ],
+              "title": "Basic Info",
+            },
+            Object {
+              "fields": Array [],
+              "title": "Territory",
+            },
+            Object {
+              "fields": Array [],
+              "title": "Content",
+            },
+          ],
+          "title": "Basic Info",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Title",
+            },
+          ],
+          "title": "Title",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Localization",
+            },
+          ],
+          "title": "Localization",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Series",
+            },
+          ],
+          "title": "Series",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Rating",
+            },
+          ],
+          "title": "Rating",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Pricing",
+            },
+          ],
+          "title": "Pricing",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Branding",
+            },
+          ],
+          "title": "Branding",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Package",
+            },
+          ],
+          "title": "Package",
+        },
+        Object {
+          "sections": Array [
+            Object {
+              "fields": Array [],
+              "title": "Change Log",
+            },
+          ],
+          "title": "Change Log",
+        },
+      ]
+    }
+  />
+</div>
+`;

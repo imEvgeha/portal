@@ -29,6 +29,7 @@ import {
     SUCCESS_ICON,
     WARNING_ICON
 } from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import {URL} from "../../../../../../util/Common";
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -82,7 +83,8 @@ class TitleEdit extends Component {
             updatedEditorialMetadata: [],
             editorialMetadataForCreate: {},
             editorialMetadataForCreateAutoDecorate: false,
-            ratingForCreate: {}
+            ratingForCreate: {},
+            externalIDs: [],
         };
     }
 
@@ -90,6 +92,7 @@ class TitleEdit extends Component {
         configService.initConfigMapping();
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
+        URL.isLocalOrDev() && this.loadExternalIds(titleId);
         this.loadTerritoryMetadata(titleId);
         this.loadEditorialMetadata();
     }
@@ -101,6 +104,16 @@ class TitleEdit extends Component {
             this.loadParentTitle(titleForm);
         }).catch(() => {
             console.error('Unable to load Title Data');
+        });
+    }
+
+    loadExternalIds(titleId) {
+        titleService.getExternalIds(titleId).then((response) => {
+            this.setState({
+                externalIDs: response,
+            });
+        }).catch(() => {
+            console.error('Unable to load Extrernal IDs data');
         });
     }
 
@@ -324,7 +337,12 @@ class TitleEdit extends Component {
     };
 
     readOnly = () => {
-        return <TitleReadOnlyMode data={this.state.titleForm} toggleTitleRating={this.toggleTitleRating} activeTab={this.state.titleRankingActiveTab} />;
+        return <TitleReadOnlyMode
+            data={this.state.titleForm}
+            toggleTitleRating={this.toggleTitleRating}
+            activeTab={this.state.titleRankingActiveTab}
+            externalIDs={this.state.externalIDs}
+        />;
     };
 
     handleAddCharacterName = (id, newData) => {
@@ -366,6 +384,7 @@ class TitleEdit extends Component {
     editMode = () => {
         return (
             <TitleEditMode
+                externalIDs={this.state.externalIDs}
                 handleAddCharacterName={this.handleAddCharacterName}
                 castAndCrewReorder={this.reOrderedCastCrewArray}
                 titleRankingActiveTab={this.state.titleRankingActiveTab}
@@ -1152,7 +1171,7 @@ class TitleEdit extends Component {
             castList = getFilteredCastList(this.state.editedForm.castCrew, false);
             crewList = orderedArray;
         }
-        
+
         const castAndCrewList = [...castList, ...crewList];
         const reOrderedCastCrewList = {
             ...this.state.editedForm,

@@ -5,7 +5,7 @@ import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
-import {TITLE} from './eventManagementConstants';
+import {TITLE, INITIAL_SORT} from './eventManagementConstants';
 import './EventManagement.scss';
 import {getEventById} from './eventManagementService';
 
@@ -21,7 +21,7 @@ const EventManagement = props => {
 
     const setSearchParams = (key, value) => {
         const existingParams = new URLSearchParams(props.location.search.substring(1));
-        if (!isEmpty(value)) {
+        if (!isEmpty(value) || key === 'sort') {
             existingParams.set(key, JSON.stringify(value));
         } else {
             existingParams.delete(key);
@@ -57,6 +57,13 @@ const EventManagement = props => {
         });
     };
 
+    const isFilterModelEmpty = filterModel => {
+        if (!filterModel) {
+            return true;
+        }
+        return Object.keys(filterModel).every(filter => isEmpty(filterModel[filter].filter));
+    };
+
     useEffect(() => {
         const params = new URLSearchParams(props.location.search.substring(1));
         const selectedEventId = JSON.parse(params.get('selectedEventId'));
@@ -74,14 +81,24 @@ const EventManagement = props => {
 
                 const params = new URLSearchParams(props.location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
-                const sortModel = JSON.parse(params.get('sort'));
 
-                if (filterModel) {
+                const sortModelParam = params.get('sort');
+
+                // only set the filter model if there is an active filter in the filter model
+                if (!isFilterModelEmpty(filterModel)) {
                     api.setFilterModel(filterModel);
                 }
-                if (sortModel) {
+
+                // check is there is a sort param in the URL
+                if (sortModelParam) {
+                    const sortModel = JSON.parse(sortModelParam);
                     api.setSortModel(sortModel);
+                } else {
+                    // otherwise set the initial sort
+                    const sortModel = api.getSortModel() || [];
+                    api.setSortModel([...sortModel, INITIAL_SORT]);
                 }
+
                 break;
             }
 

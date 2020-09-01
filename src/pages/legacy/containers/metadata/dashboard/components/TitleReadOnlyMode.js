@@ -19,7 +19,7 @@ class TitleReadOnlyMode extends Component {
     };
 
     renderFields = (data) => {
-        const { 
+        const {
             title,
             releaseYear,
             usBoxOffice,
@@ -236,6 +236,7 @@ class TitleReadOnlyMode extends Component {
                     data={this.props.data}
                     toggleTitleRating={this.props.toggleTitleRating}
                     activeTab={this.props.activeTab}
+                    externalIDs={this.props.externalIDs}
                 />
             </Container>
         );
@@ -258,7 +259,8 @@ class TitleReadOnlyMode extends Component {
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
     toggleTitleRating: PropTypes.func,
-    activeTab: PropTypes.any
+    activeTab: PropTypes.any,
+    externalIDs: PropTypes.object.isRequired,
 };
 
 export default TitleReadOnlyMode;

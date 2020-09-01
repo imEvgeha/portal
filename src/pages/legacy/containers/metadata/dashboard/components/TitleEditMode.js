@@ -470,6 +470,7 @@ class TitleEditMode extends Component {
                 </Col>
             </Row>
             <CoreMetadataEditMode
+                externalIDs={this.props.externalIDs}
                 handleAddCharacterName={this.props.handleAddCharacterName}
                 titleRankingActiveTab={this.props.titleRankingActiveTab}
                 toggleTitleRating={this.props.toggleTitleRating}
@@ -497,6 +498,7 @@ class TitleEditMode extends Component {
 }
 
 TitleEditMode.propTypes = {
+  externalIDs: PropTypes.object.isRequired,
   titleRankingActiveTab: PropTypes.any,
   toggleTitleRating: PropTypes.func,
   addTitleRatingTab: PropTypes.func,

@@ -16,6 +16,7 @@ import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfin
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '../../../ui/elements/nexus-grid/utils';
+import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {
@@ -79,6 +80,7 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
+    toggleRefreshGridData,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
@@ -95,6 +97,7 @@ const RightsRepository = ({
     const [selectedPrePlanRights, setSelectedPrePlanRights] = useState([]);
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
+    const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -149,7 +152,7 @@ const RightsRepository = ({
     }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
     useEffect(() => {
-        let newSelectedRepoRights = cloneDeep(selectedRights);
+        let newSelectedRepoRights = cloneDeep(currentUserSelectedRights);
 
         if (gridApi) {
             const selectedIds = newSelectedRepoRights.map(({id}) => id);
@@ -167,7 +170,7 @@ const RightsRepository = ({
         }
 
         setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
-    }, [search, selectedRights, selectedIngest, gridApi, isTableDataLoading]);
+    }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
     useEffect(() => {
         if (selectedGridApi) {
@@ -196,14 +199,25 @@ const RightsRepository = ({
             .catch(error => {
                 // error-handling here
             });
-    }, [activeTab, prePlanRights.length, isPlanningTabRefreshed]);
+    }, [activeTab, get(prePlanRights, `[${username}].length`, 0), isPlanningTabRefreshed]);
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
         if (isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
+        if (activeTab !== RIGHTS_TAB) {
+            toggleRefreshGridData(true);
+        }
     }, [prePlanRights, username]);
+
+    // Fetch only selected rights from the current user
+    useEffect(() => {
+        if (isObject(selectedRights) && username) {
+            const usersSelectedRights = get(selectedRights, username, {});
+            setCurrentUserSelectedRights(Object.values(usersSelectedRights) || []);
+        }
+    }, [selectedRights, username]);
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
@@ -246,7 +260,7 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                const clonedSelectedRights = cloneDeep(selectedRights);
+                const clonedSelectedRights = cloneDeep(currentUserSelectedRights);
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api.getSelectedRows() || [];
@@ -283,7 +297,7 @@ const RightsRepository = ({
                         selectedRights[currentRight.id] = currentRight;
                         return selectedRights;
                     }, {});
-                    setSelectedRights(payload);
+                    setSelectedRights({[username]: payload});
                     break;
                 }
 
@@ -311,7 +325,7 @@ const RightsRepository = ({
                     selectedRights[currentRight.id] = currentRight;
                     return selectedRights;
                 }, {});
-                setSelectedRights(payload);
+                setSelectedRights({[username]: payload});
                 break;
             }
             case FILTER_CHANGED: {
@@ -360,7 +374,7 @@ const RightsRepository = ({
                 // update the store. Otherwise proceed with normal flow via gridApi and update the store via
                 // onRightsRepositoryGridEvent handler
                 if (!nodesToDeselect.length && api.getSelectedRows().length < selectedRepoRights.length) {
-                    setSelectedRights(selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id)));
+                    setSelectedRights({[username]: selectedRepoRights.filter(({id}) => !toDeselectIds.includes(id))});
                 } else {
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
@@ -405,8 +419,8 @@ const RightsRepository = ({
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
-                selectedRows={selectedRights}
-                setSelectedRights={setSelectedRights}
+                selectedRows={currentUserSelectedRights}
+                setSelectedRights={(payload) => setSelectedRights({[username]: payload})}
                 gridApi={gridApi}
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}
@@ -429,7 +443,7 @@ const RightsRepository = ({
                 rowSelection="multiple"
                 suppressRowClickSelection={true}
                 singleClickEdit
-                context={{selectedRows: selectedRights}}
+                context={{selectedRows: currentUserSelectedRights}}
                 mapping={mapping}
                 setTotalCount={setTotalCount}
                 onGridEvent={onRightsRepositoryGridEvent}
@@ -437,8 +451,12 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
-                rowClassRules={{'nexus-c-rights-repository__row': params => params &&  params.data && params.data.status
-                        && (params.data.status === "Merged" || params.data.status === "Deleted")
+                rowClassRules={{
+                    'nexus-c-rights-repository__row': params =>
+                        params &&
+                        params.data &&
+                        params.data.status &&
+                        (params.data.status === 'Merged' || params.data.status === 'Deleted'),
                 }}
             />
             <SelectedRightsRepositoryTable
@@ -485,18 +503,19 @@ RightsRepository.propTypes = {
     mapping: PropTypes.array,
     selectedIngest: PropTypes.object,
     selectedAttachmentId: PropTypes.string,
-    selectedRights: PropTypes.array,
+    selectedRights: PropTypes.object,
     prePlanRights: PropTypes.object,
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
+    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 RightsRepository.defaultProps = {
     mapping: [],
     selectedIngest: {},
     selectedAttachmentId: '',
-    selectedRights: [],
+    selectedRights: {},
     prePlanRights: {},
     rightsFilter: {},
     isTableDataLoading: false,
@@ -532,6 +551,7 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkDeleteTable should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete-table__data"
+>
+  <div
+    className="nexus-c-bulk-delete-table__entry-header"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+      isChecked={false}
+      onChange={[Function]}
+    />
+    <div
+      className="nexus-c-bulk-delete-table__entry-title"
+    />
+  </div>
+  <DynamicTable
+    defaultPage={1}
+    head={null}
+    isFixedSize={false}
+    isLoading={false}
+    isRankable={false}
+    loadingSpinnerSize="large"
+    onSetPage={[Function]}
+    onSort={[Function]}
+    rows={Array []}
+    rowsPerPage={Infinity}
+  />
+</div>
+`;

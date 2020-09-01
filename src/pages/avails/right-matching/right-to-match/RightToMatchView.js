@@ -88,11 +88,11 @@ const RightToMatchView = ({
             get(focusedRight, 'temporaryPriceReduction', false) ||
             false;
         (focusedRight.id || newPendingRight.length) &&
-        getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
-            const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
-            setTotalCount(rights.length);
-            setMatchingCandidates(rights);
-        });
+            getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
+                const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+                setTotalCount(rights.length);
+                setMatchingCandidates(rights);
+            });
     }, [focusedRight.id, newPendingRight]);
 
     useEffect(() => {
@@ -110,15 +110,17 @@ const RightToMatchView = ({
         }
     }, [availHistoryIds, fetchFocusedRight, rightId]);
 
-    const columnDefWithRedirectRightId = columnDefs.length ? cloneDeep(columnDefs).map(columnDef => {
-        if (columnDef.field === 'id') {
-            columnDef.cellRendererParams = {
-                link: '/avails/rights/',
-                newTab: false,
-            };
-        }
-        return columnDef;
-    }): [];
+    const columnDefWithRedirectRightId = columnDefs.length
+        ? cloneDeep(columnDefs).map(columnDef => {
+              if (columnDef.field === 'id') {
+                  columnDef.cellRendererParams = {
+                      link: '/avails/rights/',
+                      newTab: false,
+                  };
+              }
+              return columnDef;
+          })
+        : [];
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
     const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefWithRedirectRightId];

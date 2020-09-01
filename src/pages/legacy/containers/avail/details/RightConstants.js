@@ -5,7 +5,7 @@ export default {
 };
 
 export const NoteError = {
-    note: "LicenseRightsDescription and/or PlatformCategory are missing for Licensee Service Region 'US'",
+    note: "License Rights Description and/or Platform Category are missing for Licensee Service Region 'US'",
     noteStyle: 'error',
 };
 
