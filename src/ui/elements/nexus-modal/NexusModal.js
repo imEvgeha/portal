@@ -5,27 +5,27 @@ import './NexusModal.scss';
 export const NexusModalContext = createContext({});
 
 export const NexusModalProvider = ({children}) => {
-    const [content, setContent] = useState(null);
-    const [title, setTitle] = useState('');
-    const [actions, setActions] = useState([]);
-    const [isOpened, setIsOpened] = useState(false);
-    const [width, setStyle] = useState({});
+    const [modalParams, setModalParams] = useState({});
 
 
     const open = useCallback((content, title, width = 'medium', actions = []) => {
-        setTitle(title);
-        setIsOpened(true);
-        setContent(content);
-        setActions(actions);
-        setStyle(width);
-    }, [title, content]);
+        setModalParams({
+            title,
+            content,
+            actions,
+            width,
+            isOpened: true
+        });
+    }, []);
 
     const close = useCallback(() => {
-        setIsOpened(false);
-        setActions([]);
-        setContent(null);
-        setTitle('');
-        setStyle('');
+        setModalParams({
+            title: '',
+            content: null,
+            actions: [],
+            width: '',
+            isOpened: false
+        });
     }, []);
 
     const context = {
@@ -33,6 +33,7 @@ export const NexusModalProvider = ({children}) => {
         open
     };
 
+    const { title = '', content = null, actions = [], width = '', isOpened = false } = modalParams;
     return (
         <NexusModalContext.Provider value={context}>
             {isOpened && (
