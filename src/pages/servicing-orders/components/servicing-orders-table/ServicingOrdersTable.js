@@ -72,6 +72,8 @@ const ServicingOrdersTable = ({
                         if (get(params, 'data.tenant', '') !== 'MGM') {
                             // provide a faux checkbox that a user can mouse to receive a tooltip.  The
                             // tooltip as presented lets the user know that the given SO cannot be exported.
+                            // This is necessary because Atlaskit wraps native checkbox, and native checkbox has no
+                            // visually disabled state.
                             return (
                                 <>
                                     <Tooltip content="This servicing order cannot be exported" position="right">
