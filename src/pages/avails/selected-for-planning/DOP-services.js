@@ -39,14 +39,15 @@ const DOPService = {
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)});
     },
     createProjectRequestData: (data = []) => {
-        const selectedRightArray = [];
-        let selectedTerritoryArray = [];
+        const projectAttribute = [];
         data.forEach((right, index) => {
-            selectedRightArray.push({code: `selectedRightID[${index}]`, value: right.id});
-            selectedTerritoryArray = right.territory.map((territory, territoryIndex) => ({
-                code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
-                value: territory.country,
-            }));
+            projectAttribute.push({code: `selectedRightID[${index}]`, value: right.id});
+            projectAttribute.push(
+                ...right.territory.map((territory, territoryIndex) => ({
+                    code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
+                    value: territory.country,
+                }))
+            );
         });
 
         const utc = moment().utc();
@@ -62,8 +63,7 @@ const DOPService = {
                     code: 'rightsPreSelected',
                     value: true,
                 },
-                ...selectedRightArray,
-                ...selectedTerritoryArray,
+                ...projectAttribute,
             ],
         };
     },
