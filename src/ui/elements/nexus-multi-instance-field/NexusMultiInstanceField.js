@@ -29,7 +29,7 @@ const NexusMultiInstanceField = ({
     const [formValue, setFormValue] = useState({});
     const [inlineEdit, setInlineEdit] = useState(null);
     const [formKey, setFormKey] = useState(Math.random());
-    const {setModalContent, setModalActions, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     useEffect(() => setItems(existingItems), [existingItems]);
     useEffect(() => setFormKey(Math.random()), [editIndex]);
@@ -75,7 +75,7 @@ const NexusMultiInstanceField = ({
         );
 
         if (isUsingModal) {
-            setModalActions([
+            const actions = [
                 {
                     text: 'Cancel',
                     onClick: () => {
@@ -85,8 +85,8 @@ const NexusMultiInstanceField = ({
                     },
                 },
                 {text: 'Submit', onClick: callback},
-            ]);
-            setModalContent(content);
+            ]
+            open(content, '', 'medium', actions);
         } else {
             setInlineEdit(content);
         }

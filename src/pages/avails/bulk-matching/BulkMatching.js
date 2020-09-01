@@ -67,7 +67,7 @@ export const BulkMatching = ({
 
     const selectionList = useMatchAndDuplicateList();
     const {matchList, duplicateList} = selectionList;
-    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
     const {NEXUS} = TitleSystems;
 
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
@@ -229,14 +229,12 @@ export const BulkMatching = ({
     };
 
     const showModal = () => {
-        setModalContentAndTitle(
-            () => (
+        open(
                 <CreateTitleForm
                     close={close}
                     bulkTitleMatch={bulkTitleMatch}
                     focusedRight={get(selectedTableData, '[0].contentType', '')}
-                />
-            ),
+                />,
             NewTitleConstants.NEW_TITLE_MODAL_TITLE
         );
     };

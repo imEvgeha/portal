@@ -8,22 +8,23 @@ const DOP_POP_UP_MESSAGE = 'Please, keep in mind not all rights have been matche
 
 const useDOPIntegration = (totalCount, localStorageItem) => {
     const [dopCount, setDopCount] = useLocalStorage(localStorageItem, totalCount);
-    const {setModalContentAndTitle, setModalActions, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     const openDOPPopUp = useCallback(errorCount => {
         const handlePopUpClick = () => {
             DOP.sendInfoToDOP(errorCount, null);
             close();
         };
-        setModalContentAndTitle(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE);
-        setModalActions([
+        const actions = [
             {
                 text: 'OK',
                 onClick: handlePopUpClick,
                 appearance: 'primary',
             },
-        ]);
-    }, [close, setModalActions, setModalContentAndTitle]);
+        ];
+        open(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE, 'medium', actions);
+
+    }, []);
 
     useEffect(() => {
         if (totalCount || totalCount === 0) {

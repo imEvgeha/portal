@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {cloneDeep} from 'lodash';
 import './RightsClashingModal.scss';
+import NexusSpinner from '../../../../../ui/elements/nexus-spinner/NexusSpinner';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import {NexusGrid, NexusTitle} from '../../../../../ui/elements';
 import {createRightMatchingColumnDefsSelector} from '../../../../avails/right-matching/rightMatchingSelectors';
@@ -11,9 +12,15 @@ const columnsToUse = ['licensor', 'licensee', 'title', 'licenseType', 'format', 
 
 const RightsClashingModal = ({clashingRights, columnDefs}) => {
 
-    const {setModalContent, setModalActions, setModalTitle, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     const [rightsClashingColumnsDef, setRightsClashingColumnsDef] = useState([]);
+
+    const actions = [{
+        text: 'Cancel',
+        onClick: close
+    }];
+
 
     useEffect(() => {
         if (!columnDefs.length) {
@@ -33,17 +40,8 @@ const RightsClashingModal = ({clashingRights, columnDefs}) => {
     }, [columnDefs, createRightMatchingColumnDefs]);
 
     useEffect(() => {
-        setModalTitle('Clashing Rights');
-
-        setModalActions([{
-            text: 'Cancel',
-            onClick: close
-        }]);
-    }, []);
-
-    useEffect(() => {
         if (clashingRights && clashingRights.length > 0) {
-            setModalContent(buildContent());
+            open(buildContent(), 'Clashing Rights', 'medium', actions);
         }
     }, [clashingRights]);
 

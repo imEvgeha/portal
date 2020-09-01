@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {get, uniqBy} from 'lodash';
@@ -16,7 +16,7 @@ import {getRightsHistory} from '../availsService';
 import BulkDelete from '../bulk-delete/BulkDelete';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
-import {BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
+import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {
     getEligibleRights,
     hasAtLeastOneUnselectedTerritory,
@@ -39,21 +39,23 @@ import {
     VIEW_AUDIT_HISTORY,
     BULK_DELETE_TOOLTIP,
     MARK_DELETED,
-    BULK_DELETE_HEADER,
+    BULK_DELETE_HEADER, BULK_UNMATCH_SUCCESS_TOAST,
 } from './constants';
 import './SelectedRightsActions.scss';
+import {getAffectedRights, setCoreTitleId} from "../bulk-matching/bulkMatchingService";
+import {SUCCESS_ICON} from "../../../ui/elements/nexus-toast-notification/constants";
 
 export const SelectedRightsActions = ({
-    selectedRights,
-    addToast,
-    removeToast,
-    toggleRefreshGridData,
-    selectedRightGridApi,
-    gridApi,
-    setSelectedRights,
-    setPrePlanRepoRights,
-    activeTab,
-}) => {
+                                          selectedRights,
+                                          addToast,
+                                          removeToast,
+                                          toggleRefreshGridData,
+                                          selectedRightGridApi,
+                                          gridApi,
+                                          setSelectedRights,
+                                          setPrePlanRepoRights,
+                                          activeTab,
+                                      }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
     const [isUnmatchable, setIsUnmatchable] = useState(false);
@@ -176,17 +178,61 @@ export const SelectedRightsActions = ({
         setIsBonusRight(false);
     };
 
+    const unMatchHandler = useCallback(
+        rightIds => {
+            setCoreTitleId({rightIds}).then(unmatchedRights => {
+                // Fetch fresh data from back-end
+                toggleRefreshGridData(true);
+
+                // Response is returning updated rights, so we can feed that to SelectedRights table
+                selectedRightGridApi.setRowData(unmatchedRights.filter(right => selectedRights.includes(right.id)));
+                // Refresh changes
+                selectedRightGridApi.refreshCells();
+
+                // Close modal
+                close();
+
+                // Show success toast
+                addToast({
+                    title: BULK_UNMATCH_SUCCESS_TOAST,
+                    description: `You have successfully unmatched ${unmatchedRights.length} right(s).
+                         Please validate title fields.`,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                });
+            });
+        },
+        [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]
+    );
+
     const openBulkUnmatchModal = () => {
-        open(
-            <BulkUnmatch
-                selectedRights={selectedRights.map(({id}) => id)}
-                removeToast={removeToast}
-                addToast={addToast}
-                selectedRightGridApi={selectedRightGridApi}
-                toggleRefreshGridData={toggleRefreshGridData}
-            />,
-            BULK_UNMATCH_TITLE
-        );
+        const selectedRightsIds = selectedRights.map(({id}) => id);
+        getAffectedRights(selectedRightsIds).then(rights => {
+            const actions =[
+                {
+                    text: BULK_UNMATCH_CANCEL_BTN,
+                    onClick: () => {
+                        close();
+                        removeToast();
+                    },
+                    appearance: 'default',
+                },
+                {
+                    text: BULK_UNMATCH_CONFIRM_BTN,
+                    onClick: () => unMatchHandler(rights.map(right => right.id)),
+                    appearance: 'primary',
+                },
+            ];
+            open(
+                <BulkUnmatch
+                    selectedRights={selectedRightsIds}
+                    affectedRights={rights}
+                />,
+                BULK_UNMATCH_TITLE,
+                'x-large',
+                actions
+            );
+        });
     };
 
     const openBulkDeleteModal = () => {

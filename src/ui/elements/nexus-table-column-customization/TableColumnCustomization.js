@@ -10,11 +10,11 @@ const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
 const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) => {
     const [hideShowColumns, setHideShowColumns] = useState();
-    const {setModalContent, setModalActions, setModalTitle, setModalStyle, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     useEffect(() => {
         if (hideShowColumns) {
-            setModalActions([{
+            const actions = [{
                 text: 'Save',
                 onClick: () => {
                     close();
@@ -23,8 +23,8 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
             }, {
                 text: 'Cancel',
                 onClick: close,
-            }]);
-            setModalContent(buildModalContent(hideShowColumns));
+            }];
+            open(buildModalContent(hideShowColumns), 'Select Visible Columns', 'small', actions);
         }
     }, [hideShowColumns]);
 
@@ -127,9 +127,6 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
 
     const buildConfigAndOpenModal = () => {
         createConfigForColumnCustomization();
-
-        setModalTitle('Select Visible Columns');
-        setModalStyle({width: 'small'});
     };
 
     return (<div className="nexus-column-customization__icon-button" onClick={buildConfigAndOpenModal}><AppSwitcherIcon size="large" /></div>);

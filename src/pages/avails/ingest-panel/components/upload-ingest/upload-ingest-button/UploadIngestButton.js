@@ -12,7 +12,7 @@ const TITLE = 'Avail Ingest';
 const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     const closeModal = useCallback(() => {
         setFile(null);
@@ -30,11 +30,9 @@ const UploadIngestButton = ({ingestData}) => {
 
     useEffect(() => {
         if (file) {
-            setModalStyle({width: 'small'});
-            setModalActions([]);
-            setModalContentAndTitle(buildForm(), TITLE);
+            open(buildForm(), TITLE,'small');
         }
-    }, [buildForm, file, setModalActions, setModalContentAndTitle, setModalStyle]);
+    }, [buildForm, file]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
 
