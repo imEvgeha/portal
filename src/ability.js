@@ -61,12 +61,15 @@ const updateAbility = (roles = []) => {
     }
 
     // ******** Metadata *************
-    // if (roles.includes('metadata_viewer')) {
-    //     can('read', 'Metadata');
+    if (roles.includes('metadata_viewer'))
+        can('read', 'Metadata');
+    else
+        can(['create', 'read', 'update', 'delete'], 'Metadata');
+
     // } else if (roles.includes('metadata_user')) {
     //     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // } else if (roles.includes('metadata_admin')) {
-    can(['create', 'read', 'update', 'delete'], 'Metadata');
+    //can(['create', 'read', 'update', 'delete'], 'Metadata');
     // }
 
     // ******** Servicing Orders *************
