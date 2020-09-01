@@ -9,16 +9,15 @@ export const NexusModalProvider = ({children}) => {
     const [title, setTitle] = useState('');
     const [actions, setActions] = useState([]);
     const [isOpened, setIsOpened] = useState(false);
-    const [style, setStyle] = useState({});
+    const [width, setStyle] = useState({});
 
-    const setModalContent = content => {
+
+    const open = useCallback((content, title, width = 'medium', actions = []) => {
+        setTitle(title);
         setIsOpened(true);
         setContent(content);
-    };
-
-    const setModalContentAndTitle = useCallback((content, title) => {
-        setTitle(title);
-        setModalContent(content);
+        setActions(actions);
+        setStyle(width);
     }, [title, content]);
 
     const close = useCallback(() => {
@@ -26,21 +25,12 @@ export const NexusModalProvider = ({children}) => {
         setActions([]);
         setContent(null);
         setTitle('');
-        setStyle({});
+        setStyle('');
     }, []);
 
     const context = {
-        setModalContent,
-        setModalTitle: setTitle,
-        setModalContentAndTitle,
-        setModalActions: setActions,
-        actions,
-        title,
-        content,
         close,
-        open: () => setIsOpened(true),
-        setModalStyle: setStyle,
-        isOpened,
+        open
     };
 
     return (
@@ -51,7 +41,7 @@ export const NexusModalProvider = ({children}) => {
                         actions={actions.length && actions}
                         heading={title}
                         onClose={close}
-                        width={style.width || 'medium'}
+                        width={width}
                     >
                         <div className="nexus-c-modal">{content}</div>
                     </Modal>

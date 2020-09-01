@@ -66,7 +66,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState('');
     const node = useRef();
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {open, close} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -177,7 +177,7 @@ export const SelectedRightsActions = ({
     };
 
     const openBulkUnmatchModal = () => {
-        setModalContentAndTitle(
+        open(
             <BulkUnmatch
                 selectedRights={selectedRights.map(({id}) => id)}
                 removeToast={removeToast}
@@ -191,30 +191,31 @@ export const SelectedRightsActions = ({
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        setModalContentAndTitle(<BulkDelete rights={[]} onClose={close} />, BULK_DELETE_HEADER);
+        open(<BulkDelete rights={[]} onClose={close} />, BULK_DELETE_HEADER);
     };
 
     const openAuditHistoryModal = () => {
         const ids = selectedRights.map(e => e.id);
         const title = `Audit History (${selectedRights.length})`;
 
-        setModalStyle({width: '100%'});
-        setModalActions([
+        const actions = [
             {
                 text: 'Done',
                 onClick: close,
             },
-        ]);
-        setModalContentAndTitle(NexusSpinner, title);
+        ];
+        open(NexusSpinner, title, '100%', actions);
 
         getRightsHistory(ids).then(rightsEventHistory => {
-            setModalContentAndTitle(
+            open(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
                 </div>,
-                title
+                title,
+                '100%',
+                actions
             );
         });
     };
@@ -239,10 +240,10 @@ export const SelectedRightsActions = ({
 
         setSelectedRights(nonEligibleRights);
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
-        setModalStyle({width: 'large'});
-        setModalContentAndTitle(
+        open(
             <StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />,
-            STATUS_CHECK_HEADER
+            STATUS_CHECK_HEADER,
+            'large'
         );
     };
 
