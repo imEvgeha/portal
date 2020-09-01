@@ -4,6 +4,7 @@ export const HEADER = {
             key: 1,
             content: 'Linked Rights',
             width: 30,
+            shouldTruncate: true,
         },
         {
             key: 2,

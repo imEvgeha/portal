@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@atlaskit/button';
 import {shallow} from 'enzyme';
 import {BulkDelete} from './BulkDelete';
 
@@ -7,22 +6,22 @@ describe('BulkDelete', () => {
     let wrapper = null;
 
     const props = {
-        rights: [
-            {
+        rightsWithDeps: {
+            right123: {
                 id: 1,
                 title: 'title1',
                 status: 'Merged',
                 rightStatus: 'Pending',
                 licensed: true,
             },
-            {
+            right345: {
                 id: 2,
                 title: 'title12',
                 status: 'ReadyNew',
                 rightStatus: 'Pending',
                 licensed: false,
             },
-        ],
+        },
     };
 
     beforeEach(() => {
@@ -33,11 +32,7 @@ describe('BulkDelete', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('renders Dynamic Table', () => {
-        expect(wrapper.find('DynamicTable')).toHaveLength(1);
-    });
-
     it('renders Cancel nad Mark as Deleted buttons', () => {
-        expect(wrapper.find(Button)).toHaveLength(2);
+        expect(wrapper.find('BulkDeleteActions')).toHaveLength(1);
     });
 });

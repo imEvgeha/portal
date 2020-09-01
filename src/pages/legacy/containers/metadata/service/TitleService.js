@@ -224,4 +224,10 @@ export const titleService = {
             method: 'post',
         });
     },
+
+    getExternalIds: (id) => {
+        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/getPublishInfo/${id}`;
+        return nexusFetch(url);
+    },
+
 };

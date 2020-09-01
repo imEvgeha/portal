@@ -45,8 +45,6 @@ export default {
         INTERNATIONAL: 'International',
     },
     LICENSEE_WARNING: 'Any mismatches between the file and the selected licensees will result in a fatal',
-    LICENSEE_TOOLTIP:
-        'If Licensee is defined anywhere in the file, the system will use the file to determine Licensee.',
 };
 
 export const DEBOUNCE_TIMEOUT = 2000;

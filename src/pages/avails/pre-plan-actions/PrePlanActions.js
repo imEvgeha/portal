@@ -34,10 +34,10 @@ export const PrePlanActions = ({
     const {open, close} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
 
-    const removeRightsFromPrePlan = () => {
+    const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
-            const unselectedTerritory = right.territory.filter(t => !t.selected);
+            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected);
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
@@ -118,7 +118,7 @@ export const PrePlanActions = ({
                                         DOPService.startProject(projectId)
                                             .then(() => {
                                                 dispatchSuccessToast(eligibleRights.length);
-                                                removeRightsFromPrePlan();
+                                                removeRightsFromPrePlan(false);
                                                 setIsFetchDOP(false);
                                             })
                                             .catch(() => {

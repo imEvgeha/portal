@@ -39,26 +39,23 @@ const TerritoryField = ({
 
     const getAddButton = () => {
         return (
-            <CustomFieldAddText
-                onClick={onAddClick}
-                id={'right-create-' + name + '-button'}
-            >
+            <CustomFieldAddText onClick={onAddClick} id={'right-create-' + name + '-button'}>
                 Add...
             </CustomFieldAddText>
         );
     };
 
     return (
-        <div className='nexus-c-territory-field'>
+        <div className="nexus-c-territory-field">
             {isTableMode && getAddButton()}
             {territory && territory.length > 0 ? getTerritories() : !isTableMode && getAddButton()}
             {renderChildren()}
             <br />
             {mappingErrorMessage[name] && mappingErrorMessage[name].text && (
-            <small className="text-danger m-2">
-                {mappingErrorMessage[name] && mappingErrorMessage[name].text || ''}
-            </small>
-          )}
+                <small className="text-danger m-2">
+                    {(mappingErrorMessage[name] && mappingErrorMessage[name].text) || ''}
+                </small>
+            )}
         </div>
     );
 };
@@ -71,7 +68,7 @@ TerritoryField.propTypes = {
     onTagClick: PropTypes.func,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
-    isTableMode: PropTypes.bool
+    isTableMode: PropTypes.bool,
 };
 
 TerritoryField.defaultProps = {
@@ -79,7 +76,7 @@ TerritoryField.defaultProps = {
     renderChildren: () => null,
     onTagClick: () => null,
     mappingErrorMessage: {},
-    isTableMode: false
+    isTableMode: false,
 };
 
 export default TerritoryField;

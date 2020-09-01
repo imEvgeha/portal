@@ -1,13 +1,13 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
 import {shallow} from 'enzyme';
+import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import IngestReport from './IngestReport';
-import NexusTooltip from "../../../../../ui/elements/nexus-tooltip/NexusTooltip";
 
 describe('IngestReport', () => {
     let wrapper = null;
     const errorText = 'Some attachments could not be processed';
-    let props;
+    let props = {};
 
     beforeEach(() => {
         props = {

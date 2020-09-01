@@ -1,5 +1,6 @@
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
+import {rightsService} from '../legacy/containers/avail/service/RightsService';
 
 export const getRightsHistory = searchIds => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get('gateway.service.eventApi')}/history/bulkRequest`;
@@ -13,4 +14,8 @@ export const getRightsHistory = searchIds => {
         method: 'post',
         body: JSON.stringify(body),
     });
+};
+
+export const getLinkedToOriginalRights = (params, pageSize) => {
+    return rightsService.advancedSearchV2(params, 0, pageSize);
 };
