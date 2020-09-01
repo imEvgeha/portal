@@ -142,7 +142,7 @@ const InputForm = ({
         <div className="manual-ingest-config">
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--file-name">
-                    <label>File</label>
+                    <label className="manual-ingest-config__label">File</label>
                     <span>{file.name}</span>
                 </div>
                 <Button onClick={browseClick} className="manual-ingest-config__grid--browse">
@@ -150,7 +150,7 @@ const InputForm = ({
                 </Button>
             </div>
             <div className="manual-ingest-config__templates">
-                <label>Template</label>
+                <label className="manual-ingest-config__label">Template</label>
                 <RadioGroup
                     label="Template"
                     options={templates}
@@ -160,7 +160,7 @@ const InputForm = ({
             </div>
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--licensor">
-                    <label>Licensor</label>
+                    <label className="manual-ingest-config__label">Licensor</label>
                     <Select
                         id="manual-upload-licensor"
                         onChange={setLicensor}
@@ -172,10 +172,10 @@ const InputForm = ({
                     />
                 </div>
                 <div className="manual-ingest-config--service-region">
-                    <label>Service Region</label>
+                    <label className="manual-ingest-config__label">Service Region</label>
                     <Select
                         id="manual-upload-service-region"
-                        onChange={setServiceRegion}
+                        onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}
                         isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
@@ -185,7 +185,7 @@ const InputForm = ({
                 </div>
             </div>
             <div className="manual-ingest-config__licensee">
-                <label>Licensee</label>
+                <label className="manual-ingest-config__label">Licensee</label>
                 <Select
                     id="manual-upload-licensee"
                     onChange={setSelectedLicensees}
@@ -208,7 +208,7 @@ const InputForm = ({
                 {isShowingCatalogType && (
                     <div className="manual-ingest-config__catalog-options">
                         <div className="manual-ingest-config__catalog-select">
-                            <label>Catalog Type</label>
+                            <label className="manual-ingest-config__label">Catalog Type</label>
                             <Select
                                 id="manual-upload-catalog-type"
                                 onChange={val => setCatalogType(val)}
