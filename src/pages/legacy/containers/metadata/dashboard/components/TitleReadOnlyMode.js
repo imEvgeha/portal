@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
 import {Alert, Col, Container, Row} from 'reactstrap';
 import PropTypes from 'prop-types';
 import CoreMetadataReadOnlyMode from './coretitlemetadata/CoreMetadataReadOnlyMode';
@@ -11,15 +11,15 @@ class TitleReadOnlyMode extends Component {
         super(props);
     }
 
-    addBooleanQuotes = (fieldName) => {
-        if(fieldName !== undefined && fieldName !== null) {
+    addBooleanQuotes = fieldName => {
+        if (fieldName !== undefined && fieldName !== null) {
             return fieldName.toString();
         }
         return fieldName;
     };
 
-    renderFields = (data) => {
-        const { 
+    renderFields = data => {
+        const {
             title,
             releaseYear,
             usBoxOffice,
@@ -37,42 +37,63 @@ class TitleReadOnlyMode extends Component {
             episodic,
             parentIds,
             category,
-            id
+            id,
         } = data;
-        const { seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount } = episodic || {};
+        const {seriesTitleName, seasonNumber, episodeNumber, seasonId, episodeId, episodeCount} = episodic || {};
         let seriesLink;
         let seasonLink;
-        parentIds && parentIds.map(e => {
-            if(e.contentType === 'SERIES') {
-                seriesLink = e.id;
-            }
-            if(e.contentType === 'SEASON') {
-                seasonLink = e.id;
-            }
-        });
+        parentIds &&
+            parentIds.map(e => {
+                if (e.contentType === 'SERIES') {
+                    seriesLink = e.id;
+                }
+                if (e.contentType === 'SEASON') {
+                    seasonLink = e.id;
+                }
+            });
 
         return (
             <Container fluid id="titleContainer">
-                <Row style={{ marginTop: '5px' }}>
+                <Row style={{marginTop: '5px'}}>
                     <Col md="4">
-                        <img width="700" height="350" src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png" alt="" className="placeholder-img" />
+                        <img
+                            width="700"
+                            height="350"
+                            src="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png"
+                            alt=""
+                            className="placeholder-img"
+                        />
                     </Col>
                     <Col md="8">
                         <Row>
                             <Col>
-                                <Alert color="light" id="titleName"><h2><b>Title: </b>{title ? title : <span style={{ color: '#999' }}>Empty</span>}</h2></Alert>
+                                <Alert color="light" id="titleName">
+                                    <h2>
+                                        <b>Title: </b>
+                                        {title ? title : <span style={{color: '#999'}}>Empty</span>}
+                                    </h2>
+                                </Alert>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                                <Alert color="light" id="titleContentType"><b>Content Type:</b> {contentType ? toPrettyContentTypeIfExist(contentType) : <span style={{ color: '#999' }}>Empty</span>}</Alert>
+                                <Alert color="light" id="titleContentType">
+                                    <b>Content Type:</b>{' '}
+                                    {contentType ? (
+                                        toPrettyContentTypeIfExist(contentType)
+                                    ) : (
+                                        <span style={{color: '#999'}}>Empty</span>
+                                    )}
+                                </Alert>
                             </Col>
                         </Row>
                         {contentSubType && (
                             <Row>
                                 <Col>
                                     <Alert color="light" id="titleContentSubType">
-                                        <b>Content SubType: </b>{contentSubType.substring(0, 1).toUpperCase() + contentSubType.substring(1, contentSubType.length).toLowerCase()}
+                                        <b>Content SubType: </b>
+                                        {contentSubType.substring(0, 1).toUpperCase() +
+                                            contentSubType.substring(1, contentSubType.length).toLowerCase()}
                                     </Alert>
                                 </Col>
                             </Row>
@@ -82,21 +103,28 @@ class TitleReadOnlyMode extends Component {
                                 {seriesTitleName && (
                                     <Col md="12">
                                         <Alert color="light" id="titleSeriesName">
-                                            <b>Series: </b> <a href={seriesLink} className="linked-data">{seriesTitleName}</a>
+                                            <b>Series: </b>{' '}
+                                            <a href={seriesLink} className="linked-data">
+                                                {seriesTitleName}
+                                            </a>
                                         </Alert>
                                     </Col>
                                 )}
                                 {seasonNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleSeasonNumber">
-                                            <b>Season Number: </b> <a href={seasonLink} className="linked-data">{seasonNumber}</a>
+                                            <b>Season Number: </b>{' '}
+                                            <a href={seasonLink} className="linked-data">
+                                                {seasonNumber}
+                                            </a>
                                         </Alert>
                                     </Col>
                                 )}
                                 {episodeNumber && (
                                     <Col md="6">
                                         <Alert color="light" id="titleEpisodeNumber">
-                                            <b>Episode Number: </b>{episodeNumber}
+                                            <b>Episode Number: </b>
+                                            {episodeNumber}
                                         </Alert>
                                     </Col>
                                 )}
@@ -105,14 +133,16 @@ class TitleReadOnlyMode extends Component {
                                 {seasonId && (
                                     <Col>
                                         <Alert color="light" id="titleSeasonId">
-                                            <b>Season ID: </b>{seasonId}
+                                            <b>Season ID: </b>
+                                            {seasonId}
                                         </Alert>
                                     </Col>
                                 )}
                                 {episodeId && (
                                     <Col>
                                         <Alert color="light" id="titleEpisodeId">
-                                            <b>Episode ID: </b>{episodeId}
+                                            <b>Episode ID: </b>
+                                            {episodeId}
                                         </Alert>
                                     </Col>
                                 )}
@@ -122,46 +152,53 @@ class TitleReadOnlyMode extends Component {
                             {totalNumberOfSeasons && (
                                 <Col>
                                     <Alert color="light" id="titleSeasons">
-                                        <b>Seasons: </b>{totalNumberOfSeasons}
+                                        <b>Seasons: </b>
+                                        {totalNumberOfSeasons}
                                     </Alert>
                                 </Col>
                             )}
                         </Row>
                         <Row>
-                            { contentType === 'SERIES' && (
+                            {contentType === 'SERIES' && (
                                 <Col>
                                     <Alert color="light" id="titleSeries">
-                                        <Link to={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-url">Show all seasons</Link>
+                                        <Link to={`/metadata?parentId=${id}&contentType=SEASON`} className="linked-url">
+                                            Show all seasons
+                                        </Link>
                                     </Alert>
                                 </Col>
                             )}
                         </Row>
                         <Row>
                             {this.addBooleanQuotes(animated) && (
-                                <Col className='no-wrap'>
+                                <Col className="no-wrap">
                                     <Alert color="light" id="titleAnimated">
-                                        <b>Animated: </b>{this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}
+                                        <b>Animated: </b>
+                                        {this.addBooleanQuotes(animated) === 'true' ? 'Y' : 'N'}
                                     </Alert>
                                 </Col>
                             )}
                             {countryOfOrigin && (
-                                <Col className='no-wrap'>
+                                <Col className="no-wrap">
                                     <Alert color="light" id="titleCountryOfOrigin">
-                                        <b>Country of Origin: </b>{countryOfOrigin}
+                                        <b>Country of Origin: </b>
+                                        {countryOfOrigin}
                                     </Alert>
                                 </Col>
                             )}
                             {originalLanguage && (
-                                <Col className='no-wrap'>
+                                <Col className="no-wrap">
                                     <Alert color="light" id="titleOriginalLanguage">
-                                        <b>Original Language: </b>{originalLanguage}
+                                        <b>Original Language: </b>
+                                        {originalLanguage}
                                     </Alert>
                                 </Col>
                             )}
                             {duration && (
-                                <Col className='no-wrap'>
+                                <Col className="no-wrap">
                                     <Alert color="light" id="titleDuration">
-                                        <b>Duration: </b>{duration}
+                                        <b>Duration: </b>
+                                        {duration}
                                     </Alert>
                                 </Col>
                             )}
@@ -170,16 +207,22 @@ class TitleReadOnlyMode extends Component {
                             {eventType && (
                                 <Col>
                                     <Alert color="light" id="titleEventType">
-                                        <b>Event Type: </b>{eventType}
+                                        <b>Event Type: </b>
+                                        {eventType}
                                     </Alert>
                                 </Col>
                             )}
                         </Row>
                         <Row>
-                            { contentType === 'SEASON' && (
+                            {contentType === 'SEASON' && (
                                 <Col>
                                     <Alert color="light" id="titleEpisodeCount">
-                                        <Link to={`/metadata?parentId=${id}&contentType=EPISODE`} className="linked-url">Show all episodes</Link>
+                                        <Link
+                                            to={`/metadata?parentId=${id}&contentType=EPISODE`}
+                                            className="linked-url"
+                                        >
+                                            Show all episodes
+                                        </Link>
                                     </Alert>
                                 </Col>
                             )}
@@ -188,14 +231,16 @@ class TitleReadOnlyMode extends Component {
                             {seasonPremiere && (
                                 <Col>
                                     <Alert color="light" id="titleSeasonPremiere">
-                                        <b>Season Premiere: </b>{this.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}
+                                        <b>Season Premiere: </b>
+                                        {this.addBooleanQuotes(seasonPremiere) === 'true' ? 'Y' : 'N'}
                                     </Alert>
                                 </Col>
                             )}
                             {seasonFinale && (
                                 <Col>
                                     <Alert color="light" id="titleSeasonFinale">
-                                        <b>Season Finale: </b>{this.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}
+                                        <b>Season Finale: </b>
+                                        {this.addBooleanQuotes(seasonFinale) === 'true' ? 'Y' : 'N'}
                                     </Alert>
                                 </Col>
                             )}
@@ -204,7 +249,8 @@ class TitleReadOnlyMode extends Component {
                             {releaseYear && (
                                 <Col>
                                     <Alert color="light" id="titleReleaseYear">
-                                        <b>Release Year: </b>{releaseYear}
+                                        <b>Release Year: </b>
+                                        {releaseYear}
                                     </Alert>
                                 </Col>
                             )}
@@ -217,15 +263,17 @@ class TitleReadOnlyMode extends Component {
                             ) : null}
                         </Row>
                         <Row>
-                            {category && category.length > 0 &&
-                            (
+                            {category && category.length > 0 && (
                                 <Col>
                                     <Alert color="light" id="titleCategory">
                                         <b>Categories: </b>
-                                        {category.map((value, i) => (
-                                            category.length === i + 1 ?
-                                                <span key={i}>{value.name}</span> : <span key={i}>{value.name}, </span>
-                                        ))}
+                                        {category.map((value, i) =>
+                                            category.length === i + 1 ? (
+                                                <span key={i}>{value.name}</span>
+                                            ) : (
+                                                <span key={i}>{value.name}, </span>
+                                            )
+                                        )}
                                     </Alert>
                                 </Col>
                             )}
@@ -236,13 +284,14 @@ class TitleReadOnlyMode extends Component {
                     data={this.props.data}
                     toggleTitleRating={this.props.toggleTitleRating}
                     activeTab={this.props.activeTab}
+                    externalIDs={this.props.externalIDs}
                 />
             </Container>
         );
     };
 
     render() {
-        const { data } = this.props;
+        const {data} = this.props;
         if (Object.values(data).length > 0) {
             return this.renderFields(data);
         } else {
@@ -258,7 +307,8 @@ class TitleReadOnlyMode extends Component {
 TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
     toggleTitleRating: PropTypes.func,
-    activeTab: PropTypes.any
+    activeTab: PropTypes.any,
+    externalIDs: PropTypes.object.isRequired,
 };
 
 export default TitleReadOnlyMode;

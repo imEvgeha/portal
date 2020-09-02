@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import Tooltip from '@atlaskit/tooltip';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import DateTimeRenderer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeRenderer';
@@ -14,7 +15,7 @@ import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '../../../../ui/grid/gridActions';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnDefs from '../../columnMappings.json';
-import {NOT_FILTERABLE_FIELDS, REFRESH_BTN} from '../../eventManagementConstants';
+import {NOT_FILTERABLE_FIELDS, REFRESH_BTN, CLEAR_FILTERS_BTN} from '../../eventManagementConstants';
 import {getEventSearch} from '../../eventManagementService';
 import './EventManagementTable.scss';
 
@@ -26,7 +27,7 @@ const EventManagementGrid = compose(
     withInfiniteScrolling({fetchData: getEventSearch})
 )(NexusGrid);
 
-const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...props}) => {
+const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => {
             const defaultColDef = {
@@ -55,8 +56,20 @@ const EventManagementTable = ({gridApi, onGridEvent, toggleRefreshGridData, ...p
 
     return (
         <div className="nexus-c-event-management-table">
-            <div className="nexus-c-event-management-table__refresh-button">
-                <Button onClick={() => toggleRefreshGridData(true)}>{REFRESH_BTN}</Button>
+            <div className="nexus-c-event-management-table__toolbar">
+                <Tooltip content="Clear Active Column Filters">
+                    <Button className="nexus-c-event-management-table__toolbar-button" onClick={clearFilters}>
+                        {CLEAR_FILTERS_BTN}
+                    </Button>
+                </Tooltip>
+                <Tooltip content="Refresh Grid Data">
+                    <Button
+                        className="nexus-c-event-management-table__toolbar-button"
+                        onClick={() => toggleRefreshGridData(true)}
+                    >
+                        {REFRESH_BTN}
+                    </Button>
+                </Tooltip>
             </div>
             <EventManagementGrid
                 className="nexus-c-event-management-grid"
@@ -74,6 +87,7 @@ EventManagementTable.propTypes = {
     gridApi: PropTypes.object,
     onGridEvent: PropTypes.func,
     toggleRefreshGridData: PropTypes.func.isRequired,
+    clearFilters: PropTypes.func.isRequired,
 };
 
 EventManagementTable.defaultProps = {

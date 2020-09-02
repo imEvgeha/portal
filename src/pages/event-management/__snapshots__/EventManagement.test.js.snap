@@ -13,6 +13,7 @@ exports[`EventManagement should match snapshot 1`] = `
     className="nexus-c-event-management__table"
   >
     <Connect(EventManagementTable)
+      clearFilters={[Function]}
       onGridEvent={[Function]}
       onSortChanged={[Function]}
     />

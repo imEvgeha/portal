@@ -37,6 +37,11 @@ const EventManagement = props => {
         });
     };
 
+    const clearFilters = () => {
+        gridApi && gridApi.setFilterModel(null);
+        setSearchParams('filter', null);
+    };
+
     const onSortChanged = ({api}) => {
         const sortModel = api.getSortModel();
         setSearchParams('sort', sortModel);
@@ -128,7 +133,7 @@ const EventManagement = props => {
                 <Button onClick={() => setIsLocal(prev => !prev)}>Set to {isLocal ? 'UTC' : 'Local'} Time</Button>
             </div>
             <div className="nexus-c-event-management__table">
-                <EventManagementTable gridApi={gridApi} onGridEvent={onGridEvent} onSortChanged={onSortChanged} />
+                <EventManagementTable clearFilters={clearFilters} onSortChanged={onSortChanged} />
             </div>
             {selectedEvent && <EventDrawer event={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>
