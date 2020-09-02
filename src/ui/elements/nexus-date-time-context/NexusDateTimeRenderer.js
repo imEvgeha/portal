@@ -8,6 +8,17 @@ import {useDateTimeContext} from './NexusDateTimeProvider';
  * Consumes the NexusDateTimeContext to show a timestamp along with a tooltip on hover.
  * The tooltip will display UTC time if the current context is set to local time,
  * and vice versa if the context is set to UTC time.
+ *
+ * @component
+ * @example
+ * const value = "2020-08-07T20:41:04.686Z" // required
+ * const format = DATETIME_FIELDS.BUSINESS_DATETIME // optional, defaults to true
+ * const shouldDisplayTime = true; // optional, defaults to true
+ * return (
+ *   <DateTimeRenderer value={value} format={format} shouldDisplayTime={shouldDisplayTime}>
+ *     {value => <p>{value}</p>}
+ *   <DateTimeRenderer />
+ * )
  */
 const DateTimeRenderer = ({value, format, shouldDisplayTime, children}) => {
     const {renderDateTime, isLocal} = useDateTimeContext();
