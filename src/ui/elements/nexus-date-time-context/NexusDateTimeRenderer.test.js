@@ -35,6 +35,12 @@ describe('NexusDateTimeRenderer', () => {
         expect(wrapper).toBeTruthy();
     });
 
+    it('renders the children html correctly along with the given value', () => {
+        init(true, text => `render function: ${text}`);
+        expect(wrapper.html()).toContain('test-className');
+        expect(wrapper.text()).toContain('Hello render function: 2020-08-07T20:41:03Z');
+    });
+
     describe('the tooltip', () => {
         const getTooltip = wrapper => {
             return wrapper.dive().dive().shallow().dive().shallow().find('Tooltip');
@@ -50,12 +56,6 @@ describe('NexusDateTimeRenderer', () => {
             init(true);
             const tooltip = getTooltip(wrapper);
             expect(tooltip.prop('content')).not.toContain('Local Time:');
-        });
-
-        it('renders the children html correctly along with the given value', () => {
-            init(true, text => `render function: ${text}`);
-            expect(wrapper.html()).toContain('test-className');
-            expect(wrapper.text()).toContain('Hello render function: 2020-08-07T20:41:03Z');
         });
     });
 });
