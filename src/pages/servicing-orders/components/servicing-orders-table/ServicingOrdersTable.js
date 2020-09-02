@@ -75,23 +75,19 @@ const ServicingOrdersTable = ({
                             // This is necessary because Atlaskit wraps native checkbox, and native checkbox has no
                             // visually disabled state.
                             return (
-                                <>
-                                    <Tooltip content="This servicing order cannot be exported" position="right">
-                                        <div className="nexus-c-servicing-orders-table__checkbox--disabled" />
-                                    </Tooltip>
-                                </>
+                                <Tooltip content="This servicing order cannot be exported" position="right">
+                                    <div className="nexus-c-servicing-orders-table__checkbox--disabled" />
+                                </Tooltip>
                             );
                         }
                         // provide a cell checkbox using atlaskit
                         return (
-                            <>
-                                <Checkbox
-                                    value={params.data.soNumber}
-                                    onChange={e => onCheckboxChange(e, params)}
-                                    defaultChecked={defaultSelected}
-                                    isDisabled={params.data.tenant !== 'MGM'}
-                                />
-                            </>
+                            <Checkbox
+                                value={params.data.soNumber}
+                                onChange={e => onCheckboxChange(e, params)}
+                                defaultChecked={defaultSelected}
+                                isDisabled={params.data.tenant !== 'MGM'}
+                            />
                         );
                     },
                 };
