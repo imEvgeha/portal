@@ -16,3 +16,5 @@ export const RIGHT_MATCHING_DOP_STORAGE = 'rightMatchingDOP';
 export const STATUS_FOR_MATCHING = ['Ready', 'ReadyNew'];
 export const SECTION_MESSAGE =
     'Select rights from the repository that match the focused right or declare it as a NEW right from the action menu above.';
+export const WARNING_CONFLICTING_RIGHTS =
+    'Some selected rights have been updated and are no more conflicting. Please re-select matching rights.';

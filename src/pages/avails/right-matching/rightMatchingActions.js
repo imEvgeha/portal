@@ -43,3 +43,8 @@ export const storeMatchedRights = payload => ({
     type: actionTypes.STORE_MATCHED_RIGHTS,
     payload,
 });
+
+export const validateConflictingRights = payload => ({
+    type: actionTypes.VALIDATE_CONFLICTING_RIGHTS,
+    payload,
+});
