@@ -4,6 +4,7 @@ import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
+import {useDateTimeContext} from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeProvider';
 import DateTimeRenderer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeRenderer';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
@@ -28,6 +29,8 @@ const EventManagementGrid = compose(
 )(NexusGrid);
 
 const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) => {
+    const {isLocal, setIsLocal} = useDateTimeContext();
+
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => {
             const defaultColDef = {
@@ -57,12 +60,20 @@ const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) =
     return (
         <div className="nexus-c-event-management-table">
             <div className="nexus-c-event-management-table__toolbar">
-                <Tooltip content="Clear Active Column Filters">
+                <Tooltip content={`Change timestamps to show in ${isLocal ? 'UTC' : 'Local'} format`}>
+                    <Button
+                        className="nexus-c-event-management-table__toolbar-button"
+                        onClick={() => setIsLocal(prev => !prev)}
+                    >
+                        Set to {isLocal ? 'UTC' : 'Local'} Time
+                    </Button>
+                </Tooltip>
+                <Tooltip content="Clear active column filters">
                     <Button className="nexus-c-event-management-table__toolbar-button" onClick={clearFilters}>
                         {CLEAR_FILTERS_BTN}
                     </Button>
                 </Tooltip>
-                <Tooltip content="Refresh Grid Data">
+                <Tooltip content="Refresh grid data">
                     <Button
                         className="nexus-c-event-management-table__toolbar-button"
                         onClick={() => toggleRefreshGridData(true)}

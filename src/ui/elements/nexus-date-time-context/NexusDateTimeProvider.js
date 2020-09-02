@@ -1,7 +1,9 @@
-import React, {createContext, useState, useCallback} from 'react';
+import React, {createContext, useCallback, useContext, useState} from 'react';
 import {ISODateToView} from '../../../util/date-time/DateTimeUtils';
 
 export const NexusDateTimeContext = createContext({});
+
+export const useDateTimeContext = () => useContext(NexusDateTimeContext);
 
 /**
  * An app context provider which passes down the user preference of
