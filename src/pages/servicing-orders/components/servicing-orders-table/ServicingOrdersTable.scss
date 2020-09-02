@@ -1,7 +1,8 @@
 @import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/config';
 
 .nexus-c-servicing-orders-table {
-    width: 100%;
+    max-width: 100%;
     height: calc(100vh - 205px);
     position: relative;
 
@@ -9,12 +10,13 @@
         height: 100%;
     }
     .ag-react-container a {
-        color: #0065ff;
+        color: map-get($colors, nexus-link);
         text-decoration: underline;
     }
 
     &__checkbox-cell {
         width: 45px;
+        @include addSpacing('width', 11.25);
         margin-left: 0 !important;
         padding-left: 4px !important;
         display: flex;
@@ -22,10 +24,10 @@
     }
 
     &__checkbox--disabled {
-        height: 13px;
-        width: 13px;
-        margin: 6px 0 0 6px;
+        @include addSpacing('height', 3.25);
+        @include addSpacing('width', 3.25);
+        @include margin(1.5, 0, 0, 1.5);
+        @include addSpacing('border-radius', 0.25);
         background-color: map-get($mid-neutral-colors, mid-neutral-8);
-        border-radius: 2px;
     }
 }
