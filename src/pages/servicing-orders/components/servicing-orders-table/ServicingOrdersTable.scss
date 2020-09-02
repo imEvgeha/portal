@@ -15,7 +15,6 @@
     }
 
     &__checkbox-cell {
-        width: 45px;
         @include addSpacing('width', 11.25);
         margin-left: 0 !important;
         padding-left: 4px !important;
