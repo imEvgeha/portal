@@ -1044,6 +1044,10 @@ class RightDetails extends React.Component {
                 }, 1);
             };
 
+            if (name === 'licensor') {
+                readOnly = !!this.state.right.coreTitleId || this.state.right.territory.some(t => t.selected);
+            }
+
             return renderFieldTemplate(
                 name,
                 displayName,
