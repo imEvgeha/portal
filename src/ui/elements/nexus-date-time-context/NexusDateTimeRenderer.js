@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
 import {DATETIME_FIELDS} from '../../../util/date-time/constants';
-import {NexusDateTimeContext} from './NexusDateTimeProvider';
+import {useDateTimeContext} from './NexusDateTimeProvider';
 
 /**
  * Consumes the NexusDateTimeContext to show a timestamp along with a tooltip on hover.
@@ -10,7 +10,7 @@ import {NexusDateTimeContext} from './NexusDateTimeProvider';
  * and vice versa if the context is set to UTC time.
  */
 const DateTimeRenderer = ({value, format, shouldDisplayTime, children}) => {
-    const {renderDateTime, isLocal} = useContext(NexusDateTimeContext);
+    const {renderDateTime, isLocal} = useDateTimeContext();
     return (
         <Tooltip
             content={`${!isLocal ? 'Local Time: ' : ''}${renderDateTime(value, format, shouldDisplayTime, !isLocal)}`}
