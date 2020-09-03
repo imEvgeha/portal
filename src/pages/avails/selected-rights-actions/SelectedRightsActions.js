@@ -301,23 +301,21 @@ export const SelectedRightsActions = ({
                             <div>{BULK_UNMATCH}</div>
                         </NexusTooltip>
                     </div>
-                    {URL.isLocalOrDevOrQA() && (
-                        <div
-                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                'nexus-c-selected-rights-actions__menu-item--is-active':
-                                    isBonusRightCreatable && !statusDeleteMerged,
-                            })}
-                            data-test-id="bonus-rights"
-                            onClick={isBonusRightCreatable ? createBonusRights : null}
+                    <div
+                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                            'nexus-c-selected-rights-actions__menu-item--is-active':
+                                isBonusRightCreatable && !statusDeleteMerged,
+                        })}
+                        data-test-id="bonus-rights"
+                        onClick={isBonusRightCreatable ? createBonusRights : null}
+                    >
+                        <NexusTooltip
+                            content={CREATE_BONUS_RIGHT_TOOLTIP}
+                            isDisabled={isBonusRightCreatable && !statusDeleteMerged}
                         >
-                            <NexusTooltip
-                                content={CREATE_BONUS_RIGHT_TOOLTIP}
-                                isDisabled={isBonusRightCreatable && !statusDeleteMerged}
-                            >
-                                <div>{CREATE_BONUS_RIGHT}</div>
-                            </NexusTooltip>
-                        </div>
-                    )}
+                            <div>{CREATE_BONUS_RIGHT}</div>
+                        </NexusTooltip>
+                    </div>
                     {activeTab !== PRE_PLAN_TAB && (
                         <>
                             <div
