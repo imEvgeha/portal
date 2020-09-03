@@ -20,7 +20,7 @@ import Constants from './titleMatchingConstants';
 import {getFocusedRight, getColumnDefs} from './titleMatchingSelectors';
 import './TitleMatchView.scss';
 
-const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title 
+const SECTION_MESSAGE = `Select titles from the repository that match the Incoming right or declare it as a NEW title
 from the action menu.`;
 
 const IncomingRightTable = withColumnsResizing()(NexusGrid);
@@ -34,7 +34,7 @@ const TitleMatchView = ({
     columnDefs,
     searchCriteria,
 }) => {
-    const {setModalContentAndTitle, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
     // eslint-disable-next-line
     const newTitleCell = ({data}) => {
@@ -43,8 +43,8 @@ const TitleMatchView = ({
             <CustomActionsCellRenderer id={id}>
                 <Button
                     onClick={() =>
-                        setModalContentAndTitle(
-                            () => <CreateTitleForm close={close} focusedRight={focusedRight} />,
+                        openModal(
+                            <CreateTitleForm close={closeModal} focusedRight={focusedRight} />,
                             NewTitleConstants.NEW_TITLE_MODAL_TITLE
                         )
                     }

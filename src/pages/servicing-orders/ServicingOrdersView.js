@@ -32,10 +32,7 @@ const ServicingOrdersView = () => {
         </>
     );
     const modalHeading = 'Warning';
-    const modalStyle = {
-        width: 'small',
-    };
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
         setFixedFilter({
@@ -80,21 +77,20 @@ const ServicingOrdersView = () => {
      * Open global modal with config
      */
     const openWarningModal = () => {
-        setModalContentAndTitle(ModalContent, modalHeading);
-        setModalStyle(modalStyle);
-        setModalActions([
+        const actions = [
             {
                 text: 'Continue',
                 onClick: () => {
                     exportSelectedServicingOrders();
-                    close();
+                    closeModal();
                 },
             },
             {
                 text: 'Cancel',
-                onClick: close,
+                onClick: closeModal,
             },
-        ]);
+        ];
+        openModal(ModalContent, modalHeading, 'small', actions);
     };
 
     /**

@@ -8,27 +8,27 @@ import './NexusTag.scss';
 
 const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationContent = null}) => {
     const [defaultTooltipContent, setDefaultContent] = useState(null);
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext)
 
     const handleRemove = event => {
         if (confirmationContent) {
-            setModalActions([
+
+            const actions = [
                 {
                     text: CANCEL,
-                    onClick: close,
+                    onClick: closeModal,
                     appearance: 'default',
                 },
                 {
                     text: DELETE,
                     onClick: () => {
                         onRemove(event);
-                        close();
+                        closeModal();
                     },
                     appearance: 'danger',
                 },
-            ]);
-            setModalContentAndTitle(confirmationContent, REMOVE_TITLE);
-            setModalStyle({width: '30%'});
+            ];
+            openModal(confirmationContent, REMOVE_TITLE, 'medium', actions);
         } else {
             onRemove(event);
         }
