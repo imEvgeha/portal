@@ -62,7 +62,7 @@ const InputForm = ({
     const [selectedLicensees, setSelectedLicensees] = useState([]);
 
     const [serviceRegion, setServiceRegion] = useState(
-        ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
+        ingestServiceRegion ? {label: ingestServiceRegion, value: ingestServiceRegion} : ''
     );
     const [isShowingCatalogType, setIsShowingCatalogType] = useState(false);
     const [catalogType, setCatalogType] = useState('');
@@ -94,9 +94,15 @@ const InputForm = ({
     const uploadHandler = () => {
         const params = {
             serviceRegion: serviceRegion.value,
+            licensed: isLicensed,
             file,
             closeModal,
         };
+
+        if (isShowingCatalogType) {
+            params.catalogUpdate = isShowingCatalogType;
+            params.catalogType = catalogType;
+        }
 
         if (get(ingestData, 'externalId', '')) {
             params.externalId = ingestData.externalId;
@@ -137,6 +143,18 @@ const InputForm = ({
     };
 
     const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
+    const isUploadEnabled = () => {
+        if (isShowingCatalogType) {
+            if (template === INTERNATIONAL || template === USMASTER) {
+                return serviceRegion && catalogType && selectedLicensees.length;
+            }
+            return serviceRegion && licensor && catalogType && selectedLicensees.length;
+        }
+        if (template === INTERNATIONAL || template === USMASTER) {
+            return !isEmpty(serviceRegion);
+        }
+        return !isEmpty(serviceRegion) && licensor && selectedLicensees.length;
+    };
 
     return (
         <div className="manual-ingest-config">
@@ -163,7 +181,7 @@ const InputForm = ({
                     <label className="manual-ingest-config__label">Licensor</label>
                     <Select
                         id="manual-upload-licensor"
-                        onChange={setLicensor}
+                        onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
                         isDisabled={template !== STUDIO || ingestLicensor}
@@ -188,10 +206,12 @@ const InputForm = ({
                 <label className="manual-ingest-config__label">Licensee</label>
                 <Select
                     id="manual-upload-licensee"
-                    onChange={setSelectedLicensees}
+                    onChange={val => setSelectedLicensees(val || [])}
                     value={selectedLicensees}
                     options={licenseesOptions}
-                    isDisabled={!serviceRegion || [USMASTER, INTERNATIONAL].includes(template)}
+                    isDisabled={
+                        !serviceRegion || (!isShowingCatalogType ? [USMASTER, INTERNATIONAL].includes(template) : false)
+                    }
                     placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
                     isMulti
                     {...selectProps}
@@ -236,9 +256,9 @@ const InputForm = ({
                 </Button>
                 <Button
                     onClick={uploadHandler}
-                    className={uploadDisabled ? '' : 'btn-primary'}
+                    className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
-                    isDisabled={uploadDisabled}
+                    isDisabled={!isUploadEnabled()}
                 >
                     Upload
                 </Button>
