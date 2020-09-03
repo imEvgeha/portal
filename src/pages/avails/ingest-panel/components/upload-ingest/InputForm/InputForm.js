@@ -30,6 +30,7 @@ const InputForm = ({
     licensees,
     uploadIngest,
     isUploading,
+    openConfirmationModal,
 }) => {
     const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
 
@@ -142,7 +143,7 @@ const InputForm = ({
         selectedTemplate !== STUDIO && setLicensor('');
     };
 
-    const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
+    // const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
     const isUploadEnabled = () => {
         if (isShowingCatalogType) {
             if (template === INTERNATIONAL || template === USMASTER) {
@@ -255,7 +256,7 @@ const InputForm = ({
                     Cancel
                 </Button>
                 <Button
-                    onClick={uploadHandler}
+                    onClick={openConfirmationModal}
                     className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
@@ -273,6 +274,7 @@ InputForm.propTypes = {
     closeModal: PropTypes.func.isRequired,
     uploadIngest: PropTypes.func,
     browseClick: PropTypes.func,
+    openConfirmationModal: PropTypes.func,
     file: PropTypes.object,
     isUploading: PropTypes.bool,
     ingestData: PropTypes.object,
@@ -283,6 +285,7 @@ InputForm.defaultProps = {
     licensees: [],
     uploadIngest: () => null,
     browseClick: () => null,
+    openConfirmationModal: () => null,
     file: {},
     isUploading: false,
     ingestData: {},
