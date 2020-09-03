@@ -110,11 +110,16 @@ class TitleEdit extends Component {
 
     loadExternalIds(titleId) {
         isNexusTitle(titleId) &&
-            titleService.getExternalIds(titleId).then(response => {
-                this.setState({
-                    externalIDs: response,
+            titleService
+                .getExternalIds(titleId)
+                .then(response => {
+                    this.setState({
+                        externalIDs: response,
+                    });
+                })
+                .catch(() => {
+                    console.error('Unable to load Extrernal IDs data');
                 });
-            });
     }
 
     loadParentTitle(titleFormData) {
