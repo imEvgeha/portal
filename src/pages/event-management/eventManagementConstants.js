@@ -1,5 +1,6 @@
 export const TITLE = 'Event Management';
 export const REFRESH_BTN = 'Refresh';
+export const CLEAR_FILTERS_BTN = 'Clear Filters';
 export const DRAWER_TITLE = 'Event Details';
 
 export const EVENT_HEADER = 'Event Header';

@@ -1,9 +1,16 @@
+@import '../../../../styles/atlaskit/mixins';
+
 .nexus-c-event-management-table {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  &__refresh-button {
-    float: right;
-    place-self: flex-end;
-  }
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__toolbar {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__toolbar-button {
+        @include margin(0, 0, 0, 2);
+    }
 }
