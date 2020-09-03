@@ -37,7 +37,7 @@ class SelectRightsDOPConnector extends Component {
     openDOPPopUp = () => {
         const handlePopUpClick = () => {
             DOP.sendInfoToDOP(1, null);
-            this.context.close();
+            this.context.closeModal();
         };
         const actions = [
             {
