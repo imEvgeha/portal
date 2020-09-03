@@ -318,7 +318,7 @@ export const SelectedRightsActions = ({
                             </NexusTooltip>
                         </div>
                     )}
-                    {activeTab !== PRE_PLAN_TAB && URL.isLocalOrDevOrQA() && (
+                    {activeTab !== PRE_PLAN_TAB && (
                         <>
                             <div
                                 className={classNames('nexus-c-selected-rights-actions__menu-item', {
