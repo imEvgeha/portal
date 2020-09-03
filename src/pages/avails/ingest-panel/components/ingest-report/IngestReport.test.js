@@ -79,6 +79,4 @@ describe('IngestReport', () => {
         const tooltips = wrapper.find(NexusTooltip);
         expect(tooltips).toHaveLength(2);
     });
-
 });
-

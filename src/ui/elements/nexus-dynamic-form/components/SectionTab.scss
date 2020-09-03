@@ -1,7 +1,7 @@
 @import '../../../../styles/atlaskit/mixins';
 @import '../../../../styles/atlaskit/colors';
 
-.nexus-c-section-tab{
+.nexus-c-section-tab {
     display: flex;
     justify-content: center;
     flex-basis: 100%;
@@ -9,7 +9,7 @@
     border-bottom: 1px solid map-get($neutrals, N40);
     cursor: pointer;
     color: map-get($neutrals, N800);
-    transition: color .2s ease-in;
+    transition: color 0.2s ease-in;
 
     &:hover {
         color: map-get($blues, B400);
@@ -17,7 +17,8 @@
     }
 
     // remove the blue border around active links (browser default)
-    &:active, &:focus {
+    &:active,
+    &:focus {
         outline: none;
     }
 

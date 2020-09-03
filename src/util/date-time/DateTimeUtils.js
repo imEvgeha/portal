@@ -23,28 +23,56 @@ const parseSimulcast = (date = null, dateFormat, isTimeVisible = true) => {
 // https://en.wikipedia.org/wiki/ISO_8601#Coordinated_Universal_Time_(UTC)
 const isUtc = (date = '') => typeof date === 'string' && date.endsWith('Z');
 
-const ISODateToView = (date, type) => {
+/**
+ * Returns a date-time string for the given timestamp and format.
+ * @param {string} date the timestamp to render
+ * @param {string} type a `DATETIME_FIELDS` enum value from `src/util/date-time/constants`
+ * @param {boolean} [isLocal=false] set `true` if you want to return the local datetime for the given date, default false
+ * @param {boolean} [shouldDisplayTime=true] set `false` if you don't want to display the time, default true
+ */
+const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) => {
     if (date) {
         const {locale} = store.getState().locale;
         const dateFormat = getDateFormatBasedOnLocale(locale);
+        const momentDate = moment(date);
+
+        let dateTimeFormat = null;
+        let isUtcTime = null;
+
+        const appendDateTimeFormats = (dateFormat, timeFormat) => {
+            return `${dateFormat} ${shouldDisplayTime ? timeFormat : ''}`.trim();
+        };
+
         switch (type) {
             case DATETIME_FIELDS.TIMESTAMP: {
-                const timestampFormat = `${dateFormat} ${TIMESTAMP_TIME_FORMAT}`;
-                return `${moment(date).utc(false).format(timestampFormat)}`;
+                dateTimeFormat = appendDateTimeFormats(dateFormat, TIMESTAMP_TIME_FORMAT);
+                isUtcTime = false;
+                break;
             }
+
             case DATETIME_FIELDS.BUSINESS_DATETIME: {
                 const isUtcDate = isUtc(date);
-
                 const timeFormat = isUtcDate ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
-                const dateTimeFormat = `${dateFormat} ${timeFormat}`;
 
-                return `${moment(date).utc(!isUtcDate).format(dateTimeFormat)}`;
+                dateTimeFormat = appendDateTimeFormats(dateFormat, timeFormat);
+                isUtcTime = !isUtcDate;
+                break;
             }
-            case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-                return `${moment(date).utc(true).format(dateFormat)}`;
+
+            case DATETIME_FIELDS.REGIONAL_MIDNIGHT: {
+                dateTimeFormat = dateFormat;
+                isUtcTime = true;
+                break;
+            }
+
             default:
                 return '';
         }
+
+        if (isLocal) {
+            return momentDate.utc(isUtcTime).local().format(appendDateTimeFormats(dateFormat, RELATIVE_TIME_FORMAT));
+        }
+        return momentDate.utc(isUtcTime).format(dateTimeFormat);
     }
     return '';
 };
