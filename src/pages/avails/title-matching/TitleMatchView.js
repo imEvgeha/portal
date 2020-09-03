@@ -34,7 +34,7 @@ const TitleMatchView = ({
     columnDefs,
     searchCriteria,
 }) => {
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
     // eslint-disable-next-line
     const newTitleCell = ({data}) => {
@@ -43,8 +43,8 @@ const TitleMatchView = ({
             <CustomActionsCellRenderer id={id}>
                 <Button
                     onClick={() =>
-                        open(
-                            <CreateTitleForm close={close} focusedRight={focusedRight} />,
+                        openModal(
+                            <CreateTitleForm close={closeModal} focusedRight={focusedRight} />,
                             NewTitleConstants.NEW_TITLE_MODAL_TITLE
                         )
                     }

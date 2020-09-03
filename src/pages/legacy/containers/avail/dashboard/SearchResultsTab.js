@@ -94,20 +94,20 @@ class SearchResultsTab extends React.Component {
 
     handleViewAuditHistory = () => {
         const {selectedRights = []} = this.props;
-        const {open, close} = this.context;
+        const {openModal, closeModal} = this.context;
 
         const title = `Audit History (${selectedRights.length})`;
         const actions = [
             {
                 text: 'Done',
-                onClick: close,
+                onClick: closeModal,
             },
         ];
-        open(NexusSpinner, title, '100%', actions);
+        openModal(NexusSpinner, title, '100%', actions);
 
         const ids = selectedRights.map(e => e.id);
         getRightsHistory(ids).then(rightsEventHistory => {
-            open(
+            openModal(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />

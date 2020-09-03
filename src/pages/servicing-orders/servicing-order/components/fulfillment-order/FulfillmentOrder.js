@@ -122,25 +122,25 @@ export const FulfillmentOrder = ({
             {
                 text: 'Continue',
                 onClick: () => {
-                    close();
+                    closeModal();
                     setFulfillmentOrder(fo);
                 },
             },
             {
                 text: 'Cancel',
                 onClick: () => {
-                    close();
+                    closeModal();
                 },
             },
         ];
-        open(ModalContent, modalHeading, 'small', actions);
+        openModal(ModalContent, modalHeading, 'small', actions);
     };
 
     const readinessOption = fulfillmentOrder
         ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
         : {};
 
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);

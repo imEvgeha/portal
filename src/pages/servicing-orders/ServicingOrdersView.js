@@ -32,7 +32,7 @@ const ServicingOrdersView = () => {
         </>
     );
     const modalHeading = 'Warning';
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
         setFixedFilter({
@@ -82,15 +82,15 @@ const ServicingOrdersView = () => {
                 text: 'Continue',
                 onClick: () => {
                     exportSelectedServicingOrders();
-                    close();
+                    closeModal();
                 },
             },
             {
                 text: 'Cancel',
-                onClick: close,
+                onClick: closeModal,
             },
         ];
-        open(ModalContent, modalHeading, 'small', actions);
+        openModal(ModalContent, modalHeading, 'small', actions);
     };
 
     /**

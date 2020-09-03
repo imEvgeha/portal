@@ -12,13 +12,13 @@ const columnsToUse = ['licensor', 'licensee', 'title', 'licenseType', 'format', 
 
 const RightsClashingModal = ({clashingRights, columnDefs}) => {
 
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const [rightsClashingColumnsDef, setRightsClashingColumnsDef] = useState([]);
 
     const actions = [{
         text: 'Cancel',
-        onClick: close
+        onClick: closeModal
     }];
 
 
@@ -41,7 +41,7 @@ const RightsClashingModal = ({clashingRights, columnDefs}) => {
 
     useEffect(() => {
         if (clashingRights && clashingRights.length > 0) {
-            open(buildContent(), 'Clashing Rights', 'medium', actions);
+            openModal(buildContent(), 'Clashing Rights', 'medium', actions);
         }
     }, [clashingRights]);
 

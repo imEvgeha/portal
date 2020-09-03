@@ -68,7 +68,7 @@ export const SelectedRightsActions = ({
     const [headerText, setHeaderText] = useState('');
     const node = useRef();
 
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
         window.addEventListener('click', removeMenu);
@@ -191,7 +191,7 @@ export const SelectedRightsActions = ({
                 selectedRightGridApi.refreshCells();
 
                 // Close modal
-                close();
+                closeModal();
 
                 // Show success toast
                 addToast({
@@ -203,7 +203,7 @@ export const SelectedRightsActions = ({
                 });
             });
         },
-        [addToast, close, selectedRightGridApi, selectedRights, toggleRefreshGridData]
+        [addToast, selectedRightGridApi, selectedRights, toggleRefreshGridData]
     );
 
     const openBulkUnmatchModal = () => {
@@ -213,7 +213,7 @@ export const SelectedRightsActions = ({
                 {
                     text: BULK_UNMATCH_CANCEL_BTN,
                     onClick: () => {
-                        close();
+                        closeModal();
                         removeToast();
                     },
                     appearance: 'default',
@@ -224,7 +224,7 @@ export const SelectedRightsActions = ({
                     appearance: 'primary',
                 },
             ];
-            open(
+            openModal(
                 <BulkUnmatch
                     selectedRights={selectedRightsIds}
                     affectedRights={rights}
@@ -238,7 +238,7 @@ export const SelectedRightsActions = ({
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        open(<BulkDelete rights={[]} onClose={close} />, BULK_DELETE_HEADER, 'large');
+        openModal(<BulkDelete rights={[]} onClose={closeModal} />, BULK_DELETE_HEADER, 'large');
     };
 
     const openAuditHistoryModal = () => {
@@ -248,13 +248,13 @@ export const SelectedRightsActions = ({
         const actions = [
             {
                 text: 'Done',
-                onClick: close,
+                onClick: closeModal,
             },
         ];
-        open(NexusSpinner, title, '100%', actions);
+        openModal(NexusSpinner, title, '100%', actions);
 
         getRightsHistory(ids).then(rightsEventHistory => {
-            open(
+            openModal(
                 <div>
                     {selectedRights.map((right, index) => (
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
@@ -270,7 +270,7 @@ export const SelectedRightsActions = ({
     const onCloseStatusCheckModal = () => {
         gridApi.deselectAll();
         toggleRefreshGridData(true);
-        close();
+        closeModal();
     };
 
     const prepareRightsForPrePlan = () => {
@@ -287,7 +287,7 @@ export const SelectedRightsActions = ({
 
         setSelectedRights(nonEligibleRights);
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
-        open(
+        openModal(
             <StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />,
             STATUS_CHECK_HEADER,
             'large'

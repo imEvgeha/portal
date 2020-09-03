@@ -10,21 +10,21 @@ const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
 const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) => {
     const [hideShowColumns, setHideShowColumns] = useState();
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
         if (hideShowColumns) {
             const actions = [{
                 text: 'Save',
                 onClick: () => {
-                    close();
+                    closeModal();
                     saveColumns();
                 },
             }, {
                 text: 'Cancel',
-                onClick: close,
+                onClick: closeModal,
             }];
-            open(buildModalContent(hideShowColumns), 'Select Visible Columns', 'small', actions);
+            openModal(buildModalContent(hideShowColumns), 'Select Visible Columns', 'small', actions);
         }
     }, [hideShowColumns]);
 

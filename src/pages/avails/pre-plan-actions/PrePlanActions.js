@@ -31,7 +31,7 @@ export const PrePlanActions = ({
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const node = useRef();
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
 
     const removeRightsFromPrePlan = keepUnselected => {
@@ -71,11 +71,11 @@ export const PrePlanActions = ({
                 const [eligibleRights, nonEligibleRights] = getEligibleRights(result);
                 const DOPRequestRights = [];
                 if (nonEligibleRights && nonEligibleRights.length) {
-                    open(
+                    openModal(
                         <StatusCheck
                             message={STATUS_CHECK_MSG}
                             nonEligibleTitles={nonEligibleRights}
-                            onClose={close}
+                            onClose={closeModal}
                         />,
                         STATUS_CHECK_HEADER
                     );

@@ -8,7 +8,7 @@ export const NexusModalProvider = ({children}) => {
     const [modalParams, setModalParams] = useState({});
 
 
-    const open = useCallback((content, title, width = 'medium', actions = []) => {
+    const openModal = useCallback((content, title, width = 'medium', actions = []) => {
         setModalParams({
             title,
             content,
@@ -18,7 +18,7 @@ export const NexusModalProvider = ({children}) => {
         });
     }, []);
 
-    const close = useCallback(() => {
+    const closeModal = useCallback(() => {
         setModalParams({
             title: '',
             content: null,
@@ -29,8 +29,8 @@ export const NexusModalProvider = ({children}) => {
     }, []);
 
     const context = {
-        close,
-        open
+        closeModal,
+        openModal
     };
 
     const { title = '', content = null, actions = [], width = '', isOpened = false } = modalParams;
@@ -41,7 +41,7 @@ export const NexusModalProvider = ({children}) => {
                     <Modal
                         actions={actions.length && actions}
                         heading={title}
-                        onClose={close}
+                        onClose={closeModal}
                         width={width}
                     >
                         <div className="nexus-c-modal">{content}</div>

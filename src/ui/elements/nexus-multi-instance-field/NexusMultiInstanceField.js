@@ -29,7 +29,7 @@ const NexusMultiInstanceField = ({
     const [formValue, setFormValue] = useState({});
     const [inlineEdit, setInlineEdit] = useState(null);
     const [formKey, setFormKey] = useState(Math.random());
-    const {open, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => setItems(existingItems), [existingItems]);
     useEffect(() => setFormKey(Math.random()), [editIndex]);
@@ -81,12 +81,12 @@ const NexusMultiInstanceField = ({
                     onClick: () => {
                         setEditIndex(-1);
                         setFormValue({});
-                        close();
+                        closeModal();
                     },
                 },
                 {text: 'Submit', onClick: callback},
             ]
-            open(content, '', 'medium', actions);
+            openModal(content, '', 'medium', actions);
         } else {
             setInlineEdit(content);
         }
@@ -129,7 +129,7 @@ const NexusMultiInstanceField = ({
         setFormValue({});
 
         if (isUsingModal) {
-            close();
+            closeModal();
         } else {
             setInlineEdit(null);
         }
@@ -146,7 +146,7 @@ const NexusMultiInstanceField = ({
         setItems(combinedItems);
         setFormValue({});
         if (isUsingModal) {
-            close();
+            closeModal();
         } else {
             setInlineEdit(null);
         }
