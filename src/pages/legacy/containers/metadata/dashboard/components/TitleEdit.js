@@ -27,6 +27,7 @@ import PublishVzMovida from './publish/PublishVzMovida';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
+import {isNexusTitle} from './utils/utils';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -81,7 +82,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreate: {},
             editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {},
-            externalIDs: [],
+            externalIDs: null,
         };
     }
 
@@ -108,15 +109,11 @@ class TitleEdit extends Component {
     }
 
     loadExternalIds(titleId) {
-        titleService
-            .getExternalIds(titleId)
-            .then(response => {
+        isNexusTitle(titleId) &&
+            titleService.getExternalIds(titleId).then(response => {
                 this.setState({
                     externalIDs: response,
                 });
-            })
-            .catch(() => {
-                console.error('Unable to load Extrernal IDs data');
             });
     }
 
