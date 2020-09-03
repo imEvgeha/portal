@@ -22,6 +22,7 @@ import PersonListReadOnly from './PersonListReadOnly';
 import {isNexusTitle} from '../utils/utils';
 import { CHARACTER_NAME } from '../../../../../constants/metadata/constant-variables';
 import './CoreMetadata.scss';
+import {URL} from '../../../../../../../util/Common';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -29,7 +30,7 @@ class CoreMetadataReadOnlyMode extends Component {
 
     render() {
         const {externalIds, id, legacyIds } = this.props.data;
-        const nexusTitle = isNexusTitle(id);
+        const nexusTitle = URL.isLocalOrDev() && isNexusTitle(id);
         const vzExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === VZ);
         const movidaExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === MOVIDA);
         const vzId = nexusTitle ? get(vzExternalID, 'externalId', '')

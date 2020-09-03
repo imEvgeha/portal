@@ -213,7 +213,7 @@ const URL = {
 
     isLocalOrDev() {
         const host = window.location.hostname;
-        return host.includes('localhost') || host.includes('.dev.');
+        return false;
     },
 };
 
