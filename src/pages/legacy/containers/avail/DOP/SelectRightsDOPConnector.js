@@ -46,7 +46,7 @@ class SelectRightsDOPConnector extends Component {
                 appearance: 'primary',
             }
         ];
-        this.context.open(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE, 'medium', actions);
+        this.context.openModal(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE, 'medium', actions);
     };
 
     showConfirmDialog = () => {
