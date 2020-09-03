@@ -225,18 +225,17 @@ export const SelectedRightsActions = ({
                     appearance: 'primary',
                 },
             ];
-            openModal(
-                <BulkUnmatch selectedRights={selectedRightsIds} affectedRights={rights} />,
-                BULK_UNMATCH_TITLE,
-                'x-large',
-                actions
-            );
+            openModal(<BulkUnmatch selectedRights={selectedRightsIds} affectedRights={rights} />, {
+                title: BULK_UNMATCH_TITLE,
+                width: 'x-large',
+                actions,
+            });
         });
     };
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        openModal(<BulkDelete rights={[]} onClose={closeModal} />, BULK_DELETE_HEADER, 'large');
+        openModal(<BulkDelete rights={[]} onClose={closeModal} />, {title: BULK_DELETE_HEADER, width: 'large'});
     };
 
     const openAuditHistoryModal = () => {
@@ -249,7 +248,7 @@ export const SelectedRightsActions = ({
                 onClick: closeModal,
             },
         ];
-        openModal(NexusSpinner, title, '100%', actions);
+        openModal(NexusSpinner, {title, width: '100%', actions});
 
         getRightsHistory(ids).then(rightsEventHistory => {
             openModal(
@@ -258,9 +257,11 @@ export const SelectedRightsActions = ({
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
                 </div>,
-                title,
-                '100%',
-                actions
+                {
+                    title,
+                    width: '100%',
+                    actions,
+                }
             );
         });
     };
@@ -285,11 +286,10 @@ export const SelectedRightsActions = ({
 
         setSelectedRights(nonEligibleRights);
         setPrePlanRepoRights(filterOutUnselectedTerritories(eligibleRights));
-        openModal(
-            <StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />,
-            STATUS_CHECK_HEADER,
-            'large'
-        );
+        openModal(<StatusCheck nonEligibleTitles={nonEligibleRights} onClose={onCloseStatusCheckModal} />, {
+            title: STATUS_CHECK_HEADER,
+            width: 'large',
+        });
     };
 
     const createBonusRights = () => {

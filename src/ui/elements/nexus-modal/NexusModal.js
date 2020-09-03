@@ -6,22 +6,25 @@ export const NexusModalContext = createContext({});
 
 export const NexusModalProvider = ({children}) => {
     const [modalStack, setModalstack] = useState([]);
+    const STACK_INDEX = 6;
 
-    const openModal = useCallback((content, title, width = 'medium', actions = []) => {
-        setModalstack(modalParams => [
-            ...modalParams,
+    const openModal = useCallback((content, params) => {
+        const {title, width = 'medium', actions = [], shouldCloseOnOverlayClick = true} = params || {};
+        setModalstack(modalStack => [
+            ...modalStack,
             {
                 title,
                 content,
                 actions,
                 width,
+                shouldCloseOnOverlayClick,
             },
         ]);
     }, []);
 
     const closeModal = useCallback(() => {
-        setModalstack(modalParams => {
-            const stackContent = modalParams.slice();
+        setModalstack(modalStack => {
+            const stackContent = modalStack.slice();
             stackContent.pop();
             return [...stackContent];
         });
@@ -40,7 +43,7 @@ export const NexusModalProvider = ({children}) => {
                     content = null,
                     actions = [],
                     width = '',
-                    shouldCloseOnOverlayClick = false,
+                    shouldCloseOnOverlayClick = true,
                 } = modalItem;
                 return (
                     <ModalTransition key={title}>
@@ -50,7 +53,7 @@ export const NexusModalProvider = ({children}) => {
                             onClose={closeModal}
                             width={width}
                             shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-                            stackIndex={index}
+                            stackIndex={index !== 0 ? STACK_INDEX : 0}
                         >
                             <div className="nexus-c-modal">{content}</div>
                         </Modal>

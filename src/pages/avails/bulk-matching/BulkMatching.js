@@ -230,12 +230,12 @@ export const BulkMatching = ({
 
     const showModal = () => {
         openModal(
-                <CreateTitleForm
-                    close={closeModal}
-                    bulkTitleMatch={bulkTitleMatch}
-                    focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
-                />,
-            NewTitleConstants.NEW_TITLE_MODAL_TITLE
+            <CreateTitleForm
+                close={closeModal}
+                bulkTitleMatch={bulkTitleMatch}
+                focusedRight={{contentType: get(selectedTableData, '[0].contentType', '')}}
+            />,
+            {title: NewTitleConstants.NEW_TITLE_MODAL_TITLE}
         );
     };
 

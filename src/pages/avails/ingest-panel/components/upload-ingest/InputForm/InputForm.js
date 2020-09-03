@@ -10,6 +10,7 @@ import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelecto
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
 import {getLicensees, getLicensors} from '../../../ingestSelectors';
+import IngestConfirmation from '../../ingest-confirmation/IngestConfirmation';
 import './InputForm.scss';
 
 const {
@@ -30,7 +31,8 @@ const InputForm = ({
     licensees,
     uploadIngest,
     isUploading,
-    openConfirmationModal,
+    openModalCallback,
+    closeModalCallback,
 }) => {
     const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
 
@@ -92,17 +94,33 @@ const InputForm = ({
         setLicenseesOptions(parsedLicensees.map(({licenseeName}) => ({value: licenseeName, label: licenseeName})));
     }, [licensees, serviceRegion]);
 
+    const openIngestConfirmationModal = () => {
+        openModalCallback(
+            <IngestConfirmation
+                licensor={licensor.label}
+                serviceRegion={serviceRegion.value}
+                licensee={selectedLicensees.map(licensee => licensee.value).join(', ')}
+                catalog={catalogType.value}
+                isLicenced={isLicensed}
+                onActionCancel={closeModalCallback}
+                onActionConfirm={uploadHandler}
+            />,
+            {title: 'Attention', width: 'medium', shouldCloseOnOverlayClick: false}
+        );
+    };
+
     const uploadHandler = () => {
+        closeModalCallback();
         const params = {
             serviceRegion: serviceRegion.value,
             licensed: isLicensed,
             file,
-            closeModal,
+            closeModal: closeModalCallback,
         };
 
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
-            params.catalogType = catalogType;
+            params.catalogType = catalogType.value;
         }
 
         if (get(ingestData, 'externalId', '')) {
@@ -143,7 +161,6 @@ const InputForm = ({
         selectedTemplate !== STUDIO && setLicensor('');
     };
 
-    // const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
     const isUploadEnabled = () => {
         if (isShowingCatalogType) {
             if (template === INTERNATIONAL || template === USMASTER) {
@@ -256,7 +273,7 @@ const InputForm = ({
                     Cancel
                 </Button>
                 <Button
-                    onClick={openConfirmationModal}
+                    onClick={openIngestConfirmationModal}
                     className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
                     isDisabled={!isUploadEnabled()}
@@ -274,7 +291,8 @@ InputForm.propTypes = {
     closeModal: PropTypes.func.isRequired,
     uploadIngest: PropTypes.func,
     browseClick: PropTypes.func,
-    openConfirmationModal: PropTypes.func,
+    openModalCallback: PropTypes.func,
+    closeModalCallback: PropTypes.func,
     file: PropTypes.object,
     isUploading: PropTypes.bool,
     ingestData: PropTypes.object,
@@ -285,7 +303,8 @@ InputForm.defaultProps = {
     licensees: [],
     uploadIngest: () => null,
     browseClick: () => null,
-    openConfirmationModal: () => null,
+    openModalCallback: () => null,
+    closeModalCallback: () => null,
     file: {},
     isUploading: false,
     ingestData: {},
