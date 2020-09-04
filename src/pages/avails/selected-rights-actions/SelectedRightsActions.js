@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import {get, uniqBy} from 'lodash';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
+import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
@@ -13,6 +14,7 @@ import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
 import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
 import {getRightsHistory} from '../availsService';
+import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
 import BulkDelete from '../bulk-delete/BulkDelete';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
@@ -42,8 +44,6 @@ import {
     BULK_DELETE_HEADER, BULK_UNMATCH_SUCCESS_TOAST,
 } from './constants';
 import './SelectedRightsActions.scss';
-import {getAffectedRights, setCoreTitleId} from "../bulk-matching/bulkMatchingService";
-import {SUCCESS_ICON} from "../../../ui/elements/nexus-toast-notification/constants";
 
 export const SelectedRightsActions = ({
                                           selectedRights,
