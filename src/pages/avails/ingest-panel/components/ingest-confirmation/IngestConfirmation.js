@@ -22,11 +22,11 @@ const IngestConfirmation = ({
         <div className="nexus-c-ingest-confirmation">
             <p className="nexus-c-ingest-confirmation__message">{INGEST_ASSIGN_MESSAGE}</p>
             <div className="nexus-c-ingest-confirmation__content">
-                <p>Licensor: {`${licensor}`}</p>
-                <p>Service Region: {`${serviceRegion}`}</p>
-                <p>Licensee: {`${licensee}`}</p>
-                <p>Catalog: {`${catalog}`}</p>
-                <p>Licensed: {`${isLicenced ? 'Yes' : 'No'}`}</p>
+                <p>Licensor: {licensor || 'N/A'}</p>
+                <p>Service Region: {serviceRegion}</p>
+                <p>Licensee: {licensee || 'N/A'}</p>
+                <p>Catalog: {catalog || 'N/A'}</p>
+                <p>Licensed: {isLicenced ? 'Yes' : 'No'}</p>
             </div>
             <div className="nexus-c-ingest-confirmation__actions">
                 <p>{INGEST_UPLOAD_CONTINUE_MSG}</p>

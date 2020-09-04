@@ -241,7 +241,7 @@ const InputForm = ({
                     isDisabled={
                         !serviceRegion || (!isShowingCatalogType ? [USMASTER, INTERNATIONAL].includes(template) : false)
                     }
-                    placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
+                    placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select Licensee'}
                     isMulti
                     {...selectProps}
                 />
