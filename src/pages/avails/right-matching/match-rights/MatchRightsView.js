@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {isEmpty} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -24,6 +24,7 @@ import {
     fetchAndStoreFocusedRight,
     fetchCombinedRight,
     saveCombinedRight,
+    validateConflictingRights,
 } from '../rightMatchingActions';
 import {
     CANCEL_BUTTON,
@@ -60,6 +61,7 @@ const MatchRightView = ({
     pendingRight,
     mergeRights,
     rightsForMatching,
+    validateRights,
 }) => {
     const activeFocusedRight = mergeRights ? {...prepareRight(pendingRight), id: null} : focusedRight;
     const {params} = match || {};
@@ -116,13 +118,21 @@ const MatchRightView = ({
     };
 
     const onSaveCombinedRight = () => {
-        const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
-        const payload = {
-            rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
-            combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
-            redirectPath,
-        };
-        saveCombinedRight(payload);
+        validateRights({
+            rightId,
+            tpr: get(activeFocusedRight, 'temporaryPriceReduction', false),
+            rightData: prepareRight(pendingRight),
+            selectedRights: rightsForMatching.map(right => right.id),
+            callback: () => {
+                const redirectPath = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
+                const payload = {
+                    rightIds: selectedMatchedRights.filter(right => right.id).map(right => right.id),
+                    combinedRight: [combinedRight, ...(mergeRights ? [activeFocusedRight] : [])],
+                    redirectPath,
+                };
+                saveCombinedRight(payload);
+            },
+        });
     };
 
     const onMatchRightGridEvent = ({type, api}) => {
@@ -278,6 +288,7 @@ MatchRightView.propTypes = {
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
     rightsForMatching: PropTypes.array,
+    validateRights: PropTypes.func.isRequired,
 };
 
 MatchRightView.defaultProps = {
@@ -324,6 +335,7 @@ const mapDispatchToProps = dispatch => ({
     fetchCombinedRight: payload => dispatch(fetchCombinedRight(payload)),
     saveCombinedRight: payload => dispatch(saveCombinedRight(payload)),
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
+    validateRights: payload => dispatch(validateConflictingRights(payload)),
 });
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MatchRightView);
