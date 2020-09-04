@@ -61,14 +61,16 @@ const updateAbility = (roles = []) => {
     }
 
     // ******** Metadata *************
-    // if (roles.includes('metadata_viewer')) {
-    //     can('read', 'Metadata');
-    // } else if (roles.includes('metadata_user')) {
-    //     can(['create', 'read', 'update', 'delete'], 'Metadata');
-    // } else if (roles.includes('metadata_admin')) {
-    can(['create', 'read', 'update', 'delete'], 'Metadata');
-    // }
+    //TODO: metadata_user to be added in PORT 2651
+    can(['create', 'read', 'update'], 'Metadata');
 
+    if (roles.includes('metadata_viewer')) {
+        can('read', 'Metadata');
+    }
+    else if (roles.includes('metadata_admin')) {
+        can(['create', 'read', 'update', 'delete'], 'Metadata');
+    }
+    
     // ******** Servicing Orders *************
     can(['create', 'read', 'update', 'delete'], 'ServicingOrders');
 

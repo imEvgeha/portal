@@ -22,7 +22,7 @@ describe('NexusDynamicForm', () => {
     ];
 
     beforeEach(() => {
-        wrapper = shallow(<NexusDynamicForm schema={schema}/>);
+        wrapper = shallow(<NexusDynamicForm schema={schema} />);
     });
 
     it('should match snapshot', () => {
@@ -38,6 +38,6 @@ describe('NexusDynamicForm', () => {
 
         tabContainer.children().forEach((child, index) => {
             expect(child.dive().text()).toEqual(tabs[index]); // All tabs are named properly
-        })
+        });
     });
 });

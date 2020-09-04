@@ -18,7 +18,7 @@
     @include padding(1, 6);
     border-bottom: 1px solid map-get($neutrals, N40);
     cursor: pointer;
-    transition: color .2s ease-in;
+    transition: color 0.2s ease-in;
 
     &:hover {
         color: map-get($blues, B400);

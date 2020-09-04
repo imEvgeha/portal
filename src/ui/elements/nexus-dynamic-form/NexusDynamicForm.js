@@ -3,34 +3,24 @@ import PropTypes from 'prop-types';
 import SectionTab from './components/SectionTab';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({
-    schema = [],
-}) => {
+const NexusDynamicForm = ({schema = []}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
     const parseField = (field = {}) => {
         const {label = '', type = ''} = field || {};
 
-        switch(type) {
+        switch (type) {
             case 'text': {
-                return (
-                    <div>{label}</div>
-                );
+                return <div>{label}</div>;
             }
             default:
-                return (
-                    <div>Unsupported field type</div>
-                );
+                return <div>Unsupported field type</div>;
         }
     };
 
     const buildSection = (fields = []) => {
-        return (
-            <>
-                {fields.map(parseField)}
-            </>
-        )
+        return <>{fields.map(parseField)}</>;
     };
 
     return (
@@ -50,10 +40,7 @@ const NexusDynamicForm = ({
                     <Fragment key={`tab-${title}`}>
                         {sections.map(({title: sectionTitle = '', fields = []}) => (
                             <Fragment key={`section-${sectionTitle}`}>
-                                <h3
-                                    id={sectionTitle}
-                                    className="nexus-c-dynamic-form__section-title"
-                                >
+                                <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                     {sectionTitle}
                                 </h3>
                                 {buildSection(fields)}
