@@ -66,7 +66,7 @@ const updateAbility = (roles = []) => {
     // } else if (roles.includes('metadata_user')) {
     //     can(['create', 'read', 'update', 'delete'], 'Metadata');
     // } else if (roles.includes('metadata_admin')) {
-    can(['create', 'read', 'update', 'delete'], 'Metadata');
+    can(['create', 'read', 'update'], 'Metadata');
     // }
 
     // ******** Servicing Orders *************
