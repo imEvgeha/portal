@@ -235,9 +235,9 @@ const RightToMatchView = ({
     };
 
     const reorderConflictingRightsHeaders = tableName => {
-        if (updatedColumnDefs.length === 1 && updatedColumnDefs[0].headerName === 'Actions') return;
+        if (updatedColumnDefs.length === 1 && updatedColumnDefs[0].headerName === 'Actions') return [];
         if (updatedFocusedRightColumnDefs.length === 1 && updatedFocusedRightColumnDefs[0].headerName === 'Actions')
-            return;
+            return [];
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
         const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
