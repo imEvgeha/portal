@@ -109,6 +109,17 @@ const InputForm = ({
         );
     };
 
+    const handleCatalogCheckboxChange = () => {
+        if (isShowingCatalogType) {
+            setCatalogType('');
+            setIsLicensed(false);
+            setSelectedLicensees([]);
+            setIsShowingCatalogType(!isShowingCatalogType);
+        } else {
+            setIsShowingCatalogType(!isShowingCatalogType);
+        }
+    };
+
     const uploadHandler = () => {
         closeModalCallback();
         const params = {
@@ -240,7 +251,7 @@ const InputForm = ({
                 <Checkbox
                     id="catalog"
                     label="Catalog"
-                    onChange={() => setIsShowingCatalogType(!isShowingCatalogType)}
+                    onChange={handleCatalogCheckboxChange}
                     isChecked={isShowingCatalogType}
                 />
                 {isShowingCatalogType && (

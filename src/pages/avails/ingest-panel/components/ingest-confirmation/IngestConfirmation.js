@@ -2,6 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import './IngestConfirmation.scss';
+import {
+    INGEST_ASSIGN_MESSAGE,
+    INGEST_UPLOAD_CONTINUE_MSG,
+    INGEST_UPLOAD_CANCEL_BTN,
+    INGEST_UPLOAD_CONTINUE_BTN,
+} from './constants';
 
 const IngestConfirmation = ({
     licensor,
@@ -14,7 +20,7 @@ const IngestConfirmation = ({
 }) => {
     return (
         <div className="nexus-c-ingest-confirmation">
-            <p>You have assigned your upload with:</p>
+            <p className="nexus-c-ingest-confirmation__message">{INGEST_ASSIGN_MESSAGE}</p>
             <div className="nexus-c-ingest-confirmation__content">
                 <p>Licensor: {`${licensor}`}</p>
                 <p>Service Region: {`${serviceRegion}`}</p>
@@ -23,21 +29,21 @@ const IngestConfirmation = ({
                 <p>Licensed: {`${isLicenced ? 'Yes' : 'No'}`}</p>
             </div>
             <div className="nexus-c-ingest-confirmation__actions">
-                <p>Do you wish to continue?</p>
+                <p>{INGEST_UPLOAD_CONTINUE_MSG}</p>
                 <div className="nexus-c-ingest-confirmation__btn-wrapper">
                     <Button
                         appearance="subtle"
                         onClick={onActionCancel}
                         className="nexus-c-ingest-confirmation__cancel-btn"
                     >
-                        Cancel
+                        {INGEST_UPLOAD_CANCEL_BTN}
                     </Button>
                     <Button
                         appearance="primary"
                         onClick={onActionConfirm}
                         className="nexus-c-ingest-confirmation__continue-btn"
                     >
-                        Continue
+                        {INGEST_UPLOAD_CONTINUE_BTN}
                     </Button>
                 </div>
             </div>
