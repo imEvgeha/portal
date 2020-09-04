@@ -106,7 +106,13 @@ exports[`EventHeader should match snapshot 1`] = `
     <div
       className="nexus-c-event-header__field-value"
     >
-      string
+      <DateTimeRenderer
+        format="businessDateTime"
+        shouldDisplayTime={true}
+        value="string"
+      >
+        <Component />
+      </DateTimeRenderer>
     </div>
   </div>
   <div
