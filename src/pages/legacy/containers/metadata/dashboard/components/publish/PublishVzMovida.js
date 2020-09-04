@@ -5,6 +5,7 @@ import {default as AtlaskitButton} from '@atlaskit/button';
 import TitleSystems from '../../../../../constants/metadata/systems';
 import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
+import {Can} from "../../../../../../../ability";
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -93,13 +94,15 @@ const PublishVzMovida = ({coreTitle, territoryMetadataList, editorialMetadataLis
                 <div className='nexus-c-title-edit__sync-container-field-description'>
                     <b>{capitalize(name)}</b> Last updated: {dateToShow}
                 </div>
-                <AtlaskitButton
-                    appearance='primary'
-                    isDisabled={isDisabled}
-                    onClick={() => onSyncPublishClick(name)}
-                >
-                    {buttonName}
-                </AtlaskitButton>
+                <Can I="update" a="Metadata">
+                    <AtlaskitButton
+                        appearance='primary'
+                        isDisabled={isDisabled}
+                        onClick={() => onSyncPublishClick(name)}
+                    >
+                        {buttonName}
+                    </AtlaskitButton>
+                </Can>
             </div>
         );
     };

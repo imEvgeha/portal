@@ -5,44 +5,35 @@ import './NexusModal.scss';
 export const NexusModalContext = createContext({});
 
 export const NexusModalProvider = ({children}) => {
-    const [content, setContent] = useState(null);
-    const [title, setTitle] = useState('');
-    const [actions, setActions] = useState([]);
-    const [isOpened, setIsOpened] = useState(false);
-    const [style, setStyle] = useState({});
+    const [modalParams, setModalParams] = useState({});
 
-    const setModalContent = content => {
-        setIsOpened(true);
-        setContent(content);
-    };
 
-    const setModalContentAndTitle = useCallback((content, title) => {
-        setTitle(title);
-        setModalContent(content);
-    }, [title, content]);
+    const openModal = useCallback((content, title, width = 'medium', actions = []) => {
+        setModalParams({
+            title,
+            content,
+            actions,
+            width,
+            isOpened: true
+        });
+    }, []);
 
-    const close = useCallback(() => {
-        setIsOpened(false);
-        setActions([]);
-        setContent(null);
-        setTitle('');
-        setStyle({});
+    const closeModal = useCallback(() => {
+        setModalParams({
+            title: '',
+            content: null,
+            actions: [],
+            width: '',
+            isOpened: false
+        });
     }, []);
 
     const context = {
-        setModalContent,
-        setModalTitle: setTitle,
-        setModalContentAndTitle,
-        setModalActions: setActions,
-        actions,
-        title,
-        content,
-        close,
-        open: () => setIsOpened(true),
-        setModalStyle: setStyle,
-        isOpened,
+        closeModal,
+        openModal
     };
 
+    const { title = '', content = null, actions = [], width = '', isOpened = false } = modalParams;
     return (
         <NexusModalContext.Provider value={context}>
             {isOpened && (
@@ -50,8 +41,8 @@ export const NexusModalProvider = ({children}) => {
                     <Modal
                         actions={actions.length && actions}
                         heading={title}
-                        onClose={close}
-                        width={style.width || 'medium'}
+                        onClose={closeModal}
+                        width={width}
                     >
                         <div className="nexus-c-modal">{content}</div>
                     </Modal>

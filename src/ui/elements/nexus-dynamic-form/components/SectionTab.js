@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './SectionTab.scss';
 
-const SectionTab = ({
-    section = '',
-    isActive = false,
-    onClick = null,
-}) => {
+const SectionTab = ({section = '', isActive = false, onClick = null}) => {
     const [anchorTarget, setAnchorTarget] = useState(null);
 
     useEffect(() => {
@@ -24,26 +20,23 @@ const SectionTab = ({
         <a
             href={`#${section}`}
             onClick={handleClick}
-            className={classnames(
-                'nexus-c-section-tab',
-                {
-                    'nexus-c-section-tab--is-active': isActive,
-                }
-            )}
+            className={classnames('nexus-c-section-tab', {
+                'nexus-c-section-tab--is-active': isActive,
+            })}
         >
             {section}
         </a>
-    )
-}
+    );
+};
 
 SectionTab.propTypes = {
     section: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,
     onClick: PropTypes.func,
-}
+};
 
 SectionTab.defaultProps = {
     onClick: null,
-}
+};
 
 export default SectionTab;

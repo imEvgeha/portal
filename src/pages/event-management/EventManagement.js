@@ -34,6 +34,11 @@ const EventManagement = props => {
         });
     };
 
+    const clearFilters = () => {
+        gridApi && gridApi.setFilterModel(null);
+        setSearchParams('filter', null);
+    };
+
     const onSortChanged = ({api}) => {
         const sortModel = api.getSortModel();
         setSearchParams('sort', sortModel);
@@ -122,7 +127,11 @@ const EventManagement = props => {
         <div className="nexus-c-event-management">
             <div className="nexus-c-event-management__title">{TITLE}</div>
             <div className="nexus-c-event-management__table">
-                <EventManagementTable onGridEvent={onGridEvent} onSortChanged={onSortChanged} />
+                <EventManagementTable
+                    clearFilters={clearFilters}
+                    onGridEvent={onGridEvent}
+                    onSortChanged={onSortChanged}
+                />
             </div>
             {selectedEvent && <EventDrawer event={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>

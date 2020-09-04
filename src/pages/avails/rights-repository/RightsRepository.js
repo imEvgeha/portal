@@ -420,7 +420,7 @@ const RightsRepository = ({
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
                 selectedRows={currentUserSelectedRights}
-                setSelectedRights={(payload) => setSelectedRights({[username]: payload})}
+                setSelectedRights={payload => setSelectedRights({[username]: payload})}
                 gridApi={gridApi}
                 rightsFilter={rightsFilter}
                 rightColumnApi={columnApi}

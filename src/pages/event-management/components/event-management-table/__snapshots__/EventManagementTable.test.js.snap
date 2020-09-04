@@ -5,13 +5,40 @@ exports[`EventManagementTable should match snapshot 1`] = `
   className="nexus-c-event-management-table"
 >
   <div
-    className="nexus-c-event-management-table__refresh-button"
+    className="nexus-c-event-management-table__toolbar"
   >
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      onClick={[Function]}
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content="Change timestamps to show in Local format"
     >
-      Refresh
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-event-management-table__toolbar-button"
+        onClick={[Function]}
+      >
+        Set to 
+        Local
+         Time
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content="Clear active column filters"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-event-management-table__toolbar-button"
+        onClick={[MockFunction]}
+      >
+        Clear Filters
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+      content="Refresh grid data"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        className="nexus-c-event-management-table__toolbar-button"
+        onClick={[Function]}
+      >
+        Refresh
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   </div>
   <Component
     className="nexus-c-event-management-grid"
@@ -94,7 +121,8 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "width": 100,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": null,
+          "cellRendererFramework": [Function],
           "colId": "createdTimeStamp",
           "dataType": "timestamp",
           "enableSearch": true,
@@ -106,7 +134,8 @@ exports[`EventManagementTable should match snapshot 1`] = `
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellRenderer": null,
+          "cellRendererFramework": [Function],
           "colId": "postedTimeStamp",
           "dataType": "timestamp",
           "enableSearch": true,
@@ -179,6 +208,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         },
       ]
     }
+    gridApi={Object {}}
     mapping={
       Array [
         Object {

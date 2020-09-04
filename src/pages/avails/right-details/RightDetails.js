@@ -7,7 +7,7 @@ import './RightDetails.scss';
 const RightDetails = () => {
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema}/>
+            <NexusDynamicForm schema={schema} />
         </div>
     );
 };
