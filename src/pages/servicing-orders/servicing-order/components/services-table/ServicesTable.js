@@ -26,16 +26,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
 
-    useEffect(
-        () => {
-            if (!isEmpty(data)) {
-                setProviderServices(`${data.fs.toLowerCase()}Services`);
-                setServices(data);
-                setOriginalServices(data);
-            }
-        },
-        [data]
-    );
+    useEffect(() => {
+        if (!isEmpty(data)) {
+            setProviderServices(`${data.fs.toLowerCase()}Services`);
+            setServices(data);
+            setOriginalServices(data);
+        }
+    }, [data]);
 
     useEffect(
         () => {
@@ -45,7 +42,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    deliverToVu: service.deteTasks.deteDeliveries.externalDelivery.deliverToId.toLowerCase() === 'vu',
+                    deliverToVu:
+                        service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId.toLowerCase() === 'vu',
                     operationalStatus: service.status,
                     rowIndex: index,
                 }));
@@ -94,7 +92,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
             // eslint-disable-next-line max-len
-            currentService.deteTasks.deteDeliveries.externalDelivery.deliverToId = setDeliverToId(data.deliverToVu, rowIndex);
+            currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = setDeliverToId(
+                data.deliverToVu,
+                rowIndex
+            );
             currentService.status = data.operationalStatus;
 
             const newServices = {...services, [providerServices]: updatedServices};
@@ -106,7 +107,11 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     };
 
     const setDeliverToId = (deliverToVu, index) => {
-        const deliverToId = get(originalServices, [providerServices, index, 'deteTasks', 'deteDeliveries', 'externalDelivery', 'deliverToId'], '');
+        const deliverToId = get(
+            originalServices,
+            [providerServices, index, 'deteTasks', 'deteDeliveries', 'externalDelivery', 'deliverToId'],
+            ''
+        );
         if (deliverToVu) {
             return 'VU';
         }
@@ -117,7 +122,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const addEmptyServicesRow = () => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
         const blankService = cloneDeep(SERVICE_SCHEMA);
-        blankService.deteSources.barcode = data.barcode;
+        blankService.deteSources[0].barcode = data.barcode;
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
