@@ -19,9 +19,7 @@ const RightCreate = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate')
 );
 const RightDetailsV2 = React.lazy(() => RightDetailsV2Import);
-const RightDetailsV2Import = import(
-    /* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails'
-);
+const RightDetailsV2Import = import(/* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails');
 const SelectRightsPlanning = React.lazy(() =>
     import(
         /* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'
