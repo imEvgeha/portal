@@ -1,6 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {Checkbox} from '@atlaskit/checkbox';
 import Tag from '@atlaskit/tag';
+import Tooltip from '@atlaskit/tooltip';
 import {camelCase, get, startCase} from 'lodash';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -27,10 +29,13 @@ const ServicingOrdersTable = ({
     isRefreshData,
     dataRefreshComplete,
 }) => {
+    let selectedItems = [];
+
     const [statusBarInfo, setStatusBarInfo] = useState({
         totalRows: 0,
         selectedRows: 0,
     });
+
     const [gridApi, setGridApi] = useState(null);
 
     const valueFormatter = ({dataType = '', field = '', isEmphasized = false}) => {
@@ -55,6 +60,39 @@ const ServicingOrdersTable = ({
 
     const updateColumnDefs = useCallback(columnDefs => {
         return columnDefs.map(columnDef => {
+            if (columnDef.field === 'checkbox_column') {
+                // we use atlaskit checkbox here because ag-grid row selection does not
+                // allow disabled states for checkboxes, only presence or absence of a checkbox.
+                return {
+                    ...columnDef,
+                    cellClass: 'nexus-c-servicing-orders-table__checkbox-cell',
+                    cellRendererFramework: params => {
+                        const defaultSelected = isAlreadySelected(params);
+
+                        if (get(params, 'data.tenant', '') !== 'MGM') {
+                            // provide a faux checkbox that a user can mouse to receive a tooltip.  The
+                            // tooltip as presented lets the user know that the given SO cannot be exported.
+                            // This is necessary because Atlaskit wraps native checkbox, and native checkbox has no
+                            // visually disabled state.
+                            return (
+                                <Tooltip content="This servicing order cannot be exported" position="right">
+                                    <div className="nexus-c-servicing-orders-table__checkbox--disabled" />
+                                </Tooltip>
+                            );
+                        }
+                        // provide a cell checkbox using atlaskit
+                        return (
+                            <Checkbox
+                                value={params.data.soNumber}
+                                onChange={e => onCheckboxChange(e, params)}
+                                defaultChecked={defaultSelected}
+                                isDisabled={params.data.tenant !== 'MGM'}
+                            />
+                        );
+                    },
+                };
+            }
+
             if (columnDef.field === 'rush_order') {
                 return {
                     ...columnDef,
@@ -86,6 +124,43 @@ const ServicingOrdersTable = ({
         });
     }, []);
 
+    const onCheckboxChange = (e, params) => {
+        const totalRows = params.api.getInfiniteRowCount();
+        if (e.target.checked) {
+            addRowSelection(params, totalRows);
+        } else {
+            removeRowSelection(params, totalRows);
+        }
+    };
+
+    const addRowSelection = (params, total) => {
+        selectedItems.push(params.data);
+        setSelectedServicingOrders(selectedItems);
+        setStatusBarInfo({selectedRows: selectedItems.length, totalRows: total});
+    };
+
+    const removeRowSelection = (params, total) => {
+        const filteredItems = selectedItems.filter(item => item.so_number !== params.data.so_number);
+
+        if (filteredItems.length < 1) {
+            setSelectedServicingOrders(prevState => (prevState.length = 0));
+        } else {
+            setSelectedServicingOrders(filteredItems);
+        }
+
+        setStatusBarInfo({selectedRows: filteredItems.length, totalRows: total});
+        selectedItems = filteredItems;
+    };
+
+    const isAlreadySelected = params => {
+        const foundItem = params.data ? selectedItems.filter(item => item.so_number === params.data.so_number) : [];
+        return foundItem && foundItem.length > 0;
+    };
+
+    const resetSelectedItems = () => {
+        selectedItems = [];
+    };
+
     /**
      * Callback when datatable is first rendered on the DOM
      * @param {object} param
@@ -95,19 +170,6 @@ const ServicingOrdersTable = ({
         // Needs to be removed if more table rows are added to prevent overcrowding
         api.sizeColumnsToFit();
         setGridApi(api);
-    };
-
-    /**
-     * Runs when the selections are changed.
-     * This current function is being used to gather an array of so_numbers of the selected rows
-     * @param params - the grid params object containing the api
-     */
-    const onSelectionChanged = ({api}) => {
-        const selectedRowsData = api.getSelectedNodes().map(node => node.data);
-
-        // set the new array to state
-        setSelectedServicingOrders(selectedRowsData);
-        setStatusBarInfo({...statusBarInfo, selectedRows: selectedRowsData.length});
     };
 
     const setTotalCount = total => {
@@ -122,13 +184,14 @@ const ServicingOrdersTable = ({
 
     useEffect(() => {
         if (isRefreshData) {
+            resetSelectedItems();
+
             // Refresh data
             gridApi.purgeInfiniteCache();
 
             // Remove all selections
             gridApi.deselectAll();
-            setSelectedServicingOrders([]);
-
+            setSelectedServicingOrders(prevState => (prevState.length = 0));
             dataRefreshComplete();
         }
     }, [isRefreshData, dataRefreshComplete, gridApi, setSelectedServicingOrders]);
@@ -142,10 +205,6 @@ const ServicingOrdersTable = ({
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
                 customDateFilterParamSuffixes={['Start', 'End']}
-                onSelectionChanged={onSelectionChanged}
-                rowSelection="multiple"
-                // lets users deselect a row with cmd/ctrl + click
-                rowDeselection={true}
                 setTotalCount={setTotalCount}
             />
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
