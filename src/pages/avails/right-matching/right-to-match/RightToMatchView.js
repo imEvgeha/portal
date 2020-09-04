@@ -20,6 +20,7 @@ import {WARNING_TITLE, WARNING_ICON} from '../../../../ui/elements/nexus-toast-n
 import {NEW_RIGHT_BUTTON_CLICK_MESSAGE} from '../../../../ui/toast/constants';
 import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../../util/Common';
+import sortTableHeaders from '../../../../util/sortTableHeaders';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
@@ -44,6 +45,7 @@ import * as selectors from '../rightMatchingSelectors';
 import {getMatchingCandidates} from '../rightMatchingService';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
 import RightToMatchNavigation from './components/navigation/RightToMatchNavigation';
+import {TABLE_HEADERS, FIELDS, TABLE_NAMES} from './constants';
 import './RightToMatchView.scss';
 
 const RightRepositoryNexusGrid = compose(withColumnsResizing(), withSideBar())(NexusGrid);
@@ -181,6 +183,76 @@ const RightToMatchView = ({
         }
     };
 
+    const highlightDiffCells = columnDefinitions => {
+        const pendingRightData = pendingRight;
+        const {START, END, AVAIL_START, AVAIL_END, TERRITORY, FORMAT} = FIELDS;
+
+        columnDefinitions.forEach(def => {
+            def.cellClass = params => {
+                const key = params.colDef.field;
+                let areEqual = true;
+                let areEq = true;
+                switch (key) {
+                    case START:
+                    case END:
+                    case AVAIL_START:
+                    case AVAIL_END:
+                        if (pendingRightData[key] && pendingRightData[key] !== params.value) {
+                            return 'nexus-c-right-to-match-view__grid-column--highlighted';
+                        }
+                        break;
+                    case TERRITORY:
+                        if (pendingRightData[key].length !== params.value.length) {
+                            return 'nexus-c-right-to-match-view__grid-column--highlighted';
+                        }
+                        pendingRightData[key].forEach(territory => {
+                            if (!params.value.find(country => country.country === territory.country)) {
+                                areEqual = false;
+                            }
+                        });
+                        if (!areEqual) {
+                            return 'nexus-c-right-to-match-view__grid-column--highlighted';
+                        }
+                        break;
+                    case FORMAT:
+                        if (pendingRightData[key].length !== params.value.length) {
+                            return 'nexus-c-right-to-match-view__grid-column--highlighted';
+                        }
+                        pendingRightData[key].forEach(format => {
+                            if (!params.value.find(val => val === format.value)) {
+                                areEq = false;
+                            }
+                        });
+                        if (!areEq) {
+                            return 'nexus-c-right-to-match-view__grid-column--highlighted';
+                        }
+                        break;
+                    default:
+                        return;
+                }
+            };
+        });
+    };
+
+    const reorderConflictingRightsHeaders = tableName => {
+        if (updatedColumnDefs.length === 1 && updatedColumnDefs[0].headerName === 'Actions') return;
+        if (updatedFocusedRightColumnDefs.length === 1 && updatedFocusedRightColumnDefs[0].headerName === 'Actions')
+            return;
+
+        const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
+        const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
+        const headerNames = ['SKIP', RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
+
+        let columnDefinitions = updatedColumnDefs;
+        if (tableName === PENDING_RIGHT) columnDefinitions = updatedFocusedRightColumnDefs;
+
+        const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
+
+        if (tableName === CONFLICTING_RIGHTS) highlightDiffCells(reorderedHeaders);
+
+        return reorderedHeaders;
+    };
+
     return (
         <div className="nexus-c-right-to-match-view">
             <NexusTitle>
@@ -206,7 +278,7 @@ const RightToMatchView = ({
             <div className="nexus-c-right-to-match-view__focused-right">
                 <IncomingRightNexusGrid
                     id="incomingRightRightsMatching"
-                    columnDefs={updatedFocusedRightColumnDefs}
+                    columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.PENDING_RIGHT)}
                     rowData={newPendingRight.length ? newPendingRight : updatedFocusedRight}
                     domLayout="autoHeight"
                 />
@@ -220,7 +292,7 @@ const RightToMatchView = ({
                 </NexusTitle>
                 <RightRepositoryNexusGrid
                     id="rightsMatchingRepo"
-                    columnDefs={updatedColumnDefs}
+                    columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
                     mapping={mapping}
                     onGridEvent={handleGridEvent}
                     rowSelection="multiple"
