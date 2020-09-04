@@ -48,9 +48,6 @@ export const FulfillmentOrder = ({
         </>
     );
     const modalHeading = 'Warning';
-    const modalStyle = {
-        width: 'small',
-    };
 
     // runs when a fulfillment order has been successfully edited and saved
     // 1. re-fetches all the fulfillment orders
@@ -121,30 +118,29 @@ export const FulfillmentOrder = ({
     };
 
     const openWarningModal = fo => {
-        setModalContentAndTitle(ModalContent, modalHeading);
-        setModalStyle(modalStyle);
-        setModalActions([
+        const actions = [
             {
                 text: 'Continue',
                 onClick: () => {
-                    close();
+                    closeModal();
                     setFulfillmentOrder(fo);
                 },
             },
             {
                 text: 'Cancel',
                 onClick: () => {
-                    close();
+                    closeModal();
                 },
             },
-        ]);
+        ];
+        openModal(ModalContent, modalHeading, 'small', actions);
     };
 
     const readinessOption = fulfillmentOrder
         ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
         : {};
 
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);

@@ -12,29 +12,27 @@ const TITLE = 'Avail Ingest';
 const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
-    const {setModalContentAndTitle, setModalActions, setModalStyle, close} = useContext(NexusModalContext);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
-    const closeModal = useCallback(() => {
+    const closeUploadModal = useCallback(() => {
         setFile(null);
-        close();
-    }, [close]);
-
-    const browseClick = useCallback(() => {
         closeModal();
-        inputClick();
     }, [closeModal]);
 
+    const browseClick = useCallback(() => {
+        closeUploadModal();
+        inputClick();
+    }, [closeUploadModal]);
+
     const buildForm = useCallback(() => {
-        return <InputForm ingestData={ingestData} closeModal={closeModal} file={file} browseClick={browseClick} />;
-    }, [browseClick, closeModal, file, ingestData]);
+        return <InputForm ingestData={ingestData} closeModal={closeUploadModal} file={file} browseClick={browseClick} />;
+    }, [browseClick, closeUploadModal, file, ingestData]);
 
     useEffect(() => {
         if (file) {
-            setModalStyle({width: 'small'});
-            setModalActions([]);
-            setModalContentAndTitle(buildForm(), TITLE);
+            openModal(buildForm(), TITLE,'small');
         }
-    }, [buildForm, file, setModalActions, setModalContentAndTitle, setModalStyle]);
+    }, [buildForm, file]);
 
     const inputClick = () => inputRef && inputRef.current && inputRef.current.click();
 
