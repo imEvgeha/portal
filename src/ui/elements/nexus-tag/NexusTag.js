@@ -8,11 +8,10 @@ import './NexusTag.scss';
 
 const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationContent = null}) => {
     const [defaultTooltipContent, setDefaultContent] = useState(null);
-    const {openModal, closeModal} = useContext(NexusModalContext)
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const handleRemove = event => {
         if (confirmationContent) {
-
             const actions = [
                 {
                     text: CANCEL,
@@ -28,7 +27,7 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationCo
                     appearance: 'danger',
                 },
             ];
-            openModal(confirmationContent, REMOVE_TITLE, 'medium', actions);
+            openModal(confirmationContent, {title: REMOVE_TITLE, width: 'medium', actions});
         } else {
             onRemove(event);
         }
@@ -49,7 +48,7 @@ const NexusTag = ({value = {}, text, tagState, onClick, onRemove, confirmationCo
                             }`}
                             key={index}
                         >
-                            {key}:<span className="nexus-c-tag__tooltip-prop-value">{getValidValue(value[key])}</span>
+                            {key}: <span className="nexus-c-tag__tooltip-prop-value">{getValidValue(value[key])}</span>
                         </li>
                     )
                 );

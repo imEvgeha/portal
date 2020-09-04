@@ -1,5 +1,11 @@
 [
     {
+        "colId": "checkbox_column",
+        "field": "checkbox_column",
+        "headerName": "",
+        "width": 43
+    },
+    {
         "colId": "so_number",
         "field": "so_number",
         "dataType": "string",
@@ -12,7 +18,6 @@
             "link": "/servicing-orders/",
             "newTab": false
         },
-        "checkboxSelection": true,
         "suppressSizeToFit": true,
         "sortable": true
     },

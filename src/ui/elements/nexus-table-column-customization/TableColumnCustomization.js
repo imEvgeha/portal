@@ -14,32 +14,39 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
 
     useEffect(() => {
         if (hideShowColumns) {
-            const actions = [{
-                text: 'Save',
-                onClick: () => {
-                    closeModal();
-                    saveColumns();
+            const actions = [
+                {
+                    text: 'Save',
+                    onClick: () => {
+                        closeModal();
+                        saveColumns();
+                    },
                 },
-            }, {
-                text: 'Cancel',
-                onClick: closeModal,
-            }];
-            openModal(buildModalContent(hideShowColumns), 'Select Visible Columns', 'small', actions);
+                {
+                    text: 'Cancel',
+                    onClick: closeModal,
+                },
+            ];
+            openModal(buildModalContent(hideShowColumns), {title: 'Select Visible Columns', width: 'small', actions});
         }
     }, [hideShowColumns]);
 
     const createConfigForColumnCustomization = () => {
         const config = {};
-        availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if (column.javaVariableName === 'title') { return ''; }
-            const checked = columns.indexOf(column.javaVariableName) > -1;
+        availsMapping.mappings
+            .filter(({dataType}) => dataType)
+            .forEach(column => {
+                if (column.javaVariableName === 'title') {
+                    return '';
+                }
+                const checked = columns.indexOf(column.javaVariableName) > -1;
 
-            config[column.javaVariableName] = {
-                id: column.id,
-                label: column.displayName,
-                checked,
-            };
-        });
+                config[column.javaVariableName] = {
+                    id: column.id,
+                    label: column.displayName,
+                    checked,
+                };
+            });
 
         config[SELECT_ALL] = {
             label: SELECT_ALL_DISPLAY_NAME,
@@ -52,7 +59,9 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     const isAllSelected = config => {
         let allSelected = true;
         for (const key in config) {
-            if (key === SELECT_ALL) { continue; }
+            if (key === SELECT_ALL) {
+                continue;
+            }
             allSelected = allSelected && config[key].checked;
         }
         return allSelected;
@@ -70,10 +79,14 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         const newValue = !newHideShowColumns[selectAllKey].checked;
         newHideShowColumns[selectAllKey].checked = newValue;
 
-        availsMapping.mappings.filter(({dataType}) => dataType).forEach(column => {
-            if (column.javaVariableName === 'title') { return ''; }
-            newHideShowColumns[column.javaVariableName].checked = newValue;
-        });
+        availsMapping.mappings
+            .filter(({dataType}) => dataType)
+            .forEach(column => {
+                if (column.javaVariableName === 'title') {
+                    return '';
+                }
+                newHideShowColumns[column.javaVariableName].checked = newValue;
+            });
         setHideShowColumns(newHideShowColumns);
     };
 
@@ -104,11 +117,13 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
     const buildModalContent = config => {
         const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
         for (const key in config) {
-            if (key === SELECT_ALL) { continue; }
+            if (key === SELECT_ALL) {
+                continue;
+            }
             options.push(buildCheckBox(key, toggleColumn));
         }
 
-        return (<div> {options} </div>);
+        return <div> {options} </div>;
     };
 
     let buildCheckBox = (key, onChange) => {
@@ -129,7 +144,11 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         createConfigForColumnCustomization();
     };
 
-    return (<div className="nexus-column-customization__icon-button" onClick={buildConfigAndOpenModal}><AppSwitcherIcon size="large" /></div>);
+    return (
+        <div className="nexus-column-customization__icon-button" onClick={buildConfigAndOpenModal}>
+            <AppSwitcherIcon size="large" />
+        </div>
+    );
 };
 
 export default TableColumnCustomization;

@@ -192,7 +192,7 @@ export function* fetchAndStoreAvailConfiguration(requestMethod) {
 }
 
 export function* handleMatchingRights({payload}) {
-    const {error, right, isEdit, push} = payload;
+    const {error, right, isEdit, push, removeToast} = payload;
     const {message: {mergeRights, message, rightIDs} = {}, status} = error || {};
     const toastProps = {
         title: isEdit ? EDIT_RIGHT_ERROR_TITLE : CREATE_NEW_RIGHT_ERROR_TITLE,
@@ -229,7 +229,10 @@ export function* handleMatchingRights({payload}) {
                 actions: [
                     {
                         content: RIGHT_ERROR_MSG_MERGED,
-                        onClick: () => push(URL.keepEmbedded('/avails/right-matching')),
+                        onClick: () => {
+                            removeToast();
+                            push(URL.keepEmbedded('/avails/right-matching'));
+                        },
                     },
                 ],
             },

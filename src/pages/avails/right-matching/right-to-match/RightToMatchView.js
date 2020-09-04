@@ -29,6 +29,7 @@ import {
     createNewRight,
     fetchAndStoreFocusedRight,
     storeMatchedRights,
+    validateConflictingRights,
 } from '../rightMatchingActions';
 import {
     RIGHT_TO_MATCH_TITLE,
@@ -67,8 +68,8 @@ const RightToMatchView = ({
     pendingRight,
     mergeRights,
     storeMatchedRights,
+    validateRights,
 }) => {
-    const [totalCount, setTotalCount] = useState(0);
     const [isMatchEnabled, setIsMatchEnabled] = useState(false);
     const [selectedRows, setSelectedRows] = useState([]);
     const [matchingCandidates, setMatchingCandidates] = useState([]);
@@ -81,18 +82,9 @@ const RightToMatchView = ({
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
 
     useEffect(() => {
-        removeToast();
-    }, []);
-
-    useEffect(() => {
-        const tpr =
-            get(newPendingRight, '[0].temporaryPriceReduction', false) ||
-            get(focusedRight, 'temporaryPriceReduction', false) ||
-            false;
         (focusedRight.id || newPendingRight.length) &&
-            getMatchingCandidates(rightId, tpr, get(newPendingRight, '[0]', '')).then(response => {
+            getMatchingCandidates(rightId, getTpr(), get(newPendingRight, '[0]', '')).then(response => {
                 const rights = response.filter(r => r.id !== rightId); // as candidates API returns pending right in response
-                setTotalCount(rights.length);
                 setMatchingCandidates(rights);
             });
     }, [focusedRight.id, newPendingRight]);
@@ -111,6 +103,13 @@ const RightToMatchView = ({
             fetchFocusedRight(rightId);
         }
     }, [availHistoryIds, fetchFocusedRight, rightId]);
+
+    const getTpr = () => {
+        return (
+            get(newPendingRight, '[0].temporaryPriceReduction', false) ||
+            get(focusedRight, 'temporaryPriceReduction', false)
+        );
+    };
 
     const columnDefWithRedirectRightId = columnDefs.length
         ? cloneDeep(columnDefs).map(columnDef => {
@@ -174,12 +173,21 @@ const RightToMatchView = ({
 
     const handleMatchClick = () => {
         if (Array.isArray(selectedRows) && selectedRows.length > 0) {
-            const matchedRightIds = selectedRows.map(el => el.id).join();
-            storeMatchedRights({rightsForMatching: selectedRows});
-            if (mergeRights) {
-                return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
-            }
-            history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds}`));
+            const matchedRightIds = selectedRows.map(el => el.id);
+            validateRights({
+                rightId,
+                setMatchingCandidates,
+                tpr: getTpr(),
+                rightData: get(newPendingRight, '[0]', ''),
+                selectedRights: matchedRightIds,
+                callback: () => {
+                    storeMatchedRights({rightsForMatching: selectedRows});
+                    if (mergeRights) {
+                        return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
+                    }
+                    history.push(URL.keepEmbedded(`${location.pathname}/match/${matchedRightIds.join()}`));
+                },
+            });
         }
     };
 
@@ -288,7 +296,7 @@ const RightToMatchView = ({
             </SectionMessage>
             <div className="nexus-c-right-to-match-view__rights-to-match">
                 <NexusTitle isSubTitle>
-                    {CONFLICTING_RIGHTS} {`(${totalCount})`}
+                    {CONFLICTING_RIGHTS} {`(${matchingCandidates.length})`}
                 </NexusTitle>
                 <RightRepositoryNexusGrid
                     id="rightsMatchingRepo"
@@ -348,6 +356,7 @@ RightToMatchView.propTypes = {
     // eslint-disable-next-line react/boolean-prop-naming
     mergeRights: PropTypes.bool,
     storeMatchedRights: PropTypes.func,
+    validateRights: PropTypes.func.isRequired,
 };
 
 RightToMatchView.defaultProps = {
@@ -387,6 +396,7 @@ const mapDispatchToProps = dispatch => ({
     createRightMatchingColumnDefs: payload => dispatch(createRightMatchingColumnDefs(payload)),
     createNewRight: payload => dispatch(createNewRight(payload)),
     storeMatchedRights: payload => dispatch(storeMatchedRights(payload)),
+    validateRights: payload => dispatch(validateConflictingRights(payload)),
 });
 
 export default compose(

@@ -60,16 +60,18 @@ const NexusMultiInstanceField = ({
                 onChange={setFormValue}
             >
                 {!isUsingModal && (
-                <div className="nexus-c-multi-instance-field__action-buttons">
-                    <Button onClick={() => {
-                        setEditIndex(-1);
-                        setFormValue({});
-                        setInlineEdit(null);
-                    }}
-                    >Cancel
-                    </Button>
-                    <FormButton label={OKLabel} onClick={callback} />
-                </div>
+                    <div className="nexus-c-multi-instance-field__action-buttons">
+                        <Button
+                            onClick={() => {
+                                setEditIndex(-1);
+                                setFormValue({});
+                                setInlineEdit(null);
+                            }}
+                        >
+                            Cancel
+                        </Button>
+                        <FormButton label={OKLabel} onClick={callback} />
+                    </div>
                 )}
             </Form>
         );
@@ -85,8 +87,8 @@ const NexusMultiInstanceField = ({
                     },
                 },
                 {text: 'Submit', onClick: callback},
-            ]
-            openModal(content, '', 'medium', actions);
+            ];
+            openModal(content, {title: '', width: 'medium', actions});
         } else {
             setInlineEdit(content);
         }
@@ -154,26 +156,18 @@ const NexusMultiInstanceField = ({
 
     const MultiInstanceField = isReadOnly => {
         return (
-            <> {isReadOnly
-                ? (
+            <>
+                {' '}
+                {isReadOnly ? (
                     <div className="nexus-c-multi-instance-field__tag-group">
                         {items.map(item => (
-                            <NexusTag
-                                key={uid(item)}
-                                text={item[keyForTagLabel]}
-                                value={item}
-                                tagState={item.state}
-                            />
+                            <NexusTag key={uid(item)} text={item[keyForTagLabel]} value={item} tagState={item.state} />
                         ))}
                     </div>
-                )
-                : (
+                ) : (
                     <div className="nexus-c-multi-instance-field">
                         <div className="nexus-c-multi-instance-field__content">
-                            <div
-                                className="nexus-c-multi-instance-field__clickable-text"
-                                onClick={onAddItem}
-                            >
+                            <div className="nexus-c-multi-instance-field__clickable-text" onClick={onAddItem}>
                                 {!items.length && PLACEHOLDER}
                             </div>
                             <div className="nexus-c-multi-instance-field__tag-group">
@@ -203,32 +197,30 @@ const NexusMultiInstanceField = ({
 
     return (
         <>
-            {isWithInlineEdit && !isReadOnly
-                ? (
-                    <InlineEdit
-                        onConfirm={onConfirm}
-                        editView={() => MultiInstanceField(false)}
-                        readView={() => (
-                            <div className="nexus-c-multi-instance-field__tag-group">
-                                {existingItems && existingItems.map(item => {
+            {isWithInlineEdit && !isReadOnly ? (
+                <InlineEdit
+                    onConfirm={onConfirm}
+                    editView={() => MultiInstanceField(false)}
+                    readView={() => (
+                        <div className="nexus-c-multi-instance-field__tag-group">
+                            {existingItems &&
+                                existingItems.map(item => {
                                     return (
                                         <Fragment key={uid(item)}>
                                             {item.state !== 'new' && (
-                                            <NexusTag
-                                                text={item[keyForTagLabel]}
-                                                value={item}
-                                            />
+                                                <NexusTag text={item[keyForTagLabel]} value={item} />
                                             )}
                                         </Fragment>
                                     );
                                 })}
-                            </div>
-                        )}
-                        readViewFitContainerWidth
-                        defaultValue={[]}
-                    />
-                )
-                : MultiInstanceField(isReadOnly)}
+                        </div>
+                    )}
+                    readViewFitContainerWidth
+                    defaultValue={[]}
+                />
+            ) : (
+                MultiInstanceField(isReadOnly)
+            )}
             {inlineEdit}
         </>
     );
