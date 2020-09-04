@@ -5,49 +5,61 @@ import './NexusModal.scss';
 export const NexusModalContext = createContext({});
 
 export const NexusModalProvider = ({children}) => {
-    const [modalParams, setModalParams] = useState({});
+    const [modalStack, setModalstack] = useState([]);
+    const STACK_INDEX = 6;
 
-
-    const openModal = useCallback((content, title, width = 'medium', actions = []) => {
-        setModalParams({
-            title,
-            content,
-            actions,
-            width,
-            isOpened: true
-        });
+    const openModal = useCallback((content, params) => {
+        const {title, width = 'medium', actions = [], shouldCloseOnOverlayClick = true} = params || {};
+        setModalstack(modalStack => [
+            ...modalStack,
+            {
+                title,
+                content,
+                actions,
+                width,
+                shouldCloseOnOverlayClick,
+            },
+        ]);
     }, []);
 
     const closeModal = useCallback(() => {
-        setModalParams({
-            title: '',
-            content: null,
-            actions: [],
-            width: '',
-            isOpened: false
+        setModalstack(modalStack => {
+            const stackContent = modalStack.slice();
+            stackContent.pop();
+            return [...stackContent];
         });
     }, []);
 
     const context = {
         closeModal,
-        openModal
+        openModal,
     };
 
-    const { title = '', content = null, actions = [], width = '', isOpened = false } = modalParams;
     return (
         <NexusModalContext.Provider value={context}>
-            {isOpened && (
-                <ModalTransition>
-                    <Modal
-                        actions={actions.length && actions}
-                        heading={title}
-                        onClose={closeModal}
-                        width={width}
-                    >
-                        <div className="nexus-c-modal">{content}</div>
-                    </Modal>
-                </ModalTransition>
-            )}
+            {modalStack.map((modalItem, index) => {
+                const {
+                    title = '',
+                    content = null,
+                    actions = [],
+                    width = '',
+                    shouldCloseOnOverlayClick = true,
+                } = modalItem;
+                return (
+                    <ModalTransition key={title}>
+                        <Modal
+                            actions={actions.length && actions}
+                            heading={title}
+                            onClose={closeModal}
+                            width={width}
+                            shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
+                            stackIndex={index !== 0 ? STACK_INDEX : 0}
+                        >
+                            <div className="nexus-c-modal">{content}</div>
+                        </Modal>
+                    </ModalTransition>
+                );
+            })}
             {children}
         </NexusModalContext.Provider>
     );

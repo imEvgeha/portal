@@ -22,8 +22,7 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
                 appearance: 'primary',
             },
         ];
-        openModal(DOP_POP_UP_MESSAGE, DOP_POP_UP_TITLE, 'medium', actions);
-
+        openModal(DOP_POP_UP_MESSAGE, {title: DOP_POP_UP_TITLE, width: 'medium', actions});
     }, []);
 
     useEffect(() => {
@@ -47,4 +46,3 @@ const useDOPIntegration = (totalCount, localStorageItem) => {
 };
 
 export default useDOPIntegration;
-

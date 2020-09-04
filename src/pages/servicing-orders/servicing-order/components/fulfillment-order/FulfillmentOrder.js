@@ -133,7 +133,7 @@ export const FulfillmentOrder = ({
                 },
             },
         ];
-        openModal(ModalContent, modalHeading, 'small', actions);
+        openModal(ModalContent, {title: modalHeading, width: 'small', actions});
     };
 
     const readinessOption = fulfillmentOrder

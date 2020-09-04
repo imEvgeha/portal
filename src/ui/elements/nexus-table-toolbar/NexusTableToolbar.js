@@ -9,7 +9,6 @@ import {
     SELECTED_FOR_PLANNING_TAB,
 } from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
-import {URL} from '../../../util/Common';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import NexusTab from './components/NexusTab';
 import SelectedButton from './components/SelectedButton';

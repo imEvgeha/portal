@@ -90,7 +90,7 @@ const ServicingOrdersView = () => {
                 onClick: closeModal,
             },
         ];
-        openModal(ModalContent, modalHeading, 'small', actions);
+        openModal(ModalContent, {title: modalHeading, width: 'small', actions});
     };
 
     /**
