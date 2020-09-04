@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IngestConfirmation should match snapshot 1`] = `
+<div
+  className="nexus-c-ingest-confirmation"
+>
+  <p
+    className="nexus-c-ingest-confirmation__message"
+  >
+    You have assigned your upload with:
+  </p>
+  <div
+    className="nexus-c-ingest-confirmation__content"
+  >
+    <p>
+      Licensor: 
+      1091
+    </p>
+    <p>
+      Service Region: 
+      UK
+    </p>
+    <p>
+      Licensee: 
+      CVA, Cell C
+    </p>
+    <p>
+      Catalog: 
+      Full Catalog
+    </p>
+    <p>
+      Licensed: 
+      Yes
+    </p>
+  </div>
+  <div
+    className="nexus-c-ingest-confirmation__actions"
+  >
+    <p>
+      Do you wish to continue?
+    </p>
+    <div
+      className="nexus-c-ingest-confirmation__btn-wrapper"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        appearance="subtle"
+        className="nexus-c-ingest-confirmation__cancel-btn"
+        onClick={[MockFunction]}
+      >
+        Cancel
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+      <WithAnalyticsContext(WithAnalyticsEvents(Button))
+        appearance="primary"
+        className="nexus-c-ingest-confirmation__continue-btn"
+        onClick={[MockFunction]}
+      >
+        Continue
+      </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    </div>
+  </div>
+</div>
+`;
