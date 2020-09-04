@@ -7,6 +7,7 @@ import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
+import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
@@ -15,6 +16,7 @@ import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHi
 import {getRightsHistory} from '../availsService';
 import BulkDelete from '../bulk-delete/BulkDelete';
 import BulkMatching from '../bulk-matching/BulkMatching';
+import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
 import {BULK_UNMATCH_CANCEL_BTN, BULK_UNMATCH_CONFIRM_BTN, BULK_UNMATCH_TITLE} from '../bulk-unmatch/constants';
 import {
@@ -42,8 +44,6 @@ import {
     BULK_DELETE_HEADER, BULK_UNMATCH_SUCCESS_TOAST,
 } from './constants';
 import './SelectedRightsActions.scss';
-import {getAffectedRights, setCoreTitleId} from "../bulk-matching/bulkMatchingService";
-import {SUCCESS_ICON} from "../../../ui/elements/nexus-toast-notification/constants";
 
 export const SelectedRightsActions = ({
                                           selectedRights,
