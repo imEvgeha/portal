@@ -70,6 +70,9 @@ const updateAbility = (roles = []) => {
     else if (roles.includes('metadata_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Metadata');
     }
+    else {
+        cannot(['create', 'update', 'delete'], 'Metadata');
+    }
 
     // ******** Servicing Orders *************
     can(['create', 'read', 'update', 'delete'], 'ServicingOrders');
