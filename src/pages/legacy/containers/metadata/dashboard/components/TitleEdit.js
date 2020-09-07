@@ -118,6 +118,30 @@ class TitleEdit extends Component {
                     });
                 })
                 .catch(() => {
+                    // TODO: Remove mock data
+                    const mockResponse = [
+                        {
+                            titleId: 'titl_igrkn',
+                            externalSystem: 'movida',
+                            externalId: 'MOV_igrkn',
+                            externalTitleId: '2761109',
+                            publishedAt: '2020-08-25T13:14:10.427Z',
+                            status: 'success',
+                            publishErrors: [],
+                        },
+                        {
+                            titleId: 'titl_igrkn',
+                            externalSystem: 'vz',
+                            externalId: 'VZ_igrknN',
+                            externalTitleId: '523318',
+                            publishedAt: '2020-08-27T13:14:10.427Z',
+                            status: 'failure',
+                            publishErrors: [],
+                        },
+                    ];
+                    this.setState({
+                        externalIDs: mockResponse,
+                    });
                     console.error('Unable to load Extrernal IDs data');
                 });
     }
@@ -1259,10 +1283,8 @@ class TitleEdit extends Component {
                                             {getRepositoryName(id) === TitleSystems.NEXUS && (
                                                 <>
                                                     <PublishVzMovida
-                                                        coreTitle={titleForm}
-                                                        editorialMetadataList={editorialMetadata}
-                                                        territoryMetadataList={territory}
                                                         onSyncPublishClick={this.onSyncPublishClick}
+                                                        externalIDs={this.state.externalIDs}
                                                     />
                                                     <Can I="update" a="Metadata">
                                                         <Button
