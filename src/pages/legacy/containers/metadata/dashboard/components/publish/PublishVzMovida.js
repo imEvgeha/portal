@@ -1,20 +1,21 @@
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import {capitalize} from 'lodash';
 import {default as AtlaskitButton} from '@atlaskit/button';
 import TitleSystems from '../../../../../constants/metadata/systems';
 import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
 import {Can} from '../../../../../../../ability';
-import PropTypes from 'prop-types';
+import {ERROR, SUCCESS, SYNC, PUBLISH} from './Constants';
 
 const {MOVIDA, VZ} = TitleSystems;
 
 const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
     const renderSyncField = (name, externalID) => {
-        const buttonName = !!externalID ? 'Sync' : 'Publish';
-        const isDisabled = externalID && externalID.status === 'success' ? true : false;
-        const indicator = isDisabled ? 'success' : 'error';
+        const buttonName = !!externalID ? SYNC : PUBLISH;
+        const isDisabled = externalID && externalID.status === SUCCESS ? true : false;
+        const indicator = isDisabled ? SUCCESS : ERROR;
 
         const lastUpdated = externalID ? externalID.publishedAt : '';
         // If lastUpdated is a valid date, then format it to a localized and user-friendly format
