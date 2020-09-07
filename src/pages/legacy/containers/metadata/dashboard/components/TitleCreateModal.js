@@ -34,6 +34,7 @@ import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '../../../../../../util/Common';
+import {publisherService} from '../../service/PublisherService';
 
 const onViewTitleClick = response => {
     const {id} = response || {};
@@ -145,6 +146,28 @@ class TitleCreate extends React.Component {
         titleService
             .createTitle(title, isSyncVZ, isSyncMovida)
             .then(response => {
+                if (isSyncVZ || isSyncMovida) {
+                    // call registerTitle API
+                    publisherService
+                        .registerTitle(response.id, isSyncVZ, isSyncMovida)
+                        .then(response => {
+                            this.props.addToast({
+                                title: SUCCESS_TITLE,
+                                icon: SUCCESS_ICON,
+                                isAutoDismiss: true,
+                                description: titleConstants.NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
+                            });
+                        })
+                        .catch(() => {
+                            this.setState({
+                                errorMessage: get(
+                                    e,
+                                    'response.data.description',
+                                    titleConstants.NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE
+                                ),
+                            });
+                        });
+                }
                 this.form && this.form.reset();
                 this.cleanFields();
                 this.toggle();
