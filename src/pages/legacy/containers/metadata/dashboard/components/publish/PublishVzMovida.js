@@ -7,7 +7,7 @@ import TitleSystems from '../../../../../constants/metadata/systems';
 import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
 import {Can} from '../../../../../../../ability';
-import {ERROR, SUCCESS, SYNC, PUBLISH} from './Constants';
+import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
 
 const {MOVIDA, VZ} = TitleSystems;
 

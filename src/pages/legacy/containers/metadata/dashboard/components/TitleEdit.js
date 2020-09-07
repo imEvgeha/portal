@@ -29,7 +29,7 @@ import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-to
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
-import {SYNC} from './publish/constants';
+import {SYNC} from './publish/PublishConstants';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
