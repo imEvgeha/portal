@@ -1,72 +1,80 @@
 @import '../../../../../../styles/config';
 @import '../../../../../../styles/atlaskit/colors';
+@import '../../../../../../styles/atlaskit/mixins';
 
 .manual-ingest-config {
-  display: flex;
-  flex-direction: column;
-  min-height: 250px;
-  overflow: hidden;
-  font-size: 14px;
-  label[data-testid=disabled--radio-label] {
-    color: map-get($colors, nexus-light-grey);
-  }
-  &__grid {
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    overflow: hidden;
+
+    &--file-name {
+        display: flex;
+        flex-direction: column;
+        span {
+            @include heading(h400);
+            word-break: break-all;
+        }
+    }
+}
+
+.manual-ingest-config__grid {
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 25px;
-    margin-bottom: 30px;
+    @include margin(0, 0, 6, 0);
     &:first-of-type {
-      grid-template-columns: 2fr 1fr;
-      margin-bottom: 20px;
+        grid-template-columns: 2fr 1fr;
+        @include margin(0, 0, 3, 0);
     }
     &:last-of-type {
-      margin-bottom: 10px;
-      button {
-        display: flex;
-        justify-content: center;
-        svg {
-          stroke: #FFFFFF;
+        @include margin(0, 0, 2, 0);
+        button {
+            display: flex;
+            justify-content: center;
+            svg {
+                stroke: #ffffff;
+            }
+            &.btn-primary {
+                background: #0065ff;
+                color: #ffffff !important;
+            }
         }
-        &.btn-primary {
-          background: #0065FF;
-          color: #FFFFFF!important;
-        }
-      }
     }
     &--browse {
-      justify-self: end;
-      box-shadow: none!important;
+        justify-self: end;
+        box-shadow: none !important;
     }
-  }
-  &__internal {
+}
+
+.manual-ingest-config__sub-text {
+    @include heading(h100);
+    @include margin(1, 0, 0, 0);
+}
+
+.manual-ingest-config__catalog {
+    @include margin(2, 0, 5, 0);
+}
+
+.manual-ingest-config__catalog-options {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    margin-left: -5px;
-    font-size: 14px;
-    label {
-      margin-bottom: 0;
-    }
-  }
-  &--file-name {
+    flex-direction: row;
+    @include margin(5, 0, 0, 0);
+}
+
+.manual-ingest-config__catalog-select {
+    width: 50%;
+}
+
+.manual-ingest-config__catalog-checkbox {
+    width: 50%;
     display: flex;
-    flex-direction: column;
-    label {
-      margin-bottom: 0;
-      font-size: 12px;
-    }
-    span {
-      word-break: break-all;
-      font-size: 14px;
-    }
-  }
-  &__licensee {
-      padding-bottom: 20px;
-  }
-  &__sub-text {
-      font-size: 12px;
-      padding-top: 5px;
-      color: map-get($neutrals, N90)
-  }
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.manual-ingest-config__label {
+    @include heading(h200);
+    @include margin(2, 0, 1, 0);
 }

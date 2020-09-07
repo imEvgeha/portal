@@ -13,11 +13,13 @@ const UploadIngestButton = ({ingestData}) => {
     const inputRef = useRef();
     const [file, setFile] = useState(null);
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const openModalCallback = useCallback((node, params) => openModal(node, params), []);
+    const closeModalCallback = useCallback(() => closeModal(), []);
 
     const closeUploadModal = useCallback(() => {
         setFile(null);
-        closeModal();
-    }, [closeModal]);
+        closeModalCallback();
+    }, []);
 
     const browseClick = useCallback(() => {
         closeUploadModal();
@@ -25,12 +27,21 @@ const UploadIngestButton = ({ingestData}) => {
     }, [closeUploadModal]);
 
     const buildForm = useCallback(() => {
-        return <InputForm ingestData={ingestData} closeModal={closeUploadModal} file={file} browseClick={browseClick} />;
+        return (
+            <InputForm
+                ingestData={ingestData}
+                closeModal={closeUploadModal}
+                file={file}
+                browseClick={browseClick}
+                openModalCallback={openModalCallback}
+                closeModalCallback={closeModalCallback}
+            />
+        );
     }, [browseClick, closeUploadModal, file, ingestData]);
 
     useEffect(() => {
         if (file) {
-            openModal(buildForm(), TITLE,'small');
+            openModalCallback(buildForm(), {title: TITLE, width: 'small', shouldCloseOnOverlayClick: false});
         }
     }, [buildForm, file]);
 

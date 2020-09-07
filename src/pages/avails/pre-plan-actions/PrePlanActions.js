@@ -77,7 +77,7 @@ export const PrePlanActions = ({
                             nonEligibleTitles={nonEligibleRights}
                             onClose={closeModal}
                         />,
-                        STATUS_CHECK_HEADER
+                        {title: STATUS_CHECK_HEADER}
                     );
                 }
                 if (eligibleRights && eligibleRights.length) {

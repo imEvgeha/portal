@@ -1,9 +1,11 @@
-import {push} from 'connected-react-router';
+import {push, goBack} from 'connected-react-router';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {
     CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
+    WARNING_ICON,
+    WARNING_TITLE,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
@@ -14,7 +16,14 @@ import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/servi
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {createColumnDefs} from '../utils';
 import * as actionTypes from './rightMatchingActionTypes';
-import {createRightById, getCombinedRight, getRightMatchingList, putCombinedRight} from './rightMatchingService';
+import {WARNING_CONFLICTING_RIGHTS} from './rightMatchingConstants';
+import {
+    createRightById,
+    getCombinedRight,
+    getRightMatchingList,
+    putCombinedRight,
+    getMatchingCandidates,
+} from './rightMatchingService';
 
 // TODO - refactor this worker saga (use select)
 export function* createRightMatchingColumnDefs() {
@@ -279,6 +288,40 @@ export function* createNewRight(requestMethod, {payload}) {
     }
 }
 
+export function* validateConflictingRights({payload}) {
+    const {rightId, tpr, rightData, selectedRights, callback, setMatchingCandidates} = payload || {};
+    try {
+        let conflictingRights = yield call(getMatchingCandidates, rightId, tpr, rightData);
+        conflictingRights = conflictingRights.filter(r => r.id !== rightId); // as candidates API returns pending right in response
+        const conflictingRightsIds = conflictingRights.map(right => right.id);
+
+        if (selectedRights.every(right => conflictingRightsIds.includes(right))) {
+            callback();
+        } else {
+            setMatchingCandidates ? setMatchingCandidates(conflictingRights) : yield put(goBack());
+            yield put({
+                type: ADD_TOAST,
+                payload: {
+                    title: WARNING_TITLE,
+                    icon: WARNING_ICON,
+                    description: WARNING_CONFLICTING_RIGHTS,
+                    isAutoDismiss: true,
+                },
+            });
+        }
+    } catch (error) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: WARNING_TITLE,
+                icon: WARNING_ICON,
+                description: WARNING_CONFLICTING_RIGHTS,
+                isAutoDismiss: true,
+            },
+        });
+    }
+}
+
 export function* rightMatchingWatcher() {
     yield all([
         takeLatest(actionTypes.CREATE_RIGHT_MATCHING_COLUMN_DEFS, createRightMatchingColumnDefs),
@@ -290,5 +333,6 @@ export function* rightMatchingWatcher() {
         takeEvery(actionTypes.SAVE_COMBINED_RIGHT, saveCombinedRight, putCombinedRight),
         takeEvery(actionTypes.FETCH_RIGHT_MATCH_DATA_UNTIL_FIND_ID, fetchMatchRightUntilFindId, getRightMatchingList),
         takeEvery(actionTypes.CREATE_NEW_RIGHT, createNewRight, createRightById),
+        takeEvery(actionTypes.VALIDATE_CONFLICTING_RIGHTS, validateConflictingRights),
     ]);
 }

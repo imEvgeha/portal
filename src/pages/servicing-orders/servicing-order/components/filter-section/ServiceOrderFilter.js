@@ -61,7 +61,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     value={getValidDate(srDueDate)}
                     isDisabled
                     isReturningTime={false}
-                    onChange={null}
+                    onChange={() => null}
                 />
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">

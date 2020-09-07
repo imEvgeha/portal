@@ -426,6 +426,7 @@ class RightDetails extends React.Component {
                     right: updatedRight,
                     isEdit: true,
                     push: this.context.router.history.push,
+                    removeToast: this.props.removeToast,
                 });
             });
     }
@@ -2227,6 +2228,7 @@ RightDetails.propTypes = {
     blocking: PropTypes.bool,
     history: PropTypes.object,
     handleMatchingRights: PropTypes.func,
+    removeToast: PropTypes.func,
 };
 
 RightDetails.defaultProps = {
@@ -2237,6 +2239,7 @@ RightDetails.defaultProps = {
     blocking: null,
     history: null,
     handleMatchingRights: () => null,
+    removeToast: () => null,
 };
 
 RightDetails.contextTypes = {

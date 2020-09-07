@@ -327,6 +327,7 @@ class RightCreate extends React.Component {
                     right: this.right,
                     isEdit: false,
                     push: this.context.router.history.push,
+                    removeToast: this.props.removeToast,
                 });
             });
     }
@@ -1257,11 +1258,13 @@ RightCreate.propTypes = {
     blocking: PropTypes.bool,
     match: PropTypes.object,
     addToast: PropTypes.func,
+    removeToast: PropTypes.func,
     handleMatchingRights: PropTypes.func,
 };
 
 RightCreate.defaultProps = {
     addToast: () => null,
+    removeToast: () => null,
     handleMatchingRights: () => null,
 };
 
