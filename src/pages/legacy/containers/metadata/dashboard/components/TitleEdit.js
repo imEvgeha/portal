@@ -28,6 +28,8 @@ import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
+import {publisherService} from '../../service/PublisherService';
+import {SYNC} from './publish/constants';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -110,7 +112,7 @@ class TitleEdit extends Component {
 
     loadExternalIds(titleId) {
         isNexusTitle(titleId) &&
-            titleService
+            publisherService
                 .getExternalIds(titleId)
                 .then(response => {
                     this.setState({
@@ -127,15 +129,6 @@ class TitleEdit extends Component {
                             externalTitleId: '2761109',
                             publishedAt: '2020-08-25T13:14:10.427Z',
                             status: 'success',
-                            publishErrors: [],
-                        },
-                        {
-                            titleId: 'titl_igrkn',
-                            externalSystem: 'vz',
-                            externalId: 'VZ_igrknN',
-                            externalTitleId: '523318',
-                            publishedAt: '2020-08-27T13:14:10.427Z',
-                            status: 'failure',
                             publishErrors: [],
                         },
                     ];
@@ -507,6 +500,32 @@ class TitleEdit extends Component {
             })
             .catch(() => {
                 console.error('Unable to load Title Data');
+                return false;
+            });
+    };
+
+    titleSync = (titleId, syncToVZ, syncToMovida) => {
+        return publisherService
+            .syncTitle(titleId, syncToVZ, syncToMovida)
+            .then(response => {
+                this.loadExternalIds(titleId);
+                return true;
+            })
+            .catch(() => {
+                console.error('Unable to Sync Title');
+                return false;
+            });
+    };
+
+    titlePublish = (titleId, syncToVZ, syncToMovida) => {
+        return publisherService
+            .registerTitle(titleId, syncToVZ, syncToMovida)
+            .then(response => {
+                this.loadExternalIds(titleId);
+                return true;
+            })
+            .catch(() => {
+                console.error('Unable to Sync Title');
                 return false;
             });
     };
@@ -1242,10 +1261,14 @@ class TitleEdit extends Component {
         });
     };
 
-    onSyncPublishClick = name => {
+    onSyncPublishClick = (name, buttonName) => {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
-        this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+        if (buttonName === SYNC) {
+            this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
+        } else {
+            this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
+        }
     };
 
     render() {

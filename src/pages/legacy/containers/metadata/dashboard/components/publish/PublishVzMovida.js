@@ -36,7 +36,7 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
                     <AtlaskitButton
                         appearance="primary"
                         isDisabled={isDisabled}
-                        onClick={() => onSyncPublishClick(name)}
+                        onClick={() => onSyncPublishClick(name, buttonName)}
                     >
                         {buttonName}
                     </AtlaskitButton>

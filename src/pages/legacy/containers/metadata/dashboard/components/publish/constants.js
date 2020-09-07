@@ -1,4 +1,4 @@
 export const PUBLISH = 'Publish';
 export const SYNC = 'Sync';
-export const SUCCESS = 'Success';
+export const SUCCESS = 'success';
 export const ERROR = 'error';
