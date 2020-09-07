@@ -1,17 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@atlaskit/avatar';
 import {DropdownItemGroup, DropdownItem} from '@atlaskit/dropdown-menu';
 import EditorSettingsIcon from '@atlaskit/icon/glyph/editor/settings';
+import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import {GlobalNav, GlobalItem, ThemeProvider, modeGenerator} from '@atlaskit/navigation-next';
 import {colors} from '@atlaskit/theme';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {logout} from '../../../auth/authActions';
+import NexusFeedback from "../nexus-feedback/NexusFeedback";
+import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
-import {SETTINGS, backgroundColor} from './constants';
+import {SETTINGS, FEEDBACK_HEADER, backgroundColor} from './constants';
 
 const customThemeMode = modeGenerator({
     product: {
@@ -59,6 +62,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 
 const NexusNavigation = ({history, location, profileInfo, logout}) => {
     const [selectedItem, setSelectedItem] = useState('');
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => setSelectedItem(location.pathname.split('/')[1]), [location.pathname]);
 
@@ -87,6 +91,12 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
                 secondaryItems={[
+                    {
+                        icon: FeedbackIcon,
+                        tooltip: 'Feedback',
+                        onClick: () => openModal(<NexusFeedback currentPage={selectedItem} close={closeModal}/>,
+                            {title: FEEDBACK_HEADER}),
+                    },
                     {
                         icon: EditorSettingsIcon,
                         id: SETTINGS,
