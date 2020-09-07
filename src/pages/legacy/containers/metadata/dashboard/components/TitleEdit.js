@@ -128,7 +128,7 @@ class TitleEdit extends Component {
                             externalId: 'MOV_igrkn',
                             externalTitleId: '2761109',
                             publishedAt: '2020-08-25T13:14:10.427Z',
-                            status: 'success',
+                            status: 'error',
                             publishErrors: [],
                         },
                     ];

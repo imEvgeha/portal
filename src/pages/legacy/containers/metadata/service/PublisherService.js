@@ -6,14 +6,16 @@ import {getSyncQueryParams} from './TitleService';
 export const publisherService = {
     getExternalIds: id => {
         const url =
-            config.get('gateway.titleUrl') + config.get('gateway.service.publisher') + `/getPublishInfo?&titleId=${id}`;
+            config.get('gateway.publisher') +
+            config.get('gateway.service.publisher') +
+            `/getPublishInfo?&titleId=${id}`;
         return nexusFetch(url);
     },
 
     registerTitle: (titleId, syncToVZ, syncToMovida) => {
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = {legacySystemNames, titleId};
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.publisher') + `/registerTitle`;
+        const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/registerTitle`;
 
         return nexusFetch(url, {
             method: 'post',
@@ -22,9 +24,9 @@ export const publisherService = {
     },
 
     syncTitle: (titleId, syncToVZ, syncToMovida) => {
-        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = {legacySystemNames, titleId};
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.publisher') + `/syncTitle`;
+        const legacySystemName = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = {legacySystemName, titleId};
+        const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/syncTitle`;
 
         return nexusFetch(url, {
             method: 'post',
