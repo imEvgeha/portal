@@ -193,6 +193,7 @@ const RightToMatchView = ({
 
     const highlightDiffCells = columnDefinitions => {
         const pendingRightData = Object.keys(pendingRight).length === 0 ? focusedRight : pendingRight;
+        if (Object.keys(pendingRightData).length === 0) return;
         const {START, END, AVAIL_START, AVAIL_END, TERRITORY, FORMAT} = FIELDS;
 
         columnDefinitions.forEach(def => {
