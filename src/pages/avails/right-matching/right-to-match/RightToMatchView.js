@@ -192,7 +192,7 @@ const RightToMatchView = ({
     };
 
     const highlightDiffCells = columnDefinitions => {
-        const pendingRightData = pendingRight;
+        const pendingRightData = Object.keys(pendingRight).length === 0 ? focusedRight : pendingRight;
         const {START, END, AVAIL_START, AVAIL_END, TERRITORY, FORMAT} = FIELDS;
 
         columnDefinitions.forEach(def => {
@@ -227,7 +227,9 @@ const RightToMatchView = ({
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
                         pendingRightData[key].forEach(format => {
-                            if (!params.value.find(val => val === format.value)) {
+                            if (
+                                !params.value.find(val => val === (typeof format === 'string' ? format : format.value))
+                            ) {
                                 areEq = false;
                             }
                         });
