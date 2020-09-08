@@ -114,6 +114,7 @@ const InputForm = ({
             setCatalogType('');
             setIsLicensed(false);
             setSelectedLicensees([]);
+            setLicensor('');
             setIsShowingCatalogType(!isShowingCatalogType);
         } else {
             setIsShowingCatalogType(!isShowingCatalogType);
@@ -138,13 +139,16 @@ const InputForm = ({
             params.externalId = ingestData.externalId;
         }
 
+        if (template === STUDIO || isShowingCatalogType) {
+            params.licensor = get(licensor, 'value.value', '');
+            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
+        }
+
         if (template !== STUDIO) {
             params.internal = true;
             params.internalTemplateType = template;
         } else {
             params.internal = false;
-            params.licensor = get(licensor, 'value.value', '');
-            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
         uploadIngest(params);
     };
@@ -174,9 +178,6 @@ const InputForm = ({
 
     const isUploadEnabled = () => {
         if (isShowingCatalogType) {
-            if (template === INTERNATIONAL || template === USMASTER) {
-                return serviceRegion && catalogType && selectedLicensees.length;
-            }
             return serviceRegion && licensor && catalogType && selectedLicensees.length;
         }
         if (template === INTERNATIONAL || template === USMASTER) {
@@ -213,8 +214,8 @@ const InputForm = ({
                         onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO || ingestLicensor}
-                        placeholder={template !== STUDIO ? 'N/A' : 'Select'}
+                        isDisabled={(template !== STUDIO && !isShowingCatalogType) || ingestLicensor}
+                        placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>
