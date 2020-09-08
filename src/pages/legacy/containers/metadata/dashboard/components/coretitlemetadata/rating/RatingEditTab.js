@@ -6,6 +6,7 @@ import { AvField } from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import { configFields } from '../../../../service/ConfigService';
 import { BBFC_UK, MIDDLE_EAST } from '../../../../../../constants/metadata/ratings';
+import {Can} from "../../../../../../../../ability";
 
 const mapStateToProps = state => {
     return {
@@ -114,11 +115,13 @@ class RatingEditTab extends Component {
 
         return (
             <div id="ratingCreate">
-                <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <span style={{color:'red', cursor:'pointer'}} onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
-                        Delete Rating
-                    </span>
-                </Row>
+                <Can I="delete" a="Metadata">
+                    <Row style={{padding: '0 30px', display: 'flex', justifyContent: 'flex-end'}}>
+                        <span style={{color:'red', cursor:'pointer'}} onClick={() => handleEditChange(null, currentRatingData)} appearance="danger">
+                            Delete Rating
+                        </span>
+                    </Row>
+                </Can>
                 <Row style={{ padding: '15px' }}>
                     <Col md={3}>
                         <b> Rating System<span style={{ color: 'red' }}>*</span></b>
@@ -185,7 +188,7 @@ class RatingEditTab extends Component {
                             name="advisories"
                             onChange={(e) => this.handleAdvisoriesChange(e)}
                             required={this.state.isAdvisoryRequired}
-                            errorMessage="Field cannot be empty!" 
+                            errorMessage="Field cannot be empty!"
                             value={advisoriesFreeText ? advisoriesFreeText : ''}
                             validate={{
                                     maxLength: { value: 500, errorMessage: 'Too long Advisories. Max 500 symbols.' }
