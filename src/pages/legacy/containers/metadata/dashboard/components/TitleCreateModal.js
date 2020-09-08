@@ -146,7 +146,7 @@ class TitleCreate extends React.Component {
         titleService
             .createTitle(title, isSyncVZ, isSyncMovida)
             .then(response => {
-                if (isSyncVZ || isSyncMovida) {
+                if (URL.isLocalOrDev() && (isSyncVZ || isSyncMovida)) {
                     // call registerTitle API
                     publisherService
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)

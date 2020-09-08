@@ -24,6 +24,7 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
+import PublishVzMovidaOld from './publish/PublishVzMovidaOld';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
@@ -120,21 +121,6 @@ class TitleEdit extends Component {
                     });
                 })
                 .catch(() => {
-                    // TODO: Remove mock data
-                    const mockResponse = [
-                        {
-                            titleId: 'titl_igrkn',
-                            externalSystem: 'movida',
-                            externalId: 'MOV_igrkn',
-                            externalTitleId: '2761109',
-                            publishedAt: '2020-08-25T13:14:10.427Z',
-                            status: 'error',
-                            publishErrors: [],
-                        },
-                    ];
-                    this.setState({
-                        externalIDs: mockResponse,
-                    });
                     console.error('Unable to load Extrernal IDs data');
                 });
     }
@@ -1264,10 +1250,14 @@ class TitleEdit extends Component {
     onSyncPublishClick = (name, buttonName) => {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
-        if (buttonName === SYNC) {
-            this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
+        if (URL.isLocalOrDev()) {
+            if (buttonName === SYNC) {
+                this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
+            } else {
+                this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
+            }
         } else {
-            this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
+            this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
         }
     };
 
@@ -1305,10 +1295,19 @@ class TitleEdit extends Component {
                                         <div className="nexus-c-title-edit__sync-container">
                                             {getRepositoryName(id) === TitleSystems.NEXUS && (
                                                 <>
-                                                    <PublishVzMovida
-                                                        onSyncPublishClick={this.onSyncPublishClick}
-                                                        externalIDs={this.state.externalIDs}
-                                                    />
+                                                    {URL.isLocalOrDev() ? (
+                                                        <PublishVzMovida
+                                                            onSyncPublishClick={this.onSyncPublishClick}
+                                                            externalIDs={this.state.externalIDs}
+                                                        />
+                                                    ) : (
+                                                        <PublishVzMovidaOld
+                                                            coreTitle={titleForm}
+                                                            editorialMetadataList={editorialMetadata}
+                                                            territoryMetadataList={territory}
+                                                            onSyncPublishClick={this.onSyncPublishClick}
+                                                        />
+                                                    )}
                                                     <Can I="update" a="Metadata">
                                                         <Button
                                                             className="float-right"
