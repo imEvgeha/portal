@@ -100,7 +100,8 @@ const InputForm = ({
                 licensor={licensor.label}
                 serviceRegion={serviceRegion.value}
                 licensee={selectedLicensees.map(licensee => licensee.value).join(', ')}
-                catalog={catalogType.value}
+                isCatalog={isShowingCatalogType}
+                catalogType={catalogType.value}
                 isLicenced={isLicensed}
                 onActionCancel={closeModalCallback}
                 onActionConfirm={uploadHandler}
@@ -125,7 +126,6 @@ const InputForm = ({
         closeModalCallback();
         const params = {
             serviceRegion: serviceRegion.value,
-            licensed: isLicensed,
             file,
             closeModal: closeModalCallback,
         };
@@ -133,6 +133,7 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
+            params.licensed = isLicensed;
         }
 
         if (get(ingestData, 'externalId', '')) {
