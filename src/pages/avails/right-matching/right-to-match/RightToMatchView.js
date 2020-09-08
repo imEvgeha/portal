@@ -74,7 +74,7 @@ const RightToMatchView = ({
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
-    const previousPageRoute = mergeRights ? AVAILS_PATH : `/avails/history/${availHistoryIds}/right-matching`;
+    const previousPageRoute = mergeRights ? AVAILS_PATH : `/avails/rights/${focusedRight.id}`; // `/avails/history/${availHistoryIds}/right-matching`
 
     // DOP Integration
     useDOPIntegration(null, RIGHT_MATCHING_DOP_STORAGE);
