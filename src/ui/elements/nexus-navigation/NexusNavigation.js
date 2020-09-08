@@ -92,7 +92,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
                 secondaryItems={[
-                    //TODO: remove URL.isLocalOrDev() once backend is intergated
+                    // TODO: remove URL.isLocalOrDev() once backend is intergated
                     URL.isLocalOrDev() && {
                         icon: FeedbackIcon,
                         id: 'Feedback',
