@@ -7,11 +7,7 @@ import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatc
 import {BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';
 
-const BulkUnmatch = ({
-    columnDefs = [],
-    affectedRights = {},
-}) => {
-
+const BulkUnmatch = ({columnDefs = [], affectedRights = {}}) => {
     return (
         <div className="nexus-c-bulk-unmatch">
             <p className="nexus-c-bulk-unmatch__confirmation-message">
@@ -30,8 +26,13 @@ const BulkUnmatch = ({
 };
 
 BulkUnmatch.propTypes = {
-    columnDefs: PropTypes.array.isRequired,
-    affectedRights: PropTypes.object.isRequired,
+    columnDefs: PropTypes.array,
+    affectedRights: PropTypes.array,
+};
+
+BulkUnmatch.defaultProps = {
+    columnDefs: [],
+    affectedRights: [],
 };
 
 const createMapStateToProps = () => {
