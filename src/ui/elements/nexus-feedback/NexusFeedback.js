@@ -8,7 +8,7 @@ import "./NexusFeedback.scss"
 import {SUCCESS_ICON, SUCCESS_TITLE} from "../nexus-toast-notification/constants";
 import {options, THANKYOU_NOTE} from './constants';
 
-const NexusFeedback = ({addToast, currentPage, close}) => {
+const NexusFeedback = ({addToast, currentPage, closeModal}) => {
 
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
@@ -21,7 +21,7 @@ const NexusFeedback = ({addToast, currentPage, close}) => {
         //TODO: send info to backend email service
         //console.log(selected, feedBack, currentPage);
         //call API and then close modal
-        close();
+        closeModal();
         addToast({
             title: SUCCESS_TITLE,
             description: THANKYOU_NOTE,
@@ -62,7 +62,7 @@ const NexusFeedback = ({addToast, currentPage, close}) => {
                 </Button>
                 <Button
                     appearance="subtle"
-                    onClick={close}
+                    onClick={closeModal}
                     className="nexus-c-feedback__button"
                     isDisabled={false}
                 >
@@ -75,7 +75,7 @@ const NexusFeedback = ({addToast, currentPage, close}) => {
 
 NexusFeedback.propTypes = {
     addToast: PropTypes.func,
-    close: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
     currentPage:  PropTypes.string
 };
 

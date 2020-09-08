@@ -96,7 +96,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                     URL.isLocalOrDev() && {
                         icon: FeedbackIcon,
                         tooltip: 'Feedback',
-                        onClick: () => openModal(<NexusFeedback currentPage={selectedItem} close={closeModal}/>,
+                        onClick: () => openModal(<NexusFeedback currentPage={selectedItem} closeModal={closeModal}/>,
                             {title: FEEDBACK_HEADER}),
                     },
                     {
