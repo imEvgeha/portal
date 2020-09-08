@@ -113,9 +113,11 @@ class SearchResultsTab extends React.Component {
                         <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
                     ))}
                 </div>,
-                title,
-                '100%',
-                actions
+                {
+                    title,
+                    width: '100%',
+                    actions,
+                }
             );
         });
     };

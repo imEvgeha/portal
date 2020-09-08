@@ -4,7 +4,7 @@ export const SELECT_VALUES = {
     version: [
         {subtitles: ['English', 'French', 'Italian']},
         {audio: ['English', 'French', 'Italian']},
-        {video: ['Theatrical', 'Broadcast', 'Director\'s cut']},
+        {video: ['Theatrical', 'Broadcast', "Director's cut"]},
     ],
     standard: [
         {subtitles: ['Text Type - Full Stream', 'Forced', 'SDH']},
@@ -28,26 +28,30 @@ export const TABLE_ROW = {
 };
 
 export const SERVICE_SCHEMA = {
-    deteSources: {
-        amsAssetId: '',
-        barcode: '',
-        externalSources: {
-            externalId: '',
-            externalSystem: '',
-            assetFormat: '',
-            assetType: '',
-        },
-    },
-    deteTasks: {
-        deteDeliveries: {
-            deliveryMethod: '',
-            externalDelivery: {
+    deteSources: [
+        {
+            amsAssetId: '',
+            barcode: '',
+            externalSources: {
                 externalId: '',
                 externalSystem: '',
-                customerId: '',
-                deliverToId: '',
+                assetFormat: '',
+                assetType: '',
             },
         },
+    ],
+    deteTasks: {
+        deteDeliveries: [
+            {
+                deliveryMethod: '',
+                externalDelivery: {
+                    externalId: '',
+                    externalSystem: '',
+                    customerId: '',
+                    deliverToId: '',
+                },
+            },
+        ],
         dueDate: '',
         typeAttribute: '',
     },

@@ -8,12 +8,19 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "cellClass": "nexus-c-servicing-orders-table__checkbox-cell",
+          "cellRendererFramework": [Function],
+          "colId": "checkbox_column",
+          "field": "checkbox_column",
+          "headerName": "",
+          "width": 43,
+        },
+        Object {
           "cellRenderer": "loadingCellRenderer",
           "cellRendererParams": Object {
             "link": "/servicing-orders/",
             "newTab": false,
           },
-          "checkboxSelection": true,
           "colId": "so_number",
           "dataType": "string",
           "enableSearch": true,
@@ -142,11 +149,16 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     mapping={
       Array [
         Object {
+          "colId": "checkbox_column",
+          "field": "checkbox_column",
+          "headerName": "",
+          "width": 43,
+        },
+        Object {
           "cellRendererParams": Object {
             "link": "/servicing-orders/",
             "newTab": false,
           },
-          "checkboxSelection": true,
           "colId": "so_number",
           "dataType": "string",
           "enableSearch": true,
@@ -249,9 +261,6 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
       ]
     }
     onFirstDataRendered={[Function]}
-    onSelectionChanged={[Function]}
-    rowDeselection={true}
-    rowSelection="multiple"
     setTotalCount={[Function]}
   />
   <ServicingOrdersTableStatusBar

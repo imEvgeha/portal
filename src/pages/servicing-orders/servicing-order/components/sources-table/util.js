@@ -16,21 +16,21 @@ export const prepareRowData = data => {
 
     services.forEach(service => {
         const sources = get(service, sourcesKey, {});
-        const {barcode} = sources;
 
-        if (barcode) {
-            const source = get(preparedSources, barcode, {});
-            preparedSources[barcode] = source;
-            source.fs = fs;
-            source.barcode = barcode;
-            const preparedServices = get(source, servicesKey, []);
-            source[servicesKey] = preparedServices;
-            preparedServices.push(service);
-        }
+        sources.map(s => {
+            const {barcode} = s;
+
+            if (barcode) {
+                const source = get(preparedSources, barcode, {});
+                preparedSources[barcode] = source;
+                source.fs = fs;
+                source.barcode = barcode;
+                const preparedServices = get(source, servicesKey, []);
+                source[servicesKey] = preparedServices;
+                preparedServices.push(service);
+            }
+        });
     });
 
-
-    return Object.entries(preparedSources).map(
-        ([key, value]) => (value)
-    );
+    return Object.entries(preparedSources).map(([key, value]) => value);
 };

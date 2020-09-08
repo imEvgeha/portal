@@ -39,12 +39,18 @@ export default {
         {label: 'US', value: 'US'},
         {label: 'UK', value: 'UK'},
     ],
+    CATALOG_TYPES: [
+        {label: 'Full Catalog', value: 'Full Catalog'},
+        {label: 'Title Catalog', value: 'Title Catalog'},
+    ],
     TEMPLATES: {
         STUDIO: 'Studio',
         USMASTER: 'US Master',
         INTERNATIONAL: 'International',
     },
     LICENSEE_WARNING: 'Any mismatches between the file and the selected licensees will result in a fatal',
+    LICENSEE_TOOLTIP_MSG:
+        'If Licensee is defined anywhere in the file, the system will use the file to determine Licensee.',
 };
 
 export const DEBOUNCE_TIMEOUT = 2000;

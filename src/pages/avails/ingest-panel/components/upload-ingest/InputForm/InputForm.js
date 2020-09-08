@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button/dist/cjs/components/Button';
+import {Checkbox} from '@atlaskit/checkbox';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import {get, isEmpty} from 'lodash';
@@ -9,11 +10,13 @@ import {createLoadingSelector} from '../../../../../../ui/loading/loadingSelecto
 import constants from '../../../constants';
 import {uploadIngest} from '../../../ingestActions';
 import {getLicensees, getLicensors} from '../../../ingestSelectors';
+import IngestConfirmation from '../../ingest-confirmation/IngestConfirmation';
 import './InputForm.scss';
 
 const {
     ingestTypes: {EMAIL},
     SERVICE_REGIONS,
+    CATALOG_TYPES,
     TEMPLATES: {USMASTER, STUDIO, INTERNATIONAL},
     LICENSEE_WARNING,
 } = constants;
@@ -28,6 +31,8 @@ const InputForm = ({
     licensees,
     uploadIngest,
     isUploading,
+    openModalCallback,
+    closeModalCallback,
 }) => {
     const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
 
@@ -60,8 +65,11 @@ const InputForm = ({
     const [selectedLicensees, setSelectedLicensees] = useState([]);
 
     const [serviceRegion, setServiceRegion] = useState(
-        ingestServiceRegion && {label: ingestServiceRegion, value: ingestServiceRegion}
+        ingestServiceRegion ? {label: ingestServiceRegion, value: ingestServiceRegion} : ''
     );
+    const [isShowingCatalogType, setIsShowingCatalogType] = useState(false);
+    const [catalogType, setCatalogType] = useState('');
+    const [isLicensed, setIsLicensed] = useState(false);
 
     useEffect(() => {
         if (template === STUDIO && !ingestData) {
@@ -86,15 +94,54 @@ const InputForm = ({
         setLicenseesOptions(parsedLicensees.map(({licenseeName}) => ({value: licenseeName, label: licenseeName})));
     }, [licensees, serviceRegion]);
 
+    const openIngestConfirmationModal = () => {
+        openModalCallback(
+            <IngestConfirmation
+                licensor={licensor.label}
+                serviceRegion={serviceRegion.value}
+                licensee={selectedLicensees.map(licensee => licensee.value).join(', ')}
+                catalog={catalogType.value}
+                isLicenced={isLicensed}
+                onActionCancel={closeModalCallback}
+                onActionConfirm={uploadHandler}
+            />,
+            {title: 'Attention', width: 'medium', shouldCloseOnOverlayClick: false}
+        );
+    };
+
+    const handleCatalogCheckboxChange = () => {
+        if (isShowingCatalogType) {
+            setCatalogType('');
+            setIsLicensed(false);
+            setSelectedLicensees([]);
+            setLicensor('');
+            setIsShowingCatalogType(!isShowingCatalogType);
+        } else {
+            setIsShowingCatalogType(!isShowingCatalogType);
+        }
+    };
+
     const uploadHandler = () => {
+        closeModalCallback();
         const params = {
             serviceRegion: serviceRegion.value,
+            licensed: isLicensed,
             file,
-            closeModal,
+            closeModal: closeModalCallback,
         };
+
+        if (isShowingCatalogType) {
+            params.catalogUpdate = isShowingCatalogType;
+            params.catalogType = catalogType.value;
+        }
 
         if (get(ingestData, 'externalId', '')) {
             params.externalId = ingestData.externalId;
+        }
+
+        if (template === STUDIO || isShowingCatalogType) {
+            params.licensor = get(licensor, 'value.value', '');
+            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
 
         if (template !== STUDIO) {
@@ -102,8 +149,6 @@ const InputForm = ({
             params.internalTemplateType = template;
         } else {
             params.internal = false;
-            params.licensor = get(licensor, 'value.value', '');
-            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
         uploadIngest(params);
     };
@@ -131,13 +176,21 @@ const InputForm = ({
         selectedTemplate !== STUDIO && setLicensor('');
     };
 
-    const uploadDisabled = !(serviceRegion && (template === STUDIO ? licensor && !isEmpty(licensees) : true));
+    const isUploadEnabled = () => {
+        if (isShowingCatalogType) {
+            return serviceRegion && licensor && catalogType && selectedLicensees.length;
+        }
+        if (template === INTERNATIONAL || template === USMASTER) {
+            return !isEmpty(serviceRegion);
+        }
+        return !isEmpty(serviceRegion) && licensor && selectedLicensees.length;
+    };
 
     return (
         <div className="manual-ingest-config">
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--file-name">
-                    <label>File</label>
+                    <label className="manual-ingest-config__label">File</label>
                     <span>{file.name}</span>
                 </div>
                 <Button onClick={browseClick} className="manual-ingest-config__grid--browse">
@@ -145,26 +198,32 @@ const InputForm = ({
                 </Button>
             </div>
             <div className="manual-ingest-config__templates">
-                <RadioGroup options={templates} onChange={onTemplateChange} defaultValue={initialTemplate.value} />
+                <label className="manual-ingest-config__label">Template</label>
+                <RadioGroup
+                    label="Template"
+                    options={templates}
+                    onChange={onTemplateChange}
+                    defaultValue={initialTemplate.value}
+                />
             </div>
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--licensor">
-                    <label>Licensor</label>
+                    <label className="manual-ingest-config__label">Licensor</label>
                     <Select
                         id="manual-upload-licensor"
-                        onChange={setLicensor}
+                        onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO || ingestLicensor}
-                        placeholder={template !== STUDIO ? 'N/A' : 'Select'}
+                        isDisabled={(template !== STUDIO && !isShowingCatalogType) || ingestLicensor}
+                        placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>
                 <div className="manual-ingest-config--service-region">
-                    <label>Service Region</label>
+                    <label className="manual-ingest-config__label">Service Region</label>
                     <Select
                         id="manual-upload-service-region"
-                        onChange={setServiceRegion}
+                        onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}
                         isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
@@ -174,28 +233,62 @@ const InputForm = ({
                 </div>
             </div>
             <div className="manual-ingest-config__licensee">
-                <label>Licensee</label>
+                <label className="manual-ingest-config__label">Licensee</label>
                 <Select
                     id="manual-upload-licensee"
-                    onChange={setSelectedLicensees}
+                    onChange={val => setSelectedLicensees(val || [])}
                     value={selectedLicensees}
                     options={licenseesOptions}
-                    isDisabled={!serviceRegion || [USMASTER, INTERNATIONAL].includes(template)}
-                    placeholder={template !== STUDIO ? 'N/A' : 'Select Licensee'}
+                    isDisabled={
+                        !serviceRegion || (!isShowingCatalogType ? [USMASTER, INTERNATIONAL].includes(template) : false)
+                    }
+                    placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select Licensee'}
                     isMulti
                     {...selectProps}
                 />
                 <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
+            </div>
+            <div className="manual-ingest-config__catalog">
+                <Checkbox
+                    id="catalog"
+                    label="Catalog"
+                    onChange={handleCatalogCheckboxChange}
+                    isChecked={isShowingCatalogType}
+                />
+                {isShowingCatalogType && (
+                    <div className="manual-ingest-config__catalog-options">
+                        <div className="manual-ingest-config__catalog-select">
+                            <label className="manual-ingest-config__label">Catalog Type</label>
+                            <Select
+                                id="manual-upload-catalog-type"
+                                onChange={val => setCatalogType(val)}
+                                value={catalogType}
+                                options={CATALOG_TYPES}
+                                isDisabled={false}
+                                placeholder="Select"
+                                {...selectProps}
+                            />
+                        </div>
+                        <div className="manual-ingest-config__catalog-checkbox">
+                            <Checkbox
+                                id="licensed-checkbox"
+                                label="Licensed"
+                                onChange={() => setIsLicensed(!isLicensed)}
+                                isChecked={isLicensed}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
             <div className="manual-ingest-config__grid">
                 <Button isDisabled={isUploading} onClick={closeModal}>
                     Cancel
                 </Button>
                 <Button
-                    onClick={uploadHandler}
-                    className={uploadDisabled ? '' : 'btn-primary'}
+                    onClick={openIngestConfirmationModal}
+                    className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
-                    isDisabled={uploadDisabled}
+                    isDisabled={!isUploadEnabled()}
                 >
                     Upload
                 </Button>
@@ -210,6 +303,8 @@ InputForm.propTypes = {
     closeModal: PropTypes.func.isRequired,
     uploadIngest: PropTypes.func,
     browseClick: PropTypes.func,
+    openModalCallback: PropTypes.func,
+    closeModalCallback: PropTypes.func,
     file: PropTypes.object,
     isUploading: PropTypes.bool,
     ingestData: PropTypes.object,
@@ -220,6 +315,8 @@ InputForm.defaultProps = {
     licensees: [],
     uploadIngest: () => null,
     browseClick: () => null,
+    openModalCallback: () => null,
+    closeModalCallback: () => null,
     file: {},
     isUploading: false,
     ingestData: {},

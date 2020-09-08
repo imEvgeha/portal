@@ -43,10 +43,9 @@ const TitleMatchView = ({
             <CustomActionsCellRenderer id={id}>
                 <Button
                     onClick={() =>
-                        openModal(
-                            <CreateTitleForm close={closeModal} focusedRight={focusedRight} />,
-                            NewTitleConstants.NEW_TITLE_MODAL_TITLE
-                        )
+                        openModal(<CreateTitleForm close={closeModal} focusedRight={focusedRight} />, {
+                            title: NewTitleConstants.NEW_TITLE_MODAL_TITLE,
+                        })
                     }
                 >
                     New Title
