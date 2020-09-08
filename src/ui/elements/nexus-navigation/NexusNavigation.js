@@ -95,6 +95,7 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                     //TODO: remove URL.isLocalOrDev() once backend is intergated
                     URL.isLocalOrDev() && {
                         icon: FeedbackIcon,
+                        id: 'Feedback',
                         tooltip: 'Feedback',
                         onClick: () => openModal(<NexusFeedback currentPage={selectedItem} closeModal={closeModal}/>,
                             {title: FEEDBACK_HEADER}),
