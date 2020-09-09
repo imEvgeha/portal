@@ -206,8 +206,7 @@ class EditorialMetadataCreateTab extends Component {
         elements.push(document.getElementById('editorialShortSynopsis'));
         elements.push(document.getElementById('editorialMediumSynopsis'));
         let invalidElements = elements.filter(item => item && item.value === '');
-        if (invalidElements.length) return false;
-        return true;
+        return !invalidElements.length;
     };
 
     raiseValidationError = () => {
