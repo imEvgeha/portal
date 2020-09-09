@@ -29,7 +29,6 @@ import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
-import {Link} from 'react-router-dom';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -1247,7 +1246,6 @@ class TitleEdit extends Component {
                                                 </SectionMessage>
                                             )}
                                         </div>
-
                                         <Button
                                             className="float-right"
                                             id="btnSave"
