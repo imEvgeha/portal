@@ -53,6 +53,7 @@ const EditorialMetadata = ({
     cleanField,
     handleDeleteEditorialMetaData,
     handleRegenerateDecoratedMetadata,
+    setValidationError,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -239,6 +240,7 @@ const EditorialMetadata = ({
                                         titleContentType={titleContentType}
                                         cleanField={cleanField}
                                         titleHasMaster={titleHasMaster}
+                                        setValidationError={setValidationError}
                                     />
                                 </Col>
                             </Row>

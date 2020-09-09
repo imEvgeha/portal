@@ -4,6 +4,7 @@ import {get} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
+import SectionMessage from '@atlaskit/section-message';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -28,6 +29,7 @@ import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
+import {Link} from 'react-router-dom';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -83,6 +85,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {},
             externalIDs: null,
+            validationError: '',
         };
     }
 
@@ -1224,6 +1227,8 @@ class TitleEdit extends Component {
         this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
     };
 
+    setValidationError = msg => this.setState({validationError: msg});
+
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
         const {id = ''} = titleForm || {};
@@ -1235,12 +1240,21 @@ class TitleEdit extends Component {
                             <Col className="clearfix" style={{marginRight: '20px', marginBottom: '10px'}}>
                                 {this.state.isEditMode ? (
                                     <>
+                                        <div>
+                                            {this.state.isEditMode && this.state.validationError && (
+                                                <SectionMessage appearance="error" title="Save action is restricted">
+                                                    <p>{this.state.validationError}</p>
+                                                </SectionMessage>
+                                            )}
+                                        </div>
+
                                         <Button
                                             className="float-right"
                                             id="btnSave"
                                             isLoading={this.state.isLoading}
                                             onClick={this.handleOnSave}
                                             appearance="primary"
+                                            isDisabled={this.state.validationError}
                                         >
                                             Save
                                         </Button>
@@ -1313,6 +1327,7 @@ class TitleEdit extends Component {
                             cleanField={this.cleanField}
                             handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
                             handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
+                            setValidationError={this.setValidationError}
                         />
 
                         <TerritoryMetadata
