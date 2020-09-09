@@ -36,6 +36,7 @@ import {
 } from '../../../../../constants/metadata/configAPI';
 
 import constants from '../../../MetadataConstants';
+import {Can} from "../../../../../../../ability";
 
 const mapStateToProps = state => {
     return {
@@ -196,11 +197,13 @@ class EditorialMetadataEditMode extends Component {
             MAX_SORT_TITLE_LENGTH, MAX_SYNOPSIS_LENGTH, MAX_COPYRIGHT_LENGTH } = constants;
         return (
             <div id="editorialMetadataEdit">
-                <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
-                    <span style={{color: 'red', cursor: 'pointer'}} onClick={() => handleDelete(currentMetadata.id)}>
-                        Delete Editorial Metadata
-                    </span>
-                </Row>
+                <Can I="delete" a="Metadata">
+                    <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
+                        <span style={{color: 'red', cursor: 'pointer'}} onClick={() => handleDelete(currentMetadata.id)}>
+                            Delete Editorial Metadata
+                        </span>
+                    </Row>
+                </Can>
                 {isMaster &&
                     <Row style={{padding: '15px'}}>
                         <Col className='info-master' md={12}>
@@ -616,7 +619,7 @@ class EditorialMetadataEditMode extends Component {
                             loadOptionsPerson={this.loadOptionsPerson}
                             addPerson={(person) => this.handleEditorialAddPerson(person, castCrew)}
                             getFormatTypeName={getFormatTypeName}
-                            showPersonType={true}                                
+                            showPersonType={true}
                             isMultiColumn={true}
                             parentId={this.props.data.id}
                             handleAddCharacterName={this.props.handleAddEditorialCharacterNameEdit}
