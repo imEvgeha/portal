@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RightsRepositoryHeader should match snapshot 1`] = `
+<div
+  className="nexus-c-rights-repository-header"
+>
+  <div
+    className="nexus-c-rights-repository-header__title"
+  >
+    <[object Object]
+      fill="#42526E"
+    />
+    <h1
+      className="nexus-c-rights-repository-header__title-text"
+    >
+      Rights
+    </h1>
+  </div>
+  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+    appearance="primary"
+    isLoading={false}
+    onClick={[Function]}
+  >
+    Create New Right
+  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+</div>
+`;
