@@ -503,6 +503,8 @@
             "javaVariableName": "bonusRight",
             "displayName": "Bonus Right",
             "dataType": "boolean",
+            "searchDataType": "boolean",
+            "queryParamName": "bonusRight",
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": true,
