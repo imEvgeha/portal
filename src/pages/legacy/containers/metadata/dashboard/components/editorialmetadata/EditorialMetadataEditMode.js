@@ -200,11 +200,27 @@ class EditorialMetadataEditMode extends Component {
         this.props.handleEditorialCastCrew(castAndCrewList, this.props.data);
     };
 
+    checkForAutoDecorateValidation = fieldsArray => {
+        let invalidElements = fieldsArray.filter(item => item === null || item === '');
+        return !invalidElements.length;
+    };
+
+    raiseValidationError = (isMaster, fields) => {
+        if (isMaster) {
+            if (!this.checkForAutoDecorateValidation(fields))
+                this.props.setValidationError(
+                    'Please fill all the required fields for master editorial record',
+                    'push'
+                );
+            else
+                this.props.setValidationError('Please fill all the required fields for master editorial record', 'pop');
+        }
+    };
+
     render() {
         const {handleDelete, data: currentMetadata} = this.props;
         const isMaster = !!this.props.data.hasGeneratedChildren;
         const isDecorated = !!this.props.data.parentEmetId;
-        console.log('isDecorated: ', isDecorated);
 
         this.prepareFieldsForUpdate();
         const updateData = this.props.updatedEditorialMetadata.find(e => e.id === this.props.data.id);
@@ -223,7 +239,16 @@ class EditorialMetadataEditMode extends Component {
             castCrew,
             shortTitleTemplate,
         } = updateData || this.props.data;
+
+        this.raiseValidationError(isMaster, [
+            shortTitleTemplate,
+            title.title,
+            synopsis.description,
+            synopsis.shortDescription,
+        ]);
+
         const {seriesName, seasonNumber, episodeNumber} = episodic || {};
+
         const {
             MAX_TITLE_LENGTH,
             MAX_MEDIUM_TITLE_LENGTH,
@@ -232,6 +257,7 @@ class EditorialMetadataEditMode extends Component {
             MAX_SYNOPSIS_LENGTH,
             MAX_COPYRIGHT_LENGTH,
         } = constants;
+
         return (
             <div id="editorialMetadataEdit">
                 <Can I="delete" a="Metadata">

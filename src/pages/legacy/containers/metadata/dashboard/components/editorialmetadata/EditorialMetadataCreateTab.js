@@ -211,11 +211,12 @@ class EditorialMetadataCreateTab extends Component {
 
     raiseValidationError = () => {
         if (this.state.autoDecorate && !this.checkForAutoDecorateValidation()) {
-            this.props.setValidationError('Please fill all the required fields for auto-decorated metadata');
-        } else this.props.setValidationError('');
+            this.props.setValidationError('Please fill all the required fields for auto-decorated metadata', 'push');
+        } else this.props.setValidationError('Please fill all the required fields for auto-decorated metadata', 'pop');
     };
     render() {
         this.raiseValidationError();
+
         const {
             synopsis,
             title,
@@ -226,6 +227,7 @@ class EditorialMetadataCreateTab extends Component {
             sasktelLineupId,
             castCrew,
         } = this.props.editorialMetadataForCreate;
+
         const {
             MAX_SEASON_LENGTH,
             MAX_TITLE_LENGTH,

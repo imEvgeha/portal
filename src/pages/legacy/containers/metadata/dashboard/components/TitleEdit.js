@@ -33,6 +33,9 @@ import {isNexusTitle} from './utils/utils';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
 
+const TITLE_VALIDATION_ERROR = 'Title cannot be empty';
+const YEAR_VALIDATION_ERROR = 'Release year cannot be empty';
+
 const emptyTerritory = {
     locale: null,
     availAnnounceDate: null,
@@ -84,7 +87,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {},
             externalIDs: null,
-            validationError: '',
+            validationErrors: [],
         };
     }
 
@@ -208,15 +211,37 @@ class TitleEdit extends Component {
         }));
     };
 
-    handleOnChangeEdit = e => {
-        const editedForm = {
-            ...this.state.editedForm,
-            [e.target.name]: e.target.value,
-        };
+    setValidationError = (msg, action) => {
+        if (action === 'push') {
+            if (this.state.validationErrors.findIndex(item => item === msg) === -1)
+                this.setState({validationErrors: [...this.state.validationErrors, msg]});
+        } else if (action === 'pop' && this.state.validationErrors.findIndex(item => item === msg) >= 0) {
+            let errorArray = this.state.validationErrors.filter(item => item !== msg);
+            this.setState({validationErrors: errorArray});
+        }
+    };
 
-        this.setState({
-            editedForm: editedForm,
-        });
+    handleOnChangeEdit = e => {
+        if (e.target.name === 'title') {
+            if (e.target.value === '') this.setValidationError(TITLE_VALIDATION_ERROR, 'push');
+            else {
+                this.setValidationError(TITLE_VALIDATION_ERROR, 'pop');
+            }
+        } else if (e.target.name === 'releaseYear') {
+            if (e.target.value === '') this.setValidationError(YEAR_VALIDATION_ERROR, 'push');
+            else {
+                this.setValidationError(YEAR_VALIDATION_ERROR, 'pop');
+            }
+        } else {
+            const editedForm = {
+                ...this.state.editedForm,
+                [e.target.name]: e.target.value,
+            };
+
+            this.setState({
+                editedForm: editedForm,
+            });
+        }
     };
 
     handleCategoryOnChangeEdit = category => {
@@ -433,6 +458,7 @@ class TitleEdit extends Component {
                 ratings={this.state.editedForm.ratings}
                 handleOnChangeEdit={this.handleOnChangeEdit}
                 handleCategoryOnChangeEdit={this.handleCategoryOnChangeEdit}
+                setValidationError={this.setValidationError}
             />
         );
     };
@@ -1226,8 +1252,6 @@ class TitleEdit extends Component {
         this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
     };
 
-    setValidationError = msg => this.setState({validationError: msg});
-
     render() {
         const {titleForm, territory, editorialMetadata} = this.state;
         const {id = ''} = titleForm || {};
@@ -1240,9 +1264,11 @@ class TitleEdit extends Component {
                                 {this.state.isEditMode ? (
                                     <>
                                         <div>
-                                            {this.state.isEditMode && this.state.validationError && (
+                                            {this.state.isEditMode && this.state.validationErrors.length > 0 && (
                                                 <SectionMessage appearance="error" title="Save action is restricted">
-                                                    <p>{this.state.validationError}</p>
+                                                    {this.state.validationErrors.map(item => (
+                                                        <p key={item}>{item}</p>
+                                                    ))}
                                                 </SectionMessage>
                                             )}
                                         </div>
@@ -1252,7 +1278,7 @@ class TitleEdit extends Component {
                                             isLoading={this.state.isLoading}
                                             onClick={this.handleOnSave}
                                             appearance="primary"
-                                            isDisabled={this.state.validationError}
+                                            isDisabled={this.state.validationErrors.length}
                                         >
                                             Save
                                         </Button>
