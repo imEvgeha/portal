@@ -100,16 +100,18 @@ const ServicingOrdersView = () => {
         setIsRefreshData(false);
     };
 
+    const options = [NO_CUSTOMER_FILTER, {label: 'MGM', value: 'MGM'}, {label: 'WB', value: 'WB'}];
+
     return (
         <div className="nexus-c-servicing-orders">
-            <span className="nexus-c-servicing-orders__title">{SERVICING_ORDERS_TTL}</span>
+            <h1>{SERVICING_ORDERS_TTL}</h1>
 
             <div className="nexus-c-servicing-orders__external-filters">
                 <div className="nexus-c-servicing-orders__customer-filter">
                     <label htmlFor="customer">{CUSTOMER_LBL}</label>
                     <Select
                         name="customer"
-                        options={[NO_CUSTOMER_FILTER, {label: 'MGM', value: 'MGM'}, {label: 'WB', value: 'WB'}]}
+                        options={options}
                         className="nexus-c-servicing-orders__customer-filter--select"
                         placeholder={NO_CUSTOMER_FILTER.label}
                         value={customerFilter}
