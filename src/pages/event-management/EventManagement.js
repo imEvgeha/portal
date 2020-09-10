@@ -35,8 +35,17 @@ const EventManagement = props => {
     };
 
     const clearFilters = () => {
-        gridApi && gridApi.setFilterModel(null);
-        setSearchParams('filter', null);
+        if (gridApi) {
+            gridApi.setFilterModel(null);
+            gridApi.destroyFilter('createdTimeStamp');
+            gridApi.destroyFilter('postedTimeStamp');
+            gridApi.setFilterModel({
+                createdTimeStamp: {},
+                postedTimeStamp: {},
+            });
+            gridApi.onFilterChanged();
+            setSearchParams('filter', null);
+        }
     };
 
     const onSortChanged = ({api}) => {

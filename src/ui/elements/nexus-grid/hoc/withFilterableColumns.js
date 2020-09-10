@@ -287,7 +287,7 @@ const withFilterableColumns = ({
                                     ...(audioType && {audioType}),
                                 };
                                 columnDef.filterParams = {
-                                    // TODO; check is this neccessary
+                                    // TODO; check is this necessary
                                     ...DEFAULT_FILTER_PARAMS,
                                     initialFilters: audioLanguageInitialFilters,
                                     schema,
@@ -306,7 +306,7 @@ const withFilterableColumns = ({
                                 columnDef.floatingFilterComponent = 'customDateFloatingFilter';
                                 columnDef.filter = CUSTOM_DATE;
                                 columnDef.filterParams = {
-                                    // TODO; check is this neccessary
+                                    // TODO; check is this necessary
                                     ...DEFAULT_FILTER_PARAMS,
                                     filterOptions: ['inRange'],
                                     //

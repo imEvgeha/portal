@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import {DATEPICKER_LABELS} from '../../constants';
@@ -17,11 +18,19 @@ export class CustomDateFilter extends React.Component {
     }
 
     onChange = dateRange => {
-        if (!dateRange) { return; }
-        const {filterChangedCallback} = this.props;
+        if (!dateRange) {
+            return;
+        }
+
+        const {
+            colDef: {field},
+            customDateFilterParamSuffixes: [customStartSuffix = 'From', customEndSuffix = 'To'],
+            filterChangedCallback,
+        } = this.props;
         const {dates = {}} = this.state;
         const {startDate, endDate} = dates;
         const keys = Object.keys(dateRange);
+
         if (keys.includes('startDate') && dateRange.startDate !== startDate) {
             const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : true;
             this.setState(
@@ -44,6 +53,16 @@ export class CustomDateFilter extends React.Component {
                 },
                 () => (!dateRange.endDate || needUpdate) && filterChangedCallback()
             );
+        } else if (keys.includes('type') && dateRange.type === 'range' && keys.includes('filter')) {
+            this.setState(
+                {
+                    dates: {
+                        startDate: get(dateRange, ['filter', `${field}${customStartSuffix}`]),
+                        endDate: get(dateRange, ['filter', `${field}${customEndSuffix}`]),
+                    },
+                },
+                filterChangedCallback
+            );
         }
     };
 
@@ -54,7 +73,9 @@ export class CustomDateFilter extends React.Component {
     getModel = () => {
         const {dates = {}} = this.state;
         const {startDate, endDate} = dates;
-        const {colDef: {field}} = this.props;
+        const {
+            colDef: {field},
+        } = this.props;
         const fieldVariable = field;
         const {
             customDateFilterParamSuffixes: [customStartSuffix, customEndSuffix],
