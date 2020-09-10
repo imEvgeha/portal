@@ -199,8 +199,8 @@ const RightToMatchView = ({
         columnDefinitions.forEach(def => {
             def.cellClass = params => {
                 const key = params.colDef.field;
-                let areEqual = true;
-                let areEq = true;
+                let areTerritoriesEqual = true;
+                let areFormatsEqual = true;
                 switch (key) {
                     case START:
                     case END:
@@ -216,10 +216,10 @@ const RightToMatchView = ({
                         }
                         pendingRightData[key].forEach(territory => {
                             if (!params.value.find(country => country.country === territory.country)) {
-                                areEqual = false;
+                                areTerritoriesEqual = false;
                             }
                         });
-                        if (!areEqual) {
+                        if (!areTerritoriesEqual) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
                         break;
@@ -231,10 +231,10 @@ const RightToMatchView = ({
                             if (
                                 !params.value.find(val => val === (typeof format === 'string' ? format : format.value))
                             ) {
-                                areEq = false;
+                                areFormatsEqual = false;
                             }
                         });
-                        if (!areEq) {
+                        if (!areFormatsEqual) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
                         break;
