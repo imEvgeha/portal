@@ -26,11 +26,7 @@ exports[`IngestConfirmation should match snapshot 1`] = `
     </p>
     <p>
       Catalog: 
-      Full Catalog
-    </p>
-    <p>
-      Licensed: 
-      Yes
+      No
     </p>
   </div>
   <div
