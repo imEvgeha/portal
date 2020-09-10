@@ -100,7 +100,8 @@ const InputForm = ({
                 licensor={licensor.label}
                 serviceRegion={serviceRegion.value}
                 licensee={selectedLicensees.map(licensee => licensee.value).join(', ')}
-                catalog={catalogType.value}
+                isCatalog={isShowingCatalogType}
+                catalogType={catalogType.value}
                 isLicenced={isLicensed}
                 onActionCancel={closeModalCallback}
                 onActionConfirm={uploadHandler}
@@ -114,6 +115,7 @@ const InputForm = ({
             setCatalogType('');
             setIsLicensed(false);
             setSelectedLicensees([]);
+            setLicensor('');
             setIsShowingCatalogType(!isShowingCatalogType);
         } else {
             setIsShowingCatalogType(!isShowingCatalogType);
@@ -124,7 +126,6 @@ const InputForm = ({
         closeModalCallback();
         const params = {
             serviceRegion: serviceRegion.value,
-            licensed: isLicensed,
             file,
             closeModal: closeModalCallback,
         };
@@ -132,10 +133,16 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
+            params.licensed = isLicensed;
         }
 
         if (get(ingestData, 'externalId', '')) {
             params.externalId = ingestData.externalId;
+        }
+
+        if (template === STUDIO || isShowingCatalogType) {
+            params.licensor = get(licensor, 'value.value', '');
+            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
 
         if (template !== STUDIO) {
@@ -143,8 +150,6 @@ const InputForm = ({
             params.internalTemplateType = template;
         } else {
             params.internal = false;
-            params.licensor = get(licensor, 'value.value', '');
-            params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
         uploadIngest(params);
     };
@@ -174,9 +179,6 @@ const InputForm = ({
 
     const isUploadEnabled = () => {
         if (isShowingCatalogType) {
-            if (template === INTERNATIONAL || template === USMASTER) {
-                return serviceRegion && catalogType && selectedLicensees.length;
-            }
             return serviceRegion && licensor && catalogType && selectedLicensees.length;
         }
         if (template === INTERNATIONAL || template === USMASTER) {
@@ -213,8 +215,8 @@ const InputForm = ({
                         onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={template !== STUDIO || ingestLicensor}
-                        placeholder={template !== STUDIO ? 'N/A' : 'Select'}
+                        isDisabled={(template !== STUDIO && !isShowingCatalogType) || ingestLicensor}
+                        placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
                 </div>

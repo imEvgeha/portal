@@ -7,6 +7,7 @@ import {Row, Col, Container} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import {DATE_FORMAT, COUNTRY} from '../../../../../constants/metadata/constant-variables';
 import NexusDatePicker from '../../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import {Can} from "../../../../../../../ability";
 
 class TerritoryMetadataEditMode extends Component {
     getValidDate = (date) => {
@@ -21,14 +22,16 @@ class TerritoryMetadataEditMode extends Component {
             <div id="territoryMetadataEdit">
                 <Container>
                     <AvForm onValidSubmit={this.props.validSubmit}>
-                        <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
-                            <span
-                                style={{color: 'red', cursor: 'pointer'}}
-                                onClick={()=>this.props.handleDeleteTerritoryMetaData(this.props.data.id)}
-                            >
-                                Delete Territorial Metadata
-                            </span>
-                        </Row>
+                        <Can I="delete" a="Metadata">
+                            <Row style={{padding: '0 30px', marginBottom: '24px', display: 'flex', justifyContent: 'flex-end'}}>
+                                <span
+                                    style={{color: 'red', cursor: 'pointer'}}
+                                    onClick={()=>this.props.handleDeleteTerritoryMetaData(this.props.data.id)}
+                                >
+                                    Delete Territorial Metadata
+                                </span>
+                            </Row>
+                        </Can>
                         <Row style={{ padding: '15px' }}>
                             <Col>
                                 <span>Locale</span> <br />
