@@ -56,6 +56,8 @@ export const SelectedRightsActions = ({
     setSelectedRights,
     setPrePlanRepoRights,
     activeTab,
+    singleRightMatch,
+    setSingleRightMatch,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -131,37 +133,6 @@ export const SelectedRightsActions = ({
         return selectedRights.every(({coreTitleId}) => !!coreTitleId);
     };
 
-    // Check the criteria for enabling specific actions
-    useEffect(() => {
-        if (selectedRights.length) {
-            // Bulk match criteria check
-            setIsMatchable(haveEmptyCoreTitleIdsSameContentType() && checkSourceRightIds());
-
-            // Bulk unmatch criteria check
-            setIsUnmatchable(haveCoreTitleIds() && checkSourceRightIds());
-
-            // Bonus rights create criteria
-            setIsBonusRightCreatable(checkBonusRightCreateCriteria());
-
-            // PrePlan criteria
-            setIsPreplanEligible(checkPrePlanEligibilityCriteria());
-
-            // Deletion criteria
-            setIsDeletable(noRightsWithDeletedStatus());
-
-            // Set status deleted/merged criteria
-            setStatusDeleteMerged(checkStatusDeleteMerged());
-        } else {
-            setIsMatchable(false);
-            setIsUnmatchable(false);
-            setIsBonusRightCreatable(false);
-            setIsPreplanEligible(false);
-            setIsDeletable(false);
-            setStatusDeleteMerged(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedRights]);
-
     const clickHandler = () => setMenuOpened(!menuOpened);
 
     const removeMenu = e => {
@@ -176,6 +147,7 @@ export const SelectedRightsActions = ({
     };
 
     const closeDrawer = () => {
+        singleRightMatch.length && setSingleRightMatch([]);
         setDrawerOpen(false);
         setIsBonusRight(false);
     };
@@ -298,6 +270,44 @@ export const SelectedRightsActions = ({
         setDrawerOpen(true);
     };
 
+    // Check the criteria for enabling specific actions
+    useEffect(() => {
+        if (selectedRights.length) {
+            // Bulk match criteria check
+            setIsMatchable(haveEmptyCoreTitleIdsSameContentType() && checkSourceRightIds());
+
+            // Bulk unmatch criteria check
+            setIsUnmatchable(haveCoreTitleIds() && checkSourceRightIds());
+
+            // Bonus rights create criteria
+            setIsBonusRightCreatable(checkBonusRightCreateCriteria());
+
+            // PrePlan criteria
+            setIsPreplanEligible(checkPrePlanEligibilityCriteria());
+
+            // Deletion criteria
+            setIsDeletable(noRightsWithDeletedStatus());
+
+            // Set status deleted/merged criteria
+            setStatusDeleteMerged(checkStatusDeleteMerged());
+        } else {
+            setIsMatchable(false);
+            setIsUnmatchable(false);
+            setIsBonusRightCreatable(false);
+            setIsPreplanEligible(false);
+            setIsDeletable(false);
+            setStatusDeleteMerged(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedRights]);
+
+    // single title match flow (from popover)
+    useEffect(() => {
+        if (singleRightMatch.length && !drawerOpen) {
+            openDrawer();
+        }
+    }, [singleRightMatch, openDrawer, drawerOpen]);
+
     return (
         <>
             <div className="nexus-c-selected-rights-actions" ref={node}>
@@ -402,7 +412,7 @@ export const SelectedRightsActions = ({
                 title={headerText}
             >
                 <BulkMatching
-                    data={selectedRights}
+                    data={singleRightMatch.length ? singleRightMatch : selectedRights}
                     closeDrawer={closeDrawer}
                     isBonusRight={isBonusRight}
                     setHeaderText={setHeaderText}
@@ -423,6 +433,8 @@ SelectedRightsActions.propTypes = {
     setPrePlanRepoRights: PropTypes.func.isRequired,
     activeTab: PropTypes.string.isRequired,
     gridApi: PropTypes.object,
+    singleRightMatch: PropTypes.array,
+    setSingleRightMatch: PropTypes.func,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -431,6 +443,8 @@ SelectedRightsActions.defaultProps = {
     removeToast: () => null,
     selectedRightGridApi: {},
     gridApi: {},
+    singleRightMatch: [],
+    setSingleRightMatch: () => null,
 };
 
 const mapDispatchToProps = dispatch => ({

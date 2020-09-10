@@ -1,14 +1,20 @@
 .nexus-c-tooltip-cell-renderer__tooltip {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  position: absolute;
-  top: 2rem;
-  height: 2rem;
-  padding: 5px 15px;
+    position: absolute;
+    top: 2rem;
+    height: 2rem;
+    padding: 5px 15px;
 
-  background: white;
-  border: 1px solid black;
-  border-radius: 3px;
+    background: white;
+    border: 1px solid black;
+    border-radius: 3px;
+
+    span {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
 }

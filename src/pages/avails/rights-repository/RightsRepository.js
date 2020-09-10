@@ -98,6 +98,7 @@ const RightsRepository = ({
     const [isPlanningTabRefreshed, setIsPlanningTabRefreshed] = useState(false);
     const [currentUserPrePlanRights, setCurrentUserPrePlanRights] = useState([]);
     const [currentUserSelectedRights, setCurrentUserSelectedRights] = useState([]);
+    const [singleRightMatch, setSingleRightMatch] = useState([]);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
@@ -237,9 +238,11 @@ const RightsRepository = ({
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({
         cellRendererFramework: TooltipCellRenderer,
-        cellRendererParams: {isTooltipEnabled: false},
+        cellRendererParams: {isTooltipEnabled: true, setSingleRightMatch},
         lockVisible: true,
+        cellStyle: {overflow: 'visible'},
     });
+
     const updatedColumnDefs = columnDefsWithRedirect.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
@@ -248,6 +251,7 @@ const RightsRepository = ({
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
     });
+
     const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
         ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
         : columnDefsWithRedirect;
@@ -436,6 +440,8 @@ const RightsRepository = ({
                 isPlanningTabRefreshed={isPlanningTabRefreshed}
                 setIsPlanningTabRefreshed={setIsPlanningTabRefreshed}
                 username={username}
+                singleRightMatch={singleRightMatch}
+                setSingleRightMatch={setSingleRightMatch}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
