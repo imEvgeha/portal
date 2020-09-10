@@ -81,3 +81,9 @@
     padding: 0;
 }
 
+/*Added for PORT-2907*/
+.nexus-c-right-to-match-view__grid-column {
+    &--highlighted {
+        background-color: rgba(map-get($colors, warning), 0.3);
+    }
+}
