@@ -5,6 +5,7 @@ exports[`BulkUnmatch should match snapshot 1`] = `
   value={null}
 >
   <BulkUnmatch
+    affectedRights={Array []}
     columnDefs={Array []}
     dispatch={[Function]}
     selectedRights={

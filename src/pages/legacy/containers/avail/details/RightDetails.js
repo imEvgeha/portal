@@ -41,6 +41,7 @@ import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG, CUSTOM_ERROR_HA
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {handleMatchingRightsAction} from '../availActions';
+import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
 import './RightDetails.scss';
 
 const mapStateToProps = state => {
@@ -388,7 +389,7 @@ class RightDetails extends React.Component {
             ingestHistoryAttachmentId,
             ingestHistoryAttachmentIds,
         } = this.state.right;
-        const updatedRight = {
+        let updatedRight = {
             ...flatRight,
             availHistoryId,
             availHistoryIds,
@@ -397,6 +398,19 @@ class RightDetails extends React.Component {
             [name]: value,
             ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
         };
+        if (name === 'availDates') {
+            updatedRight = {
+                ...updatedRight,
+                availStart: value.startDate,
+                availEnd: value.endDate,
+            };
+        } else {
+            updatedRight = {
+                ...updatedRight,
+                [name]: value,
+                ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
+            };
+        }
 
         store.dispatch(blockUI(true));
         rightsService
@@ -1776,6 +1790,10 @@ class RightDetails extends React.Component {
             highlighted,
             isTimestamp
         ) => {
+            if (name === 'availEnd') {
+                return;
+            }
+
             let ref;
 
             const {flatRight = {}, editedRight = {}} = this.state;
@@ -1789,7 +1807,59 @@ class RightDetails extends React.Component {
             };
 
             // Revert back to valid value in case of an error
-            const revertChanges = () => {
+            let revertChanges = () => {
+                this.setState(prevState => ({
+                    editedRight: {
+                        ...prevState.editedRight,
+                        availStart: prevState.flatRight.availStart,
+                        availEnd: prevState.flatRight.availEnd,
+                    },
+                }));
+            };
+            const valError = validate(value);
+            const error = priorityError || valError;
+
+            let props = {
+                isTimestamp,
+                isWithInlineEdit: true,
+                isRequired: required,
+                isReadOnly: name === 'updatedCatalogReceivedAt' ? false : !!sourceRightId || isReadOnly,
+                isClearable: !required,
+                isClearableOnly: name === 'updatedCatalogReceivedAt',
+            };
+
+            const rangeProps = {
+                ...props,
+                endDateTimePickerProps: {
+                    ...props,
+                    id: 'availEnd',
+                    defaultValue: editedRight.availEnd || flatRight.availEnd,
+                },
+                startDateTimePickerProps: {
+                    ...props,
+                    id: 'availStart',
+                    defaultValue: editedRight.availStart || flatRight.availStart,
+                },
+                isUsingTime: true,
+                labels: ['Avail Start:', 'Avail End:'],
+
+                onChangeAny: ({endDate, startDate}) => {
+                    this.setState(prevState => ({
+                        editedRight: {
+                            ...prevState.editedRight,
+                            availStart: startDate === undefined ? prevState.editedRight.availStart : startDate,
+                            availEnd: endDate === undefined ? prevState.editedRight.availEnd : endDate,
+                        },
+                    }));
+                },
+                onChange: value =>
+                    (!valError && this.handleEditableSubmit('availDates', value, revertChanges)) || revertChanges(),
+            };
+
+            if (name === 'availStart') {
+                return <NexusDateTimeWindowPicker {...rangeProps} />;
+            }
+            revertChanges = () => {
                 this.setState(prevState => ({
                     editedRight: {
                         ...prevState.editedRight,
@@ -1797,12 +1867,13 @@ class RightDetails extends React.Component {
                     },
                 }));
             };
-            const valError = validate(value);
-            const error = priorityError || valError;
-            const props = {
+            props = {
+                ...props,
                 id: displayName,
+                defaultValue: value,
+                error,
+                value: editedRight[name] !== undefined ? editedRight[name] : value,
                 label: displayName,
-
                 isLabelHidden: true, // TODO: Remove after RightDetails gets refactored/redesigned
                 onChange: date => {
                     // Keep a separate state for edited values
@@ -1812,15 +1883,6 @@ class RightDetails extends React.Component {
                 },
                 onConfirm: date =>
                     (!valError && this.handleEditableSubmit(name, date, revertChanges)) || revertChanges(),
-                defaultValue: value,
-                value: editedRight[name] !== undefined ? editedRight[name] : value,
-                error,
-                isRequired: required,
-                isReadOnly: name === 'updatedCatalogReceivedAt' ? false : !!sourceRightId || isReadOnly,
-                isTimestamp,
-                isWithInlineEdit: true,
-                isClearable: !required,
-                isClearableOnly: name === 'updatedCatalogReceivedAt',
             };
 
             const component = showTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;
