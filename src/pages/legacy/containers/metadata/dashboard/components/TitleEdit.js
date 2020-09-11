@@ -24,10 +24,13 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
+import PublishVzMovidaOld from './publish/PublishVzMovidaOld';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
+import {publisherService} from '../../service/PublisherService';
+import {SYNC} from './publish/PublishConstants';
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -110,7 +113,7 @@ class TitleEdit extends Component {
 
     loadExternalIds(titleId) {
         isNexusTitle(titleId) &&
-            titleService
+            publisherService
                 .getExternalIds(titleId)
                 .then(response => {
                     this.setState({
@@ -483,6 +486,32 @@ class TitleEdit extends Component {
             })
             .catch(() => {
                 console.error('Unable to load Title Data');
+                return false;
+            });
+    };
+
+    titleSync = (titleId, syncToVZ, syncToMovida) => {
+        return publisherService
+            .syncTitle(titleId, syncToVZ, syncToMovida)
+            .then(response => {
+                this.loadExternalIds(titleId);
+                return true;
+            })
+            .catch(() => {
+                console.error('Unable to Sync Title');
+                return false;
+            });
+    };
+
+    titlePublish = (titleId, syncToVZ, syncToMovida) => {
+        return publisherService
+            .registerTitle(titleId, syncToVZ, syncToMovida)
+            .then(response => {
+                this.loadExternalIds(titleId);
+                return true;
+            })
+            .catch(() => {
+                console.error('Unable to Sync Title');
                 return false;
             });
     };
@@ -1218,10 +1247,18 @@ class TitleEdit extends Component {
         });
     };
 
-    onSyncPublishClick = name => {
+    onSyncPublishClick = (name, buttonName) => {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
-        this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+        if (URL.isLocalOrDev()) {
+            if (buttonName === SYNC) {
+                this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
+            } else {
+                this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
+            }
+        } else {
+            this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+        }
     };
 
     render() {
@@ -1258,12 +1295,19 @@ class TitleEdit extends Component {
                                         <div className="nexus-c-title-edit__sync-container">
                                             {getRepositoryName(id) === TitleSystems.NEXUS && (
                                                 <>
-                                                    <PublishVzMovida
-                                                        coreTitle={titleForm}
-                                                        editorialMetadataList={editorialMetadata}
-                                                        territoryMetadataList={territory}
-                                                        onSyncPublishClick={this.onSyncPublishClick}
-                                                    />
+                                                    {URL.isLocalOrDev() ? (
+                                                        <PublishVzMovida
+                                                            onSyncPublishClick={this.onSyncPublishClick}
+                                                            externalIDs={this.state.externalIDs}
+                                                        />
+                                                    ) : (
+                                                        <PublishVzMovidaOld
+                                                            coreTitle={titleForm}
+                                                            editorialMetadataList={editorialMetadata}
+                                                            territoryMetadataList={territory}
+                                                            onSyncPublishClick={this.onSyncPublishClick}
+                                                        />
+                                                    )}
                                                     <Can I="update" a="Metadata">
                                                         <Button
                                                             className="float-right"
