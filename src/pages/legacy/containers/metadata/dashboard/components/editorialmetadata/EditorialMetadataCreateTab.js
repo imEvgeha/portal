@@ -5,6 +5,7 @@ import {Col, Label, Row} from 'reactstrap'; // ?
 import {AvField} from 'availity-reactstrap-validation'; // ?
 import Select from 'react-select';
 import {debounce} from 'lodash';
+import {AUTODECORATE_ERROR} from './Constants';
 import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
 import {resolutionFormat} from '../../../../../constants/resolutionFormat';
 import {EDITORIAL_METADATA_PREFIX} from '../../../../../constants/metadata/metadataComponent';
@@ -211,8 +212,8 @@ class EditorialMetadataCreateTab extends Component {
 
     raiseValidationError = () => {
         if (this.state.autoDecorate && !this.checkForAutoDecorateValidation()) {
-            this.props.setValidationError('Please fill all the required fields for auto-decorated metadata', 'push');
-        } else this.props.setValidationError('Please fill all the required fields for auto-decorated metadata', 'pop');
+            this.props.setValidationError(AUTODECORATE_ERROR, 'push');
+        } else this.props.setValidationError(AUTODECORATE_ERROR, 'pop');
     };
     render() {
         this.raiseValidationError();

@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import Select from 'react-select';
 import {debounce} from 'lodash';
 import {editorialMetadataService} from '../../../../../constants/metadata/editorialMetadataService';
+import {MASTER_RECORD_ERROR} from './Constants';
 import {resolutionFormat} from '../../../../../constants/resolutionFormat';
 import {
     EDITORIAL_METADATA_PREFIX,
@@ -208,12 +209,8 @@ class EditorialMetadataEditMode extends Component {
     raiseValidationError = (isMaster, fields) => {
         if (isMaster) {
             if (!this.checkForAutoDecorateValidation(fields))
-                this.props.setValidationError(
-                    'Please fill all the required fields for master editorial record',
-                    'push'
-                );
-            else
-                this.props.setValidationError('Please fill all the required fields for master editorial record', 'pop');
+                this.props.setValidationError(MASTER_RECORD_ERROR, 'push');
+            else this.props.setValidationError(MASTER_RECORD_ERROR, 'pop');
         }
     };
 
