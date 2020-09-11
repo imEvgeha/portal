@@ -175,6 +175,10 @@ const InputForm = ({
         const serviceRegionValue = selectedTemplate === USMASTER && {label: US, value: US};
         !get(ingestData, 'externalId', '') && setServiceRegion(serviceRegionValue);
         selectedTemplate !== STUDIO && setLicensor('');
+        setSelectedLicensees([]);
+        setIsShowingCatalogType(false);
+        setCatalogType('');
+        setIsLicensed(false);
     };
 
     const isUploadEnabled = () => {
