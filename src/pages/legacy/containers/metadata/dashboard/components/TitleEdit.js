@@ -4,7 +4,6 @@ import {get} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
-import SectionMessage from '@atlaskit/section-message';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -216,8 +215,8 @@ class TitleEdit extends Component {
         if (action === 'push' && !newErrorSet.has(msg)) {
             newErrorSet.add(msg);
             this.setState({validationErrors: newErrorSet});
-        } else if (action === 'pop' && newErrorSet.delete(msg)) {
-            this.setState({validationErrors: newErrorSet});
+        } else if (action === 'pop') {
+            if (newErrorSet.delete(msg)) this.setState({validationErrors: newErrorSet});
         }
     };
 
@@ -1263,15 +1262,6 @@ class TitleEdit extends Component {
                             <Col className="clearfix" style={{marginRight: '20px', marginBottom: '10px'}}>
                                 {this.state.isEditMode ? (
                                     <>
-                                        <div>
-                                            {this.state.isEditMode && this.state.validationErrors.size > 0 && (
-                                                <SectionMessage appearance="error" title="Save action is restricted">
-                                                    {Array.from(this.state.validationErrors).map(item => (
-                                                        <p key={item}>{item}</p>
-                                                    ))}
-                                                </SectionMessage>
-                                            )}
-                                        </div>
                                         <Button
                                             className="float-right"
                                             id="btnSave"
