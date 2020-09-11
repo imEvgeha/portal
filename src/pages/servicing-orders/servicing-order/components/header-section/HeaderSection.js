@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import classnames from 'classnames';
 import {Link} from 'react-router-dom';
 import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
 import FilterIcon from '../../../../../assets/filter.svg';
+import IconButton from '../../../../../ui/atlaskit/icon-button/IconButton';
 import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';
 import ServiceOrderFilter from '../filter-section/ServiceOrderFilter';
@@ -30,9 +32,13 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
         return filteredList;
     };
 
+    const panelHeaderClassNames = classnames('panel-header__title', {
+        'panel-header__title--open': showFilter
+    })
+    
     return (
         <div className="panel-header">
-            <div className="panel-header__title">
+            <div className={panelHeaderClassNames}>
                 <div className="panel-header__title--section">
                     <Link to={`/${SERVICING_ORDERS.toLowerCase()}`}>
                         <ArrowLeftIcon size="large" primaryColor={backArrowColor} />
@@ -40,7 +46,11 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
                     <span className="panel-header__title--text">Servicing Order</span>
                 </div>
                 <div className="panel-header__filter">
-                    <div onClick={toggleFilters}>{showFilter ? <FilterSolidIcon /> : <FilterIcon />}</div>
+                    <IconButton
+                        label={showFilter ? 'Hide Filter Section' : 'Show Filter Section'}
+                        onClick={toggleFilters}
+                        icon={showFilter ? FilterSolidIcon : FilterIcon}
+                    />
                 </div>
             </div>
             {showFilter && (
