@@ -41,6 +41,7 @@ import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG, CUSTOM_ERROR_HA
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {handleMatchingRightsAction} from '../availActions';
+import {createAliasValue} from '../util/ProcessSelectOptions';
 import './RightDetails.scss';
 
 const mapStateToProps = state => {
@@ -983,7 +984,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted, filterBy) => {
             let priorityError = null;
             if (error) {
                 priorityError = (
@@ -1009,27 +1010,13 @@ class RightDetails extends React.Component {
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
-
-            const onCancel = () => {
-                selectedVal = cloneDeep(value);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            if (filterBy) {
+                console.log(this.state.right);
+                const filterValue = get(this.state, `right.${filterBy}`, '');
+                options = options.filter(o => o[filterBy] === filterValue);
+                readOnly = readOnly || (filterBy && !filterValue);
+            }
+            options = createAliasValue(options);
 
             if (options.length > 0 && selectedVal) {
                 val = options.find(opt => opt.value === selectedVal);
@@ -1037,6 +1024,13 @@ class RightDetails extends React.Component {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
+
+            const onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
 
             const handleOptionsChange = option => {
                 ref.current.handleChange(option.value ? option.value : null);
@@ -1145,19 +1139,7 @@ class RightDetails extends React.Component {
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions
-                        .filter(rec => rec.value)
-                        .map(rec => {
-                            return {
-                                ...rec,
-                                label: rec.label || rec.value,
-                                aliasValue: rec.aliasId
-                                    ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                        ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                        : null
-                                    : null,
-                            };
-                        }),
+                    options: createAliasValue(filteredOptions),
                 },
             ];
 
@@ -1273,19 +1255,7 @@ class RightDetails extends React.Component {
                 currencyOptions = this.props.selectValues['pricing.priceCurrency'];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1444,19 +1414,7 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
 
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
@@ -1615,19 +1573,7 @@ class RightDetails extends React.Component {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1969,7 +1915,8 @@ class RightDetails extends React.Component {
                                         error,
                                         readOnly,
                                         required,
-                                        highlighted
+                                        highlighted,
+                                        mapping.filterBy
                                     )
                                 );
                                 break;
