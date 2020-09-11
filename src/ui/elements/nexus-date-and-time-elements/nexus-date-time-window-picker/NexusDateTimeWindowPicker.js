@@ -50,6 +50,11 @@ const NexusDateTimeWindowPicker = ({
         typeof defaultValue === 'string' && setIsSimulcast(isUtc(defaultValue));
     }, []);
 
+    useEffect(() => {
+        setStartDate(startDateTimePickerProps.defaultValue);
+        setEndDate(endDateTimePickerProps.defaultValue);
+    }, [startDateTimePickerProps.defaultValue, endDateTimePickerProps.defaultValue]);
+
     // When date changes, validate and trigger change
     useEffect(() => {
         validateStartDate(startDate);

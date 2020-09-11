@@ -5,7 +5,7 @@ import {getDomainName, prepareSortMatrixParamTitles, encodedSerialize} from '../
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 
-const getSyncQueryParams = (syncToVZ, syncToMovida) => {
+export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ || syncToMovida) {
         if (syncToVZ && syncToMovida) {
             return `${TitleSystems.VZ.toUpperCase()},${TitleSystems.MOVIDA.toUpperCase()}`;
@@ -92,8 +92,10 @@ export const titleService = {
     },
 
     createTitle: (title, syncToVZ, syncToMovida) => {
+        // TODO: Remove this when new publish API is ready
         const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
         const params = legacySystemNames ? {legacySystemNames} : {};
+
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
 
         return nexusFetch(url, {
@@ -242,10 +244,5 @@ export const titleService = {
         return nexusFetch(url, {
             method: 'post',
         });
-    },
-
-    getExternalIds: id => {
-        const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + `/getPublishInfo/${id}`;
-        return nexusFetch(url);
     },
 };
