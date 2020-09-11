@@ -213,9 +213,9 @@ class TitleEdit extends Component {
 
     setValidationError = (msg, action) => {
         let newErrorSet = new Set(this.state.validationErrors);
-        if (action === 'push') {
+        if (action === 'push' && !newErrorSet.has(msg)) {
             newErrorSet.add(msg);
-            this.state.validationErrors.size - newErrorSet.size !== 0 && this.setState({validationErrors: newErrorSet});
+            this.setState({validationErrors: newErrorSet});
         } else if (action === 'pop' && newErrorSet.delete(msg)) {
             this.setState({validationErrors: newErrorSet});
         }
@@ -1278,7 +1278,7 @@ class TitleEdit extends Component {
                                             isLoading={this.state.isLoading}
                                             onClick={this.handleOnSave}
                                             appearance="primary"
-                                            isDisabled={this.state.validationErrors.length}
+                                            isDisabled={this.state.validationErrors.size}
                                         >
                                             Save
                                         </Button>
