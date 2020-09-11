@@ -87,7 +87,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {},
             externalIDs: null,
-            validationErrors: [],
+            validationErrors: new Set(),
         };
     }
 
@@ -212,12 +212,12 @@ class TitleEdit extends Component {
     };
 
     setValidationError = (msg, action) => {
+        let newErrorSet = new Set(this.state.validationErrors);
         if (action === 'push') {
-            if (this.state.validationErrors.findIndex(item => item === msg) === -1)
-                this.setState({validationErrors: [...this.state.validationErrors, msg]});
-        } else if (action === 'pop' && this.state.validationErrors.findIndex(item => item === msg) >= 0) {
-            let errorArray = this.state.validationErrors.filter(item => item !== msg);
-            this.setState({validationErrors: errorArray});
+            newErrorSet.add(msg);
+            this.state.validationErrors.size - newErrorSet.size !== 0 && this.setState({validationErrors: newErrorSet});
+        } else if (action === 'pop' && newErrorSet.delete(msg)) {
+            this.setState({validationErrors: newErrorSet});
         }
     };
 
@@ -1264,9 +1264,9 @@ class TitleEdit extends Component {
                                 {this.state.isEditMode ? (
                                     <>
                                         <div>
-                                            {this.state.isEditMode && this.state.validationErrors.length > 0 && (
+                                            {this.state.isEditMode && this.state.validationErrors.size > 0 && (
                                                 <SectionMessage appearance="error" title="Save action is restricted">
-                                                    {this.state.validationErrors.map(item => (
+                                                    {Array.from(this.state.validationErrors).map(item => (
                                                         <p key={item}>{item}</p>
                                                     ))}
                                                 </SectionMessage>
