@@ -44,15 +44,13 @@ const NexusDateTimeWindowPicker = ({
     const [endDate, setEndDate] = useState(endDateTimePickerProps.defaultValue || '');
     const [endDateError, setEndDateError] = useState('');
 
-    // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
-    useEffect(() => {
-        const {defaultValue} = startDateTimePickerProps || {};
-        typeof defaultValue === 'string' && setIsSimulcast(isUtc(defaultValue));
-    }, []);
-
     useEffect(() => {
         setStartDate(startDateTimePickerProps.defaultValue);
         setEndDate(endDateTimePickerProps.defaultValue);
+
+        // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
+        typeof startDateTimePickerProps.defaultValue === 'string' &&
+            setIsSimulcast(isUtc(startDateTimePickerProps.defaultValue));
     }, [startDateTimePickerProps.defaultValue, endDateTimePickerProps.defaultValue]);
 
     // When date changes, validate and trigger change

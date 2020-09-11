@@ -395,14 +395,11 @@ class RightDetails extends React.Component {
             availHistoryIds,
             ingestHistoryAttachmentId,
             ingestHistoryAttachmentIds,
-            [name]: value,
-            ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
         };
-        if (name === 'availDates') {
+        if (name === 'dates') {
             updatedRight = {
                 ...updatedRight,
-                availStart: value.startDate,
-                availEnd: value.endDate,
+                ...value,
             };
         } else {
             updatedRight = {
@@ -1788,37 +1785,16 @@ class RightDetails extends React.Component {
             isReadOnly,
             required,
             highlighted,
-            isTimestamp
+            isTimestamp,
+            dateEnd
         ) => {
-            if (name === 'availEnd') {
+            if (dateEnd === 'endDate') {
+                //end date in date range
                 return;
             }
 
-            let ref;
-
+            let revertChanges;
             const {flatRight = {}, editedRight = {}} = this.state;
-            const validate = date => {
-                if (!date && required) {
-                    return 'Mandatory Field. Date cannot be empty';
-                }
-                const rangeError = rangeValidation(name, displayName, date, flatRight);
-                if (rangeError) return rangeError;
-                return this.extraValidation(name, displayName, date, flatRight);
-            };
-
-            // Revert back to valid value in case of an error
-            let revertChanges = () => {
-                this.setState(prevState => ({
-                    editedRight: {
-                        ...prevState.editedRight,
-                        availStart: prevState.flatRight.availStart,
-                        availEnd: prevState.flatRight.availEnd,
-                    },
-                }));
-            };
-            const valError = validate(value);
-            const error = priorityError || valError;
-
             let props = {
                 isTimestamp,
                 isWithInlineEdit: true,
@@ -1828,37 +1804,69 @@ class RightDetails extends React.Component {
                 isClearableOnly: name === 'updatedCatalogReceivedAt',
             };
 
-            const rangeProps = {
-                ...props,
-                endDateTimePickerProps: {
-                    ...props,
-                    id: 'availEnd',
-                    defaultValue: editedRight.availEnd || flatRight.availEnd,
-                },
-                startDateTimePickerProps: {
-                    ...props,
-                    id: 'availStart',
-                    defaultValue: editedRight.availStart || flatRight.availStart,
-                },
-                isUsingTime: true,
-                labels: ['Avail Start:', 'Avail End:'],
-
-                onChangeAny: ({endDate, startDate}) => {
+            if (dateEnd) {
+                // Revert back to valid value in case of an error
+                revertChanges = () => {
                     this.setState(prevState => ({
                         editedRight: {
                             ...prevState.editedRight,
-                            availStart: startDate === undefined ? prevState.editedRight.availStart : startDate,
-                            availEnd: endDate === undefined ? prevState.editedRight.availEnd : endDate,
+                            [name]: prevState.flatRight[name],
+                            [dateEnd]: prevState.flatRight[dateEnd],
                         },
                     }));
-                },
-                onChange: value =>
-                    (!valError && this.handleEditableSubmit('availDates', value, revertChanges)) || revertChanges(),
-            };
+                };
+                const rangeProps = {
+                    ...props,
+                    endDateTimePickerProps: {
+                        ...props,
+                        id: dateEnd,
+                        defaultValue: editedRight[dateEnd] || flatRight[dateEnd],
+                    },
+                    startDateTimePickerProps: {
+                        ...props,
+                        id: name,
+                        defaultValue: editedRight[name] || flatRight[name],
+                    },
+                    isUsingTime: true,
+                    labels: [`${displayName}:`, `${displayName.replace('Start', 'End')}:`],
 
-            if (name === 'availStart') {
+                    onChangeAny: ({endDate, startDate}) => {
+                        this.setState(prevState => ({
+                            editedRight: {
+                                ...prevState.editedRight,
+                                [name]: startDate === undefined ? prevState.editedRight[name] : startDate,
+                                [dateEnd]: endDate === undefined ? prevState.editedRight[dateEnd] : endDate,
+                            },
+                        }));
+                    },
+                    onChange: value =>
+                        (!valError &&
+                            this.handleEditableSubmit(
+                                'dates',
+                                {
+                                    [name]: value.startDate,
+                                    [dateEnd]: value.endDate,
+                                },
+                                revertChanges
+                            )) ||
+                        revertChanges(),
+                };
                 return <NexusDateTimeWindowPicker {...rangeProps} />;
             }
+
+            let ref;
+            const validate = date => {
+                if (!date && required) {
+                    return 'Mandatory Field. Date cannot be empty';
+                }
+                const rangeError = rangeValidation(name, displayName, date, flatRight);
+                if (rangeError) return rangeError;
+                return this.extraValidation(name, displayName, date, flatRight);
+            };
+
+            const valError = validate(value);
+            const error = priorityError || valError;
+
             revertChanges = () => {
                 this.setState(prevState => ({
                     editedRight: {
@@ -2121,7 +2129,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        false
+                                        false,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;
@@ -2136,7 +2145,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        true
+                                        true,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;
@@ -2151,7 +2161,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        false
+                                        false,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;
