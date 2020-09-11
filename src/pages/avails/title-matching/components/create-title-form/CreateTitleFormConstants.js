@@ -1,13 +1,25 @@
-import {ADVERTISEMENT, EPISODE, EVENT, MOVIE, SEASON, SERIES, SPORTS, SPECIAL} from '../../../../legacy/constants/metadata/contentType';
+import {
+    ADVERTISEMENT,
+    EPISODE,
+    EVENT,
+    MOVIE,
+    SEASON,
+    SERIES,
+    SPORTS,
+    SPECIAL,
+} from '../../../../legacy/constants/metadata/contentType';
 import MetadataConstants from '../../../../legacy/containers/metadata/MetadataConstants';
 
 const NEW_TITLE_MODAL_TITLE = 'Create New Title';
 const NEW_TITLE_TOAST_SUCCESS_MESSAGE = 'You successfully created a new title!';
+const NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE = 'You successfully published the new title!';
+const NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE = 'Title publishing failed!';
 const NEW_TITLE_LABEL_CANCEL = 'Cancel';
 const NEW_TITLE_LABEL_SUBMIT = 'Match & Create';
-const NEW_TITLE_ERROR_ALREADY_EXISTS = 'WARNING! Title already exists. Please select existing title or edit title details.';
+const NEW_TITLE_ERROR_ALREADY_EXISTS =
+    'WARNING! Title already exists. Please select existing title or edit title details.';
 const NEW_TITLE_ERROR_EMPTY_FIELDS = 'WARNING! Please add all required fields.';
-const getTitleFormSchema = currentValue => ([
+const getTitleFormSchema = currentValue => [
     {
         name: 'title',
         id: 'title',
@@ -63,34 +75,21 @@ const getTitleFormSchema = currentValue => ([
         requiredWhen: [
             {
                 field: 'contentType',
-                is: [
-                    SEASON.apiName,
-                    EPISODE.apiName,
-                ],
+                is: [SEASON.apiName, EPISODE.apiName],
             },
             {
                 field: 'seasonNumber',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
             {
                 field: 'episodeNumber',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
         ],
         visibleWhen: [
             {
                 field: 'contentType',
-                is: [
-                    SEASON.apiName,
-                    EPISODE.apiName,
-                    EVENT.apiName,
-                    SPORTS.apiName,
-                    SPECIAL.apiName,
-                ],
+                is: [SEASON.apiName, EPISODE.apiName, EVENT.apiName, SPORTS.apiName, SPECIAL.apiName],
             },
         ],
     },
@@ -106,34 +105,21 @@ const getTitleFormSchema = currentValue => ([
         requiredWhen: [
             {
                 field: 'contentType',
-                is: [
-                    SEASON.apiName,
-                    EPISODE.apiName,
-                ],
+                is: [SEASON.apiName, EPISODE.apiName],
             },
             {
                 field: 'seriesTitleName',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
             {
                 field: 'episodeNumber',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
         ],
         visibleWhen: [
             {
                 field: 'contentType',
-                is: [
-                    SEASON.apiName,
-                    EPISODE.apiName,
-                    EVENT.apiName,
-                    SPORTS.apiName,
-                    SPECIAL.apiName,
-                ],
+                is: [SEASON.apiName, EPISODE.apiName, EVENT.apiName, SPORTS.apiName, SPECIAL.apiName],
             },
         ],
         validWhen: {
@@ -159,32 +145,21 @@ const getTitleFormSchema = currentValue => ([
         requiredWhen: [
             {
                 field: 'contentType',
-                is: [
-                    EPISODE.apiName,
-                ],
+                is: [EPISODE.apiName],
             },
             {
                 field: 'seriesTitleName',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
             {
                 field: 'seasonNumber',
-                isNot: [
-                    '',
-                ],
+                isNot: [''],
             },
         ],
         visibleWhen: [
             {
                 field: 'contentType',
-                is: [
-                    EPISODE.apiName,
-                    EVENT.apiName,
-                    SPORTS.apiName,
-                    SPECIAL.apiName,
-                ],
+                is: [EPISODE.apiName, EVENT.apiName, SPORTS.apiName, SPECIAL.apiName],
             },
         ],
         validWhen: {
@@ -210,17 +185,13 @@ const getTitleFormSchema = currentValue => ([
         requiredWhen: [
             {
                 field: 'contentType',
-                isNot: [
-                    SERIES.apiName,
-                ],
+                isNot: [SERIES.apiName],
             },
         ],
         visibleWhen: [
             {
                 field: 'contentType',
-                isNot: [
-                    SEASON.apiName,
-                ],
+                isNot: [SEASON.apiName],
             },
         ],
         validWhen: {
@@ -234,9 +205,11 @@ const getTitleFormSchema = currentValue => ([
             },
         },
     },
-]);
+];
 export default {
     NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+    NEW_TITLE_TOAST_SUCCESS_PUBLISHING_MESSAGE,
+    NEW_TITLE_TOAST_ERROR_PUBLISHING_MESSAGE,
     NEW_TITLE_MODAL_TITLE,
     NEW_TITLE_LABEL_CANCEL,
     NEW_TITLE_LABEL_SUBMIT,
