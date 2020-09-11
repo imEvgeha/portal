@@ -3,14 +3,19 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import _ from 'lodash';
-import Field from './Field';
+import NexusField from './NexusField';
 
-const Form = ({fields, data, onSubmit}) => (
+const NexusForm = ({fields, data, onSubmit}) => (
     <AKForm onSubmit={onSubmit}>
         {({formProps, dirty, submitting}) => (
             <form {...formProps}>
                 {Object.keys(fields).map(key => (
-                    <Field key={key} name={key} defaultValue={_.get(data, fields[key].path)} {...fields[key]} />
+                    <NexusField
+                        key={key}
+                        name={key}
+                        defaultValue={_.get(data, fields[key].path) || fields[key].defaultValue}
+                        {...fields[key]}
+                    />
                 ))}
                 <Button type="submit" appearance="primary" isDisabled={!dirty || submitting}>
                     Submit
@@ -20,14 +25,15 @@ const Form = ({fields, data, onSubmit}) => (
     </AKForm>
 );
 
-Form.propTypes = {
+NexusForm.propTypes = {
     fields: PropTypes.object.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object,
     onSubmit: PropTypes.func,
 };
 
-Form.defaultProps = {
+NexusForm.defaultProps = {
+    data: {},
     onSubmit: undefined,
 };
 
-export default Field;
+export default NexusForm;

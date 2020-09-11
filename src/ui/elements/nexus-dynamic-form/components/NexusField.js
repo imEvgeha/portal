@@ -4,7 +4,7 @@ import {DatePicker, TimePicker, DateTimePicker} from '@atlaskit/datetime-picker'
 import {Field as AKField, ErrorMessage} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 
-const Field = ({...props}) => {
+const NexusField = ({...props}) => {
     const renderField = (fieldProps, valid, error) => {
         switch (props.type) {
             case 'string':
@@ -32,8 +32,8 @@ const Field = ({...props}) => {
     );
 };
 
-Field.propTypes = {
+NexusField.propTypes = {
     type: PropTypes.string.isRequired,
 };
 
-export default Field;
+export default NexusField;

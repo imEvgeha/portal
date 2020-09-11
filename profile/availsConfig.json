@@ -1,0 +1,25 @@
+{
+    "rightId": {
+        "label": "Right ID",
+        "type": "string",
+        "isDisabled": true,
+        "path": "rightId"
+    },
+    "title": {
+        "label": "Title",
+        "type": "string",
+        "tooltipMessage": "Required when coreTitleId exists",
+        "isRequired": true,
+        "path": "title",
+        "dependencies": {
+            "view": "edit",
+            "type": "readOnly",
+            "field": "coreTitleId"
+        }
+    },
+    "ratingSystem": {
+        "label": "Rating System",
+        "type": "string",
+        "path": "rating.ratingSystem"
+    }
+}
