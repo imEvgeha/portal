@@ -216,19 +216,23 @@ class TitleEdit extends Component {
             newErrorSet.add(msg);
             this.setState({validationErrors: newErrorSet});
         } else if (action === 'pop') {
-            if (newErrorSet.delete(msg)) this.setState({validationErrors: newErrorSet});
+            if (newErrorSet.delete(msg)) {
+                this.setState({validationErrors: newErrorSet});
+            }
         }
     };
 
     handleOnChangeEdit = e => {
         if (e.target.name === 'title') {
-            if (e.target.value === '') this.setValidationError(TITLE_VALIDATION_ERROR, 'push');
-            else {
+            if (e.target.value === '') {
+                this.setValidationError(TITLE_VALIDATION_ERROR, 'push');
+            } else {
                 this.setValidationError(TITLE_VALIDATION_ERROR, 'pop');
             }
         } else if (e.target.name === 'releaseYear') {
-            if (e.target.value === '') this.setValidationError(YEAR_VALIDATION_ERROR, 'push');
-            else {
+            if (e.target.value === '') {
+                this.setValidationError(YEAR_VALIDATION_ERROR, 'push');
+            } else {
                 this.setValidationError(YEAR_VALIDATION_ERROR, 'pop');
             }
         } else {
