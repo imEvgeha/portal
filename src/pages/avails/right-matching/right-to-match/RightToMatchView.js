@@ -215,6 +215,7 @@ const RightToMatchView = ({
                         }
                         break;
                     case TERRITORY:
+                        if (params.colDef.colId === 'selected') return;
                         if (pendingRightData[key].length !== params.value.length) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
