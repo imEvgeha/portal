@@ -41,6 +41,8 @@ import {NoteError, NoteMerged, NotePending, PLATFORM_INFORM_MSG, CUSTOM_ERROR_HA
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {handleMatchingRightsAction} from '../availActions';
+import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
+import {createAliasValue} from '../util/ProcessSelectOptions';
 import './RightDetails.scss';
 
 const mapStateToProps = state => {
@@ -388,15 +390,25 @@ class RightDetails extends React.Component {
             ingestHistoryAttachmentId,
             ingestHistoryAttachmentIds,
         } = this.state.right;
-        const updatedRight = {
+        let updatedRight = {
             ...flatRight,
             availHistoryId,
             availHistoryIds,
             ingestHistoryAttachmentId,
             ingestHistoryAttachmentIds,
-            [name]: value,
-            ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
         };
+        if (name === 'dates') {
+            updatedRight = {
+                ...updatedRight,
+                ...value,
+            };
+        } else {
+            updatedRight = {
+                ...updatedRight,
+                [name]: value,
+                ...(name === 'updatedCatalogReceivedAt' && value === null && {updatedCatalogReceived: false}),
+            };
+        }
 
         store.dispatch(blockUI(true));
         rightsService
@@ -983,7 +995,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
+        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted, filterBy) => {
             let priorityError = null;
             if (error) {
                 priorityError = (
@@ -1009,27 +1021,13 @@ class RightDetails extends React.Component {
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
-
-            const onCancel = () => {
-                selectedVal = cloneDeep(value);
-                setTimeout(() => {
-                    this.setState({});
-                }, 1);
-            };
-
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            if (filterBy) {
+                console.log(this.state.right);
+                const filterValue = get(this.state, `right.${filterBy}`, '');
+                options = options.filter(o => o[filterBy] === filterValue);
+                readOnly = readOnly || (filterBy && !filterValue);
+            }
+            options = createAliasValue(options);
 
             if (options.length > 0 && selectedVal) {
                 val = options.find(opt => opt.value === selectedVal);
@@ -1037,6 +1035,13 @@ class RightDetails extends React.Component {
                     options.unshift({value: '', label: value ? 'Select...' : ''});
                 }
             }
+
+            const onCancel = () => {
+                selectedVal = cloneDeep(value);
+                setTimeout(() => {
+                    this.setState({});
+                }, 1);
+            };
 
             const handleOptionsChange = option => {
                 ref.current.handleChange(option.value ? option.value : null);
@@ -1145,19 +1150,7 @@ class RightDetails extends React.Component {
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions
-                        .filter(rec => rec.value)
-                        .map(rec => {
-                            return {
-                                ...rec,
-                                label: rec.label || rec.value,
-                                aliasValue: rec.aliasId
-                                    ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                        ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                        : null
-                                    : null,
-                            };
-                        }),
+                    options: createAliasValue(filteredOptions),
                 },
             ];
 
@@ -1273,19 +1266,7 @@ class RightDetails extends React.Component {
                 currencyOptions = this.props.selectValues['pricing.priceCurrency'];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1444,19 +1425,7 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
 
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
@@ -1615,19 +1584,7 @@ class RightDetails extends React.Component {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
             const onCancel = () => {
                 selectedVal = cloneDeep(value);
                 setTimeout(() => {
@@ -1774,11 +1731,76 @@ class RightDetails extends React.Component {
             isReadOnly,
             required,
             highlighted,
-            isTimestamp
+            isTimestamp,
+            dateEnd
         ) => {
-            let ref;
+            if (dateEnd === 'endDate') {
+                //end date in date range
+                return;
+            }
 
+            let revertChanges;
             const {flatRight = {}, editedRight = {}} = this.state;
+            let props = {
+                isTimestamp,
+                isWithInlineEdit: true,
+                isRequired: required,
+                isReadOnly: name === 'updatedCatalogReceivedAt' ? false : !!sourceRightId || isReadOnly,
+                isClearable: !required,
+                isClearableOnly: name === 'updatedCatalogReceivedAt',
+            };
+
+            if (dateEnd) {
+                // Revert back to valid value in case of an error
+                revertChanges = () => {
+                    this.setState(prevState => ({
+                        editedRight: {
+                            ...prevState.editedRight,
+                            [name]: prevState.flatRight[name],
+                            [dateEnd]: prevState.flatRight[dateEnd],
+                        },
+                    }));
+                };
+                const rangeProps = {
+                    ...props,
+                    endDateTimePickerProps: {
+                        ...props,
+                        id: dateEnd,
+                        defaultValue: editedRight[dateEnd] || flatRight[dateEnd],
+                    },
+                    startDateTimePickerProps: {
+                        ...props,
+                        id: name,
+                        defaultValue: editedRight[name] || flatRight[name],
+                    },
+                    isUsingTime: true,
+                    labels: [`${displayName}:`, `${displayName.replace('Start', 'End')}:`],
+
+                    onChangeAny: ({endDate, startDate}) => {
+                        this.setState(prevState => ({
+                            editedRight: {
+                                ...prevState.editedRight,
+                                [name]: startDate === undefined ? prevState.editedRight[name] : startDate,
+                                [dateEnd]: endDate === undefined ? prevState.editedRight[dateEnd] : endDate,
+                            },
+                        }));
+                    },
+                    onChange: value =>
+                        (!valError &&
+                            this.handleEditableSubmit(
+                                'dates',
+                                {
+                                    [name]: value.startDate,
+                                    [dateEnd]: value.endDate,
+                                },
+                                revertChanges
+                            )) ||
+                        revertChanges(),
+                };
+                return <NexusDateTimeWindowPicker {...rangeProps} />;
+            }
+
+            let ref;
             const validate = date => {
                 if (!date && required) {
                     return 'Mandatory Field. Date cannot be empty';
@@ -1788,8 +1810,10 @@ class RightDetails extends React.Component {
                 return this.extraValidation(name, displayName, date, flatRight);
             };
 
-            // Revert back to valid value in case of an error
-            const revertChanges = () => {
+            const valError = validate(value);
+            const error = priorityError || valError;
+
+            revertChanges = () => {
                 this.setState(prevState => ({
                     editedRight: {
                         ...prevState.editedRight,
@@ -1797,12 +1821,13 @@ class RightDetails extends React.Component {
                     },
                 }));
             };
-            const valError = validate(value);
-            const error = priorityError || valError;
-            const props = {
+            props = {
+                ...props,
                 id: displayName,
+                defaultValue: value,
+                error,
+                value: editedRight[name] !== undefined ? editedRight[name] : value,
                 label: displayName,
-
                 isLabelHidden: true, // TODO: Remove after RightDetails gets refactored/redesigned
                 onChange: date => {
                     // Keep a separate state for edited values
@@ -1812,15 +1837,6 @@ class RightDetails extends React.Component {
                 },
                 onConfirm: date =>
                     (!valError && this.handleEditableSubmit(name, date, revertChanges)) || revertChanges(),
-                defaultValue: value,
-                value: editedRight[name] !== undefined ? editedRight[name] : value,
-                error,
-                isRequired: required,
-                isReadOnly: name === 'updatedCatalogReceivedAt' ? false : !!sourceRightId || isReadOnly,
-                isTimestamp,
-                isWithInlineEdit: true,
-                isClearable: !required,
-                isClearableOnly: name === 'updatedCatalogReceivedAt',
             };
 
             const component = showTime ? <NexusDateTimePicker {...props} /> : <NexusDatePicker {...props} />;
@@ -1969,7 +1985,8 @@ class RightDetails extends React.Component {
                                         error,
                                         readOnly,
                                         required,
-                                        highlighted
+                                        highlighted,
+                                        mapping.filterBy
                                     )
                                 );
                                 break;
@@ -2059,7 +2076,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        false
+                                        false,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;
@@ -2074,7 +2092,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        true
+                                        true,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;
@@ -2089,7 +2108,8 @@ class RightDetails extends React.Component {
                                         readOnly,
                                         required,
                                         highlighted,
-                                        false
+                                        false,
+                                        mapping.dateEnd
                                     )
                                 );
                                 break;

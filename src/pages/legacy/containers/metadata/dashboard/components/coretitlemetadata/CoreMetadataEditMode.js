@@ -621,7 +621,7 @@ CoreMetadataEditMode.propTypes = {
     areRatingFieldsRequired: PropTypes.bool,
     castAndCrewReorder: PropTypes.func,
     handleAddCharacterName: PropTypes.func,
-    externalIDs: PropTypes.object.isRequired,
+    externalIDs: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(CoreMetadataEditMode);
