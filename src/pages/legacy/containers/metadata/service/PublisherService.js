@@ -13,8 +13,8 @@ export const publisherService = {
     },
 
     registerTitle: (titleId, syncToVZ, syncToMovida) => {
-        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = {legacySystemNames, titleId};
+        const externalSystems = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = {externalSystems, titleId};
         const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/registerTitle`;
 
         return nexusFetch(url, {
