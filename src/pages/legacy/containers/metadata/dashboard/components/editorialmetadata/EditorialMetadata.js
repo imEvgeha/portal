@@ -115,15 +115,19 @@ const EditorialMetadata = ({
                 </Col>
                 <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
                     {URL.isLocalOrDev() && <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>}
-                    {isNexusTitle && titleHasMaster && !isEditMode && currentFolder.value === 'US English' && (
-                        <Button
-                            appearance="primary"
-                            style={{marginLeft: '15px'}}
-                            onClick={handleRegenerateDecoratedMetadata}
-                        >
-                            Regenerate Auto-Decorated Metadata
-                        </Button>
-                    )}
+                    {isNexusTitle &&
+                        titleHasMaster &&
+                        !isEditMode &&
+                        currentFolder &&
+                        currentFolder.value === 'US English' && (
+                            <Button
+                                appearance="primary"
+                                style={{marginLeft: '15px'}}
+                                onClick={handleRegenerateDecoratedMetadata}
+                            >
+                                Regenerate Auto-Decorated Metadata
+                            </Button>
+                        )}
                 </Col>
             </Row>
             <Row>
