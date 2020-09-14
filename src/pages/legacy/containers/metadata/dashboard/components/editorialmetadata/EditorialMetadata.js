@@ -53,6 +53,7 @@ const EditorialMetadata = ({
     cleanField,
     handleDeleteEditorialMetaData,
     handleRegenerateDecoratedMetadata,
+    setValidationError,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -115,15 +116,19 @@ const EditorialMetadata = ({
                 </Col>
                 <Col style={{display: 'flex', justifyContent: 'flex-end'}}>
                     {URL.isLocalOrDev() && <Button onClick={() => setIsDrawerOpen(true)}>Open drawer</Button>}
-                    {isNexusTitle && titleHasMaster && !isEditMode && currentFolder.value === 'US English' && (
-                        <Button
-                            appearance="primary"
-                            style={{marginLeft: '15px'}}
-                            onClick={handleRegenerateDecoratedMetadata}
-                        >
-                            Regenerate Auto-Decorated Metadata
-                        </Button>
-                    )}
+                    {isNexusTitle &&
+                        titleHasMaster &&
+                        !isEditMode &&
+                        currentFolder &&
+                        currentFolder.value === 'US English' && (
+                            <Button
+                                appearance="primary"
+                                style={{marginLeft: '15px'}}
+                                onClick={handleRegenerateDecoratedMetadata}
+                            >
+                                Regenerate Auto-Decorated Metadata
+                            </Button>
+                        )}
                 </Col>
             </Row>
             <Row>
@@ -239,6 +244,7 @@ const EditorialMetadata = ({
                                         titleContentType={titleContentType}
                                         cleanField={cleanField}
                                         titleHasMaster={titleHasMaster}
+                                        setValidationError={setValidationError}
                                     />
                                 </Col>
                             </Row>
@@ -263,6 +269,7 @@ const EditorialMetadata = ({
                                                     handleDelete={handleDeleteEditorialMetaData}
                                                     key={i}
                                                     data={item}
+                                                    setValidationError={setValidationError}
                                                 />
                                             </Col>
                                         </Row>

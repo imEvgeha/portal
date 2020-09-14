@@ -1,3 +1,5 @@
+@import '../../../styles/atlaskit/mixins';
+
 .servicing-order {
     display: flex;
     min-height: 100%;
@@ -7,18 +9,13 @@
         flex-direction: column;
         min-width: 390px;
         max-width: 400px;
-        border-right: 1px solid #dcdcdc;
-        padding: 24px 0 0;
+        border-right: 1px solid map-get($light-neutral-colors, light-neutral-2);
     }
 
     &__right {
-        padding: 24px 20px 0;
+        @include padding(6, 5, 0);
         width: 100%;
         background-color: white;
         overflow: auto;
     }
-}
-
-.servicing-order__tables {
-    margin-top: 20px;
 }

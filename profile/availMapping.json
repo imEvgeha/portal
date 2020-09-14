@@ -919,7 +919,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "filterBy": "rating.ratingSystem"
         },
         {
             "javaVariableName": "rating.ratingReason",

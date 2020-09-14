@@ -34,6 +34,7 @@ import RightsClashingModal from '../clashing-modal/RightsClashingModal';
 import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
+import {createAliasValue} from '../util/ProcessSelectOptions';
 
 const mapStateToProps = state => {
     return {
@@ -692,19 +693,7 @@ class RightCreate extends React.Component {
             const allOptions = [
                 {
                     label: 'Select All',
-                    options: filteredOptions
-                        .filter(rec => rec.value)
-                        .map(rec => {
-                            return {
-                                ...rec,
-                                label: rec.label || rec.value,
-                                aliasValue: rec.aliasId
-                                    ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                        ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                        : null
-                                    : null,
-                            };
-                        }),
+                    options: createAliasValue(filteredOptions),
                 },
             ];
 
@@ -764,26 +753,17 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, required, value) => {
+        const renderSelectField = (name, displayName, required, value, filterBy) => {
             let options = [];
             let val;
 
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
             }
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            if (filterBy) {
+                options = options.filter(o => this.right[filterBy] && o[filterBy] === this.right[filterBy].value);
+            }
+            options = createAliasValue(options);
             if (options.length > 0 && value) {
                 val = value;
                 if (!required) {
@@ -807,6 +787,7 @@ class RightCreate extends React.Component {
                         options={options}
                         value={val}
                         onChange={handleOptionsChange}
+                        isDisabled={filterBy && !this.right[filterBy]}
                     />
                     {this.mappingErrorMessage[name] && this.mappingErrorMessage[name].text && (
                         <small className="text-danger m-2">
@@ -855,19 +836,7 @@ class RightCreate extends React.Component {
                 priceCurrencyOptions = this.props.selectValues['pricing.priceCurrency'];
             }
 
-            priceTypeOptions = priceTypeOptions
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? priceTypeOptions.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? priceTypeOptions.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            priceTypeOptions = createAliasValue(priceTypeOptions);
 
             if (priceTypeOptions.length > 0 && value) {
                 val = value;
@@ -912,19 +881,7 @@ class RightCreate extends React.Component {
                 options = this.props.selectValues[name];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
 
             if (options.length > 0 && value) {
                 val = value;
@@ -973,19 +930,7 @@ class RightCreate extends React.Component {
                 audioTypeOptions = this.props.selectValues['languageAudioTypes.audioType'];
             }
 
-            options = options
-                .filter(rec => rec.value)
-                .map(rec => {
-                    return {
-                        ...rec,
-                        label: rec.label || rec.value,
-                        aliasValue: rec.aliasId
-                            ? options.filter(pair => rec.aliasId === pair.id).length === 1
-                                ? options.filter(pair => rec.aliasId === pair.id)[0].value
-                                : null
-                            : null,
-                    };
-                });
+            options = createAliasValue(options);
 
             if (options.length > 0 && value) {
                 val = value;
@@ -1093,7 +1038,13 @@ class RightCreate extends React.Component {
                                 break;
                             case 'select':
                                 renderFields.push(
-                                    renderSelectField(mapping.javaVariableName, mapping.displayName, required, value)
+                                    renderSelectField(
+                                        mapping.javaVariableName,
+                                        mapping.displayName,
+                                        required,
+                                        value,
+                                        mapping.filterBy
+                                    )
                                 );
                                 break;
                             case 'multiselect':

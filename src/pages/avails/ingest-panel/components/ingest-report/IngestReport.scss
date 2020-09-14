@@ -44,5 +44,8 @@
         font-size: 11px;
         color: #de350b;
         margin: 10px 0 0 5px;
+        /*Added for PORT-3116*/
+        width: 0;
+        min-width: 100%;
     }
 }

@@ -1,59 +1,49 @@
-@import '../../../../../styles/mixins.scss';
+@import '../../../../../styles/atlaskit/mixins.scss';
 .panel-header {
+    &__title {
+        @include margin(6, 0);
+        display: flex;
+        justify-content: space-around;
+        svg {
+            cursor: pointer;
+        }
 
-  h1 {
-    margin-top: 0;
-    @include addSpace('margin-left', 2);
-  }
+        &--text {
+            @include heading(h800);
+            @include margin(0, 0, 0, 2);
+            color: map-get($dark-neutral-colors, dark-neutral-5);
+        }
 
-  &__title {
-    display: flex;
-    justify-content: space-around;
-    svg {
-      cursor: pointer;
+        &--section {
+            display: flex;
+            align-items: center;
+        }
+
+        &--open {
+            @include margin(6, 0, 3, 0);
+        }
     }
 
-    &--text {
-      font-size: 29px;
-      color: #42526e;
-      margin-left: 5px;
+    &__list {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 100%;
+
+        & > :first-child {
+            border-top: 1px solid map-get($light-neutral-colors, light-neutral-2);
+        }
     }
 
-    &--section {
-      display: flex;
-      align-items: center;
+    &__filter {
+        display: flex;
+        align-items: center;
+
+        svg {
+            @include addSpacing(width, 5);
+            @include addSpacing(height, 5);
+            fill: map-get($dark-neutral-colors, dark-neutral-5);
+        }
     }
-  }
-
-  &__list {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    max-height: 100%;
-
-    & > :first-child {
-      border-top: 1px solid #dcdcdc;
-    }
-  }
-
-  &__filter {
-    display: flex;
-    align-items: center;
-
-    svg {
-      cursor: pointer;
-    }
-
-    &--pop {
-      margin-right: 20px;
-      fill: #a5adba;
-    }
-
-    svg {
-      width: 20px;
-      height: 20px;
-      fill: #42526e;
-    }
-  }
 }
