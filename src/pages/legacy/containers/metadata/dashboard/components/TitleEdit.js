@@ -215,7 +215,7 @@ class TitleEdit extends Component {
 
     setValidationError = (msg, action) => {
         let newErrorSet = new Set(this.state.validationErrors);
-        if (action === 'push' && !newErrorSet.has(msg)) {
+        if (action === 'push') {
             newErrorSet.add(msg);
             this.setState({validationErrors: newErrorSet});
         } else if (action === 'pop') {

@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import AppProviders from './AppProviders';
+import ErrorBoundary from './ErrorBoundary';
 import Router from './Router';
 import {createKeycloakInstance} from './auth/keycloak';
 import {setEnvConfiguration} from './config';
@@ -51,12 +52,12 @@ const App = () => (
         <Provider store={store}>
             <AppProviders persistor={persistor}>
                 <ConnectedRouter history={history}>
-                    <>
+                    <ErrorBoundary>
                         <Toast />
                         <NexusLayout>
                             <Router routes={routesWithTracking()} />
                         </NexusLayout>
-                    </>
+                    </ErrorBoundary>
                 </ConnectedRouter>
             </AppProviders>
         </Provider>
