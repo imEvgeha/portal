@@ -4,6 +4,46 @@ exports[`RightDetails should match snapshot 1`] = `
 <div
   className="nexus-c-right-details"
 >
+  <NexusForm
+    data={
+      Object {
+        "rating": Object {
+          "ratingReason": null,
+          "ratingSystem": "system X",
+          "ratingValue": null,
+        },
+        "rightId": "1234",
+        "title": "Some title",
+      }
+    }
+    fields={
+      Object {
+        "ratingSystem": Object {
+          "label": "Rating System",
+          "path": "rating.ratingSystem",
+          "type": "string",
+        },
+        "rightId": Object {
+          "isDisabled": true,
+          "label": "Right ID",
+          "path": "rightId",
+          "type": "string",
+        },
+        "title": Object {
+          "dependencies": Object {
+            "field": "coreTitleId",
+            "type": "readOnly",
+            "view": "edit",
+          },
+          "isRequired": true,
+          "label": "Title",
+          "path": "title",
+          "tooltipMessage": "Required when coreTitleId exists",
+          "type": "string",
+        },
+      }
+    }
+  />
   <NexusDynamicForm
     schema={
       Array [
