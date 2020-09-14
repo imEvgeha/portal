@@ -1,18 +1,16 @@
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import InlineEdit from '@atlaskit/inline-edit';
 import Select from '@atlaskit/select';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale, isUtc} from '../../../../util/date-time/DateTimeUtils';
+import {isUtc} from '../../../../util/date-time/DateTimeUtils';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
 import './NexusDateTimePicker.scss';
+import {getDisplayDate, getDateFormat} from '../utils';
 import {
     RELATIVE_TIME_LABEL,
     SIMULCAST_TIME_LABEL,
-    SIMULCAST_TIME_FORMAT,
-    TIMESTAMP_TIME_FORMAT,
-    RELATIVE_TIME_FORMAT,
     TIMESTAMP_DATE_FORMAT,
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT,
@@ -43,6 +41,8 @@ const NexusDateTimePicker = ({
     // Get locale provided by intl
     const intl = useIntl();
     const {locale = 'en-US'} = intl || {};
+    const dateFormat = getDateFormat(locale, isTimestamp, isSimulcast);
+    const displayDate = getDisplayDate(value, locale, isTimestamp, isSimulcast);
 
     useEffect(() => {
         date &&
@@ -60,21 +60,12 @@ const NexusDateTimePicker = ({
         setFirstRun(false);
     }, [date]);
 
-    const timeFormat = isTimestamp ? TIMESTAMP_TIME_FORMAT : isSimulcast ? SIMULCAST_TIME_FORMAT : RELATIVE_TIME_FORMAT;
-
-    // Create date format based on locale
-    const dateFormat = getDateFormatBasedOnLocale(locale).toUpperCase().concat(timeFormat);
-
-    const getDisplayDate = date => {
-        return date ? moment(date).utc(!isUtc(date)).format(dateFormat) : '';
-    };
-
     const DatePicker = isReadOnly => {
         return (
             <>
                 {!isLabelHidden && label && <div className="nexus-c-date-time-picker__label">{label}</div>}
                 {isReadOnly && !isViewModeDisabled ? (
-                    getDisplayDate(value)
+                    displayDate
                 ) : (
                     <div className="nexus-c-date-time-picker">
                         <div className="nexus-c-date-time-picker__date-time">
@@ -119,7 +110,7 @@ const NexusDateTimePicker = ({
                     readView={() => (
                         <div className="nexus-c-date-time-picker__read-view-container">
                             {moment(value).isValid() ? (
-                                `${getDisplayDate(value)}`
+                                displayDate
                             ) : (
                                 <div className="read-view-container__placeholder">{`Enter ${label}`}</div>
                             )}

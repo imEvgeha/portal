@@ -52,3 +52,37 @@
         margin-top: 0 !important;
     }
 }
+.nexus-c-date-time-window-picker {
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    &__start-date,
+    &__end-date {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        > div:not(.nexus-c-date-time-window-picker__label),
+        > form {
+            flex-grow: 1;
+        }
+    }
+    &__end-date {
+        margin-top: 30px;
+    }
+    &__label {
+        flex: 0 0 33.33333%;
+    }
+    &__read-view-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    form {
+        width: 100%;
+    }
+    .nexus-c-date-time-picker__type-select {
+        margin-left: 33.33333%;
+        margin-top: 20px;
+    }
+}
