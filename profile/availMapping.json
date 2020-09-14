@@ -274,7 +274,8 @@
                     "field": "licensed",
                     "fieldValue": false
                 }
-            ]
+            ],
+            "dateEnd": "availEnd"
         },
         {
             "javaVariableName": "availEnd",
@@ -291,7 +292,8 @@
                     "field": "licensed",
                     "fieldValue": false
                 }
-            ]
+            ],
+            "dateEnd": "endDate"
         },
         {
             "javaVariableName": "start",
@@ -313,7 +315,8 @@
                     "field": "licensed",
                     "fieldValue": true
                 }
-            ]
+            ],
+            "dateEnd": "end"
         },
         {
             "javaVariableName": "end",
@@ -335,7 +338,8 @@
                     "field": "licensed",
                     "fieldValue": true
                 }
-            ]
+            ],
+            "dateEnd": "endDate"
         },
         {
             "javaVariableName": "startLag",
@@ -915,7 +919,8 @@
             "readOnly": false,
             "enableSearch": true,
             "enableEdit": true,
-            "required": false
+            "required": false,
+            "filterBy": "rating.ratingSystem"
         },
         {
             "javaVariableName": "rating.ratingReason",

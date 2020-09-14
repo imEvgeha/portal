@@ -4,11 +4,9 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
 <div
   className="nexus-c-servicing-orders"
 >
-  <span
-    className="nexus-c-servicing-orders__title"
-  >
+  <h1>
     Servicing Orders
-  </span>
+  </h1>
   <div
     className="nexus-c-servicing-orders__external-filters"
   >
