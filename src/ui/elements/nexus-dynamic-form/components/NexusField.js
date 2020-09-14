@@ -9,6 +9,8 @@ const NexusField = ({...props}) => {
         switch (props.type) {
             case 'string':
                 return <TextField {...fieldProps} valid={valid} error={error} />;
+            case 'number':
+                return <TextField {...fieldProps} type="Number" valid={valid} error={error} />;
             case 'date':
                 return <DatePicker {...fieldProps} valid={valid} error={error} />;
             case 'time':
@@ -34,6 +36,7 @@ const NexusField = ({...props}) => {
 
 NexusField.propTypes = {
     type: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
 };
 
 export default NexusField;
