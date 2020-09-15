@@ -13,7 +13,6 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-    PERSONS_PER_REQUEST,
 } from '../../../../../constants/metadata/configAPI';
 import {
     CREW_LIST_LABEL,
@@ -33,6 +32,7 @@ import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-cont
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {URL} from '../../../../../../../util/Common';
+import {loadOptionsPerson} from '../utils/utils';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -71,29 +71,7 @@ class CoreMetadataEditMode extends Component {
 
     loadOptionsPerson = (searchPersonText, type) => {
         if (searchPersonText.length < 2) return [];
-        if (type === CAST) {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST).then(res =>
-                getFilteredCastList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        } else {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW).then(res =>
-                getFilteredCrewList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        }
+        return loadOptionsPerson(searchPersonText, type);
     };
 
     handleMSVIDs = data => {
