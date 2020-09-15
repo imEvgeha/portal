@@ -18,7 +18,6 @@ class DashboardTab extends React.Component {
     };
 
     render() {
-        throw new Error('I crashed in Avails Dashboard!');
         return (
             <div className="dashboard-tab">
                 <div className="row">
