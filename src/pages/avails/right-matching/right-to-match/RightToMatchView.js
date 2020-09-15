@@ -210,11 +210,16 @@ const RightToMatchView = ({
                     case END:
                     case AVAIL_START:
                     case AVAIL_END:
-                        if (pendingRightData[key] && pendingRightData[key] !== params.value) {
+                        const or =
+                            (!pendingRightData[key] && params.value) ||
+                            (pendingRightData[key] && !params.value) ||
+                            (pendingRightData[key] && params.value);
+                        if (or && pendingRightData[key] !== params.value) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
                         break;
                     case TERRITORY:
+                        if (params.colDef.colId === 'selected') return;
                         if (pendingRightData[key].length !== params.value.length) {
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }

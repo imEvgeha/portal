@@ -1,0 +1,14 @@
+import {FIELDS} from '../right-to-match/constants';
+
+const STATUSES = {
+    PENDING: 'Pending',
+    ERROR: 'Error',
+};
+
+export const UNSELECTED_STATUSES = [STATUSES.PENDING, STATUSES.ERROR];
+
+export const MIN_SELECTED_ROWS = 2;
+
+const {TERRITORY, FORMAT, START, END, AVAIL_START, AVAIL_END, ID, STATUS} = FIELDS;
+export const FIELDS_WITHOUT_COLOURING = [ID, STATUS];
+export const FIELDS_FOR_COLOURING = [TERRITORY, FORMAT, START, END, AVAIL_START, AVAIL_END];

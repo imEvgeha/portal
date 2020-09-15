@@ -118,7 +118,14 @@ class RightsCreateFromAttachment extends React.Component {
             </div>
         ),
         attachment: ({value}) => (
-            <NexusTooltip content={<div>{ATTACHMENT_TOOLTIP}<div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div></div>}>
+            <NexusTooltip
+                content={
+                    <div>
+                        {ATTACHMENT_TOOLTIP}
+                        <div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div>
+                    </div>
+                }
+            >
                 <div className="nexus-c-attachment-link-old">
                     <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
                         <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
@@ -142,6 +149,11 @@ class RightsCreateFromAttachment extends React.Component {
         return initialColumnDefs.map(colDef => ({
             ...colDef,
             cellRenderer: colDef.field,
+            cellStyle: params => {
+                return {
+                    'white-space': 'normal',
+                };
+            },
         }));
     };
 
