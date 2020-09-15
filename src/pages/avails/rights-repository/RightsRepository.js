@@ -406,7 +406,7 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
-            <RightsRepositoryHeader />
+            <RightsRepositoryHeader isTableDataLoading={isTableDataLoading} />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
                     ingest={selectedIngest}

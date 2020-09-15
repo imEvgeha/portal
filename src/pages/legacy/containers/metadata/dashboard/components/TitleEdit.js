@@ -35,6 +35,9 @@ import {SYNC} from './publish/PublishConstants';
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
 
+const TITLE_VALIDATION_ERROR = 'Title cannot be empty';
+const YEAR_VALIDATION_ERROR = 'Release year cannot be empty';
+
 const emptyTerritory = {
     locale: null,
     availAnnounceDate: null,
@@ -86,6 +89,7 @@ class TitleEdit extends Component {
             editorialMetadataForCreateAutoDecorate: false,
             ratingForCreate: {},
             externalIDs: null,
+            validationErrors: new Set(),
         };
     }
 
@@ -209,15 +213,41 @@ class TitleEdit extends Component {
         }));
     };
 
-    handleOnChangeEdit = e => {
-        const editedForm = {
-            ...this.state.editedForm,
-            [e.target.name]: e.target.value,
-        };
+    setValidationError = (msg, action) => {
+        let newErrorSet = new Set(this.state.validationErrors);
+        if (action === 'push' && !newErrorSet.has(msg)) {
+            newErrorSet.add(msg);
+            this.setState({validationErrors: newErrorSet});
+        } else if (action === 'pop') {
+            if (newErrorSet.delete(msg)) {
+                this.setState({validationErrors: newErrorSet});
+            }
+        }
+    };
 
-        this.setState({
-            editedForm: editedForm,
-        });
+    handleOnChangeEdit = e => {
+        if (e.target.name === 'title') {
+            if (e.target.value === '') {
+                this.setValidationError(TITLE_VALIDATION_ERROR, 'push');
+            } else {
+                this.setValidationError(TITLE_VALIDATION_ERROR, 'pop');
+            }
+        } else if (e.target.name === 'releaseYear') {
+            if (e.target.value === '') {
+                this.setValidationError(YEAR_VALIDATION_ERROR, 'push');
+            } else {
+                this.setValidationError(YEAR_VALIDATION_ERROR, 'pop');
+            }
+        } else {
+            const editedForm = {
+                ...this.state.editedForm,
+                [e.target.name]: e.target.value,
+            };
+
+            this.setState({
+                editedForm: editedForm,
+            });
+        }
     };
 
     handleCategoryOnChangeEdit = category => {
@@ -434,6 +464,7 @@ class TitleEdit extends Component {
                 ratings={this.state.editedForm.ratings}
                 handleOnChangeEdit={this.handleOnChangeEdit}
                 handleCategoryOnChangeEdit={this.handleCategoryOnChangeEdit}
+                setValidationError={this.setValidationError}
             />
         );
     };
@@ -1278,6 +1309,7 @@ class TitleEdit extends Component {
                                             isLoading={this.state.isLoading}
                                             onClick={this.handleOnSave}
                                             appearance="primary"
+                                            isDisabled={this.state.validationErrors.size}
                                         >
                                             Save
                                         </Button>
@@ -1357,6 +1389,7 @@ class TitleEdit extends Component {
                             cleanField={this.cleanField}
                             handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
                             handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
+                            setValidationError={this.setValidationError}
                         />
 
                         <TerritoryMetadata

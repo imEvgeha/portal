@@ -98,7 +98,14 @@ const NexusTableExportDropdown = ({
     };
 
     const getDownloadableColumns = (columns = []) => {
-        return columns.map(({colDef: {field} = {}}) => field).filter(col => mappingColumnNames.includes(col));
+        const headerFields = new Set(); // no duplicates
+        columns.map(({colDef: {field} = {}}) => {
+            if (mappingColumnNames.includes(field)) {
+                headerFields.add(field);
+            }
+            return null;
+        });
+        return Array.from(headerFields);
     };
 
     const renderDropdown = () => {

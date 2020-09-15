@@ -524,14 +524,13 @@ class TitleEditMode extends Component {
 }
 
 TitleEditMode.propTypes = {
-    externalIDs: PropTypes.object.isRequired,
+    externalIDs: PropTypes.object,
     titleRankingActiveTab: PropTypes.any,
     toggleTitleRating: PropTypes.func,
     addTitleRatingTab: PropTypes.func,
     createRatingTab: PropTypes.string,
     handleRatingEditChange: PropTypes.func,
     handleRatingCreateChange: PropTypes.func,
-
     keyPressed: PropTypes.func,
     data: PropTypes.object,
     handleOnChangeEdit: PropTypes.func.isRequired,
@@ -549,7 +548,6 @@ TitleEditMode.propTypes = {
     ratingObjectForCreate: PropTypes.object,
     areRatingFieldsRequired: PropTypes.bool,
     castAndCrewReorder: PropTypes.func,
-
     handleAddCharacterName: PropTypes.func,
     handleCategoryOnChangeEdit: PropTypes.func,
 };

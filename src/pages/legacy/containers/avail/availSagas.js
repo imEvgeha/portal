@@ -94,7 +94,7 @@ export function* fetchAndStoreSelectItems(payload, type) {
         return Array.from(
             source
                 .reduce(
-                    (acc, item) => (item && item[propName] && acc.set(item[propName], item), acc), // using map (preserves ordering)
+                    (acc, item) => item && item[propName] && acc.set(item[propName], item), // using map (preserves ordering)
                     new Map()
                 )
                 .values()
@@ -104,7 +104,10 @@ export function* fetchAndStoreSelectItems(payload, type) {
     const updatedSelectValues = fetchedSelectedItems.filter(Boolean).reduce((acc, el) => {
         const values = Object.values(el);
         const {key, value = [], configEndpoint} = (Array.isArray(values) && values[0]) || {};
-        const options = deduplicate(processOptions(value, configEndpoint), 'value');
+        const options = deduplicate(
+            processOptions(value, configEndpoint),
+            key === 'rating.ratingValue' ? 'label' : 'value'
+        );
 
         acc = {
             ...acc,
