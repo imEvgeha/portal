@@ -35,6 +35,7 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-t
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '../../../../../../util/Common';
 import {publisherService} from '../../service/PublisherService';
+import {URL} from '../../../../../../util/Common';
 
 const onViewTitleClick = response => {
     const {id} = response || {};
