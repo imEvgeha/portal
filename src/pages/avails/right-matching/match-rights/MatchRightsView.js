@@ -18,7 +18,6 @@ import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
 import {addCellClass, createColumnSchema, createSchemaForColoring, HIGHLIGHTED_CELL_CLASS} from '../../utils';
-import {FIELDS} from '../right-to-match/constants';
 import {SAVE_COMBINED_RIGHT} from '../rightMatchingActionTypes';
 import {
     createRightMatchingColumnDefs,
@@ -37,13 +36,8 @@ import {
 } from '../rightMatchingConstants';
 import * as selectors from '../rightMatchingSelectors';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import {UNSELECTED_STATUSES, MIN_SELECTED_ROWS, FIELDS_WITHOUT_COLOURING, FIELDS_FOR_COLOURING} from './constants';
 import './MatchRightsView.scss';
-
-const UNSELECTED_STATUSES = ['Pending', 'Error'];
-const MIN_SELECTED_ROWS = 2;
-const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
-const {TERRITORY, FORMAT, START, END, AVAIL_START, AVAIL_END} = FIELDS;
-const FIELDS_FOR_COLOURING = [TERRITORY, FORMAT, START, END, AVAIL_START, AVAIL_END];
 
 const CombinedRightNexusGrid = compose(withColumnsResizing(), withEditableColumns())(NexusGrid);
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
