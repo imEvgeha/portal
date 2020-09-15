@@ -58,7 +58,7 @@ const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) =
     };
 
     return (
-        <div className="nexus-c-event-management-table">
+        <div className="nexus-c-event-management-table__wrapper">
             <div className="nexus-c-event-management-table__toolbar">
                 <Tooltip content={`Change timestamps to show in ${isLocal ? 'UTC' : 'Local'} format`}>
                     <Button
@@ -82,14 +82,16 @@ const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) =
                     </Button>
                 </Tooltip>
             </div>
-            <EventManagementGrid
-                className="nexus-c-event-management-grid"
-                columnDefs={updateColumnDefs(columnDefs)}
-                rowSelection="single"
-                mapping={columnDefs}
-                notFilterableColumns={NOT_FILTERABLE_FIELDS}
-                {...props}
-            />
+            <div className="nexus-c-event-management-table">
+                <EventManagementGrid
+                    className="nexus-c-event-management-grid"
+                    columnDefs={updateColumnDefs(columnDefs)}
+                    rowSelection="single"
+                    mapping={columnDefs}
+                    notFilterableColumns={NOT_FILTERABLE_FIELDS}
+                    {...props}
+                />
+            </div>
         </div>
     );
 };

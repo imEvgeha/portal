@@ -1,5 +1,11 @@
 @import '../../../../styles/atlaskit/mixins';
 
+.nexus-c-event-management-table__wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .nexus-c-event-management-table {
     height: 100%;
     display: flex;
