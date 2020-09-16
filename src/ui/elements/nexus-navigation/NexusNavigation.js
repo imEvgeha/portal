@@ -10,7 +10,6 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {logout} from '../../../auth/authActions';
-import {URL} from '../../../util/Common';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
