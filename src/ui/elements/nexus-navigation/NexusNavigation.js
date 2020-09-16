@@ -10,8 +10,8 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {logout} from '../../../auth/authActions';
-import {URL} from "../../../util/Common";
-import NexusFeedback from "../nexus-feedback/NexusFeedback";
+import {URL} from '../../../util/Common';
+import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
 import {navigationPrimaryItems} from './components/NavigationItems';
@@ -33,31 +33,25 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
         const ItemWithDropdown = () => {
             return (
                 <GlobalItemWithDropdown
-                    trigger={({isOpen}) => (
-                        <GlobalItem isSelected={isOpen} {...itemProps} />
-                    )}
+                    trigger={({isOpen}) => <GlobalItem isSelected={isOpen} {...itemProps} />}
                     items={<DropdownItems />}
                 />
             );
         };
-        return (
-            abilityLocationName
-                ? (
-                    <Can do="read" on={abilityLocationName}>
-                        <ItemWithDropdown />
-                    </Can>
-                )
-                : <ItemWithDropdown />
+        return abilityLocationName ? (
+            <Can do="read" on={abilityLocationName}>
+                <ItemWithDropdown />
+            </Can>
+        ) : (
+            <ItemWithDropdown />
         );
     }
-    return (
-        abilityLocationName
-            ? (
-                <Can do="read" on={abilityLocationName}>
-                    <GlobalItem {...itemProps} />
-                </Can>
-            )
-            : <GlobalItem {...itemProps} />
+    return abilityLocationName ? (
+        <Can do="read" on={abilityLocationName}>
+            <GlobalItem {...itemProps} />
+        </Can>
+    ) : (
+        <GlobalItem {...itemProps} />
     );
 };
 
@@ -75,36 +69,36 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
     const AccountDropdownItems = () => {
         return (
             <DropdownItemGroup title={profileInfo.username || 'Profile'}>
-                <DropdownItem onClick={logout}>
-                    Log out
-                </DropdownItem>
+                <DropdownItem onClick={logout}>Log out</DropdownItem>
             </DropdownItemGroup>
         );
     };
 
     return (
-        <ThemeProvider theme={theme => ({
-            ...theme,
-            mode: customThemeMode,
-        })}
+        <ThemeProvider
+            theme={theme => ({
+                ...theme,
+                mode: customThemeMode,
+            })}
         >
             <GlobalNav
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
                 secondaryItems={[
-                    // TODO: remove URL.isLocalOrDev() once backend is intergated
-                    URL.isLocalOrDev() && {
+                    {
                         icon: FeedbackIcon,
                         id: 'Feedback',
                         tooltip: 'Feedback',
-                        onClick: () => openModal(<NexusFeedback currentPage={selectedItem} closeModal={closeModal}/>,
-                            {title: FEEDBACK_HEADER}),
+                        onClick: () =>
+                            openModal(<NexusFeedback currentPage={selectedItem} closeModal={closeModal} />, {
+                                title: FEEDBACK_HEADER,
+                            }),
                     },
                     {
                         icon: EditorSettingsIcon,
                         id: SETTINGS,
                         tooltip: SETTINGS,
-                        isSelected: (selectedItem === SETTINGS),
+                        isSelected: selectedItem === SETTINGS,
                         onClick: () => handleClick(SETTINGS),
                     },
                     {
