@@ -18,7 +18,6 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
   </div>
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     appearance="primary"
-    isLoading={false}
     onClick={[Function]}
   >
     Create New Right
