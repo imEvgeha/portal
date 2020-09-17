@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {Can, idToAbilityNameMap} from '../../../ability';
 import {logout} from '../../../auth/authActions';
+import {URL} from '../../../util/Common';
 import NexusFeedback from '../nexus-feedback/NexusFeedback';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import GlobalItemWithDropdown from './components/GlobalItemWithDropdown';
@@ -84,7 +85,8 @@ const NexusNavigation = ({history, location, profileInfo, logout}) => {
                 itemComponent={ItemComponent}
                 primaryItems={navigationPrimaryItems(selectedItem, handleClick)}
                 secondaryItems={[
-                    {
+                    // TODO: remove URL.isLocalOrDev() once backend is intergated
+                    URL.isLocalOrDev() && {
                         icon: FeedbackIcon,
                         id: 'Feedback',
                         tooltip: 'Feedback',
