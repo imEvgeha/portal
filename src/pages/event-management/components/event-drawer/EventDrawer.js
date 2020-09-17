@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {get, isObject} from 'lodash';
 import {uid} from 'react-uid';
@@ -9,25 +9,25 @@ import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
 import {URL} from '../../../../util/Common';
 import {
     DRAWER_TITLE,
-    EVENT_MESSAGE,
-    EVENT_HEADER,
     EVENT_ATTACHMENTS,
-    JSON_MIME_TYPE,
-    XML_MIME_TYPE,
+    EVENT_HEADER,
+    EVENT_MESSAGE,
     JSON_DECODING_ERR_MSG,
-    XML_DECODING_ERR_MSG,
+    JSON_MIME_TYPE,
     JSON_PARSING_ERR_MSG,
+    XML_DECODING_ERR_MSG,
     XML_EMPTY_ELEMENT,
+    XML_MIME_TYPE,
 } from '../../eventManagementConstants';
+import {getEventById} from '../../eventManagementService';
 import EventHeader from '../event-header/EventHeader';
 import EventSectionCollapsible from '../event-section-collapsible/EventSectionCollapsible';
 import EventDrawerHeader from './components/EventDrawerHeader';
 import './EventDrawer.scss';
 
-const EventDrawer = ({event, onDrawerClose}) => {
-    const message = get(event, 'message', {});
-    const headers = URL.isLocalOrDevOrQA() ? {...get(event, 'headers', {}), id: get(event, 'id', '')} : event;
-    const attachments = get(message, 'attachments', {});
+const EventDrawer = ({id, onDrawerClose}) => {
+    const [event, setEvent] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const decodeBase64 = (data, mimeType) => {
         if (!data && mimeType === XML_MIME_TYPE) {
@@ -58,11 +58,36 @@ const EventDrawer = ({event, onDrawerClose}) => {
         return parsedString;
     };
 
+    useEffect(() => {
+        setIsLoading(true);
+        const getEvent = id => {
+            return getEventById(id).then(evt => {
+                const fetchedEvent = {...get(evt, 'event', null), id};
+                const message = get(fetchedEvent, 'message', {});
+                const headers = URL.isLocalOrDevOrQA()
+                    ? {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')}
+                    : fetchedEvent;
+                const attachments = get(message, 'attachments', {});
+                setEvent({
+                    message,
+                    headers,
+                    attachments,
+                });
+                setIsLoading(false);
+            });
+        };
+
+        getEvent(id);
+    }, []);
+
+    const {message, headers, attachments} = event || {};
+
     return (
         <div className="nexus-c-event-drawer">
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={!!(headers && headers.eventId)}
+                isOpen={id}
+                isLoading={isLoading}
                 title={DRAWER_TITLE}
                 width="wide"
                 headerContent={headers && <EventDrawerHeader event={headers} />}
@@ -136,12 +161,12 @@ const EventDrawer = ({event, onDrawerClose}) => {
 };
 
 EventDrawer.propTypes = {
-    event: PropTypes.object,
+    id: PropTypes.oneOf([PropTypes.object, PropTypes.string]),
     onDrawerClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
-    event: null,
+    id: null,
     onDrawerClose: () => null,
 };
 

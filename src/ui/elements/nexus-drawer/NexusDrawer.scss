@@ -15,7 +15,7 @@ $widths: (
     width: 0;
     background-color: white;
     z-index: 500;
-    transition: width 220ms cubic-bezier(0.2, 0, 0, 1) 0s;
+    transition: width 220ms cubic-bezier(0.2, 0, 0, 1);
 
     &--from-left {
         left: 0;
@@ -29,6 +29,14 @@ $widths: (
         &--is-#{$width}-open {
             width: map-get($map: $widths, $key: $width);
         }
+    }
+
+    &--is-loading {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     &__title {
