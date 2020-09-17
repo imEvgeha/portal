@@ -59,7 +59,6 @@ const EventManagement = props => {
                 const {id} = selectedRow;
                 setSelectedEvent(id);
                 setSearchParams('selectedEventId', id);
-                // await getEvent(selectedRow.id);
             }
         } else {
             setSelectedEvent(selectedRow);
