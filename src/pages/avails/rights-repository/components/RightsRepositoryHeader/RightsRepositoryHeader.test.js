@@ -12,7 +12,6 @@ describe('RightsRepositoryHeader', () => {
         history: {
             push: historyPushMock,
         },
-        isTableDataLoading: false,
     };
 
     beforeEach(() => {
