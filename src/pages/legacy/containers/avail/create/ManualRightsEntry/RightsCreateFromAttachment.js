@@ -150,9 +150,13 @@ class RightsCreateFromAttachment extends React.Component {
             ...colDef,
             cellRenderer: colDef.field,
             cellStyle: params => {
+                if (params.colDef.field === 'error')
+                    return {
+                        'white-space': 'normal',
+                        'overflow-y': 'auto',
+                    };
                 return {
                     'white-space': 'normal',
-                    'overflow-y': 'scroll',
                 };
             },
         }));
