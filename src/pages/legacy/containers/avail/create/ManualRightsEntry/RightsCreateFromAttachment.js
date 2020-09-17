@@ -152,6 +152,7 @@ class RightsCreateFromAttachment extends React.Component {
             cellStyle: params => {
                 return {
                     'white-space': 'normal',
+                    'overflow-y': 'scroll',
                 };
             },
         }));
