@@ -34,11 +34,11 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-    PERSONS_PER_REQUEST,
 } from '../../../../../constants/metadata/configAPI';
 
 import constants from '../../../MetadataConstants';
 import {Can} from '../../../../../../../ability';
+import {loadOptionsPerson} from '../utils/utils';
 
 const mapStateToProps = state => {
     return {
@@ -142,32 +142,6 @@ class EditorialMetadataEditMode extends Component {
         }
         if (!this.props.data.synopsis) {
             this.props.data.synopsis = {};
-        }
-    };
-
-    loadOptionsPerson = (searchPersonText, type) => {
-        if (type === CAST) {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true).then(res =>
-                getFilteredCastList(res.data, true, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        } else {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW).then(res =>
-                getFilteredCrewList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
         }
     };
 
@@ -831,7 +805,7 @@ class EditorialMetadataEditMode extends Component {
                             persons={getFilteredCastList(castCrew, false, true)}
                             filterPersonList={getFilteredCastList}
                             removePerson={person => this.handleEditorialRemovePerson(person, castCrew)}
-                            loadOptionsPerson={this.loadOptionsPerson}
+                            loadOptionsPerson={loadOptionsPerson}
                             addPerson={person => this.handleEditorialAddPerson(person, castCrew)}
                             getFormatTypeName={getFormatTypeName}
                             showPersonType={true}
@@ -852,7 +826,7 @@ class EditorialMetadataEditMode extends Component {
                             persons={getFilteredCrewList(castCrew, false)}
                             filterPersonList={getFilteredCrewList}
                             removePerson={person => this.handleEditorialRemovePerson(person, castCrew)}
-                            loadOptionsPerson={this.loadOptionsPerson}
+                            loadOptionsPerson={loadOptionsPerson}
                             addPerson={person => this.handleEditorialAddPerson(person, castCrew)}
                             getFormatTypeName={getFormatTypeName}
                             showPersonType={true}
