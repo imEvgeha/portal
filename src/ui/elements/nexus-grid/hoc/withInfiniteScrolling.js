@@ -163,7 +163,7 @@ const withInfiniteScrolling = ({
                 setGridApi(api);
             }
 
-            if (events.includes(type) && typeof onGridEvent === 'function') {
+            if (isMounted.current && events.includes(type) && typeof onGridEvent === 'function') {
                 props.onGridEvent(data);
             }
         };
