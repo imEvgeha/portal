@@ -114,6 +114,7 @@ Alternatively you may withdraw a right which can be re-instantiated later."
     direction="fromRight"
     headerContent={null}
     isClosedOnBlur={false}
+    isLoading={false}
     isOpen={false}
     onClose={[Function]}
     title=""

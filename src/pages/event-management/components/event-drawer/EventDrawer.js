@@ -161,7 +161,7 @@ const EventDrawer = ({id, onDrawerClose}) => {
 };
 
 EventDrawer.propTypes = {
-    id: PropTypes.oneOf([PropTypes.object, PropTypes.string]),
+    id: PropTypes.string,
     onDrawerClose: PropTypes.func,
 };
 
