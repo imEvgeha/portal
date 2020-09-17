@@ -12,10 +12,10 @@ const NexusDynamicForm = ({schema = []}) => {
 
         switch (type) {
             case 'text': {
-                return <div>{label}</div>;
+                return <div key={`field-${label}`}>{label}</div>;
             }
             default:
-                return <div>Unsupported field type</div>;
+                return <div key={`field-${label}`}>Unsupported field type</div>;
         }
     };
 
