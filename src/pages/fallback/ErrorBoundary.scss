@@ -1,0 +1,20 @@
+.nexus-c-error {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0px 4px 8px #091e4240;
+
+    &__heading {
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    &__message {
+        padding: 2px 0px 25px 0px;
+    }
+}

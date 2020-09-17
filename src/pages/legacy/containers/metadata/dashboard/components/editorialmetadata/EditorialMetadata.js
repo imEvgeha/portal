@@ -120,7 +120,7 @@ const EditorialMetadata = ({
                         titleHasMaster &&
                         !isEditMode &&
                         currentFolder &&
-                        currentFolder.value === 'US English' && (
+                        currentFolderName === 'US English' && (
                             <Button
                                 appearance="primary"
                                 style={{marginLeft: '15px'}}

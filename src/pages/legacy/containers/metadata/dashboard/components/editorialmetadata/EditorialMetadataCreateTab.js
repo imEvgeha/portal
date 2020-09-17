@@ -28,10 +28,10 @@ import {
     getFilteredCrewList,
     getFormatTypeName,
     CREW,
-    PERSONS_PER_REQUEST,
     getFilteredCastList,
 } from '../../../../../constants/metadata/configAPI';
 import constants from '../../../MetadataConstants';
+import {loadOptionsPerson} from '../utils/utils';
 
 const US = 'US';
 const EN = 'en';
@@ -108,32 +108,6 @@ class EditorialMetadataCreateTab extends Component {
             }
         }
         this.props.handleCategoryChange(category);
-    };
-
-    loadOptionsPerson = (searchPersonText, type) => {
-        if (type === CAST) {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CAST, true).then(res =>
-                getFilteredCastList(res.data, true, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        } else {
-            return searchPerson(searchPersonText, PERSONS_PER_REQUEST, CREW).then(res =>
-                getFilteredCrewList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        }
     };
 
     handleEditorialRemovePerson = (person, castCrew) => {
@@ -805,7 +779,7 @@ class EditorialMetadataCreateTab extends Component {
                             persons={getFilteredCastList(castCrew, false, true)}
                             filterPersonList={getFilteredCastList}
                             removePerson={person => this.handleEditorialRemovePerson(person, castCrew)}
-                            loadOptionsPerson={this.loadOptionsPerson}
+                            loadOptionsPerson={loadOptionsPerson}
                             addPerson={person => this.handleEditorialAddPerson(person, castCrew)}
                             isMultiColumn={true}
                             getFormatTypeName={getFormatTypeName}
@@ -824,7 +798,7 @@ class EditorialMetadataCreateTab extends Component {
                             persons={getFilteredCrewList(castCrew, false)}
                             filterPersonList={getFilteredCrewList}
                             removePerson={person => this.handleEditorialRemovePerson(person, castCrew)}
-                            loadOptionsPerson={this.loadOptionsPerson}
+                            loadOptionsPerson={loadOptionsPerson}
                             addPerson={person => this.handleEditorialAddPerson(person, castCrew)}
                             getFormatTypeName={getFormatTypeName}
                             isMultiColumn={false}

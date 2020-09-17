@@ -36,11 +36,8 @@ import {
 } from '../rightMatchingConstants';
 import * as selectors from '../rightMatchingSelectors';
 import useDOPIntegration from '../util/hooks/useDOPIntegration';
+import {UNSELECTED_STATUSES, MIN_SELECTED_ROWS, FIELDS_WITHOUT_COLOURING, FIELDS_FOR_COLOURING} from './constants';
 import './MatchRightsView.scss';
-
-const UNSELECTED_STATUSES = ['Pending', 'Error'];
-const MIN_SELECTED_ROWS = 2;
-const FIELDS_WITHOUT_COLOURING = ['id', 'status'];
 
 const CombinedRightNexusGrid = compose(withColumnsResizing(), withEditableColumns())(NexusGrid);
 const MatchedRightsNexusGrid = withColumnsResizing()(NexusGrid);
@@ -202,7 +199,9 @@ const MatchRightView = ({
               cellClass: ({colDef, context}) => {
                   const {field} = colDef || {};
 
-                  if (!FIELDS_WITHOUT_COLOURING.includes(field)) {
+                  if (FIELDS_FOR_COLOURING.includes(field)) {
+                      if (colDef.colId === 'selected') return;
+
                       const {values} = context[field] || {};
                       const isCellHighlighted = values && Object.keys(values).length > 1;
 

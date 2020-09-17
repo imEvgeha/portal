@@ -11,6 +11,7 @@ import AppProviders from './AppProviders';
 import Router from './Router';
 import {createKeycloakInstance} from './auth/keycloak';
 import {setEnvConfiguration} from './config';
+import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore from './store';
@@ -51,12 +52,12 @@ const App = () => (
         <Provider store={store}>
             <AppProviders persistor={persistor}>
                 <ConnectedRouter history={history}>
-                    <>
+                    <ErrorBoundary>
                         <Toast />
                         <NexusLayout>
                             <Router routes={routesWithTracking()} />
                         </NexusLayout>
-                    </>
+                    </ErrorBoundary>
                 </ConnectedRouter>
             </AppProviders>
         </Provider>

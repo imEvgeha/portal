@@ -16,6 +16,8 @@ export const FIELDS = {
     AVAIL_END: 'availEnd',
     TERRITORY: 'territory',
     FORMAT: 'format',
+    ID: 'id',
+    STATUS: 'status',
 };
 
 export const TABLE_NAMES = {
