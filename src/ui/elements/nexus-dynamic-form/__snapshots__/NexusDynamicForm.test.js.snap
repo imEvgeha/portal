@@ -23,7 +23,9 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
     >
       Best section 2020
     </h3>
-    <div>
+    <div
+      key="field-Awesome field"
+    >
       Awesome field
     </div>
   </div>
