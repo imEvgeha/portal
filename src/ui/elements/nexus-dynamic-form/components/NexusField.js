@@ -8,15 +8,15 @@ const NexusField = ({...props}) => {
     const renderField = (fieldProps, valid, error) => {
         switch (props.type) {
             case 'string':
-                return <TextField {...fieldProps} valid={valid} error={error} />;
+                return <TextField {...fieldProps} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" valid={valid} error={error} />;
+                return <TextField {...fieldProps} type="Number" />;
             case 'date':
-                return <DatePicker {...fieldProps} valid={valid} error={error} />;
+                return <DatePicker {...fieldProps} />;
             case 'time':
-                return <TimePicker {...fieldProps} valid={valid} error={error} />;
+                return <TimePicker {...fieldProps} />;
             case 'datetime':
-                return <DateTimePicker {...fieldProps} valid={valid} error={error} />;
+                return <DateTimePicker {...fieldProps} />;
             default:
                 return;
         }
