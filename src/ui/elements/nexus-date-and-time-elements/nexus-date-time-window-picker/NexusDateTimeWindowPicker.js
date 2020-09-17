@@ -8,7 +8,6 @@ import {isUtc} from '../../../../util/date-time/DateTimeUtils';
 import CustomIntlProvider from '../../nexus-layout/CustomIntlProvider';
 import NexusDatePicker from '../nexus-date-picker/NexusDatePicker';
 import NexusSimpleDateTimePicker from '../nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
-import './NexusDateTimeWindowPicker.scss';
 import {getDisplayDate} from '../utils';
 import {
     END_DATE_ERROR,
