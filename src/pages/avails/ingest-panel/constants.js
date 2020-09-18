@@ -22,6 +22,7 @@ export default {
     attachmentTypes: {
         EXCEL: 'Excel',
         EMAIL: 'Email',
+        PDF: 'PDF',
     },
     filterKeys: {
         RECEIVED_FROM: 'receivedFrom',

@@ -1,4 +1,5 @@
 import React from 'react';
+import {default as AKForm} from '@atlaskit/form';
 import {shallow} from 'enzyme';
 import NexusDynamicForm from './NexusDynamicForm';
 
@@ -39,5 +40,10 @@ describe('NexusDynamicForm', () => {
         tabContainer.children().forEach((child, index) => {
             expect(child.dive().text()).toEqual(tabs[index]); // All tabs are named properly
         });
+    });
+
+    it('should render a form', () => {
+        const form = wrapper.find(AKForm);
+        expect(form.length).toEqual(1);
     });
 });
