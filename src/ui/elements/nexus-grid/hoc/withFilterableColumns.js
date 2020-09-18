@@ -64,19 +64,29 @@ const withFilterableColumns = ({
 
         // TODO: temporary solution to get select values
         useEffect(() => {
-            if (isEmpty(selectValues)) {
+            if (isMounted.current && isEmpty(selectValues)) {
                 fetchAvailMapping();
             }
         }, [selectValues]);
 
         useEffect(() => {
-            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+            if (
+                isMounted.current &&
+                !!columnDefs.length &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length
+            ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
         }, [columnDefs, selectValues]);
 
         useEffect(() => {
-            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+            if (
+                isMounted.current &&
+                !!columnDefs.length &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length
+            ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
                 setTimeout(() => {
                     initializeValues();
@@ -87,7 +97,7 @@ const withFilterableColumns = ({
         let waitForFilter = 0;
         function initializeFilter(filterInstance, key, isCallback = false) {
             // initialize one column filter with value
-            if (!filterInstance) {
+            if (!isMounted.current && !filterInstance) {
                 return;
             }
             const currentValue = get(filters, key, undefined);
@@ -183,7 +193,7 @@ const withFilterableColumns = ({
                     if (fixedFilter && fixedFilter[queryParamName]) {
                         locked = true;
                     }
-                    const filterInstance = gridApi && gridApi.getFilterInstance(field);
+                    const filterInstance = isMounted.current && gridApi && gridApi.getFilterInstance(field);
                     const {
                         TEXT,
                         NUMBER,

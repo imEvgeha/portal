@@ -105,7 +105,7 @@ const RightsRepository = ({
         return () => {
             isMounted.current = false;
         };
-    });
+    }, []);
 
     useEffect(() => {
         gridApi && gridApi.setFilterModel(null);

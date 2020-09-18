@@ -84,7 +84,7 @@ const withInfiniteScrolling = ({
             const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
 
-            if (gridApi && gridApi.getDisplayedRowCount() === 0) {
+            if (isMounted.current && gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
             }
 
