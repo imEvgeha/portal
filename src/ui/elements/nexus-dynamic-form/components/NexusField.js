@@ -5,7 +5,7 @@ import {Field as AKField, ErrorMessage} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 
 const NexusField = ({...props}) => {
-    const renderField = (fieldProps, valid, error) => {
+    const renderField = fieldProps => {
         switch (props.type) {
             case 'string':
                 return <TextField {...fieldProps} />;
@@ -26,7 +26,7 @@ const NexusField = ({...props}) => {
         <AKField {...props}>
             {({fieldProps, error, valid}) => (
                 <>
-                    {renderField(fieldProps, valid, error)}
+                    {renderField(fieldProps)}
                     {error && <ErrorMessage>{error}</ErrorMessage>}
                 </>
             )}

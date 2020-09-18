@@ -57,7 +57,12 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
                                     ))}
                                 </Fragment>
                             ))}
-                            <Button type="submit" appearance="primary" isDisabled={!dirty || submitting}>
+                            <Button
+                                type="submit"
+                                className="nexus-c-dynamic-form__submit-button"
+                                appearance="primary"
+                                isDisabled={!dirty || submitting}
+                            >
                                 Submit
                             </Button>
                         </form>
