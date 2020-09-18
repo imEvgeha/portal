@@ -9,6 +9,7 @@ const RightDetails = () => {
     const mockData = {
         rightId: '1234',
         title: 'Some title',
+        boolean: 'true',
         rating: {
             ratingSystem: 'system X',
             ratingValue: null,
@@ -18,7 +19,7 @@ const RightDetails = () => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} data={mockData} />
+            <NexusDynamicForm schema={schema} data={mockData} isEdit />
         </div>
     );
 };

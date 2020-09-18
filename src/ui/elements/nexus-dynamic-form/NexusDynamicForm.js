@@ -2,7 +2,7 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import _ from 'lodash';
+import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
 import './NexusDynamicForm.scss';
@@ -11,16 +11,16 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
-    const buildSection = (fields = {}) => {
+    const buildSection = (fields = {}, isEdit) => {
         return (
             <>
-                {' '}
                 {Object.keys(fields).map(key => {
                     return (
                         <NexusField
                             key={key}
                             name={key}
-                            defaultValue={_.get(data, fields[key].path) || fields[key].defaultValue}
+                            isEdit={isEdit}
+                            defaultValue={get(data, fields[key].path) || fields[key].defaultValue}
                             {...fields[key]}
                         />
                     );
@@ -77,11 +77,13 @@ NexusDynamicForm.propTypes = {
     schema: PropTypes.array.isRequired,
     data: PropTypes.object,
     onSubmit: PropTypes.func,
+    isEdit: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
     data: {},
     onSubmit: undefined,
+    isEdit: false,
 };
 
 export default NexusDynamicForm;

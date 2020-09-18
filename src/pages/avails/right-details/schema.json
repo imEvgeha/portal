@@ -27,6 +27,30 @@
                         "label": "Rating System",
                         "type": "string",
                         "path": "rating.ratingSystem"
+                    },
+                    "number": {
+                        "label": "Number",
+                        "type": "number",
+                        "tooltipMessage": "Required when coreTitleId exists",
+                        "isRequired": true,
+                        "path": "number",
+                        "dependencies": {
+                            "view": "edit",
+                            "type": "readOnly",
+                            "field": "coreTitleId"
+                        }
+                    },
+                    "boolean": {
+                        "label": "Boolean",
+                        "type": "boolean",
+                        "tooltipMessage": "Required when coreTitleId exists",
+                        "isRequired": true,
+                        "path": "boolean",
+                        "dependencies": {
+                            "view": "edit",
+                            "type": "readOnly",
+                            "field": "coreTitleId"
+                        }
                     }
                 }
             },
