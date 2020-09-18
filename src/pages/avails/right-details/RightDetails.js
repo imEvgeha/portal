@@ -19,7 +19,7 @@ const RightDetails = () => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} data={mockData} isEdit />
+            <NexusDynamicForm schema={schema} data={mockData} isEdit={false} />
         </div>
     );
 };

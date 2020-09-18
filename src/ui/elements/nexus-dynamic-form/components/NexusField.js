@@ -33,24 +33,12 @@ const NexusField = ({type, isEdit, tooltip, ...props}) => {
 
     const renderFieldViewMode = fieldProps => {
         switch (type) {
-            case 'string':
-                return <TextField {...fieldProps} />;
-            case 'number':
-                return <TextField {...fieldProps} type="Number" />;
-            case 'date':
-                return <DatePicker {...fieldProps} />;
-            case 'time':
-                return <TimePicker {...fieldProps} />;
             case 'datetime':
                 return <DateTimePicker {...fieldProps} />;
-            // case 'boolean':
-            //     return <CheckboxField {...fieldProps} >
-            //         {({ fieldProps }) => (
-            //             <Checkbox {...fieldProps} />
-            //         )}
-            //     </CheckboxField>
+            case 'boolean':
+                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             default:
-                return;
+                return <div>{fieldProps.value}</div>;
         }
     };
 
