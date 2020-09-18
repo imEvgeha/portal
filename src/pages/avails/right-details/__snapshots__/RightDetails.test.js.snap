@@ -7,6 +7,7 @@ exports[`RightDetails should match snapshot 1`] = `
   <NexusDynamicForm
     data={
       Object {
+        "boolean": "true",
         "rating": Object {
           "ratingReason": null,
           "ratingSystem": "system X",
@@ -16,12 +17,37 @@ exports[`RightDetails should match snapshot 1`] = `
         "title": "Some title",
       }
     }
+    isEdit={true}
     schema={
       Array [
         Object {
           "sections": Array [
             Object {
               "fields": Object {
+                "boolean": Object {
+                  "dependencies": Object {
+                    "field": "coreTitleId",
+                    "type": "readOnly",
+                    "view": "edit",
+                  },
+                  "isRequired": true,
+                  "label": "Boolean",
+                  "path": "boolean",
+                  "tooltipMessage": "Required when coreTitleId exists",
+                  "type": "boolean",
+                },
+                "number": Object {
+                  "dependencies": Object {
+                    "field": "coreTitleId",
+                    "type": "readOnly",
+                    "view": "edit",
+                  },
+                  "isRequired": true,
+                  "label": "Number",
+                  "path": "number",
+                  "tooltipMessage": "Required when coreTitleId exists",
+                  "type": "number",
+                },
                 "ratingSystem": Object {
                   "label": "Rating System",
                   "path": "rating.ratingSystem",
