@@ -1,26 +1,32 @@
 import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
+import {default as AKForm} from '@atlaskit/form';
+import _ from 'lodash';
+import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = []}) => {
+const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
-    const parseField = (field = {}) => {
-        const {label = '', type = ''} = field || {};
-
-        switch (type) {
-            case 'text': {
-                return <div key={`field-${label}`}>{label}</div>;
-            }
-            default:
-                return <div key={`field-${label}`}>Unsupported field type</div>;
-        }
-    };
-
-    const buildSection = (fields = []) => {
-        return <>{fields.map(parseField)}</>;
+    const buildSection = (fields = {}) => {
+        return (
+            <>
+                {' '}
+                {Object.keys(fields).map(key => {
+                    return (
+                        <NexusField
+                            key={key}
+                            name={key}
+                            defaultValue={_.get(data, fields[key].path) || fields[key].defaultValue}
+                            {...fields[key]}
+                        />
+                    );
+                })}
+            </>
+        );
     };
 
     return (
@@ -36,18 +42,27 @@ const NexusDynamicForm = ({schema = []}) => {
                 ))}
             </div>
             <div className="nexus-c-dynamic-form__tab-content">
-                {schema.map(({title = '', sections = []}) => (
-                    <Fragment key={`tab-${title}`}>
-                        {sections.map(({title: sectionTitle = '', fields = []}) => (
-                            <Fragment key={`section-${sectionTitle}`}>
-                                <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
-                                    {sectionTitle}
-                                </h3>
-                                {buildSection(fields)}
-                            </Fragment>
-                        ))}
-                    </Fragment>
-                ))}
+                <AKForm onSubmit={onSubmit}>
+                    {({formProps, dirty, submitting}) => (
+                        <form {...formProps}>
+                            {schema.map(({title = '', sections = []}) => (
+                                <Fragment key={`tab-${title}`}>
+                                    {sections.map(({title: sectionTitle = '', fields = {}}) => (
+                                        <Fragment key={`section-${sectionTitle}`}>
+                                            <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
+                                                {sectionTitle}
+                                            </h3>
+                                            {buildSection(fields)}
+                                        </Fragment>
+                                    ))}
+                                </Fragment>
+                            ))}
+                            <Button type="submit" appearance="primary" isDisabled={!dirty || submitting}>
+                                Submit
+                            </Button>
+                        </form>
+                    )}
+                </AKForm>
             </div>
         </div>
     );
@@ -55,8 +70,13 @@ const NexusDynamicForm = ({schema = []}) => {
 
 NexusDynamicForm.propTypes = {
     schema: PropTypes.array.isRequired,
+    data: PropTypes.object,
+    onSubmit: PropTypes.func,
 };
 
-NexusDynamicForm.defaultProps = {};
+NexusDynamicForm.defaultProps = {
+    data: {},
+    onSubmit: undefined,
+};
 
 export default NexusDynamicForm;

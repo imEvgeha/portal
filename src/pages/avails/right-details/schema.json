@@ -4,20 +4,39 @@
         "sections": [
             {
                 "title": "Basic Info",
-                "fields": [
-                    {
+                "fields": {
+                    "rightId": {
                         "label": "Right ID",
-                        "type": "text"
+                        "type": "string",
+                        "isDisabled": true,
+                        "path": "rightId"
+                    },
+                    "title": {
+                        "label": "Title",
+                        "type": "string",
+                        "tooltipMessage": "Required when coreTitleId exists",
+                        "isRequired": true,
+                        "path": "title",
+                        "dependencies": {
+                            "view": "edit",
+                            "type": "readOnly",
+                            "field": "coreTitleId"
+                        }
+                    },
+                    "ratingSystem": {
+                        "label": "Rating System",
+                        "type": "string",
+                        "path": "rating.ratingSystem"
                     }
-                ]
+                }
             },
             {
                 "title": "Territory",
-                "fields": []
+                "fields": {}
             },
             {
                 "title": "Content",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -26,7 +45,7 @@
         "sections": [
             {
                 "title": "Title",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -35,7 +54,7 @@
         "sections": [
             {
                 "title": "Localization",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -44,7 +63,7 @@
         "sections": [
             {
                 "title": "Series",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -53,7 +72,7 @@
         "sections": [
             {
                 "title": "Rating",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -62,7 +81,7 @@
         "sections": [
             {
                 "title": "Pricing",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -71,7 +90,7 @@
         "sections": [
             {
                 "title": "Branding",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -80,7 +99,7 @@
         "sections": [
             {
                 "title": "Package",
-                "fields": []
+                "fields": {}
             }
         ]
     },
@@ -89,7 +108,7 @@
         "sections": [
             {
                 "title": "Change Log",
-                "fields": []
+                "fields": {}
             }
         ]
     }
