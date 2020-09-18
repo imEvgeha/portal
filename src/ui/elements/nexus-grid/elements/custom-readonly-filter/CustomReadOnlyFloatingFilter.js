@@ -15,7 +15,7 @@ class CustomReadOnlyFloatingFilter extends React.Component {
 
     render() {
         const {value} = this.state;
-        const content = (isObject(value) && isObjectEmpty(value)) ? '' : value;
+        const content = isObject(value) && isObjectEmpty(value) ? '' : value;
 
         return (
             <div className="nexus-c-custom-read-only-floating-filter">
@@ -26,7 +26,7 @@ class CustomReadOnlyFloatingFilter extends React.Component {
 }
 
 CustomReadOnlyFloatingFilter.propTypes = {
-    readOnlyValue: PropTypes.object,
+    readOnlyValue: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
 };
 
 CustomReadOnlyFloatingFilter.defaultProps = {

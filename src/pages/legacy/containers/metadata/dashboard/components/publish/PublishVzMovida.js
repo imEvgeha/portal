@@ -56,8 +56,13 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
 };
 
 PublishVzMovida.propTypes = {
-    onSyncPublishClick: PropTypes.func.isRequired,
-    externalIDs: PropTypes.object.isRequired,
+    onSyncPublishClick: PropTypes.func,
+    externalIDs: PropTypes.object,
+};
+
+PublishVzMovida.defaultProps = {
+    onSyncPublishClick: () => null,
+    externalIDs: {},
 };
 
 export default PublishVzMovida;
