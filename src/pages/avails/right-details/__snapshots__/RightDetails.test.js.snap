@@ -5,25 +5,81 @@ exports[`RightDetails should match snapshot 1`] = `
   className="nexus-c-right-details"
 >
   <NexusDynamicForm
+    data={
+      Object {
+        "boolean": "true",
+        "rating": Object {
+          "ratingReason": null,
+          "ratingSystem": "system X",
+          "ratingValue": null,
+        },
+        "rightId": "1234",
+        "title": "Some title",
+      }
+    }
+    isEdit={true}
     schema={
       Array [
         Object {
           "sections": Array [
             Object {
-              "fields": Array [
-                Object {
-                  "label": "Right ID",
-                  "type": "text",
+              "fields": Object {
+                "boolean": Object {
+                  "dependencies": Object {
+                    "field": "coreTitleId",
+                    "type": "readOnly",
+                    "view": "edit",
+                  },
+                  "isRequired": true,
+                  "label": "Boolean",
+                  "path": "boolean",
+                  "tooltipMessage": "Required when coreTitleId exists",
+                  "type": "boolean",
                 },
-              ],
+                "number": Object {
+                  "dependencies": Object {
+                    "field": "coreTitleId",
+                    "type": "readOnly",
+                    "view": "edit",
+                  },
+                  "isRequired": true,
+                  "label": "Number",
+                  "path": "number",
+                  "tooltipMessage": "Required when coreTitleId exists",
+                  "type": "number",
+                },
+                "ratingSystem": Object {
+                  "label": "Rating System",
+                  "path": "rating.ratingSystem",
+                  "type": "string",
+                },
+                "rightId": Object {
+                  "isDisabled": true,
+                  "label": "Right ID",
+                  "path": "rightId",
+                  "type": "string",
+                },
+                "title": Object {
+                  "dependencies": Object {
+                    "field": "coreTitleId",
+                    "type": "readOnly",
+                    "view": "edit",
+                  },
+                  "isRequired": true,
+                  "label": "Title",
+                  "path": "title",
+                  "tooltipMessage": "Required when coreTitleId exists",
+                  "type": "string",
+                },
+              },
               "title": "Basic Info",
             },
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Territory",
             },
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Content",
             },
           ],
@@ -32,7 +88,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Title",
             },
           ],
@@ -41,7 +97,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Localization",
             },
           ],
@@ -50,7 +106,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Series",
             },
           ],
@@ -59,7 +115,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Rating",
             },
           ],
@@ -68,7 +124,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Pricing",
             },
           ],
@@ -77,7 +133,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Branding",
             },
           ],
@@ -86,7 +142,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Package",
             },
           ],
@@ -95,7 +151,7 @@ exports[`RightDetails should match snapshot 1`] = `
         Object {
           "sections": Array [
             Object {
-              "fields": Array [],
+              "fields": Object {},
               "title": "Change Log",
             },
           ],
