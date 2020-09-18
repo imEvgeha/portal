@@ -86,7 +86,7 @@ const EventDrawer = ({id, onDrawerClose}) => {
         <div className="nexus-c-event-drawer">
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={id}
+                isOpen={!!id}
                 isLoading={isLoading}
                 title={DRAWER_TITLE}
                 width="wide"
