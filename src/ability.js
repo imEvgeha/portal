@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import {AbilityBuilder, Ability} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
 import {withRouter} from 'react-router-dom';
-import {AVAILS, MEDIA, METADATA, SERVICING_ORDERS, EVENT_MANAGEMENT} from './ui/elements/nexus-navigation/constants';
+import {
+    AVAILS,
+    MEDIA,
+    METADATA,
+    SERVICING_ORDERS,
+    EVENT_MANAGEMENT,
+    DOP_TASKS,
+} from './ui/elements/nexus-navigation/constants';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',
@@ -11,6 +18,7 @@ const idToAbilityNameMap = {
     [MEDIA]: 'AssetManagement',
     [SERVICING_ORDERS]: 'ServicingOrders',
     [EVENT_MANAGEMENT]: 'EventManagement',
+    [DOP_TASKS]: 'DopTasks',
 };
 
 const ability = new Ability([]);
@@ -63,14 +71,11 @@ const updateAbility = (roles = []) => {
     // ******** Metadata *************
     if (roles.includes('metadata_admin')) {
         can(['create', 'read', 'update', 'delete'], 'Metadata');
-    }
-    else if (roles.includes('metadata_user')) {
+    } else if (roles.includes('metadata_user')) {
         can(['create', 'read', 'update'], 'Metadata');
-    }
-    else if (roles.includes('metadata_viewer')) {
+    } else if (roles.includes('metadata_viewer')) {
         can('read', 'Metadata');
-    }
-    else {
+    } else {
         cannot(['create', 'update', 'delete'], 'Metadata');
     }
 
@@ -87,6 +92,9 @@ const updateAbility = (roles = []) => {
 
     // ******** Sync Log *************
     can(['create', 'read', 'update', 'delete'], 'SyncLog');
+
+    // ******** DOP Tasks *************
+    can(['create', 'read', 'update', 'delete'], 'DopTasks');
 
     ability.update(rules);
 };
