@@ -7,11 +7,11 @@ import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
+const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
-    const buildSection = (fields = {}, isEdit) => {
+    const buildSection = (fields = {}) => {
         return (
             <>
                 {Object.keys(fields).map(key => {

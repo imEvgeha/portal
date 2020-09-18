@@ -1,0 +1,17 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-field {
+    .nexus-c-field__label,
+    .nexus-c-field__value {
+        display: inline-block;
+    }
+
+    .nexus-c-field__value {
+        width: 75%;
+    }
+
+    .nexus-c-field__label {
+        width: 25%;
+    }
+}

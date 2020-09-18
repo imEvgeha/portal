@@ -9,7 +9,7 @@ const RightDetails = () => {
     const mockData = {
         rightId: '1234',
         title: 'Some title',
-        boolean: 'true',
+        boolean: true,
         rating: {
             ratingSystem: 'system X',
             ratingValue: null,
