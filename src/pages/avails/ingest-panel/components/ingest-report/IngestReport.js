@@ -29,9 +29,18 @@ const IngestReport = ({report, isShowingError = true, filterClick, ingestId, has
 
     const createTag = key => (
         <div className="ingest-report__field" key={key}>
-            <span className="ingest-report__field--label">{reportFields[key].label}</span>
+            <span
+                className={classnames('ingest-report__field-label', {
+                    'ingest-report__field-label--is-selectable': key === 'fatal',
+                })}
+            >
+                {reportFields[key].label}
+            </span>
             <div
-                className={classnames('ingest-report__field--value', activeFilter === key && 'filter-active')}
+                className={classnames('ingest-report__field-value', {
+                    'filter-active': activeFilter === key,
+                    'ingest-report__field-value--is-selectable': key === 'fatal',
+                })}
                 onClick={() =>
                     key === 'fatal'
                         ? window.open(RightsURL.getFatalsRightsSearchUrl(ingestId), '_blank')
