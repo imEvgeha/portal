@@ -56,33 +56,9 @@
         justify-content: flex-end;
 
         .ingest-report {
-            border-right: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
             @include addSpacing(padding-right, 4);
             @include addSpacing(margin-top, 0);
-
-            &__field {
-                @include addSpacing(width, 12);
-
-                &--value {
-                    cursor: pointer;
-                    background: map-get($mid-neutral-colors, mid-neutral-7);
-
-                    &:hover {
-                        background: map-get($mid-neutral-colors, mid-neutral-5);
-                        color: map-get($dark-neutral-colors, dark-neutral-1);
-                    }
-
-                    &.filter-active {
-                        background: map-get($dark-neutral-colors, dark-neutral-5);
-                        color: map-get($light-neutral-colors, light-neutral-6);
-
-                        &:hover {
-                            background: map-get($dark-neutral-colors, dark-neutral-5);
-                            color: map-get($light-neutral-colors, light-neutral-6);
-                        }
-                    }
-                }
-            }
+            border-right: 1px solid map-get($mid-neutral-colors, mid-neutral-7);
         }
     }
 
