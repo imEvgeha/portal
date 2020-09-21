@@ -4,6 +4,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {DatePicker, TimePicker, DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
+import NexusTextArea from "../../nexus-textarea/NexusTextArea";
 import './NexusField.scss';
 
 const NexusField = ({type, isEdit, tooltip, ...props}) => {
@@ -11,6 +12,8 @@ const NexusField = ({type, isEdit, tooltip, ...props}) => {
         switch (type) {
             case 'string':
                 return <TextField {...fieldProps} />;
+            case 'textarea':
+                return <NexusTextArea {...fieldProps} />;
             case 'number':
                 return <TextField {...fieldProps} type="Number" />;
             case 'date':

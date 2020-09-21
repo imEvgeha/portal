@@ -13,7 +13,7 @@
                     },
                     "title": {
                         "name": "Title",
-                        "type": "string",
+                        "type": "textarea",
                         "tooltip": "Required when coreTitleId exists",
                         "isRequired": true,
                         "path": "title",
