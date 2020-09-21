@@ -31,7 +31,7 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
     const [updatedColDef, setUpdatedColDef] = useState([]);
 
     const dragStoppedHandler = event => {
-        const updatedMappings = updatedColDef.length ? updatedColDef : cloneDeep(mappings);
+        const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
         const columnHeader = event.target.textContent.trim();
         const columns = event.columnApi.columnController.gridColumns;
 
