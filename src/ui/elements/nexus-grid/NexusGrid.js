@@ -18,6 +18,7 @@ const NexusGrid = ({
     onGridEvent,
     isGridHidden,
     frameworkComponents,
+    dragStopped,
     ...restProps
 }) => {
     const handleGridEvent = data => {
@@ -63,6 +64,7 @@ const NexusGrid = ({
                     loadingCellRenderer: LoadingCellRenderer,
                     tooltipCellRenderer: TooltipCellRenderer,
                 }}
+                onDragStopped={dragStopped}
             />
         </div>
     );
@@ -77,6 +79,7 @@ NexusGrid.propTypes = {
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
     frameworkComponents: PropTypes.object,
+    dragStopped: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -88,6 +91,7 @@ NexusGrid.defaultProps = {
     setRowData: null,
     isGridHidden: false,
     frameworkComponents: {},
+    dragStopped: null,
 };
 
 export default NexusGrid;
