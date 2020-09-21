@@ -20,6 +20,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
                             key={key}
                             name={key}
                             isEdit={isEdit}
+                            data={data}
                             defaultValue={get(data, fields[key].path) || fields[key].defaultValue}
                             {...fields[key]}
                         />

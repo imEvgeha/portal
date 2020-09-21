@@ -8,8 +8,8 @@
                     "rightId": {
                         "name": "Right ID",
                         "type": "string",
-                        "isDisabled": true,
-                        "path": "rightId"
+                        "path": "rightId",
+                        "readOnly": true
                     },
                     "title": {
                         "name": "Title",
@@ -17,40 +17,39 @@
                         "tooltip": "Required when coreTitleId exists",
                         "isRequired": true,
                         "path": "title",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "dependencies": [
+                            {
+                                "view": "edit",
+                                "type": "readOnly",
+                                "field": "coreTitleId",
+                                "value": 17
+                            },
+                            {
+                                "view": "edit",
+                                "type": "readOnly",
+                                "field": "rightId"
+                            }
+                        ]
                     },
                     "ratingSystem": {
                         "name": "Rating System",
                         "type": "string",
                         "path": "rating.ratingSystem"
                     },
-                    "number": {
-                        "name": "Number",
+                    "coreTitleId": {
+                        "name": "Core TitleId",
                         "type": "number",
                         "tooltip": "Required when coreTitleId exists",
                         "isRequired": true,
-                        "path": "number",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "path": "coreTitleId"
                     },
                     "boolean": {
                         "name": "Boolean",
                         "type": "boolean",
                         "tooltip": "Required when coreTitleId exists",
                         "isRequired": true,
-                        "path": "boolean",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "readOnly": true,
+                        "path": "boolean"
                     }
                 }
             },
