@@ -1,0 +1,13 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.dop-tasks-header {
+    display: flex;
+    flex-direction: row;
+    @include margin(6);
+}
+
+.dop-tasks-header__label {
+    font-size: 29px;
+    color: map-get($neutrals, N800);
+}

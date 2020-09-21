@@ -7,6 +7,7 @@ import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import {can} from '../../../../ability';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
+import {URL} from '../../../../util/Common';
 import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
@@ -63,7 +64,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
                   },
               ]
             : []),
-        {
+        URL.isLocalOrDev() && {
             icon: () => <EditorBulletListIcon size="large" />,
             id: DOP_TASKS,
             tooltip: 'DOP Tasks',
