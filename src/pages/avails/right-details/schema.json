@@ -15,19 +15,14 @@
                         "name": "Title",
                         "type": "textarea",
                         "tooltip": "Required when coreTitleId exists",
-                        "isRequired": true,
+                        "required": false,
                         "path": "title",
                         "dependencies": [
                             {
                                 "view": "edit",
-                                "type": "readOnly",
+                                "type": "required",
                                 "field": "coreTitleId",
-                                "value": 17
-                            },
-                            {
-                                "view": "edit",
-                                "type": "readOnly",
-                                "field": "rightId"
+                                "value": 12
                             }
                         ]
                     },
@@ -40,15 +35,12 @@
                         "name": "Core TitleId",
                         "type": "number",
                         "tooltip": "Required when coreTitleId exists",
-                        "isRequired": true,
+                        "required": true,
                         "path": "coreTitleId"
                     },
                     "boolean": {
                         "name": "Boolean",
                         "type": "boolean",
-                        "tooltip": "Required when coreTitleId exists",
-                        "isRequired": true,
-                        "readOnly": true,
                         "path": "boolean"
                     }
                 }

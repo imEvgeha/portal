@@ -21,7 +21,7 @@ const RightDetails = () => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} data={mockData} isEdit={true} />
+            <NexusDynamicForm schema={schema} data={mockData} isEdit={true} onSubmit={() => console.log('here')} />
         </div>
     );
 };
