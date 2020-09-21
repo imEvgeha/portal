@@ -1246,7 +1246,10 @@ class TitleEdit extends Component {
 
     removeCastCrew = removeCastCrew => {
         const cast = this.state.editedForm.castCrew.filter(cast => {
-            return cast.id !== removeCastCrew.id;
+            if (cast.id === removeCastCrew.id) {
+                return cast.personType !== removeCastCrew.personType;
+            }
+            return true;
         });
         const updateEditForm = {
             ...this.state.editedForm,
