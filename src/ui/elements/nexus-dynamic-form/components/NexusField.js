@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import './NexusField.scss';
 
-const NexusField = ({type, isEdit, tooltip, data, readOnly, required, dependencies, ...props}) => {
+const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, dependencies, ...props}) => {
     const checkDependencies = type => {
         const view = isEdit ? 'edit' : 'view';
         const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === view);
@@ -26,17 +26,17 @@ const NexusField = ({type, isEdit, tooltip, data, readOnly, required, dependenci
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
-                return <TextField isReadOnly={readOnly || checkDependencies('readOnly')} {...fieldProps} />;
+                return <TextField isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} />;
             case 'textarea':
-                return <NexusTextArea isReadOnly={readOnly || checkDependencies('readOnly')} {...fieldProps} />;
+                return <NexusTextArea isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} />;
             case 'number':
                 return (
-                    <TextField isReadOnly={readOnly || checkDependencies('readOnly')} {...fieldProps} type="Number" />
+                    <TextField isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} type="Number" />
                 );
             case 'boolean':
                 const {name, label} = fieldProps;
                 return (
-                    <CheckboxField isDisabled={readOnly || checkDependencies('readOnly')} name={name} label={label}>
+                    <CheckboxField isDisabled={isReadOnly || checkDependencies('readOnly')} name={name} label={label}>
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
                 );
@@ -58,11 +58,11 @@ const NexusField = ({type, isEdit, tooltip, data, readOnly, required, dependenci
 
     return (
         <div className="nexus-c-field">
-            <AKField isRequired={checkDependencies('required') || required} {...props}>
+            <AKField isRequired={checkDependencies('required') || isRequired} {...props}>
                 {({fieldProps, error, valid}) => (
                     <>
                         <div className="nexus-c-field__label">
-                            {`${fieldProps.name}${checkDependencies('required') || required ? '*' : ''}: `}
+                            {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
                             {tooltip && (
                                 <span title={tooltip} style={{color: 'grey'}}>
                                     <i className="far fa-question-circle" />
@@ -87,8 +87,8 @@ NexusField.propTypes = {
     tooltip: PropTypes.string,
     data: PropTypes.object,
     dependencies: PropTypes.array,
-    readOnly: PropTypes.bool,
-    required: PropTypes.bool,
+    isReadOnly: PropTypes.bool,
+    isRequired: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -96,8 +96,8 @@ NexusField.defaultProps = {
     tooltip: null,
     data: {},
     dependencies: [],
-    readOnly: false,
-    required: false,
+    isReadOnly: false,
+    isRequired: false,
 };
 
 export default NexusField;

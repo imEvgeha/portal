@@ -9,18 +9,18 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "rightId",
-                        "readOnly": true
+                        "isReadOnly": true
                     },
                     "title": {
                         "name": "Title",
                         "type": "textarea",
                         "tooltip": "Required when coreTitleId exists",
-                        "required": false,
+                        "isRequired": false,
                         "path": "title",
                         "dependencies": [
                             {
                                 "view": "edit",
-                                "type": "required",
+                                "type": "readOnly",
                                 "field": "coreTitleId",
                                 "value": 12
                             }
@@ -35,7 +35,7 @@
                         "name": "Core TitleId",
                         "type": "number",
                         "tooltip": "Required when coreTitleId exists",
-                        "required": true,
+                        "isRequired": true,
                         "path": "coreTitleId"
                     },
                     "boolean": {
