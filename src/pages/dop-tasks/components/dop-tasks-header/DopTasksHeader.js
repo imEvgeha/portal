@@ -4,8 +4,8 @@ import {DOP_TASKS_HEDER} from '../../constants';
 import './DopTasksHeader.scss';
 
 const DopTasksHeader = ({label, children}) => (
-    <div className="dop-tasks-header">
-        <div className="dop-tasks-header__label">{label}</div>
+    <div className="nexus-c-dop-tasks-header">
+        <div className="nexus-c-dop-tasks-header__label">{label}</div>
         {children}
     </div>
 );

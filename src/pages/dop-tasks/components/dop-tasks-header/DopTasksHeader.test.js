@@ -18,7 +18,7 @@ describe('DopTasksHeader', () => {
     });
 
     it('should render header label', () => {
-        const label = wrapper.find('.dop-tasks-header__label');
+        const label = wrapper.find('.nexus-c-dop-tasks-header__label');
         expect(label.text()).toEqual('DOP Tasks');
     });
 });

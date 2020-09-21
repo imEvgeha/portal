@@ -1,0 +1,35 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-dop-tasks-dropdown {
+    @include addSpacing('width', 100);
+    @include margin(0, 0, 0, 10);
+    display: flex;
+    align-items: center;
+
+    button {
+        width: 100%;
+        @include addSpacing('height', 10);
+
+        > span {
+            width: 100%;
+
+            > span {
+                text-align: left;
+            }
+        }
+    }
+}
+
+.nexus-c-dop-tasks-dropdown__label {
+    @include margin(0, 1, 0, 0);
+    width: 30%;
+}
+
+.nexus-c-dop-tasks-dropdown__elements {
+    width: 70%;
+}
+
+.nexus-c-dop-tasks-dropdown__textfield {
+    @include padding(2);
+}
