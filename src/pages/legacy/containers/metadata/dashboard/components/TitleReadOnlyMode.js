@@ -308,7 +308,7 @@ TitleReadOnlyMode.propTypes = {
     data: PropTypes.object.isRequired,
     toggleTitleRating: PropTypes.func,
     activeTab: PropTypes.any,
-    externalIDs: PropTypes.object,
+    externalIDs: PropTypes.array,
 };
 
 export default TitleReadOnlyMode;
