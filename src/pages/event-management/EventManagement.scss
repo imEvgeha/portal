@@ -1,20 +1,26 @@
+@import '../../styles/config.scss';
+@import '../../styles/atlaskit/mixins';
+
 .nexus-c-event-management {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 24px 0 0;
-  &__title {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    @include padding(6, 0, 0, 0);
+}
+
+.nexus-c-event-management__title {
     font-size: 29px;
     padding: 0 22px;
-    color: #42526E;
-  }
-  &__table {
+    color: #172b4d;
+    height: 0;
+}
+
+.nexus-c-event-management__table {
     width: 100%;
     height: 100%;
-    padding: 24px 24px 45px 24px;
+    @include padding(6);
 
     & .nexus-c-nexus-grid {
-      height: 100%;
+        height: 100%;
     }
-  }
 }

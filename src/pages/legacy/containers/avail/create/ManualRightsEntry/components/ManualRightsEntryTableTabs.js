@@ -9,13 +9,15 @@ import {
     UNMATCHED,
     ERRORS,
     SUCCESS,
-    ATTACHMENTS_TAB
+    ATTACHMENTS_TAB,
 } from '../../../../../constants/avails/manualRightsEntryTabs';
 import {updateManualRightEntrySelectedTab} from '../../../../../stores/actions/avail/manualRightEntry';
 import {rightsService} from '../../../service/RightsService';
 import Constants from '../../../../../../../pages/avails/ingest-panel/constants';
 
-const {attachmentTypes: {EXCEL}} = Constants;
+const {
+    attachmentTypes: {EXCEL, PDF},
+} = Constants;
 
 const ManualRightEntryTableTabs = ({
     selectedTab,
@@ -113,7 +115,7 @@ const ManualRightEntryTableTabs = ({
                 isActive={selectedTab === ATTACHMENTS_TAB}
                 onClick={() => updateManualRightEntrySelectedTab(ATTACHMENTS_TAB)}
             >
-                Attachments ({attachments.filter(a => a.attachmentType === EXCEL).length})
+                Attachments ({attachments.filter(a => a.attachmentType === EXCEL || a.attachmentType === PDF).length})
             </ManualRightEntryTab>
         </TabContainer>
     );

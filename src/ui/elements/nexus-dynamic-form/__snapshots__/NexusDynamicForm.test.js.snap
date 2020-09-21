@@ -17,15 +17,11 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
   <div
     className="nexus-c-dynamic-form__tab-content"
   >
-    <h3
-      className="nexus-c-dynamic-form__section-title"
-      id="Best section 2020"
+    <Form
+      isDisabled={false}
     >
-      Best section 2020
-    </h3>
-    <div>
-      Awesome field
-    </div>
+      <Component />
+    </Form>
   </div>
 </div>
 `;
