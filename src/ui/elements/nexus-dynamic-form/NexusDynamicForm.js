@@ -34,7 +34,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm ref={form} onSubmit={onSubmit}>
-                {({formProps, dirty, submitting}) => (
+                {({formProps, dirty, submitting, reset}) => (
                     <form {...formProps}>
                         {isEdit ? (
                             <>
@@ -48,7 +48,10 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
                                 </Button>
                                 <Button
                                     className="nexus-c-dynamic-form__cancel-button"
-                                    onClick={() => setIsEdit(false)}
+                                    onClick={() => {
+                                        reset();
+                                        setIsEdit(false);
+                                    }}
                                 >
                                     Cancel
                                 </Button>

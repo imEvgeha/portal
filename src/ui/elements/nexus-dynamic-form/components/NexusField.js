@@ -32,9 +32,12 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
             case 'number':
                 return <TextField {...fieldProps} type="Number" />;
             case 'boolean':
-                const {name, label} = fieldProps;
                 return (
-                    <CheckboxField isDisabled={isReadOnly || checkDependencies('readOnly')} name={name} label={label}>
+                    <CheckboxField
+                        isDisabled={isReadOnly || checkDependencies('readOnly')}
+                        name={fieldProps.name}
+                        label={fieldProps.label}
+                    >
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
                 );
