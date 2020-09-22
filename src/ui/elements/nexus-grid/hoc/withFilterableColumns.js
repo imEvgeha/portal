@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
@@ -43,6 +43,8 @@ const withFilterableColumns = ({
             fixedFilter,
             customDateFilterParamSuffixes = [],
         } = props;
+
+        const isMounted = useRef(true);
         const [filterableColumnDefs, setFilterableColumnDefs] = useState([]);
         const [gridApi, setGridApi] = useState();
         const columns = props.filterableColumns || filterableColumns;
@@ -54,21 +56,37 @@ const withFilterableColumns = ({
         const excludedFilterColumns = props.notFilterableColumns || notFilterableColumns;
         const [isDatasourceEnabled, setIsDatasourceEnabled] = useState(!filters);
 
+        useEffect(() => {
+            return () => {
+                isMounted.current = false;
+            };
+        }, []);
+
         // TODO: temporary solution to get select values
         useEffect(() => {
-            if (isEmpty(selectValues)) {
+            if (isMounted.current && isEmpty(selectValues)) {
                 fetchAvailMapping();
             }
         }, [selectValues]);
 
         useEffect(() => {
-            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+            if (
+                isMounted.current &&
+                !!columnDefs.length &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length
+            ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
         }, [columnDefs, selectValues]);
 
         useEffect(() => {
-            if (!!columnDefs.length && isObject(selectValues) && !!Object.keys(selectValues).length) {
+            if (
+                isMounted.current &&
+                !!columnDefs.length &&
+                isObject(selectValues) &&
+                !!Object.keys(selectValues).length
+            ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
                 setTimeout(() => {
                     initializeValues();
@@ -79,7 +97,7 @@ const withFilterableColumns = ({
         let waitForFilter = 0;
         function initializeFilter(filterInstance, key, isCallback = false) {
             // initialize one column filter with value
-            if (!filterInstance) {
+            if (!isMounted.current && !filterInstance) {
                 return;
             }
             const currentValue = get(filters, key, undefined);
@@ -113,7 +131,7 @@ const withFilterableColumns = ({
             }
             if (isCallback) {
                 waitForFilter--;
-                if (!waitForFilter) {
+                if (isMounted.current && !waitForFilter) {
                     gridApi.onFilterChanged();
                     setIsDatasourceEnabled(true);
                 }
@@ -128,7 +146,7 @@ const withFilterableColumns = ({
         const initializeValues = () => {
             // initialize all columns filters with values
             waitForFilter = 0;
-            if (gridApi && Array.isArray(mapping) && mapping.length) {
+            if (isMounted.current && gridApi && Array.isArray(mapping) && mapping.length) {
                 setIsDatasourceEnabled(false);
                 // union of keys for column filter and fixed filter
                 const keys = [
@@ -150,7 +168,7 @@ const withFilterableColumns = ({
                     }
                 });
 
-                if (!waitForFilter) {
+                if (isMounted.current && !waitForFilter) {
                     gridApi.onFilterChanged();
                     setIsDatasourceEnabled(true);
                 }
@@ -175,7 +193,7 @@ const withFilterableColumns = ({
                     if (fixedFilter && fixedFilter[queryParamName]) {
                         locked = true;
                     }
-                    const filterInstance = gridApi && gridApi.getFilterInstance(field);
+                    const filterInstance = isMounted.current && gridApi && gridApi.getFilterInstance(field);
                     const {
                         TEXT,
                         NUMBER,
@@ -435,7 +453,7 @@ const withFilterableColumns = ({
         columnDefs: PropTypes.array.isRequired,
         mapping: PropTypes.array.isRequired,
         fetchAvailMapping: PropTypes.func.isRequired,
-        onGridEvent: PropTypes.func.isRequired,
+        onGridEvent: PropTypes.func,
     };
 
     ComposedComponent.defaultProps = {
@@ -446,6 +464,7 @@ const withFilterableColumns = ({
         filterableColumns: null,
         notFilterableColumns: null,
         initialFilter: {},
+        onGridEvent: () => null,
     };
 
     return connect(

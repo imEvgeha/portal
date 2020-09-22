@@ -8,8 +8,16 @@ import usePrevious from '../../../../util/hooks/usePrevious';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
 import {filterBy, sortBy} from '../utils';
-import {DEFAULT_HOC_PROPS, ROW_BUFFER, PAGINATION_PAGE_SIZE, CACHE_OVERFLOW_SIZE, MAX_CONCURRENT_DATASOURCE_REQUEST,
-    MAX_BLOCKS_IN_CACHE, ROW_MODEL_TYPE, GRID_EVENTS} from '../constants';
+import {
+    DEFAULT_HOC_PROPS,
+    ROW_BUFFER,
+    PAGINATION_PAGE_SIZE,
+    CACHE_OVERFLOW_SIZE,
+    MAX_CONCURRENT_DATASOURCE_REQUEST,
+    MAX_BLOCKS_IN_CACHE,
+    ROW_MODEL_TYPE,
+    GRID_EVENTS,
+} from '../constants';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS,
@@ -22,12 +30,19 @@ const withInfiniteScrolling = ({
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const hasBeenCalledRef = useRef();
+        const isMounted = useRef(true);
         const previousParams = usePrevious(props.params);
         const [gridApi, setGridApi] = useState();
 
+        useEffect(() => {
+            return () => {
+                isMounted.current = false;
+            };
+        }, []);
+
         // Handle refreshing grid's data from outside
         useEffect(() => {
-            if (props.shouldGridRefresh && (fetchData && gridApi)) {
+            if (isMounted.current && props.shouldGridRefresh && fetchData && gridApi) {
                 updateData(fetchData, gridApi);
                 props.toggleRefreshGridData(false);
             }
@@ -36,10 +51,13 @@ const withInfiniteScrolling = ({
         //  params
         useEffect(() => {
             const {params, isDatasourceEnabled} = props;
-            if ((!isEqual(params, previousParams) && params)
-                && gridApi
-                && !hasBeenCalledRef.current
-                && isDatasourceEnabled
+            if (
+                isMounted.current &&
+                !isEqual(params, previousParams) &&
+                params &&
+                gridApi &&
+                !hasBeenCalledRef.current &&
+                isDatasourceEnabled
             ) {
                 updateData(fetchData, gridApi);
             }
@@ -48,7 +66,7 @@ const withInfiniteScrolling = ({
         //  update data when datasource is enabled
         useEffect(() => {
             const {isDatasourceEnabled} = props;
-            if (gridApi && isDatasourceEnabled) {
+            if (isMounted.current && gridApi && isDatasourceEnabled) {
                 updateData(fetchData, gridApi);
             }
         }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
@@ -66,7 +84,7 @@ const withInfiniteScrolling = ({
             const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
 
-            if (gridApi && gridApi.getDisplayedRowCount() === 0) {
+            if (isMounted.current && gridApi && gridApi.getDisplayedRowCount() === 0) {
                 gridApi.showLoadingOverlay();
             }
 
@@ -75,14 +93,14 @@ const withInfiniteScrolling = ({
                 ...cleanObject(filterParams, true),
             };
 
-            if (typeof props.setDataLoading === 'function') {
+            if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
             fetchData(preparedParams, pageNumber, pageSize, sortParams)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
-                    if (typeof props.setTotalCount === 'function') {
+                    if (typeof props.setTotalCount === 'function' && isMounted.current) {
                         props.setTotalCount(total);
                     }
 
@@ -117,12 +135,11 @@ const withInfiniteScrolling = ({
                 .catch(error => failCallback(error))
                 .finally(() => {
                     hasBeenCalledRef.current = false;
-                    if (typeof props.setDataLoading === 'function') {
+                    if (typeof props.setDataLoading === 'function' && isMounted.current) {
                         props.setDataLoading(false);
                     }
                 });
         };
-
 
         const updateData = (fetchData, gridApi) => {
             hasBeenCalledRef.current = true;
@@ -146,7 +163,7 @@ const withInfiniteScrolling = ({
                 setGridApi(api);
             }
 
-            if (events.includes(type) && typeof onGridEvent === 'function') {
+            if (isMounted.current && events.includes(type) && typeof onGridEvent === 'function') {
                 props.onGridEvent(data);
             }
         };
@@ -167,11 +184,7 @@ const withInfiniteScrolling = ({
             suppressAnimationFrame: true,
         };
 
-        return (
-            <WrappedComponent
-                {...mergedProps}
-            />
-        );
+        return <WrappedComponent {...mergedProps} />;
     };
 
     ComposedComponent.propTypes = {
