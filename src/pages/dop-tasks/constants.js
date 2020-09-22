@@ -10,6 +10,10 @@ export const QUEUED_TASKS_OPTIONS = [
 ];
 
 export const SAVED_TABLE_SELECT_OPTIONS = [
-    {label: 'Queued Task 1', value: 'queuedTask1'},
-    {label: 'Queued Task 2', value: 'queuedTask2'},
+    {label: 'Open', value: 'open'},
+    {label: 'All', value: 'all'},
+    {label: 'With Errors', value: 'withErrors'},
+    {label: 'On Hold', value: 'onHold'},
+    {label: 'Changed in last 24 hours', value: 'changedInLast24Hours'},
+    {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
 ];
