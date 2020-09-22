@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {get, isEmpty} from 'lodash';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
-import {TITLE, INITIAL_SORT} from './eventManagementConstants';
+import {INITIAL_SORT, TITLE} from './eventManagementConstants';
 import './EventManagement.scss';
-import {getEventById} from './eventManagementService';
 
 const EventManagement = props => {
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -53,22 +52,17 @@ const EventManagement = props => {
         setSearchParams('sort', sortModel);
     };
 
-    const onSelectionChanged = async selectedRow => {
+    const onSelectionChanged = selectedRow => {
         if (URL.isLocalOrDevOrQA()) {
             // Call api to get event by ID
             if (selectedRow) {
-                await getEvent(selectedRow.id);
+                const {id} = selectedRow;
+                setSelectedEvent(id);
+                setSearchParams('selectedEventId', id);
             }
         } else {
             setSelectedEvent(selectedRow);
         }
-    };
-
-    const getEvent = id => {
-        return getEventById(id).then(evt => {
-            setSelectedEvent({...get(evt, 'event', null), id});
-            setSearchParams('selectedEventId', id);
-        });
     };
 
     const isFilterModelEmpty = filterModel => {
@@ -82,7 +76,7 @@ const EventManagement = props => {
         const params = new URLSearchParams(props.location.search.substring(1));
         const selectedEventId = JSON.parse(params.get('selectedEventId'));
         if (selectedEventId) {
-            getEvent(selectedEventId);
+            setSelectedEvent(selectedEventId);
         }
     }, []);
 
@@ -142,7 +136,7 @@ const EventManagement = props => {
                     onSortChanged={onSortChanged}
                 />
             </div>
-            {selectedEvent && <EventDrawer event={selectedEvent} onDrawerClose={closeEventDrawer} />}
+            {selectedEvent && <EventDrawer id={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>
     );
 };

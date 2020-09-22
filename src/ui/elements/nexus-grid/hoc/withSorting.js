@@ -47,8 +47,13 @@ const withSorting = (initialSort = null) => WrappedComponent => {
     };
 
     ComposedComponent.propTypes = {
-        onGridEvent: PropTypes.func.isRequired,
-        defaultColDef: PropTypes.object.isRequired,
+        onGridEvent: PropTypes.func,
+        defaultColDef: PropTypes.object,
+    };
+
+    ComposedComponent.defaultProps = {
+        onGridEvent: () => null,
+        defaultColDef: {},
     };
 
     return ComposedComponent;

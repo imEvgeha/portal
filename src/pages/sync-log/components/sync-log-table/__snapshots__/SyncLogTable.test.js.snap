@@ -217,6 +217,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
     direction="fromRight"
     headerContent={null}
     isClosedOnBlur={true}
+    isLoading={false}
     isOpen={false}
     onClose={[Function]}
     title="Publish Errors"

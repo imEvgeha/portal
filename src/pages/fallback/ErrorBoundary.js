@@ -21,6 +21,7 @@ export default class ErrorBoundary extends React.Component {
     setErrorNull = () => this.setState({error: null, errorInfo: null});
 
     render() {
+        // eslint-disable-next-line no-unused-vars
         const {error, errorInfo} = this.state;
         const {children} = this.props;
         if (errorInfo) {

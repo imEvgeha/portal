@@ -3,7 +3,6 @@ import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
-import * as service from './eventManagementService';
 
 describe('EventManagement', () => {
     let wrapper = null;
@@ -62,11 +61,6 @@ describe('EventManagement', () => {
             setSortModel: setSortModelMock,
         };
 
-        const serviceMock = jest.spyOn(service, 'getEventById');
-        serviceMock.mockImplementation(() => {
-            return Promise.resolve({id: '123'});
-        });
-
         const afterUseEffectWrapper = () => {
             withHooks(() => {
                 wrapper = shallow(
@@ -88,14 +82,10 @@ describe('EventManagement', () => {
             deselectAllMock.mockReset();
             setFilterModelMock.mockReset();
             setSortModelMock.mockReset();
-            serviceMock.mockReset();
         });
 
         it('should render EventDrawer', async () => {
-            expect(serviceMock.mock.calls.length).toEqual(1);
-            await setTimeout(() => {
-                expect(wrapper.find('EventDrawer').length).toEqual(1);
-            }, 1000);
+            expect(wrapper.find('EventDrawer').length).toEqual(1);
         });
 
         it('should set api on grid event and passes correct prop to EventDrawer', async () => {
@@ -150,9 +140,8 @@ describe('EventManagement', () => {
 
         it('opens the event drawer given a selectedEventId in the URL search params', async () => {
             substringMockFn.mockImplementationOnce(() => 'selectedEventId=%22test_event_id%22');
-            serviceMock.mockImplementation(evt => Promise.resolve({event: {id: evt}}));
             await afterUseEffectWrapper();
-            expect(serviceMock).toHaveBeenCalledWith('test_event_id');
+            expect(wrapper.find('EventDrawer').props().id).toEqual('test_event_id');
         });
     });
 });

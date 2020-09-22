@@ -16,27 +16,55 @@
         flex-direction: column;
         align-items: center;
         color: map-get($dark-neutral-colors, dark-neutral-5);
-        @include addSpacing(width, 10);
+        @include addSpacing(width, 12);
         @include addSpacing(height, 10);
         line-height: initial;
+    }
 
-        &--label {
-            @include heading(h100);
-            @include margin(0, 0, 1, 0);
+    &__field-label {
+        @include heading(h100);
+        @include margin(0, 0, 1, 0);
+
+        &--is-selectable {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    &__field-value {
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include padding(0.5, 2);
+        @include addSpacing(min-width, 5.5);
+        @include addSpacing(min-height, 5);
+        @include addSpacing(border-radius, 8);
+        color: map-get($dark-neutral-colors, dark-neutral-1);
+        background: map-get($light-neutral-colors, light-neutral-1);
+        text-align: center;
+        font-weight: bold;
+
+        &--is-selectable {
+            cursor: pointer;
+
+            &:hover {
+                background: map-get($mid-neutral-colors, mid-neutral-6);
+                color: map-get($dark-neutral-colors, dark-neutral-1);
+            }
         }
 
-        &--value {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: map-get($dark-neutral-colors, dark-neutral-1);
-            background: map-get($light-neutral-colors, light-neutral-1);
-            border-radius: 32px;
-            padding: 2px 8px;
-            text-align: center;
-            font-weight: bold;
-            min-width: 22px;
-            min-height: 20px;
+        &.filter-active {
+            background: map-get($dark-neutral-colors, dark-neutral-5);
+            color: map-get($light-neutral-colors, light-neutral-6);
+
+            &:hover {
+                background: map-get($dark-neutral-colors, dark-neutral-5);
+                color: map-get($light-neutral-colors, light-neutral-6);
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
@@ -53,6 +53,7 @@ export const BulkMatching = ({
     setHeaderText,
     headerText,
 }) => {
+    const isMounted = useRef(true);
     const [selectedTableData, setSelectedTableData] = useState([]);
     const [affectedTableData, setAffectedTableData] = useState([]);
     const [existingBonusRights, setExistingBonusRights] = useState([]);
@@ -73,7 +74,13 @@ export const BulkMatching = ({
     const changeActiveTab = tab => tab !== activeTab && setActiveTab(tab);
 
     useEffect(() => {
-        if (data.length) {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isMounted.current && data.length) {
             setSelectedTableData(data);
         }
     }, [data]);
@@ -83,13 +90,15 @@ export const BulkMatching = ({
             const rightIds = selectedTableData.map(right => right.id);
             if (isBonusRight) {
                 getExistingBonusRights(rightIds).then(({data}) => {
-                    setExistingBonusRights(data);
-                    setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
-                    setLoadTitlesTable(true);
+                    if (isMounted.current) {
+                        setExistingBonusRights(data);
+                        setRestrictedCoreTitleIds([selectedTableData[0].coreTitleId]);
+                        setLoadTitlesTable(true);
+                    }
                 });
             } else {
                 getAffectedRights(rightIds).then(res => {
-                    if (Array.isArray(res) && res.length) {
+                    if (isMounted.current && Array.isArray(res) && res.length) {
                         setAffectedTableData(res);
                     }
                 });
@@ -101,10 +110,10 @@ export const BulkMatching = ({
         if (affectedTableData.length) {
             const affectedRightIds = affectedTableData.map(right => right.id);
             getRestrictedTitles(affectedRightIds).then(res => {
-                if (Array.isArray(res) && res.length) {
+                if (isMounted.current && Array.isArray(res) && res.length) {
                     setRestrictedCoreTitleIds(res);
                 }
-                setLoadTitlesTable(true);
+                isMounted.current && setLoadTitlesTable(true);
             });
         }
     }, [affectedTableData]);

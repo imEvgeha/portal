@@ -17,9 +17,7 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
   <div
     className="nexus-c-dynamic-form__tab-content"
   >
-    <Form
-      isDisabled={false}
-    >
+    <Form>
       <Component />
     </Form>
   </div>

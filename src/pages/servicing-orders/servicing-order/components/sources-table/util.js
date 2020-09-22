@@ -27,8 +27,9 @@ export const prepareRowData = data => {
                 source.barcode = barcode;
                 const preparedServices = get(source, servicesKey, []);
                 source[servicesKey] = preparedServices;
-                preparedServices.push(service);
+                return preparedServices.push(service);
             }
+            return null;
         });
     });
 
