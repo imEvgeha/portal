@@ -305,7 +305,7 @@ CoreMetadataReadOnlyMode.propTypes = {
     data: PropTypes.object,
     toggleTitleRating: PropTypes.func,
     activeTab: PropTypes.any,
-    externalIDs: PropTypes.object,
+    externalIDs: PropTypes.array,
 };
 
 export default CoreMetadataReadOnlyMode;
