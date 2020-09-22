@@ -45,9 +45,9 @@ describe('IngestReport', () => {
     });
 
     it('should include error message', () => {
-        const labels = wrapper.find('.ingest-report__field--label');
+        const labels = wrapper.find('.ingest-report__field-label');
         expect(labels).toHaveLength(6);
-        const values = wrapper.find('.ingest-report__field--value');
+        const values = wrapper.find('.ingest-report__field-value');
         expect(values).toHaveLength(6);
         expect(labels.at(0).text()).toEqual('Rights');
         expect(values.at(0).text()).toEqual('20001');
