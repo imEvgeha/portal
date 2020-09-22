@@ -26,11 +26,11 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
-                return <TextField {...fieldProps} />;
+                return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
             case 'textarea':
-                return <NexusTextArea {...fieldProps} />;
+                return <NexusTextArea {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" />;
+                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${fieldProps.name}`} />;
             case 'boolean':
                 return (
                     <CheckboxField
