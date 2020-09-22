@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -10,7 +10,7 @@ import './NexusDynamicForm.scss';
 const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
-
+    const form = useRef();
     const buildSection = (fields = {}) => {
         return (
             <>
@@ -20,7 +20,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
                             key={key}
                             name={key}
                             isEdit={isEdit}
-                            data={data}
+                            data={form.current && form.current.getValues()}
                             defaultValue={get(data, fields[key].path) || fields[key].defaultValue}
                             {...fields[key]}
                         />
@@ -32,20 +32,28 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
 
     return (
         <div className="nexus-c-dynamic-form">
-            <div className="nexus-c-dynamic-form__tab-container">
-                {tabs.map(tab => (
-                    <SectionTab
-                        key={tab}
-                        section={tab}
-                        onClick={() => setSelectedTab(tab)}
-                        isActive={selectedTab === tab}
-                    />
-                ))}
-            </div>
-            <div className="nexus-c-dynamic-form__tab-content">
-                <AKForm onSubmit={onSubmit}>
-                    {({formProps, dirty, submitting}) => (
-                        <form {...formProps}>
+            <AKForm ref={form} onSubmit={onSubmit}>
+                {({formProps, dirty, submitting}) => (
+                    <form {...formProps}>
+                        <Button
+                            type="submit"
+                            className="nexus-c-dynamic-form__submit-button"
+                            appearance="primary"
+                            isDisabled={!dirty || submitting}
+                        >
+                            Submit
+                        </Button>
+                        <div className="nexus-c-dynamic-form__tab-container">
+                            {tabs.map(tab => (
+                                <SectionTab
+                                    key={tab}
+                                    section={tab}
+                                    onClick={() => setSelectedTab(tab)}
+                                    isActive={selectedTab === tab}
+                                />
+                            ))}
+                        </div>
+                        <div className="nexus-c-dynamic-form__tab-content">
                             {schema.map(({title = '', sections = []}) => (
                                 <Fragment key={`tab-${title}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
@@ -58,18 +66,10 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
                                     ))}
                                 </Fragment>
                             ))}
-                            <Button
-                                type="submit"
-                                className="nexus-c-dynamic-form__submit-button"
-                                appearance="primary"
-                                isDisabled={!dirty || submitting}
-                            >
-                                Submit
-                            </Button>
-                        </form>
-                    )}
-                </AKForm>
-            </div>
+                        </div>
+                    </form>
+                )}
+            </AKForm>
         </div>
     );
 };

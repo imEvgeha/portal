@@ -26,13 +26,11 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
-                return <TextField isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} />;
+                return <TextField {...fieldProps} />;
             case 'textarea':
-                return <NexusTextArea isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} />;
+                return <NexusTextArea {...fieldProps} />;
             case 'number':
-                return (
-                    <TextField isReadOnly={isReadOnly || checkDependencies('readOnly')} {...fieldProps} type="Number" />
-                );
+                return <TextField {...fieldProps} type="Number" />;
             case 'boolean':
                 const {name, label} = fieldProps;
                 return (
@@ -58,7 +56,11 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
 
     return (
         <div className="nexus-c-field">
-            <AKField isRequired={checkDependencies('required') || isRequired} {...props}>
+            <AKField
+                isDisabled={isReadOnly || checkDependencies('readOnly')}
+                isRequired={checkDependencies('required') || isRequired}
+                {...props}
+            >
                 {({fieldProps, error, valid}) => (
                     <>
                         <div className="nexus-c-field__label">

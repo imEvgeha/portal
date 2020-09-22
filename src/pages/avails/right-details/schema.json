@@ -21,7 +21,7 @@
                             {
                                 "view": "edit",
                                 "type": "readOnly",
-                                "field": "coreTitleId",
+                                "field": "Core TitleId",
                                 "value": 12
                             }
                         ]
@@ -41,7 +41,8 @@
                     "boolean": {
                         "name": "Boolean",
                         "type": "boolean",
-                        "path": "boolean"
+                        "path": "boolean",
+                        "isReadOnly": true
                     }
                 }
             },
