@@ -82,11 +82,11 @@ class CoreMetadataEditMode extends Component {
         this.props.handleOnMsvIds(data);
     };
 
-    handleOnMsvLicensorChange(e) {
+    handleOnMsvLicensorChange = e => {
         this.setState({
             msvLicensor: e.target.value,
         });
-    }
+    };
 
     handleOnMsvLicenseeChange(e) {
         this.setState({
@@ -512,14 +512,14 @@ class CoreMetadataEditMode extends Component {
                                 name="msvLicensor"
                                 id="msvLicensor"
                                 value={this.state.msvLicensor}
-                                onChange={e => this.handleOnMsvLicensorChange(e)}
+                                onChange={this.handleOnMsvLicensorChange}
                             >
                                 <option value="">Select Licensor</option>
                                 {this.props.configLicensors &&
-                                    this.props.configLicensors.value.map((e, index) => {
+                                    this.props.configLicensors.value.map(e => {
                                         return (
-                                            <option key={e.value} value={e.value}>
-                                                {e.value}
+                                            <option key={e.value} value={e.movidaName ? e.movidaName : e.value}>
+                                                {e.movidaName ? e.value + ' | ' + e.movidaName : e.value}
                                             </option>
                                         );
                                     })}
