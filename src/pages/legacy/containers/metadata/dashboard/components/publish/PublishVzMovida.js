@@ -8,6 +8,7 @@ import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
 import {Can} from '../../../../../../../ability';
 import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
+import NexusDynamicForm from '../../../../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -57,7 +58,11 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
 
 PublishVzMovida.propTypes = {
     onSyncPublishClick: PropTypes.func.isRequired,
-    externalIDs: PropTypes.array.isRequired,
+    externalIDs: PropTypes.array,
+};
+
+PublishVzMovida.defaultProps = {
+    externalIDs: null,
 };
 
 export default PublishVzMovida;
