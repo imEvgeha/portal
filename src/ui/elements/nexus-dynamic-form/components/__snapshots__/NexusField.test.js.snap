@@ -6,6 +6,7 @@ exports[`NexusField should match snapshot 1`] = `
   isDisabled={true}
   label="Right ID"
   name="rightId"
+  transform={[Function]}
   type="string"
 >
   <Component />
