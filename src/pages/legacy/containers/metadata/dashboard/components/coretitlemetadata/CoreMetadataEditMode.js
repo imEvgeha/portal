@@ -518,7 +518,7 @@ class CoreMetadataEditMode extends Component {
                                 {this.props.configLicensors &&
                                     this.props.configLicensors.value.map(e => {
                                         return (
-                                            <option key={e.value} value={e.movidaName ? e.movidaName : e.value}>
+                                            <option key={e.value} value={e.movidaName || e.value}>
                                                 {e.movidaName ? e.value + ' | ' + e.movidaName : e.value}
                                             </option>
                                         );
