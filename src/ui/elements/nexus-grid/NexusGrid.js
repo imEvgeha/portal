@@ -53,7 +53,7 @@ const NexusGrid = ({
                 columnDefs={columnDefs}
                 getContextMenuItems={getContextMenuItems}
                 rowData={rowData}
-                suppressPropertyNamesCheck={true}
+                suppressPropertyNamesCheck
                 onGridReady={handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={debounce(handleGridEvent, SELECTION_DELAY)}
