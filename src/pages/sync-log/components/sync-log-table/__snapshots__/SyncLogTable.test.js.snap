@@ -83,6 +83,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
+          "cellRenderer": "titleNameCellRenderer",
           "cellRendererParams": Object {
             "setErrors": [Function],
           },
@@ -150,6 +151,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
     frameworkComponents={
       Object {
         "publishErrors": [Function],
+        "titleNameCellRenderer": [Function],
       }
     }
     mapping={
@@ -170,6 +172,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           "minWidth": 150,
         },
         Object {
+          "cellRenderer": "titleNameCellRenderer",
           "colId": "titleName",
           "field": "titleName",
           "headerName": "Title Name",
