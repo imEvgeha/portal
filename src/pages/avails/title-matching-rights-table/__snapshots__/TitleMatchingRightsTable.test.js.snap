@@ -80,6 +80,7 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
         },
       ]
     }
+    dragStopped={null}
     frameworkComponents={Object {}}
     isGridHidden={false}
     mapping={

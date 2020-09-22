@@ -10,15 +10,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="total"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label"
       >
         Rights
       </span>
       <div
-        className="ingest-report__field--value filter-active"
-        onClick={[Function]}
+        className="ingest-report__field-value filter-active"
       >
         20001
       </div>
@@ -26,15 +27,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="created"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label"
       >
         New
       </span>
       <div
-        className="ingest-report__field--value"
-        onClick={[Function]}
+        className="ingest-report__field-value"
       >
         1001
       </div>
@@ -42,15 +44,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="updated"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label"
       >
         Updated
       </span>
       <div
-        className="ingest-report__field--value"
-        onClick={[Function]}
+        className="ingest-report__field-value"
       >
         19999
       </div>
@@ -58,15 +61,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="fatal"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label ingest-report__field-label--is-selectable"
       >
         Fatals
       </span>
       <div
-        className="ingest-report__field--value"
-        onClick={[Function]}
+        className="ingest-report__field-value ingest-report__field-value--is-selectable"
       >
         3
       </div>
@@ -74,15 +78,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="pending"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label"
       >
         Pending
       </span>
       <div
-        className="ingest-report__field--value"
-        onClick={[Function]}
+        className="ingest-report__field-value"
       >
         0
       </div>
@@ -90,15 +95,16 @@ exports[`IngestReport should match snapshot 1`] = `
     <div
       className="ingest-report__field"
       key="errors"
+      onClick={[Function]}
+      role="button"
     >
       <span
-        className="ingest-report__field--label"
+        className="ingest-report__field-label"
       >
         Errors
       </span>
       <div
-        className="ingest-report__field--value"
-        onClick={[Function]}
+        className="ingest-report__field-value"
       >
         2
       </div>
