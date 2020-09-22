@@ -65,6 +65,7 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
       },
     ]
   }
+  dragStopped={[Function]}
   id="selectedForPlanningRepo"
   isGridHidden={true}
   key="planning_table_undefined"

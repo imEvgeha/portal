@@ -10,7 +10,15 @@ import TooltipCellRenderer from './elements/cell-renderer/tooltip-cell-renderer/
 
 const SELECTION_DELAY = 5;
 
-const NexusGrid = ({columnDefs, rowData, onGridEvent, isGridHidden, frameworkComponents, ...restProps}) => {
+const NexusGrid = ({
+    columnDefs,
+    rowData,
+    onGridEvent,
+    isGridHidden,
+    frameworkComponents,
+    dragStopped,
+    ...restProps
+}) => {
     const isMounted = useRef(true);
 
     useEffect(() => {
@@ -63,6 +71,7 @@ const NexusGrid = ({columnDefs, rowData, onGridEvent, isGridHidden, frameworkCom
                     loadingCellRenderer: LoadingCellRenderer,
                     tooltipCellRenderer: TooltipCellRenderer,
                 }}
+                onDragStopped={dragStopped}
             />
         </div>
     );
@@ -75,6 +84,7 @@ NexusGrid.propTypes = {
     setRowData: PropTypes.func,
     isGridHidden: PropTypes.bool,
     frameworkComponents: PropTypes.object,
+    dragStopped: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -84,6 +94,7 @@ NexusGrid.defaultProps = {
     setRowData: null,
     isGridHidden: false,
     frameworkComponents: {},
+    dragStopped: null,
 };
 
 export default NexusGrid;

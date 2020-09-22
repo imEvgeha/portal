@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../../ui/elements/nexus-grid/NexusGrid';
@@ -26,14 +27,31 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
               }
             : col
     );
+
+    const [updatedColDef, setUpdatedColDef] = useState([]);
+
+    const dragStoppedHandler = event => {
+        const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
+        const columnHeader = event.target.textContent.trim();
+        const columns = event.columnApi.columnController.gridColumns;
+
+        const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
+        const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
+        const movedColumn = updatedMappings.splice(moveFrom, 1)[0];
+        updatedMappings.splice(moveTo, 0, movedColumn);
+
+        setUpdatedColDef(updatedMappings);
+    };
+
     return (
         <SelectedForPlanningTable
             id="selectedForPlanningRepo"
-            columnDefs={mappings}
+            columnDefs={updatedColDef.length ? updatedColDef : mappings}
             rowSelection="multiple"
             suppressRowClickSelection
             isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
             key={`planning_table_${isPlanningTabRefreshed}`}
+            dragStopped={dragStoppedHandler} //
         />
     );
 };

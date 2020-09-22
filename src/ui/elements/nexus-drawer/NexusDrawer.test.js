@@ -32,10 +32,12 @@ describe('NexusDrawer', () => {
         wrapper = shallow(<NexusDrawer onClose={onClose} isOpen={true} />);
 
         expect(wrapper.find('IconButton')).toHaveLength(1);
-        wrapper
-            .find('IconButton')
-            .props()
-            .onClick();
+        wrapper.find('IconButton').props().onClick();
         expect(onClose).toHaveBeenCalled();
+    });
+
+    it('shows a spinner when the isLoading prop is true', () => {
+        wrapper = shallow(<NexusDrawer isLoading={true} isOpen={true} onClose={() => null} />);
+        expect(wrapper.find('Spinner')).toBeTruthy();
     });
 });
