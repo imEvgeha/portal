@@ -13,6 +13,7 @@ import columnMappings from '../../columnMappings';
 import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
 import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
+import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRenderer';
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
@@ -93,6 +94,7 @@ const SyncLogTable = () => {
                 }}
                 frameworkComponents={{
                     publishErrors: PublishErrors,
+                    titleNameCellRenderer: TitleNameCellRenderer,
                 }}
             />
 
