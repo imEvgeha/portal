@@ -1,9 +1,37 @@
 const columnDefinitions = [
     {
+        colId: 'id',
+        field: 'id',
+        headerName: 'Bonus Right ID',
+        cellRendererParams: {
+            link: '/avails/rights/',
+            newTab: true,
+        },
+        cellRenderer: 'loadingCellRenderer',
+    },
+    {
         colId: 'title',
         field: 'title',
         headerName: 'Title',
         cellRenderer: 'loadingCellRenderer',
+    },
+    {
+        colId: 'sourceRightId',
+        field: 'sourceRightId',
+        headerName: 'Source Right ID',
+    },
+    {
+        colId: 'bonusRight',
+        field: 'bonusRight',
+        headerName: 'Bonus Right',
+        valueFormatter: params => {
+            return params.value ? 'Yes' : 'No';
+        },
+    },
+    {
+        colId: 'coreTitleId',
+        field: 'coreTitleId',
+        headerName: 'Core Title Id',
     },
     {
         colId: 'releaseYear',
@@ -16,11 +44,6 @@ const columnDefinitions = [
         field: 'licensor',
         headerName: 'Licensor',
         width: 120,
-    },
-    {
-        colId: 'coreTitleId',
-        field: 'coreTitleId',
-        headerName: 'Core Title Id',
     },
     {
         colId: 'rightStatus',
