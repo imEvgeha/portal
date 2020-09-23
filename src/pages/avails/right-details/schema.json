@@ -9,7 +9,8 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "rightId",
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "defaultValueCreate": "11111"
                     },
                     "title": {
                         "name": "Title",

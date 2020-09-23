@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useRef} from 'react';
+import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -8,7 +8,7 @@ import SectionTab from './components/SectionTab';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
+const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [isEdit, setIsEdit] = useState(false);
@@ -19,8 +19,18 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
                 {Object.keys(fields).map(key => {
                     const additionalProps =
                         fields[key].type === 'boolean'
-                            ? {defaultIsChecked: get(data, fields[key].path) || fields[key].defaultValue}
-                            : {defaultValue: get(data, fields[key].path) || fields[key].defaultValue};
+                            ? {
+                                  defaultIsChecked:
+                                      view === VIEWS.CREATE
+                                          ? get(fields[key], 'defaultValueCreate')
+                                          : get(data, fields[key].path),
+                              }
+                            : {
+                                  defaultValue:
+                                      view === VIEWS.CREATE
+                                          ? get(fields[key], 'defaultValueCreate')
+                                          : get(data, fields[key].path),
+                              };
                     return (
                         <NexusField
                             key={key}
@@ -38,7 +48,12 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm onSubmit={values => onSubmit(values)}>
+            <AKForm
+                onSubmit={values => {
+                    setIsEdit(false);
+                    onSubmit(values);
+                }}
+            >
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {isEdit ? (
@@ -105,11 +120,13 @@ NexusDynamicForm.propTypes = {
     schema: PropTypes.array.isRequired,
     data: PropTypes.object,
     onSubmit: PropTypes.func,
+    view: PropTypes.string,
 };
 
 NexusDynamicForm.defaultProps = {
     data: {},
     onSubmit: undefined,
+    view: VIEWS.VIEW,
 };
 
 export default NexusDynamicForm;
