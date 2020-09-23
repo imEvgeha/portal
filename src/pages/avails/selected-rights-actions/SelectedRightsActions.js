@@ -90,8 +90,11 @@ export const SelectedRightsActions = ({
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
 
-    // None of the rights has status 'Deleted'
-    const noRightsWithDeletedStatus = () => selectedRights.every(({status}) => status !== 'Deleted');
+    // None of the rights has status 'Deleted' and no territories with selected status (no rights are selected for planning)
+    const checkRightDeletionCriteria = () =>
+        selectedRights.every(
+            ({status, territory}) => status !== 'Deleted' && territory.filter(item => item.selected).length === 0
+        );
 
     // At least one of the selected rights has status 'Deleted' or 'Merged'
     const checkStatusDeleteMerged = () =>
@@ -286,7 +289,7 @@ export const SelectedRightsActions = ({
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
 
             // Deletion criteria
-            setIsDeletable(noRightsWithDeletedStatus());
+            setIsDeletable(checkRightDeletionCriteria());
 
             // Set status deleted/merged criteria
             setStatusDeleteMerged(checkStatusDeleteMerged());
@@ -393,7 +396,7 @@ export const SelectedRightsActions = ({
                                         'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
                                     })}
                                     data-test-id="mark-as-deleted"
-                                    onClick={openBulkDeleteModal}
+                                    onClick={isDeletable ? openBulkDeleteModal : null}
                                 >
                                     <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
                                         <div>{MARK_DELETED}</div>
