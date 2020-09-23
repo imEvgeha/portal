@@ -902,6 +902,7 @@ class TitleEdit extends Component {
     cleanEditorialMetadata = () => {
         this.setState({
             editorialMetadataForCreate: emptyEditorial,
+            editorialMetadataForCreateAutoDecorate: false,
         });
     };
 
