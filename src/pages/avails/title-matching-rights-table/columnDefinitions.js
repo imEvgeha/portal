@@ -1,3 +1,6 @@
+import React from 'react';
+import {Link} from 'react-router-dom';
+
 const columnDefinitions = [
     {
         colId: 'id',
@@ -5,11 +8,9 @@ const columnDefinitions = [
         headerName: 'Bonus Right ID',
         cellRendererParams: {
             link: '/avails/rights/',
+            newTab: true,
         },
-        cellRenderer: params => {
-            const rightId = params.value;
-            return `<a href=${params.link}${rightId} target="_blank">${rightId}</a>`;
-        },
+        cellRenderer: 'loadingCellRenderer',
     },
     {
         colId: 'title',
