@@ -9,9 +9,35 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
       Array [
         Object {
           "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": Object {
+            "link": "/avails/rights/",
+            "newTab": true,
+          },
+          "colId": "id",
+          "field": "id",
+          "headerName": "Bonus Right ID",
+        },
+        Object {
+          "cellRenderer": "loadingCellRenderer",
           "colId": "title",
           "field": "title",
           "headerName": "Title",
+        },
+        Object {
+          "colId": "sourceRightId",
+          "field": "sourceRightId",
+          "headerName": "Source Right ID",
+        },
+        Object {
+          "colId": "bonusRight",
+          "field": "bonusRight",
+          "headerName": "Bonus Right",
+          "valueFormatter": [Function],
+        },
+        Object {
+          "colId": "coreTitleId",
+          "field": "coreTitleId",
+          "headerName": "Core Title Id",
         },
         Object {
           "colId": "releaseYear",
@@ -24,11 +50,6 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           "field": "licensor",
           "headerName": "Licensor",
           "width": 120,
-        },
-        Object {
-          "colId": "coreTitleId",
-          "field": "coreTitleId",
-          "headerName": "Core Title Id",
         },
         Object {
           "colId": "rightStatus",
