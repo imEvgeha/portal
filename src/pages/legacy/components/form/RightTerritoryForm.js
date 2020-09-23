@@ -57,12 +57,13 @@ class RightTerritoryForm extends React.Component {
                             isFromCreatePage={this.props.isFromCreatePage}
                             existingTerritoryList={this.props.existingTerritoryList || this.props.data}
                             territoryIndex={this.props.territoryIndex}
+                            isBonusRight={this.props.isBonusRight}
                         />
                         <ModalFooter>
                             <Button appearance="default" onClick={this.props.onClose}>
                                 Cancel
                             </Button>
-                            <Button appearance="primary" type="submit">
+                            <Button appearance="primary" type="submit" isDisabled={this.props.isBonusRight}>
                                 {this.props.isEdit ? 'Update' : 'Create'}
                             </Button>
                         </ModalFooter>
@@ -81,11 +82,13 @@ RightTerritoryForm.propTypes = {
     isEdit: PropTypes.bool,
     isFromCreatePage: PropTypes.bool,
     existingTerritoryList: PropTypes.array,
+    isBonusRight: PropTypes.bool,
 };
 
 RightTerritoryForm.defaultProps = {
     isEdit: false,
     isFromCreatePage: false,
+    isBonusRight: false,
 };
 
 export default RightTerritoryForm;
