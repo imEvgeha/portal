@@ -9,7 +9,7 @@ import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
-const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependencies, ...props}) => {
+const NexusField = ({type, view, tooltip, formData, isReadOnly, isRequired, dependencies, ...props}) => {
     const checkDependencies = type => {
         // View mode has the same dependencies as Edit mode
         const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -18,7 +18,7 @@ const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependen
         return !!(
             foundDependencies &&
             foundDependencies.some(({field, value}) => {
-                const dependencyValue = get(data, field);
+                const dependencyValue = get(formData, field);
                 // if has value || its value equal to the provided value
                 return dependencyValue && (dependencyValue === value || !value);
             })
@@ -95,7 +95,7 @@ NexusField.propTypes = {
     name: PropTypes.string.isRequired,
     view: PropTypes.string,
     tooltip: PropTypes.string,
-    data: PropTypes.object,
+    formData: PropTypes.object,
     dependencies: PropTypes.array,
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
@@ -104,7 +104,7 @@ NexusField.propTypes = {
 NexusField.defaultProps = {
     view: VIEWS.VIEW,
     tooltip: null,
-    data: {},
+    formData: {},
     dependencies: [],
     isReadOnly: false,
     isRequired: false,

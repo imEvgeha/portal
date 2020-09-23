@@ -2,20 +2,16 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
+import {getDefaultValue} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
+const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
-
-    const getDefaultValue = (field = {}) => {
-        return view === VIEWS.CREATE ? get(field, 'defaultValueCreate') : get(data, field.path);
-    };
 
     const buildSection = (fields = {}, getValues) => {
         return (
@@ -26,8 +22,8 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
                             key={key}
                             name={key}
                             view={view}
-                            data={getValues()}
-                            defaultValue={getDefaultValue(fields[key])}
+                            formData={getValues()}
+                            defaultValue={getDefaultValue(fields[key], view, initialData)}
                             {...fields[key]}
                         />
                     );
@@ -108,13 +104,13 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
 
 NexusDynamicForm.propTypes = {
     schema: PropTypes.array.isRequired,
-    data: PropTypes.object,
+    initialData: PropTypes.object,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
-    data: {},
+    initialData: {},
     onSubmit: undefined,
     isEdit: false,
 };
