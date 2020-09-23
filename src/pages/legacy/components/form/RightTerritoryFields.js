@@ -8,7 +8,14 @@ import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-t
 import Textfield from '@atlaskit/textfield';
 import {getValidDate} from '../../../../util/utils';
 
-const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, territoryIndex, options}) => {
+const RightTerritoryFields = ({
+    isEdit,
+    isFromCreatePage,
+    existingTerritoryList,
+    territoryIndex,
+    options,
+    isBonusRight,
+}) => {
     const currentTerritory = Array.isArray(existingTerritoryList) && existingTerritoryList[territoryIndex];
     const errors = (currentTerritory && currentTerritory.errors) || [];
     const {dateSelected = '', selected = false, dateWithdrawn = ''} =
@@ -76,7 +83,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
             <Field
                 label="COUNTRY"
                 isRequired
-                isDisabled={isEdit && currentTerritory['selected']}
+                isDisabled={isEdit && (currentTerritory['selected'] || isBonusRight)}
                 name="country"
                 validate={validate}
                 defaultValue={
@@ -139,6 +146,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
                 isRequired
                 validate={validate}
                 name="rightContractStatus"
+                isDisabled={isEdit && isBonusRight}
                 defaultValue={
                     isEdit
                         ? {
@@ -190,6 +198,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
             <Field
                 label="VU CONTRACT ID"
                 name="vuContractId"
+                isDisabled={isEdit && isBonusRight}
                 defaultValue={
                     isEdit && existingTerritoryList[territoryIndex]['vuContractId']
                         ? existingTerritoryList[territoryIndex]['vuContractId'].join(', ')
@@ -216,7 +225,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
                         value={value}
                         onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
                         isReturningTime={false}
-                        isDisabled={isFromCreatePage}
+                        isDisabled={isFromCreatePage || (isEdit && isBonusRight)}
                     />
                 )}
             </Field>
@@ -224,6 +233,7 @@ const RightTerritoryFields = ({isEdit, isFromCreatePage, existingTerritoryList, 
             <Field
                 label="COMMENTS"
                 name="comment"
+                isDisabled={isEdit && isBonusRight}
                 defaultValue={
                     isEdit && existingTerritoryList[territoryIndex]['comment']
                         ? existingTerritoryList[territoryIndex]['comment']
@@ -250,6 +260,7 @@ RightTerritoryFields.propTypes = {
     existingTerritoryList: PropTypes.array,
     territoryIndex: PropTypes.number,
     options: PropTypes.array,
+    isBonusRight: PropTypes.bool,
 };
 
 RightTerritoryFields.defaultProps = {
@@ -258,6 +269,7 @@ RightTerritoryFields.defaultProps = {
     existingTerritoryList: [],
     territoryIndex: null,
     options: [],
+    isBonusRight: false,
 };
 
 export default RightTerritoryFields;
