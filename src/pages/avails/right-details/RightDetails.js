@@ -26,7 +26,8 @@ const RightDetails = () => {
             <NexusDynamicForm
                 schema={schema}
                 data={mockData}
-                view={VIEWS.VIEW}
+                isEdit
+                // isEdit={false}
                 onSubmit={values => console.log(values)}
             />
         </div>

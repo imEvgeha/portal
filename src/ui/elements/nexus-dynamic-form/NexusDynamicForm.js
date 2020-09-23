@@ -8,10 +8,10 @@ import SectionTab from './components/SectionTab';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
+const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
-    const [isEdit, setIsEdit] = useState(false);
+    const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
     const buildSection = (fields = {}, getValues) => {
         return (
@@ -35,7 +35,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
                         <NexusField
                             key={key}
                             name={key}
-                            view={isEdit ? VIEWS.EDIT : VIEWS.VIEW}
+                            view={view}
                             data={getValues()}
                             {...additionalProps}
                             {...fields[key]}
@@ -50,13 +50,13 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
         <div className="nexus-c-dynamic-form">
             <AKForm
                 onSubmit={values => {
-                    setIsEdit(false);
+                    setView(VIEWS.VIEW);
                     onSubmit(values);
                 }}
             >
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
-                        {isEdit ? (
+                        {view !== VIEWS.VIEW ? (
                             <>
                                 <Button
                                     type="submit"
@@ -70,7 +70,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
                                     className="nexus-c-dynamic-form__cancel-button"
                                     onClick={() => {
                                         reset();
-                                        setIsEdit(false);
+                                        setView(VIEWS.VIEW);
                                     }}
                                 >
                                     Cancel
@@ -80,7 +80,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, view}) => {
                             <Button
                                 className="nexus-c-dynamic-form__edit-button"
                                 appearance="primary"
-                                onClick={() => setIsEdit(true)}
+                                onClick={() => setView(VIEWS.EDIT)}
                             >
                                 Edit
                             </Button>
@@ -120,13 +120,13 @@ NexusDynamicForm.propTypes = {
     schema: PropTypes.array.isRequired,
     data: PropTypes.object,
     onSubmit: PropTypes.func,
-    view: PropTypes.string,
+    isEdit: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
     data: {},
     onSubmit: undefined,
-    view: VIEWS.VIEW,
+    isEdit: false,
 };
 
 export default NexusDynamicForm;

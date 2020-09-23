@@ -48,7 +48,8 @@
                     "boolean": {
                         "name": "Boolean",
                         "type": "boolean",
-                        "path": "boolean"
+                        "path": "boolean",
+                        "defaultValueCreate": true
                     }
                 }
             },
