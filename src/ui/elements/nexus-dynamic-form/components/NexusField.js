@@ -9,7 +9,7 @@ import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
-const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependencies, defaultIsChecked, ...props}) => {
+const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependencies, ...props}) => {
     const checkDependencies = type => {
         // View mode has the same dependencies as Edit mode
         const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -39,7 +39,7 @@ const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependen
                         isDisabled={isReadOnly || checkDependencies('readOnly')}
                         name={fieldProps.name}
                         label={fieldProps.label}
-                        defaultIsChecked={defaultIsChecked}
+                        defaultIsChecked={fieldProps.value}
                     >
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
@@ -54,7 +54,7 @@ const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependen
             case 'datetime':
                 return <DateTimePicker {...fieldProps} />;
             case 'boolean':
-                return <Checkbox isDisabled defaultChecked={defaultIsChecked} />;
+                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             default:
                 return <div>{fieldProps.value}</div>;
         }
@@ -99,7 +99,6 @@ NexusField.propTypes = {
     dependencies: PropTypes.array,
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
-    defaultIsChecked: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -109,7 +108,6 @@ NexusField.defaultProps = {
     dependencies: [],
     isReadOnly: false,
     isRequired: false,
-    defaultIsChecked: false,
 };
 
 export default NexusField;

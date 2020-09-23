@@ -21,21 +21,13 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
         return (
             <>
                 {Object.keys(fields).map(key => {
-                    const additionalProps =
-                        fields[key].type === 'boolean'
-                            ? {
-                                  defaultIsChecked: getDefaultValue(fields[key]),
-                              }
-                            : {
-                                  defaultValue: getDefaultValue(fields[key]),
-                              };
                     return (
                         <NexusField
                             key={key}
                             name={key}
                             view={view}
                             data={getValues()}
-                            {...additionalProps}
+                            defaultValue={getDefaultValue(fields[key])}
                             {...fields[key]}
                         />
                     );
