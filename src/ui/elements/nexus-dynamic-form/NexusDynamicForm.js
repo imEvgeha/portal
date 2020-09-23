@@ -17,13 +17,17 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
         return (
             <>
                 {Object.keys(fields).map(key => {
+                    const additionalProps =
+                        fields[key].type === 'boolean'
+                            ? {defaultIsChecked: get(data, fields[key].path) || fields[key].defaultValue}
+                            : {defaultValue: get(data, fields[key].path) || fields[key].defaultValue};
                     return (
                         <NexusField
                             key={key}
                             name={key}
                             view={isEdit ? VIEWS.EDIT : VIEWS.VIEW}
                             data={getValues()}
-                            defaultValue={get(data, fields[key].path) || fields[key].defaultValue}
+                            {...additionalProps}
                             {...fields[key]}
                         />
                     );
@@ -34,7 +38,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm onSubmit={onSubmit}>
+            <AKForm onSubmit={values => onSubmit(values)}>
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {isEdit ? (

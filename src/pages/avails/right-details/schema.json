@@ -47,8 +47,7 @@
                     "boolean": {
                         "name": "Boolean",
                         "type": "boolean",
-                        "path": "boolean",
-                        "isReadOnly": true
+                        "path": "boolean"
                     }
                 }
             },
