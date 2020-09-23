@@ -13,6 +13,10 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
+    const getDefaultValue = (field = {}) => {
+        return view === VIEWS.CREATE ? get(field, 'defaultValueCreate') : get(data, field.path);
+    };
+
     const buildSection = (fields = {}, getValues) => {
         return (
             <>
@@ -20,16 +24,10 @@ const NexusDynamicForm = ({schema = [], data, onSubmit, isEdit}) => {
                     const additionalProps =
                         fields[key].type === 'boolean'
                             ? {
-                                  defaultIsChecked:
-                                      view === VIEWS.CREATE
-                                          ? get(fields[key], 'defaultValueCreate')
-                                          : get(data, fields[key].path),
+                                  defaultIsChecked: getDefaultValue(fields[key]),
                               }
                             : {
-                                  defaultValue:
-                                      view === VIEWS.CREATE
-                                          ? get(fields[key], 'defaultValueCreate')
-                                          : get(data, fields[key].path),
+                                  defaultValue: getDefaultValue(fields[key]),
                               };
                     return (
                         <NexusField
