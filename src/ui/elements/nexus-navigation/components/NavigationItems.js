@@ -1,12 +1,14 @@
 import React from 'react';
 import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
+import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
 import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import {can} from '../../../../ability';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
-import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT} from '../constants';
+import {URL} from '../../../../util/Common';
+import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
     const canReadEventManager = can('read', 'EventManagement');
@@ -62,5 +64,12 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
                   },
               ]
             : []),
+        URL.isLocalOrDev() && {
+            icon: () => <EditorBulletListIcon size="large" />,
+            id: DOP_TASKS,
+            tooltip: 'DOP Tasks',
+            isSelected: selectedItem === DOP_TASKS,
+            onClick: () => handleClick(DOP_TASKS),
+        },
     ];
 };
