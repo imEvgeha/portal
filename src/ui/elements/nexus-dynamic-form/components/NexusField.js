@@ -6,12 +6,14 @@ import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import {get} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
+import {VIEWS} from '../constants';
 import './NexusField.scss';
 
-const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, dependencies, ...props}) => {
+const NexusField = ({type, view, tooltip, data, isReadOnly, isRequired, dependencies, ...props}) => {
     const checkDependencies = type => {
-        const view = isEdit ? 'edit' : 'view';
-        const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === view);
+        // View mode has the same dependencies as Edit mode
+        const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
+        const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
 
         return !!(
             foundDependencies &&
@@ -75,7 +77,9 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
                             )}
                         </div>
                         <div className="nexus-c-field__value">
-                            {isEdit ? renderFieldEditMode(fieldProps) : renderFieldViewMode(fieldProps)}
+                            {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                ? renderFieldEditMode(fieldProps)
+                                : renderFieldViewMode(fieldProps)}
                         </div>
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                     </>
@@ -88,7 +92,7 @@ const NexusField = ({type, isEdit, tooltip, data, isReadOnly, isRequired, depend
 NexusField.propTypes = {
     type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    isEdit: PropTypes.bool,
+    view: PropTypes.string,
     tooltip: PropTypes.string,
     data: PropTypes.object,
     dependencies: PropTypes.array,
@@ -97,7 +101,7 @@ NexusField.propTypes = {
 };
 
 NexusField.defaultProps = {
-    isEdit: false,
+    view: VIEWS.VIEW,
     tooltip: null,
     data: {},
     dependencies: [],

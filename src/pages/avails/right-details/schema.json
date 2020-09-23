@@ -19,10 +19,16 @@
                         "path": "title",
                         "dependencies": [
                             {
-                                "view": "edit",
+                                "view": "EDIT",
                                 "type": "readOnly",
                                 "field": "Core TitleId",
                                 "value": 12
+                            },
+                            {
+                                "view": "EDIT",
+                                "type": "required",
+                                "field": "Boolean",
+                                "value": true
                             }
                         ]
                     },

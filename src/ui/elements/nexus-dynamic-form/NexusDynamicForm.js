@@ -5,14 +5,15 @@ import {default as AKForm} from '@atlaskit/form';
 import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
+import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [isEdit, setIsEdit] = useState(false);
-    const form = useRef();
-    const buildSection = (fields = {}) => {
+
+    const buildSection = (fields = {}, getValues) => {
         return (
             <>
                 {Object.keys(fields).map(key => {
@@ -20,8 +21,8 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
                         <NexusField
                             key={key}
                             name={key}
-                            isEdit={isEdit}
-                            data={form.current && form.current.getValues()}
+                            view={isEdit ? VIEWS.EDIT : VIEWS.VIEW}
+                            data={getValues()}
                             defaultValue={get(data, fields[key].path) || fields[key].defaultValue}
                             {...fields[key]}
                         />
@@ -33,8 +34,8 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm ref={form} onSubmit={onSubmit}>
-                {({formProps, dirty, submitting, reset}) => (
+            <AKForm onSubmit={onSubmit}>
+                {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {isEdit ? (
                             <>
@@ -83,7 +84,7 @@ const NexusDynamicForm = ({schema = [], data, onSubmit}) => {
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(fields)}
+                                            {buildSection(fields, getValues)}
                                         </Fragment>
                                     ))}
                                 </Fragment>
