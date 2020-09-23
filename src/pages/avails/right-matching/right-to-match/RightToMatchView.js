@@ -209,7 +209,7 @@ const RightToMatchView = ({
                     case START:
                     case END:
                     case AVAIL_START:
-                    case AVAIL_END:
+                    case AVAIL_END: {
                         const or =
                             (!pendingRightData[key] && params.value) ||
                             (pendingRightData[key] && !params.value) ||
@@ -218,6 +218,7 @@ const RightToMatchView = ({
                             return 'nexus-c-right-to-match-view__grid-column--highlighted';
                         }
                         break;
+                    }
                     case TERRITORY:
                         if (params.colDef.colId === 'selected') return;
                         if (pendingRightData[key].length !== params.value.length) {

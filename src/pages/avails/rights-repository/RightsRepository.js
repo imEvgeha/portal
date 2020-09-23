@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
@@ -82,6 +82,7 @@ const RightsRepository = ({
     username,
     toggleRefreshGridData,
 }) => {
+    const isMounted = useRef(true);
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
@@ -101,6 +102,12 @@ const RightsRepository = ({
     const [singleRightMatch, setSingleRightMatch] = useState([]);
 
     useEffect(() => {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
         gridApi && gridApi.setFilterModel(null);
     }, [selectedIngest, selectedAttachmentId, gridApi]);
 
@@ -117,7 +124,7 @@ const RightsRepository = ({
     }, [ingestClick]);
 
     useEffect(() => {
-        if (selectedIngest && selectedAttachmentId) {
+        if (isMounted.current && selectedIngest && selectedAttachmentId) {
             const {attachments} = selectedIngest;
             const attachment = Array.isArray(attachments)
                 ? attachments.find(a => a.id === selectedAttachmentId)
@@ -132,7 +139,7 @@ const RightsRepository = ({
     useEffect(() => {
         const {external = {}} = rightsFilter || {};
         const {status} = external;
-        if (!isEqual(previousExternalStatusFilter, status) && gridApi) {
+        if (isMounted.current && !isEqual(previousExternalStatusFilter, status) && gridApi) {
             const filterInstance = gridApi.getFilterInstance('status');
             let values = [];
             if (!status || status === 'Rights') {
@@ -155,7 +162,7 @@ const RightsRepository = ({
     useEffect(() => {
         let newSelectedRepoRights = cloneDeep(currentUserSelectedRights);
 
-        if (gridApi) {
+        if (isMounted.current && gridApi) {
             const selectedIds = newSelectedRepoRights.map(({id}) => id);
             const loadedSelectedRights = [];
 
@@ -169,12 +176,13 @@ const RightsRepository = ({
                 newSelectedRepoRights = loadedSelectedRights;
             }
         }
-
-        setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
+        if (isMounted.current) {
+            setSelectedRepoRights(getSelectedRightsFromIngest(newSelectedRepoRights, selectedIngest));
+        }
     }, [search, currentUserSelectedRights, selectedIngest, gridApi, isTableDataLoading]);
 
     useEffect(() => {
-        if (selectedGridApi) {
+        if (isMounted.current && selectedGridApi) {
             if (isTableDataLoading) {
                 selectedGridApi.clearFocusedCell();
                 selectedGridApi.showLoadingOverlay();
@@ -185,7 +193,7 @@ const RightsRepository = ({
     }, [isTableDataLoading, selectedGridApi]);
 
     useEffect(() => {
-        if (selectedGridApi && selectedRepoRights.length > 0) {
+        if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -195,7 +203,9 @@ const RightsRepository = ({
         DOPService.getUsersProjectsList(1, 1)
             .then(([response, headers]) => {
                 const total = headers.get('X-Total-Count') || response.length;
-                setPlanningRightsCount(total);
+                if (isMounted.current) {
+                    setPlanningRightsCount(total);
+                }
             })
             .catch(error => {
                 // error-handling here
@@ -204,17 +214,17 @@ const RightsRepository = ({
 
     // Fetch only pre-plan rights from the current user
     useEffect(() => {
-        if (isObject(prePlanRights) && username) {
+        if (isMounted.current && isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
-        if (activeTab !== RIGHTS_TAB) {
+        if (isMounted.current && activeTab !== RIGHTS_TAB) {
             toggleRefreshGridData(true);
         }
     }, [prePlanRights, username]);
 
     // Fetch only selected rights from the current user
     useEffect(() => {
-        if (isObject(selectedRights) && username) {
+        if (isMounted.current && isObject(selectedRights) && username) {
             const usersSelectedRights = get(selectedRights, username, {});
             setCurrentUserSelectedRights(Object.values(usersSelectedRights) || []);
         }

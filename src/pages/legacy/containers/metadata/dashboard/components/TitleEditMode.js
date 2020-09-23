@@ -524,7 +524,7 @@ class TitleEditMode extends Component {
 }
 
 TitleEditMode.propTypes = {
-    externalIDs: PropTypes.object,
+    externalIDs: PropTypes.array,
     titleRankingActiveTab: PropTypes.any,
     toggleTitleRating: PropTypes.func,
     addTitleRatingTab: PropTypes.func,
