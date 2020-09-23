@@ -245,7 +245,7 @@ class TitleEdit extends Component {
         };
 
         this.setState({
-            editedForm: editedForm,
+            editedForm,
         });
     };
 
