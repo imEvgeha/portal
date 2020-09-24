@@ -23,3 +23,8 @@ export const getLinkedRights = payload => ({
 export const clearLinkedRights = () => ({
     type: actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS,
 });
+
+export const getRight = payload => ({
+    type: actionTypes.GET_RIGHT,
+    payload,
+});
