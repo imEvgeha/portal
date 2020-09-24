@@ -21,12 +21,6 @@
                                 "view": "EDIT",
                                 "type": "readOnly",
                                 "field": "Core TitleId"
-                            },
-                            {
-                                "view": "EDIT",
-                                "type": "required",
-                                "field": "territory.selected",
-                                "value": true
                             }
                         ]
                     },
@@ -65,8 +59,8 @@
                     "coreTitleId": {
                         "name": "Core TitleId",
                         "type": "number",
-                        "isRequired": true,
-                        "path": "coreTitleId"
+                        "path": "coreTitleId",
+                        "isReadOnly": true
                     }
                 }
             }
