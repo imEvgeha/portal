@@ -14,15 +14,9 @@ export const getValidationError = (validationErrors, field) => {
         error = fieldValidationError.message;
         if (fieldValidationError.sourceDetails) {
             if (fieldValidationError.sourceDetails.originalValue)
-                error += `, original value:  '${  fieldValidationError.sourceDetails.originalValue  }'`;
+                error = `${error}, original value: ${fieldValidationError.sourceDetails.originalValue}`;
             if (fieldValidationError.sourceDetails.fileName) {
-                error +=
-                    `, in file ${ 
-                    fieldValidationError.sourceDetails.fileName 
-                    }, row number ${ 
-                    fieldValidationError.sourceDetails.rowId 
-                    }, column ${ 
-                    fieldValidationError.sourceDetails.originalFieldName}`;
+                error = `${error}, in file ${fieldValidationError.sourceDetails.fileName}, row number ${fieldValidationError.sourceDetails.rowId}, column ${fieldValidationError.sourceDetails.originalFieldName}`;
             }
         }
     }
