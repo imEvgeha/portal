@@ -3,3 +3,4 @@ export const VIEWS = {
     VIEW: 'VIEW',
     CREATE: 'CREATE',
 };
+export const INCORRECT_LENGTH = 'INCORRECT LENGTH';
