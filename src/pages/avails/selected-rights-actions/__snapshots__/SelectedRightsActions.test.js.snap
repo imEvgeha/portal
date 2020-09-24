@@ -15,7 +15,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="view-history"
-        onClick={null}
+        onClick={[Function]}
       >
         <div>
           View Audit History
@@ -24,7 +24,7 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"
-        onClick={null}
+        onClick={[Function]}
       >
         <NexusTooltip
           content="This feature is enabled when:
@@ -42,7 +42,7 @@ either all are bonus rights(with unique sourceRightId) or none"
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-unmatch"
-        onClick={null}
+        onClick={[Function]}
       >
         <NexusTooltip
           content="This feature is enabled when:
@@ -59,7 +59,7 @@ either all are bonus rights(with unique sourceRightId) or none"
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bonus-rights"
-        onClick={null}
+        onClick={[Function]}
       >
         <NexusTooltip
           content="This feature is enabled when selected
@@ -80,7 +80,7 @@ and Temporary Price Reduction = false"
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="add-to-preplan"
-        onClick={null}
+        onClick={[Function]}
       >
         <NexusTooltip
           content="Select Right to enable this feature"

@@ -27,6 +27,7 @@ describe('SelectedRightsActions', () => {
                     store={store}
                     toggleRefreshGridData={() => null}
                     selectedRightGridApi={{}}
+                    activeTab=""
                 />
             );
         });
