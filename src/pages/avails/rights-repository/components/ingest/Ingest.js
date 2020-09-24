@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import config from 'react-global-configuration';
+import {Redirect} from 'react-router-dom';
 import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
 import Email from '../../../../../assets/email.svg';
@@ -8,60 +10,67 @@ import IngestReport from '../../../ingest-panel/components/ingest-report/IngestR
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
 import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
 import Constants from '../../../ingest-panel/constants';
+import {DOP_PROJECT_URL} from '../../../selected-for-planning/constants';
 import './Ingest.scss';
 
-const Ingest = ({
-    ingest,
-    filterByStatus,
-    attachment,
-    deselectIngest,
-    downloadIngestEmail,
-    downloadIngestFile,
-}) => {
+const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIngestEmail, downloadIngestFile}) => {
     const {attachments = [{}], ingestType, received, id} = ingest;
     const {link, status, ingestReport = {}} = attachment;
-    const {attachmentTypes: {EMAIL}} = Constants;
+    const {
+        attachmentTypes: {EMAIL},
+    } = Constants;
     const emails = attachments.filter(a => a.attachmentType && a.attachmentType === EMAIL);
 
-    return ingest && (
-        <div className="nexus-c-avails-ingest">
-            <div className="nexus-c-avails-ingest__cross-icon">
-                <CrossCircle className="nexus-c-avails-ingest__cross-circle" onClick={deselectIngest} />
-            </div>
-            <div className="nexus-c-avails-ingest__details">
-                <IngestTitle
-                    ingestType={ingestType}
-                    link={link}
-                    isHeader
-                />
-                <IngestStatus
-                    status={status}
-                    date={received}
-                    ingestType={ingestType}
-                />
-                <div className="nexus-c-avails-ingest__avail-id">Avail History ID: {ingest.id}</div>
-            </div>
-            <div className="nexus-c-avails-ingest__stats">
-                <IngestReport
-                    report={ingestReport}
-                    isShowingError={false}
-                    filterClick={filterByStatus}
-                    ingestId={id}
-                />
-                {emails.map(email => (
-                    <div key={email.id} className="nexus-c-avails-ingest__email">
-                        <NexusTooltip content="Download Email">
-                            <Email key={email.id} className="nexus-c-avails-ingest__email-icon" onClick={() => downloadIngestEmail(email)} />
+    let renderIngestId = ingest.id;
+    if (ingest.dopProjectId) {
+        const url = config.get('gateway.DOPUrl') + DOP_PROJECT_URL + ingest.dopProjectId;
+        renderIngestId = (
+            <a href={url} target="_blank">
+                {ingest.id}
+            </a>
+        );
+    }
+
+    return (
+        ingest && (
+            <div className="nexus-c-avails-ingest">
+                <div className="nexus-c-avails-ingest__cross-icon">
+                    <CrossCircle className="nexus-c-avails-ingest__cross-circle" onClick={deselectIngest} />
+                </div>
+                <div className="nexus-c-avails-ingest__details">
+                    <IngestTitle ingestType={ingestType} link={link} isHeader />
+                    <IngestStatus status={status} date={received} ingestType={ingestType} />
+                    <div className="nexus-c-avails-ingest__avail-id">Avail History ID: {renderIngestId}</div>
+                </div>
+                <div className="nexus-c-avails-ingest__stats">
+                    <IngestReport
+                        report={ingestReport}
+                        isShowingError={false}
+                        filterClick={filterByStatus}
+                        ingestId={id}
+                    />
+                    {emails.map(email => (
+                        <div key={email.id} className="nexus-c-avails-ingest__email">
+                            <NexusTooltip content="Download Email">
+                                <Email
+                                    key={email.id}
+                                    className="nexus-c-avails-ingest__email-icon"
+                                    onClick={() => downloadIngestEmail(email)}
+                                />
+                            </NexusTooltip>
+                        </div>
+                    ))}
+                    <div className="nexus-c-avails-ingest__download">
+                        <NexusTooltip content="Download Attachment">
+                            <DownloadIcon
+                                className="nexus-c-avails-ingest__download-icon"
+                                onClick={() => downloadIngestFile(attachment)}
+                            />
                         </NexusTooltip>
                     </div>
-                ))}
-                <div className="nexus-c-avails-ingest__download">
-                    <NexusTooltip content="Download Attachment">
-                        <DownloadIcon className="nexus-c-avails-ingest__download-icon" onClick={() => downloadIngestFile(attachment)} />
-                    </NexusTooltip>
                 </div>
             </div>
-        </div>
+        )
     );
 };
 
