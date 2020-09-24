@@ -8,7 +8,8 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 - boolean
 
 ## Json schema
-See an example of json schema in `NEXUS\PORTAL\src\pages\avails\right-details`
+- See an example of json schema in `NEXUS\PORTAL\src\pages\avails\right-details`
+- path should be the same as the field name in the API
 
 ## Dependencies
 - Are used to provide dependencies between the fields

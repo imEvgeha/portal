@@ -16,6 +16,7 @@
                         "type": "string",
                         "isRequired": true,
                         "path": "title",
+                        "tooltip": "Read Only when coreTitleId exists",
                         "dependencies": [
                             {
                                 "view": "EDIT",
@@ -27,7 +28,6 @@
                     "releaseYear": {
                         "name": "Release Year",
                         "type": "number",
-                        "tooltip": "Required when coreTitleId exists",
                         "path": "releaseYear",
                         "customValidation": "length4"
                     },
