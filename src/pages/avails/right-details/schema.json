@@ -8,7 +8,7 @@
                     "rightId": {
                         "name": "Right ID",
                         "type": "string",
-                        "path": "rightId",
+                        "path": "id",
                         "isReadOnly": true
                     },
                     "title": {

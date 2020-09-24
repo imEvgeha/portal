@@ -2,45 +2,23 @@ import React, {memo, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
-import {getRight} from "../rights-repository/rightsActions";
+import {getRight} from '../rights-repository/rightsActions';
+import * as selectors from '../rights-repository/rightsSelectors';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight}) => {
-    const mockData = {
-        rightId: '123',
-        title: 'Some title Lorem Ipsum is simply dummy text of ',
-        boolean: true,
-        coreTitleId: 12,
-        rating: {
-            ratingSystem: 'system X',
-            ratingValue: null,
-            ratingReason: null,
-        },
-        territory: [
-            {
-                country: 'GB',
-                selected: false,
-                dateSelected: null,
-                rightContractStatus: 'Pending',
-                vuContractId: [],
-                hide: null,
-                comment: null,
-                dateWithdrawn: null,
-            },
-        ],
-    };
-
+const RightDetails = ({getRight, right, match}) => {
     useEffect(() => {
-        getRight({id: 'rght_zrp8g'});
-    });
+        const {params} = match || {};
+        getRight({id: params.id});
+    }, []);
 
     return (
         <div className="nexus-c-right-details">
             <NexusDynamicForm
                 schema={schema}
-                initialData={mockData}
+                initialData={right}
                 isEdit
                 // isEdit={false}
                 onSubmit={values => console.log(values)}
@@ -51,14 +29,26 @@ const RightDetails = ({getRight}) => {
 
 RightDetails.propTypes = {
     getRight: PropTypes.func,
+    right: PropTypes.object,
+    match: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
     getRight: () => null,
+    right: {},
+    match: {},
+};
+
+const mapStateToProps = () => {
+    const rightSelector = selectors.getRightDetailsRightsSelector();
+
+    return (state, props) => ({
+        right: rightSelector(state, props),
+    });
 };
 
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(memo(RightDetails));
+export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));
