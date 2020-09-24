@@ -6,7 +6,6 @@ import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import {get} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {minLength8} from '../valdationUtils/minLength8.js';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -19,8 +18,20 @@ const NexusField = ({
     isRequired,
     dependencies,
     validationError,
+    customValidation,
     ...props
 }) => {
+    const getValidationFunction = value => {
+        // load dynamic file
+        return import('../valdationUtils/minLength8.js').then(math => {
+            return math.minLength8(value);
+        });
+
+        // return new Promise((resolve) => {
+        //
+        // });
+    };
+
     const checkDependencies = type => {
         // View mode has the same dependencies as Edit mode
         const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -79,7 +90,7 @@ const NexusField = ({
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
-                validate={minLength8}
+                validate={getValidationFunction}
                 {...props}
             >
                 {({fieldProps, error}) => (
@@ -117,6 +128,7 @@ NexusField.propTypes = {
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
+    customValidation: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -127,6 +139,7 @@ NexusField.defaultProps = {
     isReadOnly: false,
     isRequired: false,
     validationError: null,
+    customValidation: null,
 };
 
 export default NexusField;
