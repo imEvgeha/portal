@@ -36,7 +36,8 @@
                     "ratingSystem": {
                         "name": "Rating System",
                         "type": "string",
-                        "path": "rating.ratingSystem"
+                        "path": "rating.ratingSystem",
+                        "customValidation": "minLength8"
                     },
                     "coreTitleId": {
                         "name": "Core TitleId",

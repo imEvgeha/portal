@@ -6,6 +6,7 @@ import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import {get} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
+import {minLength8} from '../valdationUtils/minLength8.js';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -78,9 +79,10 @@ const NexusField = ({
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
+                validate={minLength8}
                 {...props}
             >
-                {({fieldProps, error, valid}) => (
+                {({fieldProps, error}) => (
                     <>
                         <div className="nexus-c-field__label">
                             {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
@@ -90,15 +92,14 @@ const NexusField = ({
                                 </span>
                             )}
                         </div>
-                        <div className="nexus-c-field__value">
-                            {view === VIEWS.EDIT || view === VIEWS.CREATE
-                                ? renderFieldEditMode(fieldProps)
-                                : renderFieldViewMode(fieldProps)}
+                        <div className="nexus-c-field__value-section">
+                            <div className="nexus-c-field__value">
+                                {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                    ? renderFieldEditMode(fieldProps)
+                                    : renderFieldViewMode(fieldProps)}
+                            </div>
+                            <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
                         </div>
-                        {/* <div className="nexus-c-field__error"> */}
-                        {/*    <ErrorMessage>{'aa'}</ErrorMessage> */}
-                        {/* </div> */}
-                        {error && <ErrorMessage>{error}</ErrorMessage>}
                     </>
                 )}
             </AKField>
