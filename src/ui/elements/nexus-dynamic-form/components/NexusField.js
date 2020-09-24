@@ -23,13 +23,9 @@ const NexusField = ({
 }) => {
     const getValidationFunction = value => {
         // load dynamic file
-        return import('../valdationUtils/minLength8.js').then(math => {
-            return math.minLength8(value);
+        return import(`../valdationUtils/${customValidation}.js`).then(math => {
+            return math[`${customValidation}`](value);
         });
-
-        // return new Promise((resolve) => {
-        //
-        // });
     };
 
     const checkDependencies = type => {
@@ -90,7 +86,7 @@ const NexusField = ({
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
-                validate={getValidationFunction}
+                validate={customValidation && getValidationFunction}
                 {...props}
             >
                 {({fieldProps, error}) => (
