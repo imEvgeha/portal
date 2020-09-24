@@ -9,7 +9,17 @@ import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
-const NexusField = ({type, view, tooltip, formData, isReadOnly, isRequired, dependencies, ...props}) => {
+const NexusField = ({
+    type,
+    view,
+    tooltip,
+    formData,
+    isReadOnly,
+    isRequired,
+    dependencies,
+    validationError,
+    ...props
+}) => {
     const checkDependencies = type => {
         // View mode has the same dependencies as Edit mode
         const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -50,6 +60,9 @@ const NexusField = ({type, view, tooltip, formData, isReadOnly, isRequired, depe
     };
 
     const renderFieldViewMode = fieldProps => {
+        if (validationError) {
+            return <div>{validationError}</div>;
+        }
         switch (type) {
             case 'datetime':
                 return <DateTimePicker {...fieldProps} />;
@@ -61,7 +74,7 @@ const NexusField = ({type, view, tooltip, formData, isReadOnly, isRequired, depe
     };
 
     return (
-        <div className="nexus-c-field">
+        <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
@@ -82,6 +95,9 @@ const NexusField = ({type, view, tooltip, formData, isReadOnly, isRequired, depe
                                 ? renderFieldEditMode(fieldProps)
                                 : renderFieldViewMode(fieldProps)}
                         </div>
+                        {/* <div className="nexus-c-field__error"> */}
+                        {/*    <ErrorMessage>{'aa'}</ErrorMessage> */}
+                        {/* </div> */}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                     </>
                 )}
@@ -99,6 +115,7 @@ NexusField.propTypes = {
     dependencies: PropTypes.array,
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
+    validationError: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -108,6 +125,7 @@ NexusField.defaultProps = {
     dependencies: [],
     isReadOnly: false,
     isRequired: false,
+    validationError: null,
 };
 
 export default NexusField;
