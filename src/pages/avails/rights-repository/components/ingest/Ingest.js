@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
-import {Redirect} from 'react-router-dom';
 import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
 import Email from '../../../../../assets/email.svg';
