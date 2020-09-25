@@ -238,16 +238,15 @@ class TitleEdit extends Component {
             } else {
                 this.setValidationError(YEAR_VALIDATION_ERROR, 'pop');
             }
-        } else {
-            const editedForm = {
-                ...this.state.editedForm,
-                [e.target.name]: e.target.value,
-            };
-
-            this.setState({
-                editedForm: editedForm,
-            });
         }
+        const editedForm = {
+            ...this.state.editedForm,
+            [e.target.name]: e.target.value,
+        };
+
+        this.setState({
+            editedForm,
+        });
     };
 
     handleCategoryOnChangeEdit = category => {
@@ -902,6 +901,7 @@ class TitleEdit extends Component {
     cleanEditorialMetadata = () => {
         this.setState({
             editorialMetadataForCreate: emptyEditorial,
+            editorialMetadataForCreateAutoDecorate: false,
         });
     };
 

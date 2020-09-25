@@ -1,0 +1,14 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-dop-tasks-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @include margin(6);
+}
+
+.nexus-c-dop-tasks-header__label {
+    font-size: 29px;
+    color: map-get($neutrals, N800);
+}

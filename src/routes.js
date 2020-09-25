@@ -1,6 +1,7 @@
 import React from 'react';
 import {canRender} from './ability';
 import availsRoutes from './pages/avails/availsRoutes';
+import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
 import metadataRoutes from './pages/metadata/metadataRoutes';
 import servicingOrdersRoutes from './pages/servicing-orders/servicingOrdersRoutes';
@@ -58,6 +59,7 @@ export const routes = [
     ...servicingOrdersRoutes,
     ...eventManagementRoutes,
     ...syncLogRoutes,
+    ...dopTasksRoutes,
     ...restRoutes,
     ...staticPagesRoutes,
 ];

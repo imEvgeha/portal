@@ -90,8 +90,11 @@ export const SelectedRightsActions = ({
         return hasEmptySourceRightIds || hasUniqueSourceRightIds;
     };
 
-    // None of the rights has status 'Deleted'
-    const noRightsWithDeletedStatus = () => selectedRights.every(({status}) => status !== 'Deleted');
+    // None of the rights has status 'Deleted' and no territories with selected status (no rights are selected for planning)
+    const checkRightDeletionCriteria = () =>
+        selectedRights.every(
+            ({status, territory = []}) => status !== 'Deleted' && territory.filter(item => item.selected).length === 0
+        );
 
     // At least one of the selected rights has status 'Deleted' or 'Merged'
     const checkStatusDeleteMerged = () =>
@@ -286,7 +289,7 @@ export const SelectedRightsActions = ({
             setIsPreplanEligible(checkPrePlanEligibilityCriteria());
 
             // Deletion criteria
-            setIsDeletable(noRightsWithDeletedStatus());
+            setIsDeletable(checkRightDeletionCriteria());
 
             // Set status deleted/merged criteria
             setStatusDeleteMerged(checkStatusDeleteMerged());
@@ -322,7 +325,7 @@ export const SelectedRightsActions = ({
                             'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
                         })}
                         data-test-id="view-history"
-                        onClick={selectedRights.length ? openAuditHistoryModal : null}
+                        onClick={() => (selectedRights.length ? openAuditHistoryModal() : null)}
                     >
                         <div>{VIEW_AUDIT_HISTORY}</div>
                     </div>
@@ -331,7 +334,7 @@ export const SelectedRightsActions = ({
                             'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,
                         })}
                         data-test-id="bulk-match"
-                        onClick={isMatchable ? openDrawer : null}
+                        onClick={() => (isMatchable ? openDrawer() : null)}
                     >
                         <NexusTooltip
                             content={BULK_MATCH_DISABLED_TOOLTIP}
@@ -346,7 +349,7 @@ export const SelectedRightsActions = ({
                                 isUnmatchable && !statusDeleteMerged,
                         })}
                         data-test-id="bulk-unmatch"
-                        onClick={isUnmatchable ? openBulkUnmatchModal : null}
+                        onClick={() => (isUnmatchable ? openBulkUnmatchModal() : null)}
                     >
                         <NexusTooltip
                             content={BULK_UNMATCH_DISABLED_TOOLTIP}
@@ -361,7 +364,7 @@ export const SelectedRightsActions = ({
                                 isBonusRightCreatable && !statusDeleteMerged,
                         })}
                         data-test-id="bonus-rights"
-                        onClick={isBonusRightCreatable ? createBonusRights : null}
+                        onClick={() => (isBonusRightCreatable ? createBonusRights() : null)}
                     >
                         <NexusTooltip
                             content={CREATE_BONUS_RIGHT_TOOLTIP}
@@ -378,7 +381,7 @@ export const SelectedRightsActions = ({
                                         !!selectedRights.length && !statusDeleteMerged,
                                 })}
                                 data-test-id="add-to-preplan"
-                                onClick={selectedRights.length ? prepareRightsForPrePlan : null}
+                                onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
                             >
                                 <NexusTooltip
                                     content={PREPLAN_TOOLTIP}
@@ -393,7 +396,7 @@ export const SelectedRightsActions = ({
                                         'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
                                     })}
                                     data-test-id="mark-as-deleted"
-                                    onClick={openBulkDeleteModal}
+                                    onClick={() => (isDeletable ? openBulkDeleteModal() : null)}
                                 >
                                     <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
                                         <div>{MARK_DELETED}</div>

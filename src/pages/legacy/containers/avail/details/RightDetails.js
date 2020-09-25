@@ -1328,15 +1328,20 @@ class RightDetails extends React.Component {
                     const error = errors.length
                         ? errors
                               .map(error => {
-                                  const {severityType = '', fieldName = '', message = ''} = error || {};
-                                  return `${fieldName.split('.').pop()} ${message} (${severityType})`;
+                                  const {
+                                      severityType = '',
+                                      fieldName = '',
+                                      message = '',
+                                      sourceDetails: {originalValue} = {originalValue: ''},
+                                  } = error || {};
+                                  return `${fieldName.split('.').pop()} "${originalValue}" ${message} (${severityType})`;
                               })
                               .join('\n')
                         : '';
                     return {
-                        priceType: priceType,
-                        priceValue: priceValue,
-                        priceCurrency: priceCurrency,
+                        priceType,
+                        priceValue,
+                        priceCurrency,
                         label: get(
                             options.find(o => o.value === priceType),
                             'label',
@@ -1556,6 +1561,7 @@ class RightDetails extends React.Component {
                                         territoryIndex={this.state.territoryIndex}
                                         isEdit={this.state.isEdit}
                                         options={options}
+                                        isBonusRight={this.state.right.bonusRight}
                                     />
                                 </>
                             )}
