@@ -33,22 +33,6 @@ describe('NexusDynamicForm', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render tab container and all tabs within', () => {
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-        console.log(wrapper.debug());
-        console.log(wrapper);
-
-        const tabs = schema.map(({title = ''}) => title);
-        const tabContainer = wrapper.find('.nexus-c-dynamic-form__tab-container');
-        expect(tabContainer.length).toEqual(1); // Container exists
-
-        expect(tabContainer.children().length).toEqual(tabs.length); // Container has all tabs
-
-        tabContainer.children().forEach((child, index) => {
-            expect(child.dive().text()).toEqual(tabs[index]); // All tabs are named properly
-        });
-    });
-
     it('should render a form', () => {
         const form = wrapper.find(AKForm);
         expect(form.length).toEqual(1);

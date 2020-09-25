@@ -4,8 +4,8 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
-import {get} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
+import {checkFieldDependencies} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -29,18 +29,7 @@ const NexusField = ({
     };
 
     const checkDependencies = type => {
-        // View mode has the same dependencies as Edit mode
-        const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
-        const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
-
-        return !!(
-            foundDependencies &&
-            foundDependencies.some(({field, value}) => {
-                const dependencyValue = get(formData, field);
-                // if has value || its value equal to the provided value
-                return dependencyValue && (dependencyValue === value || !value);
-            })
-        );
+        return checkFieldDependencies(type, view, dependencies, formData);
     };
 
     const renderFieldEditMode = fieldProps => {
