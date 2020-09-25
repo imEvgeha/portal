@@ -59,7 +59,7 @@
                 "fields": {
                     "coreTitleId": {
                         "name": "Core TitleId",
-                        "type": "number",
+                        "type": "string",
                         "path": "coreTitleId",
                         "isReadOnly": true,
                         "hiddenInCreate": true

@@ -15,7 +15,7 @@ const RightDetails = ({getRight, right, match}) => {
     }, []);
 
     const onSubmit = values => {
-        // console.log(values);
+        console.log(values);
     };
 
     return (
