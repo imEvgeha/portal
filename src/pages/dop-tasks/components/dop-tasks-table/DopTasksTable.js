@@ -6,11 +6,11 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {COLUMN_MAPPINGS} from '../../constants';
 import './DopTasksTable.scss';
-// import {fetchDOPTasksdata} from './utils';
+import {fetchDopTasksData} from '../../utils';
 
 const DopTasksTableGrid = compose(
-    withColumnsResizing()
-    // withInfiniteScrolling({fetchData: () => null})
+    withColumnsResizing(),
+    withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
 const DopTasksTable = () => {

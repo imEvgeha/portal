@@ -21,34 +21,26 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
 export const getSearchPayload = (user, offset, limit) => ({
     filterCriterion: [
         {
-            fieldName: 'MANAGER',
+            fieldName: 'taskStatus',
             valueDataType: 'String',
             operator: 'in',
             logicalAnd: true,
+            value: TASK_STATUS_ENUM.join(','),
+        },
+        {
+            fieldName: 'actualOwner',
+            logicalAnd: true,
+            operator: 'equal',
             value: user,
-        },
-        {
-            fieldName: 'STATUS',
             valueDataType: 'String',
-            operator: 'in',
-            logicalAnd: true,
-            value: '',
-        },
-        {
-            fieldName: 'TYPE',
-            valueDataType: 'String',
-            operator: 'in',
-            logicalAnd: true,
-            value: '',
         },
     ],
     sortCriterion: [
         {
-            fieldName: 'ID',
+            fieldName: 'activityEstimatedEndDate',
             ascending: true,
         },
     ],
-    field: ['!projectAttribute'],
     offset,
     limit,
 });
@@ -144,4 +136,16 @@ export const COLUMN_MAPPINGS = [
         headerName: 'Project Status',
         width: 120,
     },
+];
+
+export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+export const PROJECT_STATUS_ENUM = [
+    'BNOT STARTED',
+    'CIN PROGRESS',
+    'CDRELEASE IN PROGRESS',
+    'DCOMPLETED',
+    'ECANCEL IN PROGRESS',
+    'FCANCELLED',
+    'AHHOLD IN PROGRESS',
+    'AIN ERROR',
 ];
