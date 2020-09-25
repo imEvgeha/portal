@@ -9,7 +9,8 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "id",
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "hiddenInCreate": true
                     },
                     "title": {
                         "name": "Title",
@@ -60,7 +61,8 @@
                         "name": "Core TitleId",
                         "type": "number",
                         "path": "coreTitleId",
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "hiddenInCreate": true
                     }
                 }
             }

@@ -2,6 +2,7 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
+import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
 import {getValidationError, getDefaultValue} from './utils';
@@ -18,15 +19,17 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
             <>
                 {Object.keys(fields).map(key => {
                     return (
-                        <NexusField
-                            key={key}
-                            name={key}
-                            view={view}
-                            formData={getValues()}
-                            validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            defaultValue={getDefaultValue(fields[key], view, initialData)}
-                            {...fields[key]}
-                        />
+                        !(view === VIEWS.CREATE && get(fields[key], 'hiddenInCreate')) && (
+                            <NexusField
+                                key={key}
+                                name={key}
+                                view={view}
+                                formData={getValues()}
+                                validationError={getValidationError(initialData.validationErrors, fields[key])}
+                                defaultValue={getDefaultValue(fields[key], view, initialData)}
+                                {...fields[key]}
+                            />
+                        )
                     );
                 })}
             </>
