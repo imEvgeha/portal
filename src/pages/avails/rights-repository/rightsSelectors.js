@@ -1,3 +1,4 @@
+import {get} from 'lodash';
 import {createSelector} from 'reselect';
 
 const getRightsReducer = state => {
@@ -5,7 +6,8 @@ const getRightsReducer = state => {
     return avails.rights;
 };
 
-export const getRightDetailsRightsSelector = () => createSelector(getRightsReducer, rights => rights.right || {});
+export const getRightDetailsRightsSelector = () =>
+    createSelector(getRightsReducer, rights => get(rights, 'right') || {});
 
 export const createSelectedRightsSelector = () => createSelector(getRightsReducer, rights => rights.selected || {});
 

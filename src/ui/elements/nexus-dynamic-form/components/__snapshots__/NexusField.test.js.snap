@@ -1,14 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NexusField should match snapshot 1`] = `
-<Field
-  defaultValue="rght_zrp8g"
-  isDisabled={true}
-  label="Right ID"
-  name="rightId"
-  transform={[Function]}
-  type="string"
+<div
+  className="nexus-c-field "
 >
-  <Component />
-</Field>
+  <Field
+    defaultValue="rght_zrp8g"
+    isDisabled={true}
+    isRequired={false}
+    label="Right ID"
+    name="rightId"
+    validate={null}
+  >
+    <Component />
+  </Field>
+</div>
 `;

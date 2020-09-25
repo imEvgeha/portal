@@ -4,24 +4,10 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
 <div
   className="nexus-c-dynamic-form"
 >
-  <div
-    className="nexus-c-dynamic-form__tab-container"
+  <Form
+    onSubmit={[Function]}
   >
-    <SectionTab
-      isActive={true}
-      key="Amazing Tab"
-      onClick={[Function]}
-      section="Amazing Tab"
-    />
-  </div>
-  <div
-    className="nexus-c-dynamic-form__tab-content"
-  >
-    <Form
-      isDisabled={false}
-    >
-      <Component />
-    </Form>
-  </div>
+    <Component />
+  </Form>
 </div>
 `;

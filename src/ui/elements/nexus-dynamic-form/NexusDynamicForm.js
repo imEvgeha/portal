@@ -36,6 +36,44 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         );
     };
 
+    const buildTabs = () => {
+        return tabs.map(tab => (
+            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
+        ));
+    };
+
+    const buildButtons = (dirty, submitting, reset) => {
+        return view !== VIEWS.VIEW ? (
+            <>
+                <Button
+                    type="submit"
+                    className="nexus-c-dynamic-form__submit-button"
+                    appearance="primary"
+                    isDisabled={!dirty || submitting}
+                >
+                    Save changes
+                </Button>
+                <Button
+                    className="nexus-c-dynamic-form__cancel-button"
+                    onClick={() => {
+                        reset();
+                        setView(VIEWS.VIEW);
+                    }}
+                >
+                    Cancel
+                </Button>
+            </>
+        ) : (
+            <Button
+                className="nexus-c-dynamic-form__edit-button"
+                appearance="primary"
+                onClick={() => setView(VIEWS.EDIT)}
+            >
+                Edit
+            </Button>
+        );
+    };
+
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm
@@ -46,45 +84,8 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
             >
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
-                        {view !== VIEWS.VIEW ? (
-                            <>
-                                <Button
-                                    type="submit"
-                                    className="nexus-c-dynamic-form__submit-button"
-                                    appearance="primary"
-                                    isDisabled={!dirty || submitting}
-                                >
-                                    Save changes
-                                </Button>
-                                <Button
-                                    className="nexus-c-dynamic-form__cancel-button"
-                                    onClick={() => {
-                                        reset();
-                                        setView(VIEWS.VIEW);
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </>
-                        ) : (
-                            <Button
-                                className="nexus-c-dynamic-form__edit-button"
-                                appearance="primary"
-                                onClick={() => setView(VIEWS.EDIT)}
-                            >
-                                Edit
-                            </Button>
-                        )}
-                        <div className="nexus-c-dynamic-form__tab-container">
-                            {tabs.map(tab => (
-                                <SectionTab
-                                    key={tab}
-                                    section={tab}
-                                    onClick={() => setSelectedTab(tab)}
-                                    isActive={selectedTab === tab}
-                                />
-                            ))}
-                        </div>
+                        {buildButtons(dirty, submitting, reset)}
+                        <div className="nexus-c-dynamic-form__tab-container">{buildTabs()}</div>
                         <div className="nexus-c-dynamic-form__tab-content">
                             {schema.map(({title = '', sections = []}) => (
                                 <Fragment key={`tab-${title}`}>
