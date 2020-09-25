@@ -7,7 +7,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         ? get(field, 'defaultValueCreate')
         : get(data, field.path) !== null
         ? get(data, field.path)
-        : undefined;
+        : '';
 };
 
 export const getValidationError = (validationErrors, field) => {
