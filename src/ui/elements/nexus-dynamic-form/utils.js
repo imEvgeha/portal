@@ -3,7 +3,11 @@ import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
 
 export const getDefaultValue = (field = {}, view, data) => {
-    return view === VIEWS.CREATE ? get(field, 'defaultValueCreate') : get(data, field.path);
+    return view === VIEWS.CREATE
+        ? get(field, 'defaultValueCreate')
+        : get(data, field.path) !== null
+        ? get(data, field.path)
+        : undefined;
 };
 
 export const getValidationError = (validationErrors, field) => {

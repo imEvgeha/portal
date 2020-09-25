@@ -14,14 +14,13 @@ const RightDetails = ({getRight, right, match}) => {
         getRight({id: params.id});
     }, []);
 
+    const onSubmit = values => {
+        // console.log(values);
+    };
+
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm
-                schema={schema}
-                initialData={right}
-                isEdit
-                // onSubmit={values => console.log(values)}
-            />
+            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
         </div>
     );
 };
