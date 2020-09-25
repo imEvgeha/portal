@@ -25,7 +25,7 @@ class ReportsInternal extends Component {
                 options={options}
                 onChange={option => this.props.onChange(option.value)}
                 styles={{
-                    container: styles => ({...styles, width: '100px', marginLeft: '8px'}),
+                    container: styles => ({...styles, width: '200px', marginLeft: '8px'}),
                 }}
             />
         );
