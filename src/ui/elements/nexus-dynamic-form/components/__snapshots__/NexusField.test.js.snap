@@ -10,7 +10,7 @@ exports[`NexusField should match snapshot 1`] = `
     isRequired={false}
     label="Right ID"
     name="rightId"
-    validate={null}
+    validate={[Function]}
   >
     <Component />
   </Field>

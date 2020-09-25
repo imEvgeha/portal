@@ -52,7 +52,7 @@ describe('Utils', () => {
         const dependencies = [
             {
                 view: 'EDIT',
-                type: 'readOnly',
+                type: 'required',
                 field: 'Core TitleId',
             },
         ];
