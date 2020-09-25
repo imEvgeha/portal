@@ -9,7 +9,6 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "id",
-                        "isReadOnly": true,
                         "hiddenInCreate": true
                     },
                     "title": {

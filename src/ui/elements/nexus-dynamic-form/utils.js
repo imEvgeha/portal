@@ -45,4 +45,5 @@ export const getValidationFunction = (value, customValidation) => {
             return math[`${customValidation}`](value);
         });
     }
+    return undefined;
 };

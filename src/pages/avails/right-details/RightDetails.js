@@ -20,8 +20,7 @@ const RightDetails = ({getRight, right, match}) => {
                 schema={schema}
                 initialData={right}
                 isEdit
-                // isEdit={false}
-                onSubmit={values => console.log(values)}
+                // onSubmit={values => console.log(values)}
             />
         </div>
     );
