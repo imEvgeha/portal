@@ -1,4 +1,4 @@
-import {getDefaultValue, getValidationError} from './utils';
+import {getDefaultValue, getValidationError, checkFieldDependencies} from './utils';
 import {VIEWS} from './constants';
 
 describe('Utils', () => {
@@ -42,6 +42,26 @@ describe('Utils', () => {
                 path: 'title',
             };
             expect(getValidationError(validationErrors, fieldTitle)).toEqual(null);
+        });
+    });
+
+    describe('checkFieldDependencies', () => {
+        const formData = {
+            'Core TitleId': 'titl_TxodB',
+        };
+        const dependencies = [
+            {
+                view: 'EDIT',
+                type: 'readOnly',
+                field: 'Core TitleId',
+            },
+        ];
+        it('should return true when the dependencies include a field that has value', () => {
+            expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, formData)).toEqual(true);
+        });
+
+        it('should return false when the dependencies include a field that does not have value', () => {
+            expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, {})).toEqual(false);
         });
     });
 });

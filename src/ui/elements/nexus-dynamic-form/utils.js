@@ -37,3 +37,12 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
         })
     );
 };
+
+export const getValidationFunction = (value, customValidation) => {
+    // load dynamic file
+    if (customValidation) {
+        return import(`./valdationUtils/${customValidation}.js`).then(math => {
+            return math[`${customValidation}`](value);
+        });
+    }
+};

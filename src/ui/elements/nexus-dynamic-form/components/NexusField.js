@@ -5,7 +5,7 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies} from '../utils';
+import {checkFieldDependencies, getValidationFunction} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -21,13 +21,6 @@ const NexusField = ({
     customValidation,
     ...props
 }) => {
-    const getValidationFunction = value => {
-        // load dynamic file
-        return import(`../valdationUtils/${customValidation}.js`).then(math => {
-            return math[`${customValidation}`](value);
-        });
-    };
-
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
     };
@@ -75,7 +68,7 @@ const NexusField = ({
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
-                validate={customValidation && getValidationFunction}
+                validate={value => getValidationFunction(value, customValidation)}
                 {...props}
             >
                 {({fieldProps, error}) => (
