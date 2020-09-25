@@ -1,9 +1,8 @@
 import DopTasksService from './dopTasks-services';
 
-export const fetchDopTasksData = async (sort, offset, limit) => {
+export const fetchDopTasksData = async (externalFilter, offset, limit) => {
     try {
-        const response = await DopTasksService.getTasks(offset + 1, limit);
-        console.log(response);
+        const [response, headers] = await DopTasksService.getTasks(externalFilter, offset + 1, limit);
         const data = response.reduce((acc, obj) => {
             const {name: taskName = '', status: taskStatus = '', customData = {}, owner = {}, potentialOwner = []} =
                 obj || {};
@@ -45,8 +44,7 @@ export const fetchDopTasksData = async (sort, offset, limit) => {
             ];
         }, []);
 
-        const total = data.length;
-        console.log(data);
+        const total = headers.get('X-Total-Count');
 
         return new Promise(res => {
             res({

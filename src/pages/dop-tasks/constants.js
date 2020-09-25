@@ -18,33 +18,6 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
 ];
 
-export const getSearchPayload = (user, offset, limit) => ({
-    filterCriterion: [
-        {
-            fieldName: 'taskStatus',
-            valueDataType: 'String',
-            operator: 'in',
-            logicalAnd: true,
-            value: TASK_STATUS_ENUM.join(','),
-        },
-        {
-            fieldName: 'actualOwner',
-            logicalAnd: true,
-            operator: 'equal',
-            value: user,
-            valueDataType: 'String',
-        },
-    ],
-    sortCriterion: [
-        {
-            fieldName: 'activityEstimatedEndDate',
-            ascending: true,
-        },
-    ],
-    offset,
-    limit,
-});
-
 export const COLUMN_MAPPINGS = [
     {
         colId: 'taskName',
@@ -139,6 +112,7 @@ export const COLUMN_MAPPINGS = [
 ];
 
 export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+
 export const PROJECT_STATUS_ENUM = [
     'BNOT STARTED',
     'CIN PROGRESS',
@@ -149,3 +123,28 @@ export const PROJECT_STATUS_ENUM = [
     'AHHOLD IN PROGRESS',
     'AIN ERROR',
 ];
+
+export const INITIAL_CRITERIA = {
+    filterCriterion: [
+        {
+            fieldName: 'taskStatus',
+            valueDataType: 'String',
+            operator: 'in',
+            logicalAnd: true,
+            value: TASK_STATUS_ENUM.join(','),
+        },
+        {
+            fieldName: 'actualOwner',
+            logicalAnd: true,
+            operator: 'equal',
+            value: '',
+            valueDataType: 'String',
+        },
+    ],
+    sortCriterion: [
+        {
+            fieldName: 'activityEstimatedEndDate',
+            ascending: true,
+        },
+    ],
+};

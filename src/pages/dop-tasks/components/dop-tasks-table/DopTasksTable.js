@@ -16,7 +16,14 @@ const DopTasksTableGrid = compose(
 const DopTasksTable = () => {
     return (
         <div className="nexus-c-dop-tasks-table">
-            <DopTasksTableGrid id="DopTasksTable" columnDefs={COLUMN_MAPPINGS} suppressRowClickSelection />
+            <DopTasksTableGrid
+                id="DopTasksTable"
+                columnDefs={COLUMN_MAPPINGS}
+                suppressRowClickSelection
+                externalFilter={{
+                    user: 'user',
+                }}
+            />
         </div>
     );
 };
