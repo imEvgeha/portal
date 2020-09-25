@@ -10,5 +10,9 @@ export default TitleNameCellRenderer;
 
 TitleNameCellRenderer.propTypes = {
     value: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.object,
 };
+
+TitleNameCellRenderer.defaultProps = {
+    data: {}
+}
