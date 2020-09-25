@@ -26,4 +26,8 @@
             color: rgb(169, 68, 66);
         }
     }
+
+    .nexus-c-field__placeholder {
+        color: map-get($neutrals, N100);
+    }
 }

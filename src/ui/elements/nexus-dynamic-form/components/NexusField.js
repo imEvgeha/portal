@@ -59,7 +59,11 @@ const NexusField = ({
             case 'boolean':
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             default:
-                return <div>{fieldProps.value}</div>;
+                return fieldProps.value ? (
+                    <div>{fieldProps.value}</div>
+                ) : (
+                    <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
+                );
         }
     };
 
