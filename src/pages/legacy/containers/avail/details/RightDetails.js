@@ -1022,7 +1022,6 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
             if (filterBy) {
-                console.log(this.state.right);
                 const filterValue = get(this.state, `right.${filterBy}`, '');
                 options = options.filter(o => o[filterBy] === filterValue);
                 readOnly = readOnly || (filterBy && !filterValue);
