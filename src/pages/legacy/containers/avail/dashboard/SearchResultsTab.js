@@ -73,9 +73,8 @@ class SearchResultsTab extends React.Component {
         this.props.resultPageShowSelected(!this.props.showSelectedAvails);
     }
 
-    handleChangeReport(event) {
+    handleChangeReport(reportName) {
         this.props.resultPageShowSelected(false);
-        const reportName = event.target.value;
         configurationService.changeReport(reportName);
     }
 
