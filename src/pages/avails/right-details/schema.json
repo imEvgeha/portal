@@ -9,8 +9,13 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "id",
-                        "hiddenInCreate": true,
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
                     },
                     "title": {
                         "name": "Title",
@@ -30,13 +35,25 @@
                         "name": "Release Year",
                         "type": "number",
                         "path": "releaseYear",
-                        "customValidation": "length4"
+                        "validations": [
+                            {
+                                "name": "length",
+                                "params": {
+                                    "value": 4
+                                }
+                            }
+                        ]
                     },
                     "licensed": {
                         "name": "Licensed",
                         "type": "boolean",
                         "path": "licensed",
-                        "defaultValueCreate": true,
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "defaultValue": true
+                            }
+                        ],
                         "isReadOnly": true
                     }
                 }
@@ -62,7 +79,22 @@
                         "type": "string",
                         "path": "coreTitleId",
                         "isReadOnly": true,
-                        "hiddenInCreate": true
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "title": "Episodic",
+                "fields": {
+                    "seriesTitle": {
+                        "name": "Series Title",
+                        "type": "string",
+                        "path": "episodic.seriesTitle"
                     }
                 }
             }

@@ -2,9 +2,13 @@ import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
 
+export const getFieldConfig = (field, config, view) => {
+    return field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
+};
+
 export const getDefaultValue = (field = {}, view, data) => {
-    return view === VIEWS.CREATE
-        ? get(field, 'defaultValueCreate')
+    return getFieldConfig(field, 'defaultValue', view)
+        ? getFieldConfig(field, 'defaultValue', view)
         : get(data, field.path) !== null
         ? get(data, field.path)
         : '';
