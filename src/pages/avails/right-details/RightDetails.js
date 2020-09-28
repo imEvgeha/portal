@@ -11,7 +11,9 @@ import './RightDetails.scss';
 const RightDetails = ({getRight, right, match}) => {
     useEffect(() => {
         const {params} = match || {};
-        getRight({id: params.id});
+        if (params.id) {
+            getRight({id: params.id});
+        }
     }, []);
 
     const onSubmit = values => {
