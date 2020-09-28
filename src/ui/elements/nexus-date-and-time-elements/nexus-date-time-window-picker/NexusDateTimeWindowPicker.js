@@ -107,7 +107,7 @@ const NexusDateTimeWindowPicker = ({
 
     // If both dates are filled, send a formatted time-window string
     const handleChange = () => {
-        if (startDate && endDate) {
+        if ((startDate && endDate) || (isClearable && !startDate && !endDate)) {
             if (isTimestamp) {
                 // YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
                 onChange({
@@ -201,8 +201,8 @@ const NexusDateTimeWindowPicker = ({
     const ReadView = () => (
         <div className="nexus-c-date-time-window-picker__read-view-container">
             {[
-                {date: startDate, name: 'start-date'},
-                {date: endDate, name: 'end-date'},
+                {date: startDateTimePickerProps.defaultValue, name: 'start-date'},
+                {date: endDateTimePickerProps.defaultValue, name: 'end-date'},
             ].map(({date, name}, index) => (
                 <div className={`nexus-c-date-time-window-picker__${name}`} key={index}>
                     {!!labels.length && <div className="nexus-c-date-time-window-picker__label">{labels[index]}</div>}

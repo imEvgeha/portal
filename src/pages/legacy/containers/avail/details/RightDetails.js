@@ -1335,7 +1335,9 @@ class RightDetails extends React.Component {
                                       message = '',
                                       sourceDetails: {originalValue} = {originalValue: ''},
                                   } = error || {};
-                                  return `${fieldName.split('.').pop()} "${originalValue}" ${message} (${severityType})`;
+                                  return `${fieldName
+                                      .split('.')
+                                      .pop()} "${originalValue}" ${message} (${severityType})`;
                               })
                               .join('\n')
                         : '';
@@ -1782,15 +1784,6 @@ class RightDetails extends React.Component {
                     isUsingTime: true,
                     labels: [`${displayName}:`, `${displayName.replace('Start', 'End')}:`],
 
-                    onChangeAny: ({endDate, startDate}) => {
-                        this.setState(prevState => ({
-                            editedRight: {
-                                ...prevState.editedRight,
-                                [name]: startDate === undefined ? prevState.editedRight[name] : startDate,
-                                [dateEnd]: endDate === undefined ? prevState.editedRight[dateEnd] : endDate,
-                            },
-                        }));
-                    },
                     onChange: value =>
                         (!valError &&
                             this.handleEditableSubmit(
