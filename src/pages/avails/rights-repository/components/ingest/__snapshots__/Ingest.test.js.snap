@@ -29,7 +29,12 @@ exports[`Ingest should match snapshot 1`] = `
       className="nexus-c-avails-ingest__avail-id"
     >
       Avail History ID: 
-      avih_Tergd
+      <a
+        href="null/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=Project408"
+        target="_blank"
+      >
+        avih_Tergd
+      </a>
     </div>
   </div>
   <div

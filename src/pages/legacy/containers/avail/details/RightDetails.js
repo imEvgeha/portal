@@ -715,7 +715,7 @@ class RightDetails extends React.Component {
                         placeholder={`${this.emptyValueText} ${displayName}`}
                         defaultValue={value}
                         hideActionButtons={!!sourceRightId || readOnly}
-                        readView={() => <p>{value || `${this.emptyValueText} ${displayName}`}</p>}
+                        readView={() => <p>{error || value || `${this.emptyValueText} ${displayName}`}</p>}
                         editView={fieldProps => (
                             <TextField
                                 {...fieldProps}
@@ -1022,7 +1022,6 @@ class RightDetails extends React.Component {
                 options = this.props.selectValues[name];
             }
             if (filterBy) {
-                console.log(this.state.right);
                 const filterValue = get(this.state, `right.${filterBy}`, '');
                 options = options.filter(o => o[filterBy] === filterValue);
                 readOnly = readOnly || (filterBy && !filterValue);

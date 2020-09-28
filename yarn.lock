@@ -439,21 +439,6 @@
     tiny-invariant "^0.0.3"
     uuid "^3.1.0"
 
-"@atlaskit/form@^6.1.4":
-  version "6.3.2"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-6.3.2.tgz#06019d0a1f4ec1ab84eb6d53fe0ad8a02ebfea68"
-  integrity sha512-p4vEANJpkDVD7Xdrvf/KPJEEXUXh8WsoC9UnxJYh8McgqmuYF7Qh/xXMjrEVb+NH12MCsOapPb9tUkCdQSsEgA==
-  dependencies:
-    "@atlaskit/icon" "^19.0.6"
-    "@atlaskit/theme" "^9.2.4"
-    "@babel/runtime" "^7.0.0"
-    final-form "^4.13.0"
-    final-form-focus "^1.1.0"
-    memoize-one "^5.1.0"
-    react-uid "^2.2.0"
-    shallow-equal "^1.0.0"
-    tiny-invariant "^0.0.3"
-
 "@atlaskit/form@^7.0.0":
   version "7.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-7.0.0.tgz#272bd2de986fc6f2c7df3b450ac0f2683cbf8c59"
@@ -468,6 +453,20 @@
     shallow-equal "^1.0.0"
     tiny-invariant "^0.0.3"
     tslib "^1.9.3"
+
+"@atlaskit/form@^8.1.4":
+  version "8.1.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-8.1.4.tgz#da50cac4e14c44c68000d284cc4275a17aa7631e"
+  integrity sha512-y4gy3KhteQZZIyCRHys6TdBOg4EKGlhKmWn3rAAwQTkHIe98ly26qwwYzhsyEpU1LGMLkpB1znXYHzTeCU+BxQ==
+  dependencies:
+    "@atlaskit/icon" "^21.1.0"
+    "@atlaskit/theme" "^10.0.0"
+    final-form "^4.20.1"
+    final-form-focus "^1.1.2"
+    lodash "^4.17.15"
+    react-uid "^2.2.0"
+    tiny-invariant "^0.0.3"
+    tslib "^2.0.0"
 
 "@atlaskit/icon@13.2.3":
   version "13.2.3"
@@ -531,6 +530,15 @@
   dependencies:
     "@atlaskit/theme" "^10.0.0"
     tslib "^1.9.3"
+    uuid "^3.1.0"
+
+"@atlaskit/icon@^21.1.0":
+  version "21.1.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/icon/-/icon-21.1.2.tgz#e4ccf13f06dd82d33bff9a4b879484518967cbf3"
+  integrity sha512-tjxRDBU/IzKgqczoU5DO3rVINnTnD19NEQk/5NXOR2qfV6e/+EYboNl+fJFIhN/B26GQyR6yJHLTxlzIwSsKHw==
+  dependencies:
+    "@atlaskit/theme" "^10.0.0"
+    tslib "^2.0.0"
     uuid "^3.1.0"
 
 "@atlaskit/inline-dialog@^12.1.6":
@@ -2242,7 +2250,7 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.8.7":
+"@babel/runtime@^7.10.0", "@babel/runtime@^7.8.7":
   version "7.11.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -10774,17 +10782,24 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-final-form-focus@^1.1.0:
+final-form-focus@^1.1.0, final-form-focus@^1.1.2:
   version "1.1.2"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form-focus/-/final-form-focus-1.1.2.tgz#8ea5c4bd802e220cebaa47a587bb0be164eb6806"
   integrity sha512-Gd+Bd2Ll7ijo3/sd6kJ/bwLkhc2bUJPxTON6fIqee/008EJpACWhT+zoWCm9q6NcfMcWRS+Sp5ikRX8iqdXeGQ==
 
-final-form@^4.10.0, final-form@^4.13.0, final-form@^4.14.1:
+final-form@^4.10.0, final-form@^4.14.1:
   version "4.18.6"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form/-/final-form-4.18.6.tgz#3539c53d04e6603a0cc11c78dc830755add986d4"
   integrity sha512-LssWTXTGkoNv5WxowFTTUyC86oLYlEHH2glARBxOq8RpjiQdOyUyVG7qfPaCeOwoOw7Y5wrhSWdePyOydqSrCw==
   dependencies:
     "@babel/runtime" "^7.3.1"
+
+final-form@^4.20.1:
+  version "4.20.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/final-form/-/final-form-4.20.1.tgz#525a7f7f27f55c28d8994b157b24d6104fc560e9"
+  integrity sha512-IIsOK3JRxJrN72OBj7vFWZxtGt3xc1bYwJVPchjVWmDol9DlzMSAOPB+vwe75TUYsw1JaH0fTQnIgwSQZQ9Acg==
+  dependencies:
+    "@babel/runtime" "^7.10.0"
 
 finalhandler@1.1.0:
   version "1.1.0"
@@ -23936,6 +23951,11 @@ tslib@^1.9.0, tslib@^1.9.3:
   version "1.10.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
+
+tslib@^2.0.0:
+  version "2.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
+  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
 
 tsscmp@~1.0.0:
   version "1.0.6"

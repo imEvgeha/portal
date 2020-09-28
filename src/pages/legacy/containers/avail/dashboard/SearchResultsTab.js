@@ -73,9 +73,8 @@ class SearchResultsTab extends React.Component {
         this.props.resultPageShowSelected(!this.props.showSelectedAvails);
     }
 
-    handleChangeReport(event) {
+    handleChangeReport(reportName) {
         this.props.resultPageShowSelected(false);
-        const reportName = event.target.value;
         configurationService.changeReport(reportName);
     }
 
@@ -126,7 +125,7 @@ class SearchResultsTab extends React.Component {
         return (
             <div id="dashboard-result-table">
                 <div className="container-fluid">
-                    <div className="row justify-content-between" style={{paddingTop: '16px'}}>
+                    <div className="row justify-content-between" style={{paddingTop: '8px', paddingBottom: '8px'}}>
                         <div className="align-bottom" style={{marginLeft: '15px'}}>
                             <span className="table-top-text" id="dashboard-result-number" style={{paddingTop: '10px'}}>
                                 Results: <Total />

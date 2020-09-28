@@ -19,6 +19,8 @@ import {
     SIMULCAST_DATE_FORMAT,
     RELATIVE_DATE_FORMAT_WITHOUT_TIME,
     RELATIVE_DATE_FORMAT,
+    END_DATE_EMPTY_ERROR,
+    START_DATE_EMPTY_ERROR,
 } from '../constants';
 
 const NexusDateTimeWindowPicker = ({
@@ -66,6 +68,11 @@ const NexusDateTimeWindowPicker = ({
         onChangeAny({endDate});
         !isWithInlineEdit && handleChange();
     }, [endDate]);
+
+    useEffect(() => {
+        startDate && !endDate && setEndDateError(END_DATE_EMPTY_ERROR);
+        !startDate && endDate && setStartDateError(START_DATE_EMPTY_ERROR);
+    }, [startDate, endDate]);
 
     // Get locale provided by intl
     const intl = useIntl();
