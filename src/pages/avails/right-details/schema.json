@@ -92,6 +92,49 @@
                             { "label": "Canceled", "value": "Canceled" },
                             { "label": "Withdrawn", "value": "Withdrawn" }
                         ]
+                    },
+                    "allowedLanguages": {
+                        "name": "Allowed Languages",
+                        "type": "multiselect",
+                        "path": "allowedLanguages",
+                        "isRequired": false,
+                        "isReadOnly": false,
+                        "configEndpoint": "/languages"
+                    },
+                    "licenseRightsDescription": {
+                        "name": "License Rights Description",
+                        "type": "select",
+                        "path": "licenseRightsDescription",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/license-rights-desc"
+                    },
+                    "platformCategory": {
+                        "name": "Platform Category",
+                        "type": "multiselect",
+                        "path": "platformCategory",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "options": [
+                            { "label": "Residential", "value": "Residential" },
+                            { "label": "Hotel", "value": "Hotel" }
+                        ]
+                    },
+                    "affiliate": {
+                        "name": "Affiliate",
+                        "type": "multiselect",
+                        "path": "affiliate",
+                        "isRequired": false,
+                        "isReadOnly": false,
+                        "configEndpoint": "/affiliates"
+                    },
+                    "affiliateExclude": {
+                        "name": "Affiliate Exclude",
+                        "type": "multiselect",
+                        "path": "affiliateExclude",
+                        "isRequired": false,
+                        "isReadOnly": false,
+                        "configEndpoint": "/affiliates"
                     }
                 }
             },
