@@ -38,6 +38,60 @@
                         "path": "licensed",
                         "defaultValueCreate": true,
                         "isReadOnly": true
+                    },
+                    "format": {
+                        "name": "Format",
+                        "type": "multiselect",
+                        "path": "format",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/formats"
+                    },
+                    "licensor": {
+                        "name": "Licensor",
+                        "type": "select",
+                        "path": "licensor",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/licensors"
+                    },
+                    "licensee": {
+                        "name": "Licensee",
+                        "type": "select",
+                        "path": "licensee",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/licensees"
+                    },
+                    "licenseType": {
+                        "name": "License Type",
+                        "type": "select",
+                        "path": "licenseType",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/licence-types"
+                    },
+                    "contentType": {
+                        "name": "Content Type",
+                        "type": "select",
+                        "path": "contentType",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "configEndpoint": "/content-types"
+                    },
+                    "rightStatus": {
+                        "name": "Right Status",
+                        "type": "select",
+                        "path": "rightStatus",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "options": [
+                            { "label": "Pending", "value": "Pending" },
+                            { "label": "Confirmed", "value": "Confirmed" },
+                            { "label": "Tentative", "value": "Tentative" },
+                            { "label": "Canceled", "value": "Canceled" },
+                            { "label": "Withdrawn", "value": "Withdrawn" }
+                        ]
                     }
                 }
             },

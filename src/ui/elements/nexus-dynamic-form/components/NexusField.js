@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
+import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
+import config from 'react-global-configuration';
+import {nexusFetch} from '../../../../util/http-client/index';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {checkFieldDependencies, getValidationFunction} from '../utils';
 import {VIEWS} from '../constants';
@@ -19,10 +22,37 @@ const NexusField = ({
     dependencies,
     validationError,
     customValidation,
+    options,
+    configEndpoint,
     ...props
 }) => {
+    const [fetchedOptions, setFetchedOptions] = useState([]);
+
+    useEffect(() => {
+        if (configEndpoint) {
+            fetchSelectValues(configEndpoint).then(res => {
+                const options = formatOptions(res.data);
+                setFetchedOptions(options);
+            });
+        }
+    }, []);
+
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
+    };
+
+    const fetchSelectValues = endpoint => {
+        const url = `${config.get('gateway.configuration')}/configuration-api/v1${endpoint}?page=0&size=10000`;
+        return nexusFetch(url, {isWithErrorHandling: false});
+    };
+
+    const formatOptions = options => {
+        return options.map(opt => {
+            return {
+                label: opt.value,
+                value: opt.value,
+            };
+        });
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -43,6 +73,16 @@ const NexusField = ({
                     >
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
+                );
+            case 'select':
+                return <Select options={options !== null ? options : fetchedOptions} placeholder={fieldProps.value} />;
+            case 'multiselect':
+                return (
+                    <Select
+                        options={options !== null ? options : fetchedOptions}
+                        placeholder={fieldProps.value}
+                        isMulti
+                    />
                 );
             default:
                 return;
@@ -111,6 +151,8 @@ NexusField.propTypes = {
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
     customValidation: PropTypes.string,
+    options: PropTypes.array,
+    configEndpoint: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -122,6 +164,8 @@ NexusField.defaultProps = {
     isRequired: false,
     validationError: null,
     customValidation: null,
+    options: null,
+    configEndpoint: null,
 };
 
 export default NexusField;
