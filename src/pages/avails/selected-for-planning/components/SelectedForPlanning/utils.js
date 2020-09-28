@@ -29,11 +29,9 @@ export const prepareSelectForPlanningData = async (sort, offset, limit) => {
             // in cellRenderer's onClick
             data[projectId]['projectId'] = projectId;
         });
-        console.log(data);
         // Convert object to an array
         data = Object.values(data);
         const total = headers.get('X-Total-Count') || data.length;
-        console.log(data);
         return new Promise(res => {
             res({
                 page: offset,

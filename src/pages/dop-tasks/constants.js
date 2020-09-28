@@ -3,10 +3,12 @@ export const DOP_QUEUED_TASKS_LABEL = 'Queued Tasks';
 export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
 export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
+export const USER = 'user';
+export const ALL = '*';
 
 export const QUEUED_TASKS_OPTIONS = [
-    {label: 'My Tasks', value: 'myTasks'},
-    {label: 'Queued Tasks', value: 'queuedTasks'},
+    {label: 'My Tasks', value: 'user'},
+    {label: 'Queued Tasks', value: '*'},
 ];
 
 export const SAVED_TABLE_SELECT_OPTIONS = [
@@ -124,7 +126,7 @@ export const PROJECT_STATUS_ENUM = [
     'AIN ERROR',
 ];
 
-export const INITIAL_CRITERIA = {
+export const INITIAL_SEARCH_PARAMS = {
     filterCriterion: [
         {
             fieldName: 'taskStatus',

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DopTasksView should match snapshot 1`] = `
+<div
+  className="nexus-c-dop-tasks-view"
+>
+  <DopTasksHeader
+    label="DOP Tasks"
+  >
+    <QueuedTasks
+      setUser={[Function]}
+    />
+    <SavedTableDropdown />
+  </DopTasksHeader>
+  <DopTasksTable
+    user="user"
+  />
+</div>
+`;
