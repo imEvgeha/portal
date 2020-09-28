@@ -26,19 +26,6 @@
                             }
                         ]
                     },
-                    "releaseYear": {
-                        "name": "Release Year",
-                        "type": "number",
-                        "path": "releaseYear",
-                        "customValidation": "length4"
-                    },
-                    "licensed": {
-                        "name": "Licensed",
-                        "type": "boolean",
-                        "path": "licensed",
-                        "defaultValueCreate": true,
-                        "isReadOnly": true
-                    },
                     "format": {
                         "name": "Format",
                         "type": "multiselect",
@@ -46,6 +33,13 @@
                         "isRequired": true,
                         "isReadOnly": false,
                         "configEndpoint": "/formats"
+                    },
+                    "licensed": {
+                        "name": "Licensed",
+                        "type": "boolean",
+                        "path": "licensed",
+                        "defaultValueCreate": true,
+                        "isReadOnly": true
                     },
                     "licensor": {
                         "name": "Licensor",
@@ -79,19 +73,11 @@
                         "isReadOnly": false,
                         "configEndpoint": "/content-types"
                     },
-                    "rightStatus": {
-                        "name": "Right Status",
-                        "type": "select",
-                        "path": "rightStatus",
-                        "isRequired": true,
-                        "isReadOnly": false,
-                        "options": [
-                            { "label": "Pending", "value": "Pending" },
-                            { "label": "Confirmed", "value": "Confirmed" },
-                            { "label": "Tentative", "value": "Tentative" },
-                            { "label": "Canceled", "value": "Canceled" },
-                            { "label": "Withdrawn", "value": "Withdrawn" }
-                        ]
+                    "releaseYear": {
+                        "name": "Release Year",
+                        "type": "number",
+                        "path": "releaseYear",
+                        "customValidation": "length4"
                     },
                     "allowedLanguages": {
                         "name": "Allowed Languages",
@@ -118,6 +104,20 @@
                         "options": [
                             { "label": "Residential", "value": "Residential" },
                             { "label": "Hotel", "value": "Hotel" }
+                        ]
+                    },
+                    "rightStatus": {
+                        "name": "Right Status",
+                        "type": "select",
+                        "path": "rightStatus",
+                        "isRequired": true,
+                        "isReadOnly": false,
+                        "options": [
+                            { "label": "Pending", "value": "Pending" },
+                            { "label": "Confirmed", "value": "Confirmed" },
+                            { "label": "Tentative", "value": "Tentative" },
+                            { "label": "Canceled", "value": "Canceled" },
+                            { "label": "Withdrawn", "value": "Withdrawn" }
                         ]
                     },
                     "affiliate": {
