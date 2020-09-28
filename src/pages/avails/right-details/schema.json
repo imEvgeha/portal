@@ -1,56 +1,43 @@
 [
     {
-        "title": "Basic Info",
+        "title": "Basic Info and Territory",
         "sections": [
             {
                 "title": "Basic Info",
                 "fields": {
                     "rightId": {
-                        "label": "Right ID",
+                        "name": "Right ID",
                         "type": "string",
-                        "isDisabled": true,
-                        "path": "rightId"
+                        "path": "id",
+                        "hiddenInCreate": true,
+                        "isReadOnly": true
                     },
                     "title": {
-                        "label": "Title",
+                        "name": "Title",
                         "type": "string",
-                        "tooltipMessage": "Required when coreTitleId exists",
                         "isRequired": true,
                         "path": "title",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "tooltip": "Read Only when coreTitleId exists",
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Core TitleId"
+                            }
+                        ]
                     },
-                    "ratingSystem": {
-                        "label": "Rating System",
-                        "type": "string",
-                        "path": "rating.ratingSystem"
-                    },
-                    "number": {
-                        "label": "Number",
+                    "releaseYear": {
+                        "name": "Release Year",
                         "type": "number",
-                        "tooltipMessage": "Required when coreTitleId exists",
-                        "isRequired": true,
-                        "path": "number",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "path": "releaseYear",
+                        "customValidation": "length4"
                     },
-                    "boolean": {
-                        "label": "Boolean",
+                    "licensed": {
+                        "name": "Licensed",
                         "type": "boolean",
-                        "tooltipMessage": "Required when coreTitleId exists",
-                        "isRequired": true,
-                        "path": "boolean",
-                        "dependencies": {
-                            "view": "edit",
-                            "type": "readOnly",
-                            "field": "coreTitleId"
-                        }
+                        "path": "licensed",
+                        "defaultValueCreate": true,
+                        "isReadOnly": true
                     }
                 }
             },
@@ -59,17 +46,25 @@
                 "fields": {}
             },
             {
-                "title": "Content",
+                "title": "Pricing",
                 "fields": {}
             }
         ]
     },
     {
-        "title": "Title",
+        "title": "Title and Episodic",
         "sections": [
             {
                 "title": "Title",
-                "fields": {}
+                "fields": {
+                    "coreTitleId": {
+                        "name": "Core TitleId",
+                        "type": "string",
+                        "path": "coreTitleId",
+                        "isReadOnly": true,
+                        "hiddenInCreate": true
+                    }
+                }
             }
         ]
     },

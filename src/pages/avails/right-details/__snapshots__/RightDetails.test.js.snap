@@ -1,164 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RightDetails should match snapshot 1`] = `
-<div
-  className="nexus-c-right-details"
+<ContextProvider
+  value={null}
 >
-  <NexusDynamicForm
-    data={
+  <Memo(RightDetails)
+    getRight={[Function]}
+    match={
       Object {
-        "boolean": "true",
-        "rating": Object {
-          "ratingReason": null,
-          "ratingSystem": "system X",
-          "ratingValue": null,
+        "params": Object {
+          "id": "rght_zrp8g",
         },
-        "rightId": "1234",
-        "title": "Some title",
       }
     }
-    isEdit={true}
-    schema={
-      Array [
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {
-                "boolean": Object {
-                  "dependencies": Object {
-                    "field": "coreTitleId",
-                    "type": "readOnly",
-                    "view": "edit",
-                  },
-                  "isRequired": true,
-                  "label": "Boolean",
-                  "path": "boolean",
-                  "tooltipMessage": "Required when coreTitleId exists",
-                  "type": "boolean",
-                },
-                "number": Object {
-                  "dependencies": Object {
-                    "field": "coreTitleId",
-                    "type": "readOnly",
-                    "view": "edit",
-                  },
-                  "isRequired": true,
-                  "label": "Number",
-                  "path": "number",
-                  "tooltipMessage": "Required when coreTitleId exists",
-                  "type": "number",
-                },
-                "ratingSystem": Object {
-                  "label": "Rating System",
-                  "path": "rating.ratingSystem",
-                  "type": "string",
-                },
-                "rightId": Object {
-                  "isDisabled": true,
-                  "label": "Right ID",
-                  "path": "rightId",
-                  "type": "string",
-                },
-                "title": Object {
-                  "dependencies": Object {
-                    "field": "coreTitleId",
-                    "type": "readOnly",
-                    "view": "edit",
-                  },
-                  "isRequired": true,
-                  "label": "Title",
-                  "path": "title",
-                  "tooltipMessage": "Required when coreTitleId exists",
-                  "type": "string",
-                },
-              },
-              "title": "Basic Info",
-            },
-            Object {
-              "fields": Object {},
-              "title": "Territory",
-            },
-            Object {
-              "fields": Object {},
-              "title": "Content",
-            },
-          ],
-          "title": "Basic Info",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Title",
-            },
-          ],
-          "title": "Title",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Localization",
-            },
-          ],
-          "title": "Localization",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Series",
-            },
-          ],
-          "title": "Series",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Rating",
-            },
-          ],
-          "title": "Rating",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Pricing",
-            },
-          ],
-          "title": "Pricing",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Branding",
-            },
-          ],
-          "title": "Branding",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Package",
-            },
-          ],
-          "title": "Package",
-        },
-        Object {
-          "sections": Array [
-            Object {
-              "fields": Object {},
-              "title": "Change Log",
-            },
-          ],
-          "title": "Change Log",
-        },
-      ]
+    right={Object {}}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
     }
   />
-</div>
+</ContextProvider>
 `;

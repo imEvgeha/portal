@@ -1,31 +1,54 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, {memo, useEffect} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
+import {getRight} from '../rights-repository/rightsActions';
+import * as selectors from '../rights-repository/rightsSelectors';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = () => {
-    const mockData = {
-        rightId: '1234',
-        title: 'Some title',
-        boolean: 'true',
-        rating: {
-            ratingSystem: 'system X',
-            ratingValue: null,
-            ratingReason: null,
-        },
+const RightDetails = ({getRight, right, match}) => {
+    useEffect(() => {
+        const {params} = match || {};
+        if (params.id) {
+            getRight({id: params.id});
+        }
+    }, []);
+
+    const onSubmit = values => {
+        // console.log(values);
     };
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} data={mockData} isEdit />
+            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
         </div>
     );
 };
 
-RightDetails.propTypes = {};
+RightDetails.propTypes = {
+    getRight: PropTypes.func,
+    right: PropTypes.object,
+    match: PropTypes.object,
+};
 
-RightDetails.defaultProps = {};
+RightDetails.defaultProps = {
+    getRight: () => null,
+    right: {},
+    match: {},
+};
 
-export default RightDetails;
+const mapStateToProps = () => {
+    const rightSelector = selectors.getRightDetailsRightsSelector();
+
+    return (state, props) => ({
+        right: rightSelector(state, props),
+    });
+};
+
+const mapDispatchToProps = dispatch => ({
+    getRight: payload => dispatch(getRight(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));

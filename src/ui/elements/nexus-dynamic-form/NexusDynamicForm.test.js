@@ -11,35 +11,26 @@ describe('NexusDynamicForm', () => {
             sections: [
                 {
                     title: 'Best section 2020',
-                    fields: [
-                        {
-                            label: 'Awesome field',
-                            type: 'text',
+                    fields: {
+                        rightId: {
+                            name: 'Right ID',
+                            type: 'string',
+                            path: 'id',
+                            isReadOnly: true,
+                            hiddenInCreate: true,
                         },
-                    ],
+                    },
                 },
             ],
         },
     ];
 
     beforeEach(() => {
-        wrapper = shallow(<NexusDynamicForm schema={schema} />);
+        wrapper = shallow(<NexusDynamicForm schema={schema} isEdit />);
     });
 
     it('should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
-    });
-
-    it('should render tab container and all tabs within', () => {
-        const tabs = schema.map(({title = ''}) => title);
-        const tabContainer = wrapper.find('.nexus-c-dynamic-form__tab-container');
-        expect(tabContainer.length).toEqual(1); // Container exists
-
-        expect(tabContainer.children().length).toEqual(tabs.length); // Container has all tabs
-
-        tabContainer.children().forEach((child, index) => {
-            expect(child.dive().text()).toEqual(tabs[index]); // All tabs are named properly
-        });
     });
 
     it('should render a form', () => {
