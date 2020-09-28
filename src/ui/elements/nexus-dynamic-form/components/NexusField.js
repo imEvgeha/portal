@@ -49,8 +49,8 @@ const NexusField = ({
     const formatOptions = options => {
         return options.map(opt => {
             return {
-                label: opt.value,
-                value: opt.value,
+                label: opt.languageName ? opt.languageName : opt.value,
+                value: opt.languageName ? opt.languageName : opt.value,
             };
         });
     };
@@ -75,13 +75,20 @@ const NexusField = ({
                     </CheckboxField>
                 );
             case 'select':
-                return <Select options={options !== null ? options : fetchedOptions} placeholder={fieldProps.value} />;
+                return (
+                    <Select
+                        options={options !== null ? options : fetchedOptions}
+                        defaultValue={{value: fieldProps.value, label: fieldProps.value}}
+                    />
+                );
             case 'multiselect':
                 return (
                     <Select
                         options={options !== null ? options : fetchedOptions}
-                        placeholder={fieldProps.value}
                         isMulti
+                        defaultValue={fieldProps.value.map(val => {
+                            return {label: val, value: val};
+                        })}
                     />
                 );
             default:
