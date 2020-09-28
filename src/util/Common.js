@@ -47,6 +47,11 @@ function equalOrIncluded(term, container) {
         let terms = container.substr(1, container.length - 2);
         terms = terms.split(',').map(val => val.trim());
         match = terms.includes(term);
+    } else if (!match && /^\w+\[\d\]$/.test(container)) {
+        // if container matches the pattern `x[n]` where `x` is the name of an array, and `n` is any number
+        // e.g. randomArrayName[0]
+        const [matchedPattern] = /^\w+/.exec(container);
+        return matchedPattern === term;
     }
 
     return match;

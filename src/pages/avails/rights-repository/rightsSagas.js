@@ -1,4 +1,5 @@
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRights} from '../availsService';
 import * as actionTypes from './rightsActionTypes';
 import {DEFAULT_PAGE_SIZE} from './constants';
@@ -55,8 +56,28 @@ export function* storeLinkedToOriginalRights({payload}) {
     }
 }
 
+export function* getRight({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const response = yield rightsService.get(payload.id, {});
+        yield put({
+            type: actionTypes.GET_RIGHT_SUCCESS,
+            payload: response,
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.GET_RIGHT_ERROR,
+            payload: error,
+        });
+    }
+}
+
 export function* rightsWatcher() {
     yield all([
+        takeEvery(actionTypes.GET_RIGHT, getRight),
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
         takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, storeLinkedToOriginalRights),
     ]);
