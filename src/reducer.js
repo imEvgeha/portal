@@ -15,32 +15,34 @@ import media from './pages/legacy/stores/reducers/media/search';
 import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
 import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
-import {availsPersistConfig, authPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
+import syncLogReducer from './pages/sync-log/syncLogReducer';
+import {authPersistConfig, availsPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
 import uiReducer from './ui/uiReducer';
 
-const createRootReducer = routerHistory => combineReducers({
-    router: connectRouter(routerHistory),
-    locale: localeReducer, // check it
+const createRootReducer = routerHistory =>
+    combineReducers({
+        router: connectRouter(routerHistory),
+        locale: localeReducer, // check it
 
-    root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
-    settings,
-    media,
-    dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
+        root: createPersistReducer(rootPersistConfig, root), // rename it to 'config'
+        settings,
+        media,
+        dopReducer, // separate DOP reducer for all pages or integrate DOP per domain
 
-    titleReducer, // remove it
-    dashboard, // remove it
-    history, // remove it
-    createright, // remove it
-    manualRightsEntry, // remove it
+        titleReducer, // remove it
+        dashboard, // remove it
+        history, // remove it
+        createright, // remove it
+        manualRightsEntry, // remove it
 
-    // new structure
-    avails: createPersistReducer(availsPersistConfig, availsReducer),
-    metadata: metadataReducer,
-    eventManagement: eventManagementReducer,
-    servicingOrders: servicingOrdersReducer,
-    ui: uiReducer,
-    auth: createPersistReducer(authPersistConfig, authReducer),
-});
+        // new structure
+        avails: createPersistReducer(availsPersistConfig, availsReducer),
+        metadata: metadataReducer,
+        eventManagement: eventManagementReducer,
+        servicingOrders: servicingOrdersReducer,
+        syncLog: syncLogReducer,
+        ui: uiReducer,
+        auth: createPersistReducer(authPersistConfig, authReducer),
+    });
 
 export default createRootReducer;
-

@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {connect} from 'react-redux';
 import {compose} from 'redux';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
@@ -10,7 +12,9 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnMappings from '../../columnMappings';
+import {createSaveDateFromAction, createSaveDateToAction} from '../../syncLogActions';
 import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';
+import {selectSyncLogDateFrom, selectSyncLogDateTo} from '../../syncLogSelectors';
 import {getSyncLog, exportSyncLog} from '../../syncLogService';
 import PublishErrors from '../PublishErrors/PublishErrors';
 import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRenderer';
@@ -18,10 +22,8 @@ import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
 
-const SyncLogTable = () => {
+const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
     const [gridApi, setGridApi] = useState(null);
-    const [dateFrom, setDateFrom] = useState(dateToISO(new Date(), DATETIME_FIELDS.REGIONAL_MIDNIGHT));
-    const [dateTo, setDateTo] = useState('');
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
 
@@ -51,7 +53,16 @@ const SyncLogTable = () => {
         }
     };
 
+    const onDateFromChange = dateFrom => setDateFrom(dateFrom);
+    const onDateToChange = dateTo => setDateTo(dateTo);
+
     const closeDrawer = () => setShowDrawer(false);
+
+    useEffect(() => {
+        if (dateFrom === '') {
+            setDateFrom(dateToISO(new Date(), DATETIME_FIELDS.REGIONAL_MIDNIGHT));
+        }
+    }, [dateFrom]);
 
     return (
         <div className="nexus-c-sync-log-table">
@@ -62,7 +73,7 @@ const SyncLogTable = () => {
                         <NexusDatePicker
                             id="dateFrom"
                             label="Date From"
-                            onChange={setDateFrom}
+                            onChange={onDateFromChange}
                             value={dateFrom}
                             isReturningTime={false}
                             isRequired
@@ -72,7 +83,7 @@ const SyncLogTable = () => {
                         <NexusDatePicker
                             id="dateTo"
                             label="Date To"
-                            onChange={setDateTo}
+                            onChange={onDateToChange}
                             value={dateTo}
                             isReturningTime={false}
                         />
@@ -118,4 +129,22 @@ const SyncLogTable = () => {
     );
 };
 
-export default SyncLogTable;
+const mapStateToProps = state => ({
+    dateFrom: selectSyncLogDateFrom(state),
+    dateTo: selectSyncLogDateTo(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+    setDateFrom: dateFrom => dispatch(createSaveDateFromAction(dateFrom)),
+    setDateTo: dateTo => dispatch(createSaveDateToAction(dateTo)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SyncLogTable);
+export {SyncLogTable};
+
+SyncLogTable.propTypes = {
+    setDateFrom: PropTypes.func.isRequired,
+    dateFrom: PropTypes.string.isRequired,
+    setDateTo: PropTypes.func.isRequired,
+    dateTo: PropTypes.string.isRequired,
+};
