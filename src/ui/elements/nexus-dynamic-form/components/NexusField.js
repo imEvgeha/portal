@@ -22,13 +22,13 @@ const NexusField = ({
     dependencies,
     validationError,
     customValidation,
-    options,
-    configEndpoint,
+    optionsConfig,
     ...props
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
 
     useEffect(() => {
+        const {configEndpoint} = optionsConfig;
         if (configEndpoint) {
             fetchSelectValues(configEndpoint).then(res => {
                 const options = formatOptions(res.data);
@@ -47,15 +47,19 @@ const NexusField = ({
     };
 
     const formatOptions = options => {
+        const {defaultValuePath, defaultLabelPath} = optionsConfig;
+        const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
+        const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
         return options.map(opt => {
             return {
-                label: opt.languageName ? opt.languageName : opt.value,
-                value: opt.languageName ? opt.languageName : opt.value,
+                label: opt[labelField],
+                value: opt[valueField],
             };
         });
     };
 
     const renderFieldEditMode = fieldProps => {
+        const {options} = optionsConfig;
         switch (type) {
             case 'string':
                 return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
@@ -77,14 +81,14 @@ const NexusField = ({
             case 'select':
                 return (
                     <Select
-                        options={options !== null ? options : fetchedOptions}
+                        options={options !== undefined ? options : fetchedOptions}
                         defaultValue={{value: fieldProps.value, label: fieldProps.value}}
                     />
                 );
             case 'multiselect':
                 return (
                     <Select
-                        options={options !== null ? options : fetchedOptions}
+                        options={options !== undefined ? options : fetchedOptions}
                         isMulti
                         defaultValue={fieldProps.value.map(val => {
                             return {label: val, value: val};
@@ -158,8 +162,7 @@ NexusField.propTypes = {
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
     customValidation: PropTypes.string,
-    options: PropTypes.array,
-    configEndpoint: PropTypes.string,
+    optionsConfig: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -171,8 +174,7 @@ NexusField.defaultProps = {
     isRequired: false,
     validationError: null,
     customValidation: null,
-    options: null,
-    configEndpoint: null,
+    optionsConfig: {},
 };
 
 export default NexusField;

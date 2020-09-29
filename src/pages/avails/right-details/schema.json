@@ -32,7 +32,9 @@
                         "path": "format",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/formats"
+                        "optionsConfig": {
+                            "configEndpoint": "/formats"
+                        }
                     },
                     "licensed": {
                         "name": "Licensed",
@@ -47,7 +49,9 @@
                         "path": "licensor",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/licensors"
+                        "optionsConfig": {
+                            "configEndpoint": "/licensors"
+                        }
                     },
                     "licensee": {
                         "name": "Licensee",
@@ -55,7 +59,9 @@
                         "path": "licensee",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/licensees"
+                        "optionsConfig": {
+                            "configEndpoint": "/licensees"
+                        }
                     },
                     "licenseType": {
                         "name": "License Type",
@@ -63,7 +69,9 @@
                         "path": "licenseType",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/licence-types"
+                        "optionsConfig": {
+                            "configEndpoint": "/licence-types"
+                        }
                     },
                     "contentType": {
                         "name": "Content Type",
@@ -71,7 +79,9 @@
                         "path": "contentType",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/content-types"
+                        "optionsConfig": {
+                            "configEndpoint": "/content-types"
+                        }
                     },
                     "releaseYear": {
                         "name": "Release Year",
@@ -85,7 +95,11 @@
                         "path": "allowedLanguages",
                         "isRequired": false,
                         "isReadOnly": false,
-                        "configEndpoint": "/languages"
+                        "optionsConfig": {
+                            "configEndpoint": "/languages",
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "licenseRightsDescription": {
                         "name": "License Rights Description",
@@ -93,7 +107,9 @@
                         "path": "licenseRightsDescription",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "configEndpoint": "/license-rights-desc"
+                        "optionsConfig": {
+                            "configEndpoint": "/license-rights-desc"
+                        }
                     },
                     "platformCategory": {
                         "name": "Platform Category",
@@ -101,10 +117,12 @@
                         "path": "platformCategory",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "options": [
-                            { "label": "Residential", "value": "Residential" },
-                            { "label": "Hotel", "value": "Hotel" }
-                        ]
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Residential", "value": "Residential" },
+                                { "label": "Hotel", "value": "Hotel" }
+                            ]
+                        }
                     },
                     "rightStatus": {
                         "name": "Right Status",
@@ -112,13 +130,15 @@
                         "path": "rightStatus",
                         "isRequired": true,
                         "isReadOnly": false,
-                        "options": [
-                            { "label": "Pending", "value": "Pending" },
-                            { "label": "Confirmed", "value": "Confirmed" },
-                            { "label": "Tentative", "value": "Tentative" },
-                            { "label": "Canceled", "value": "Canceled" },
-                            { "label": "Withdrawn", "value": "Withdrawn" }
-                        ]
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Pending", "value": "Pending" },
+                                { "label": "Confirmed", "value": "Confirmed" },
+                                { "label": "Tentative", "value": "Tentative" },
+                                { "label": "Canceled", "value": "Canceled" },
+                                { "label": "Withdrawn", "value": "Withdrawn" }
+                            ]
+                        }
                     },
                     "affiliate": {
                         "name": "Affiliate",
@@ -126,7 +146,9 @@
                         "path": "affiliate",
                         "isRequired": false,
                         "isReadOnly": false,
-                        "configEndpoint": "/affiliates"
+                        "optionsConfig": {
+                            "configEndpoint": "/affiliates"
+                        }
                     },
                     "affiliateExclude": {
                         "name": "Affiliate Exclude",
@@ -134,7 +156,9 @@
                         "path": "affiliateExclude",
                         "isRequired": false,
                         "isReadOnly": false,
-                        "configEndpoint": "/affiliates"
+                        "optionsConfig": {
+                            "configEndpoint": "/affiliates"
+                        }
                     }
                 }
             },
