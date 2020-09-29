@@ -27,7 +27,8 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Core TitleId"
+                                "field": "Core TitleId",
+                                "value": "any"
                             }
                         ]
                     },

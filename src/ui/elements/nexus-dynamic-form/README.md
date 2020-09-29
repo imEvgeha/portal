@@ -24,7 +24,8 @@ Portal dynamic form generator is a new tool that will be build a form based on a
         {
             "view": "EDIT",
             "type": "readOnly",
-            "field": "Core TitleId"
+            "field": "Core TitleId",
+            "value": "any"
         }
     ]
 
@@ -35,12 +36,22 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 
 - This means that the field title will be marked as readOnly when Core TitleId field is not empty
 - If you are providing a value then checks also that the value of Core TitleId field is equal to the one you provided
+- If you want to check that the value is null then you should add: { "value": "" }
 
-## Custom Validation
-- If you need to have a custom validation functionfor a field, you need to add the property
+## Validation
+- If you need to have some validation functions for a field, you need to add the property validation like below
 
 {
-    "customValidation": "myProvidedFunction"
+
+    "validation": [
+        {
+            "name": "myProvidedFunction",
+            "args": {
+                "length": 4
+            }
+        }
+    ]
+
 }
 
 - Then you need to create a file with the same incorrectValue e.g. myProvidedFunction in the folder \NEXUS\PORTAL\src\ui\elements\nexus-dynamic-form\valdationUtils and write there your function

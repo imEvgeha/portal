@@ -22,12 +22,7 @@ const RightDetails = ({getRight, right, match}) => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm
-                schema={schema}
-                initialData={right}
-                isEdit={false}
-                onSubmit={values => onSubmit(values)}
-            />
+            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
         </div>
     );
 };
