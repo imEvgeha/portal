@@ -1,6 +1,6 @@
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
-import {length} from './valdationUtils/length.js';
+import {length} from './valdationUtils/lengthEqual.js';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -53,7 +53,7 @@ export const getValidationFunction = (value, validations) => {
         return validations
             .map(v =>
                 import(`./valdationUtils/${v.name}.js`).then(f => {
-                    return f[`${v.name}`](value);
+                    return f[`${v.name}`](value, v.args);
                 })
             )
             .find(e => e !== undefined);

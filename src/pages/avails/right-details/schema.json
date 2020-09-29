@@ -37,9 +37,9 @@
                         "path": "releaseYear",
                         "validation": [
                             {
-                                "name": "length",
-                                "params": {
-                                    "value": 4
+                                "name": "lengthEqual",
+                                "args": {
+                                    "length": 4
                                 }
                             }
                         ]
