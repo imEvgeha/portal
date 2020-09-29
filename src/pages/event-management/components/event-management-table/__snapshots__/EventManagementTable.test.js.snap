@@ -14,7 +14,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
         className="nexus-c-event-management-table__toolbar-button"
         onClick={[Function]}
       >
-        Set to
+        Set to 
         Local
          Time
       </WithAnalyticsContext(WithAnalyticsEvents(Button))>
@@ -179,7 +179,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "dataType": "string",
             "enableSearch": true,
             "field": "avroClassName",
-            "headerName": "Avro class incorrectValue",
+            "headerName": "Avro class name",
             "hide": true,
             "javaVariableName": "avroClassName",
             "searchDataType": "string",
@@ -191,7 +191,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "dataType": "string",
             "enableSearch": true,
             "field": "eventClassName",
-            "headerName": "Event class incorrectValue",
+            "headerName": "Event class name",
             "hide": true,
             "javaVariableName": "eventClassName",
             "searchDataType": "string",
@@ -323,7 +323,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "dataType": "string",
             "enableSearch": true,
             "field": "avroClassName",
-            "headerName": "Avro class incorrectValue",
+            "headerName": "Avro class name",
             "hide": true,
             "javaVariableName": "avroClassName",
             "searchDataType": "string",
@@ -333,7 +333,7 @@ exports[`EventManagementTable should match snapshot 1`] = `
             "dataType": "string",
             "enableSearch": true,
             "field": "eventClassName",
-            "headerName": "Event class incorrectValue",
+            "headerName": "Event class name",
             "hide": true,
             "javaVariableName": "eventClassName",
             "searchDataType": "string",

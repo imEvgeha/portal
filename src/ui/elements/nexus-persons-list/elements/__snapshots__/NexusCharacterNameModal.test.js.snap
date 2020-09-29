@@ -48,7 +48,7 @@ exports[`NexusCharacterNameModal should match snapshot 1`] = `
     </styled.div>
     <styled.input
       disabled={true}
-      incorrectValue="displayName"
+      name="displayName"
       readOnly={true}
       value="hint"
     />
@@ -60,7 +60,7 @@ exports[`NexusCharacterNameModal should match snapshot 1`] = `
     </styled.div>
     <styled.input
       isError={false}
-      incorrectValue="characterName"
+      name="characterName"
       onChange={[Function]}
       placeholder="Character Name"
       value="test"

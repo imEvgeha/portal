@@ -6,7 +6,12 @@ describe('Utils', () => {
         name: 'Right ID',
         type: 'string',
         path: 'id',
-        defaultValueCreate: '1234',
+        viewConfig: [
+            {
+                view: 'CREATE',
+                defaultValue: '1234',
+            },
+        ],
     };
     describe('getDefaultValue', () => {
         it('should return the defaultValueCreate when the view is create', () => {

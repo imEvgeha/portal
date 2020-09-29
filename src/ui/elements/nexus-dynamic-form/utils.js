@@ -3,7 +3,8 @@ import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
-    return field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
+    const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
+    return viewConfig && viewConfig[config];
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
