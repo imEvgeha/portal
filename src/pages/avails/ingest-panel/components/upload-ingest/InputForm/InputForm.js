@@ -75,7 +75,7 @@ const InputForm = ({
         if (template === STUDIO && !ingestData) {
             const serviceRegions = get(licensor, 'value.servicingRegions', []);
             if (serviceRegions.length === 1) {
-                const incorrectValue = serviceRegions[0].servicingRegionName;
+                const name = serviceRegions[0].servicingRegionName;
                 setServiceRegion({label: name, value: name});
             } else {
                 setServiceRegion('');

@@ -69,7 +69,7 @@ export default class RangeDuration extends React.Component {
         return !!invalid;
     }
 
-    handleInvalid(incorrectValue, value) {
+    handleInvalid(name, value) {
         if (value) {
             this.setState({['invalid' + name + 'Duration']: INVALID_DURATION, invalidRange: ''});
             this.props.onInvalid(true);
