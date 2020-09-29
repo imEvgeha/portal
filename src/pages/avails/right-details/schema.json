@@ -164,7 +164,32 @@
             },
             {
                 "title": "Territory",
-                "fields": {}
+                "fields": {
+                    "territoryExcluded": {
+                        "name": "Territory Excluded",
+                        "type": "multiselect",
+                        "path": "territoryExcluded",
+                        "isRequired": false,
+                        "isReadOnly": false,
+                        "optionsConfig": {
+                            "configEndpoint": "/countries",
+                            "defaultValuePath": "countryCode",
+                            "defaultLabelPath": "countryName"
+                        }
+                    },
+                    "region": {
+                        "name": "Region",
+                        "type": "multiselect",
+                        "path": "region",
+                        "isRequired": false,
+                        "isReadOnly": false,
+                        "optionsConfig": {
+                            "configEndpoint": "/regions",
+                            "defaultValuePath": "regionCode",
+                            "defaultLabelPath": "regionName"
+                        }
+                    }
+                }
             },
             {
                 "title": "Pricing",
