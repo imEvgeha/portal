@@ -26,7 +26,7 @@ module.exports = ({env, addon}) => {
     const currentPath = path.join(__dirname, '..');
     // Create the fallback path ()
     const basePath = currentPath + '/.env';
-    // We're concatenating the environment incorrectValue to our filename to specify the correct env file!
+    // We're concatenating the environment name to our filename to specify the correct env file!
     const envPath = basePath + '.' + getEnvFileSuffix(env);
     // Check if the file exists, otherwise fall back to the production .env
     const finalPath = fs.existsSync(envPath) ? envPath : basePath;

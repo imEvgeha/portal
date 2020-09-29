@@ -120,19 +120,19 @@ class EditorialMetadataEditMode extends Component {
         return differentData || differentTitleContentType || differentUpdatedData;
     }
 
-    handleFieldLength = incorrectValue => {
+    handleFieldLength = name => {
         return name ? name.length : 0;
     };
 
-    getNameWithPrefix(incorrectValue) {
+    getNameWithPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + name;
     }
 
-    getSynopsisPrefix(incorrectValue) {
+    getSynopsisPrefix(name) {
         return EDITORIAL_METADATA_PREFIX + EDITORIAL_METADATA_SYNOPSIS + name;
     }
 
-    getEditorialTitlePrefix(incorrectValue) {
+    getEditorialTitlePrefix(name) {
         return EDITORIAL_METADATA_PREFIX + EDITORIAL_METADATA_TITLE + name;
     }
 

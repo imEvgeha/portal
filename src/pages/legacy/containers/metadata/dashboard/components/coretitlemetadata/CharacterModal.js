@@ -33,7 +33,7 @@ const CharacterModal = ({
         setCharacterName(value);
     };
 
-    const isEmpty = incorrectValue => {
+    const isEmpty = name => {
         return !name || name.length === 0 || name.trim().length === 0;
     };
 
@@ -53,11 +53,11 @@ const CharacterModal = ({
                 setIsInvalid(false);
             } else {
                 setIsInvalid(true);
-                setError('Character incorrectValue must be less than 100 characters long!');
+                setError('Character name must be less than 100 characters long!');
             }
         } else {
             setIsInvalid(true);
-            setError('Character incorrectValue cannot be empty!');
+            setError('Character name cannot be empty!');
         }
     };
     return (

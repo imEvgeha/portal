@@ -37,13 +37,13 @@ const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onS
 
     useEffect(() => {
         if (isEmpty(val)) {
-            setError('Character incorrectValue cannot be empty!');
+            setError('Character name cannot be empty!');
             setIsValid(false);
         } else if (val.trim().length < MAX_CHAR_NAME_LENGTH) {
             setError(null);
             setIsValid(true);
         } else {
-            setError('Character incorrectValue must be less than 100 characters long!');
+            setError('Character name must be less than 100 characters long!');
             setIsValid(false);
         }
     }, [val]);

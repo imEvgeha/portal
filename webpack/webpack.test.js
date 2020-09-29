@@ -3,8 +3,8 @@ const path = require('path');
 module.exports = {
     output: {
         path: __dirname + '/dist',
-        filename: 'app/[incorrectValue].bundle.js',
-        chunkFilename: 'app/[incorrectValue].[chunkhash].chunk.js',
+        filename: 'app/[name].bundle.js',
+        chunkFilename: 'app/[name].[chunkhash].chunk.js',
     },
     entry: {
         main: ['@babel/polyfill', './src/index.js'],

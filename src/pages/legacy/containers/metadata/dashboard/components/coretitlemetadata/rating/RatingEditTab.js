@@ -101,7 +101,7 @@ class RatingEditTab extends Component {
         });
     }
 
-    handleFieldLength = incorrectValue => {
+    handleFieldLength = name => {
         return name ? name.length : 0;
     };
 

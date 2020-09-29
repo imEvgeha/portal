@@ -102,15 +102,15 @@ module.exports = envFile => ({
             },
         }),
         new MiniCssExtractPlugin({
-            filename: 'css/[incorrectValue].[contenthash].css',
+            filename: 'css/[name].[contenthash].css',
             chunkFilename: 'css/[id].[contenthash].chunk.css',
             // ignoreOrder: true,
         }),
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/[incorrectValue].bundle.js',
-        chunkFilename: 'js/[incorrectValue].[chunkhash].chunk.js',
+        filename: 'js/[name].bundle.js',
+        chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/',
     },
     // tell Webpack to provide empty mocks for imported Node modules not use

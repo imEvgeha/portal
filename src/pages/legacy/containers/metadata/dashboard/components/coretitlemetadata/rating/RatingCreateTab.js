@@ -105,7 +105,7 @@ class RatingCreateTab extends Component {
         this.props.handleRatingCreateChange(newRating);
     };
 
-    handleFieldLength = incorrectValue => {
+    handleFieldLength = name => {
         return name ? name.length : 0;
     };
 
