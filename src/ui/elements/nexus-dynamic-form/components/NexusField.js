@@ -6,6 +6,7 @@ import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import config from 'react-global-configuration';
+import {getSortedData} from '../../../../util/Common';
 import {nexusFetch} from '../../../../util/http-client/index';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {checkFieldDependencies, getValidationFunction} from '../utils';
@@ -50,12 +51,23 @@ const NexusField = ({
         const {defaultValuePath, defaultLabelPath} = optionsConfig;
         const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
         const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
-        return options.map(opt => {
+
+        const formattedOptions = options.map(opt => {
             return {
                 label: opt[labelField],
                 value: opt[valueField],
             };
         });
+        return sortOptions(formattedOptions);
+    };
+
+    const sortOptions = options => {
+        const {configEndpoint} = optionsConfig;
+        const SORT_TYPE = 'label';
+        switch (configEndpoint) {
+            default:
+                return getSortedData(options, SORT_TYPE, true);
+        }
     };
 
     const renderFieldEditMode = fieldProps => {
