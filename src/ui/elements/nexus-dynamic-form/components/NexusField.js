@@ -5,10 +5,8 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
-import {getSortedData} from '../../../../util/Common';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction} from '../utils';
-import {fetchSelectValues} from './fieldService';
+import {checkFieldDependencies, getValidationFunction, fetchSelectValues, formatOptions} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -31,7 +29,7 @@ const NexusField = ({
         const {configEndpoint} = optionsConfig;
         if (configEndpoint) {
             fetchSelectValues(configEndpoint).then(res => {
-                const options = formatOptions(res.data);
+                const options = formatOptions(res.data, optionsConfig);
                 setFetchedOptions(options);
             });
         }
@@ -39,25 +37,6 @@ const NexusField = ({
 
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
-    };
-
-    const formatOptions = options => {
-        const {defaultValuePath, defaultLabelPath} = optionsConfig;
-        const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
-        const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
-
-        const formattedOptions = options.map(opt => {
-            return {
-                label: opt[labelField],
-                value: opt[valueField],
-            };
-        });
-        return sortOptions(formattedOptions);
-    };
-
-    const sortOptions = options => {
-        const SORT_TYPE = 'label';
-        return getSortedData(options, SORT_TYPE, true);
     };
 
     const renderFieldEditMode = fieldProps => {
