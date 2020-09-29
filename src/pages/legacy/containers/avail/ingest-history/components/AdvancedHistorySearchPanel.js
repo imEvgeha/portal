@@ -48,12 +48,12 @@ class AdvancedHistorySearchPanel extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const incorrectValue = target.name;
+        const name = target.name;
         this.props.searchFormUpdateAdvancedHistorySearchCriteria({...this.props.searchCriteria, [name]: value});
         this.setState({invalidForm: !this.validateState(this.state.invalid)});
     }
 
-    handleDateChange(incorrectValue, field, value) {
+    handleDateChange(name, field, value) {
         if (value) {
             value = value ? moment(value).startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS') : value;
         }
@@ -63,7 +63,7 @@ class AdvancedHistorySearchPanel extends React.Component {
         });
     }
 
-    handleDateInvalid(incorrectValue, value) {
+    handleDateInvalid(name, value) {
         const state = {invalid: {...this.state.invalid, [name]: value}};
         state.invalidForm = !this.validateState(state.invalid);
         this.setState(state);
@@ -96,7 +96,7 @@ class AdvancedHistorySearchPanel extends React.Component {
     }
 
     render() {
-        const renderTextField = (incorrectValue, displayName) => {
+        const renderTextField = (name, displayName) => {
             return (
                 <div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
                     <label htmlFor={'avail-ingest-history-search-' + name + '-text'}>{displayName}</label>
@@ -114,7 +114,7 @@ class AdvancedHistorySearchPanel extends React.Component {
             );
         };
 
-        const renderRangeDatepicker = (incorrectValue, displayName) => {
+        const renderRangeDatepicker = (name, displayName) => {
             return (
                 <RangeDatapicker
                     key={name}

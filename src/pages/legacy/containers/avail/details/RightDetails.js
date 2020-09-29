@@ -333,7 +333,7 @@ class RightDetails extends React.Component {
         }
     }
 
-    handleEditableSubmit(incorrectValue, value, cancel) {
+    handleEditableSubmit(name, value, cancel) {
         if (value === '') {
             value = null;
         }
@@ -377,7 +377,7 @@ class RightDetails extends React.Component {
         return rightCopy;
     }
 
-    update(incorrectValue, value, onError = () => {}) {
+    update(name, value, onError = () => {}) {
         if (this.state.flatRight[name] === value) {
             onError();
             return;
@@ -453,10 +453,10 @@ class RightDetails extends React.Component {
 
     /**
      * Runs string validation in text fields
-     * @param {string} name - the incorrectValue of the field
+     * @param {string} name - the name of the field
      * @param {string} value - the value currently in the text field
      */
-    validateTextField(incorrectValue, value) {
+    validateTextField(name, value) {
         const newValue = !!value ? safeTrim(value) : '';
         const mapping = this.props.availsMapping.mappings.find(mapping => mapping.javaVariableName === name);
         if (!!mapping) {
@@ -473,7 +473,7 @@ class RightDetails extends React.Component {
         return '';
     }
 
-    getPairFieldName(incorrectValue) {
+    getPairFieldName(name) {
         switch (name) {
             case 'start':
                 return 'availStart';
@@ -484,7 +484,7 @@ class RightDetails extends React.Component {
         }
     }
 
-    extraValidation(incorrectValue, displayName, date, right) {
+    extraValidation(name, displayName, date, right) {
         const pairFieldName = this.getPairFieldName(name);
         if (pairFieldName) {
             const mappingPair = this.props.availsMapping.mappings.find(
@@ -612,7 +612,7 @@ class RightDetails extends React.Component {
     render() {
         const {sourceRightId} = this.state.right || {};
         const renderFieldTemplate = (
-            incorrectValue,
+            name,
             displayName,
             value,
             error,
@@ -685,10 +685,10 @@ class RightDetails extends React.Component {
         /**
          * Renders a text field using the @atlaskit/inline-edit component, which also allows us to pass in extra props like `autoComplete="off"`
          */
-        const renderTextField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderTextField = (name, displayName, value, error, readOnly, required, highlighted) => {
             const ref = React.createRef();
 
-            const onSubmit = (incorrectValue, value) => {
+            const onSubmit = (name, value) => {
                 let newValue = safeTrim(value);
 
                 if (newValue === '') {
@@ -741,7 +741,7 @@ class RightDetails extends React.Component {
         };
 
         const renderAvField = (
-            incorrectValue,
+            name,
             displayName,
             value,
             error,
@@ -862,27 +862,27 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderIntegerField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderIntegerField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {
                 number: true,
                 pattern: {value: /^\d+$/, errorMessage: 'Please enter a valid integer'},
             });
         };
 
-        const renderYearField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderYearField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {
                 pattern: {value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'},
             });
         };
 
-        const renderDoubleField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderDoubleField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {
                 number: true,
                 pattern: {value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'},
             });
         };
 
-        const renderTimeField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderTimeField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(name, displayName, value, error, readOnly, required, highlighted, null, {
                 pattern: {
                     value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
@@ -891,7 +891,7 @@ class RightDetails extends React.Component {
             });
         };
 
-        const renderDurationField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderDurationField = (name, displayName, value, error, readOnly, required, highlighted) => {
             return renderAvField(
                 name,
                 displayName,
@@ -905,7 +905,7 @@ class RightDetails extends React.Component {
         };
 
         const renderBooleanField = (
-            incorrectValue,
+            name,
             displayName,
             value,
             error,
@@ -995,16 +995,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderSelectField = (
-            incorrectValue,
-            displayName,
-            value,
-            error,
-            readOnly,
-            required,
-            highlighted,
-            filterBy
-        ) => {
+        const renderSelectField = (name, displayName, value, error, readOnly, required, highlighted, filterBy) => {
             let priorityError = null;
             if (error) {
                 priorityError = (
@@ -1097,7 +1088,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderMultiSelectField = (incorrectValue, displayName, value, error, readOnly, required, highlighted) => {
+        const renderMultiSelectField = (name, displayName, value, error, readOnly, required, highlighted) => {
             let priorityError = null;
             if (error && !name.includes('affiliate')) {
                 priorityError = (
@@ -1256,7 +1247,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderPriceField = (incorrectValue, displayName, value, errors, readOnly, required, highlighted) => {
+        const renderPriceField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             let ref;
             if (this.fields[name]) {
                 ref = this.fields[name];
@@ -1320,7 +1311,7 @@ class RightDetails extends React.Component {
                 list.forEach(el => {
                     const price = Object.assign({}, el);
                     Object.keys(price).forEach(key => {
-                        if (originalFieldNames.findIndex(incorrectValue => name === key) < 0) {
+                        if (originalFieldNames.findIndex(name => name === key) < 0) {
                             delete price[key];
                         }
                     });
@@ -1416,7 +1407,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderTerritoryField = (incorrectValue, displayName, value, errors, readOnly, required, highlighted) => {
+        const renderTerritoryField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             {
                 /*let priorityError = null;
             if (error) {
@@ -1489,7 +1480,7 @@ class RightDetails extends React.Component {
                 list.forEach(el => {
                     const territory = Object.assign({}, el);
                     Object.keys(territory).forEach(key => {
-                        if (originalFieldNames.findIndex(incorrectValue => name === key) < 0) {
+                        if (originalFieldNames.findIndex(name => name === key) < 0) {
                             delete territory[key];
                         }
                     });
@@ -1582,15 +1573,7 @@ class RightDetails extends React.Component {
             );
         };
 
-        const renderAudioLanguageField = (
-            incorrectValue,
-            displayName,
-            value,
-            errors,
-            readOnly,
-            required,
-            highlighted
-        ) => {
+        const renderAudioLanguageField = (name, displayName, value, errors, readOnly, required, highlighted) => {
             let ref;
             if (this.fields[name]) {
                 ref = this.fields[name];
@@ -1656,7 +1639,7 @@ class RightDetails extends React.Component {
                 list.forEach(el => {
                     const language = Object.assign({}, el);
                     Object.keys(language).forEach(key => {
-                        if (originalFieldNames.findIndex(incorrectValue => name === key) < 0) {
+                        if (originalFieldNames.findIndex(name => name === key) < 0) {
                             delete language[key];
                         }
                     });
@@ -1748,7 +1731,7 @@ class RightDetails extends React.Component {
 
         const renderDatepickerField = (
             showTime,
-            incorrectValue,
+            name,
             displayName,
             value,
             priorityError,
@@ -2211,7 +2194,7 @@ class RightDetails extends React.Component {
                                 console.warn(
                                     'Unsupported DataType: ' +
                                         mapping.dataType +
-                                        ' for field incorrectValue: ' +
+                                        ' for field name: ' +
                                         mapping.displayName
                                     // eslint-disable-next-line
                                 );

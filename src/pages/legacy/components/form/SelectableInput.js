@@ -116,7 +116,7 @@ class SelectableInput extends Component {
     };
 
     render() {
-        const renderTextField = (incorrectValue, displayName) => {
+        const renderTextField = (name, displayName) => {
             return (
                 <div key={name} style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
                     <input
@@ -142,7 +142,7 @@ class SelectableInput extends Component {
             cb(isValid);
         };
 
-        const renderIntegerField = (incorrectValue, displayName) => {
+        const renderIntegerField = (name, displayName) => {
             return (
                 <div
                     key={name.value}
@@ -167,7 +167,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderYearField = (incorrectValue, displayName) => {
+        const renderYearField = (name, displayName) => {
             return (
                 <div
                     key={name.value}
@@ -192,7 +192,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderDoubleField = (incorrectValue, displayName) => {
+        const renderDoubleField = (name, displayName) => {
             return (
                 <div
                     key={name.value}
@@ -220,7 +220,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderTimeField = (incorrectValue, displayName) => {
+        const renderTimeField = (name, displayName) => {
             return (
                 <div
                     key={name.value}
@@ -243,7 +243,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderBooleanField = (incorrectValue, displayName) => {
+        const renderBooleanField = (name, displayName) => {
             return (
                 <div
                     key={name.value}
@@ -265,7 +265,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderRangeDurationField = (incorrectValue, displayName) => {
+        const renderRangeDurationField = (name, displayName) => {
             return (
                 <RangeDuration
                     key={name.value}
@@ -314,7 +314,7 @@ class SelectableInput extends Component {
             );
         };
 
-        const renderSelect = (incorrectValue, displayName) => {
+        const renderSelect = (name, displayName) => {
             let options = [];
             if (this.props.selected && this.props.selectValues && this.props.selectValues[this.props.selected.field]) {
                 options = this.props.selectValues[this.props.selected.field];
@@ -430,9 +430,7 @@ class SelectableInput extends Component {
                     return renderBooleanField(selected, displayName);
                 default:
                     // eslint-disable-next-line
-                    console.warn(
-                        'Unsupported DataType: ' + this.props.dataType + ' for field incorrectValue: ' + displayName
-                    );
+                    console.warn('Unsupported DataType: ' + this.props.dataType + ' for field name: ' + displayName);
             }
         };
 

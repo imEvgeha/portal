@@ -52,12 +52,12 @@ class CustomModal extends React.Component {
                 <ModalHeader toggle={this.toggle}>Save report</ModalHeader>
                 <ModalBody>
                     <div className="form-group">
-                        <label htmlFor="dashboard-avails-report-incorrectValue-text">Report incorrectValue</label>
+                        <label htmlFor="dashboard-avails-report-name-text">Report name</label>
                         <input
                             type="text"
                             className="form-control"
                             id="dashboard-avails-report-name-text"
-                            placeholder="Enter report incorrectValue"
+                            placeholder="Enter report name"
                             value={this.state.reportName}
                             onChange={this.handleInputChange}
                             onKeyPress={this._handleKeyPress}

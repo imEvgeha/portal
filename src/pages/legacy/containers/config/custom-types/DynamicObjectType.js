@@ -158,7 +158,7 @@ export default class DynamicObjectType extends Component {
                     <Textfield
                         value={keyName}
                         onChange={e => this.onKeyNameChange(e.target.value)}
-                        placeholder="Input key incorrectValue..."
+                        placeholder="Input key name..."
                     />
                     <Button
                         isDisabled={keyName.trim().length === 0 || items.find(({key}) => key === keyName) != null}
