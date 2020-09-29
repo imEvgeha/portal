@@ -62,12 +62,8 @@ const NexusField = ({
     };
 
     const sortOptions = options => {
-        const {configEndpoint} = optionsConfig;
         const SORT_TYPE = 'label';
-        switch (configEndpoint) {
-            default:
-                return getSortedData(options, SORT_TYPE, true);
-        }
+        return getSortedData(options, SORT_TYPE, true);
     };
 
     const renderFieldEditMode = fieldProps => {
