@@ -17,7 +17,6 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         return (
             <>
                 {Object.keys(fields).map(key => {
-                    const a = !getFieldConfig(fields[key], 'hidden', view);
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
                             <NexusField

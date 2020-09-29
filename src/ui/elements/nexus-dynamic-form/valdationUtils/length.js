@@ -1,8 +1,8 @@
 import {INCORRECT_LENGTH} from '../constants';
 
-export function length4(value) {
-    const length = 4;
-    if (value && value.length !== length) {
+export function length(value) {
+    const l = 4;
+    if (value && value.length !== l) {
         return INCORRECT_LENGTH;
     }
     return undefined;

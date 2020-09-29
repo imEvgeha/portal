@@ -1,5 +1,6 @@
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
+import {length} from './valdationUtils/length.js';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -46,12 +47,16 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
     );
 };
 
-export const getValidationFunction = (value, customValidation) => {
+export const getValidationFunction = (value, validations) => {
     // load dynamic file
-    if (customValidation) {
-        return import(`./valdationUtils/${customValidation}.js`).then(math => {
-            return math[`${customValidation}`](value);
-        });
+    if (validations && validations.length > 0) {
+        return validations
+            .map(v =>
+                import(`./valdationUtils/${v.name}.js`).then(f => {
+                    return f[`${v.name}`](value);
+                })
+            )
+            .find(e => e !== undefined);
     }
     return undefined;
 };
