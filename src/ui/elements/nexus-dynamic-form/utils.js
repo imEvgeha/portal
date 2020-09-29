@@ -1,6 +1,5 @@
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
-import {length} from './valdationUtils/lengthEqual.js';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
