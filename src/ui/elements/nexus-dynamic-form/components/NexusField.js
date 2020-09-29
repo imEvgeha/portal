@@ -5,11 +5,10 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
-import config from 'react-global-configuration';
 import {getSortedData} from '../../../../util/Common';
-import {nexusFetch} from '../../../../util/http-client/index';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {checkFieldDependencies, getValidationFunction} from '../utils';
+import {fetchSelectValues} from './fieldService';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -40,11 +39,6 @@ const NexusField = ({
 
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
-    };
-
-    const fetchSelectValues = endpoint => {
-        const url = `${config.get('gateway.configuration')}/configuration-api/v1${endpoint}?page=0&size=10000`;
-        return nexusFetch(url, {isWithErrorHandling: false});
     };
 
     const formatOptions = options => {
