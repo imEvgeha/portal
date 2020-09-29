@@ -106,7 +106,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
             <SourceTableGrid
                 columnDefs={[radioButtonColumn, servicesColumn, ...columnDefinitions]}
                 rowData={sources}
-                domLayout="autoHeight"
+                domLayout="normal"
                 mapping={mappings}
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
