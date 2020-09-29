@@ -82,7 +82,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         field: 'services',
         cellRendererFramework: ({data}) => {
             // TODO: fix this
-            const name = data && `${data['fs'].toLowerCase()}Services`;
+            const incorrectValue = data && `${data['fs'].toLowerCase()}Services`;
             const serviceLength = name && data[name] ? data[name].length : 0;
 
             return <Badge>{serviceLength}</Badge>;

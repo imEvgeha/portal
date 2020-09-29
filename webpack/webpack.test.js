@@ -3,11 +3,11 @@ const path = require('path');
 module.exports = {
     output: {
         path: __dirname + '/dist',
-        filename: 'app/[name].bundle.js',
-        chunkFilename: 'app/[name].[chunkhash].chunk.js'
+        filename: 'app/[incorrectValue].bundle.js',
+        chunkFilename: 'app/[incorrectValue].[chunkhash].chunk.js',
     },
     entry: {
-        main: ['@babel/polyfill', './src/index.js']
+        main: ['@babel/polyfill', './src/index.js'],
     },
     resolve: {
         alias: {
@@ -15,18 +15,20 @@ module.exports = {
                 __dirname,
                 'src/store-persist-config/packages/redux-persist-transform-filter/index.js'
             ),
-        }
+        },
     },
     module: {
         rules: [
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                loaders: ['babel-loader', 'eslint-loader']
-            }, {
+                loaders: ['babel-loader', 'eslint-loader'],
+            },
+            {
                 test: /\.(scss|css)/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
-            }, {
+                loaders: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
                 test: /\.(gif|png|jpe?g|svg)$/i,
                 use: [
                     'file-loader',
@@ -38,7 +40,7 @@ module.exports = {
                         },
                     },
                 ],
-            }
+            },
         ],
-    }
+    },
 };

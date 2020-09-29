@@ -70,11 +70,11 @@ class EditorialMetadataCreateTab extends Component {
         );
     }
 
-    handleFieldLength = name => {
+    handleFieldLength = incorrectValue => {
         return name ? name.length : 0;
     };
 
-    getNameWithPrefix(name) {
+    getNameWithPrefix(incorrectValue) {
         return EDITORIAL_METADATA_PREFIX + name;
     }
 

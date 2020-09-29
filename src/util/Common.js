@@ -9,7 +9,7 @@ import moment from 'moment';
  * @param {octet-stream} data - Byte array format (application/octet-stream)
  * @param {string} fileNamePrefix - Prefix for file naming
  * @param {string} fileExtension - File extension
- * @param {boolean} showTime - Show time in file name timestamp
+ * @param {boolean} showTime - Show time in file incorrectValue timestamp
  */
 function downloadFile(data, fileNamePrefix = 'INT_avails_', fileExtension = '.xlsx', showTime = true) {
     // TODO: Header containing filename sugestion is not accesible by javascript by default,
@@ -48,7 +48,7 @@ function equalOrIncluded(term, container) {
         terms = terms.split(',').map(val => val.trim());
         match = terms.includes(term);
     } else if (!match && /^\w+\[\d\]$/.test(container)) {
-        // if container matches the pattern `x[n]` where `x` is the name of an array, and `n` is any number
+        // if container matches the pattern `x[n]` where `x` is the incorrectValue of an array, and `n` is any number
         // e.g. randomArrayName[0]
         const [matchedPattern] = /^\w+/.exec(container);
         return matchedPattern === term;

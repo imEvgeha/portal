@@ -50,13 +50,14 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 export const getValidationFunction = (value, validations) => {
     // load dynamic file
     if (validations && validations.length > 0) {
-        return validations
-            .map(v =>
-                import(`./valdationUtils/${v.name}.js`).then(f => {
-                    return f[`${v.name}`](value, v.args);
-                })
-            )
-            .find(e => e !== undefined);
+        const promises = validations.map(v =>
+            import(`./valdationUtils/${v.name}.js`).then(f => {
+                return f[`${v.name}`](value, v.args);
+            })
+        );
+        return Promise.all(promises).then(responses => {
+            return responses.find(e => e !== undefined);
+        });
     }
     return undefined;
 };

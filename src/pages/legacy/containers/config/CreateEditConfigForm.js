@@ -199,7 +199,7 @@ export default class CreateEditConfigForm extends React.Component {
         if (field) {
             if ((field.type === 'select' || field.type === 'multiselect') && field.source) {
                 if (field.name === 'licensees') {
-                    //licensees needs to be filtered by selected servicing region name
+                    //licensees needs to be filtered by selected servicing region incorrectValue
                     return this.getLicensees(field, context);
                 } else if (cache[field.source.url] === undefined) {
                     const promise = getConfigApiValues(field.source.url, 0, 1000).then(response => {

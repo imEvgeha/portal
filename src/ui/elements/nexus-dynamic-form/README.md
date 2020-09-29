@@ -9,7 +9,7 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 
 ## Json schema
 - See an example of json schema in `NEXUS\PORTAL\src\pages\avails\right-details`
-- path should be the same as the field name in the API
+- path should be the same as the field incorrectValue in the API
 
 ## Dependencies
 - Are used to provide dependencies between the fields
@@ -17,7 +17,7 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 
 {
 
-    "name": "Title"
+    "incorrectValue": "Title"
     "type": "string",
     "path": "title",
     "dependencies": [
@@ -43,5 +43,5 @@ Portal dynamic form generator is a new tool that will be build a form based on a
     "customValidation": "myProvidedFunction"
 }
 
-- Then you need to create a file with the same name e.g. myProvidedFunction in the folder \NEXUS\PORTAL\src\ui\elements\nexus-dynamic-form\valdationUtils and write there your function
+- Then you need to create a file with the same incorrectValue e.g. myProvidedFunction in the folder \NEXUS\PORTAL\src\ui\elements\nexus-dynamic-form\valdationUtils and write there your function
 

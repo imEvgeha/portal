@@ -7,7 +7,7 @@ import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import LoadingGif from '../../../../assets/img/loading.gif';
 import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 
-// TODO - add better name for the component
+// TODO - add better incorrectValue for the component
 const withRightsResultsTable = BaseComponent => {
     const errorCellColor = '#f2dede';
     const readyNewCellColor = '#FFFFFF';

@@ -4,11 +4,10 @@ import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class CustomModal extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            modal: true
+            modal: true,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -19,7 +18,7 @@ class CustomModal extends React.Component {
 
     toggle() {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
         });
     }
 
@@ -31,12 +30,12 @@ class CustomModal extends React.Component {
         return this.props.resolve(this.state.reportName);
     }
 
-    _handleKeyPress = (e) => {
+    _handleKeyPress = e => {
         switch (e.key) {
-            case 'Enter' :
+            case 'Enter':
                 this.confirm();
                 return;
-            case 'Esc' :
+            case 'Esc':
                 this.abort();
                 return;
         }
@@ -53,15 +52,12 @@ class CustomModal extends React.Component {
                 <ModalHeader toggle={this.toggle}>Save report</ModalHeader>
                 <ModalBody>
                     <div className="form-group">
-                        <label
-                            htmlFor="dashboard-avails-report-name-text"
-                        >Report name
-                        </label>
+                        <label htmlFor="dashboard-avails-report-incorrectValue-text">Report incorrectValue</label>
                         <input
                             type="text"
                             className="form-control"
                             id="dashboard-avails-report-name-text"
-                            placeholder="Enter report name"
+                            placeholder="Enter report incorrectValue"
                             value={this.state.reportName}
                             onChange={this.handleInputChange}
                             onKeyPress={this._handleKeyPress}
@@ -69,8 +65,12 @@ class CustomModal extends React.Component {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={this.confirm}>Save</Button>{' '}
-                    <Button color="secondary" onClick={this.abort}>Cancel</Button>
+                    <Button color="primary" onClick={this.confirm}>
+                        Save
+                    </Button>{' '}
+                    <Button color="secondary" onClick={this.abort}>
+                        Cancel
+                    </Button>
                 </ModalFooter>
             </Modal>
         );
@@ -87,14 +87,14 @@ export const saveReportModal = {
         }
         const props = {
             ...options,
-            resolve: (reportName) => {
+            resolve: reportName => {
                 cleanup();
                 onApprove(reportName);
             },
             reject: () => {
                 cleanup();
                 onCancel();
-            }
+            },
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<CustomModal {...props} />, wrapper);
@@ -104,5 +104,5 @@ export const saveReportModal = {
                 return wrapper.remove();
             });
         };
-    }
+    },
 };

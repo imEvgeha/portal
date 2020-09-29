@@ -84,7 +84,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    handleInvalidDatePicker(name, invalid) {
+    handleInvalidDatePicker(incorrectValue, invalid) {
         const groupedMappingName = this.getGroupedMappingName(name);
         if (invalid) {
             this.mappingErrorMessage[name] = {date: INVALID_DATE};
@@ -100,11 +100,11 @@ class RightCreate extends React.Component {
 
     handleChange({target}, val) {
         const value = val || (target.value ? safeTrim(target.value) : '');
-        const name = target.name;
+        const incorrectValue = target.name;
         this.checkRight(name, value, true);
     }
 
-    handleArrayPush = (e, name) => {
+    handleArrayPush = (e, incorrectValue) => {
         let newArray;
         if (this.right[name]) {
             newArray = Array.from(this.right[name]);
@@ -115,14 +115,14 @@ class RightCreate extends React.Component {
         this.checkRight(name, newArray, true);
     };
 
-    handleDeleteObjectFromArray = (value, name, subField) => {
+    handleDeleteObjectFromArray = (value, incorrectValue, subField) => {
         const newRight = this.right[name] && this.right[name].filter(e => e[subField] !== value);
         this.checkRight(name, newRight, true);
     };
 
     handleBooleanChange({target}) {
         const value = target.value;
-        const name = target.name;
+        const incorrectValue = target.name;
         if (value === '') {
             delete this.right[name];
             this.checkRight(name, value, false);
@@ -131,7 +131,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    checkRight(name, value, setNewValue) {
+    checkRight(incorrectValue, value, setNewValue) {
         if (!this.mappingErrorMessage[name] || !this.mappingErrorMessage[name].inner) {
             const validationError = this.validateField(name, value, this.right);
 
@@ -180,7 +180,7 @@ class RightCreate extends React.Component {
         }
     }
 
-    handleDatepickerChange(name, displayName, val) {
+    handleDatepickerChange(incorrectValue, displayName, val) {
         this.checkRight(name, val, true);
         if (!this.mappingErrorMessage[name].text) {
             const groupedMappingName = this.getGroupedMappingName(name);
@@ -199,13 +199,13 @@ class RightCreate extends React.Component {
         this.setState({});
     }
 
-    getGroupedMappingName(name) {
+    getGroupedMappingName(incorrectValue) {
         if (name === 'start') return 'end';
         if (name === 'end') return 'start';
         return name.endsWith('Start') ? name.replace('Start', 'End') : name.replace('End', 'Start');
     }
 
-    getPairFieldName(name) {
+    getPairFieldName(incorrectValue) {
         switch (name) {
             case 'start':
                 return 'availStart';
@@ -244,7 +244,7 @@ class RightCreate extends React.Component {
         return '';
     }
 
-    validateField(name, value) {
+    validateField(incorrectValue, value) {
         const map = this.props.availsMapping.mappings.find(x => x.javaVariableName === name);
         const isOriginRightIdRequired =
             name === 'originalRightId' &&
@@ -379,7 +379,7 @@ class RightCreate extends React.Component {
     };
 
     render() {
-        const renderFieldTemplate = (name, displayName, required, tooltip, content) => {
+        const renderFieldTemplate = (incorrectValue, displayName, required, tooltip, content) => {
             return (
                 <div
                     key={name}
@@ -412,7 +412,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderStringField = (name, displayName, required, value, tooltip) => {
+        const renderStringField = (incorrectValue, displayName, required, value, tooltip) => {
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -440,7 +440,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderIntegerField = (name, displayName, required, value) => {
+        const renderIntegerField = (incorrectValue, displayName, required, value) => {
             const validation = {number: true, pattern: {value: /^\d+$/, errorMessage: 'Please enter a valid integer'}};
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
@@ -496,7 +496,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderYearField = (name, displayName, required, value) => {
+        const renderYearField = (incorrectValue, displayName, required, value) => {
             const validation = {pattern: {value: /^\d{4}$/, errorMessage: 'Please enter a valid year (4 digits)'}};
             const validate = (val, ctx, input, cb) => {
                 let isValid = true;
@@ -550,7 +550,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderDoubleField = (name, displayName, required, value) => {
+        const renderDoubleField = (incorrectValue, displayName, required, value) => {
             const validation = {
                 number: true,
                 pattern: {value: /^\d*(\d[.,]|[.,]\d)?\d*$/, errorMessage: 'Please enter a valid number'},
@@ -609,7 +609,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderTimeField = (name, displayName, required, value) => {
+        const renderTimeField = (incorrectValue, displayName, required, value) => {
             const validation = {
                 pattern: {
                     value: /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
@@ -668,7 +668,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderMultiSelectField = (name, displayName, required, value) => {
+        const renderMultiSelectField = (incorrectValue, displayName, required, value) => {
             let options = [];
             if (this.props.selectValues && this.props.selectValues[name]) {
                 options = this.props.selectValues[name];
@@ -753,7 +753,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderSelectField = (name, displayName, required, value, filterBy) => {
+        const renderSelectField = (incorrectValue, displayName, required, value, filterBy) => {
             let options = [];
             let val;
 
@@ -802,7 +802,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderBooleanField = (name, displayName, required, value, defaultValue) => {
+        const renderBooleanField = (incorrectValue, displayName, required, value, defaultValue) => {
             return renderFieldTemplate(
                 name,
                 displayName,
@@ -824,7 +824,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderPriceField = (name, displayName, required, value) => {
+        const renderPriceField = (incorrectValue, displayName, required, value) => {
             let priceTypeOptions = [],
                 priceCurrencyOptions = [];
             let val;
@@ -874,7 +874,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderTerritoryField = (name, displayName, required, value) => {
+        const renderTerritoryField = (incorrectValue, displayName, required, value) => {
             let options = [];
             let val;
             if (this.props.selectValues && this.props.selectValues[name]) {
@@ -919,7 +919,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderAudioLanguageField = (name, displayName, required, value) => {
+        const renderAudioLanguageField = (incorrectValue, displayName, required, value) => {
             let options = [],
                 audioTypeOptions = [];
             let val;
@@ -976,7 +976,7 @@ class RightCreate extends React.Component {
             );
         };
 
-        const renderDatepickerField = (name, displayName, required, value, useTime, isTimestamp) => {
+        const renderDatepickerField = (incorrectValue, displayName, required, value, useTime, isTimestamp) => {
             const errors = this.mappingErrorMessage[name];
             const {date, text, range, pair} = errors || {};
             const error = date || text || range || pair || '';
@@ -1144,7 +1144,7 @@ class RightCreate extends React.Component {
                                 console.warn(
                                     'Unsupported DataType: ' +
                                         mapping.dataType +
-                                        ' for field name: ' +
+                                        ' for field incorrectValue: ' +
                                         mapping.displayName
                                     // eslint-disable-next-line
                                 );

@@ -37,6 +37,12 @@
                         "path": "releaseYear",
                         "validation": [
                             {
+                                "name": "incorrectValue",
+                                "args": {
+                                    "value": "1111"
+                                }
+                            },
+                            {
                                 "name": "lengthEqual",
                                 "args": {
                                     "length": 4

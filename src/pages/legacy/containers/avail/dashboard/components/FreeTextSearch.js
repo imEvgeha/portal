@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import {searchFormUpdateTextSearch} from '../../../../stores/actions/avail/dashboard';
 import {connect} from 'react-redux';
 
-
 const mapStateToProps = state => {
     return {
-        freeTextSearch: state.dashboard.session.freeTextSearch
+        freeTextSearch: state.dashboard.session.freeTextSearch,
     };
 };
 
 const mapDispatchToProps = {
-    searchFormUpdateTextSearch
+    searchFormUpdateTextSearch,
 };
 
 class FreeTextSearch extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -26,12 +24,12 @@ class FreeTextSearch extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.freeTextSearch !== this.props.freeTextSearch){
-            this.setState({text:this.props.freeTextSearch.text});
+        if (prevProps.freeTextSearch !== this.props.freeTextSearch) {
+            this.setState({text: this.props.freeTextSearch.text});
         }
     }
 
-    _handleKeyPress = (e) => {
+    _handleKeyPress = e => {
         if (e.key === 'Enter') {
             this.handleSearch();
         }
@@ -40,15 +38,15 @@ class FreeTextSearch extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const incorrectValue = target.name;
         this.setState({
-            [name]: value
+            [name]: value,
         });
     }
 
     handleSearch() {
         this.props.searchFormUpdateTextSearch({
-            text: this.state.text
+            text: this.state.text,
         });
         this.props.onSearch({text: this.state.text});
     }
@@ -78,7 +76,7 @@ class FreeTextSearch extends React.Component {
                     </button>
                 </div>
             </div>
-);
+        );
     }
 }
 
@@ -87,6 +85,6 @@ FreeTextSearch.propTypes = {
     onSearch: PropTypes.func,
     containerId: PropTypes.string,
     disabled: PropTypes.bool,
-    freeTextSearch: PropTypes.object
+    freeTextSearch: PropTypes.object,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(FreeTextSearch);

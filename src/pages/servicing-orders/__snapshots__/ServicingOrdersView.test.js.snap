@@ -20,7 +20,7 @@ exports[`ServicingOrdersView HTML content should match snapshot 1`] = `
       </label>
       <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
         className="nexus-c-servicing-orders__customer-filter--select"
-        name="customer"
+        incorrectValue="customer"
         onChange={[Function]}
         options={
           Array [

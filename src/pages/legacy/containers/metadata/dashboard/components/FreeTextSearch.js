@@ -4,11 +4,10 @@ import {searchFormUpdateTextSearch} from '../../../../stores/actions/metadata/in
 import {connect} from 'react-redux';
 
 const mapDispatchToProps = {
-    searchFormUpdateTextSearch
+    searchFormUpdateTextSearch,
 };
 
 class FreeTextSearch extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +17,7 @@ class FreeTextSearch extends React.Component {
         this.handleSearch = this.handleSearch.bind(this);
     }
 
-    _handleKeyPress = (e) => {
+    _handleKeyPress = e => {
         if (e.key === 'Enter') {
             this.handleSearch();
         }
@@ -31,9 +30,9 @@ class FreeTextSearch extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const incorrectValue = target.name;
         this.setState({
-            [name]: value
+            [name]: value,
         });
     }
 
@@ -78,7 +77,7 @@ class FreeTextSearch extends React.Component {
                     </button>
                 </div>
             </div>
-);
+        );
     }
 }
 

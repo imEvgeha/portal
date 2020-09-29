@@ -21,7 +21,7 @@ import Toast from './ui/toast/Toast';
 import {initializeTracker} from './util/hoc/withTracker';
 import './styles/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
-import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
+import './styles/legacy/WeAre138.scss'; // TODO: lovely file incorrectValue - remove
 import './styles/legacy/global.scss'; // TODO; refactor
 
 const AG_GRID_LICENSE_KEY =

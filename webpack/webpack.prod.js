@@ -1,4 +1,4 @@
-const {CleanWebpackPlugin} = require('clean-webpack-plugin'); 
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -15,14 +15,10 @@ module.exports = envFile => ({
     module: {
         rules: [
             {
-            test: /\.(scss|css)/,
-            loader: [
-                MiniCssExtractPlugin.loader,
-                require.resolve('css-loader'),
-                require.resolve('sass-loader'),
-            ]
-        },
-        ]
+                test: /\.(scss|css)/,
+                loader: [MiniCssExtractPlugin.loader, require.resolve('css-loader'), require.resolve('sass-loader')],
+            },
+        ],
     },
     optimization: {
         splitChunks: {
@@ -34,9 +30,7 @@ module.exports = envFile => ({
                     chunks: 'all',
                     name: 'framework',
                     test: new RegExp(
-                        `(?<!node_modules.*)[\\\\/]node_modules[\\\\/](${FRAMEWORK_BUNDLES.join(
-                            '|'
-                        )})[\\\\/]`
+                        `(?<!node_modules.*)[\\\\/]node_modules[\\\\/](${FRAMEWORK_BUNDLES.join('|')})[\\\\/]`
                     ),
                     priority: 40,
                     enforce: true,
@@ -54,8 +48,8 @@ module.exports = envFile => ({
                     name: 'styles',
                     priority: 40,
                     enforce: true,
-                }
-            }
+                },
+            },
         },
         runtimeChunk: {
             name: 'webpack-runtime',
@@ -74,21 +68,21 @@ module.exports = envFile => ({
                     },
                     output: {
                         comments: false,
-                        ascii_only:true,
-                    }
+                        ascii_only: true,
+                    },
                 },
             }),
-            new OptimizeCSSAssetsPlugin(), 
-        ]
+            new OptimizeCSSAssetsPlugin(),
+        ],
     },
     performance: {
         hints: false,
         maxEntrypointSize: 512000,
-        maxAssetSize: 512000
+        maxAssetSize: 512000,
     },
     plugins: [
         new CleanWebpackPlugin({
-            root: paths.appBuild
+            root: paths.appBuild,
         }),
         new HtmlWebpackPlugin({
             template: paths.appHtml,
@@ -105,19 +99,19 @@ module.exports = envFile => ({
                 minifyJS: true,
                 minifyCSS: true,
                 minifyURLs: true,
-            }
+            },
         }),
         new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash].css',
+            filename: 'css/[incorrectValue].[contenthash].css',
             chunkFilename: 'css/[id].[contenthash].chunk.css',
             // ignoreOrder: true,
         }),
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/[name].bundle.js',
-        chunkFilename: 'js/[name].[chunkhash].chunk.js',
-        publicPath: '/'
+        filename: 'js/[incorrectValue].bundle.js',
+        chunkFilename: 'js/[incorrectValue].[chunkhash].chunk.js',
+        publicPath: '/',
     },
     // tell Webpack to provide empty mocks for imported Node modules not use
     node: {

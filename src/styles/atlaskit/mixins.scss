@@ -48,7 +48,7 @@
 
 /**
   A more generalized way to add spacing, but only one value at a time.
-  Pass in property name and multiplier
+  Pass in property incorrectValue and multiplier
   Ex: @include addSpace('margin-top', 4)
 **/
 @mixin addSpacing($property, $multiplier) {

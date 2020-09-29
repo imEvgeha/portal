@@ -1,11 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React, {useState, useEffect} from 'react';
+import {Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import PropTypes from 'prop-types';
-import { CustomInput, CustomLabel } from './CustomComponents';
-import { ErrorMessage } from '@atlaskit/form';
+import {CustomInput, CustomLabel} from './CustomComponents';
+import {ErrorMessage} from '@atlaskit/form';
 import Button from '@atlaskit/button';
 
-const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddCharacterName, parentId, modalType, data, selectedId}) => {
+const CharacterModal = ({
+    selectedPerson,
+    isModalOpen,
+    toggleModal,
+    handleAddCharacterName,
+    parentId,
+    modalType,
+    data,
+    selectedId,
+}) => {
     const [characterName, setCharacterName] = useState('');
     const [isInvalid, setIsInvalid] = useState(false);
     const [error, setError] = useState(null);
@@ -19,36 +28,36 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
         setCharacterName(selectedPerson && selectedPerson.characterName ? selectedPerson.characterName : '');
     }, [selectedPerson]);
 
-    const handleChange = (e) => {
-        const { value } = e.target;
+    const handleChange = e => {
+        const {value} = e.target;
         setCharacterName(value);
     };
 
-    const isEmpty = (name) => {
-        return (!name || name.length === 0 || name.trim().length === 0);
+    const isEmpty = incorrectValue => {
+        return !name || name.length === 0 || name.trim().length === 0;
     };
 
     const handleSubmit = () => {
-        if(characterName) {
-            if(characterName.length > 0 && characterName.length <= 100) {
+        if (characterName) {
+            if (characterName.length > 0 && characterName.length <= 100) {
                 const newObject = {
                     ...selectedPerson,
-                    characterName: characterName
+                    characterName: characterName,
                 };
-                if(parentId) {        
+                if (parentId) {
                     handleAddCharacterName(data, parentId, selectedId, newObject);
-                } else {            
+                } else {
                     handleAddCharacterName(selectedId, newObject);
                 }
                 toggle();
                 setIsInvalid(false);
             } else {
                 setIsInvalid(true);
-                setError('Character name must be less than 100 characters long!');
+                setError('Character incorrectValue must be less than 100 characters long!');
             }
         } else {
             setIsInvalid(true);
-            setError('Character name cannot be empty!');
+            setError('Character incorrectValue cannot be empty!');
         }
     };
     return (
@@ -63,18 +72,20 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
                     disabled={true}
                     value={selectedPerson && selectedPerson.displayName}
                 />
-                <CustomLabel isError={isInvalid} htmlFor="characterName">Character Name</CustomLabel>
-                <CustomInput        
+                <CustomLabel isError={isInvalid} htmlFor="characterName">
+                    Character Name
+                </CustomLabel>
+                <CustomInput
                     isError={isInvalid}
                     onChange={value => handleChange(value)}
                     placeholder="Character Name"
                     name="characterName"
                     value={characterName}
                 />
-                {isInvalid &&  ( <ErrorMessage>{error}</ErrorMessage>)}
+                {isInvalid && <ErrorMessage>{error}</ErrorMessage>}
             </ModalBody>
             <ModalFooter>
-                <Button onClick={handleSubmit} appearance="primary" isDisabled={isEmpty(characterName)}> 
+                <Button onClick={handleSubmit} appearance="primary" isDisabled={isEmpty(characterName)}>
                     OK
                 </Button>
                 <Button onClick={toggle} appearance="danger">
@@ -85,7 +96,6 @@ const CharacterModal = ({selectedPerson, isModalOpen, toggleModal, handleAddChar
     );
 };
 
-
 CharacterModal.propTypes = {
     handleAddCharacterName: PropTypes.func,
     isModalOpen: PropTypes.bool,
@@ -94,7 +104,7 @@ CharacterModal.propTypes = {
     parentId: PropTypes.string,
     modalType: PropTypes.string,
     data: PropTypes.object,
-    selectedId: PropTypes.number
+    selectedId: PropTypes.number,
 };
 
 export default CharacterModal;

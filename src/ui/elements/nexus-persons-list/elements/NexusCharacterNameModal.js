@@ -10,13 +10,7 @@ import {
 
 const MAX_CHAR_NAME_LENGTH = 100;
 
-const NexusCharacterNameModal = ({
-    hint,
-    defaultVal,
-    isModalOpen,
-    closeModal,
-    onSubmit,
-}) => {
+const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onSubmit}) => {
     const [val, setVal] = useState(defaultVal || '');
     const [isValid, setIsValid] = useState(true);
     const [error, setError] = useState(null);
@@ -38,18 +32,18 @@ const NexusCharacterNameModal = ({
     };
 
     const isEmpty = str => {
-        return (!str || str.trim().length === 0);
+        return !str || str.trim().length === 0;
     };
 
     useEffect(() => {
         if (isEmpty(val)) {
-            setError('Character name cannot be empty!');
+            setError('Character incorrectValue cannot be empty!');
             setIsValid(false);
         } else if (val.trim().length < MAX_CHAR_NAME_LENGTH) {
             setError(null);
             setIsValid(true);
         } else {
-            setError('Character name must be less than 100 characters long!');
+            setError('Character incorrectValue must be less than 100 characters long!');
             setIsValid(false);
         }
     }, [val]);
@@ -65,13 +59,10 @@ const NexusCharacterNameModal = ({
             <ModalHeader toggle={onCancel}>{defaultVal ? 'Edit' : 'Add'} Character Name</ModalHeader>
             <ModalBody>
                 <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
-                <CustomInput
-                    readOnly
-                    name="displayName"
-                    disabled={true}
-                    value={hint || ''}
-                />
-                <CustomLabel isError={!isValid} htmlFor="characterName">Character Name</CustomLabel>
+                <CustomInput readOnly name="displayName" disabled={true} value={hint || ''} />
+                <CustomLabel isError={!isValid} htmlFor="characterName">
+                    Character Name
+                </CustomLabel>
                 <CustomInput
                     isError={!isValid}
                     onChange={value => handleChange(value)}
@@ -79,7 +70,7 @@ const NexusCharacterNameModal = ({
                     name="characterName"
                     value={val || ''}
                 />
-                {!isValid && (<ErrorMessage>{error}</ErrorMessage>)}
+                {!isValid && <ErrorMessage>{error}</ErrorMessage>}
             </ModalBody>
             <ModalFooter>
                 <Button onClick={handleSubmit} appearance="primary" isDisabled={!isValid}>

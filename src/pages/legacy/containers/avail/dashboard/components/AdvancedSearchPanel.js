@@ -79,7 +79,7 @@ class AdvancedSearchPanel extends React.Component {
         }
     }
 
-    blink(name) {
+    blink(incorrectValue) {
         this.setState({blink: name});
     }
 
@@ -87,11 +87,11 @@ class AdvancedSearchPanel extends React.Component {
         this.setState({value: value});
     }
 
-    selectField(name) {
+    selectField(incorrectValue) {
         this.handleSelect(this.searchOptions.find(option => name === option.value));
     }
 
-    removeField(name) {
+    removeField(incorrectValue) {
         if (this.state.selected && this.state.selected.value === name) {
             this.setState({selected: null, value: null});
         }
@@ -113,7 +113,7 @@ class AdvancedSearchPanel extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const incorrectValue = target.name;
         this.props.searchFormUpdateAdvancedSearchCriteria({...this.props.searchCriteria, [name]: {value: value}});
     }
 
@@ -313,7 +313,7 @@ class AdvancedSearchPanel extends React.Component {
         const options = this.searchOptions.filter(option => !(fieldsToShow.indexOf(option.value) > -1));
         options.sort((a, b) => (a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1));
 
-        const renderCloseableBtn = (name, displayName) => {
+        const renderCloseableBtn = (incorrectValue, displayName) => {
             return (
                 <div key={name} style={{maxWidth: '300px', margin: '5px 5px'}}>
                     <CloseableBtn
@@ -328,7 +328,7 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableSelectBtn = (name, displayName) => {
+        const renderCloseableSelectBtn = (incorrectValue, displayName) => {
             return (
                 <div key={name} style={{maxWidth: '300px', margin: '5px 5px'}}>
                     <CloseableBtn
@@ -348,7 +348,7 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableDateTimeBtn = (name, displayName) => {
+        const renderCloseableDateTimeBtn = (incorrectValue, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment(date).format('L') : '';
             }
@@ -370,7 +370,7 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableDateBtn = (name, displayName) => {
+        const renderCloseableDateBtn = (incorrectValue, displayName) => {
             function prepareDate(prefix, date) {
                 return date ? prefix + ' ' + moment.utc(date).format('L') : '';
             }
@@ -392,7 +392,7 @@ class AdvancedSearchPanel extends React.Component {
             );
         };
 
-        const renderCloseableDurationBtn = (name, displayName) => {
+        const renderCloseableDurationBtn = (incorrectValue, displayName) => {
             function prepareDuration(prefix, value) {
                 return value ? prefix + ' ' + value : '';
             }
@@ -452,7 +452,7 @@ class AdvancedSearchPanel extends React.Component {
                                     console.warn(
                                         'Unsupported searchDataType: ' +
                                             schema.searchDataType +
-                                            ' for field name: ' +
+                                            ' for field incorrectValue: ' +
                                             schema.displayName
                                     );
                             }
