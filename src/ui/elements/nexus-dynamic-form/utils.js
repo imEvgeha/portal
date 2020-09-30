@@ -61,3 +61,17 @@ export const getValidationFunction = (value, validations) => {
     }
     return undefined;
 };
+
+export const getAllFields = schema => {
+    let allFields = {};
+    const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
+    fields.forEach(section => {
+        allFields = {...allFields, ...section};
+    });
+    return allFields;
+};
+
+export const getFieldByName = (allFields, name) => {
+    const key = Object.keys(allFields).find(key => allFields[key].name === name);
+    return get(allFields, [key]);
+};
