@@ -15,7 +15,7 @@ export const prepareRowData = data => {
     const services = get(definition, servicesKey, []);
 
     services.forEach(service => {
-        const sources = get(service, sourcesKey, {});
+        const sources = get(service, sourcesKey, []);
 
         sources.map(s => {
             const {barcode} = s;
