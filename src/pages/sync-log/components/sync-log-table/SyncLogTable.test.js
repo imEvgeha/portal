@@ -1,17 +1,20 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import {shallow} from 'enzyme';
-import SyncLogTable from './SyncLogTable';
+import {SyncLogTable} from './SyncLogTable';
 
 describe('SyncLogTable', () => {
     let wrapper = null;
     let spy = null;
-
+    const props = {
+        setDateTo: () => null,
+        setDateFrom: () => null,
+        dateTo: '',
+        dateFrom: '',
+    };
     beforeAll(() => {
         const mockDate = new Date('2020-07-11');
-        spy = jest
-            .spyOn(global, 'Date')
-            .mockImplementation(() => mockDate);
+        spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
     });
 
     afterAll(() => {
@@ -19,7 +22,7 @@ describe('SyncLogTable', () => {
     });
 
     beforeEach(() => {
-        wrapper = shallow(<SyncLogTable />);
+        wrapper = shallow(<SyncLogTable {...props} />);
     });
 
     it('should match snapshot', () => {

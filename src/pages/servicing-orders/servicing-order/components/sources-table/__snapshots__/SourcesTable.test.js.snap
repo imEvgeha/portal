@@ -56,7 +56,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
         },
       ]
     }
-    domLayout="autoHeight"
+    domLayout="normal"
     mapping={
       Array [
         Object {
