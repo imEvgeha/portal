@@ -62,7 +62,7 @@ const NexusField = ({
                     </CheckboxField>
                 );
             case 'select':
-                if (fieldProps.value.value === undefined)
+                if (fieldProps.value && fieldProps.value.value === undefined)
                     selectFieldProps = {
                         ...fieldProps,
                         value: {
@@ -70,11 +70,15 @@ const NexusField = ({
                             value: fieldProps.value,
                         },
                     };
+                else
+                    selectFieldProps = {
+                        ...fieldProps,
+                    };
                 return (
                     <Select
                         {...selectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
-                        defaultValue={{value: fieldProps.value, label: fieldProps.value}}
+                        defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
                     />
                 );
             case 'multiselect':
@@ -88,6 +92,10 @@ const NexusField = ({
                         value: fieldProps.value.map(val => {
                             return {label: val, value: val};
                         }),
+                    };
+                else
+                    multiselectFieldProps = {
+                        ...fieldProps,
                     };
                 return (
                     <Select
