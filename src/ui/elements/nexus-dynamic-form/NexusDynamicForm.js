@@ -4,7 +4,14 @@ import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
-import {getValidationError, getDefaultValue, getFieldConfig, getAllFields, getFieldByName} from './utils';
+import {
+    getValidationError,
+    getDefaultValue,
+    getFieldConfig,
+    getAllFields,
+    getFieldByName,
+    getProperValue,
+} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -81,7 +88,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         Object.keys(values).map(key => {
             const field = getFieldByName(allFields, key);
             const {path} = field;
-            properValues[path] = values[key];
+            properValues[path] = getProperValue(field.type, values[key]);
         });
         onSubmit(properValues);
     };

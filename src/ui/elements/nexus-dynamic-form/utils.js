@@ -1,3 +1,6 @@
+import React from 'react';
+import {Checkbox} from '@atlaskit/checkbox';
+import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
@@ -74,4 +77,13 @@ export const getAllFields = schema => {
 export const getFieldByName = (allFields, name) => {
     const key = Object.keys(allFields).find(key => allFields[key].name === name);
     return get(allFields, [key]);
+};
+
+export const getProperValue = (type, value) => {
+    switch (type) {
+        case 'number':
+            return Number(value);
+        default:
+            return value;
+    }
 };
