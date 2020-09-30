@@ -5,7 +5,7 @@ import {default as AKForm} from '@atlaskit/form';
 import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
-import {getValidationError, getDefaultValue} from './utils';
+import {getValidationError, getDefaultValue, formatValues} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -74,14 +74,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         );
     };
 
+    const handleOnSubmit = values => {
+        setView(VIEWS.VIEW);
+        formatValues(values);
+        onSubmit(values);
+    };
+
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm
-                onSubmit={values => {
-                    setView(VIEWS.VIEW);
-                    onSubmit(values);
-                }}
-            >
+            <AKForm onSubmit={values => handleOnSubmit(values)}>
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}

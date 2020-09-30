@@ -77,3 +77,20 @@ const sortOptions = options => {
     const SORT_TYPE = 'label';
     return getSortedData(options, SORT_TYPE, true);
 };
+
+export const formatValues = values => {
+    Object.keys(values).map(key => {
+        if (typeof values[key] === 'object') {
+            if (Array.isArray(values[key])) {
+                values[key] = values[key].map(val => {
+                    if (typeof val !== 'string') {
+                        return val.value;
+                    }
+                    return val;
+                });
+            } else {
+                values[key] = values[key].value;
+            }
+        }
+    });
+};

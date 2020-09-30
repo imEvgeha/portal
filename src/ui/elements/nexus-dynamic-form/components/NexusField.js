@@ -41,6 +41,8 @@ const NexusField = ({
 
     const renderFieldEditMode = fieldProps => {
         const {options} = optionsConfig;
+        let selectFieldProps = null;
+        let multiselectFieldProps = null;
         switch (type) {
             case 'string':
                 return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
@@ -60,20 +62,45 @@ const NexusField = ({
                     </CheckboxField>
                 );
             case 'select':
+                if (fieldProps.value.value === undefined)
+                    selectFieldProps = {
+                        ...fieldProps,
+                        value: {
+                            label: fieldProps.value,
+                            value: fieldProps.value,
+                        },
+                    };
                 return (
                     <Select
+                        {...selectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         defaultValue={{value: fieldProps.value, label: fieldProps.value}}
                     />
                 );
             case 'multiselect':
+                if (
+                    fieldProps.value &&
+                    fieldProps.value.length &&
+                    fieldProps.value[fieldProps.value.length - 1].value === undefined
+                )
+                    multiselectFieldProps = {
+                        ...fieldProps,
+                        value: fieldProps.value.map(val => {
+                            return {label: val, value: val};
+                        }),
+                    };
                 return (
                     <Select
+                        {...multiselectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         isMulti
-                        defaultValue={fieldProps.value.map(val => {
-                            return {label: val, value: val};
-                        })}
+                        defaultValue={
+                            fieldProps.value
+                                ? fieldProps.value.map(val => {
+                                      return {label: val, value: val};
+                                  })
+                                : undefined
+                        }
                     />
                 );
             default:
