@@ -1,20 +1,20 @@
 .table-top-icon {
-  font-size: 1.25em;
-  color: #333333;
-  padding: 5px;
+    font-size: 1.25em;
+    color: #333333;
+    padding: 5px;
 }
 
 .table-top-icon:hover {
-  color: #5c656d;
+    color: #5c656d;
 }
 
 .table-top-icon:active {
-  color: #8c959d;
+    color: #8c959d;
 }
 
 .table-top-text {
-  position: relative;
-  top: 6px;
+    position: relative;
+    top: 6px;
 }
 
 html {
@@ -35,16 +35,18 @@ html {
 
 .ag-theme-balham:not(.nexus-c-nexus-grid) {
     background-color: #ffffff;
-    .ag-header, .ag-floating-top, .ag-body {
-         background-color: #ffffff;
+    .ag-header,
+    .ag-floating-top,
+    .ag-body {
+        background-color: #ffffff;
     }
 
     .ag-header-cell {
         background-color: #050505;
         color: #ffffff;
         border-left: 2px solid white;
-        border-right: 1px solid rgba(0,0,0,0.2);
-        border-bottom: 0px none rgb(33,37,41);
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 0px none rgb(33, 37, 41);
         line-height: 52px;
     }
 
@@ -62,7 +64,7 @@ html {
         font-family: 'Muli', sans-serif;
         font-size: 17.6px;
         font-weight: 400;
-        color: rgb(33,37,41);
+        color: rgb(33, 37, 41);
         background-color: initial;
         .ag-react-container {
             line-height: 48px;
@@ -71,8 +73,8 @@ html {
             border-collapse: collapse;
             border-left: 2px solid white;
             border-top: 2px solid white;
-            border-right: 1px solid rgba(0,0,0,0.2);
-            border-bottom: 0px none rgb(33,37,41);
+            border-right: 1px solid rgba(0, 0, 0, 0.2);
+            border-bottom: 0px none rgb(33, 37, 41);
 
             .ag-selection-checkbox {
                 line-height: 48px;
@@ -82,20 +84,20 @@ html {
 
     .ag-row-even {
         .ag-cell {
-            background-color: rgba(51,51,51,0.13);
+            background-color: rgba(51, 51, 51, 0.13);
         }
     }
 
     .ag-row-odd {
         .ag-cell {
-            background-color: rgba(51,51,51,0.07);
+            background-color: rgba(51, 51, 51, 0.07);
         }
     }
 
     .ag-row-selected {
         background-color: inherit;
         .ag-cell {
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
         }
     }
 
@@ -103,8 +105,9 @@ html {
         opacity: 1 !important;
     }
 
-    .ag-icon-asc, .ag-icon-desc, .ag-icon-none {
+    .ag-icon-asc,
+    .ag-icon-desc,
+    .ag-icon-none {
         opacity: 1;
     }
 }
-

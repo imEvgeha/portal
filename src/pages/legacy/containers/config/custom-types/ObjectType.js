@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
-import { Form, FormContext } from 'react-forms-processor';
-import { Field as AkField } from '@atlaskit/form';
+import React, {Component} from 'react';
+import {Form, FormContext} from 'react-forms-processor';
+import {Field as AkField} from '@atlaskit/form';
 import PropTypes from 'prop-types';
 
-const createFormForItem = (field,
-    item,
-    fieldsForForm,
-    formChangeHandler) => {
+const createFormForItem = (field, item, fieldsForForm, formChangeHandler) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
-        id: `${field.id}.${subfield.id}`
+        id: `${field.id}.${subfield.id}`,
     }));
     return (
         <FormContext.Consumer>
             {context => {
-                const { renderer, optionsHandler, validationHandler } = context;
+                const {renderer, optionsHandler, validationHandler} = context;
                 return (
                     <Form
                         parentContext={context}
@@ -36,53 +33,44 @@ export default class ObjectType extends Component {
     constructor(props) {
         super(props);
 
-        const { defaultValue } = props;
+        const {defaultValue} = props;
 
         this.state = {
-            value: defaultValue
+            value: defaultValue,
         };
     }
 
     updateItemState(value) {
         this.setState(
             {
-                value
+                value,
             },
             () => {
-                const { onChange } = this.props;
-                const { value } = this.state;
+                const {onChange} = this.props;
+                const {value} = this.state;
                 onChange && onChange(value);
             }
         );
     }
 
     createFormChangeHandler() {
-        return (value) => {
+        return value => {
             this.updateItemState(value);
         };
     }
 
     getForms() {
-            const {field, fields} = this.props;
-            const {value} = this.state;
-            const formChangeHandler = this.createFormChangeHandler();
-            const form = createFormForItem(
-                field,
-                value,
-                fields,
-                formChangeHandler
-            );
-            return (
-                <div>
-                    {form}
-                </div>
-            );
-        }
+        const {field, fields} = this.props;
+        const {value} = this.state;
+        const formChangeHandler = this.createFormChangeHandler();
+        const form = createFormForItem(field, value, fields, formChangeHandler);
+        return <div>{form}</div>;
+    }
 
     render() {
         const {label, field} = this.props;
 
-        return(
+        return (
             <div>
                 <AkField label={label} name="formBuilder" isRequired={field.required}>
                     {() => <div>{this.getForms()}</div>}
@@ -94,11 +82,11 @@ export default class ObjectType extends Component {
 
 ObjectType.propTypes = {
     defaultValue: PropTypes.any.isRequired,
-    onChange:PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     fields: PropTypes.array.isRequired,
-    label: PropTypes.string
+    label: PropTypes.string,
 };
 
 ObjectType.defaultProps = {
-    label: 'Item'
+    label: 'Item',
 };

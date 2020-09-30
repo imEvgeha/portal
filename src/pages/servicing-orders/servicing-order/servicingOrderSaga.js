@@ -37,7 +37,5 @@ export function* saveFulfillmentOrder(requestMethod, {payload}) {
 }
 
 export function* servicingOrderWatcher() {
-    yield all([
-        takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI),
-    ]);
+    yield all([takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI)]);
 }

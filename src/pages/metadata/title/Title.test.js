@@ -2,10 +2,7 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import Title from './Title';
 import EditorialMetadata from './editorial-metadata/EditorialMetadata';
-import {
-    METADATA_TITLE_SECTIONS,
-    METADATA_TITLE_EDITORIAL_SECTION,
-} from './constants';
+import {METADATA_TITLE_SECTIONS, METADATA_TITLE_EDITORIAL_SECTION} from './constants';
 
 describe('Title', () => {
     let wrapper = null;
@@ -33,7 +30,8 @@ describe('Title', () => {
 
     it('should render section when respective tab is clicked', () => {
         const EMetTab = wrapper.findWhere(
-            node => node.hasClass('nexus-c-metadata-title__section-tab') && node.text() === METADATA_TITLE_EDITORIAL_SECTION
+            node =>
+                node.hasClass('nexus-c-metadata-title__section-tab') && node.text() === METADATA_TITLE_EDITORIAL_SECTION
         );
         EMetTab.simulate('click');
         expect(wrapper.contains(<EditorialMetadata />)).toBeTruthy();

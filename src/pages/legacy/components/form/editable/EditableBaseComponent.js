@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { Button } from 'reactstrap';
+import React, {Component} from 'react';
+import {Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import {isObject} from '../../../../../util/Common';
 import {NexusTag} from '../../../../../ui/elements/';
 
 class EditableBaseComponent extends Component {
-
     constructor(props) {
         super(props);
 
@@ -29,16 +28,31 @@ class EditableBaseComponent extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.value != this.props.value) {
             // dirty fix for price field
-            if (this.props.displayName === 'Price' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].priceType) {
+            if (
+                this.props.displayName === 'Price' &&
+                Array.isArray(this.props.value) &&
+                this.props.value.length > 0 &&
+                this.props.value[0].priceType
+            ) {
                 return;
             }
 
             // dirty fix for territory field
-            if (this.props.displayName === 'Territory' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].country) {
+            if (
+                this.props.displayName === 'Territory' &&
+                Array.isArray(this.props.value) &&
+                this.props.value.length > 0 &&
+                this.props.value[0].country
+            ) {
                 return;
             }
             // dirty fix for audio Language field
-            if (this.props.displayName === 'Audio Language Types' && Array.isArray(this.props.value) && this.props.value.length > 0 && this.props.value[0].language) {
+            if (
+                this.props.displayName === 'Audio Language Types' &&
+                Array.isArray(this.props.value) &&
+                this.props.value.length > 0 &&
+                this.props.value[0].language
+            ) {
                 return;
             }
             this.setState({
@@ -46,7 +60,6 @@ class EditableBaseComponent extends Component {
                 value: cloneDeep(this.props.value) ? this.props.value : null,
             });
         }
-
     }
 
     handleShowHelperComponent(e) {
@@ -68,20 +81,20 @@ class EditableBaseComponent extends Component {
             value: cloneDeep(this.props.value),
             showStateValue: false,
             editable: false,
-            errorMessage: ''
+            errorMessage: '',
         });
-        if(this.props.onCancel){
+        if (this.props.onCancel) {
             this.props.onCancel();
         }
     }
 
     handleChange(val) {
-        this.setState({ value: cloneDeep(val), submitStatus: false, errorMessage: '' });
+        this.setState({value: cloneDeep(val), submitStatus: false, errorMessage: ''});
     }
 
     handleInvalid(val, error) {
         if (error) {
-            this.setState({ value: cloneDeep(val), errorMessage: error, submitStatus: true });
+            this.setState({value: cloneDeep(val), errorMessage: error, submitStatus: true});
         }
     }
 
@@ -89,12 +102,12 @@ class EditableBaseComponent extends Component {
         const validationError = this.props.validate(val);
         if (validationError !== undefined) {
             this.setState({
-                errorMessage: validationError
+                errorMessage: validationError,
             });
         } else {
             this.setState({
                 editable: false,
-                showStateValue: true
+                showStateValue: true,
             });
             this.props.onChange(cloneDeep(val), this.cancel);
         }
@@ -108,7 +121,7 @@ class EditableBaseComponent extends Component {
 
     render() {
         const {displayName, originalFieldList} = this.props;
-        const displayFunc = (value) => {
+        const displayFunc = value => {
             const getComplexFieldValue = (name, element) => {
                 switch (name) {
                     case 'Price':
@@ -119,43 +132,61 @@ class EditableBaseComponent extends Component {
                         return element.language;
                     case 'CastCrew':
                         return `${element.displayName || ''}(${element.personType}`;
-                     default:
-                    return element.value || element[Object.keys(element)[0]];
+                    default:
+                        return element.value || element[Object.keys(element)[0]];
                 }
             };
             const setSimpleArrayWithError = arr => {
                 const updatedArr = arr.map((el, index, array) => {
                     const value = isObject(el) ? getComplexFieldValue(displayName, el) : el;
-                    const style = isObject(el) && el.hasOwnProperty('isValid') && !el.isValid ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'} : {color: '#1a1a1a', paddingRight: '4px'};
-                    return (
-                        <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>
-                    );
+                    const style =
+                        isObject(el) && el.hasOwnProperty('isValid') && !el.isValid
+                            ? {color: 'rgb(169, 68, 66)', paddingRight: '4px'}
+                            : {color: '#1a1a1a', paddingRight: '4px'};
+                    return <span key={index} style={style}>{`${value}${index < array.length - 1 ? ', ' : ''}`}</span>;
                 });
                 return updatedArr;
             };
 
-            const valueToUse = ['Price', 'Territory', 'Audio Language Types'].includes(displayName) ? originalFieldList : value;
+            const valueToUse = ['Price', 'Territory', 'Audio Language Types'].includes(displayName)
+                ? originalFieldList
+                : value;
 
             return (
                 <span
                     onClick={this.handleShowHelperComponent}
-                    style={{ width: '100%', textOverflow: 'ellipsis', overflow: 'hidden', padding: '5px', minHeight: '26px', display: 'flex', flexWrap: 'wrap' }}
+                    style={{
+                        width: '100%',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        padding: '5px',
+                        minHeight: '26px',
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                    }}
                     className={this.props.disabled ? 'disabled' : ''}
                 >
-                    {Array.isArray(valueToUse) ? valueToUse.length > 0 ? this.props.isArrayOfObject ? valueToUse.map((e, i) => {
-                        const priceDisplayValue = (e.priceType || e.priceValue || e.priceCurrency)
-                            && `${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`;
+                    {Array.isArray(valueToUse)
+                        ? valueToUse.length > 0
+                            ? this.props.isArrayOfObject
+                                ? valueToUse.map((e, i) => {
+                                      const priceDisplayValue =
+                                          (e.priceType || e.priceValue || e.priceCurrency) &&
+                                          `${e.priceType || ''} ${e.priceValue || ''} ${e.priceCurrency || ''}`;
 
-                        return (
-                            <NexusTag
-                                key={i}
-                                text={e.country || priceDisplayValue || e.value || e.label}
-                                value={e}
-                            />
-                        )
-                    }) : setSimpleArrayWithError(value) : '' : value}
+                                      return (
+                                          <NexusTag
+                                              key={i}
+                                              text={e.country || priceDisplayValue || e.value || e.label}
+                                              value={e}
+                                          />
+                                      );
+                                  })
+                                : setSimpleArrayWithError(value)
+                            : ''
+                        : value}
                 </span>
-);
+            );
         };
 
         const unfocusedRender = () => {
@@ -165,13 +196,17 @@ class EditableBaseComponent extends Component {
                 if (this.state.showStateValue) {
                     return displayFunc(this.state.value);
                 } else {
-                    if (this.props.value && (!Array.isArray(this.props.value) || (Array.isArray(this.props.value) && this.props.value.length > 0))) {
+                    if (
+                        this.props.value &&
+                        (!Array.isArray(this.props.value) ||
+                            (Array.isArray(this.props.value) && this.props.value.length > 0))
+                    ) {
                         return displayFunc(this.props.value);
                     } else {
                         return (
                             <span
                                 className="displayDate"
-                                style={{ color: '#808080', cursor: 'pointer', width: '100%' }}
+                                style={{color: '#808080', cursor: 'pointer', width: '100%'}}
                                 onClick={this.handleShowHelperComponent}
                             >
                                 {this.props.disabled ? '' : 'Enter ' + this.props.displayName}
@@ -184,39 +219,33 @@ class EditableBaseComponent extends Component {
 
         return (
             <div className="editable-container">
-                {
-                    this.state.editable ? (
-                        <div style={{ width: '100%' }}>
-                            <div className="dPicker" style={{ marginBottom: '5px', minWidth: '500px', width: '90%' }}>
-                                {this.props.helperComponent}
-                            </div>
-                            <div style={{ float: 'left', paddingLeft: '10px' }}>
-                                <Button
-                                    className="dPButton"
-                                    disabled={this.state.submitStatus}
-                                    onClick={() => this.submit(this.state.value)}
-                                    color="success"
-                                ><i className="fa fa-check" />
-                                </Button>
-                                <Button
-                                    className="dPButton"
-                                    onClick={this.handleCancelHelperComponent}
-                                    color="danger"
-                                ><i className="fa fa-times" />
-                                </Button>
-                            </div>
-                            {
-                                this.props.showError && this.state.errorMessage && (
-                                <small className="text-danger m-2" style={{ float: 'left', width: '100%' }}>
-                                    {this.state.errorMessage}
-                                </small>
-                              )
-}
+                {this.state.editable ? (
+                    <div style={{width: '100%'}}>
+                        <div className="dPicker" style={{marginBottom: '5px', minWidth: '500px', width: '90%'}}>
+                            {this.props.helperComponent}
                         </div>
-                      )
-                        :
-                        unfocusedRender()
-                }
+                        <div style={{float: 'left', paddingLeft: '10px'}}>
+                            <Button
+                                className="dPButton"
+                                disabled={this.state.submitStatus}
+                                onClick={() => this.submit(this.state.value)}
+                                color="success"
+                            >
+                                <i className="fa fa-check" />
+                            </Button>
+                            <Button className="dPButton" onClick={this.handleCancelHelperComponent} color="danger">
+                                <i className="fa fa-times" />
+                            </Button>
+                        </div>
+                        {this.props.showError && this.state.errorMessage && (
+                            <small className="text-danger m-2" style={{float: 'left', width: '100%'}}>
+                                {this.state.errorMessage}
+                            </small>
+                        )}
+                    </div>
+                ) : (
+                    unfocusedRender()
+                )}
             </div>
         );
     }
@@ -233,7 +262,7 @@ EditableBaseComponent.propTypes = {
     showError: PropTypes.bool,
     isArrayOfObject: PropTypes.bool,
     onCancel: PropTypes.func,
-    originalFieldList: PropTypes.array
+    originalFieldList: PropTypes.array,
 };
 
 EditableBaseComponent.defaultProps = {
@@ -241,6 +270,6 @@ EditableBaseComponent.defaultProps = {
     showError: true,
     isArrayOfObject: false,
     onCancel: null,
-    originalFieldList: []
+    originalFieldList: [],
 };
 export default EditableBaseComponent;

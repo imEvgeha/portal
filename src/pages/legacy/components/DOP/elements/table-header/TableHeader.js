@@ -1,5 +1,5 @@
 import React from 'react';
-import {updatePromotedRights, updatePromotedRightsFullData,} from '../../../../stores/actions/DOP';
+import {updatePromotedRights, updatePromotedRightsFullData} from '../../../../stores/actions/DOP';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {rightsService} from '../../../../containers/avail/service/RightsService';
@@ -10,21 +10,26 @@ import Tabs from './Tabs';
 import UserTerritories from './territories/UserTerritories';
 
 class TableHeader extends React.Component {
-
     constructor(props) {
         super(props);
     }
 
-    isPromoted = (node) => {
+    isPromoted = node => {
         return this.props.promotedRights.findIndex(e => e.rightId === node.data.id) > -1;
     };
 
     getPromotableStatus = node => {
-        return  node && node.data.territory.some(({country, selected}) => country && !selected);
+        return node && node.data.territory.some(({country, selected}) => country && !selected);
     };
 
     onBulkPromote = () => {
-        const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
+        const {
+            promotedRights,
+            updatePromotedRights,
+            promotedRightsFullData,
+            updatePromotedRightsFullData,
+            table,
+        } = this.props;
         const toPromote = [];
         const toPromoteFullData = [];
         table.api.getSelectedNodes().forEach(node => {
@@ -42,18 +47,24 @@ class TableHeader extends React.Component {
         updatePromotedRightsFullData([...promotedRightsFullData, ...toPromoteFullData]);
     };
 
-    getTerritoriesWithUserSelected = (territories) => {
+    getTerritoriesWithUserSelected = territories => {
         const selectableTerritories = territories.filter(({country, selected}) => !selected && country) || [];
         let newTerritories = selectableTerritories.map(el => el.country);
         if (this.props.useSelectedTerritories) {
-            const userSelectedTerritoryList = this.props.selectedTerritories.map((el => el.countryCode));
+            const userSelectedTerritoryList = this.props.selectedTerritories.map(el => el.countryCode);
             newTerritories = union(newTerritories, userSelectedTerritoryList);
         }
         return newTerritories;
     };
 
     onBulkUnPromote = () => {
-        const {promotedRights, updatePromotedRights, promotedRightsFullData, updatePromotedRightsFullData, table} = this.props;
+        const {
+            promotedRights,
+            updatePromotedRights,
+            promotedRightsFullData,
+            updatePromotedRightsFullData,
+            table,
+        } = this.props;
         let unPromotedRights = promotedRights.slice(0);
         let unPromotedRightsFullData = promotedRightsFullData.slice(0);
         table.api.getSelectedNodes().forEach(node => {
@@ -95,19 +106,31 @@ class TableHeader extends React.Component {
         });
     };
 
-
     render() {
         return (
-            <div style={{marginLeft: '20px', marginBottom: '10px', display: 'flex', paddingLeft: '10px', paddingRight: '10px',  justifyContent: 'space-between'}}>
-
+            <div
+                style={{
+                    marginLeft: '20px',
+                    marginBottom: '10px',
+                    display: 'flex',
+                    paddingLeft: '10px',
+                    paddingRight: '10px',
+                    justifyContent: 'space-between',
+                }}
+            >
                 <div style={{display: 'flex'}}>
-                    <BulkActionButton onBulkIgnore={this.onBulkIgnore} onBulkUnIgnore={this.onBulkUnIgnore} onBulkPromote={this.onBulkPromote} onBulkUnPromote={this.onBulkUnPromote} onClearSelection={this.onClearSelection} />
+                    <BulkActionButton
+                        onBulkIgnore={this.onBulkIgnore}
+                        onBulkUnIgnore={this.onBulkUnIgnore}
+                        onBulkPromote={this.onBulkPromote}
+                        onBulkUnPromote={this.onBulkUnPromote}
+                        onClearSelection={this.onClearSelection}
+                    />
 
                     <Tabs />
                 </div>
-                
-                <UserTerritories />
 
+                <UserTerritories />
             </div>
         );
     }
@@ -118,13 +141,13 @@ const mapStateToProps = state => {
         promotedRights: state.dopReducer.session.promotedRights,
         promotedRightsFullData: state.dopReducer.session.promotedRightsFullData,
         selectedTerritories: state.dopReducer.session.selectedTerritories,
-        useSelectedTerritories: state.dopReducer.session.useSelectedTerritories
+        useSelectedTerritories: state.dopReducer.session.useSelectedTerritories,
     };
 };
 
 const mapDispatchToProps = {
     updatePromotedRights,
-    updatePromotedRightsFullData
+    updatePromotedRightsFullData,
 };
 
 TableHeader.propTypes = {

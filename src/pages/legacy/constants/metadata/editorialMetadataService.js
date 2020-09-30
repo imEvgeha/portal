@@ -8,9 +8,9 @@ export const editorialMetadataService = [
     'Telus',
     'Cogeco',
     'Sasktel',
-    'Videotron'
+    'Videotron',
 ];
 
 export default {
-    editorialMetadataService
+    editorialMetadataService,
 };

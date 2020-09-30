@@ -14,5 +14,5 @@ TitleNameCellRenderer.propTypes = {
 };
 
 TitleNameCellRenderer.defaultProps = {
-    data: {}
-}
+    data: {},
+};

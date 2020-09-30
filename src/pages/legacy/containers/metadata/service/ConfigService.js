@@ -1,9 +1,19 @@
 import config from 'react-global-configuration';
 import {store} from '../../../../../index';
 import {loadConfigData} from '../../../stores/actions/metadata';
-import {ACTOR, CAST, DIRECTOR, PRODUCER, WRITER, ANIMATED_CHARACTER, AWARD, RECORDING_ARTIST, VOICE_TALENT} from '../../../constants/metadata/configAPI';
+import {
+    ACTOR,
+    CAST,
+    DIRECTOR,
+    PRODUCER,
+    WRITER,
+    ANIMATED_CHARACTER,
+    AWARD,
+    RECORDING_ARTIST,
+    VOICE_TALENT,
+} from '../../../constants/metadata/configAPI';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
-import {nexusFetch} from "../../../../../util/http-client";
+import {nexusFetch} from '../../../../../util/http-client';
 
 export const configFields = {
     LOCALE: 'countries',
@@ -15,20 +25,23 @@ export const configFields = {
     GENRE: 'genres',
     CATEGORY: 'categories',
     LICENSORS: 'licensors',
-    LICENSEES: 'licensees'
+    LICENSEES: 'licensees',
 };
 
 export const searchPerson = (inputValue, size, castOrCrew, isMultiCastType = false) => {
     let displayNamePath = '?';
-    if(inputValue) {
+    if (inputValue) {
         displayNamePath += `displayName=${inputValue}&`;
     }
-    const sortPath = ';'+ 'displayName' +'=ASC';
+    const sortPath = ';' + 'displayName' + '=ASC';
     let personTypePath;
-    if(isMultiCastType) {
+    if (isMultiCastType) {
         personTypePath = `personTypes=${ACTOR.toLowerCase()},${ANIMATED_CHARACTER.toLowerCase()},${AWARD.toLowerCase()},${RECORDING_ARTIST.toLowerCase()},${VOICE_TALENT.toLowerCase()}&`;
     } else {
-        personTypePath = castOrCrew === CAST ? `personTypes=${ACTOR.toLowerCase()}&` : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
+        personTypePath =
+            castOrCrew === CAST
+                ? `personTypes=${ACTOR.toLowerCase()}&`
+                : `personTypes=${DIRECTOR.toLowerCase()},${WRITER.toLowerCase()},${PRODUCER.toLowerCase()}&`;
     }
     // TODO: Lazy scrolling should be implemented as a feature to make use of 'page=X' parameter, so that PORT-728 is avoided
     const path = `/persons${sortPath}${displayNamePath}${personTypePath}page=0&size=${size}`;
@@ -43,25 +56,25 @@ const getAllConfigValuesByField = (field, sortBy) => {
     let result = [];
 
     getConfigApiValues(field, startPage, size, sortBy)
-        .then((res) => {
+        .then(res => {
             total = res.total;
             result = res.data;
             store.dispatch(loadConfigData(field, result));
         })
         .then(() => {
             startPage++;
-            for (startPage; total > size * (startPage); startPage++) {
+            for (startPage; total > size * startPage; startPage++) {
                 getConfigApiValues(field, startPage, size, sortBy)
-                    .then((res) => {
+                    .then(res => {
                         result = [...result, ...res.data];
                         store.dispatch(loadConfigData(field, result));
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         console.error('Can not fetch data from config api', err);
                     });
             }
         })
-        .catch((err) => {
+        .catch(err => {
             console.error('Can not fetch data from config api', err);
         });
 };
@@ -69,9 +82,9 @@ const getAllConfigValuesByField = (field, sortBy) => {
 export const configService = {
     initConfigMapping: () => {
         Object.values(configFields).forEach(configField => {
-            if(configField === configFields.LANGUAGE) {
+            if (configField === configFields.LANGUAGE) {
                 getAllConfigValuesByField(configField, 'languageName');
-            } else if(configField === configFields.LOCALE) {
+            } else if (configField === configFields.LOCALE) {
                 getAllConfigValuesByField(configField, 'countryName');
             } else {
                 getAllConfigValuesByField(configField);
@@ -79,5 +92,3 @@ export const configService = {
         });
     },
 };
-
-

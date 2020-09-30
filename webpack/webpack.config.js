@@ -7,12 +7,8 @@ const packageJSON = require('../package');
 const commonConfig = require('./webpack.common.js');
 
 const getAddons = addonsArgs => {
-    const addons = Array.isArray(addonsArgs)
-        ? addonsArgs
-        : [addonsArgs];
-    return addons
-        .filter(Boolean)
-        .map(name => require(`./addons/webpack.${name}.js`));
+    const addons = Array.isArray(addonsArgs) ? addonsArgs : [addonsArgs];
+    return addons.filter(Boolean).map(name => require(`./addons/webpack.${name}.js`));
 };
 
 const getEnvFileSuffix = env => {
@@ -42,11 +38,11 @@ module.exports = ({env, addon}) => {
             VERSION: packageJSON.version,
             BUILD: moment().format('YYYYMMDD.HHmmss'),
         };
-    };
+    }
     // reduce it to a nice object, the same as before (but with the variables from the file)
     const envKeys = Object.keys(envFile).reduce((prev, next) => {
         prev[`process.env.${next}`] = JSON.stringify(envFile[next]);
-            return prev;
+        return prev;
     }, {});
     const envConfig = require(`./webpack.${env}.js`);
 

@@ -29,4 +29,3 @@ GlobalItemWithDropdown.defaultProps = {
 };
 
 export default GlobalItemWithDropdown;
-

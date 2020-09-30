@@ -7,10 +7,12 @@ const DATE_FORMAT_LENGTH = 'YYYY-MM-DD'.length;
 
 function validateDate(date, locale = 'en') {
     const dateFormat = getDateFormatBasedOnLocale(locale);
-    return date
-        && (`${date}`).length === DATE_FORMAT_LENGTH
-        && datePattern.test(`${date}`)
-        && moment(date, dateFormat).isValid();
+    return (
+        date &&
+        `${date}`.length === DATE_FORMAT_LENGTH &&
+        datePattern.test(`${date}`) &&
+        moment(date, dateFormat).isValid()
+    );
 }
 
 function rangeValidation(name, displayName, date, avail) {

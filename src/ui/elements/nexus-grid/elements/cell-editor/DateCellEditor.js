@@ -50,4 +50,3 @@ DateCellEditor.defaultProps = {
     value: null,
 };
 export default DateCellEditor;
-

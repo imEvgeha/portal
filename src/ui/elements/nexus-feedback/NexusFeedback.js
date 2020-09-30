@@ -1,15 +1,14 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Button from "@atlaskit/button";
+import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import TextArea from "@atlaskit/textarea";
+import TextArea from '@atlaskit/textarea';
 import withToasts from '../../toast/hoc/withToasts';
-import "./NexusFeedback.scss"
-import {SUCCESS_ICON, SUCCESS_TITLE} from "../nexus-toast-notification/constants";
+import './NexusFeedback.scss';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../nexus-toast-notification/constants';
 import {options, THANKYOU_NOTE} from './constants';
 
 const NexusFeedback = ({addToast, currentPage, closeModal}) => {
-
     const [feedback, setFeedback] = useState('');
     const [selected, setSelected] = useState('');
 
@@ -29,9 +28,9 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
             isAutoDismiss: true,
             isWithOverlay: false,
         });
-    }
+    };
 
-    return(
+    return (
         <div>
             <div className="nexus-c-feedback__select">
                 <Select
@@ -70,18 +69,18 @@ const NexusFeedback = ({addToast, currentPage, closeModal}) => {
                 </Button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 NexusFeedback.propTypes = {
     addToast: PropTypes.func,
     closeModal: PropTypes.func.isRequired,
-    currentPage:  PropTypes.string
+    currentPage: PropTypes.string,
 };
 
 NexusFeedback.defaultProps = {
     addToast: () => null,
-    currentPage: ''
+    currentPage: '',
 };
 
 export default withToasts(NexusFeedback);

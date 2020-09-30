@@ -1,5 +1,5 @@
 export default ({languages, audioTypes}) => {
-    return ([
+    return [
         {
             id: 'language',
             label: 'LANGUAGE',
@@ -9,8 +9,8 @@ export default ({languages, audioTypes}) => {
             required: true,
             options: [
                 {
-                    items: languages
-                }
+                    items: languages,
+                },
             ],
         },
         {
@@ -22,9 +22,9 @@ export default ({languages, audioTypes}) => {
             required: true,
             options: [
                 {
-                    items: audioTypes
-                }
+                    items: audioTypes,
+                },
             ],
         },
-    ]);
-}
+    ];
+};

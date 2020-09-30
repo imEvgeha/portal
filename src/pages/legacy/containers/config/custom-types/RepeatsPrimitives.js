@@ -1,11 +1,11 @@
 // @flow
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {uniqueId} from 'lodash';
 import Button from '@atlaskit/button';
-import { Form, FormContext } from 'react-forms-processor';
-import { Field as AkField } from '@atlaskit/form';
+import {Form, FormContext} from 'react-forms-processor';
+import {Field as AkField} from '@atlaskit/form';
 
 const portal = document.createElement('div');
 portal.classList.add('my-portal');
@@ -15,20 +15,15 @@ if (!document.body) {
 }
 document.body.appendChild(portal);
 
-const createFormForItem = (field,
-    item,
-    targetIndex,
-    fieldsForForm,
-    formChangeHandler,
-    key) => {
+const createFormForItem = (field, item, targetIndex, fieldsForForm, formChangeHandler, key) => {
     const mappedFields = fieldsForForm.map(subfield => ({
         ...subfield,
-        id: `${field.id}[${targetIndex}]#${key}`
+        id: `${field.id}[${targetIndex}]#${key}`,
     }));
     return (
         <FormContext.Consumer>
             {context => {
-                const { renderer, optionsHandler, validationHandler } = context;
+                const {renderer, optionsHandler, validationHandler} = context;
                 return (
                     <Form
                         parentContext={context}
@@ -55,7 +50,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? '#DDD' : 'white'
+    background: isDraggingOver ? '#DDD' : 'white',
 });
 
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -66,41 +61,41 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     background: isDragging ? '#EEE' : 'white',
 
     // styles we need to apply on draggables
-    ...draggableStyle
+    ...draggableStyle,
 });
 
 export default class RepeatsPrimitives extends Component {
     constructor(props) {
         super(props);
 
-        let { defaultValue} = props;
+        let {defaultValue} = props;
         defaultValue = defaultValue || [];
 
         // Map the supplied array to an Item[] in order to give each piece of data an id for drag-and-drop
-        const items = defaultValue.map(data => ({ id: uniqueId(), data }));
+        const items = defaultValue.map(data => ({id: uniqueId(), data}));
         this.state = {
-            items
+            items,
         };
     }
 
     addItem() {
-        let { items } = this.state;
-        items = [...items, { id: uniqueId(), data: '' }];
+        let {items} = this.state;
+        items = [...items, {id: uniqueId(), data: ''}];
         // this.updateItemState(items);
         this.setState({
-            items
+            items,
         });
     }
 
     removeItem(id) {
-        let { items } = this.state;
+        let {items} = this.state;
         items = items.filter(item => item.id !== id);
         this.updateItemState(items);
     }
 
     createFormChangeHandler(index) {
-        return (value) => {
-            const { items } = this.state;
+        return value => {
+            const {items} = this.state;
             items[index].data = value;
             this.updateItemState(items);
         };
@@ -109,53 +104,42 @@ export default class RepeatsPrimitives extends Component {
     updateItemState(items) {
         this.setState(
             {
-                items
+                items,
             },
             () => {
-                const { onChange } = this.props;
-                const { items } = this.state;
+                const {onChange} = this.props;
+                const {items} = this.state;
                 const value = items.map(item => item.data);
                 onChange && onChange(value);
             }
         );
     }
 
-    onDragEnd = (result) => {
+    onDragEnd = result => {
         // dropped outside the list
         if (!result.destination) {
             return;
         }
 
-        const items = reorder(
-            this.state.items,
-            result.source.index,
-            result.destination.index
-        );
+        const items = reorder(this.state.items, result.source.index, result.destination.index);
 
         this.updateItemState(items);
-    }
+    };
 
     getForms() {
-        const { items } = this.state;
-        const {
-            field,
-            fields,
-            idAttribute = 'id'
-        } = this.props;
+        const {items} = this.state;
+        const {field, fields, idAttribute = 'id'} = this.props;
 
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
-                        <div
-                            ref={provided.innerRef}
-                            style={getListStyle(snapshot.isDraggingOver)}
-                        >
+                        <div ref={provided.innerRef} style={getListStyle(snapshot.isDraggingOver)}>
                             {items.map((item, index) => {
                                 const formChangeHandler = this.createFormChangeHandler(index);
                                 const form = createFormForItem(
                                     field,
-                                    {[idAttribute]:item.data},
+                                    {[idAttribute]: item.data},
                                     index,
                                     fields,
                                     formChangeHandler,
@@ -165,32 +149,39 @@ export default class RepeatsPrimitives extends Component {
                                     <Draggable key={item.id} draggableId={item.id} index={index}>
                                         {(provided, snapshot) => {
                                             const child = (
-                                                (
-                                                    <div
-                                                        className="columns"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        style={getItemStyle(
-                                                            snapshot.isDragging,
-                                                            provided.draggableProps.style
-                                                        )}
-                                                    >
-                                                        <div className="container">
-                                                            <div className="row">
-                                                                <div className="col-md-auto" style={{padding:'0'}}>
-                                                                    {form}
-                                                                </div>
-                                                                <div className="col-md-auto" style={{padding:'0', marginTop:'8px'}}>
-                                                                    <Button onClick={() => {this.removeItem(item.id);}}>&times;</Button>
-                                                                </div>
+                                                <div
+                                                    className="columns"
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    style={getItemStyle(
+                                                        snapshot.isDragging,
+                                                        provided.draggableProps.style
+                                                    )}
+                                                >
+                                                    <div className="container">
+                                                        <div className="row">
+                                                            <div className="col-md-auto" style={{padding: '0'}}>
+                                                                {form}
+                                                            </div>
+                                                            <div
+                                                                className="col-md-auto"
+                                                                style={{padding: '0', marginTop: '8px'}}
+                                                            >
+                                                                <Button
+                                                                    onClick={() => {
+                                                                        this.removeItem(item.id);
+                                                                    }}
+                                                                >
+                                                                    &times;
+                                                                </Button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                )
+                                                </div>
                                             );
                                             const usePortal = snapshot.isDragging;
-                                            if(!usePortal) {
+                                            if (!usePortal) {
                                                 return child;
                                             }
 
@@ -213,9 +204,9 @@ export default class RepeatsPrimitives extends Component {
             label = 'Item',
             // description,
             addButtonLabel = 'Add',
-            noItemsMessage = 'No items yet'
+            noItemsMessage = 'No items yet',
         } = this.props;
-        const { items } = this.state;
+        const {items} = this.state;
         const noItems = <span className="no-items">{noItemsMessage}</span>;
 
         return (

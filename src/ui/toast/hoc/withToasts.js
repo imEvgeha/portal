@@ -5,9 +5,7 @@ import {addToast, removeToast} from '../toastActions';
 import * as selectors from '../toastSelectors';
 
 const withToasts = WrappedComponent => {
-    const ComposedComponent = props => (
-        <WrappedComponent {...props} />
-    );
+    const ComposedComponent = props => <WrappedComponent {...props} />;
 
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,

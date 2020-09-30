@@ -1,8 +1,8 @@
 #titleContainer {
-    background-color:#DDD;
-    padding-top:15px;
-    padding-bottom:10px;
-    border:2px solid #999;
+    background-color: #ddd;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border: 2px solid #999;
     width: 98%;
 
     .col {
@@ -22,14 +22,14 @@
 
 .linked-data {
     font-weight: bold;
-    color: #FF7274;
+    color: #ff7274;
     &:hover {
         color: red;
     }
 }
 
 .linked-url {
-    color: #0065FF;
+    color: #0065ff;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -70,7 +70,8 @@
     }
 }
 
-#btnSave, #btnCancel {
+#btnSave,
+#btnCancel {
     margin-right: 10px;
     margin-top: 10px;
 }

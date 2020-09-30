@@ -7,12 +7,7 @@ import {updateAbility} from '../ability';
 import {store} from '../index';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
-import {
-    loadDashboardState,
-    loadHistoryState,
-    loadCreateRightState,
-    loadDopState,
-} from '../pages/legacy/stores/index';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
 import Loading from '../pages/static/Loading';
 import {injectUser, logout} from './authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';

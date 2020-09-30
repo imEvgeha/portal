@@ -5,13 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const appPaths = require('./paths');
 
-module.exports = (envKeys) => ({
-    entry: [
-        require.resolve('@babel/polyfill'),
-        'abortcontroller-polyfill',
-        'whatwg-fetch',
-        appPaths.appIndexJs,
-    ],
+module.exports = envKeys => ({
+    entry: [require.resolve('@babel/polyfill'), 'abortcontroller-polyfill', 'whatwg-fetch', appPaths.appIndexJs],
     module: {
         strictExportPresence: true,
         rules: [
@@ -38,7 +33,7 @@ module.exports = (envKeys) => ({
                     },
                 ],
             },
-        ]
+        ],
     },
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
@@ -48,17 +43,17 @@ module.exports = (envKeys) => ({
                 'src/store-persist-config/packages/redux-persist-transform-filter/index.js'
             ),
             'react-dom': '@hot-loader/react-dom',
-        }
+        },
     },
     plugins: [
         new webpack.DefinePlugin(envKeys),
         new CleanWebpackPlugin(),
         new CopyWebpackPlugin([
-            { from: 'profile/config.json' },
-            { from: 'profile/configQA.json' },
-            { from: 'profile/availMapping.json' },
-            { from: 'profile/titleMatchingMappings.json' },
-            { from: 'profile/titleMatchingRightMappings.json'},
+            {from: 'profile/config.json'},
+            {from: 'profile/configQA.json'},
+            {from: 'profile/availMapping.json'},
+            {from: 'profile/titleMatchingMappings.json'},
+            {from: 'profile/titleMatchingRightMappings.json'},
         ]),
     ],
 });

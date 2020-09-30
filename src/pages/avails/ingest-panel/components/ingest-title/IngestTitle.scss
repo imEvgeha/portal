@@ -1,40 +1,40 @@
 .nexus-c-ingest-title {
-  font-size: 14px;
-  width: 300px;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
+    font-size: 14px;
+    width: 300px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
 
-  &--is-header {
-    width: unset;
-  }
+    &--is-header {
+        width: unset;
+    }
 
-  svg {
-    width: 18px;
-    height: 18px;
-    fill: #A5ADBA;
-    flex-shrink: 0;
-  }
+    svg {
+        width: 18px;
+        height: 18px;
+        fill: #a5adba;
+        flex-shrink: 0;
+    }
 }
 
 .nexus-c-ingest-title__filename {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .nexus-c-ingest-title__details {
-  display: flex;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
 .nexus-c-ingest-title__type {
-  margin-right: 12px;
+    margin-right: 12px;
 }
 
 .nexus-c-ingest-title__separator {
-  font-weight: bold;
-  margin-right: 12px;
+    font-weight: bold;
+    margin-right: 12px;
 }

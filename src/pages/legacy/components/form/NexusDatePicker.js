@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -9,8 +9,6 @@ const FIRST_DELIMETER_POSITION = 2;
 const SECOUND_DELIMETER_POSITION = 5;
 
 class NexusDatePicker extends Component {
-
-
     prevRawInput = '';
     prevDate = null;
 
@@ -18,7 +16,7 @@ class NexusDatePicker extends Component {
         super(props);
         this.state = {
             dirty: false,
-            open: false
+            open: false,
         };
 
         this.clear = this.clear.bind(this);
@@ -96,18 +94,27 @@ class NexusDatePicker extends Component {
     handleChangeRaw(date) {
         let justDirty = false;
         if (date) {
-            if ( (this.prevRawInput.length === FIRST_DELIMETER_POSITION - 1 && date.length === FIRST_DELIMETER_POSITION) ||
-                    (this.prevRawInput.length === SECOUND_DELIMETER_POSITION - 1 && date.length === SECOUND_DELIMETER_POSITION)) {
+            if (
+                (this.prevRawInput.length === FIRST_DELIMETER_POSITION - 1 &&
+                    date.length === FIRST_DELIMETER_POSITION) ||
+                (this.prevRawInput.length === SECOUND_DELIMETER_POSITION - 1 &&
+                    date.length === SECOUND_DELIMETER_POSITION)
+            ) {
                 this.refDatePicker.current.input.value = this.refDatePicker.current.input.value + '/';
             }
 
-            if ( (this.prevRawInput.length === FIRST_DELIMETER_POSITION +1 && date.length === FIRST_DELIMETER_POSITION) ||
-                    (this.prevRawInput.length === SECOUND_DELIMETER_POSITION + 1 && date.length === SECOUND_DELIMETER_POSITION || date.length > 10)) {
+            if (
+                (this.prevRawInput.length === FIRST_DELIMETER_POSITION + 1 &&
+                    date.length === FIRST_DELIMETER_POSITION) ||
+                (this.prevRawInput.length === SECOUND_DELIMETER_POSITION + 1 &&
+                    date.length === SECOUND_DELIMETER_POSITION) ||
+                date.length > 10
+            ) {
                 this.refDatePicker.current.input.value = this.refDatePicker.current.input.value.slice(0, -1);
                 date = this.refDatePicker.current.input.value;
             }
 
-            if (!this.state.dirty && date.length === 10 ) {
+            if (!this.state.dirty && date.length === 10) {
                 this.setState({dirty: true});
                 justDirty = true;
             }
@@ -117,7 +124,6 @@ class NexusDatePicker extends Component {
             } else if (this.state.dirty || justDirty) {
                 this.setValid(false);
             }
-
         } else {
             this.handleChange(null);
             this.setState({dirty: false});
@@ -140,7 +146,7 @@ class NexusDatePicker extends Component {
                 autoComplete="off"
                 allowSameDay={true}
                 onChange={this.handleChange}
-                onChangeRaw={(event) => this.handleChangeRaw(event.target.value)}
+                onChangeRaw={event => this.handleChangeRaw(event.target.value)}
                 onBlur={() => this.handleOnBlur(locale)}
                 todayButton="Today"
                 disabled={this.props.disabled}
@@ -161,6 +167,5 @@ NexusDatePicker.propTypes = {
     handleKeyPress: PropTypes.func,
     onInvalid: PropTypes.func,
 };
-
 
 export default NexusDatePicker;

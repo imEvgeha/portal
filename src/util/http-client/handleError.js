@@ -54,29 +54,26 @@ const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) =>
             description: err.description || data.message || message,
         };
     } else {
-        toast = errorToast ? {
-            ...defaultErrorToast,
-            ...errorToast,
-        } : {
-            title: ERROR_MODAL.title,
-            description: description || message || data.message || JSON.stringify(data),
-            icon: ERROR_ICON,
-            actions: ERROR_MODAL.codes.includes(status) ? [
-                {content: 'OK', onClick: () => store.dispatch(removeToast())},
-            ] : [],
-            isWithOverlay: ERROR_MODAL.codes.includes(status),
-        };
+        toast = errorToast
+            ? {
+                  ...defaultErrorToast,
+                  ...errorToast,
+              }
+            : {
+                  title: ERROR_MODAL.title,
+                  description: description || message || data.message || JSON.stringify(data),
+                  icon: ERROR_ICON,
+                  actions: ERROR_MODAL.codes.includes(status)
+                      ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
+                      : [],
+                  isWithOverlay: ERROR_MODAL.codes.includes(status),
+              };
     }
     store.dispatch(addToast(toast));
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {
-    const {
-        status,
-        statusText,
-        name,
-        errorMessage,
-    } = error || {};
+    const {status, statusText, name, errorMessage} = error || {};
 
     // TODO: this should be removed from http client error handling
     // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas

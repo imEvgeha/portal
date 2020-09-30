@@ -1,94 +1,103 @@
 [
-  {
-    "javaVariableName": "barcode",
-    "displayName": "Barcode",
-    "dataType": "string",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": true,
-    "required": true
-  }, {
-    "javaVariableName": "title",
-    "displayName": "Title",
-    "dataType": "string",
-    "queryParamName": "title",
-    "readOnly": true,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": true
-  }, {
-    "javaVariableName": "titleId",
-    "displayName": "Title ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "readOnly": true,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": true
-  }, {
-    "javaVariableName": "amsAssetId",
-    "displayName": "MP Asset ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "readOnly": true,
-    "enableSearch": true,
-    "enableEdit": false,
-    "required": true
-  }, {
-    "javaVariableName": "assetFormat",
-    "displayName": "Asset Format",
-    "dataType": "string",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  }, {
-    "javaVariableName": "standard",
-    "displayName": "Standard",
-    "dataType": "string",
-    "searchDataType": "string",
-    "readOnly": true,
-    "enableSearch": true,
-    "enableEdit": false,
-    "required": true
-  }, {
-    "javaVariableName": "assetStatus",
-    "displayName": "Asset Status",
-    "dataType": "select",
-    "searchDataType": "select",
-    "options": ["IN", "Being Fixed", "Being Made"],
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  }, {
-    "javaVariableName": "shipVia",
-    "displayName": "Ship Via",
-    "dataType": "select",
-    "searchDataType": "select",
-    "options": ["Aspera", "Smart Jogs"],
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  }, {
-    "javaVariableName": "shipListId",
-    "displayName": "Ship List ID",
-    "dataType": "select",
-    "searchDataType": "select",
-    "options": ["Vubiquity", "Receipient"],
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },{
-    "javaVariableName": "startDate",
-    "displayName": "Do not start before",
-    "dataType": "businessDateTime",
-    "searchDataType": "businessDateTime",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  }
+    {
+        "javaVariableName": "barcode",
+        "displayName": "Barcode",
+        "dataType": "string",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "title",
+        "displayName": "Title",
+        "dataType": "string",
+        "queryParamName": "title",
+        "readOnly": true,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": true
+    },
+    {
+        "javaVariableName": "titleId",
+        "displayName": "Title ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "readOnly": true,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": true
+    },
+    {
+        "javaVariableName": "amsAssetId",
+        "displayName": "MP Asset ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "readOnly": true,
+        "enableSearch": true,
+        "enableEdit": false,
+        "required": true
+    },
+    {
+        "javaVariableName": "assetFormat",
+        "displayName": "Asset Format",
+        "dataType": "string",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "standard",
+        "displayName": "Standard",
+        "dataType": "string",
+        "searchDataType": "string",
+        "readOnly": true,
+        "enableSearch": true,
+        "enableEdit": false,
+        "required": true
+    },
+    {
+        "javaVariableName": "assetStatus",
+        "displayName": "Asset Status",
+        "dataType": "select",
+        "searchDataType": "select",
+        "options": ["IN", "Being Fixed", "Being Made"],
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "shipVia",
+        "displayName": "Ship Via",
+        "dataType": "select",
+        "searchDataType": "select",
+        "options": ["Aspera", "Smart Jogs"],
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "shipListId",
+        "displayName": "Ship List ID",
+        "dataType": "select",
+        "searchDataType": "select",
+        "options": ["Vubiquity", "Receipient"],
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "startDate",
+        "displayName": "Do not start before",
+        "dataType": "businessDateTime",
+        "searchDataType": "businessDateTime",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    }
 ]
