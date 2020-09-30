@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import Select from '@atlaskit/select/dist/cjs/Select';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
@@ -10,6 +11,7 @@ import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import createValueFormatter from '../../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
@@ -25,6 +27,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
+    const [recipientsOptions, setRecipientsOptions] = useState([]);
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -42,11 +45,14 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    deliverToVu:
-                        service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId.toLowerCase() === 'vu',
+                    recipient: 'test', // service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId || '',
                     operationalStatus: service.status,
                     rowIndex: index,
                 }));
+                console.log('flattenedObject: ', flattenedObject[0].recipient);
+                flattenedObject[0].recipient !== 'VU'
+                    ? setRecipientsOptions([flattenedObject[0].recipient, 'VU'])
+                    : setRecipientsOptions(['VU']);
                 setTableData(flattenedObject);
             }
         },
@@ -141,21 +147,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     // Checkbox
     const checkboxColumn = {
-        headerName: 'Deliver to VU',
-        colId: 'deliverToVu',
-        field: 'deliverToVu',
-        cellRendererFramework: ({data}) => {
-            return (
-                <div className="nexus-c-services-table__checkbox">
-                    <Checkbox
-                        isChecked={data.deliverToVu}
-                        value=""
-                        onChange={() => onCheckboxChange(data)}
-                        isDisabled={isDisabled}
-                    />
-                </div>
-            );
-        },
+        headerName: 'Recipient',
+        colId: 'recipient',
+        field: 'recipient',
     };
 
     const onCheckboxChange = data => {
@@ -178,7 +172,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             enableEdit: false,
         }));
     };
-
+    console.log('recipientsOptions: ', recipientsOptions);
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
@@ -204,7 +198,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
-                selectValues={SELECT_VALUES}
+                selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
                 onGridEvent={handleRowDataChange}
             />
         </div>
