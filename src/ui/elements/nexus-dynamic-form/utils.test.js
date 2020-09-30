@@ -1,4 +1,4 @@
-import {getDefaultValue, getValidationError, checkFieldDependencies} from './utils';
+import {getDefaultValue, getValidationError, checkFieldDependencies, getFieldByName} from './utils';
 import {VIEWS} from './constants';
 
 describe('Utils', () => {
@@ -68,6 +68,17 @@ describe('Utils', () => {
 
         it('should return false when the dependencies include a field that does not have value', () => {
             expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, {})).toEqual(false);
+        });
+    });
+
+    describe('getFieldByName', () => {
+        const allFields = [field];
+        it('should return the field config when the field name exists', () => {
+            expect(getFieldByName(allFields, 'Right ID')).toEqual(field);
+        });
+
+        it('should return undefined config when the field name exists', () => {
+            expect(getFieldByName(allFields, 'Wrong field')).toEqual(undefined);
         });
     });
 });
