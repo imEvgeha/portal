@@ -82,7 +82,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
 
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
-        // fix subfields keys
+        // make keys same as path
         const properValues = [];
         const allFields = getAllFields(schema);
         Object.keys(values).map(key => {

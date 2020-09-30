@@ -1,4 +1,4 @@
-import {getDefaultValue, getValidationError, checkFieldDependencies, getFieldByName} from './utils';
+import {getDefaultValue, getValidationError, checkFieldDependencies, getFieldByName, getProperValue} from './utils';
 import {VIEWS} from './constants';
 
 describe('Utils', () => {
@@ -79,6 +79,12 @@ describe('Utils', () => {
 
         it('should return undefined config when the field name exists', () => {
             expect(getFieldByName(allFields, 'Wrong field')).toEqual(undefined);
+        });
+    });
+
+    describe('getProperValue', () => {
+        it('should return number when the field type is numbe', () => {
+            expect(getProperValue('number', '123')).toEqual(123);
         });
     });
 });
