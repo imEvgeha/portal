@@ -75,9 +75,29 @@ export function* getRight({payload}) {
     }
 }
 
+export function* updateRight({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const response = yield rightsService.updateRightWithFullData(payload, payload.id);
+        yield put({
+            type: actionTypes.UPDATE_RIGHT_SUCCESS,
+            payload: response,
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.UPDATE_RIGHT_ERROR,
+            payload: error,
+        });
+    }
+}
+
 export function* rightsWatcher() {
     yield all([
         takeEvery(actionTypes.GET_RIGHT, getRight),
+        takeEvery(actionTypes.UPDATE_RIGHT, updateRight),
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
         takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, storeLinkedToOriginalRights),
     ]);
