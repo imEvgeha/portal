@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -11,6 +11,7 @@ import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {COLUMN_MAPPINGS, USER} from '../../constants';
 import './DopTasksTable.scss';
 import {fetchDopTasksData} from '../../utils';
+import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
 
 const DopTasksTableGrid = compose(
     withSideBar(),
@@ -21,13 +22,28 @@ const DopTasksTableGrid = compose(
 )(NexusGrid);
 
 const DopTasksTable = ({user}) => {
-    const onGridEvent = ({type, api}) => {
+    const [gridApi, setGridApi] = useState(null);
+    const [totalRows, setTotalRows] = useState(0);
+    const [pageSize, setPageSize] = useState(0);
+
+    const getPaginationData = ({api}) => {
+        const pageSize = api.paginationGetPageSize();
+        const totalCount = api.paginationGetRowCount();
+        if (totalCount > 0) {
+            console.log(pageSize, totalCount);
+            setTotalRows(totalCount);
+            setPageSize(pageSize);
+        }
+    };
+
+    const onGridReady = ({type, api}) => {
         const {FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case FILTER_CHANGED: {
                 console.log(api.getFilterModel());
                 break;
             }
+
             default:
                 break;
         }
@@ -46,12 +62,16 @@ const DopTasksTable = ({user}) => {
                 columnDefs={COLUMN_MAPPINGS}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
-                onGridEvent={onGridEvent}
+                onGridEvent={onGridReady}
                 onSortChanged={onSortChanged}
+                pagination={true}
+                suppressPaginationPanel={true}
+                onPaginationChanged={getPaginationData}
                 externalFilter={{
                     user,
                 }}
             />
+            <DopTasksTableStatusBar />
         </div>
     );
 };

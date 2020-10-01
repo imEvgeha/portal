@@ -5,6 +5,7 @@ export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
 export const USER = 'user';
 export const ALL = '*';
+export const PAGE_LIMIT = 100;
 
 export const QUEUED_TASKS_OPTIONS = [
     {label: 'My Tasks', value: 'user'},
