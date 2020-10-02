@@ -33,6 +33,7 @@ exports[`RightDetails should match snapshot 1`] = `
         "subscribe": [Function],
       }
     }
+    updateRight={[Function]}
   />
 </ContextProvider>
 `;
