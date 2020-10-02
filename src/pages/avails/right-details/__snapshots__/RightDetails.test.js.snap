@@ -14,7 +14,15 @@ exports[`RightDetails should match snapshot 1`] = `
       }
     }
     right={Object {}}
-    selectValues={Object {}}
+    selectValues={
+      Object {
+        "format": Array [
+          Object {
+            "value": "HD",
+          },
+        ],
+      }
+    }
     store={
       Object {
         "clearActions": [Function],
