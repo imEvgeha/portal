@@ -1,18 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IconButton should match snapshot 1`] = `
-<WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
-  content="Icon Button Label"
+<div
+  className="nexus-c-icon-button"
 >
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
-    appearance="subtle"
-    iconBefore={
-      <CrossIcon
-        label="Icon Button Label"
-      />
-    }
-    onClick={[Function]}
-    theme={[Function]}
-  />
-</WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+  <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+    content="Icon Button Label"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="subtle"
+      iconBefore={
+        <CrossIcon
+          label="Icon Button Label"
+        />
+      }
+      onClick={[Function]}
+      theme={[Function]}
+    />
+  </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+</div>
 `;

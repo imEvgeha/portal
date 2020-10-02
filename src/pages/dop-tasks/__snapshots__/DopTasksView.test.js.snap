@@ -11,6 +11,11 @@ exports[`DopTasksView should match snapshot 1`] = `
       setUser={[Function]}
     />
     <SavedTableDropdown />
+    <IconButton
+      icon={[Function]}
+      label="Refresh"
+      onClick={[Function]}
+    />
   </DopTasksHeader>
   <DopTasksTable
     user="user"
