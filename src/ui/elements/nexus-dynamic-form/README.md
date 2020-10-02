@@ -54,7 +54,7 @@ Portal dynamic form generator is a new tool that will be build a form based on a
     1. options: for hardcoded options
     2. defaultValuePath: only for fetched options, if field value is NOT under the "value" property
     3. defaultLabelPath: only for fetched options, if field label is NOT under the "value" property
-
+```json
     {
         "optionsConfig": {
             "options": [
@@ -68,4 +68,4 @@ Portal dynamic form generator is a new tool that will be build a form based on a
             "defaultLabelPath": "languageName"
         }
     }
-
+```
