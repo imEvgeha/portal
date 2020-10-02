@@ -6,6 +6,8 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 - number
 - textarea
 - boolean
+- select
+- multiselect
 
 ## Json schema
 - See an example of json schema in `NEXUS\PORTAL\src\pages\avails\right-details`
@@ -44,4 +46,26 @@ Portal dynamic form generator is a new tool that will be build a form based on a
 }
 
 - Then you need to create a file with the same name e.g. myProvidedFunction in the folder \NEXUS\PORTAL\src\ui\elements\nexus-dynamic-form\valdationUtils and write there your function
+
+## Options Config
+- Only for select/multiselect types
+- This field is OPTIONAL, also all subfields are OPTIONAL
+- available options are:
+    1. options: for hardcoded options
+    2. defaultValuePath: only for fetched options, if field value is NOT under the "value" property
+    3. defaultLabelPath: only for fetched options, if field label is NOT under the "value" property
+
+{
+    "optionsConfig": {
+        "options": [
+            { "label": "Pending", "value": "Pending" },
+            { "label": "Confirmed", "value": "Confirmed" },
+            { "label": "Tentative", "value": "Tentative" },
+            { "label": "Canceled", "value": "Canceled" },
+            { "label": "Withdrawn", "value": "Withdrawn" }
+        ],
+        "defaultValuePath": "languageCode",
+        "defaultLabelPath": "languageName"
+    }
+}
 
