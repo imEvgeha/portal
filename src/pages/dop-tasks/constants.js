@@ -27,6 +27,7 @@ export const COLUMN_MAPPINGS = [
         field: 'taskName',
         headerName: 'Task Name',
         javaVariableName: 'taskName',
+        sortable: true,
         width: 150,
     },
     {
@@ -44,6 +45,7 @@ export const COLUMN_MAPPINGS = [
         field: 'activityEstimatedEndDate',
         javaVariableName: 'activityEstimatedEndDate',
         headerName: 'Due Date',
+        sortable: true,
         width: 180,
     },
     {

@@ -7,32 +7,43 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {COLUMN_MAPPINGS, USER} from '../../constants';
-import './DopTasksTable.scss';
+import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS} from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
+import './DopTasksTable.scss';
 
 const DopTasksTableGrid = compose(
     withSideBar(),
     withFilterableColumns(),
-    // withSorting(),
     withColumnsResizing(),
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
 const DopTasksTable = ({user}) => {
-    const [gridApi, setGridApi] = useState(null);
-    const [totalRows, setTotalRows] = useState(0);
-    const [pageSize, setPageSize] = useState(0);
+    const [paginationData, setPaginationData] = useState({
+        pageSize: 0,
+        totalCount: 0,
+    });
+    const [externalFilter, setExternalFilter] = useState({
+        user,
+    });
+
+    useEffect(() => {
+        if (externalFilter.user !== user) {
+            setExternalFilter(prevData => {
+                return {
+                    ...prevData,
+                    user,
+                };
+            });
+        }
+    }, [user]);
 
     const getPaginationData = ({api}) => {
         const pageSize = api.paginationGetPageSize();
         const totalCount = api.paginationGetRowCount();
         if (totalCount > 0) {
-            console.log(pageSize, totalCount);
-            setTotalRows(totalCount);
-            setPageSize(pageSize);
+            setPaginationData({pageSize, totalCount});
         }
     };
 
@@ -40,19 +51,38 @@ const DopTasksTable = ({user}) => {
         const {FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case FILTER_CHANGED: {
-                console.log(api.getFilterModel());
+                // console.log(api.getFilterModel());
                 break;
             }
-
             default:
                 break;
         }
     };
 
     const onSortChanged = ({api}) => {
-        // TODO: catch sorting column and prepare data for passing it fetchDopTasksData as a payload
+        // get sorting column and prepare data for passing it fetchDopTasksData as a payload
         const sortModel = api.getSortModel();
-        console.log(sortModel);
+        if (sortModel.length) {
+            const sortCriterion = [
+                {
+                    fieldName: sortModel[0].colId,
+                    ascending: sortModel[0].sort === 'asc',
+                },
+            ];
+            setExternalFilter(prevData => {
+                return {
+                    ...prevData,
+                    sortCriterion,
+                };
+            });
+        } else {
+            setExternalFilter(prevData => {
+                return {
+                    ...prevData,
+                    sortCriterion: INITIAL_SEARCH_PARAMS.sortCriterion,
+                };
+            });
+        }
     };
 
     return (
@@ -67,11 +97,9 @@ const DopTasksTable = ({user}) => {
                 pagination={true}
                 suppressPaginationPanel={true}
                 onPaginationChanged={getPaginationData}
-                externalFilter={{
-                    user,
-                }}
+                externalFilter={externalFilter}
             />
-            <DopTasksTableStatusBar />
+            <DopTasksTableStatusBar paginationData={paginationData} />
         </div>
     );
 };
