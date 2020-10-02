@@ -2,10 +2,17 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
-import {getValidationError, getDefaultValue, formatValues} from './utils';
+import {
+    getValidationError,
+    getDefaultValue,
+    getFieldConfig,
+    getAllFields,
+    getFieldByName,
+    getProperValue,
+    formatValues,
+} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -19,7 +26,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
             <>
                 {Object.keys(fields).map(key => {
                     return (
-                        !(view === VIEWS.CREATE && get(fields[key], 'hiddenInCreate')) && (
+                        !getFieldConfig(fields[key], 'hidden', view) && (
                             <NexusField
                                 selectValues={selectValues}
                                 key={key}
@@ -78,7 +85,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
         formatValues(values);
-        onSubmit(values);
+        // make keys same as path
+        const properValues = [];
+        const allFields = getAllFields(schema);
+        Object.keys(values).map(key => {
+            const field = getFieldByName(allFields, key);
+            const {path} = field;
+            properValues[path] = getProperValue(field.type, values[key]);
+        });
+        onSubmit(properValues);
     };
 
     return (

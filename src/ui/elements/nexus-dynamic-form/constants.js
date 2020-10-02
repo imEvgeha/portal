@@ -4,3 +4,4 @@ export const VIEWS = {
     CREATE: 'CREATE',
 };
 export const INCORRECT_LENGTH = 'INCORRECT LENGTH';
+export const INCORRECT_VALUE = 'INCORRECT_VALUE';

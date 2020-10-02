@@ -22,7 +22,7 @@ const NexusField = ({
     isRequired,
     dependencies,
     validationError,
-    customValidation,
+    validation,
     optionsConfig,
     ...props
 }) => {
@@ -137,12 +137,18 @@ const NexusField = ({
         }
     };
 
+    const isEmptyMultiselect = value => {
+        if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
+    };
+
     return (
         <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
-                validate={value => getValidationFunction(value, customValidation)}
+                validate={
+                    type === 'multiselect' ? isEmptyMultiselect : value => getValidationFunction(value, validation)
+                }
                 {...props}
             >
                 {({fieldProps, error}) => (
@@ -180,7 +186,7 @@ NexusField.propTypes = {
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
-    customValidation: PropTypes.string,
+    validation: PropTypes.array,
     optionsConfig: PropTypes.object,
     selectValues: PropTypes.object,
     path: PropTypes.string,
@@ -194,7 +200,7 @@ NexusField.defaultProps = {
     isReadOnly: false,
     isRequired: false,
     validationError: null,
-    customValidation: null,
+    validation: [],
     optionsConfig: {},
     selectValues: {},
     path: null,

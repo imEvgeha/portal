@@ -2,14 +2,14 @@ import React, {memo, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
-import {getRight} from '../rights-repository/rightsActions';
+import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import * as detailsSelectors from './rightDetailsSelector';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, right, match, selectValues}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues}) => {
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -18,7 +18,8 @@ const RightDetails = ({getRight, right, match, selectValues}) => {
     }, []);
 
     const onSubmit = values => {
-        // console.log(values);
+        console.log(values);
+        updateRight(values);
     };
 
     return (
@@ -36,6 +37,7 @@ const RightDetails = ({getRight, right, match, selectValues}) => {
 
 RightDetails.propTypes = {
     getRight: PropTypes.func,
+    updateRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
     selectValues: PropTypes.object,
@@ -43,6 +45,7 @@ RightDetails.propTypes = {
 
 RightDetails.defaultProps = {
     getRight: () => null,
+    updateRight: () => null,
     right: {},
     match: {},
     selectValues: {},
@@ -60,6 +63,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
+    updateRight: payload => dispatch(updateRight(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));
