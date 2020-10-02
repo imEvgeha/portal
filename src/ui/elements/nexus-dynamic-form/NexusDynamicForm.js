@@ -2,10 +2,16 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import {get} from 'lodash';
 import NexusField from './components/NexusField';
 import SectionTab from './components/SectionTab';
-import {getValidationError, getDefaultValue} from './utils';
+import {
+    getValidationError,
+    getDefaultValue,
+    getFieldConfig,
+    getAllFields,
+    getFieldByName,
+    getProperValue,
+} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -19,7 +25,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
             <>
                 {Object.keys(fields).map(key => {
                     return (
-                        !(view === VIEWS.CREATE && get(fields[key], 'hiddenInCreate')) && (
+                        !getFieldConfig(fields[key], 'hidden', view) && (
                             <NexusField
                                 key={key}
                                 name={key}
@@ -74,14 +80,22 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         );
     };
 
+    const handleOnSubmit = values => {
+        setView(VIEWS.VIEW);
+        // make keys same as path
+        const properValues = [];
+        const allFields = getAllFields(schema);
+        Object.keys(values).map(key => {
+            const field = getFieldByName(allFields, key);
+            const {path} = field;
+            properValues[path] = getProperValue(field.type, values[key]);
+        });
+        onSubmit(properValues);
+    };
+
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm
-                onSubmit={values => {
-                    setView(VIEWS.VIEW);
-                    onSubmit(values);
-                }}
-            >
+            <AKForm onSubmit={values => handleOnSubmit(values)}>
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}

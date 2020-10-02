@@ -28,3 +28,8 @@ export const getRight = payload => ({
     type: actionTypes.GET_RIGHT,
     payload,
 });
+
+export const updateRight = payload => ({
+    type: actionTypes.UPDATE_RIGHT,
+    payload,
+});
