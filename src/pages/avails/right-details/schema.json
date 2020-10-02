@@ -61,7 +61,21 @@
             },
             {
                 "title": "Territory",
-                "fields": {}
+                "fields": {
+                    "territory": {
+                        "name": "Territory",
+                        "type": "array",
+                        "path": "territory",
+                        "isRequired": true,
+                        "fields": {
+                            "rightContractStatus": {
+                                "name": "rightContractStatus",
+                                "type": "string",
+                                "path": "territory.rightContractStatus"
+                            }
+                        }
+                    }
+                }
             },
             {
                 "title": "Pricing",
