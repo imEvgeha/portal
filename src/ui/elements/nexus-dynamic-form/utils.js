@@ -73,6 +73,7 @@ const sortOptions = options => {
 
 export const formatValues = values => {
     Object.keys(values).map(key => {
+        if (values[key] === null) values[key] = [];
         if (typeof values[key] === 'object') {
             if (Array.isArray(values[key])) {
                 values[key] = values[key].map(val => {
