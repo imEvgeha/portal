@@ -1,6 +1,3 @@
-import React from 'react';
-import {Checkbox} from '@atlaskit/checkbox';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
