@@ -30,10 +30,7 @@
                         "name": "Format",
                         "type": "multiselect",
                         "path": "format",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/formats"
-                        }
+                        "isRequired": true
                     },
                     "licensed": {
                         "name": "Licensed",
@@ -46,37 +43,25 @@
                         "name": "Licensor",
                         "type": "select",
                         "path": "licensor",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/licensors"
-                        }
+                        "isRequired": true
                     },
                     "licensee": {
                         "name": "Licensee",
                         "type": "select",
                         "path": "licensee",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/licensees"
-                        }
+                        "isRequired": true
                     },
                     "licenseType": {
                         "name": "License Type",
                         "type": "select",
                         "path": "licenseType",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/licence-types"
-                        }
+                        "isRequired": true
                     },
                     "contentType": {
                         "name": "Content Type",
                         "type": "select",
                         "path": "contentType",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/content-types"
-                        }
+                        "isRequired": true
                     },
                     "releaseYear": {
                         "name": "Release Year",
@@ -89,7 +74,6 @@
                         "type": "multiselect",
                         "path": "allowedLanguages",
                         "optionsConfig": {
-                            "configEndpoint": "/languages",
                             "defaultValuePath": "languageCode",
                             "defaultLabelPath": "languageName"
                         }
@@ -98,10 +82,7 @@
                         "name": "License Rights Description",
                         "type": "select",
                         "path": "licenseRightsDescription",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "configEndpoint": "/license-rights-desc"
-                        }
+                        "isRequired": true
                     },
                     "platformCategory": {
                         "name": "Platform Category",
@@ -133,18 +114,12 @@
                     "affiliate": {
                         "name": "Affiliate",
                         "type": "multiselect",
-                        "path": "affiliate",
-                        "optionsConfig": {
-                            "configEndpoint": "/affiliates"
-                        }
+                        "path": "affiliate"
                     },
                     "affiliateExclude": {
                         "name": "Affiliate Exclude",
                         "type": "multiselect",
-                        "path": "affiliateExclude",
-                        "optionsConfig": {
-                            "configEndpoint": "/affiliates"
-                        }
+                        "path": "affiliateExclude"
                     }
                 }
             },
@@ -156,7 +131,6 @@
                         "type": "multiselect",
                         "path": "territoryExcluded",
                         "optionsConfig": {
-                            "configEndpoint": "/countries",
                             "defaultValuePath": "countryCode",
                             "defaultLabelPath": "countryName"
                         }
@@ -166,7 +140,6 @@
                         "type": "multiselect",
                         "path": "region",
                         "optionsConfig": {
-                            "configEndpoint": "/regions",
                             "defaultValuePath": "regionCode",
                             "defaultLabelPath": "regionName"
                         }

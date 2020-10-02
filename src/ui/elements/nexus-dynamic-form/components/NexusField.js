@@ -5,12 +5,15 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
+import {cloneDeep} from 'lodash';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction, fetchSelectValues, formatOptions} from '../utils';
+import {checkFieldDependencies, getValidationFunction, formatOptions} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
 const NexusField = ({
+    selectValues,
+    path,
     type,
     view,
     tooltip,
@@ -26,14 +29,14 @@ const NexusField = ({
     const [fetchedOptions, setFetchedOptions] = useState([]);
 
     useEffect(() => {
-        const {configEndpoint} = optionsConfig;
-        if (configEndpoint) {
-            fetchSelectValues(configEndpoint).then(res => {
-                const options = formatOptions(res.data, optionsConfig);
+        if ((type === 'select' || type === 'multiselect') && optionsConfig.options === undefined) {
+            if (Object.keys(selectValues).length) {
+                let options = cloneDeep(selectValues[path]);
+                options = formatOptions(options, optionsConfig);
                 setFetchedOptions(options);
-            });
+            }
         }
-    }, []);
+    }, [selectValues]);
 
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
@@ -179,6 +182,8 @@ NexusField.propTypes = {
     validationError: PropTypes.string,
     customValidation: PropTypes.string,
     optionsConfig: PropTypes.object,
+    selectValues: PropTypes.object,
+    path: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -191,6 +196,8 @@ NexusField.defaultProps = {
     validationError: null,
     customValidation: null,
     optionsConfig: {},
+    selectValues: {},
+    path: null,
 };
 
 export default NexusField;

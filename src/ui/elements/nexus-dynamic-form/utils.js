@@ -1,7 +1,5 @@
 import {get} from 'lodash';
-import config from 'react-global-configuration';
 import {equalOrIncluded, getSortedData} from '../../../util/Common';
-import {nexusFetch} from '../../../util/http-client/index';
 import {VIEWS} from './constants';
 
 export const getDefaultValue = (field = {}, view, data) => {
@@ -52,11 +50,6 @@ export const getValidationFunction = (value, customValidation) => {
         });
     }
     return undefined;
-};
-
-export const fetchSelectValues = endpoint => {
-    const url = `${config.get('gateway.configuration')}/configuration-api/v1${endpoint}?page=0&size=10000`;
-    return nexusFetch(url, {isWithErrorHandling: false});
 };
 
 export const formatOptions = (options, optionsConfig) => {

@@ -9,7 +9,7 @@ import {getValidationError, getDefaultValue, formatValues} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
+const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
@@ -21,6 +21,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                     return (
                         !(view === VIEWS.CREATE && get(fields[key], 'hiddenInCreate')) && (
                             <NexusField
+                                selectValues={selectValues}
                                 key={key}
                                 name={key}
                                 view={view}
@@ -113,12 +114,14 @@ NexusDynamicForm.propTypes = {
     initialData: PropTypes.object,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
+    selectValues: PropTypes.object,
 };
 
 NexusDynamicForm.defaultProps = {
     initialData: {},
     onSubmit: undefined,
     isEdit: false,
+    selectValues: {},
 };
 
 export default NexusDynamicForm;

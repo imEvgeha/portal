@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
+import * as detailsSelectors from './rightDetailsSelector';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, right, match}) => {
+const RightDetails = ({getRight, right, match, selectValues}) => {
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -22,7 +23,13 @@ const RightDetails = ({getRight, right, match}) => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
+            <NexusDynamicForm
+                schema={schema}
+                initialData={right}
+                isEdit
+                onSubmit={values => onSubmit(values)}
+                selectValues={selectValues}
+            />
         </div>
     );
 };
@@ -31,19 +38,23 @@ RightDetails.propTypes = {
     getRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
+    selectValues: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
     getRight: () => null,
     right: {},
     match: {},
+    selectValues: {},
 };
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
+    const selectValuesSelector = detailsSelectors.selectValuesSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
+        selectValues: selectValuesSelector(state, props),
     });
 };
 

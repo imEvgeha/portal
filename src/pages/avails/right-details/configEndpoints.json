@@ -10,5 +10,37 @@
     {
         "field": "licensee",
         "configEndpoint": "/licensees"
+    },
+    {
+        "field": "licenseType",
+        "configEndpoint": "/licence-types"
+    },
+    {
+        "field": "contentType",
+        "configEndpoint": "/content-types"
+    },
+    {
+        "field": "allowedLanguages",
+        "configEndpoint": "/languages"
+    },
+    {
+        "field": "licenseRightsDescription",
+        "configEndpoint": "/license-rights-desc"
+    },
+    {
+        "field": "affiliate",
+        "configEndpoint": "/affiliates"
+    },
+    {
+        "field": "affiliateExclude",
+        "configEndpoint": "/affiliates"
+    },
+    {
+        "field": "territoryExcluded",
+        "configEndpoint": "/countries"
+    },
+    {
+        "field": "region",
+        "configEndpoint": "/regions"
     }
 ]
