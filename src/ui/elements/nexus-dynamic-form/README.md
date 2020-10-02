@@ -55,17 +55,17 @@ Portal dynamic form generator is a new tool that will be build a form based on a
     2. defaultValuePath: only for fetched options, if field value is NOT under the "value" property
     3. defaultLabelPath: only for fetched options, if field label is NOT under the "value" property
 
-{
-    "optionsConfig": {
-        "options": [
+    {
+        "optionsConfig": {
+            "options": [
             { "label": "Pending", "value": "Pending" },
             { "label": "Confirmed", "value": "Confirmed" },
             { "label": "Tentative", "value": "Tentative" },
             { "label": "Canceled", "value": "Canceled" },
             { "label": "Withdrawn", "value": "Withdrawn" }
-        ],
-        "defaultValuePath": "languageCode",
-        "defaultLabelPath": "languageName"
+            ],
+            "defaultValuePath": "languageCode",
+            "defaultLabelPath": "languageName"
+        }
     }
-}
 
