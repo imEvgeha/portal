@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import RefreshIcon from '@atlaskit/icon/glyph/refresh';
+import IconButton from '../../ui/atlaskit/icon-button/IconButton';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
@@ -14,6 +16,7 @@ const DopTasksView = () => {
             <DopTasksHeader>
                 <QueuedTasks setUser={setUser} />
                 <SavedTableDropdown />
+                <IconButton icon={() => <RefreshIcon size="large" />} onClick={() => setUser(USER)} label="Refresh" />
             </DopTasksHeader>
             <DopTasksTable user={user} />
         </div>
