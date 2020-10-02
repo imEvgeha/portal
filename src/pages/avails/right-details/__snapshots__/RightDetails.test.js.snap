@@ -14,6 +14,7 @@ exports[`RightDetails should match snapshot 1`] = `
       }
     }
     right={Object {}}
+    selectValues={Object {}}
     store={
       Object {
         "clearActions": [Function],
