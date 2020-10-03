@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import Select from '@atlaskit/select/dist/cjs/Select';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
@@ -11,7 +9,6 @@ import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import createValueFormatter from '../../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
@@ -31,6 +28,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     useEffect(() => {
         if (!isEmpty(data)) {
+            const recp = data.deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId;
+            recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
             setProviderServices(`${data.fs.toLowerCase()}Services`);
             setServices(data);
             setOriginalServices(data);
@@ -45,14 +44,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    recipient: 'test', // service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId || '',
+                    recipient: service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId || '',
                     operationalStatus: service.status,
                     rowIndex: index,
                 }));
-                console.log('flattenedObject: ', flattenedObject[0].recipient);
-                flattenedObject[0].recipient !== 'VU'
-                    ? setRecipientsOptions([flattenedObject[0].recipient, 'VU'])
-                    : setRecipientsOptions(['VU']);
                 setTableData(flattenedObject);
             }
         },
@@ -98,10 +93,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
             // eslint-disable-next-line max-len
-            currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = setDeliverToId(
-                data.deliverToVu,
-                rowIndex
-            );
+            currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
             currentService.status = data.operationalStatus;
 
             const newServices = {...services, [providerServices]: updatedServices};
@@ -110,19 +102,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             // this change is propogated up to the Servicing Order form to submit
             setUpdatedServices(newServices);
         }
-    };
-
-    const setDeliverToId = (deliverToVu, index) => {
-        const deliverToId = get(
-            originalServices,
-            [providerServices, index, 'deteTasks', 'deteDeliveries', 'externalDelivery', 'deliverToId'],
-            ''
-        );
-        if (deliverToVu) {
-            return 'VU';
-        }
-        // Set deliverToId to previous value, if none set to ''
-        return deliverToId && deliverToId.toLowerCase() !== 'vu' ? deliverToId : '';
     };
 
     const addEmptyServicesRow = () => {
@@ -146,16 +125,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     });
 
     // Checkbox
-    const checkboxColumn = {
+    const recipientColumn = {
         headerName: 'Recipient',
         colId: 'recipient',
         field: 'recipient',
-    };
-
-    const onCheckboxChange = data => {
-        const newData = cloneDeep(data);
-        newData.deliverToVu = !newData.deliverToVu;
-        handleRowDataChange({rowIndex: newData.rowIndex, type: GRID_EVENTS.CELL_VALUE_CHANGED, data: newData});
     };
 
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
@@ -172,7 +145,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             enableEdit: false,
         }));
     };
-    console.log('recipientsOptions: ', recipientsOptions);
+
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
@@ -191,7 +164,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                     closeButtonColumn,
                     // slice column defs to put checkbox before operations status columns
                     ...columnDefinitions.slice(0, OP_STATUS_COL_INDEX),
-                    checkboxColumn,
+                    recipientColumn,
                     columnDefinitions[OP_STATUS_COL_INDEX],
                 ]}
                 rowData={tableData}

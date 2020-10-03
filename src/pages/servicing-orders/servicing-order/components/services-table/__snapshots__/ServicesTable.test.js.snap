@@ -86,10 +86,9 @@ exports[`ServicesTable should match snapshot 1`] = `
           "headerName": "Priority",
         },
         Object {
-          "cellRendererFramework": [Function],
-          "colId": "deliverToVu",
-          "field": "deliverToVu",
-          "headerName": "Deliver to VU",
+          "colId": "recipient",
+          "field": "recipient",
+          "headerName": "Recipient",
         },
         Object {
           "colId": "operationalStatus",
@@ -154,9 +153,17 @@ exports[`ServicesTable should match snapshot 1`] = `
           "displayName": "Deliver to VU",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "deliverToVU",
+          "javaVariableName": "deliverToVU2",
           "queryParamName": "deliverToVU",
           "readOnly": false,
+          "required": true,
+        },
+        Object {
+          "dataType": "select",
+          "displayName": "Recipient",
+          "enableEdit": true,
+          "javaVariableName": "recipient",
+          "queryParamName": "recipient",
           "required": true,
         },
         Object {
@@ -197,6 +204,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "60",
           "50",
         ],
+        "recipient": Array [],
         "sourceStandard": Array [
           "_1080_23_976",
         ],
