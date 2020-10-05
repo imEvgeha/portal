@@ -3,11 +3,16 @@ import {equalOrIncluded} from '../../../util/Common';
 import {VIEWS} from './constants';
 
 export const getDefaultValue = (field = {}, view, data) => {
-    return view === VIEWS.CREATE
-        ? get(field, 'defaultValueCreate')
-        : get(data, field.path) !== null
-        ? get(data, field.path)
-        : '';
+    if (view === VIEWS.CREATE) {
+        return get(field, 'defaultValueCreate');
+    }
+    if (field.type === 'dateRange') {
+        return {
+            startDate: get(data, field.path[0]),
+            endDate: get(data, field.path[1]),
+        };
+    }
+    return get(data, field.path) !== null ? get(data, field.path) : '';
 };
 
 export const getValidationError = (validationErrors, field) => {

@@ -46,8 +46,21 @@
                 "fields": {}
             },
             {
-                "title": "Pricing",
-                "fields": {}
+                "title": "Content",
+                "fields": {
+                    "contentType": {
+                        "name": "Content Type",
+                        "type": "string",
+                        "path": "contentType"
+                    },
+                    "availDates": {
+                        "name": "Avail Date Range",
+                        "type": "dateRange",
+                        "dateType": "businessDateTime",
+                        "labels": ["Avail Start", "Avail End"],
+                        "path": ["availStart", "availEnd"]
+                    }
+                }
             }
         ]
     },
