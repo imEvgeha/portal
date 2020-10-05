@@ -1,4 +1,6 @@
 import React from 'react';
+import {Checkbox} from '@atlaskit/checkbox';
+import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
@@ -123,4 +125,22 @@ export const buildSection = (fields = {}, getValues, view, initialData) => {
             })}
         </>
     );
+};
+
+export const renderFieldViewMode = (type, fieldProps, validationError) => {
+    if (validationError) {
+        return <div>{validationError}</div>;
+    }
+    switch (type) {
+        case 'datetime':
+            return <DateTimePicker {...fieldProps} />;
+        case 'boolean':
+            return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+        default:
+            return fieldProps.value ? (
+                <div>{fieldProps.value}</div>
+            ) : (
+                <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
+            );
+    }
 };

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form/Form';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
-import {buildSection} from '../utils';
+import {buildSection, getDefaultValue, getFieldConfig, renderFieldViewMode} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
@@ -25,8 +25,24 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                 onClick={() => view === VIEWS.EDIT && openEditModal(index)}
                 className="nexus-c-array__object"
             >
-                {buildSection(fields, getValues, view, data[index] || {})}
+                {buildObject(fields, data[index] || {})}
             </div>
+        );
+    };
+
+    const buildObject = (fields = {}, initialData) => {
+        return (
+            <>
+                {Object.keys(fields).map(key => {
+                    return (
+                        !getFieldConfig(fields[key], 'hidden', view) &&
+                        renderFieldViewMode(fields[key].type, {
+                            value: getDefaultValue(fields[key], view, initialData),
+                            name: fields[key].name,
+                        })
+                    );
+                })}
+            </>
         );
     };
 

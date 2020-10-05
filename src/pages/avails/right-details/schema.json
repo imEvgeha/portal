@@ -4,7 +4,19 @@
         "sections": [
             {
                 "title": "Basic Info",
-                "fields": {}
+                "fields": {
+                    "rightId": {
+                        "name": "Right ID",
+                        "type": "string",
+                        "path": "id",
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
+                    }
+                }
             },
             {
                 "title": "Territory",

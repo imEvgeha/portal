@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction} from '../utils';
+import {checkFieldDependencies, getValidationFunction, renderFieldViewMode} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -52,24 +51,6 @@ const NexusField = ({
         }
     };
 
-    const renderFieldViewMode = fieldProps => {
-        if (validationError) {
-            return <div>{validationError}</div>;
-        }
-        switch (type) {
-            case 'datetime':
-                return <DateTimePicker {...fieldProps} />;
-            case 'boolean':
-                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
-            default:
-                return fieldProps.value ? (
-                    <div>{fieldProps.value}</div>
-                ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
-                );
-        }
-    };
-
     return (
         <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
             <AKField
@@ -92,7 +73,7 @@ const NexusField = ({
                             <div className="nexus-c-field__value">
                                 {view === VIEWS.EDIT || view === VIEWS.CREATE
                                     ? renderFieldEditMode(fieldProps)
-                                    : renderFieldViewMode(fieldProps)}
+                                    : renderFieldViewMode(type, fieldProps, validationError)}
                             </div>
                             <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
                         </div>

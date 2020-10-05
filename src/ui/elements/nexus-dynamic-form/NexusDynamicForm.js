@@ -55,7 +55,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
         // make keys same as path
         const properValues = [];
         const allFields = getAllFields(schema);
-        Object.keys(values).map(key => {
+        Object.keys(values).forEach(key => {
             const field = getFieldByName(allFields, key);
             const {path} = field;
             properValues[path] = getProperValue(field.type, values[key]);
