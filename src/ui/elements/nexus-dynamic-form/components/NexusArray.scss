@@ -7,6 +7,21 @@
     .nexus-c-array__add {
         text-align: right;
     }
+    .nexus-c-array__objects {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: space-between;
+
+        > div {
+            flex: 0 49.5%;
+            border: 1px solid map-get($light-neutral-colors, light-neutral-1);
+            box-sizing: border-box;
+        }
+    }
+    .nexus-c-array__object {
+        padding: 25px;
+    }
 }
 
 .nexus-c-array__modal {
