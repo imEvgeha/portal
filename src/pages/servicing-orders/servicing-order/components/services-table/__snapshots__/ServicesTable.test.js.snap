@@ -149,16 +149,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "required": true,
         },
         Object {
-          "dataType": "boolean",
-          "displayName": "Deliver to VU",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "deliverToVU2",
-          "queryParamName": "deliverToVU",
-          "readOnly": false,
-          "required": true,
-        },
-        Object {
           "dataType": "select",
           "displayName": "Recipient",
           "enableEdit": true,
