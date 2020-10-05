@@ -9,8 +9,13 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "id",
-                        "hiddenInCreate": true,
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
                     },
                     "title": {
                         "name": "Title",
@@ -22,21 +27,34 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Core TitleId"
+                                "field": "Core TitleId",
+                                "value": "any"
                             }
                         ]
                     },
                     "releaseYear": {
                         "name": "Release Year",
-                        "type": "number",
+                        "type": "string",
                         "path": "releaseYear",
-                        "customValidation": "length4"
+                        "validation": [
+                            {
+                                "name": "lengthEqual",
+                                "args": {
+                                    "length": 4
+                                }
+                            }
+                        ]
                     },
                     "licensed": {
                         "name": "Licensed",
                         "type": "boolean",
                         "path": "licensed",
-                        "defaultValueCreate": true,
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "defaultValue": true
+                            }
+                        ],
                         "isReadOnly": true
                     }
                 }
@@ -62,7 +80,92 @@
                         "type": "string",
                         "path": "coreTitleId",
                         "isReadOnly": true,
-                        "hiddenInCreate": true
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                "title": "Episodic",
+                "fields": {
+                    "seriesTitle": {
+                        "name": "Series Title",
+                        "type": "string",
+                        "path": "episodic.seriesTitle"
+                    },
+                    "seriesDisplayTitle": {
+                        "name": "Series Display Title",
+                        "type": "string",
+                        "path": "episodic.seriesDisplayTitle"
+                    },
+                    "seasonTitle": {
+                        "name": "Season Title",
+                        "type": "string",
+                        "path": "episodic.seasonTitle"
+                    },
+                    "seasonDisplayTitle": {
+                        "name": "Season Display Title",
+                        "type": "string",
+                        "path": "episodic.seasonDisplayTitle"
+                    },
+                    "seasonNumber": {
+                        "name": "Season Number",
+                        "type": "number",
+                        "path": "episodic.seasonNumber"
+                    },
+                    "episodeTitle": {
+                        "name": "Episode Title",
+                        "type": "string",
+                        "path": "episodic.episodeTitle"
+                    },
+                    "episodeDisplayTitle": {
+                        "name": "Episode Display Title",
+                        "type": "string",
+                        "path": "episodic.episodeDisplayTitle"
+                    },
+                    "episodeNumber": {
+                        "name": "Episode Number",
+                        "type": "number",
+                        "path": "episodic.episodeNumber"
+                    },
+                    "volumeTitle": {
+                        "name": "Volume Title",
+                        "type": "string",
+                        "path": "episodic.volumeTitle"
+                    },
+                    "volumeDisplayTitle": {
+                        "name": "Volume Display Title",
+                        "type": "string",
+                        "path": "episodic.volumeDisplayTitle"
+                    },
+                    "volumeNumber": {
+                        "name": "Volume Number",
+                        "type": "number",
+                        "path": "episodic.volumeNumber"
+                    },
+                    "distributionNumber": {
+                        "name": "Distribution Number",
+                        "type": "string",
+                        "path": "episodic.distributionNumber"
+                    },
+                    "volumeDistributionNumber": {
+                        "name": "Volume Distribution Number",
+                        "type": "string",
+                        "path": "episodic.volumeDistributionNumber"
+                    },
+                    "episodeCount": {
+                        "name": "Episode Count",
+                        "type": "number",
+                        "path": "episodic.episodeCount"
+                    },
+                    "seasonCount": {
+                        "name": "Season Count",
+                        "type": "number",
+                        "path": "episodic.seasonCount"
                     }
                 }
             }
