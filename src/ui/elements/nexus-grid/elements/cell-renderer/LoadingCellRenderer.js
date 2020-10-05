@@ -16,7 +16,11 @@ const LoadingCellRenderer = params => {
     if (!data && colDef !== 'actions') {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
-    const linkTo = link && `${link}${data.id || data[colId]}`;
+    let projectId = null;
+    if (colDef.colId === 'projectName') {
+        projectId = data.projectId || '';
+    }
+    const linkTo = link && `${link}${projectId || data.id || data[colId]}`;
     let value = getDeepValue(data, field);
     if (isObject(value)) {
         value = JSON.stringify(value);

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -7,7 +8,8 @@ import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColu
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS} from '../../constants';
+import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS, DOP_GUIDED_TASK_URL, DOP_PROJECT_URL} from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
 import './DopTasksTable.scss';
@@ -16,6 +18,7 @@ const DopTasksTableGrid = compose(
     withSideBar(),
     withFilterableColumns(),
     withColumnsResizing(),
+    withSorting(),
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
@@ -26,6 +29,26 @@ const DopTasksTable = ({user}) => {
     });
     const [externalFilter, setExternalFilter] = useState({
         user,
+    });
+
+    const mappings = COLUMN_MAPPINGS.map(col => {
+        if (col.colId === 'taskName') {
+            return {
+                ...col,
+                cellRendererParams: {
+                    link: `${config.get('gateway.DOPUrl')}${DOP_GUIDED_TASK_URL}`,
+                },
+            };
+        }
+        if (col.colId === 'projectName') {
+            return {
+                ...col,
+                cellRendererParams: {
+                    link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+                },
+            };
+        }
+        return col;
     });
 
     useEffect(() => {
@@ -89,7 +112,7 @@ const DopTasksTable = ({user}) => {
         <div className="nexus-c-dop-tasks-table">
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={COLUMN_MAPPINGS}
+                columnDefs={mappings}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
