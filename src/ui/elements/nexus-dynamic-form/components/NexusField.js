@@ -20,7 +20,7 @@ const NexusField = ({
     isRequired,
     dependencies,
     validationError,
-    customValidation,
+    validation,
     dateType,
     labels,
     ...props
@@ -81,7 +81,7 @@ const NexusField = ({
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
-                    validate={value => getValidationFunction(value, customValidation)}
+                    validate={value => getValidationFunction(value, validation)}
                     {...props}
                 >
                     {({fieldProps, error}) => (
@@ -122,7 +122,7 @@ NexusField.propTypes = {
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
-    customValidation: PropTypes.string,
+    validation: PropTypes.array,
     dateType: PropTypes.string,
     labels: PropTypes.array,
 };
@@ -135,7 +135,7 @@ NexusField.defaultProps = {
     isReadOnly: false,
     isRequired: false,
     validationError: null,
-    customValidation: null,
+    validation: [],
     dateType: '',
     labels: [],
 };

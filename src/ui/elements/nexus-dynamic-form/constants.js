@@ -11,3 +11,4 @@ export const DATETIME_FIELDS = {
     REGIONAL: 'regional',
     REGIONAL_MIDNIGHT: 'regionalMidnight',
 };
+export const INCORRECT_VALUE = 'INCORRECT_VALUE';

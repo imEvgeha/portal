@@ -1,4 +1,4 @@
-import {getDefaultValue, getValidationError, checkFieldDependencies} from './utils';
+import {getDefaultValue, getValidationError, checkFieldDependencies, getFieldByName, getProperValue} from './utils';
 import {VIEWS} from './constants';
 
 describe('Utils', () => {
@@ -6,7 +6,12 @@ describe('Utils', () => {
         name: 'Right ID',
         type: 'string',
         path: 'id',
-        defaultValueCreate: '1234',
+        viewConfig: [
+            {
+                view: 'CREATE',
+                defaultValue: '1234',
+            },
+        ],
     };
     describe('getDefaultValue', () => {
         it('should return the defaultValueCreate when the view is create', () => {
@@ -54,6 +59,7 @@ describe('Utils', () => {
                 view: 'EDIT',
                 type: 'required',
                 field: 'Core TitleId',
+                value: 'any',
             },
         ];
         it('should return true when the dependencies include a field that has value', () => {
@@ -62,6 +68,23 @@ describe('Utils', () => {
 
         it('should return false when the dependencies include a field that does not have value', () => {
             expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, {})).toEqual(false);
+        });
+    });
+
+    describe('getFieldByName', () => {
+        const allFields = [field];
+        it('should return the field config when the field name exists', () => {
+            expect(getFieldByName(allFields, 'Right ID')).toEqual(field);
+        });
+
+        it('should return undefined config when the field name exists', () => {
+            expect(getFieldByName(allFields, 'Wrong field')).toEqual(undefined);
+        });
+    });
+
+    describe('getProperValue', () => {
+        it('should return number when the field type is numbe', () => {
+            expect(getProperValue('number', '123')).toEqual(123);
         });
     });
 });

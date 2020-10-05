@@ -27,7 +27,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           label="Date From"
           onChange={[Function]}
           onConfirm={[Function]}
-          value="2020-07-11"
+          value=""
         />
       </div>
       <div
@@ -144,7 +144,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
     }
     externalFilter={
       Object {
-        "dateFrom": "2020-07-11",
+        "dateFrom": "",
         "dateTo": "",
       }
     }

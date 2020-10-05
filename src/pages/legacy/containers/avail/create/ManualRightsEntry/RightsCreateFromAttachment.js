@@ -357,7 +357,7 @@ class RightsCreateFromAttachment extends React.Component {
                             />
                         )}
                         {selectedTab === ATTACHMENTS_TAB && (
-                            <div className="ag-theme-balham" style={{height: '800px'}}>
+                            <div className="ag-theme-balham" style={{height: 'calc(100vh - 224px)'}}>
                                 <AgGridReact
                                     columnDefs={this.getAttachmentsColumnDefs(attachmentsColumnDefs)}
                                     rowData={this.getAttachmentsRowData(attachments)}

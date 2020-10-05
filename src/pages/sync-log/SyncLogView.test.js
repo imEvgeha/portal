@@ -9,7 +9,7 @@ describe('SyncLogView', () => {
 
         beforeEach(() => {
             wrapper = shallow(<SyncLogView />);
-            syncLogTableWrapper = wrapper.find('SyncLogTable');
+            syncLogTableWrapper = wrapper.find('Connect(SyncLogTable)');
         });
 
         it('should render Sync Log view title', () => {

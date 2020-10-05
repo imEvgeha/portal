@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SavedTableDropdown should match snapshot 1`] = `
+<div
+  className="nexus-c-dop-tasks-dropdown"
+>
+  <div
+    className="nexus-c-dop-tasks-dropdown__label"
+  >
+    Saved Table View:
+  </div>
+  <div
+    className="nexus-c-dop-tasks-dropdown__elements"
+  >
+    <DropdownMenu
+      appearance="tall"
+      boundariesElement="viewport"
+      defaultOpen={false}
+      isLoading={false}
+      isMenuFixed={false}
+      isOpen={false}
+      items={Array []}
+      onItemActivated={[Function]}
+      onOpenChange={[Function]}
+      onPositioned={[Function]}
+      position="bottom left"
+      shouldAllowMultilineItems={false}
+      shouldFitContainer={true}
+      shouldFlip={true}
+      trigger="All"
+      triggerType="button"
+    >
+      <DropdownItemGroup
+        title="My Saved Views"
+      >
+        <div
+          className="nexus-c-dop-tasks-dropdown__textfield"
+        >
+          <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+            placeholder="New View..."
+          />
+        </div>
+      </DropdownItemGroup>
+      <DropdownItemGroup
+        title="Predefined Views"
+      >
+        <WithItemClick(WithItemFocus(Item))
+          key="open"
+          onClick={[Function]}
+        >
+          Open
+        </WithItemClick(WithItemFocus(Item))>
+        <WithItemClick(WithItemFocus(Item))
+          key="all"
+          onClick={[Function]}
+        >
+          All
+        </WithItemClick(WithItemFocus(Item))>
+        <WithItemClick(WithItemFocus(Item))
+          key="withErrors"
+          onClick={[Function]}
+        >
+          With Errors
+        </WithItemClick(WithItemFocus(Item))>
+        <WithItemClick(WithItemFocus(Item))
+          key="onHold"
+          onClick={[Function]}
+        >
+          On Hold
+        </WithItemClick(WithItemFocus(Item))>
+        <WithItemClick(WithItemFocus(Item))
+          key="changedInLast24Hours"
+          onClick={[Function]}
+        >
+          Changed in last 24 hours
+        </WithItemClick(WithItemFocus(Item))>
+        <WithItemClick(WithItemFocus(Item))
+          key="changedInLast5Days"
+          onClick={[Function]}
+        >
+          Changed in last 5 days
+        </WithItemClick(WithItemFocus(Item))>
+      </DropdownItemGroup>
+    </DropdownMenu>
+  </div>
+</div>
+`;
