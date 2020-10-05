@@ -1,5 +1,8 @@
+import React from 'react';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
+import NexusArray from './components/NexusArray';
+import NexusField from './components/NexusField';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -83,4 +86,36 @@ export const getProperValue = (type, value) => {
         default:
             return value;
     }
+};
+
+export const buildSection = (fields = {}, getValues, view, initialData) => {
+    return (
+        <>
+            {Object.keys(fields).map(key => {
+                return (
+                    !getFieldConfig(fields[key], 'hidden', view) &&
+                    (get(fields[key], 'type') === 'array' ? (
+                        <NexusArray
+                            key={key}
+                            name={key}
+                            view={view}
+                            data={getDefaultValue(fields[key], view, initialData)}
+                            fields={get(fields[key], 'fields')}
+                            getValues={getValues}
+                        />
+                    ) : (
+                        <NexusField
+                            key={key}
+                            name={key}
+                            view={view}
+                            formData={getValues()}
+                            validationError={getValidationError(initialData.validationErrors, fields[key])}
+                            defaultValue={getDefaultValue(fields[key], view, initialData)}
+                            {...fields[key]}
+                        />
+                    ))
+                );
+            })}
+        </>
+    );
 };

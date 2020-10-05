@@ -6,7 +6,6 @@ import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {checkFieldDependencies, getValidationFunction} from '../utils';
-import NexusArray from './NexusArray';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -20,6 +19,7 @@ const NexusField = ({
     dependencies,
     validationError,
     validation,
+    fields,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -61,8 +61,6 @@ const NexusField = ({
                 return <DateTimePicker {...fieldProps} />;
             case 'boolean':
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
-            case 'array':
-                return <NexusArray name={fieldProps.name} data={fieldProps.value} />;
             default:
                 return fieldProps.value ? (
                     <div>{fieldProps.value}</div>
@@ -116,6 +114,7 @@ NexusField.propTypes = {
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
+    fields: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -127,6 +126,7 @@ NexusField.defaultProps = {
     isRequired: false,
     validationError: null,
     validation: [],
+    fields: {},
 };
 
 export default NexusField;
