@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form/Form';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
-import {buildSection, getAllFields, getFieldByName, getProperValue} from '../utils';
+import {buildSection} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
 const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
+
+    const renderAddButton = () => {
+        return (
+            <Button onClick={openEditModal} className="nexus-c-dynamic-form__add-button">
+                {`+ Add ${name}`}
+            </Button>
+        );
+    };
 
     const renderObject = (object, index) => {
         return (
@@ -24,7 +32,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
 
     const buildButtons = (dirty, submitting, reset) => {
         return (
-            <>
+            <div className="nexus-c-array__modal-buttons">
                 <Button
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
@@ -42,7 +50,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                 >
                     Cancel
                 </Button>
-            </>
+            </div>
         );
     };
 
@@ -79,7 +87,12 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
         openModal(modalContent(index), {title: 'Territory Data', width: 'small'});
     };
 
-    return <div className="nexus-c-array">{data.map((o, index) => renderObject(o, index))}</div>;
+    return (
+        <div className="nexus-c-array">
+            <div className="nexus-c-array__add">{view === VIEWS.EDIT && renderAddButton()}</div>
+            {data.map((o, index) => renderObject(o, index))}
+        </div>
+    );
 };
 
 NexusArray.propTypes = {
