@@ -8,7 +8,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     const renderObject = (object, index) => {
         return (
             <div key={index} className="nexus-c-array__object">
-                {buildSection(fields, getValues, view, data)}
+                {buildSection(fields, getValues, view, data[index] || {})}
             </div>
         );
     };

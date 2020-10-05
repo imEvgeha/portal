@@ -10,11 +10,16 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
+const getFieldPath = path => {
+    const dotIndex = path.indexOf('.');
+    return dotIndex > 0 ? path.substring(dotIndex + 1) : path;
+};
+
 export const getDefaultValue = (field = {}, view, data) => {
     return getFieldConfig(field, 'defaultValue', view)
         ? getFieldConfig(field, 'defaultValue', view)
-        : get(data, field.path) !== null
-        ? get(data, field.path)
+        : get(data, getFieldPath(field.path)) !== null
+        ? get(data, getFieldPath(field.path))
         : '';
 };
 
