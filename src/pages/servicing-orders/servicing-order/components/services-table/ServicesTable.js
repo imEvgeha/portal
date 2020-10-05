@@ -124,7 +124,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         },
     });
 
-    // Checkbox
     const recipientColumn = {
         headerName: 'Recipient',
         colId: 'recipient',
