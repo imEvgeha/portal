@@ -4,11 +4,11 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
-import ErrorBoundary from '../../../../pages/fallback/ErrorBoundary';
-import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction} from '../utils';
-import DateTime from './DateTime';
-import {VIEWS} from '../constants';
+import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
+import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
+import {VIEWS} from '../../constants';
+import {checkFieldDependencies, getValidationFunction} from '../../utils';
+import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
 const NexusField = ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import NexusDateTimeWindowPicker from '../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import {DATETIME_FIELDS} from '../constants';
+import NexusDateTimeWindowPicker from '../../../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
+import {DATETIME_FIELDS} from '../../../../constants';
 
 const {BUSINESS_DATETIME, TIMESTAMP} = DATETIME_FIELDS;
 

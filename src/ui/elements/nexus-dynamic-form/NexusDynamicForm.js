@@ -2,8 +2,8 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import NexusField from './components/NexusField';
-import SectionTab from './components/SectionTab';
+import NexusField from './components/NexusField/NexusField';
+import SectionTab from './components/SectionTab/SectionTab';
 import {
     getValidationError,
     getDefaultValue,
