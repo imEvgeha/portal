@@ -29,6 +29,13 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, formData);
     };
 
+    const dateProps = {
+        labels,
+        type,
+        dateType,
+        isReadOnly,
+    };
+
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
@@ -49,7 +56,8 @@ const NexusField = ({
                     </CheckboxField>
                 );
             case 'dateRange':
-                return <DateTime dateType={dateType} labels={labels} {...fieldProps} />;
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} />;
             default:
                 return;
         }
@@ -60,12 +68,11 @@ const NexusField = ({
             return <div>{validationError}</div>;
         }
         switch (type) {
-            case 'datetime':
-                return <DateTimePicker {...fieldProps} />;
             case 'boolean':
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             case 'dateRange':
-                return <DateTime isReadOnly labels={labels} dateType={dateType} {...fieldProps} />;
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
             default:
                 return fieldProps.value ? (
                     <div>{fieldProps.value}</div>

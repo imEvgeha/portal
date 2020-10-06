@@ -1,33 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DateTime should match snapshot 1`] = `
-<NexusDateTimeWindowPicker
-  endDateTimePickerProps={
-    Object {
-      "defaultValue": undefined,
-      "id": "",
-    }
-  }
+<NexusDatePicker
+  error=""
+  id="-date"
   isClearable={false}
+  isLabelHidden={false}
   isReadOnly={false}
+  isRequired={false}
   isReturningTime={true}
   isTimestamp={false}
-  isUsingTime={false}
   isWithInlineEdit={false}
   label=""
-  labels={
+  onChange={[Function]}
+  onConfirm={[Function]}
+  value={
     Array [
       "",
       "",
     ]
-  }
-  onChange={[Function]}
-  onChangeAny={[Function]}
-  startDateTimePickerProps={
-    Object {
-      "defaultValue": undefined,
-      "id": "",
-    }
   }
 />
 `;
