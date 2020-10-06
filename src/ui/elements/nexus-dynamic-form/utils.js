@@ -81,11 +81,20 @@ export const getFieldByName = (allFields, name) => {
     return get(allFields, [key]);
 };
 
-export const getProperValue = (type, value) => {
+export const getProperValue = (type, value, path) => {
+    let val = '';
     switch (type) {
         case 'number':
-            return Number(value);
+            val = Number(value);
+            break;
+        case 'dateRange':
+            val = {
+                [path[0]]: value.startDate,
+                [path[1]]: value.endDate,
+            };
+            break;
         default:
-            return value;
+            val = value;
     }
+    return Array.isArray(path) ? val : {[path]: val};
 };

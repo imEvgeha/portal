@@ -1,0 +1,15 @@
+.nexus-c-date-time-window-picker {
+    padding: 0;
+    &__start-date,
+    &__end-date {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        & > div:not(.nexus-c-date-time-window-picker__label) {
+            flex-grow: 1;
+        }
+    }
+    &__label {
+        margin-right: 20px;
+    }
+}
