@@ -12,6 +12,7 @@ const RightDetailsHeader = ({title, right, history}) => {
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll, true);
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     const onBackArrowClicked = () => {
