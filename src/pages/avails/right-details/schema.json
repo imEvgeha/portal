@@ -9,6 +9,7 @@
                         "name": "Right ID",
                         "type": "string",
                         "path": "id",
+                        "isReadOnly": true,
                         "viewConfig": [
                             {
                                 "view": "CREATE",
@@ -27,6 +28,12 @@
                         "path": "territory",
                         "isRequired": true,
                         "fields": {
+                            "selected": {
+                                "name": "Selected",
+                                "type": "boolean",
+                                "path": "territory.selected",
+                                "isReadOnly": true
+                            },
                             "country": {
                                 "name": "Country",
                                 "type": "string",
