@@ -38,7 +38,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                 {Object.keys(fields).map(key => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
-                            <div>
+                            <div className="nexus-c-array__field">
                                 <Field
                                     defaultValue={getDefaultValue(fields[key], view, initialData)}
                                     name={`${fields[key].name}_${index}`}
@@ -60,14 +60,14 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
             <div className="nexus-c-array__modal-buttons">
                 <Button
                     type="submit"
-                    className="nexus-c-dynamic-form__submit-button"
+                    className="nexus-c-array__submit-button"
                     appearance="primary"
                     isDisabled={!dirty || submitting}
                 >
                     Save changes
                 </Button>
                 <Button
-                    className="nexus-c-dynamic-form__cancel-button"
+                    className="nexus-c-array__cancel-button"
                     onClick={() => {
                         reset();
                         closeModal();

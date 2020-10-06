@@ -37,7 +37,8 @@
                             "country": {
                                 "name": "Country",
                                 "type": "string",
-                                "path": "territory.country"
+                                "path": "territory.country",
+                                "className": "nexus-c-array__field-bold"
                             },
                             "rightContractStatus": {
                                 "name": "Right Contract Status",

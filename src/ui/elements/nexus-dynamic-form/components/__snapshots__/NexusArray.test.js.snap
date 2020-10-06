@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusArray should match snapshot 1`] = `
+<div
+  className="nexus-c-array"
+>
+  <div
+    className="nexus-c-array__add"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-dynamic-form__add-button"
+      onClick={[Function]}
+    >
+      + Add territory
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+  <div
+    className="nexus-c-array__objects"
+  >
+    <div
+      className="nexus-c-array__object"
+      key="0"
+      onClick={[Function]}
+    >
+      <div>
+        <Field
+          defaultValue={false}
+          id="Selected_0"
+          isDisabled={false}
+          label="Selected"
+          name="Selected_0"
+        >
+          <Component />
+        </Field>
+      </div>
+      <div>
+        <Field
+          defaultValue="IL"
+          id="Country_0"
+          isDisabled={false}
+          label="Country"
+          name="Country_0"
+        >
+          <Component />
+        </Field>
+      </div>
+    </div>
+  </div>
+</div>
+`;

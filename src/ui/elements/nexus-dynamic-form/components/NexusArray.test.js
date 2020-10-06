@@ -49,9 +49,9 @@ describe('NexusArray', () => {
     });
 
     it('should render an add button when is in edit mode', () => {
-        const nexusArray = wrapper.find('nexus-c-array');
+        const nexusArray = wrapper.find('.nexus-c-array');
         expect(nexusArray.length).toEqual(1);
-        const addBtn = wrapper.find('nexus-c-array__add');
+        const addBtn = wrapper.find('.nexus-c-array__add');
         expect(addBtn.length).toEqual(1);
     });
 });

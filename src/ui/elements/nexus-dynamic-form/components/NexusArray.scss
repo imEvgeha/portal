@@ -4,6 +4,9 @@
 .nexus-c-array {
     padding: 0.75rem 1.25rem;
     margin-bottom: 5px;
+    .nexus-c-array__field div {
+        display: flex;
+    }
     .nexus-c-array__add {
         text-align: right;
     }
