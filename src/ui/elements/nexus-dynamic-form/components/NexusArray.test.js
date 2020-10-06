@@ -5,13 +5,39 @@ import NexusArray from './NexusArray';
 
 describe('NexusArray', () => {
     let wrapper = null;
+    const fields = {
+        selected: {
+            name: 'Selected',
+            type: 'boolean',
+            path: 'territory.selected',
+            isReadOnly: true,
+        },
+        country: {
+            name: 'Country',
+            type: 'string',
+            path: 'territory.country',
+        },
+    };
+
+    const data = [
+        {
+            country: 'IL',
+            selected: false,
+            dateSelected: null,
+            rightContractStatus: 'Pending',
+            vuContractId: [],
+            hide: null,
+            comment: 'yyyyy',
+            dateWithdrawn: null,
+        },
+    ];
     const props = {
-        key: 'rightId',
-        name: 'rightId',
-        label: 'Right ID',
-        type: 'string',
-        isDisabled: true,
+        name: 'territory',
+        view: 'EDIT',
+        data,
+        fields,
         defaultValue: 'rght_zrp8g',
+        getValues: () => {},
     };
 
     beforeEach(() => {
@@ -22,8 +48,10 @@ describe('NexusArray', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    it('should render a AKField', () => {
-        const textField = wrapper.find(AKField);
-        expect(textField.length).toEqual(1);
+    it('should render an add button when is in edit mode', () => {
+        const nexusArray = wrapper.find('nexus-c-array');
+        expect(nexusArray.length).toEqual(1);
+        const addBtn = wrapper.find('nexus-c-array__add');
+        expect(addBtn.length).toEqual(1);
     });
 });
