@@ -1,7 +1,9 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {Field as AKField, Field} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
+import TextField from '@atlaskit/textfield';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {buildSection, getDefaultValue, getFieldConfig, renderFieldViewMode} from '../utils';
 import {VIEWS} from '../constants';
@@ -25,21 +27,28 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                 onClick={() => view === VIEWS.EDIT && openEditModal(index)}
                 className="nexus-c-array__object"
             >
-                {buildObject(fields, data[index] || {})}
+                {buildObject(fields, data[index] || {}, index)}
             </div>
         );
     };
 
-    const buildObject = (fields = {}, initialData) => {
+    const buildObject = (fields = {}, initialData, index) => {
         return (
             <>
                 {Object.keys(fields).map(key => {
                     return (
-                        !getFieldConfig(fields[key], 'hidden', view) &&
-                        renderFieldViewMode(fields[key].type, {
-                            value: getDefaultValue(fields[key], view, initialData),
-                            name: fields[key].name,
-                        })
+                        !getFieldConfig(fields[key], 'hidden', view) && (
+                            <div>
+                                <Field
+                                    defaultValue={getDefaultValue(fields[key], view, initialData)}
+                                    name={`${fields[key].name}_${index}`}
+                                    id={`${fields[key].name}_${index}`}
+                                    label={`${fields[key].name}`}
+                                >
+                                    {({fieldProps, error}) => renderFieldViewMode(fields[key].type, fieldProps)}
+                                </Field>
+                            </div>
+                        )
                     );
                 })}
             </>
