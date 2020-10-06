@@ -28,17 +28,17 @@
                         "path": "territory",
                         "isRequired": true,
                         "fields": {
-                            "selected": {
-                                "name": "Selected",
-                                "type": "boolean",
-                                "path": "territory.selected",
-                                "isReadOnly": true
-                            },
                             "country": {
                                 "name": "Country",
                                 "type": "string",
                                 "path": "territory.country",
                                 "className": "nexus-c-array__field-bold"
+                            },
+                            "selected": {
+                                "name": "Selected",
+                                "type": "boolean",
+                                "path": "territory.selected",
+                                "isReadOnly": true
                             },
                             "rightContractStatus": {
                                 "name": "Right Contract Status",

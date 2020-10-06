@@ -17,7 +17,7 @@
         align-content: space-between;
 
         > div {
-            flex: 0 49.5%;
+            flex: 0 32.5%;
             border: 1px solid map-get($light-neutral-colors, light-neutral-1);
             box-sizing: border-box;
         }
@@ -25,6 +25,9 @@
     .nexus-c-array__object {
         padding: 25px;
         margin-top: 15px;
+    }
+    .nexus-c-array__field.nexus-c-array__field-bold {
+        font-weight: bold;
     }
 }
 

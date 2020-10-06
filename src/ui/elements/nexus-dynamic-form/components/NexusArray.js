@@ -38,7 +38,9 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                 {Object.keys(fields).map(key => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
-                            <div className="nexus-c-array__field">
+                            <div
+                                className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
+                            >
                                 <Field
                                     defaultValue={getDefaultValue(fields[key], view, initialData)}
                                     name={`${fields[key].name}_${index}`}
