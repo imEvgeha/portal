@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import Tag from '@atlaskit/tag';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -31,7 +33,7 @@ const DopTasksTable = ({user}) => {
         user,
     });
 
-    const mappings = COLUMN_MAPPINGS.map(col => {
+    const columnDefs = COLUMN_MAPPINGS.map(col => {
         if (col.colId === 'taskName') {
             return {
                 ...col,
@@ -48,7 +50,38 @@ const DopTasksTable = ({user}) => {
                 },
             };
         }
-        return col;
+        if (col.colId === 'taskStatus') {
+            return {
+                ...col,
+                cellRendererFramework: params => {
+                    const {value} = params || {};
+                    let color = 'yellowLight';
+                    switch (value) {
+                        case 'COMPLETED':
+                            color = 'grey';
+                            break;
+                        case 'READY':
+                            color = 'green';
+                            break;
+                        case 'IN PROGRESS':
+                            color = 'blue';
+                            break;
+                        default:
+                            color = 'standard';
+                            break;
+                    }
+                    return (
+                        <div>
+                            <Tag text={params.value} color={color} />
+                        </div>
+                    );
+                },
+            };
+        }
+        return {
+            ...col,
+            valueFormatter: createValueFormatter(col),
+        };
     });
 
     useEffect(() => {
@@ -83,7 +116,7 @@ const DopTasksTable = ({user}) => {
     };
 
     const onSortChanged = ({api}) => {
-        // get sorting column and prepare data for passing it fetchDopTasksData as a payload
+        // get sorting column and prepare data for passing it as a payload instead of url params (not supported by DOP api)
         const sortModel = api.getSortModel();
         if (sortModel.length) {
             const sortCriterion = [
@@ -112,7 +145,7 @@ const DopTasksTable = ({user}) => {
         <div className="nexus-c-dop-tasks-table">
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={mappings}
+                columnDefs={columnDefs}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
