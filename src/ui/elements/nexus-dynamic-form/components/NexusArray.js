@@ -43,8 +43,8 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                             >
                                 <Field
                                     defaultValue={getDefaultValue(fields[key], view, initialData)}
-                                    name={`${fields[key].name}_${index}`}
-                                    id={`${fields[key].name}_${index}`}
+                                    name={`territory[${index}].${fields[key].name}`}
+                                    id={`territory[${index}].${fields[key].name}`}
                                     label={`${fields[key].name}`}
                                 >
                                     {({fieldProps, error}) => renderFieldViewMode(fields[key].type, fieldProps)}
@@ -117,7 +117,15 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     return (
         <div className="nexus-c-array">
             <div className="nexus-c-array__add">{view === VIEWS.EDIT && renderAddButton()}</div>
-            <div className="nexus-c-array__objects">{data.map((o, index) => renderObject(o, index))}</div>
+            <div className="nexus-c-array__objects">
+                {/* <Field */}
+                {/*    name={name} */}
+                {/*    id={name} */}
+                {/* > */}
+                {/*    {({fieldProps, error}) => */}
+                {data.map((o, index) => renderObject(o, index))}
+                {/* </Field> */}
+            </div>
         </div>
     );
 };
