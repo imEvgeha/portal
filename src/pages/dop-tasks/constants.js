@@ -1,3 +1,7 @@
+import React from 'react';
+import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import config from 'react-global-configuration';
+
 export const DOP_TASKS_HEDER = 'DOP Tasks';
 export const DOP_QUEUED_TASKS_LABEL = 'Queued Tasks';
 export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
@@ -47,6 +51,9 @@ export const COLUMN_MAPPINGS = [
         cellRenderer: 'loadingCellRenderer',
         sortable: true,
         width: 150,
+        cellRendererParams: {
+            link: `${config.get('gateway.DOPUrl')}${DOP_GUIDED_TASK_URL}`,
+        },
     },
     {
         colId: 'taskStatus',
@@ -58,6 +65,29 @@ export const COLUMN_MAPPINGS = [
         options: TASK_STATUS_ENUM,
         sortable: true,
         width: 180,
+        cellRendererFramework: params => {
+            const {value} = params || {};
+            let color = 'yellowLight';
+            switch (value) {
+                case 'COMPLETED':
+                    color = 'grey';
+                    break;
+                case 'READY':
+                    color = 'green';
+                    break;
+                case 'IN PROGRESS':
+                    color = 'blue';
+                    break;
+                default:
+                    color = 'standard';
+                    break;
+            }
+            return (
+                <div>
+                    <Tag text={value} color={color} />
+                </div>
+            );
+        },
     },
     {
         colId: 'activityEstimatedEndDate',
@@ -75,6 +105,10 @@ export const COLUMN_MAPPINGS = [
         cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
         width: 150,
+        cellRendererParams: {
+            link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+            linkId: 'projectId',
+        },
     },
     {
         colId: 'OrderExternalID',

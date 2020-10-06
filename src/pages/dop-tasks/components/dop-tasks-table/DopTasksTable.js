@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Tag from '@atlaskit/tag';
-import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -32,57 +30,7 @@ const DopTasksTable = ({user}) => {
     const [externalFilter, setExternalFilter] = useState({
         user,
     });
-
-    const columnDefs = COLUMN_MAPPINGS.map(col => {
-        if (col.colId === 'taskName') {
-            return {
-                ...col,
-                cellRendererParams: {
-                    link: `${config.get('gateway.DOPUrl')}${DOP_GUIDED_TASK_URL}`,
-                },
-            };
-        }
-        if (col.colId === 'projectName') {
-            return {
-                ...col,
-                cellRendererParams: {
-                    link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
-                },
-            };
-        }
-        if (col.colId === 'taskStatus') {
-            return {
-                ...col,
-                cellRendererFramework: params => {
-                    const {value} = params || {};
-                    let color = 'yellowLight';
-                    switch (value) {
-                        case 'COMPLETED':
-                            color = 'grey';
-                            break;
-                        case 'READY':
-                            color = 'green';
-                            break;
-                        case 'IN PROGRESS':
-                            color = 'blue';
-                            break;
-                        default:
-                            color = 'standard';
-                            break;
-                    }
-                    return (
-                        <div>
-                            <Tag text={params.value} color={color} />
-                        </div>
-                    );
-                },
-            };
-        }
-        return {
-            ...col,
-            valueFormatter: createValueFormatter(col),
-        };
-    });
+    const formattedValueColDefs = COLUMN_MAPPINGS.map(col => ({...col, valueFormatter: createValueFormatter(col)}));
 
     useEffect(() => {
         if (externalFilter.user !== user) {
@@ -145,7 +93,7 @@ const DopTasksTable = ({user}) => {
         <div className="nexus-c-dop-tasks-table">
             <DopTasksTableGrid
                 id="DopTasksTable"
-                columnDefs={columnDefs}
+                columnDefs={formattedValueColDefs}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
