@@ -1,15 +1,21 @@
 @import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
+.nexus-c-dynamic-form {
+    width: 80%;
+    margin: auto;
+}
+
 .nexus-c-dynamic-form__tab-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
     position: sticky;
-    top: 0;
+    top: 131px;
     // TODO: Change background color for the app.
     // (Not part of atlaskit's colors, but used as default background)
-    background-color: #f2f2f2;
+    background-color: #fff;
+    z-index: 1000;
 }
 
 .nexus-c-dynamic-form__tab {
@@ -38,5 +44,22 @@
 }
 
 .nexus-c-dynamic-form__cancel-button {
-    margin-left: 10px;
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
+}
+
+.nexus-c-dynamic-form__submit-button {
+    position: absolute;
+    top: 24px;
+    right: 100px;
+    z-index: 1000;
+}
+
+.nexus-c-dynamic-form__edit-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1000;
 }

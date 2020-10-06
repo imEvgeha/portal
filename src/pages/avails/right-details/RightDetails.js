@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
+import RightDetailsHeader from './components/RightDetailsHeader';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match}) => {
+const RightDetails = ({getRight, updateRight, right, match, history}) => {
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -23,6 +24,7 @@ const RightDetails = ({getRight, updateRight, right, match}) => {
 
     return (
         <div className="nexus-c-right-details">
+            <RightDetailsHeader title="Right Details" right={right} history={history} />
             <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
         </div>
     );
@@ -33,6 +35,7 @@ RightDetails.propTypes = {
     updateRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
+    history: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
@@ -40,6 +43,7 @@ RightDetails.defaultProps = {
     updateRight: () => null,
     right: {},
     match: {},
+    history: {},
 };
 
 const mapStateToProps = () => {
