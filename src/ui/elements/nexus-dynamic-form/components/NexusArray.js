@@ -106,21 +106,16 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     };
 
     const openEditModal = () => {
-        openModal(modalContent(), {title: 'Territory Data', width: 'small'});
+        openModal(modalContent(), {
+            title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
+            width: 'small',
+        });
     };
 
     return (
         <div className="nexus-c-array">
             <div className="nexus-c-array__add">{view === VIEWS.EDIT && renderAddButton()}</div>
-            <div className="nexus-c-array__objects">
-                {/* <Field */}
-                {/*    name={name} */}
-                {/*    id={name} */}
-                {/* > */}
-                {/*    {({fieldProps, error}) => */}
-                {data.map((o, index) => renderObject(o, index))}
-                {/* </Field> */}
-            </div>
+            <div className="nexus-c-array__objects">{data.map((o, index) => renderObject(o, index))}</div>
         </div>
     );
 };
