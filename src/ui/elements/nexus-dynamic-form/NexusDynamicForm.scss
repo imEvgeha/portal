@@ -43,7 +43,9 @@
     border-bottom: 2px solid map-get($neutrals, N40);
 }
 
-.nexus-c-dynamic-form__cancel-button {
+.nexus-c-dynamic-form__cancel-button,
+.nexus-c-dynamic-form__submit-button,
+.nexus-c-dynamic-form__edit-button {
     position: absolute;
     top: 24px;
     right: 24px;
@@ -51,15 +53,5 @@
 }
 
 .nexus-c-dynamic-form__submit-button {
-    position: absolute;
-    top: 24px;
     right: 100px;
-    z-index: 1000;
-}
-
-.nexus-c-dynamic-form__edit-button {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    z-index: 1000;
 }
