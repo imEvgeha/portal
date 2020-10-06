@@ -9,7 +9,7 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS, DOP_GUIDED_TASK_URL, DOP_PROJECT_URL} from '../../constants';
+import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS} from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
 import './DopTasksTable.scss';
