@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DateTime should match snapshot 1`] = `
+<NexusDatePicker
+  error=""
+  id="-date"
+  isClearable={false}
+  isLabelHidden={false}
+  isReadOnly={false}
+  isRequired={false}
+  isReturningTime={true}
+  isTimestamp={false}
+  isWithInlineEdit={false}
+  label=""
+  onChange={[Function]}
+  onConfirm={[Function]}
+  value={
+    Array [
+      "",
+      "",
+    ]
+  }
+/>
+`;

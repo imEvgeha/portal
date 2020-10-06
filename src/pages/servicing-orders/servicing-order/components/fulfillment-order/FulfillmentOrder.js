@@ -148,7 +148,7 @@ export const FulfillmentOrder = ({
     };
 
     const onSaveHandler = () => {
-        const payload = {data: transformClientToServerFulfillmentOrder(fulfillmentOrder)};
+        const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
     };
 
@@ -281,10 +281,3 @@ FulfillmentOrder.defaultProps = {
 };
 
 export default FulfillmentOrder;
-
-export function transformClientToServerFulfillmentOrder(clientFulfillmentOrder) {
-    return {
-        ...clientFulfillmentOrder,
-        definition: JSON.stringify(clientFulfillmentOrder.definition),
-    };
-}
