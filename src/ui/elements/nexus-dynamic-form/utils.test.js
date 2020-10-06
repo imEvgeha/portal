@@ -96,7 +96,7 @@ describe('Utils', () => {
                     },
                     ['date1', 'date2']
                 )
-            ).toEqual({date1: 123, date2: 345});
+            ).toEqual({date1: '123', date2: '345'});
         });
     });
 });
