@@ -4,10 +4,12 @@
     &__end-date {
         display: flex;
         align-items: center;
-        margin-bottom: 20px;
         & > div:not(.nexus-c-date-time-window-picker__label) {
             flex-grow: 1;
         }
+    }
+    &__start-date {
+        margin-bottom: 20px;
     }
     &__label {
         margin-right: 20px;

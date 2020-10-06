@@ -83,8 +83,20 @@ describe('Utils', () => {
     });
 
     describe('getProperValue', () => {
-        it('should return number when the field type is numbe', () => {
-            expect(getProperValue('number', '123')).toEqual(123);
+        it('should return number when the field type is number', () => {
+            expect(getProperValue('number', '123', 'count')).toEqual({count: 123});
+        });
+        it('should return values when the field type is dateRange', () => {
+            expect(
+                getProperValue(
+                    'dateRange',
+                    {
+                        startDate: '123',
+                        endDate: '345',
+                    },
+                    ['date1', 'date2']
+                )
+            ).toEqual({date1: 123, date2: 345});
         });
     });
 });
