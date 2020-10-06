@@ -2,8 +2,8 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import NexusField from './components/NexusField';
-import SectionTab from './components/SectionTab';
+import NexusField from './components/NexusField/NexusField';
+import SectionTab from './components/SectionTab/SectionTab';
 import {
     getValidationError,
     getDefaultValue,
@@ -83,12 +83,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
         // make keys same as path
-        const properValues = [];
+        let properValues = {};
         const allFields = getAllFields(schema);
         Object.keys(values).map(key => {
             const field = getFieldByName(allFields, key);
             const {path} = field;
-            properValues[path] = getProperValue(field.type, values[key]);
+            properValues = {
+                ...properValues,
+                ...getProperValue(field.type, values[key], path),
+            };
         });
         onSubmit(properValues);
     };

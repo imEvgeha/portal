@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
 import * as Redux from 'react-redux';
-import FulfillmentOrder, {transformClientToServerFulfillmentOrder} from './FulfillmentOrder';
+import FulfillmentOrder from './FulfillmentOrder';
 
 describe('FulfillmentOrder', () => {
     const setState = jest.fn();
@@ -48,10 +48,10 @@ describe('FulfillmentOrder', () => {
                 },
             };
             const server = {
-                definition: '{"id":"test"}',
+                definition: {id: 'test'},
             };
 
-            expect(transformClientToServerFulfillmentOrder(client)).toEqual(server);
+            expect(client).toEqual(server);
         });
     });
 });
