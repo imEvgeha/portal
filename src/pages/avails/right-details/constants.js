@@ -1,8 +1,8 @@
 export const TAGS = [
     {label: 'SELECTED', field: 'selected'},
-    {label: 'TPR RIGHT', field: 'tprRight'},
+    {label: 'TPR RIGHT', field: 'originalRightIds'},
     {label: 'BONUS RIGHT', field: 'bonusRight'},
-    {label: 'REMOVED FROM CATALOGUE', field: 'removedFromCatalogue'},
+    {label: 'REMOVED FROM CATALOGUE', field: 'availEnd'},
 ];
 
 export const HIGHLIGHTED_FIELDS = [

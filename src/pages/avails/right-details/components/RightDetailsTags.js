@@ -7,9 +7,19 @@ import './RightDetailsTags.scss';
 const RightDetailsTags = ({right}) => {
     return (
         <div className="nexus-c-right-details-tags">
-            <Lozenge appearance="inprogress">SELECTED</Lozenge>
-            <Lozenge appearance="inprogress">TPR RIGHT</Lozenge>
-            <Lozenge appearance="inprogress">BONUS RIGHT</Lozenge>
+            {TAGS.map((tag, idx) => {
+                switch (tag.label) {
+                    case 'BONUS RIGHT':
+                    case 'TPR RIGHT':
+                        return (
+                            <Lozenge key={idx} appearance={right[tag.field] ? 'inprogress' : null}>
+                                {tag.label}
+                            </Lozenge>
+                        );
+                    default:
+                        return null;
+                }
+            })}
         </div>
     );
 };
