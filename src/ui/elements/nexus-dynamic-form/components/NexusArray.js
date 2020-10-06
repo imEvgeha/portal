@@ -5,7 +5,7 @@ import {Field as AKField, Field} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import TextField from '@atlaskit/textfield';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
-import {buildSection, getDefaultValue, getFieldConfig, renderFieldViewMode} from '../utils';
+import {buildSection, getDefaultValue, getFieldConfig, renderFieldViewMode, renderNexusField} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
@@ -41,14 +41,13 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                             <div
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
-                                <Field
-                                    defaultValue={getDefaultValue(fields[key], view, initialData)}
-                                    name={`territory[${index}].${fields[key].name}`}
-                                    id={`territory[${index}].${fields[key].name}`}
-                                    label={`${fields[key].name}`}
-                                >
-                                    {({fieldProps, error}) => renderFieldViewMode(fields[key].type, fieldProps)}
-                                </Field>
+                                {renderNexusField(
+                                    `territory[${index}].${fields[key].name}`,
+                                    view,
+                                    getValues,
+                                    initialData,
+                                    fields[key]
+                                )}
                             </div>
                         )
                     );

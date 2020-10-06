@@ -18,7 +18,7 @@ const NexusField = ({
     dependencies,
     validationError,
     validation,
-    fields,
+    label,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -62,7 +62,7 @@ const NexusField = ({
                 {({fieldProps, error}) => (
                     <>
                         <div className="nexus-c-field__label">
-                            {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
+                            {`${label}${checkDependencies('required') || isRequired ? '*' : ''}: `}
                             {tooltip && (
                                 <span title={tooltip} style={{color: 'grey'}}>
                                     <i className="far fa-question-circle" />
@@ -95,7 +95,7 @@ NexusField.propTypes = {
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
-    fields: PropTypes.object,
+    label: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -107,7 +107,7 @@ NexusField.defaultProps = {
     isRequired: false,
     validationError: null,
     validation: [],
-    fields: {},
+    label: '',
 };
 
 export default NexusField;

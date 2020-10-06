@@ -111,19 +111,27 @@ export const buildSection = (fields = {}, getValues, view, initialData) => {
                             getValues={getValues}
                         />
                     ) : (
-                        <NexusField
-                            key={key}
-                            name={key}
-                            view={view}
-                            formData={getValues()}
-                            validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            defaultValue={getDefaultValue(fields[key], view, initialData)}
-                            {...fields[key]}
-                        />
+                        renderNexusField(key, view, getValues, initialData, fields[key])
                     ))
                 );
             })}
         </>
+    );
+};
+
+export const renderNexusField = (key, view, getValues, initialData, field) => {
+    return (
+        <NexusField
+            {...field}
+            id={key}
+            key={key}
+            name={key}
+            label={field.name}
+            view={view}
+            formData={getValues()}
+            validationError={getValidationError(initialData.validationErrors, field)}
+            defaultValue={getDefaultValue(field, view, initialData)}
+        />
     );
 };
 
