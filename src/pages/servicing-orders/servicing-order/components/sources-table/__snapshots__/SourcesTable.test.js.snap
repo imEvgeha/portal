@@ -54,6 +54,33 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           "headerName": "Barcode",
           "width": 200,
         },
+        Object {
+          "colId": "title",
+          "field": "title",
+          "headerName": "Title",
+        },
+        Object {
+          "colId": "titleId",
+          "field": "titleId",
+          "headerName": "Title ID",
+          "width": 100,
+        },
+        Object {
+          "colId": "amsAssetId",
+          "field": "amsAssetId",
+          "headerName": "MP Asset ID",
+          "width": 100,
+        },
+        Object {
+          "colId": "assetFormat",
+          "field": "assetFormat",
+          "headerName": "Asset Format",
+        },
+        Object {
+          "colId": "standard",
+          "field": "standard",
+          "headerName": "Standard",
+        },
       ]
     }
     domLayout="normal"
