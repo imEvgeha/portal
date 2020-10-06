@@ -3,7 +3,7 @@ const columnDefinitions = [
         colId: 'barcode',
         field: 'barcode',
         headerName: 'Barcode',
-        width: 200,
+        width: 100,
     },
     {
         colId: 'title',
@@ -26,6 +26,7 @@ const columnDefinitions = [
         colId: 'assetFormat',
         field: 'assetFormat',
         headerName: 'Asset Format',
+        width: 100,
     },
     {
         colId: 'standard',

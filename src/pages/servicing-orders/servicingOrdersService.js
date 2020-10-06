@@ -3,9 +3,15 @@ import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
-    return `${config.get('gateway.servicingOrdersUrl')}${config.get(
-        'gateway.service.servicingOrder'
-    )}`;
+    return `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}`;
+};
+
+const mgmAssetURL = config => {
+    return `${config.get('gateway.mgmBaseUrl')}${config.get('gateway.service.mgmAsset')}`;
+};
+
+const mgmTitleURL = config => {
+    return `${config.get('gateway.mgmBaseUrl')}${config.get('gateway.service.mgmTitle')}`;
 };
 
 // TODO: Use an actual API when ready
@@ -22,9 +28,7 @@ export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams
             queryParams[key] = value;
         }
     });
-    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(
-        sortedParams
-    )}`;
+    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(sortedParams)}`;
     const params = encodedSerialize({...queryParams, page, size});
     return nexusFetch(url, {params});
 };
@@ -65,6 +69,16 @@ export const exportServicingOrders = servicingOrders => {
         method: 'post',
         body: JSON.stringify(servicingOrders),
     });
+};
+
+export const getMgmTitleByBarcode = barcode => {
+    const url = `${mgmTitleURL(config)}/${barcode}`;
+    return nexusFetch(url);
+};
+
+export const getMgmAssetByBarcode = barcode => {
+    const url = `${mgmAssetURL(config)}/${barcode}`;
+    return nexusFetch(url);
 };
 
 export const servicingOrdersService = {

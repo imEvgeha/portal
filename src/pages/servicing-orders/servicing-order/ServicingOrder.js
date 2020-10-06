@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {URL} from '../../../util/Common';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
-import {servicingOrdersService} from '../servicingOrdersService';
+import {servicingOrdersService, getMgmTitleByBarcode, getMgmAssetByBarcode} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
-import {prepareRowData} from './components/sources-table/util';
+import {prepareRowData, populateMgmData} from './components/sources-table/util';
 import './ServicingOrder.scss';
+
+const Loading = 'loading...';
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -35,14 +37,24 @@ const ServicingOrder = ({match}) => {
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
+                    const newFulfillmentOrders = await populateMgmData(fulfillmentOrders);
+                    console.log('newFulfillmentOrders: ', newFulfillmentOrders);
+
                     setServiceOrder({
+                        ...servicingOrder,
+                        fulfillmentOrders: newFulfillmentOrders,
+                        servicingOrderItems,
+                    });
+                    /* setServiceOrder({
                         ...servicingOrder,
                         fulfillmentOrders,
                         servicingOrderItems,
-                    });
+                    }); */
 
-                    const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
+                    const sortedFulfillmentOrders = sortByDateFn(newFulfillmentOrders, 'definition.dueDate');
                     setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
+                    setSelectedOrder(sortedFulfillmentOrders[0]);
+                    // console.log('sortedFulfillmentOrders: ', sortedFulfillmentOrders);
                 } else {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
@@ -62,6 +74,7 @@ const ServicingOrder = ({match}) => {
             setServiceOrder(servicingOrder);
         }
     };
+    // console.log('selecedOrder: ', selectedOrder);
 
     useEffect(() => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
@@ -89,6 +102,8 @@ const ServicingOrder = ({match}) => {
         const {readiness} = selectedOrder;
         return readiness === 'READY';
     };
+
+    console.log('state changed: ', selectedOrder);
 
     return (
         <div className="servicing-order">
