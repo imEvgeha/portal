@@ -1,0 +1,50 @@
+.nexus-c-right-details-header {
+    position: sticky;
+    top: 0;
+    padding: 24px 0;
+    background-color: #f2f2f2;
+    z-index: 1000;
+}
+
+.nexus-c-right-details-header__top {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.nexus-c-right-details-header__bottom {
+    width: 80%;
+    margin: 12px auto 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > div > p {
+        margin: 0;
+    }
+}
+
+.nexus-c-right-details-header__bottom--shrinked {
+    width: 80%;
+    margin: auto;
+    display: none;
+    align-items: center;
+    > p {
+        color: #a5adba;
+        font-weight: bold;
+        margin-top: 0px;
+        margin-right: 24px;
+    }
+}
+
+.visible {
+    display: flex;
+}
+
+.hidden {
+    display: none;
+}
+
+.adjust-padding {
+    padding: 12px 0;
+}
