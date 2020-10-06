@@ -22,11 +22,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
 
     const renderObject = (object, index) => {
         return (
-            <div
-                key={index}
-                onClick={() => view === VIEWS.EDIT && openEditModal(index)}
-                className="nexus-c-array__object"
-            >
+            <div key={index} className="nexus-c-array__object">
                 {buildObject(fields, data[index] || {}, index)}
             </div>
         );
@@ -94,13 +90,13 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
         // onSubmit(properValues);
     };
 
-    const modalContent = index => {
+    const modalContent = () => {
         return (
-            <div key={index} className="nexus-c-array__modal">
+            <div className="nexus-c-array__modal">
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, view, data[index] || {})}
+                            {buildSection(fields, getValues, view, {})}
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}
@@ -109,8 +105,8 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
         );
     };
 
-    const openEditModal = index => {
-        openModal(modalContent(index), {title: 'Territory Data', width: 'small'});
+    const openEditModal = () => {
+        openModal(modalContent(), {title: 'Territory Data', width: 'small'});
     };
 
     return (
