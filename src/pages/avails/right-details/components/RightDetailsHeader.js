@@ -4,7 +4,7 @@ import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
 import RightDetailsTitle from './RightDetailsTitle';
-import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS} from '../constants';
+import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, VISIBLE, HIDDEN, ADJUST_PADDING} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history}) => {
@@ -26,9 +26,6 @@ const RightDetailsHeader = ({title, right, history}) => {
         setIsShrinked(toShrink);
     };
 
-    const VISIBLE = 'visible';
-    const HIDDEN = 'hidden';
-    const ADJUST_PADDING = 'adjust-padding';
     const [TAB_CONTAINER_ELEMENT] = document.getElementsByClassName('nexus-c-dynamic-form__tab-container');
 
     if (isShrinked) {
