@@ -42,7 +42,9 @@ const RightDetailsHeader = ({title, right, history}) => {
             </div>
             <div className={`nexus-c-right-details-header__bottom ${isShrinked ? HIDDEN : ''}`}>
                 {HIGHLIGHTED_FIELDS.map((field, idx) => {
-                    return <RightDetailsHighlightedField key={idx} name={field.title} value={right[field.field]} />;
+                    return right[field.field] ? (
+                        <RightDetailsHighlightedField key={idx} name={field.title} value={right[field.field]} />
+                    ) : null;
                 })}
             </div>
             <div className={`nexus-c-right-details-header__bottom--shrinked ${isShrinked ? VISIBLE : ''}`}>
