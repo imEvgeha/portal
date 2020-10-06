@@ -1,0 +1,11 @@
+.nexus-c-right-details-title {
+    margin-right: 12px;
+    font-size: 24px;
+    color: #4b5a74;
+    > span {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        cursor: pointer;
+    }
+}
