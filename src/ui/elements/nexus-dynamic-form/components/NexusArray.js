@@ -38,7 +38,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
                                 {renderNexusField(
-                                    `territory[${index}].${fields[key].name}`,
+                                    `${name}[${index}].${key}`,
                                     view,
                                     getValues,
                                     initialData,

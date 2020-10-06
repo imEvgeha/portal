@@ -73,17 +73,22 @@ export const getValidationFunction = (value, validations) => {
 };
 
 export const getAllFields = schema => {
-    let allFields = {};
+    let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
     fields.forEach(section => {
-        allFields = {...allFields, ...section};
+        sectionsFields = {...sectionsFields, ...section};
+    });
+    let allFields = sectionsFields;
+    Object.keys(sectionsFields).forEach(key => {
+        const arrayFields = get(sectionsFields[key], 'fields');
+        allFields = {...allFields, ...arrayFields};
     });
     return allFields;
 };
 
 export const getFieldByName = (allFields, name) => {
-    const key = Object.keys(allFields).find(key => allFields[key].name === name);
-    return get(allFields, [key]);
+    const k = Object.keys(allFields).find(key => !!key && allFields[key].name === name);
+    return get(allFields, [k]);
 };
 
 export const getProperValue = (type, value) => {
