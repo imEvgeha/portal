@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import './RightDetailsTitle.scss';
 
-const ARROW_COLOR = '#42526E';
+const ARROW_COLOR = '#42526e';
 
 const RightDetailsTitle = ({title, goBack}) => {
     return (

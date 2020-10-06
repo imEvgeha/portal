@@ -1,39 +1,41 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
 .nexus-c-right-details-header {
     position: sticky;
     top: 0;
-    padding: 24px 0;
-    background-color: #f2f2f2;
+    @include padding(6, 0);
+    background-color: #f2f2f2; //TODO: This is not atlaskit color
     z-index: 1000;
 }
 
 .nexus-c-right-details-header__top {
     width: 80%;
-    margin: 0 auto;
+    @include margin(0, auto);
     display: flex;
     align-items: center;
 }
 
 .nexus-c-right-details-header__bottom {
     width: 80%;
-    margin: 12px auto 0;
+    @include margin(3, auto, 0, auto);
     display: flex;
     align-items: center;
     justify-content: space-between;
     > div > p {
-        margin: 0;
+        @include margin(0);
     }
 }
 
 .nexus-c-right-details-header__bottom--shrinked {
     width: 80%;
-    margin: auto;
+    @include margin(auto);
     display: none;
     align-items: center;
     > p {
-        color: #a5adba;
+        color: map-get($neutrals, N70);
         font-weight: bold;
-        margin-top: 0px;
-        margin-right: 24px;
+        @include margin(0, 6, 0, 0);
     }
 }
 
@@ -46,5 +48,5 @@
 }
 
 .adjust-padding {
-    padding: 12px 0;
+    @include padding(3, 0);
 }
