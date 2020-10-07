@@ -208,6 +208,196 @@
         ]
     },
     {
+        "title": "IDs",
+        "sections": [
+            {
+                "title": "IDs",
+                "fields": {
+                    "ALID": {
+                        "name": "ALID",
+                        "type": "string",
+                        "path": "ALID"
+                    },
+                    "CID": {
+                        "name": "CID",
+                        "type": "string",
+                        "path": "CID"
+                    }
+                }
+            },
+            {
+                "title": "CM Content IDs",
+                "fields": {
+                    "contentId": {
+                        "name": "Content ID",
+                        "type": "string",
+                        "path": "cmContentIds.contentId"
+                    },
+                    "seriesContentId": {
+                        "name": "Series Content ID",
+                        "type": "string",
+                        "path": "cmContentIds.seriesContentId"
+                    },
+                    "seasonContentId": {
+                        "name": "Season Content ID",
+                        "type": "string",
+                        "path": "cmContentIds.seasonContentId"
+                    },
+                    "volumeContentId": {
+                        "name": "Volume Content ID",
+                        "type": "string",
+                        "path": "cmContentIds.volumeContentId"
+                    },
+                    "episodeContentId": {
+                        "name": "Episode Content ID",
+                        "type": "string",
+                        "path": "cmContentIds.episodeContentId"
+                    }
+                }
+            },
+            {
+                "title": "EIDR",
+                "fields": {
+                    "titleId": {
+                        "name": "Title ID",
+                        "type": "string",
+                        "path": "eidr.titleId"
+                    },
+                    "seriesId": {
+                        "name": "Series ID",
+                        "type": "string",
+                        "path": "eidr.seriesId"
+                    },
+                    "seasonId": {
+                        "name": "Season ID",
+                        "type": "string",
+                        "path": "eidr.seasonId"
+                    },
+                    "episodeTitleId": {
+                        "name": "Episode Title ID",
+                        "type": "string",
+                        "path": "eidr.episodeTitleId"
+                    },
+                    "volumeId": {
+                        "name": "Volume ID",
+                        "type": "string",
+                        "path": "eidr.volumeId"
+                    },
+                    "episodeId": {
+                        "name": "Episode ID",
+                        "type": "string",
+                        "path": "eidr.episodeId"
+                    },
+                    "editId": {
+                        "name": "Edit ID",
+                        "type": "string",
+                        "path": "eidr.editId"
+                    },
+                    "encodeId": {
+                        "name": "Encode ID",
+                        "type": "string",
+                        "path": "eidr.encodeId"
+                    }
+                }
+            },
+            {
+                "title": "Alt ID",
+                "fields": {
+                    "altId": {
+                        "name": "Alt ID",
+                        "type": "string",
+                        "path": "altId"
+                    },
+                    "seriesAltId": {
+                        "name": "Series Alt ID",
+                        "type": "string",
+                        "path": "seriesAltId"
+                    },
+                    "seasonAltId": {
+                        "name": "Season Alt ID",
+                        "type": "string",
+                        "path": "seasonAltId"
+                    },
+                    "volumeAltId": {
+                        "name": "Volume Alt ID",
+                        "type": "string",
+                        "path": "volumeAltId"
+                    },
+                    "episodeAltId": {
+                        "name": "Episode Alt ID",
+                        "type": "string",
+                        "path": "episodeAltId"
+                    },
+                    "availId": {
+                        "name": "Avail ID",
+                        "type": "string",
+                        "path": "availId"
+                    },
+                    "uvId": {
+                        "name": "UV ID",
+                        "type": "string",
+                        "path": "uvId"
+                    },
+                    "maId": {
+                        "name": "MA ID",
+                        "type": "string",
+                        "path": "maId"
+                    },
+                    "reportingId": {
+                        "name": "Reporting ID",
+                        "type": "string",
+                        "path": "reportingId"
+                    },
+                    "bundledALIds": {
+                        "name": "Bundled AL ID",
+                        "type": "string",
+                        "path": "bundledALIds"
+                    }
+                }
+            },
+            {
+                "title": "Retailer",
+                "fields": {
+                    "retailerId1": {
+                        "name": "Retailer ID",
+                        "type": "string",
+                        "path": "retailer.retailerId1"
+                    },
+                    "retailerSeriesId": {
+                        "name": "Retailer Series ID",
+                        "type": "string",
+                        "path": "retailer.retailerSeriesId"
+                    },
+                    "retailerSeasonId": {
+                        "name": "Retailer Season ID",
+                        "type": "string",
+                        "path": "retailer.retailerSeasonId"
+                    },
+                    "retailerVolumeId": {
+                        "name": "Retailer Volume ID",
+                        "type": "string",
+                        "path": "retailer.retailerVolumeId"
+                    },
+                    "retailerEpisodeId1": {
+                        "name": "Retailer Episode ID",
+                        "type": "string",
+                        "path": "retailer.retailerEpisodeId1"
+                    },
+                    "retailerSpare1": {
+                        "name": "Retailer Spare ID",
+                        "type": "string",
+                        "path": "retailer.retailerSpare1"
+                    },
+                    "canconNumber": {
+                        "name": "Cancon Number",
+                        "type": "string",
+                        "path": "canconNumber"
+                    }
+                }
+            }
+        ]
+    },
+    {
         "title": "Localization",
         "sections": [
             {
