@@ -151,5 +151,5 @@ export const getProperValues = (schema, values) => {
         const {path} = field;
         properValues[path] = getProperValue(field.type, values[key]);
     });
-    return properValues;
+    return {...properValues};
 };
