@@ -19,7 +19,7 @@ describe('RightDetailsTags', () => {
         expect(wrapper.props().children).toHaveLength(4);
     });
 
-    it('should have three atlaskits Lozenge components', () => {
-        expect(wrapper.find(Lozenge)).toHaveLength(3);
+    it('should have four atlaskits Lozenge components', () => {
+        expect(wrapper.find(Lozenge)).toHaveLength(4);
     });
 });
