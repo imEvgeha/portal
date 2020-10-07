@@ -40,3 +40,20 @@
 .nexus-c-dynamic-form__cancel-button {
     margin-left: 10px;
 }
+
+.nexus-c-dynamic-form__field {
+    .nexus-c-field {
+        > div {
+            display: flex;
+        }
+
+        .nexus-c-field__value-section {
+            width: 100%;
+        }
+
+        .nexus-c-field__label {
+            width: 25%;
+            color: map-get($neutrals, N800);
+        }
+    }
+}

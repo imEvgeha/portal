@@ -116,7 +116,9 @@ export const buildSection = (fields = {}, getValues, view, initialData) => {
                             getValues={getValues}
                         />
                     ) : (
-                        renderNexusField(key, view, getValues, initialData, fields[key])
+                        <div className="nexus-c-dynamic-form__field">
+                            {renderNexusField(key, view, getValues, initialData, fields[key])}
+                        </div>
                     ))
                 );
             })}

@@ -5,19 +5,6 @@
     padding: 0.75rem 1.25rem;
     margin-bottom: 5px;
 
-    > div {
-        display: flex;
-    }
-
-    .nexus-c-field__value-section {
-        width: 100%;
-    }
-
-    .nexus-c-field__label {
-        width: 25%;
-        color: map-get($neutrals, N800);
-    }
-
     &.nexus-c-field--error {
         background-color: rgb(242, 222, 222);
         color: rgb(169, 68, 66);
