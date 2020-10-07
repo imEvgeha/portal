@@ -4,14 +4,20 @@ import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS, DOP_GUIDED_TASK_URL, DOP_PROJECT_URL} from '../../constants';
+import {
+    COLUMN_MAPPINGS,
+    USER,
+    INITIAL_SEARCH_PARAMS,
+    DOP_GUIDED_TASK_URL,
+    DOP_PROJECT_URL,
+    PROJECT_STATUS_ENUM,
+} from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
 import './DopTasksTable.scss';
@@ -76,6 +82,12 @@ const DopTasksTable = ({user}) => {
                     link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
                     linkId: 'projectId',
                 },
+            };
+        }
+        if (col.colId === 'projectStatus') {
+            return {
+                ...col,
+                valueFormatter: params => PROJECT_STATUS_ENUM[params.value],
             };
         }
         return {
