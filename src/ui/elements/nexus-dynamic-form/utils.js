@@ -8,11 +8,16 @@ export const getFieldConfig = (field, config, view) => {
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
-    return getFieldConfig(field, 'defaultValue', view)
-        ? getFieldConfig(field, 'defaultValue', view)
-        : get(data, field.path) !== null
-        ? get(data, field.path)
-        : '';
+    if (view === VIEWS.CREATE) {
+        return getFieldConfig(field, 'defaultValue', view);
+    }
+    if (field.type === 'dateRange') {
+        return {
+            startDate: get(data, field.path[0]),
+            endDate: get(data, field.path[1]),
+        };
+    }
+    return get(data, field.path) !== null ? get(data, field.path) : '';
 };
 
 export const getValidationError = (validationErrors, field) => {
@@ -113,11 +118,20 @@ export const getFieldByName = (allFields, name) => {
     return get(allFields, [key]);
 };
 
-export const getProperValue = (type, value) => {
+export const getProperValue = (type, value, path) => {
+    let val = '';
     switch (type) {
         case 'number':
-            return Number(value);
+            val = Number(value);
+            break;
+        case 'dateRange':
+            val = {
+                [path[0]]: value.startDate,
+                [path[1]]: value.endDate,
+            };
+            break;
         default:
-            return value;
+            val = value;
     }
+    return Array.isArray(path) ? val : {[path]: val};
 };

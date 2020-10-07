@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import {cloneDeep} from 'lodash';
-import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction, formatOptions} from '../utils';
-import {VIEWS} from '../constants';
+import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
+import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
+import {VIEWS} from '../../constants';
+import {checkFieldDependencies, getValidationFunction, formatOptions} from '../../utils';
+import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
 const NexusField = ({
@@ -23,6 +24,8 @@ const NexusField = ({
     dependencies,
     validationError,
     validation,
+    dateType,
+    labels,
     optionsConfig,
     ...props
 }) => {
@@ -40,6 +43,13 @@ const NexusField = ({
 
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
+    };
+
+    const dateProps = {
+        labels,
+        type,
+        dateType,
+        isReadOnly,
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -114,6 +124,9 @@ const NexusField = ({
                         }
                     />
                 );
+            case 'dateRange':
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} />;
             default:
                 return;
         }
@@ -124,10 +137,11 @@ const NexusField = ({
             return <div>{validationError}</div>;
         }
         switch (type) {
-            case 'datetime':
-                return <DateTimePicker {...fieldProps} />;
             case 'boolean':
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+            case 'dateRange':
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
             default:
                 return fieldProps.value ? (
                     <div>{Array.isArray(fieldProps.value) ? fieldProps.value.join(', ') : fieldProps.value}</div>
@@ -142,37 +156,41 @@ const NexusField = ({
     };
 
     return (
-        <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
-            <AKField
-                isDisabled={isReadOnly || checkDependencies('readOnly')}
-                isRequired={checkDependencies('required') || isRequired}
-                validate={
-                    type === 'multiselect' ? isEmptyMultiselect : value => getValidationFunction(value, validation)
-                }
-                {...props}
-            >
-                {({fieldProps, error}) => (
-                    <>
-                        <div className="nexus-c-field__label">
-                            {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
-                            {tooltip && (
-                                <span title={tooltip} style={{color: 'grey'}}>
-                                    <i className="far fa-question-circle" />
-                                </span>
-                            )}
-                        </div>
-                        <div className="nexus-c-field__value-section">
-                            <div className="nexus-c-field__value">
-                                {view === VIEWS.EDIT || view === VIEWS.CREATE
-                                    ? renderFieldEditMode(fieldProps)
-                                    : renderFieldViewMode(fieldProps)}
+        <ErrorBoundary>
+            <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
+                <AKField
+                    isDisabled={isReadOnly || checkDependencies('readOnly')}
+                    isRequired={checkDependencies('required') || isRequired}
+                    validate={
+                        type === 'multiselect' ? isEmptyMultiselect : value => getValidationFunction(value, validation)
+                    }
+                    {...props}
+                >
+                    {({fieldProps, error}) => (
+                        <>
+                            <div className="nexus-c-field__label">
+                                {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
+                                {tooltip && (
+                                    <span title={tooltip} style={{color: 'grey'}}>
+                                        <i className="far fa-question-circle" />
+                                    </span>
+                                )}
                             </div>
-                            <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
-                        </div>
-                    </>
-                )}
-            </AKField>
-        </div>
+                            <div className="nexus-c-field__value-section">
+                                <div className="nexus-c-field__value">
+                                    {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                        ? renderFieldEditMode(fieldProps)
+                                        : renderFieldViewMode(fieldProps)}
+                                </div>
+                                <div className="nexus-c-field__error">
+                                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </AKField>
+            </div>
+        </ErrorBoundary>
     );
 };
 
@@ -190,6 +208,8 @@ NexusField.propTypes = {
     optionsConfig: PropTypes.object,
     selectValues: PropTypes.object,
     path: PropTypes.string,
+    dateType: PropTypes.string,
+    labels: PropTypes.array,
 };
 
 NexusField.defaultProps = {
@@ -204,6 +224,8 @@ NexusField.defaultProps = {
     optionsConfig: {},
     selectValues: {},
     path: null,
+    dateType: '',
+    labels: [],
 };
 
 export default NexusField;

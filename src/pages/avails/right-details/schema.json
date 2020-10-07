@@ -165,8 +165,44 @@
                 }
             },
             {
-                "title": "Pricing",
-                "fields": {}
+                "title": "Content",
+                "fields": {
+                    "contentType": {
+                        "name": "Content Type",
+                        "type": "string",
+                        "path": "contentType"
+                    },
+                    "availDates": {
+                        "name": "Avail Date Range",
+                        "type": "dateRange",
+                        "dateType": "businessDateTime",
+                        "labels": ["Avail Start", "Avail End"],
+                        "path": ["availStart", "availEnd"],
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "required",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "dates": {
+                        "name": "Date Range",
+                        "type": "dateRange",
+                        "dateType": "businessDateTime",
+                        "labels": ["Start", "End"],
+                        "path": ["start", "end"],
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
+                    }
+                }
             }
         ]
     },
@@ -322,7 +358,27 @@
         "sections": [
             {
                 "title": "Package",
-                "fields": {}
+                "fields": {
+                    "originallyReceivedAt": {
+                        "name": "Originally Received At",
+                        "type": "datetime",
+                        "dateType": "timestamp",
+                        "path": "originallyReceivedAt",
+                        "isReadOnly": true,
+                        "viewConfig": [
+                            {
+                                "view": "CREATE",
+                                "hidden": true
+                            }
+                        ]
+                    },
+                    "termYearStart": {
+                        "name": "Term Year Start",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "termYearStart"
+                    }
+                }
             }
         ]
     },

@@ -13,8 +13,11 @@ const DopTasksService = {
         const url = `${config.get('gateway.DOPUrl')}/dop/be-services/taskManagement/task/search`;
         const payload = cloneDeep(INITIAL_SEARCH_PARAMS);
         const user = externalFilter.user === USER ? getUsername(store.getState()) : ALL;
+        const newSortCriterion = externalFilter.sortCriterion || [];
         payload.filterCriterion[1].value = user;
-
+        if (newSortCriterion.length) {
+            payload.sortCriterion = newSortCriterion;
+        }
         const body = {
             ...payload,
             offset,
