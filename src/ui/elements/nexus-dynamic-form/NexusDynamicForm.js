@@ -9,6 +9,7 @@ import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
     const tabs = schema.map(({title = ''}) => title);
+    const [disableSubmit, setDisableSubmit] = useState(true);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
@@ -25,7 +26,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
                     appearance="primary"
-                    isDisabled={!dirty || submitting}
+                    isDisabled={(!dirty || submitting) && disableSubmit}
                 >
                     Save changes
                 </Button>
@@ -71,7 +72,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(fields, getValues, view, initialData, setFieldValue, schema)}
+                                            {buildSection(
+                                                fields,
+                                                getValues,
+                                                view,
+                                                initialData,
+                                                setFieldValue,
+                                                schema,
+                                                setDisableSubmit
+                                            )}
                                         </Fragment>
                                     ))}
                                 </Fragment>

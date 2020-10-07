@@ -98,7 +98,7 @@ export const getProperValue = (type, value) => {
     }
 };
 
-export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue, schema) => {
+export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue, schema, setDisableSubmit) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -114,6 +114,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             schema={schema}
+                            setDisableSubmit={setDisableSubmit}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
