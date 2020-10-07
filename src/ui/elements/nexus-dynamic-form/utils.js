@@ -100,7 +100,7 @@ export const getProperValue = (type, value) => {
     }
 };
 
-export const buildSection = (fields = {}, getValues, view, initialData) => {
+export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -114,6 +114,7 @@ export const buildSection = (fields = {}, getValues, view, initialData) => {
                             data={getDefaultValue(fields[key], view, initialData)}
                             fields={get(fields[key], 'fields')}
                             getValues={getValues}
+                            setFieldValue={setFieldValue}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -158,4 +159,15 @@ export const renderFieldViewMode = (type, fieldProps, validationError) => {
                 <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
             );
     }
+};
+
+export const getProperValues = (schema, values) => {
+    // make keys same as path
+    const properValues = [];
+    const allFields = getAllFields(schema);
+    Object.keys(values).map(key => {
+        const field = getFieldByName(allFields, key);
+        const {path} = field;
+        properValues[path] = getProperValue(field.type, values[key]);
+    });
 };

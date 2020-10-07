@@ -1,14 +1,17 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form/Form';
+import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
-import {buildSection, getFieldConfig, renderNexusField} from '../utils';
+import {buildSection, getFieldConfig, renderNexusField, getProperValues} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
-const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
+const NexusArray = ({name, view, data, fields, getValues, setFieldValue, ...props}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
+    // allData includes initialData and rows added
+    const [allData, setAllData] = useState(data);
 
     const renderAddButton = () => {
         return (
@@ -21,7 +24,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     const renderObject = (object, index) => {
         return (
             <div key={index} className="nexus-c-array__object">
-                {buildObject(fields, data[index] || {}, index)}
+                {buildObject(fields, allData[index] || {}, index)}
             </div>
         );
     };
@@ -76,17 +79,16 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     };
 
     const handleOnSubmit = values => {
-        console.log(values);
-        // setView(VIEWS.VIEW);
-        // // make keys same as path
-        // const properValues = [];
-        // const allFields = getAllFields(schema);
-        // Object.keys(values).map(key => {
-        //     const field = getFieldByName(allFields, key);
-        //     const {path} = field;
-        //     properValues[path] = getProperValue(field.type, values[key]);
-        // });
-        // onSubmit(properValues);
+        const formData = getValues();
+        const arrayData = get(formData, name) ? get(formData, name) : [];
+        // including the new row
+        const editedArray = [...arrayData, values];
+
+        // getProperValues();
+
+        setAllData(editedArray);
+        setFieldValue(name, editedArray);
+        closeModal();
     };
 
     const modalContent = () => {
@@ -114,7 +116,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     return (
         <div className="nexus-c-array">
             <div className="nexus-c-array__add">{view === VIEWS.EDIT && renderAddButton()}</div>
-            <div className="nexus-c-array__objects">{data.map((o, index) => renderObject(o, index))}</div>
+            <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>
     );
 };
@@ -125,6 +127,7 @@ NexusArray.propTypes = {
     data: PropTypes.array,
     fields: PropTypes.object,
     getValues: PropTypes.func,
+    setFieldValue: PropTypes.func,
 };
 
 NexusArray.defaultProps = {
@@ -132,6 +135,7 @@ NexusArray.defaultProps = {
     data: [],
     fields: {},
     getValues: undefined,
+    setFieldValue: undefined,
 };
 
 export default NexusArray;

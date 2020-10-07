@@ -66,7 +66,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values)}>
-                {({formProps, dirty, submitting, reset, getValues}) => (
+                {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
                         <div className="nexus-c-dynamic-form__tab-container">{buildTabs()}</div>
@@ -78,7 +78,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(fields, getValues, view, initialData)}
+                                            {buildSection(fields, getValues, view, initialData, setFieldValue)}
                                         </Fragment>
                                     ))}
                                 </Fragment>
