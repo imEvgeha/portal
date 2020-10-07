@@ -23,8 +23,18 @@
         padding: 25px;
         margin-top: 15px;
     }
-    .nexus-c-array__field.nexus-c-array__field-bold {
-        font-weight: bold;
+    .nexus-c-array__field {
+        &.nexus-c-array__field-bold {
+            font-weight: bold;
+        }
+        &.nexus-c-array__field-inline,
+        &.nexus-c-array__field-bold {
+            .nexus-c-field {
+                > div {
+                    display: flex;
+                }
+            }
+        }
     }
 }
 

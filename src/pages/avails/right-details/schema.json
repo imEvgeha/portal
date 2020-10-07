@@ -78,7 +78,8 @@
                                 "name": "Selected",
                                 "type": "boolean",
                                 "path": "territory.selected",
-                                "isReadOnly": true
+                                "isReadOnly": true,
+                                "className": "nexus-c-array__field-inline"
                             },
                             "rightContractStatus": {
                                 "name": "Right Contract Status",
