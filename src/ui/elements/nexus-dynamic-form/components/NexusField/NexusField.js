@@ -207,7 +207,7 @@ NexusField.propTypes = {
     validation: PropTypes.array,
     optionsConfig: PropTypes.object,
     selectValues: PropTypes.object,
-    path: PropTypes.string,
+    path: PropTypes.any,
     dateType: PropTypes.string,
     labels: PropTypes.array,
 };
