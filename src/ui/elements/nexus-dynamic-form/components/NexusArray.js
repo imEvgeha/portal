@@ -8,7 +8,7 @@ import {buildSection, getFieldConfig, renderNexusField, getProperValues} from '.
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
-const NexusArray = ({name, view, data, fields, getValues, setFieldValue, ...props}) => {
+const NexusArray = ({name, view, data, fields, getValues, setFieldValue, schema, ...props}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added
     const [allData, setAllData] = useState(data);
@@ -84,10 +84,10 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, ...prop
         // including the new row
         const editedArray = [...arrayData, values];
 
-        // getProperValues();
+        const properValues = editedArray.map(v => getProperValues(schema, v));
 
-        setAllData(editedArray);
-        setFieldValue(name, editedArray);
+        setAllData(properValues);
+        setFieldValue(name, properValues);
         closeModal();
     };
 
@@ -122,6 +122,7 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, ...prop
 };
 
 NexusArray.propTypes = {
+    schema: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     view: PropTypes.string,
     data: PropTypes.array,

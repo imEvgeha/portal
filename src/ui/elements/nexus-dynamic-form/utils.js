@@ -1,6 +1,4 @@
 import React from 'react';
-import {Checkbox} from '@atlaskit/checkbox';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
@@ -100,7 +98,7 @@ export const getProperValue = (type, value) => {
     }
 };
 
-export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue) => {
+export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue, schema) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -115,6 +113,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             fields={get(fields[key], 'fields')}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
+                            schema={schema}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -143,31 +142,14 @@ export const renderNexusField = (key, view, getValues, initialData, field) => {
     );
 };
 
-export const renderFieldViewMode = (type, fieldProps, validationError) => {
-    if (validationError) {
-        return <div>{validationError}</div>;
-    }
-    switch (type) {
-        case 'datetime':
-            return <DateTimePicker {...fieldProps} />;
-        case 'boolean':
-            return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
-        default:
-            return fieldProps.value ? (
-                <div>{fieldProps.value}</div>
-            ) : (
-                <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
-            );
-    }
-};
-
 export const getProperValues = (schema, values) => {
-    // make keys same as path
+    // handle values before submit
     const properValues = [];
     const allFields = getAllFields(schema);
-    Object.keys(values).map(key => {
-        const field = getFieldByName(allFields, key);
+    Object.keys(values).forEach(key => {
+        const field = allFields[key];
         const {path} = field;
         properValues[path] = getProperValue(field.type, values[key]);
     });
+    return properValues;
 };

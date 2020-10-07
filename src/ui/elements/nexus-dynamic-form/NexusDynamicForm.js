@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import SectionTab from './components/SectionTab';
-import {buildSection, getAllFields, getProperValue} from './utils';
+import {buildSection, getProperValues} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -52,14 +52,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
 
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
-        // make keys same as path
-        const properValues = [];
-        const allFields = getAllFields(schema);
-        Object.keys(values).forEach(key => {
-            const field = allFields[key];
-            const {path} = field;
-            properValues[path] = getProperValue(field.type, values[key]);
-        });
+        const properValues = getProperValues(schema, values);
         onSubmit(properValues);
     };
 
@@ -78,7 +71,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(fields, getValues, view, initialData, setFieldValue)}
+                                            {buildSection(fields, getValues, view, initialData, setFieldValue, schema)}
                                         </Fragment>
                                     ))}
                                 </Fragment>

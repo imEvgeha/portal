@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
+import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction, renderFieldViewMode} from '../utils';
+import {checkFieldDependencies, getValidationFunction} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -25,14 +26,32 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, formData);
     };
 
+    const renderFieldViewMode = (type, fieldProps, validationError) => {
+        if (validationError) {
+            return <div>{validationError}</div>;
+        }
+        switch (type) {
+            case 'datetime':
+                return <DateTimePicker {...fieldProps} />;
+            case 'boolean':
+                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+            default:
+                return fieldProps.value ? (
+                    <div>{fieldProps.value}</div>
+                ) : (
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
+                );
+        }
+    };
+
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
-                return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
+                return <TextField {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'textarea':
-                return <NexusTextArea {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
+                return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${fieldProps.name}`} />;
+                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${label}`} />;
             case 'boolean':
                 return (
                     <CheckboxField
@@ -44,8 +63,6 @@ const NexusField = ({
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
                 );
-            case 'array':
-                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${fieldProps.name}`} />;
             default:
                 return;
         }
