@@ -72,7 +72,7 @@ export const exportServicingOrders = servicingOrders => {
 };
 
 export const getMgmTitleByBarcode = barcode => {
-    const url = `${mgmTitleURL(config)}/${barcode}`;
+    const url = `${mgmTitleURL(config)}/assetId/${barcode}`;
     return nexusFetch(url);
 };
 

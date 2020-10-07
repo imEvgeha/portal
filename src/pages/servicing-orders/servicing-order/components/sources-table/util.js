@@ -1,4 +1,4 @@
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {getMgmAssetByBarcode, getMgmTitleByBarcode} from '../../../servicingOrdersService';
 
 const Loading = 'loading...';
@@ -20,16 +20,15 @@ export const prepareRowData = data => {
     services.forEach(service => {
         const sources = get(service, sourcesKey, []);
         sources.map(s => {
-            const {barcode, title, titleId, amsAssetId, assetFormat, standard} = s;
-
+            const {barcode, title, version, assetFormat, standard, status} = s;
             if (barcode) {
                 const source = get(preparedSources, barcode, {});
                 preparedSources[barcode] = source;
                 source.fs = fs;
                 source.barcode = barcode;
                 source.title = title;
-                source.titleId = titleId;
-                source.amsAssetId = amsAssetId;
+                source.version = version;
+                source.status = status;
                 source.assetFormat = assetFormat;
                 source.standard = standard;
                 const preparedServices = get(source, servicesKey, []);
@@ -43,36 +42,42 @@ export const prepareRowData = data => {
     return Object.entries(preparedSources).map(([key, value]) => value);
 };
 
-export const populateMgmData = async fulfillmentOrders => {
+export const populateMgmData = (fulfillmentOrders, setRefresh) => {
+    if (!Array.isArray(fulfillmentOrders)) return [];
+    const FO = cloneDeep(fulfillmentOrders);
     // eslint-disable-next-line array-callback-return
-    const data = fulfillmentOrders.map(item => {
-        if (item.definition.deteServices && item.definition.deteServices[0].deteSources.length)
+    FO.map(item => {
+        const length = Array.isArray(item.definition.deteServices)
+            ? item.definition.deteServices[0].deteSources.length
+            : 0;
+        if (length > 0)
             // eslint-disable-next-line array-callback-return
-            item.definition.deteServices[0].deteSources.map(item => {
+            item.definition.deteServices[0].deteSources.map((item, index) => {
                 item.title = Loading;
-                item.titleId = Loading;
-                item.amsAssetId = Loading;
+                item.version = Loading;
                 item.assetFormat = Loading;
                 item.standard = Loading;
+                item.status = Loading;
                 getMgmTitleByBarcode(item.barcode)
                     // eslint-disable-next-line no-return-assign
-                    .then(res => (item.title = res.name || 'Not Found'))
+                    .then(res => (item.title = res[0].name || 'Not Found'))
                     // eslint-disable-next-line no-return-assign
                     .catch(err => (item.title = 'Failed'));
                 getMgmAssetByBarcode(item.barcode)
                     .then(res => {
-                        item.titleId = Loading;
-                        item.amsAssetId = Loading;
+                        item.version = res.spec;
                         item.assetFormat = res.assetFormat;
                         item.standard = res.componentAssociations[0].component.standard;
+                        item.status = res.status;
+                        index === length - 1 ? setTimeout(() => setRefresh(), 500) : null;
                     })
                     .catch(err => {
-                        item.titleId = 'Not Found';
-                        item.amsAssetId = 'Not Found';
+                        item.version = 'Not Found';
+                        item.status = 'Not Found';
                         item.assetFormat = 'Not Found';
                         item.standard = 'Not Found';
                     });
             });
     });
-    return fulfillmentOrders;
+    return FO;
 };
