@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -9,7 +11,7 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS} from '../../constants';
+import {COLUMN_MAPPINGS, USER, INITIAL_SEARCH_PARAMS, DOP_GUIDED_TASK_URL, DOP_PROJECT_URL} from '../../constants';
 import {fetchDopTasksData} from '../../utils';
 import DopTasksTableStatusBar from '../dop-tasks-table-status-bar/DopTasksTableStatusBar';
 import './DopTasksTable.scss';
@@ -30,7 +32,57 @@ const DopTasksTable = ({user}) => {
     const [externalFilter, setExternalFilter] = useState({
         user,
     });
-    const formattedValueColDefs = COLUMN_MAPPINGS.map(col => ({...col, valueFormatter: createValueFormatter(col)}));
+    const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
+        if (col.colId === 'taskName') {
+            return {
+                ...col,
+                cellRendererParams: {
+                    link: `${config.get('gateway.DOPUrl')}${DOP_GUIDED_TASK_URL}`,
+                },
+            };
+        }
+        if (col.colId === 'taskStatus') {
+            return {
+                ...col,
+                cellRendererFramework: params => {
+                    const {value} = params || {};
+                    let color = 'yellowLight';
+                    switch (value) {
+                        case 'COMPLETED':
+                            color = 'grey';
+                            break;
+                        case 'READY':
+                            color = 'green';
+                            break;
+                        case 'IN PROGRESS':
+                            color = 'blue';
+                            break;
+                        default:
+                            color = 'standard';
+                            break;
+                    }
+                    return (
+                        <div>
+                            <Tag text={value} color={color} />
+                        </div>
+                    );
+                },
+            };
+        }
+        if (col.colId === 'projectName') {
+            return {
+                ...col,
+                cellRendererParams: {
+                    link: `${config.get('gateway.DOPUrl')}${DOP_PROJECT_URL}`,
+                    linkId: 'projectId',
+                },
+            };
+        }
+        return {
+            ...col,
+            valueFormatter: createValueFormatter(col),
+        };
+    });
 
     useEffect(() => {
         if (externalFilter.user !== user) {
