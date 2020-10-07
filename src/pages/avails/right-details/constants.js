@@ -1,6 +1,6 @@
 export const TAGS = [
-    {label: 'SELECTED', field: 'selected'},
-    {label: 'TPR RIGHT', field: 'originalRightIds'},
+    {label: 'SELECTED', field: 'rightSelected'},
+    {label: 'TPR RIGHT', field: 'temporaryPriceReduction'},
     {label: 'BONUS RIGHT', field: 'bonusRight'},
     {label: 'REMOVED FROM CATALOGUE', field: 'updatedCatalogReceived'},
 ];
