@@ -93,6 +93,8 @@ const ServicingOrder = ({match}) => {
         return readiness === 'READY';
     };
 
+    console.log('ss:: ', selectedOrder, selectedSource);
+
     return (
         <div className="servicing-order">
             <div className="servicing-order__left">
@@ -117,6 +119,7 @@ const ServicingOrder = ({match}) => {
                     <SourcesTable
                         onSelectedSourceChange={handleSelectedSourceChange}
                         data={prepareRowData(selectedOrder)}
+                        setUpdatedServices={setUpdatedServices}
                     />
                     {selectedSource && (
                         <ServicesTable

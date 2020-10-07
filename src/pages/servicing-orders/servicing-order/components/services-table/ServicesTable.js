@@ -97,7 +97,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             currentService.status = data.operationalStatus;
 
             const newServices = {...services, [providerServices]: updatedServices};
-
+            console.log('newServices on save service table: ', newServices);
             setServices(newServices);
             // this change is propogated up to the Servicing Order form to submit
             setUpdatedServices(newServices);

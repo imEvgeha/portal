@@ -26,11 +26,11 @@ export const prepareRowData = data => {
                 preparedSources[barcode] = source;
                 source.fs = fs;
                 source.barcode = barcode;
-                source.title = title;
-                source.version = version;
-                source.status = status;
-                source.assetFormat = assetFormat;
-                source.standard = standard;
+                // source.title = title;
+                // source.version = version;
+                // source.status = status;
+                // source.assetFormat = assetFormat;
+                // source.standard = standard;
                 const preparedServices = get(source, servicesKey, []);
                 source[servicesKey] = preparedServices;
                 return preparedServices.push(service);

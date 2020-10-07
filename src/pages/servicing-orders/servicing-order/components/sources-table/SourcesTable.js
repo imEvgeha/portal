@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import {Radio} from '@atlaskit/radio';
-import {isEqual, cloneDeep} from 'lodash';
+import {isEqual, cloneDeep, flatten} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -23,19 +23,20 @@ const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
 const Loading = 'loading...';
 
-const SourcesTable = ({data, onSelectedSourceChange}) => {
+const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(data);
     const barcodes = data.map(item => item.barcode);
 
+    // useEffect(() => populateRowData(), [data]);
     useEffect(
         () => {
             if (!isEqual(data, previousData)) {
                 setSelectedSource(null);
-                setSources(data);
+                populateRowData();
             }
-            setSources(data);
+            populateRowData();
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,6 +137,19 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
         }
     };
 
+    const populateRowData = () => {
+        const sourcesArray = [];
+        const dataArray = [];
+        data.length &&
+            data.map(item => {
+                dataArray.push(item.deteServices[0].deteSources[0]);
+            });
+        dataArray.map((item, index) => {
+            sourcesArray.push({...item, ...data[index]});
+        });
+        setSources(sourcesArray);
+    };
+
     return (
         <div className="nexus-c-sources">
             <div className="nexus-c-sources__header">
@@ -158,6 +172,7 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 SourcesTable.propTypes = {
     data: PropTypes.array,
     onSelectedSourceChange: PropTypes.func.isRequired,
+    setUpdatedServices: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {
