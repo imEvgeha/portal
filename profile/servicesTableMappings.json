@@ -43,12 +43,10 @@
         "required": true
     },
     {
-        "javaVariableName": "deliverToVU",
-        "displayName": "Deliver to VU",
-        "dataType": "boolean",
-        "queryParamName": "deliverToVU",
-        "readOnly": false,
-        "enableSearch": true,
+        "javaVariableName": "recipient",
+        "displayName": "Recipient",
+        "dataType": "select",
+        "queryParamName": "recipient",
         "enableEdit": true,
         "required": true
     },

@@ -28,7 +28,7 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
             setData({
-                list: definition.materials,
+                list: definition.materials || [],
                 tenant,
                 createdBy,
                 createdAt,

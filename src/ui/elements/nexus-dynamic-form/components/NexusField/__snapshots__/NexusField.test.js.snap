@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusField should match snapshot 1`] = `
+<ErrorBoundary>
+  <div
+    className="nexus-c-field "
+  >
+    <Field
+      defaultValue="rght_zrp8g"
+      isDisabled={true}
+      isRequired={false}
+      label="Right ID"
+      name="rightId"
+      validate={[Function]}
+    >
+      <Component />
+    </Field>
+  </div>
+</ErrorBoundary>
+`;

@@ -6,6 +6,11 @@
     flex-direction: row;
     align-items: center;
     @include margin(6);
+
+    .nexus-c-icon-button {
+        margin-left: auto;
+        background-color: map-get($neutrals, N30);
+    }
 }
 
 .nexus-c-dop-tasks-header__label {

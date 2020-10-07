@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DopTasksTableStatusBar should match snapshot 1`] = `
+<div
+  className="nexus-c-dop-tasks-table-status-bar"
+>
+  <span
+    className="nexus-c-dop-tasks-table-status-bar__description"
+  >
+    Rows:
+     
+    <span
+      className="nexus-c-dop-tasks-table-status-bar__value"
+    >
+      0
+       of 
+      0
+    </span>
+  </span>
+</div>
+`;

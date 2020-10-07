@@ -98,7 +98,7 @@
             "javaVariableName": "territory",
             "displayName": "Selected",
             "dataType": "territory.selected",
-            "searchDataType": "string",
+            "searchDataType": "territory.selected",
             "queryParamName": "selected",
             "readOnly": false,
             "enableSearch": true,

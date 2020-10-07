@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
-import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction} from '../utils';
-import {VIEWS} from '../constants';
+import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
+import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
+import {VIEWS} from '../../constants';
+import {checkFieldDependencies, getValidationFunction} from '../../utils';
+import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
 const NexusField = ({
@@ -18,11 +19,20 @@ const NexusField = ({
     isRequired,
     dependencies,
     validationError,
-    customValidation,
+    validation,
+    dateType,
+    labels,
     ...props
 }) => {
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
+    };
+
+    const dateProps = {
+        labels,
+        type,
+        dateType,
+        isReadOnly,
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -44,6 +54,9 @@ const NexusField = ({
                         {({fieldProps}) => <Checkbox {...fieldProps} />}
                     </CheckboxField>
                 );
+            case 'dateRange':
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} />;
             default:
                 return;
         }
@@ -54,10 +67,11 @@ const NexusField = ({
             return <div>{validationError}</div>;
         }
         switch (type) {
-            case 'datetime':
-                return <DateTimePicker {...fieldProps} />;
             case 'boolean':
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+            case 'dateRange':
+            case 'datetime':
+                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
             default:
                 return fieldProps.value ? (
                     <div>{fieldProps.value}</div>
@@ -68,35 +82,39 @@ const NexusField = ({
     };
 
     return (
-        <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
-            <AKField
-                isDisabled={isReadOnly || checkDependencies('readOnly')}
-                isRequired={checkDependencies('required') || isRequired}
-                validate={value => getValidationFunction(value, customValidation)}
-                {...props}
-            >
-                {({fieldProps, error}) => (
-                    <>
-                        <div className="nexus-c-field__label">
-                            {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
-                            {tooltip && (
-                                <span title={tooltip} style={{color: 'grey'}}>
-                                    <i className="far fa-question-circle" />
-                                </span>
-                            )}
-                        </div>
-                        <div className="nexus-c-field__value-section">
-                            <div className="nexus-c-field__value">
-                                {view === VIEWS.EDIT || view === VIEWS.CREATE
-                                    ? renderFieldEditMode(fieldProps)
-                                    : renderFieldViewMode(fieldProps)}
+        <ErrorBoundary>
+            <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
+                <AKField
+                    isDisabled={isReadOnly || checkDependencies('readOnly')}
+                    isRequired={checkDependencies('required') || isRequired}
+                    validate={value => getValidationFunction(value, validation)}
+                    {...props}
+                >
+                    {({fieldProps, error}) => (
+                        <>
+                            <div className="nexus-c-field__label">
+                                {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
+                                {tooltip && (
+                                    <span title={tooltip} style={{color: 'grey'}}>
+                                        <i className="far fa-question-circle" />
+                                    </span>
+                                )}
                             </div>
-                            <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
-                        </div>
-                    </>
-                )}
-            </AKField>
-        </div>
+                            <div className="nexus-c-field__value-section">
+                                <div className="nexus-c-field__value">
+                                    {view === VIEWS.EDIT || view === VIEWS.CREATE
+                                        ? renderFieldEditMode(fieldProps)
+                                        : renderFieldViewMode(fieldProps)}
+                                </div>
+                                <div className="nexus-c-field__error">
+                                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                                </div>
+                            </div>
+                        </>
+                    )}
+                </AKField>
+            </div>
+        </ErrorBoundary>
     );
 };
 
@@ -110,7 +128,9 @@ NexusField.propTypes = {
     isReadOnly: PropTypes.bool,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
-    customValidation: PropTypes.string,
+    validation: PropTypes.array,
+    dateType: PropTypes.string,
+    labels: PropTypes.array,
 };
 
 NexusField.defaultProps = {
@@ -121,7 +141,9 @@ NexusField.defaultProps = {
     isReadOnly: false,
     isRequired: false,
     validationError: null,
-    customValidation: null,
+    validation: [],
+    dateType: '',
+    labels: [],
 };
 
 export default NexusField;
