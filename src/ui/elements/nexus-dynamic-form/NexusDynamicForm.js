@@ -92,6 +92,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, container
                 ...properValues,
                 ...getProperValue(field.type, values[key], path),
             };
+            return null;
         });
         onSubmit(properValues);
     };
