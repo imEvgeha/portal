@@ -83,7 +83,7 @@
                                 "viewConfig": [
                                     {
                                         "view": "CREATE",
-                                        "defaultValue": true
+                                        "defaultValue": false
                                     }
                                 ]
                             },
