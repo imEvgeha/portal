@@ -78,7 +78,6 @@
                                 "name": "Selected",
                                 "type": "boolean",
                                 "path": "territory.selected",
-                                "isReadOnly": true,
                                 "className": "nexus-c-array__field-inline",
                                 "viewConfig": [
                                     {

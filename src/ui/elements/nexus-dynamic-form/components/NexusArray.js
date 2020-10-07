@@ -86,7 +86,7 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, schema,
 
         const properValues = editedArray.map(v => getProperValues(schema, v));
 
-        setAllData(properValues);
+        setAllData(editedArray);
         setFieldValue(name, properValues);
         setDisableSubmit(false);
         closeModal();
