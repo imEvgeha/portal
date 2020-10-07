@@ -53,15 +53,10 @@ const EventManagement = props => {
     };
 
     const onSelectionChanged = selectedRow => {
-        if (URL.isLocalOrDevOrQA()) {
-            // Call api to get event by ID
-            if (selectedRow) {
-                const {id} = selectedRow;
-                setSelectedEvent(id);
-                setSearchParams('selectedEventId', id);
-            }
-        } else {
-            setSelectedEvent(selectedRow);
+        if (selectedRow) {
+            const {id} = selectedRow;
+            setSelectedEvent(id);
+            setSearchParams('selectedEventId', id);
         }
     };
 

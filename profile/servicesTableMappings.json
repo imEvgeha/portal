@@ -1,65 +1,63 @@
 [
-  {
-    "javaVariableName": "componentId",
-    "displayName": "Component ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "componentId",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "spec",
-    "displayName": "Spec",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "spec",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "doNotStartBefore",
-    "displayName": "Do Not Start Before",
-    "dataType": "businessDateTime",
-    "searchDataType": "businessDateTime",
-    "queryParamName": "doNotStartBefore",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "priority",
-    "displayName": "Priority",
-    "dataType": "select",
-    "queryParamName": "priority",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "deliverToVU",
-    "displayName": "Deliver to VU",
-    "dataType": "boolean",
-    "queryParamName": "deliverToVU",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "operationalStatus",
-    "displayName": "Operational Status",
-    "dataType": "select",
-    "queryParamName": "operationalStatus",
-    "readOnly": true,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  }
+    {
+        "javaVariableName": "componentId",
+        "displayName": "Component ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "componentId",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "spec",
+        "displayName": "Spec",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "spec",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "doNotStartBefore",
+        "displayName": "Do Not Start Before",
+        "dataType": "businessDateTime",
+        "searchDataType": "businessDateTime",
+        "queryParamName": "doNotStartBefore",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "priority",
+        "displayName": "Priority",
+        "dataType": "select",
+        "queryParamName": "priority",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "recipient",
+        "displayName": "Recipient",
+        "dataType": "select",
+        "queryParamName": "recipient",
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "operationalStatus",
+        "displayName": "Operational Status",
+        "dataType": "select",
+        "queryParamName": "operationalStatus",
+        "readOnly": true,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    }
 ]
