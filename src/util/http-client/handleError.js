@@ -33,7 +33,9 @@ const showErrorModal = error => {
 };
 
 const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
-    const {status, data = {}, message, description} = error || {};
+    let {status, data = {}, message, description} = error || {};
+    if (typeof error === 'string') message = error;
+
     const ERROR_MODAL = {
         codes: [503],
         title: 'Unexpected error occurred. Please try again later',
@@ -71,7 +73,7 @@ const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) =>
               };
     }
     store.dispatch(addToast(toast));
-    setTimeout(() => store.dispatch(removeToast()), 4000);
+    setTimeout(() => store.dispatch(removeToast()), 6000);
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {

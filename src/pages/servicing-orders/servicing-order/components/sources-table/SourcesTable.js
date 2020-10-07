@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import {Radio} from '@atlaskit/radio';
-import {isEqual} from 'lodash';
+import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -15,15 +15,19 @@ import constants from '../fulfillment-order/constants';
 import {NON_EDITABLE_COLS, SELECT_VALUES} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
+import {fetchAssetFields} from './util';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
+const Loading = 'loading...';
+
 const SourcesTable = ({data, onSelectedSourceChange}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(data);
+    const barcodes = data.map(item => item.barcode);
 
     useEffect(
         () => {
@@ -91,12 +95,47 @@ const SourcesTable = ({data, onSelectedSourceChange}) => {
 
     const onSourceTableChange = ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            const newSources = sources.slice();
-            newSources[rowIndex] = data;
-            setSources(newSources);
+            if (barcodes[rowIndex] !== data.barcode) {
+                // call MGM fetch api and update barcode
+                const loadingSources = sources.slice();
+                let loading = cloneDeep(data);
+                loading = {
+                    ...loading,
+                    title: Loading,
+                    version: Loading,
+                    assetFormat: Loading,
+                    status: Loading,
+                    standard: Loading,
+                };
+                loadingSources[rowIndex] = loading;
+                setSources(loadingSources);
+                fetchAssetFields(data.barcode)
+                    .then(res => {
+                        const newSources = sources.slice();
+                        newSources[rowIndex] = {
+                            ...loading,
+                            barcode: data.barcode,
+                            assetFormat: res.assetFormat,
+                            title: res.title[0].name,
+                            version: res.spec,
+                            status: res.status,
+                            standard: res.componentAssociations[0].component.standard,
+                        };
+
+                        setSources(newSources);
+                    })
+                    .catch(() => {
+                        const prevSources = sources.slice();
+                        prevSources[rowIndex] = {
+                            ...prevSources[rowIndex],
+                            barcode: barcodes[rowIndex],
+                        };
+                        setSources(prevSources);
+                    });
+            }
         }
     };
-    console.log('data in source table: ', data);
+
     return (
         <div className="nexus-c-sources">
             <div className="nexus-c-sources__header">

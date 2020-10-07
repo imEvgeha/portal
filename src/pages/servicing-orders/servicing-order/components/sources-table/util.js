@@ -42,6 +42,12 @@ export const prepareRowData = data => {
     return Object.entries(preparedSources).map(([key, value]) => value);
 };
 
+export const fetchAssetFields = async barcode => {
+    const title = await getMgmTitleByBarcode(barcode);
+    const rest = await getMgmAssetByBarcode(barcode);
+    return {title, ...rest};
+};
+
 export const populateMgmData = (fulfillmentOrders, setRefresh) => {
     if (!Array.isArray(fulfillmentOrders)) return [];
     const FO = cloneDeep(fulfillmentOrders);
@@ -69,6 +75,7 @@ export const populateMgmData = (fulfillmentOrders, setRefresh) => {
                         item.assetFormat = res.assetFormat;
                         item.standard = res.componentAssociations[0].component.standard;
                         item.status = res.status;
+                        // eslint-disable-next-line no-unused-expressions
                         index === length - 1 ? setTimeout(() => setRefresh(), 500) : null;
                     })
                     .catch(err => {
