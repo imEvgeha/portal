@@ -14,6 +14,6 @@ describe('RightDetailsHeader', () => {
     });
 
     it('should not have adjust-padding class if not shrinked', () => {
-        expect(wrapper.props().className).toBe('nexus-c-right-details-header ');
+        expect(wrapper.props().className).toBe('nexus-c-right-details-header');
     });
 });
