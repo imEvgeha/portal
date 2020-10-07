@@ -17,7 +17,3 @@ export const SHRINKED_FIELDS = [
     {field: 'id', title: 'Right ID'},
     {field: 'title', title: 'Title'},
 ];
-
-export const VISIBLE = 'visible';
-export const HIDDEN = 'hidden';
-export const ADJUST_PADDING = 'adjust-padding';

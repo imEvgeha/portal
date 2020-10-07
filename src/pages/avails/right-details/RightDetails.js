@@ -1,4 +1,4 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
@@ -10,6 +10,8 @@ import schema from './schema.json';
 import './RightDetails.scss';
 
 const RightDetails = ({getRight, updateRight, right, match, history}) => {
+    const containerRef = useRef();
+
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -24,8 +26,14 @@ const RightDetails = ({getRight, updateRight, right, match, history}) => {
 
     return (
         <div className="nexus-c-right-details">
-            <RightDetailsHeader title="Right Details" right={right} history={history} />
-            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
+            <RightDetailsHeader title="Right Details" right={right} history={history} containerRef={containerRef} />
+            <NexusDynamicForm
+                schema={schema}
+                initialData={right}
+                isEdit
+                onSubmit={values => onSubmit(values)}
+                containerRef={containerRef}
+            />
         </div>
     );
 };

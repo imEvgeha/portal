@@ -2,11 +2,12 @@
 @import '../../../../styles/atlaskit/colors';
 
 .nexus-c-right-details-header {
-    position: sticky;
+    width: 100%;
+    position: fixed;
     top: 0;
     @include padding(6, 0);
     background-color: #f2f2f2; //TODO: This is not atlaskit color
-    z-index: 1000;
+    z-index: 1;
 }
 
 .nexus-c-right-details-header__top {
@@ -27,7 +28,7 @@
     }
 }
 
-.nexus-c-right-details-header__bottom--shrinked {
+.nexus-c-right-details-header__shrinked {
     width: 80%;
     @include margin(auto);
     display: none;
@@ -39,14 +40,14 @@
     }
 }
 
-.visible {
+.nexus-c-right-details-header__shrinked--visible {
     display: flex;
 }
 
-.hidden {
+.nexus-c-right-details-header__bottom--hidden {
     display: none;
 }
 
-.adjust-padding {
+.nexus-c-right-details-header--adjust-padding {
     @include padding(3, 0);
 }
