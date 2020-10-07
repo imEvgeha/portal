@@ -59,7 +59,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                     appearance="primary"
                     isDisabled={!dirty || submitting}
                 >
-                    Save changes
+                    Confirm
                 </Button>
                 <Button
                     className="nexus-c-array__cancel-button"

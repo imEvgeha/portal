@@ -24,6 +24,12 @@
         margin-top: 15px;
     }
     .nexus-c-array__field {
+        .nexus-c-field__value {
+            > div {
+                margin-top: 0;
+            }
+        }
+
         &.nexus-c-array__field-bold {
             font-weight: bold;
         }
@@ -39,8 +45,16 @@
 }
 
 .nexus-c-array__modal {
+    .nexus-c-field__value {
+        > div {
+            margin-top: 0;
+        }
+    }
     .nexus-c-array__modal-buttons {
         text-align: right;
+        .nexus-c-array__submit-button {
+            margin-right: 6px;
+        }
     }
 }
 
