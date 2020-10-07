@@ -33,6 +33,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
                             <div
+                                key={`nexus-c-array__field ${key}`}
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
                                 {renderNexusField(

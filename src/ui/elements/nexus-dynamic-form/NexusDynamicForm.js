@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import SectionTab from './components/SectionTab';
-import {buildSection, getAllFields, getFieldByName, getProperValue} from './utils';
+import {buildSection, getAllFields, getProperValue} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
