@@ -1,11 +1,9 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {Field as AKField, Field} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
-import TextField from '@atlaskit/textfield';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
-import {buildSection, getDefaultValue, getFieldConfig, renderFieldViewMode, renderNexusField} from '../utils';
+import {buildSection, getFieldConfig, renderNexusField} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusArray.scss';
 
@@ -108,7 +106,7 @@ const NexusArray = ({name, view, data, fields, getValues, ...props}) => {
     const openEditModal = () => {
         openModal(modalContent(), {
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
-            width: 'small',
+            width: 'medium',
         });
     };
 
