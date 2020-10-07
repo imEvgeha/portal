@@ -94,7 +94,9 @@ const updateAbility = (roles = []) => {
     can(['create', 'read', 'update', 'delete'], 'SyncLog');
 
     // ******** DOP Tasks *************
-    can(['create', 'read', 'update', 'delete'], 'DopTasks');
+    if (roles && roles.includes('dop_viewer')) {
+        can(['create', 'read', 'update', 'delete'], 'DopTasks');
+    }
 
     ability.update(rules);
 };
