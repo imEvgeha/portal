@@ -103,18 +103,6 @@ const DopTasksTable = ({user}) => {
         }
     };
 
-    const onGridReady = ({type, api}) => {
-        const {FILTER_CHANGED} = GRID_EVENTS;
-        switch (type) {
-            case FILTER_CHANGED: {
-                // console.log(api.getFilterModel());
-                break;
-            }
-            default:
-                break;
-        }
-    };
-
     const onSortChanged = ({api}) => {
         // get sorting column and prepare data for passing it as a payload instead of url params (not supported by DOP api)
         const sortModel = api.getSortModel();
@@ -148,7 +136,6 @@ const DopTasksTable = ({user}) => {
                 columnDefs={formattedValueColDefs}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
-                onGridEvent={onGridReady}
                 onSortChanged={onSortChanged}
                 pagination={true}
                 suppressPaginationPanel={true}

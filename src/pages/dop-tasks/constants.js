@@ -45,7 +45,6 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'taskName',
         enableSearch: true,
         cellRenderer: 'loadingCellRenderer',
-        sortable: true,
         width: 150,
     },
     {
@@ -56,7 +55,6 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         searchDataType: 'multiselect',
         options: TASK_STATUS_ENUM,
-        sortable: true,
         width: 180,
     },
     {
@@ -167,6 +165,9 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'projectStatus',
         headerName: 'Project Status',
         width: 120,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        options: PROJECT_STATUS_ENUM,
         hide: true,
     },
 ];

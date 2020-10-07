@@ -53,7 +53,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
             ];
         }, []);
 
-        const total = headers.get('X-Total-Count');
+        const total = headers.get('X-Total-Count') || data.length;
 
         return new Promise(res => {
             res({
