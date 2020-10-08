@@ -77,7 +77,7 @@ const RightToMatchView = ({
     const {params = {}} = match;
     const {rightId, availHistoryIds} = params || {};
     const previousPageRoute = URL.isEmbedded()
-        ? `/avails/history/${availHistoryIds}/right-matching`
+        ? `/avails/history/${availHistoryIds}/right-matching?embedded=true`
         : focusedRight.id
         ? `/avails/rights/${focusedRight.id}`
         : AVAILS_PATH;
@@ -150,12 +150,15 @@ const RightToMatchView = ({
 
     // eslint-disable-next-line react/prop-types
     const createNewButtonCellRenderer = ({data}) => {
-        const {id = '0'} = data || {};
-        return matchingCandidates.length === 0 ? (
-            <CustomActionsCellRenderer id={id}>
-                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
-            </CustomActionsCellRenderer>
-        ) : null;
+        const {id} = data || {};
+        if (matchingCandidates.length === 0 && id) {
+            return (
+                <CustomActionsCellRenderer id={id || '0'}>
+                    <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
+                </CustomActionsCellRenderer>
+            );
+        }
+        return null;
     };
 
     const actionNewButtonColumnDef = defineActionButtonColumn({
