@@ -119,7 +119,6 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             confirmationContent={get(fields[key], 'confirmationContent')}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
-                            schema={schema}
                             setDisableSubmit={setDisableSubmit}
                         />
                     ) : (

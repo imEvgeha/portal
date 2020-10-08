@@ -6,21 +6,11 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {CANCEL, DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
-import {buildSection, getFieldConfig, renderNexusField, getProperValues} from '../utils';
+import {buildSection, getFieldConfig, renderNexusField} from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
 
-const NexusArray = ({
-    name,
-    view,
-    data,
-    fields,
-    getValues,
-    setFieldValue,
-    schema,
-    setDisableSubmit,
-    confirmationContent,
-}) => {
+const NexusArray = ({name, view, data, fields, getValues, setFieldValue, setDisableSubmit, confirmationContent}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
@@ -168,7 +158,6 @@ const NexusArray = ({
 };
 
 NexusArray.propTypes = {
-    schema: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     view: PropTypes.string,
     data: PropTypes.array,
