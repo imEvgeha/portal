@@ -32,18 +32,11 @@
                             }
                         ]
                     },
-                    "releaseYear": {
-                        "name": "Release Year",
-                        "type": "string",
-                        "path": "releaseYear",
-                        "validation": [
-                            {
-                                "name": "lengthEqual",
-                                "args": {
-                                    "length": 4
-                                }
-                            }
-                        ]
+                    "format": {
+                        "name": "Format",
+                        "type": "multiselect",
+                        "path": "format",
+                        "isRequired": true
                     },
                     "licensed": {
                         "name": "Licensed",
@@ -56,12 +49,120 @@
                             }
                         ],
                         "isReadOnly": true
+                    },
+                    "licensor": {
+                        "name": "Licensor",
+                        "type": "select",
+                        "path": "licensor",
+                        "isRequired": true
+                    },
+                    "licensee": {
+                        "name": "Licensee",
+                        "type": "select",
+                        "path": "licensee",
+                        "isRequired": true
+                    },
+                    "licenseType": {
+                        "name": "License Type",
+                        "type": "select",
+                        "path": "licenseType",
+                        "isRequired": true
+                    },
+                    "contentType": {
+                        "name": "Content Type",
+                        "type": "select",
+                        "path": "contentType",
+                        "isRequired": true
+                    },
+                    "releaseYear": {
+                        "name": "Release Year",
+                        "type": "number",
+                        "path": "releaseYear",
+                        "validation": [
+                            {
+                                "name": "lengthEqual",
+                                "args": {
+                                    "length": 4
+                                }
+                            }
+                        ]
+                    },
+                    "allowedLanguages": {
+                        "name": "Allowed Languages",
+                        "type": "multiselect",
+                        "path": "allowedLanguages",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
+                    },
+                    "licenseRightsDescription": {
+                        "name": "License Rights Description",
+                        "type": "select",
+                        "path": "licenseRightsDescription",
+                        "isRequired": true
+                    },
+                    "platformCategory": {
+                        "name": "Platform Category",
+                        "type": "multiselect",
+                        "path": "platformCategory",
+                        "isRequired": true,
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Residential", "value": "Residential" },
+                                { "label": "Hotel", "value": "Hotel" }
+                            ]
+                        }
+                    },
+                    "rightStatus": {
+                        "name": "Right Status",
+                        "type": "select",
+                        "path": "rightStatus",
+                        "isRequired": true,
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Pending", "value": "Pending" },
+                                { "label": "Confirmed", "value": "Confirmed" },
+                                { "label": "Tentative", "value": "Tentative" },
+                                { "label": "Canceled", "value": "Canceled" },
+                                { "label": "Withdrawn", "value": "Withdrawn" }
+                            ]
+                        }
+                    },
+                    "affiliate": {
+                        "name": "Affiliate",
+                        "type": "multiselect",
+                        "path": "affiliate"
+                    },
+                    "affiliateExclude": {
+                        "name": "Affiliate Exclude",
+                        "type": "multiselect",
+                        "path": "affiliateExclude"
                     }
                 }
             },
             {
                 "title": "Territory",
-                "fields": {}
+                "fields": {
+                    "territoryExcluded": {
+                        "name": "Territory Excluded",
+                        "type": "multiselect",
+                        "path": "territoryExcluded",
+                        "optionsConfig": {
+                            "defaultValuePath": "countryCode",
+                            "defaultLabelPath": "countryName"
+                        }
+                    },
+                    "region": {
+                        "name": "Region",
+                        "type": "multiselect",
+                        "path": "region",
+                        "optionsConfig": {
+                            "defaultValuePath": "regionCode",
+                            "defaultLabelPath": "regionName"
+                        }
+                    }
+                }
             },
             {
                 "title": "Content",
