@@ -94,6 +94,16 @@
                                 "type": "string",
                                 "path": "rightContractStatus",
                                 "isRequired": true
+                            },
+                            "vuContractId": {
+                                "name": "VU Contract ID",
+                                "type": "stringInArray",
+                                "path": "vuContractId"
+                            },
+                            "comment": {
+                                "name": "Comments",
+                                "type": "string",
+                                "path": "comment"
                             }
                         }
                     }

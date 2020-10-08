@@ -47,6 +47,7 @@ const NexusField = ({
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
+            case 'stringInArray':
                 return <TextField {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'textarea':
                 return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;

@@ -93,6 +93,8 @@ export const getProperValue = (type, value) => {
     switch (type) {
         case 'number':
             return Number(value);
+        case 'stringInArray':
+            return Array.isArray(value) ? value : [value];
         default:
             return value;
     }
