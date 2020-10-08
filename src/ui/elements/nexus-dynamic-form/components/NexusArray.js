@@ -22,7 +22,7 @@ const NexusArray = ({
     confirmationContent,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
-    // allData includes initialData and rows added
+    // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
 
     const renderAddButton = () => {
@@ -34,7 +34,11 @@ const NexusArray = ({
     };
 
     const onRemove = index => {
-        console.log(index);
+        const editedData = allData.filter((obj, i) => i !== index);
+        setAllData(editedData);
+        setFieldValue(name, editedData);
+        setDisableSubmit(false);
+        closeModal();
     };
 
     const handleRemove = index => {
