@@ -5,10 +5,7 @@ import {getSyncQueryParams} from './TitleService';
 
 export const publisherService = {
     getExternalIds: id => {
-        const url =
-            config.get('gateway.publisher') +
-            config.get('gateway.service.publisher') +
-            `/getPublishInfo?&titleId=${id}`;
+        const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/getPublishInfo/${id}`;
         return nexusFetch(url);
     },
 
