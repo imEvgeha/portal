@@ -102,6 +102,58 @@
                         ]
                     }
                 }
+            },
+            {
+                "title": "Pricing",
+                "fields": {
+                    "srp": {
+                        "name": "SRP",
+                        "type": "number",
+                        "path": "srp"
+                    },
+                    "boxOffice": {
+                        "name": "Box Office",
+                        "type": "number",
+                        "path": "boxOffice"
+                    },
+                    "usBoxOffice": {
+                        "name": "US Box Office",
+                        "type": "number",
+                        "path": "usBoxOffice"
+                    },
+                    "boxOfficeComment": {
+                        "name": "Box Office Comment",
+                        "type": "string",
+                        "path": "boxOfficeComment"
+                    },
+                    "daysFromLVR": {
+                        "name": "Days From LVR",
+                        "type": "number",
+                        "path": "daysFromLVR"
+                    },
+                    "termYear": {
+                        "name": "Term Year",
+                        "type": "number",
+                        "path": "termYear"
+                    },
+                    "imdbLink": {
+                        "name": "IMDB Link",
+                        "type": "string",
+                        "path": "imdbLink"
+                    },
+                    "originalRightIds": {
+                        "name": "Original Right IDs",
+                        "type": "string",
+                        "path": "originalRightIds",
+                        "isReadOnly": true
+                    },
+                    "sourceRightId": {
+                        "name": "Source Right ID",
+                        "type": "string",
+                        "path": "sourceRightId",
+                        "isReadOnly": true
+                    }
+                }
             }
         ]
     },
