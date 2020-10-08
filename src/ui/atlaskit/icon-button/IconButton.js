@@ -10,28 +10,30 @@ const IconButton = ({icon, onClick, label}) => {
     const Icon = icon;
 
     return (
-        <Tooltip content={label}>
-            <Button
-                appearance="subtle"
-                onClick={onClick}
-                iconBefore={<Icon label={label} />}
-                theme={(currentTheme, themeProps) => {
-                    const {buttonStyles, ...rest} = currentTheme(themeProps);
-                    return {
-                        buttonStyles: {
-                            ...buttonStyles,
-                            width: gridSize() * GRID_SIZE_MULTIPLIER,
-                            height: gridSize() * GRID_SIZE_MULTIPLIER,
-                            padding: 0,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        },
-                        ...rest,
-                    };
-                }}
-            />
-        </Tooltip>
+        <div className="nexus-c-icon-button">
+            <Tooltip content={label}>
+                <Button
+                    appearance="subtle"
+                    onClick={onClick}
+                    iconBefore={<Icon label={label} />}
+                    theme={(currentTheme, themeProps) => {
+                        const {buttonStyles, ...rest} = currentTheme(themeProps);
+                        return {
+                            buttonStyles: {
+                                ...buttonStyles,
+                                width: gridSize() * GRID_SIZE_MULTIPLIER,
+                                height: gridSize() * GRID_SIZE_MULTIPLIER,
+                                padding: 0,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            },
+                            ...rest,
+                        };
+                    }}
+                />
+            </Tooltip>
+        </div>
     );
 };
 

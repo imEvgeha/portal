@@ -8,9 +8,18 @@ describe('RightDetails', () => {
 
     beforeEach(() => {
         const mockStore = configureStore();
-        const store = mockStore({ui: {avails: {rights: {right: {id: 'rght_zrp8g'}}}}});
+        const store = mockStore({
+            ui: {
+                avails: {
+                    rights: {right: {id: 'rght_zrp8g'}},
+                },
+            },
+            avails: {
+                rightDetailsOptions: {selectValues: {format: [{value: 'HD'}]}},
+            },
+        });
         const params = {params: {id: 'rght_zrp8g'}};
-        wrapper = shallow(<RightDetails match={params} store={store} />);
+        wrapper = shallow(<RightDetails match={params} store={store} selectValues={{format: [{value: 'HD'}]}} />);
     });
 
     it('should match snapshot', () => {

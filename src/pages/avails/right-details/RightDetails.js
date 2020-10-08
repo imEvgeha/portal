@@ -5,11 +5,12 @@ import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynam
 import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
+import * as detailsSelectors from './rightDetailsSelector';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match, history}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -32,6 +33,7 @@ const RightDetails = ({getRight, updateRight, right, match, history}) => {
                 initialData={right}
                 isEdit
                 onSubmit={values => onSubmit(values)}
+                selectValues={selectValues}
                 containerRef={containerRef}
             />
         </div>
@@ -43,6 +45,7 @@ RightDetails.propTypes = {
     updateRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
+    selectValues: PropTypes.object,
     history: PropTypes.object,
 };
 
@@ -51,14 +54,17 @@ RightDetails.defaultProps = {
     updateRight: () => null,
     right: {},
     match: {},
+    selectValues: {},
     history: {},
 };
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
+    const selectValuesSelector = detailsSelectors.selectValuesSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
+        selectValues: selectValuesSelector(state, props),
     });
 };
 

@@ -11,17 +11,31 @@ const DEFAULT_TIMEOUT = 60000;
 const DopTasksService = {
     getTasks: (externalFilter, offset = 1, limit = PAGE_LIMIT) => {
         const url = `${config.get('gateway.DOPUrl')}/dop/be-services/taskManagement/task/search`;
-        const payload = cloneDeep(INITIAL_SEARCH_PARAMS);
-        const user = externalFilter.user === USER ? getUsername(store.getState()) : ALL;
-        payload.filterCriterion[1].value = user;
-
-        const body = {
-            ...payload,
-            offset,
-            limit,
-        };
+        const payload = prepareFilterPayload(INITIAL_SEARCH_PARAMS, externalFilter);
+        const body = {...payload, offset, limit};
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
     },
+};
+
+const prepareFilterPayload = (initialParams, externalFilter) => {
+    const payload = cloneDeep(initialParams);
+    const {user, taskStatus, projectStatus, sortCriterion = []} = externalFilter || {};
+    if (user) {
+        payload.filterCriterion[1].value = externalFilter.user === USER ? getUsername(store.getState()) : ALL;
+    }
+    if (taskStatus) {
+        payload.filterCriterion[0].value = taskStatus;
+    }
+    if (projectStatus) {
+        // TODO: fix this when api support is ready
+        // payload.filterCriterion[0].fieldName = 'projectStatus';
+        // payload.filterCriterion[0].value = projectStatus;
+    }
+    if (sortCriterion.length) {
+        payload.sortCriterion = sortCriterion;
+    }
+
+    return payload;
 };
 
 export default DopTasksService;
