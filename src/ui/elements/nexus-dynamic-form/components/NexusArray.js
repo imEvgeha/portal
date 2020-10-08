@@ -28,7 +28,7 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, setDisa
         setAllData(editedData);
         setFieldValue(name, editedData);
         setDisableSubmit(false);
-        closeModal();
+        closeModal && closeModal();
     };
 
     const handleRemove = index => {

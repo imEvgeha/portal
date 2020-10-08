@@ -20,29 +20,115 @@ exports[`NexusArray should match snapshot 1`] = `
     <div
       className="nexus-c-array__object"
       key="0"
-      onClick={[Function]}
     >
-      <div>
-        <Field
-          defaultValue={false}
-          id="Selected_0"
-          isDisabled={false}
-          label="Selected"
-          name="Selected_0"
-        >
-          <Component />
-        </Field>
+      <div
+        className="nexus-c-array__remove-button"
+        onClick={[Function]}
+      >
+        <EditorCloseIcon
+          size="medium"
+        />
       </div>
-      <div>
-        <Field
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field selected"
+      >
+        <NexusField
+          defaultValue={false}
+          dependencies={Array []}
+          formData={Object {}}
+          id="territory[0].selected"
+          isReadOnly={true}
+          isRequired={false}
+          key="territory[0].selected"
+          label="Selected"
+          name="territory[0].selected"
+          path="territory.selected"
+          tooltip={null}
+          type="boolean"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field country"
+      >
+        <NexusField
           defaultValue="IL"
-          id="Country_0"
-          isDisabled={false}
+          dependencies={Array []}
+          formData={Object {}}
+          id="territory[0].country"
+          isReadOnly={false}
+          isRequired={false}
+          key="territory[0].country"
           label="Country"
-          name="Country_0"
-        >
-          <Component />
-        </Field>
+          name="territory[0].country"
+          path="territory.country"
+          tooltip={null}
+          type="string"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+    </div>
+    <div
+      className="nexus-c-array__object"
+      key="1"
+    >
+      <div
+        className="nexus-c-array__remove-button"
+        onClick={[Function]}
+      >
+        <EditorCloseIcon
+          size="medium"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field selected"
+      >
+        <NexusField
+          defaultValue={false}
+          dependencies={Array []}
+          formData={Object {}}
+          id="territory[1].selected"
+          isReadOnly={true}
+          isRequired={false}
+          key="territory[1].selected"
+          label="Selected"
+          name="territory[1].selected"
+          path="territory.selected"
+          tooltip={null}
+          type="boolean"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field country"
+      >
+        <NexusField
+          defaultValue="US"
+          dependencies={Array []}
+          formData={Object {}}
+          id="territory[1].country"
+          isReadOnly={false}
+          isRequired={false}
+          key="territory[1].country"
+          label="Country"
+          name="territory[1].country"
+          path="territory.country"
+          tooltip={null}
+          type="string"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
       </div>
     </div>
   </div>

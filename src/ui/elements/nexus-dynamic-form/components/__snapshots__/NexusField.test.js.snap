@@ -8,7 +8,6 @@ exports[`NexusField should match snapshot 1`] = `
     defaultValue="rght_zrp8g"
     isDisabled={true}
     isRequired={false}
-    label="Right ID"
     name="rightId"
     validate={[Function]}
   >
