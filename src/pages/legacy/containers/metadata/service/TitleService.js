@@ -91,17 +91,12 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    createTitle: (title, syncToVZ, syncToMovida) => {
-        // TODO: Remove this when new publish API is ready
-        const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = legacySystemNames ? {legacySystemNames} : {};
-
+    createTitle: title => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
 
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
-            params: encodedSerialize(params),
             isWithErrorHandling: false,
         });
     },
