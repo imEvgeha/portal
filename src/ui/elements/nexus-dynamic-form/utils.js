@@ -106,6 +106,7 @@ export const formatValues = values => {
                 values[key] = values[key].value;
             }
         }
+        return null;
     });
 };
 
