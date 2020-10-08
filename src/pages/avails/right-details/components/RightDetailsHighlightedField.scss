@@ -1,0 +1,13 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-right-details-highlighted-field > p {
+    @include margin(0);
+}
+
+.nexus-c-right-details-highlighted-field__title {
+    color: map-get($neutrals, N70);
+    font-size: 12px;
+    font-weight: bold;
+    @include margin(0, 0, 1.5, 0);
+}

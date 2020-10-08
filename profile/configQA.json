@@ -8,6 +8,7 @@
         "eventApiUrl": "https://eventapi.qa.vubiquity.com",
         "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
         "DOPUrl": "https://dop.qa.vubiquity.com:8045",
+        "publisher": "https://titlespublishermovida.qa.vubiquity.com",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
@@ -19,7 +20,8 @@
             "eventApiV2": "/api/event-api/v2",
             "servicingOrder": "",
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
-            "DOPProjectManagementProject": "/dop/be-services/projectManagement/project"
+            "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
+            "publisher": "/publisher/v1"
         }
     },
     "keycloak": {

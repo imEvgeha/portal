@@ -11,11 +11,12 @@ import {
     getAllFields,
     getFieldByName,
     getProperValue,
+    formatValues,
 } from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
+const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
@@ -27,6 +28,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                     return (
                         !getFieldConfig(fields[key], 'hidden', view) && (
                             <NexusField
+                                selectValues={selectValues}
                                 key={key}
                                 name={key}
                                 view={view}
@@ -82,6 +84,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
 
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
+        formatValues(values);
         // make keys same as path
         let properValues = {};
         const allFields = getAllFields(schema);
@@ -92,6 +95,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                 ...properValues,
                 ...getProperValue(field.type, values[key], path),
             };
+            return null;
         });
         onSubmit(properValues);
     };
@@ -102,7 +106,9 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit}) => {
                 {({formProps, dirty, submitting, reset, getValues}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
-                        <div className="nexus-c-dynamic-form__tab-container">{buildTabs()}</div>
+                        <div ref={containerRef} className="nexus-c-dynamic-form__tab-container">
+                            {buildTabs()}
+                        </div>
                         <div className="nexus-c-dynamic-form__tab-content">
                             {schema.map(({title = '', sections = []}) => (
                                 <Fragment key={`tab-${title}`}>
@@ -129,12 +135,16 @@ NexusDynamicForm.propTypes = {
     initialData: PropTypes.object,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
+    selectValues: PropTypes.object,
+    containerRef: PropTypes.any,
 };
 
 NexusDynamicForm.defaultProps = {
     initialData: {},
     onSubmit: undefined,
     isEdit: false,
+    selectValues: {},
+    containerRef: null,
 };
 
 export default NexusDynamicForm;
