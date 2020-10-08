@@ -25,7 +25,7 @@ import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
-import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, WARNING_ICON, ERROR_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
@@ -527,7 +527,11 @@ class TitleEdit extends Component {
                 return true;
             })
             .catch(() => {
-                console.error('Unable to Sync Title');
+                this.props.addToast({
+                    title: 'Sync Title Failed',
+                    icon: ERROR_ICON,
+                    isWithOverlay: false,
+                });
                 return false;
             });
     };
@@ -540,7 +544,11 @@ class TitleEdit extends Component {
                 return true;
             })
             .catch(() => {
-                console.error('Unable to Sync Title');
+                this.props.addToast({
+                    title: 'Publish Title Failed',
+                    icon: ERROR_ICON,
+                    isWithOverlay: false,
+                });
                 return false;
             });
     };
