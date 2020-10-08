@@ -24,7 +24,6 @@ import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../consta
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
-import PublishVzMovidaOld from './publish/PublishVzMovidaOld';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import {URL} from '../../../../../../util/Common';
@@ -97,7 +96,7 @@ class TitleEdit extends Component {
         configService.initConfigMapping();
         const titleId = this.props.match.params.id;
         this.loadTitle(titleId);
-        URL.isLocalOrDev() && this.loadExternalIds(titleId);
+        this.loadExternalIds(titleId);
         this.loadTerritoryMetadata(titleId);
         this.loadEditorialMetadata();
     }
@@ -1284,14 +1283,10 @@ class TitleEdit extends Component {
     onSyncPublishClick = (name, buttonName) => {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
-        if (URL.isLocalOrDev()) {
-            if (buttonName === SYNC) {
-                this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
-            } else {
-                this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
-            }
+        if (buttonName === SYNC) {
+            this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
         } else {
-            this.titleUpdate(this.state.titleForm, syncToVz, syncToMovida, false);
+            this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
         }
     };
 
@@ -1330,19 +1325,10 @@ class TitleEdit extends Component {
                                         <div className="nexus-c-title-edit__sync-container">
                                             {getRepositoryName(id) === TitleSystems.NEXUS && (
                                                 <>
-                                                    {URL.isLocalOrDev() ? (
-                                                        <PublishVzMovida
-                                                            onSyncPublishClick={this.onSyncPublishClick}
-                                                            externalIDs={this.state.externalIDs}
-                                                        />
-                                                    ) : (
-                                                        <PublishVzMovidaOld
-                                                            coreTitle={titleForm}
-                                                            editorialMetadataList={editorialMetadata}
-                                                            territoryMetadataList={territory}
-                                                            onSyncPublishClick={this.onSyncPublishClick}
-                                                        />
-                                                    )}
+                                                    <PublishVzMovida
+                                                        onSyncPublishClick={this.onSyncPublishClick}
+                                                        externalIDs={this.state.externalIDs}
+                                                    />
                                                     <Can I="update" a="Metadata">
                                                         <Button
                                                             className="float-right"
