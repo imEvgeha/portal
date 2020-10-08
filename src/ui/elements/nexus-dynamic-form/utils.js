@@ -111,6 +111,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             view={view}
                             data={getDefaultValue(fields[key], view, initialData)}
                             fields={get(fields[key], 'fields')}
+                            confirmationContent={get(fields[key], 'confirmationContent')}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             schema={schema}

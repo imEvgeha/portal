@@ -2,13 +2,25 @@ import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form/Form';
+import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
+import {CANCEL, DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
 import {buildSection, getFieldConfig, renderNexusField, getProperValues} from '../utils';
-import {VIEWS} from '../constants';
+import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
 
-const NexusArray = ({name, view, data, fields, getValues, setFieldValue, schema, setDisableSubmit}) => {
+const NexusArray = ({
+    name,
+    view,
+    data,
+    fields,
+    getValues,
+    setFieldValue,
+    schema,
+    setDisableSubmit,
+    confirmationContent,
+}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added
     const [allData, setAllData] = useState(data);
@@ -21,9 +33,39 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, schema,
         );
     };
 
+    const onRemove = index => {
+        console.log(index);
+    };
+
+    const handleRemove = index => {
+        if (confirmationContent) {
+            const actions = [
+                {
+                    text: CANCEL,
+                    onClick: closeModal,
+                    appearance: 'default',
+                },
+                {
+                    text: DELETE,
+                    onClick: () => {
+                        onRemove(index);
+                        closeModal();
+                    },
+                    appearance: 'danger',
+                },
+            ];
+            openModal(`${DELETE_POPUP} ${confirmationContent}`, {title: REMOVE_TITLE, width: 'medium', actions});
+        } else {
+            onRemove(index);
+        }
+    };
+
     const renderObject = (object, index) => {
         return (
             <div key={index} className="nexus-c-array__object">
+                <div className="nexus-c-tag__remove-button" onClick={() => handleRemove(index)}>
+                    <EditorCloseIcon size="medium" />
+                </div>
                 {buildObject(fields, allData[index] || {}, index)}
             </div>
         );
@@ -131,6 +173,7 @@ NexusArray.propTypes = {
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
     setDisableSubmit: PropTypes.func,
+    confirmationContent: PropTypes.string,
 };
 
 NexusArray.defaultProps = {
@@ -140,6 +183,7 @@ NexusArray.defaultProps = {
     getValues: undefined,
     setFieldValue: undefined,
     setDisableSubmit: undefined,
+    confirmationContent: null,
 };
 
 export default NexusArray;

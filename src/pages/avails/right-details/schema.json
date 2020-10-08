@@ -67,6 +67,7 @@
                         "type": "array",
                         "path": "territory",
                         "isRequired": true,
+                        "confirmationContent": "Alternatively, you can withdraw the territory.",
                         "fields": {
                             "country": {
                                 "name": "Country",
