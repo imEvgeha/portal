@@ -96,7 +96,7 @@ export const FulfillmentOrder = ({
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
             console.log('fulfillmentOrder.js 1: ', fulfillmentOrder);
-
+            // TODO fix - first time this captures loading and on cancle, the rows show loading
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
             setSelectedOrder(fulfillmentOrderClone);
@@ -149,6 +149,7 @@ export const FulfillmentOrder = ({
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
         setSave(false);
+        // Todo - fix - when change both source and service fields, the value of formerly changed is not retailed when canceled
         setSelectedOrder(oldOrder);
         setRefresh(prev => !prev);
     };
