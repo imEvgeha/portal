@@ -116,7 +116,7 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, schema,
 
     return (
         <div className="nexus-c-array">
-            <div className="nexus-c-array__add">{view === VIEWS.EDIT && renderAddButton()}</div>
+            <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>
             <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>
     );
