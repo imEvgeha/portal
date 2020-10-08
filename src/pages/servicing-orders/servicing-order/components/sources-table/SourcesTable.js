@@ -99,7 +99,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         : {...columnDefinitions[0], editable: false};
     const newColDef = [barcodeColumn, ...columnDefinitions.filter((item, index) => index !== 0)];
 
-    const onSourceTableChange = ({type, rowIndex, data}) => {
+    const onSourceTableChange = async ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
             console.log('data.barcode: ', data.barcode);
             if (barcodes[rowIndex] !== data.barcode) {
@@ -116,33 +116,33 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 };
                 loadingSources[rowIndex] = loading;
                 setSources(loadingSources);
-                fetchAssetFields(data.barcode)
-                    .then(res => {
-                        const newSources = sources.slice();
-                        newSources[0].barcode = data.barcode;
-                        newSources[rowIndex].deteServices[0].deteSources[rowIndex] = {
-                            ...newSources[rowIndex].deteServices[0].deteSources[rowIndex],
-                            amsAssetId: data.barcode,
-                            barcode: data.barcode,
-                            assetFormat: res.assetFormat,
-                            title: res.title[0].name,
-                            version: res.spec,
-                            status: res.status,
-                            standard: res.componentAssociations[0].component.standard,
-                        };
-                        console.log('newSources: ', newSources);
-                        setSources(newSources);
-                        setUpdatedServices(newSources[0]);
-                        setSave(true);
-                    })
-                    .catch(() => {
-                        const prevSources = sources.slice();
-                        prevSources[rowIndex] = {
-                            ...prevSources[rowIndex],
-                            barcode: barcodes[rowIndex],
-                        };
-                        setSources(prevSources);
-                    });
+                try {
+                    const res = await fetchAssetFields(data.barcode);
+                    const newSources = sources.slice();
+                    newSources[0].barcode = data.barcode;
+                    newSources[rowIndex].deteServices[0].deteSources[rowIndex] = {
+                        ...newSources[rowIndex].deteServices[0].deteSources[rowIndex],
+                        amsAssetId: data.barcode,
+                        barcode: data.barcode,
+                        assetFormat: res.assetFormat,
+                        title: res.title[0].name,
+                        version: res.spec,
+                        status: res.status,
+                        standard: res.componentAssociations[0].component.standard,
+                    };
+                    console.log('newSources: ', newSources);
+                    setSources(newSources);
+                    setUpdatedServices(newSources[0]);
+                    // Todo - fix in case of multiple rows, updating barcode triggers amny render and old data is shown in new row but with new barcode
+                    setSave(true);
+                } catch {
+                    const prevSources = sources.slice();
+                    prevSources[rowIndex] = {
+                        ...prevSources[rowIndex],
+                        barcode: barcodes[rowIndex],
+                    };
+                    setSources(prevSources);
+                }
             }
         }
     };

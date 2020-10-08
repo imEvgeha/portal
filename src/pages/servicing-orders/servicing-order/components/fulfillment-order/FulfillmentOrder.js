@@ -29,6 +29,7 @@ export const FulfillmentOrder = ({
     save,
     setSave,
     setRefresh,
+    lastOrder,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -97,10 +98,10 @@ export const FulfillmentOrder = ({
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
             console.log('fulfillmentOrder.js 1: ', fulfillmentOrder);
             // TODO fix - first time this captures loading and on cancle, the rows show loading
+            setOldOrder(fulfillmentOrder);
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
             setSelectedOrder(fulfillmentOrderClone);
-            setOldOrder(fulfillmentOrder);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [updatedServices]
@@ -150,7 +151,7 @@ export const FulfillmentOrder = ({
         cancelEditing();
         setSave(false);
         // Todo - fix - when change both source and service fields, the value of formerly changed is not retailed when canceled
-        setSelectedOrder(oldOrder);
+        setSelectedOrder(lastOrder);
         setRefresh(prev => !prev);
     };
 
@@ -281,6 +282,7 @@ FulfillmentOrder.propTypes = {
     save: PropTypes.bool.isRequired,
     setSave: PropTypes.func.isRequired,
     setRefresh: PropTypes.func,
+    lastOrder: PropTypes.object.isRequired,
 };
 
 FulfillmentOrder.defaultProps = {

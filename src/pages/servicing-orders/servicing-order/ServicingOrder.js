@@ -16,6 +16,7 @@ const ServicingOrder = ({match}) => {
     const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
+    const [lastOrder, setLastOrder] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -26,6 +27,7 @@ const ServicingOrder = ({match}) => {
         const order =
             get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
         setSelectedOrder(order);
+        setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
     const fetchFulfillmentOrders = async servicingOrder => {
@@ -121,6 +123,7 @@ const ServicingOrder = ({match}) => {
                     save={save}
                     setSave={setSave}
                     setRefresh={setRefresh}
+                    lastOrder={lastOrder}
                 >
                     <SourcesTable
                         onSelectedSourceChange={handleSelectedSourceChange}
