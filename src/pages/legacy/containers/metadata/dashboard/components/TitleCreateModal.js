@@ -145,9 +145,9 @@ class TitleCreate extends React.Component {
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService
-            .createTitle(title, isSyncVZ, isSyncMovida)
+            .createTitle(title)
             .then(response => {
-                if (URL.isLocalOrDev() && (isSyncVZ || isSyncMovida)) {
+                if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
                     publisherService
                         .registerTitle(response.id, isSyncVZ, isSyncMovida)

@@ -1,0 +1,14 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-right-details-title {
+    @include margin(0, 3, 0, 0);
+    font-size: 24px;
+    color: map-get($neutrals, N500);
+    > span {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        cursor: pointer;
+    }
+}
