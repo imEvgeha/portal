@@ -26,16 +26,16 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
 
 export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
 
-export const PROJECT_STATUS_ENUM = [
-    'BNOT STARTED',
-    'CIN PROGRESS',
-    'CDRELEASE IN PROGRESS',
-    'DCOMPLETED',
-    'ECANCEL IN PROGRESS',
-    'FCANCELLED',
-    'AHHOLD IN PROGRESS',
-    'AIN ERROR',
-];
+export const PROJECT_STATUS_ENUM = {
+    'BNOT STARTED': 'NOT STARTED',
+    'CIN PROGRESS': 'IN PROGRESS',
+    'CDRELEASE IN PROGRESS': 'RELEASE IN PROGRESS',
+    DCOMPLETED: 'COMPLETED',
+    'ECANCEL IN PROGRESS': 'CANCEL IN PROGRESS',
+    FCANCELLED: 'CANCELLED',
+    'AHHOLD IN PROGRESS': 'HOLD IN PROGRESS',
+    'AIN ERROR': 'IN ERROR',
+};
 
 export const COLUMN_MAPPINGS = [
     {
@@ -45,7 +45,6 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'taskName',
         enableSearch: true,
         cellRenderer: 'loadingCellRenderer',
-        sortable: true,
         width: 150,
     },
     {
@@ -56,7 +55,6 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         searchDataType: 'multiselect',
         options: TASK_STATUS_ENUM,
-        sortable: true,
         width: 180,
     },
     {
@@ -167,6 +165,9 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'projectStatus',
         headerName: 'Project Status',
         width: 120,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        options: Object.values(PROJECT_STATUS_ENUM),
         hide: true,
     },
 ];
