@@ -132,7 +132,7 @@ const RightToMatchView = ({
 
     const onDeclareNewRight = () => {
         removeToast();
-        createNewRight({rightId, previousPageRoute});
+        createNewRight({rightId, redirectPath: previousPageRoute});
     };
 
     const onNewRightClick = () => {
