@@ -131,11 +131,8 @@ const NexusArray = ({
         const arrayData = get(formData, name) ? get(formData, name) : [];
         // including the new row
         const editedArray = [...arrayData, values];
-
-        const properValues = editedArray.map(v => getProperValues(schema, v));
-
         setAllData(editedArray);
-        setFieldValue(name, properValues);
+        setFieldValue(name, editedArray);
         setDisableSubmit(false);
         closeModal();
     };

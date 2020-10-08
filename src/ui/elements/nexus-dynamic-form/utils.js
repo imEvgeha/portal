@@ -89,12 +89,15 @@ export const getFieldByName = (allFields, name) => {
     return get(allFields, [k]);
 };
 
-export const getProperValue = (type, value) => {
+export const getProperValue = (type, value, schema) => {
     switch (type) {
         case 'number':
             return Number(value);
         case 'stringInArray':
             return Array.isArray(value) ? value : [value];
+        case 'array':
+            const properValues = value.map(v => getProperValues(schema, v));
+            return properValues;
         default:
             return value;
     }
@@ -153,7 +156,7 @@ export const getProperValues = (schema, values) => {
     Object.keys(values).forEach(key => {
         const field = allFields[key];
         const {path} = field;
-        properValues[path] = getProperValue(field.type, values[key]);
+        properValues[path] = getProperValue(field.type, values[key], schema);
     });
     return {...properValues};
 };
