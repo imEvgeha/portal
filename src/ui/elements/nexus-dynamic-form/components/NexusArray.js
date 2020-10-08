@@ -63,9 +63,11 @@ const NexusArray = ({
     const renderObject = (object, index) => {
         return (
             <div key={index} className="nexus-c-array__object">
-                <div className="nexus-c-array__remove-button" onClick={() => handleRemove(index)}>
-                    <EditorCloseIcon size="medium" />
-                </div>
+                {view !== VIEWS.VIEW && (
+                    <div className="nexus-c-array__remove-button" onClick={() => handleRemove(index)}>
+                        <EditorCloseIcon size="medium" />
+                    </div>
+                )}
                 {buildObject(fields, allData[index] || {}, index)}
             </div>
         );
