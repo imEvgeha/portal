@@ -3,8 +3,6 @@ const columnDefinitions = [
         colId: 'barcode',
         field: 'barcode',
         headerName: 'Barcode',
-        width: 100,
-        editable: true,
     },
     {
         colId: 'title',

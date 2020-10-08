@@ -20,6 +20,7 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
     const [refresh, setRefresh] = useState(false);
+    const [save, setSave] = useState(false);
 
     useEffect(() => {
         const order =
@@ -35,7 +36,6 @@ const ServicingOrder = ({match}) => {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
-
                     fulfillmentOrders = populateMgmData(fulfillmentOrders, setRefresh);
                     setServiceOrder({
                         ...servicingOrder,
@@ -93,7 +93,7 @@ const ServicingOrder = ({match}) => {
         return readiness === 'READY';
     };
 
-    console.log('ss:: ', selectedOrder, selectedSource);
+    console.log('selectedOrder:::: ', selectedSource, selectedOrder);
 
     return (
         <div className="servicing-order">
@@ -114,18 +114,27 @@ const ServicingOrder = ({match}) => {
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
                     updatedServices={updatedServices}
-                    cancelEditing={() => setSelectedSource({...selectedSource})}
+                    cancelEditing={() => {
+                        setSelectedSource({...selectedSource});
+                        setSelectedOrder({...selectedOrder});
+                    }}
+                    save={save}
+                    setSave={setSave}
+                    setRefresh={setRefresh}
                 >
                     <SourcesTable
                         onSelectedSourceChange={handleSelectedSourceChange}
                         data={prepareRowData(selectedOrder)}
                         setUpdatedServices={setUpdatedServices}
+                        isDisabled={isFormDisabled(selectedOrder)}
+                        setSave={setSave}
                     />
                     {selectedSource && (
                         <ServicesTable
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
+                            setSave={setSave}
                         />
                     )}
                 </FulfillmentOrder>

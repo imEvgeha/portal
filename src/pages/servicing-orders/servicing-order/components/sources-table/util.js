@@ -68,13 +68,13 @@ export const populateMgmData = (fulfillmentOrders, setRefresh) => {
                     // eslint-disable-next-line no-return-assign
                     .then(res => (item.title = res[0].name || 'Not Found'))
                     // eslint-disable-next-line no-return-assign
-                    .catch(err => (item.title = 'Failed'));
+                    .catch(err => (item.title = 'Not Found'));
                 getMgmAssetByBarcode(item.barcode)
                     .then(res => {
-                        item.version = res.spec;
-                        item.assetFormat = res.assetFormat;
-                        item.standard = res.componentAssociations[0].component.standard;
-                        item.status = res.status;
+                        item.version = res.spec || 'Not Found';
+                        item.assetFormat = res.assetFormat || 'Not Found';
+                        item.standard = res.componentAssociations[0].component.standard || 'Not Found';
+                        item.status = res.status || 'Not Found';
                         // eslint-disable-next-line no-unused-expressions
                         index === length - 1 ? setTimeout(() => setRefresh(), 500) : null;
                     })

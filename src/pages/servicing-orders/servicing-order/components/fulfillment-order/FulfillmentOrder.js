@@ -26,6 +26,9 @@ export const FulfillmentOrder = ({
     updatedServices,
     children,
     cancelEditing,
+    save,
+    setSave,
+    setRefresh,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -37,6 +40,7 @@ export const FulfillmentOrder = ({
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
+    const [oldOrder, setOldOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
     const ModalContent = (
         <>
@@ -91,21 +95,20 @@ export const FulfillmentOrder = ({
         () => {
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
+            console.log('fulfillmentOrder.js 1: ', fulfillmentOrder);
 
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
+            setSelectedOrder(fulfillmentOrderClone);
+            setOldOrder(fulfillmentOrder);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [updatedServices]
     );
 
-    useEffect(
-        () => {
-            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [fulfillmentOrder]
-    );
+    useEffect(() => {
+        setIsSaveDisabled(!save);
+    }, [save]);
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
@@ -145,12 +148,19 @@ export const FulfillmentOrder = ({
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
+        setSave(false);
+        setSelectedOrder(oldOrder);
+        setRefresh(prev => !prev);
     };
 
     const onSaveHandler = () => {
         const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
+        setSave(false);
+        setRefresh(prev => !prev);
     };
+
+    // console.log('fulfillmentOrder.js 2: ', fulfillmentOrder, savedFulfillmentOrder, selectedFulfillmentOrder);
 
     return (
         <Page>
@@ -267,6 +277,9 @@ FulfillmentOrder.propTypes = {
     updatedServices: PropTypes.object,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
+    save: PropTypes.bool.isRequired,
+    setSave: PropTypes.func.isRequired,
+    setRefresh: PropTypes.func,
 };
 
 FulfillmentOrder.defaultProps = {
@@ -278,6 +291,7 @@ FulfillmentOrder.defaultProps = {
     updatedServices: null,
     children: null,
     cancelEditing: null,
+    setRefresh: null,
 };
 
 export default FulfillmentOrder;

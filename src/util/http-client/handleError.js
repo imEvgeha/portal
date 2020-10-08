@@ -73,7 +73,7 @@ const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) =>
               };
     }
     store.dispatch(addToast(toast));
-    setTimeout(() => store.dispatch(removeToast()), 6000);
+    setTimeout(() => store.dispatch(removeToast()), 4000);
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {

@@ -23,16 +23,16 @@ const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
 const Loading = 'loading...';
 
-const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
+const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled, setSave}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
-    const previousData = usePrevious(data);
-    const barcodes = data.map(item => item.barcode);
+    const previousData = usePrevious(dataArray);
+    const barcodes = dataArray.map(item => item.barcode);
 
     // useEffect(() => populateRowData(), [data]);
     useEffect(
         () => {
-            if (!isEqual(data, previousData)) {
+            if (!isEqual(dataArray, previousData)) {
                 setSelectedSource(null);
                 populateRowData();
             }
@@ -40,14 +40,14 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [data]
+        [dataArray]
     );
 
     useEffect(() => {
-        if (selectedSource === null && data.length > 0) {
-            setSelectedSource(data[0]);
+        if (selectedSource === null && dataArray.length > 0) {
+            setSelectedSource(dataArray[0]);
         }
-    }, [selectedSource, data]);
+    }, [selectedSource, dataArray]);
 
     useEffect(
         () => {
@@ -94,12 +94,18 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
         },
     });
 
+    const barcodeColumn = !isDisabled
+        ? {...columnDefinitions[0], editable: true}
+        : {...columnDefinitions[0], editable: false};
+    const newColDef = [barcodeColumn, ...columnDefinitions.filter((item, index) => index !== 0)];
+
     const onSourceTableChange = ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
+            console.log('data.barcode: ', data.barcode);
             if (barcodes[rowIndex] !== data.barcode) {
                 // call MGM fetch api and update barcode
                 const loadingSources = sources.slice();
-                let loading = cloneDeep(data);
+                let loading = data;
                 loading = {
                     ...loading,
                     title: Loading,
@@ -113,8 +119,10 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
                 fetchAssetFields(data.barcode)
                     .then(res => {
                         const newSources = sources.slice();
-                        newSources[rowIndex] = {
-                            ...loading,
+                        newSources[0].barcode = data.barcode;
+                        newSources[rowIndex].deteServices[0].deteSources[rowIndex] = {
+                            ...newSources[rowIndex].deteServices[0].deteSources[rowIndex],
+                            amsAssetId: data.barcode,
                             barcode: data.barcode,
                             assetFormat: res.assetFormat,
                             title: res.title[0].name,
@@ -122,8 +130,10 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
                             status: res.status,
                             standard: res.componentAssociations[0].component.standard,
                         };
-
+                        console.log('newSources: ', newSources);
                         setSources(newSources);
+                        setUpdatedServices(newSources[0]);
+                        setSave(true);
                     })
                     .catch(() => {
                         const prevSources = sources.slice();
@@ -138,17 +148,20 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
     };
 
     const populateRowData = () => {
+        const dataClone = cloneDeep(dataArray);
         const sourcesArray = [];
-        const dataArray = [];
-        data.length &&
-            data.map(item => {
-                dataArray.push(item.deteServices[0].deteSources[0]);
+        const newDataArray = [];
+        dataClone.length &&
+            dataClone.map(item => {
+                newDataArray.push(item.deteServices[0].deteSources[0]);
             });
-        dataArray.map((item, index) => {
-            sourcesArray.push({...item, ...data[index]});
+        newDataArray.map((item, index) => {
+            sourcesArray.push({...item, ...dataClone[index]});
         });
         setSources(sourcesArray);
     };
+
+    console.log('data: ', dataArray, isDisabled, barcodeColumn, sources);
 
     return (
         <div className="nexus-c-sources">
@@ -157,7 +170,7 @@ const SourcesTable = ({data, onSelectedSourceChange, setUpdatedServices}) => {
                 <div>{SOURCE_SUBTITLE}</div>
             </div>
             <SourceTableGrid
-                columnDefs={[radioButtonColumn, servicesColumn, ...columnDefinitions]}
+                columnDefs={[radioButtonColumn, servicesColumn, ...newColDef]}
                 rowData={sources}
                 domLayout="normal"
                 mapping={mappings}
@@ -173,6 +186,8 @@ SourcesTable.propTypes = {
     data: PropTypes.array,
     onSelectedSourceChange: PropTypes.func.isRequired,
     setUpdatedServices: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
+    setSave: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {
