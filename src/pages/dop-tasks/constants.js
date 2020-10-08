@@ -4,7 +4,10 @@ export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
 export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
 export const USER = 'user';
+export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ALL = '*';
+export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
+export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectid=';
 export const PAGE_LIMIT = 100;
 
 export const QUEUED_TASKS_OPTIONS = [
@@ -21,13 +24,27 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
 ];
 
+export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+
+export const PROJECT_STATUS_ENUM = {
+    'BNOT STARTED': 'NOT STARTED',
+    'CIN PROGRESS': 'IN PROGRESS',
+    'CDRELEASE IN PROGRESS': 'RELEASE IN PROGRESS',
+    DCOMPLETED: 'COMPLETED',
+    'ECANCEL IN PROGRESS': 'CANCEL IN PROGRESS',
+    FCANCELLED: 'CANCELLED',
+    'AHHOLD IN PROGRESS': 'HOLD IN PROGRESS',
+    'AIN ERROR': 'IN ERROR',
+};
+
 export const COLUMN_MAPPINGS = [
     {
         colId: 'taskName',
         field: 'taskName',
         headerName: 'Task Name',
         javaVariableName: 'taskName',
-        sortable: true,
+        enableSearch: true,
+        cellRenderer: 'loadingCellRenderer',
         width: 150,
     },
     {
@@ -36,8 +53,8 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'taskStatus',
         headerName: 'Status',
         enableSearch: true,
-        searchDataType: 'string',
-        sortable: true,
+        searchDataType: 'multiselect',
+        options: TASK_STATUS_ENUM,
         width: 180,
     },
     {
@@ -45,13 +62,15 @@ export const COLUMN_MAPPINGS = [
         field: 'activityEstimatedEndDate',
         javaVariableName: 'activityEstimatedEndDate',
         headerName: 'Due Date',
-        sortable: true,
-        width: 180,
+        dataType: 'regionalMidnight',
+        searchDataType: 'regionalMidnight',
+        width: 120,
     },
     {
         colId: 'projectName',
         field: 'projectName',
         javaVariableName: 'projectName',
+        cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
         width: 150,
     },
@@ -95,6 +114,8 @@ export const COLUMN_MAPPINGS = [
         field: 'activityActualStartDate',
         javaVariableName: 'activityActualStartDate',
         headerName: 'Actual Start Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
         hide: true,
     },
@@ -103,6 +124,8 @@ export const COLUMN_MAPPINGS = [
         field: 'activityActualEndDate',
         javaVariableName: 'activityActualEndDate',
         headerName: 'Actual Completion Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
         hide: true,
     },
@@ -111,6 +134,8 @@ export const COLUMN_MAPPINGS = [
         field: 'activityPlannedCompletionDate',
         javaVariableName: 'activityPlannedCompletionDate',
         headerName: 'Planned Due Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
         hide: true,
     },
@@ -119,6 +144,8 @@ export const COLUMN_MAPPINGS = [
         field: 'projectStartDate',
         javaVariableName: 'projectStartDate',
         headerName: 'Project Start Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
         hide: true,
     },
@@ -127,6 +154,8 @@ export const COLUMN_MAPPINGS = [
         field: 'projectPlannedCompletionDate',
         javaVariableName: 'projectPlannedCompletionDate',
         headerName: 'Project Planned Due Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
         hide: true,
     },
@@ -136,21 +165,11 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'projectStatus',
         headerName: 'Project Status',
         width: 120,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        options: Object.values(PROJECT_STATUS_ENUM),
         hide: true,
     },
-];
-
-export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
-
-export const PROJECT_STATUS_ENUM = [
-    'BNOT STARTED',
-    'CIN PROGRESS',
-    'CDRELEASE IN PROGRESS',
-    'DCOMPLETED',
-    'ECANCEL IN PROGRESS',
-    'FCANCELLED',
-    'AHHOLD IN PROGRESS',
-    'AIN ERROR',
 ];
 
 export const INITIAL_SEARCH_PARAMS = {
