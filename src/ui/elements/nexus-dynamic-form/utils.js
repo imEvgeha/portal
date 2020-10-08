@@ -84,11 +84,6 @@ export const getAllFields = schema => {
     return allFields;
 };
 
-export const getFieldByName = (allFields, name) => {
-    const k = Object.keys(allFields).find(key => !!key && allFields[key].name === name);
-    return get(allFields, [k]);
-};
-
 export const getProperValue = (type, value, schema) => {
     switch (type) {
         case 'number':
@@ -96,8 +91,7 @@ export const getProperValue = (type, value, schema) => {
         case 'stringInArray':
             return Array.isArray(value) ? value : [value];
         case 'array':
-            const properValues = value.map(v => getProperValues(schema, v));
-            return properValues;
+            return value.map(v => getProperValues(schema, v));
         default:
             return value;
     }
@@ -154,8 +148,12 @@ export const getProperValues = (schema, values) => {
     const allFields = getAllFields(schema);
     Object.keys(values).forEach(key => {
         const field = allFields[key];
-        const {path} = field;
-        properValues[path] = getProperValue(field.type, values[key], schema);
+        if (field) {
+            const {path} = field;
+            properValues[path] = getProperValue(field.type, values[key], schema);
+        } else {
+            properValues[key] = values[key];
+        }
     });
     return {...properValues};
 };

@@ -26,24 +26,6 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, formData);
     };
 
-    const renderFieldViewMode = (type, fieldProps, validationError) => {
-        if (validationError) {
-            return <div>{validationError}</div>;
-        }
-        switch (type) {
-            case 'datetime':
-                return <DateTimePicker {...fieldProps} />;
-            case 'boolean':
-                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
-            default:
-                return fieldProps.value ? (
-                    <div>{fieldProps.value}</div>
-                ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
-                );
-        }
-    };
-
     const renderFieldEditMode = fieldProps => {
         switch (type) {
             case 'string':
@@ -66,6 +48,24 @@ const NexusField = ({
                 );
             default:
                 return;
+        }
+    };
+
+    const renderFieldViewMode = (type, fieldProps, validationError) => {
+        if (validationError) {
+            return <div>{validationError}</div>;
+        }
+        switch (type) {
+            case 'datetime':
+                return <DateTimePicker {...fieldProps} />;
+            case 'boolean':
+                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+            default:
+                return fieldProps.value ? (
+                    <div>{fieldProps.value}</div>
+                ) : (
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
+                );
         }
     };
 
