@@ -52,7 +52,12 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
     );
 };
 
-export const getValidationFunction = (value, validations) => {
+const isEmptyMultiselect = (value, isRequired) => {
+    if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
+};
+
+export const getValidationFunction = (value, validations, {type, isRequired}) => {
+    if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     // load dynamic file
     if (validations && validations.length > 0) {
         const promises = validations.map(v =>
@@ -97,7 +102,7 @@ export const formatValues = values => {
                     }
                     return val;
                 });
-            } else {
+            } else if (values[key].value) {
                 values[key] = values[key].value;
             }
         }

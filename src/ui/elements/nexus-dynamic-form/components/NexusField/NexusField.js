@@ -4,7 +4,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
-import {cloneDeep} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../../constants';
@@ -54,8 +54,8 @@ const NexusField = ({
 
     const renderFieldEditMode = fieldProps => {
         const {options} = optionsConfig;
-        let selectFieldProps = null;
-        let multiselectFieldProps = null;
+        const selectFieldProps = {...fieldProps};
+        const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
                 return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
@@ -75,18 +75,12 @@ const NexusField = ({
                     </CheckboxField>
                 );
             case 'select':
-                if (fieldProps.value && fieldProps.value.value === undefined)
-                    selectFieldProps = {
-                        ...fieldProps,
-                        value: {
-                            label: fieldProps.value,
-                            value: fieldProps.value,
-                        },
+                if (get(fieldProps, 'value.value', undefined) === undefined) {
+                    selectFieldProps.value = {
+                        label: fieldProps.value,
+                        value: fieldProps.value,
                     };
-                else
-                    selectFieldProps = {
-                        ...fieldProps,
-                    };
+                }
                 return (
                     <Select
                         {...selectFieldProps}
@@ -99,17 +93,9 @@ const NexusField = ({
                     fieldProps.value &&
                     fieldProps.value.length &&
                     fieldProps.value[fieldProps.value.length - 1].value === undefined
-                )
-                    multiselectFieldProps = {
-                        ...fieldProps,
-                        value: fieldProps.value.map(val => {
-                            return {label: val, value: val};
-                        }),
-                    };
-                else
-                    multiselectFieldProps = {
-                        ...fieldProps,
-                    };
+                ) {
+                    multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
+                }
                 return (
                     <Select
                         {...multiselectFieldProps}
@@ -151,19 +137,13 @@ const NexusField = ({
         }
     };
 
-    const isEmptyMultiselect = value => {
-        if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
-    };
-
     return (
         <ErrorBoundary>
             <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
-                    validate={
-                        type === 'multiselect' ? isEmptyMultiselect : value => getValidationFunction(value, validation)
-                    }
+                    validate={value => getValidationFunction(value, validation, {type, isRequired})}
                     {...props}
                 >
                     {({fieldProps, error}) => (
