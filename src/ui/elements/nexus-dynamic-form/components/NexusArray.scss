@@ -24,6 +24,9 @@
         margin-top: 15px;
     }
     .nexus-c-array__field {
+        .nexus-c-field__label {
+            color: map-get($neutrals, N300);
+        }
         .nexus-c-field__value {
             > div {
                 margin-top: 0;
@@ -31,6 +34,7 @@
         }
 
         &.nexus-c-array__field-bold {
+            color: map-get($neutrals, N300);
             font-weight: bold;
         }
         &.nexus-c-array__field-inline,

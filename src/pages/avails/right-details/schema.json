@@ -72,12 +72,14 @@
                                 "name": "Country",
                                 "type": "string",
                                 "path": "territory.country",
+                                "isRequired": true,
                                 "className": "nexus-c-array__field-bold"
                             },
                             "selected": {
                                 "name": "Selected",
                                 "type": "boolean",
                                 "path": "territory.selected",
+                                "isReadOnly": true,
                                 "className": "nexus-c-array__field-inline",
                                 "viewConfig": [
                                     {
@@ -89,7 +91,8 @@
                             "rightContractStatus": {
                                 "name": "Right Contract Status",
                                 "type": "string",
-                                "path": "territory.rightContractStatus"
+                                "path": "territory.rightContractStatus",
+                                "isRequired": true
                             }
                         }
                     }
