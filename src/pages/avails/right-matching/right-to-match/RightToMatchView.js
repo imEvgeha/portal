@@ -148,14 +148,14 @@ const RightToMatchView = ({
         });
     };
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line react/prop-types
     const createNewButtonCellRenderer = ({data}) => {
         const {id = '0'} = data || {};
-        return (
+        return matchingCandidates.length === 0 ? (
             <CustomActionsCellRenderer id={id}>
                 <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
             </CustomActionsCellRenderer>
-        );
+        ) : null;
     };
 
     const actionNewButtonColumnDef = defineActionButtonColumn({
