@@ -106,7 +106,6 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                     (get(fields[key], 'type') === 'array' ? (
                         <NexusArray
                             key={key}
-                            name={key}
                             view={view}
                             data={getDefaultValue(fields[key], view, initialData)}
                             getValues={getValues}

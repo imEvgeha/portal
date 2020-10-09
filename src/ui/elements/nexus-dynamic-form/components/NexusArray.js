@@ -22,6 +22,7 @@ const NexusArray = ({
     isRequired,
     tooltip,
     dependencies,
+    path,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -38,7 +39,7 @@ const NexusArray = ({
     const onRemove = index => {
         const editedData = allData.filter((obj, i) => i !== index);
         setAllData(editedData);
-        setFieldValue(name, editedData);
+        setFieldValue(path, editedData);
         setDisableSubmit(false);
         closeModal && closeModal();
     };
@@ -90,7 +91,7 @@ const NexusArray = ({
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
                                 {renderNexusField(
-                                    `${name}[${index}].${key}`,
+                                    `${path}[${index}].${key}`,
                                     view,
                                     getValues,
                                     initialData,
@@ -130,11 +131,11 @@ const NexusArray = ({
 
     const handleOnSubmit = values => {
         const formData = getValues();
-        const arrayData = get(formData, name) ? get(formData, name) : [];
+        const arrayData = get(formData, path) ? get(formData, path) : [];
         // including the new row
         const editedArray = [...arrayData, values];
         setAllData(editedArray);
-        setFieldValue(name, editedArray);
+        setFieldValue(path, editedArray);
         setDisableSubmit(false);
         closeModal();
     };
@@ -176,6 +177,7 @@ const NexusArray = ({
 
 NexusArray.propTypes = {
     name: PropTypes.string.isRequired,
+    path: PropTypes.string.isRequired,
     view: PropTypes.string,
     tooltip: PropTypes.string,
     data: PropTypes.array,
