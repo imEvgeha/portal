@@ -4,7 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
+import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
@@ -41,7 +41,6 @@ export const FulfillmentOrder = ({
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
-    const [oldOrder, setOldOrder] = useState(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
     const ModalContent = (
         <>
@@ -96,9 +95,6 @@ export const FulfillmentOrder = ({
         () => {
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
-            console.log('fulfillmentOrder.js 1: ', fulfillmentOrder);
-            // TODO fix - first time this captures loading and on cancle, the rows show loading
-            setOldOrder(fulfillmentOrder);
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
             setSelectedOrder(fulfillmentOrderClone);
@@ -106,6 +102,14 @@ export const FulfillmentOrder = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [updatedServices]
     );
+
+    /* useEffect(
+        () => {
+            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [fulfillmentOrder]
+    ); */
 
     useEffect(() => {
         setIsSaveDisabled(!save);
@@ -119,6 +123,7 @@ export const FulfillmentOrder = ({
         get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
             ? openWarningModal(fo)
             : setFulfillmentOrder(fo);
+        setIsSaveDisabled(false);
     };
 
     const openWarningModal = fo => {
@@ -134,6 +139,7 @@ export const FulfillmentOrder = ({
                 text: 'Cancel',
                 onClick: () => {
                     closeModal();
+                    setIsSaveDisabled(true);
                 },
             },
         ];
@@ -150,15 +156,15 @@ export const FulfillmentOrder = ({
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
         setSave(false);
-        // Todo - fix - when change both source and service fields, the value of formerly changed is not retailed when canceled
+        setIsSaveDisabled(true);
         setSelectedOrder(lastOrder);
-        setRefresh(prev => !prev);
     };
 
     const onSaveHandler = () => {
         const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
         setSave(false);
+        setIsSaveDisabled(true);
         setRefresh(prev => !prev);
     };
 

@@ -95,7 +95,7 @@ const ServicingOrder = ({match}) => {
         return readiness === 'READY';
     };
 
-    console.log('selectedOrder:::: ', selectedSource, selectedOrder);
+    // console.log('selectedOrder:::: ', selectedSource, selectedOrder);
 
     return (
         <div className="servicing-order">

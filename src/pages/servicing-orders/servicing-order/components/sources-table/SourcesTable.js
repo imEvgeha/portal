@@ -101,7 +101,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onSourceTableChange = async ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            console.log('data.barcode: ', data.barcode);
             if (barcodes[rowIndex] !== data.barcode) {
                 // call MGM fetch api and update barcode
                 const loadingSources = sources.slice();
@@ -119,9 +118,18 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 try {
                     const res = await fetchAssetFields(data.barcode);
                     const newSources = sources.slice();
-                    newSources[0].barcode = data.barcode;
-                    newSources[rowIndex].deteServices[0].deteSources[rowIndex] = {
-                        ...newSources[rowIndex].deteServices[0].deteSources[rowIndex],
+                    const sendSources = sources.slice();
+                    newSources[rowIndex] = {
+                        amsAssetId: data.barcode,
+                        barcode: newSources[rowIndex].barcode,
+                        assetFormat: res.assetFormat,
+                        title: res.title[0].name,
+                        version: res.spec,
+                        status: res.status,
+                        standard: res.componentAssociations[0].component.standard,
+                        externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
+                    };
+                    sendSources[0].deteServices[0].deteSources[rowIndex] = {
                         amsAssetId: data.barcode,
                         barcode: data.barcode,
                         assetFormat: res.assetFormat,
@@ -129,13 +137,12 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                         version: res.spec,
                         status: res.status,
                         standard: res.componentAssociations[0].component.standard,
+                        externalSources: sendSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
                     };
-                    console.log('newSources: ', newSources);
                     setSources(newSources);
-                    setUpdatedServices(newSources[0]);
-                    // Todo - fix in case of multiple rows, updating barcode triggers amny render and old data is shown in new row but with new barcode
+                    setUpdatedServices(sendSources[0]);
                     setSave(true);
-                } catch {
+                } catch (e) {
                     const prevSources = sources.slice();
                     prevSources[rowIndex] = {
                         ...prevSources[rowIndex],
@@ -151,17 +158,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         const dataClone = cloneDeep(dataArray);
         const sourcesArray = [];
         const newDataArray = [];
-        dataClone.length &&
-            dataClone.map(item => {
-                newDataArray.push(item.deteServices[0].deteSources[0]);
-            });
-        newDataArray.map((item, index) => {
-            sourcesArray.push({...item, ...dataClone[index]});
-        });
+        dataClone.length && dataClone.map((item, index) => newDataArray.push(item.deteServices[0].deteSources[index]));
+        newDataArray.map((item, index) => sourcesArray.push({...item, ...dataClone[index]}));
         setSources(sourcesArray);
     };
-
-    console.log('data: ', dataArray, isDisabled, barcodeColumn, sources);
 
     return (
         <div className="nexus-c-sources">

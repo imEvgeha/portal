@@ -2,6 +2,7 @@ import {get, cloneDeep} from 'lodash';
 import {getMgmAssetByBarcode, getMgmTitleByBarcode} from '../../../servicingOrdersService';
 
 const Loading = 'loading...';
+const TIME_TO_REFRESH = 200;
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
@@ -75,7 +76,7 @@ export const populateMgmData = (fulfillmentOrders, setRefresh) => {
                         item.assetFormat = res.assetFormat || 'Not Found';
                         item.standard = res.componentAssociations[0].component.standard || 'Not Found';
                         item.status = res.status || 'Not Found';
-                        // eslint-disable-next-line no-unused-expressions
+                        // eslint-disable-next-line no-unused-expressions,no-magic-numbers
                         index === length - 1 ? setTimeout(() => setRefresh(), 500) : null;
                     })
                     .catch(err => {
