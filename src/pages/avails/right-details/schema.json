@@ -38,6 +38,34 @@
                         "path": "format",
                         "isRequired": true
                     },
+                    "start": {
+                        "name": "License Start",
+                        "type": "datetime",
+                        "dateType": "businessDateTime",
+                        "path": "start",
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "end": {
+                        "name": "License End",
+                        "type": "datetime",
+                        "dateType": "businessDateTime",
+                        "path": "end",
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
+                    },
                     "startLag": {
                         "name": "Start Lag",
                         "type": "string",
@@ -172,6 +200,11 @@
                             "defaultValuePath": "regionCode",
                             "defaultLabelPath": "regionName"
                         }
+                    },
+                    "regionExcluded": {
+                        "name": "Region Excluded",
+                        "type": "string",
+                        "path": "regionExcluded"
                     }
                 }
             },
@@ -238,20 +271,74 @@
                         "type": "string",
                         "path": "boxOfficeComment"
                     },
+                    "releaseHistoryOriginal": {
+                        "name": "Release History Original",
+                        "type": "datetime",
+                        "dateType": "businessDateTime",
+                        "path": "releaseHistoryOriginal"
+                    },
+                    "releaseHistoryPhysicalHV": {
+                        "name": "Release History Physical HV",
+                        "type": "datetime",
+                        "dateType": "businessDateTime",
+                        "path": "releaseHistoryPhysicalHV"
+                    },
                     "daysFromLVR": {
                         "name": "Days From LVR",
                         "type": "number",
                         "path": "daysFromLVR"
                     },
+                    "suppressionLiftDate": {
+                        "name": "Suppression Lift Date",
+                        "type": "datetime",
+                        "dateType": "businessDateTime",
+                        "path": "suppressionLiftDate"
+                    },
+                    "specialPreOrderFulfillDate": {
+                        "name": "Special Pre Order Fulfill Date",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "specialPreOrderFulfillDate"
+                    },
+                    "announceDate": {
+                        "name": "Announce Date",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "announceDate"
+                    },
+
                     "termYear": {
                         "name": "Term Year",
                         "type": "number",
                         "path": "termYear"
                     },
+                    "termYearStart": {
+                        "name": "Term Year Start",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "termYearStart"
+                    },
+                    "termYearEnd": {
+                        "name": "Term Year End",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "termYearEnd"
+                    },
                     "imdbLink": {
                         "name": "IMDB Link",
                         "type": "string",
                         "path": "imdbLink"
+                    },
+                    "entryType": {
+                        "name": "Entry Type",
+                        "type": "multiselect",
+                        "path": "entryType",
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Full Extract", "value": "Full Extract" },
+                                { "label": "Full Delete", "value": "Full Delete" }
+                            ]
+                        }
                     },
                     "originalRightIds": {
                         "name": "Original Right IDs",
