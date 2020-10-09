@@ -21,17 +21,12 @@ export const prepareRowData = data => {
     services.forEach(service => {
         const sources = get(service, sourcesKey, []);
         sources.map(s => {
-            const {barcode, title, version, assetFormat, standard, status} = s;
+            const {barcode} = s;
             if (barcode) {
                 const source = get(preparedSources, barcode, {});
                 preparedSources[barcode] = source;
                 source.fs = fs;
                 source.barcode = barcode;
-                // source.title = title;
-                // source.version = version;
-                // source.status = status;
-                // source.assetFormat = assetFormat;
-                // source.standard = standard;
                 const preparedServices = get(source, servicesKey, []);
                 source[servicesKey] = preparedServices;
                 return preparedServices.push(service);
