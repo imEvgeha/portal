@@ -1,4 +1,5 @@
 import React from 'react';
+import {ErrorMessage} from '@atlaskit/form';
 import {get} from 'lodash';
 import {equalOrIncluded} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
@@ -167,4 +168,8 @@ export const renderLabel = (label, isRequired, tooltip) => {
             )}
         </div>
     );
+};
+
+export const renderError = error => {
+    return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
 };

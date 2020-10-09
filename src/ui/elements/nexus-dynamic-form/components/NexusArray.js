@@ -1,12 +1,21 @@
 import React, {useContext, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {Field as AKField} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {CANCEL, DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
-import {buildSection, checkFieldDependencies, getFieldConfig, renderLabel, renderNexusField} from '../utils';
+import {
+    buildSection,
+    checkFieldDependencies,
+    getFieldConfig,
+    getValidationFunction,
+    renderLabel,
+    renderNexusField,
+    renderError,
+} from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
 
@@ -164,11 +173,23 @@ const NexusArray = ({
 
     return (
         <div className="nexus-c-array">
-            {renderLabel(
-                name,
-                !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired),
-                tooltip
-            )}
+            <AKField
+                name={path}
+                isRequired={!!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired)}
+                // validate={value => getValidationFunction(value, validation)}
+            >
+                {({fieldProps, error}) => (
+                    <>
+                        {renderLabel(
+                            name,
+                            !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired),
+                            tooltip
+                        )}
+                        {renderError(error)}
+                    </>
+                )}
+            </AKField>
+
             <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>
             <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>

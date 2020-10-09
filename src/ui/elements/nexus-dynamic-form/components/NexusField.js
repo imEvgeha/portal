@@ -5,7 +5,7 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction, renderLabel} from '../utils';
+import {checkFieldDependencies, getValidationFunction, renderLabel, renderError} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -86,7 +86,7 @@ const NexusField = ({
                                     ? renderFieldEditMode(fieldProps)
                                     : renderFieldViewMode(type, fieldProps, validationError)}
                             </div>
-                            <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>
+                            {renderError(error)}
                         </div>
                     </>
                 )}
