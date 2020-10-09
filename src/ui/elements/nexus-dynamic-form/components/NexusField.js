@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
-import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
+import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
 import {checkFieldDependencies, getValidationFunction, renderLabel, renderError} from '../utils';
@@ -74,7 +74,9 @@ const NexusField = ({
             <AKField
                 isDisabled={isReadOnly || checkDependencies('readOnly')}
                 isRequired={checkDependencies('required') || isRequired}
-                validate={value => getValidationFunction(value, validation)}
+                validate={value =>
+                    getValidationFunction(value, validation, checkDependencies('required') || isRequired)
+                }
                 {...props}
             >
                 {({fieldProps, error}) => (

@@ -56,7 +56,11 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
     );
 };
 
-export const getValidationFunction = (value, validations) => {
+export const getValidationFunction = (value, validations = [], isRequired) => {
+    const isRequiredFunction = {
+        name: 'fieldRequired',
+    };
+    validations = isRequired ? [...validations, isRequiredFunction] : validations;
     // load dynamic file
     if (validations && validations.length > 0) {
         const promises = validations.map(v =>

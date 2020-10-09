@@ -173,20 +173,18 @@ const NexusArray = ({
         });
     };
 
+    const required = !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired);
+
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
             <AKField
                 name={path}
-                isRequired={!!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired)}
-                validate={value => getValidationFunction(value, validation)}
+                isRequired={required}
+                validate={value => getValidationFunction(value, validation, required)}
             >
                 {({fieldProps, error}) => (
                     <>
-                        {renderLabel(
-                            name,
-                            !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired),
-                            tooltip
-                        )}
+                        {renderLabel(name, required, tooltip)}
                         {renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>
