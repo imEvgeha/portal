@@ -6,7 +6,6 @@ import NexusDownload from '../../../../ui/elements/nexus-download/NexusDownload'
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import NexusJsonView from '../../../../ui/elements/nexus-json-view/NexusJsonView';
 import NexusXMLView from '../../../../ui/elements/nexus-xml-view/NexusXMLView';
-import {URL} from '../../../../util/Common';
 import {
     DRAWER_TITLE,
     EVENT_ATTACHMENTS,
@@ -25,7 +24,7 @@ import EventSectionCollapsible from '../event-section-collapsible/EventSectionCo
 import EventDrawerHeader from './components/EventDrawerHeader';
 import './EventDrawer.scss';
 
-const EventDrawer = ({id, onDrawerClose}) => {
+const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
     const [event, setEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -77,10 +76,12 @@ const EventDrawer = ({id, onDrawerClose}) => {
             });
         };
 
-        getEvent(id);
+        if(!selectedEvent && id) {
+            getEvent(id);
+        }
     }, []);
 
-    const {message, headers, attachments} = event || {};
+    const {message, headers, attachments} = event || selectedEvent || {};
 
     return (
         <div className="nexus-c-event-drawer">
@@ -162,11 +163,13 @@ const EventDrawer = ({id, onDrawerClose}) => {
 
 EventDrawer.propTypes = {
     id: PropTypes.string,
+    selectedEvent: PropTypes.object,
     onDrawerClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
     id: null,
+    selectedEvent: null,
     onDrawerClose: () => null,
 };
 
