@@ -7,7 +7,7 @@ import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS} from '../../constants';
+import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
 import {checkFieldDependencies, getValidationFunction, formatOptions} from '../../utils';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
@@ -139,7 +139,11 @@ const NexusField = ({
 
     return (
         <ErrorBoundary>
-            <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
+            <div
+                className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''} ${
+                    HIGHLIGHTED_FIELDS.includes(path) ? 'nexus-c-field--highlighted' : ''
+                }`}
+            >
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
