@@ -136,7 +136,7 @@ export const getAllFields = schema => {
     return allFields;
 };
 
-export const getProperValue = (type, value, schema) => {
+export const getProperValue = (type, value, path, schema) => {
     let val = '';
     switch (type) {
         case 'number':
@@ -149,8 +149,26 @@ export const getProperValue = (type, value, schema) => {
             break;
         case 'stringInArray':
             val = Array.isArray(value) ? value : [value];
+            break;
         case 'array':
             val = value ? value.map(v => getProperValues(schema, v)) : [];
+            break;
+        case 'multiselect':
+        case 'select':
+            val = value;
+            if (typeof value === 'object') {
+                if (Array.isArray(value)) {
+                    val = value.map(val => {
+                        if (typeof val !== 'string') {
+                            return val.value;
+                        }
+                        return val;
+                    });
+                } else if (value.value) {
+                    val = value.value;
+                }
+            }
+            break;
         default:
             val = value;
     }
@@ -213,18 +231,24 @@ export const renderNexusField = (key, view, getValues, initialData, field, selec
 
 export const getProperValues = (schema, values) => {
     // handle values before submit
-    const properValues = [];
+    let properValues = {};
     const allFields = getAllFields(schema);
     Object.keys(values).forEach(key => {
         const field = allFields[key];
         if (field) {
             const {path} = field;
-            properValues[path] = getProperValue(field.type, values[key], schema);
+            properValues = {
+                ...properValues,
+                ...getProperValue(field.type, values[key], path, schema),
+            };
         } else {
-            properValues[key] = values[key];
+            properValues = {
+                ...properValues,
+                ...{[key]: values[key]},
+            };
         }
     });
-    return {...properValues};
+    return properValues;
 };
 
 export const renderLabel = (label, isRequired, tooltip) => {
