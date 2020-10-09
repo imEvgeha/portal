@@ -14,8 +14,7 @@ const {MOVIDA, VZ} = TitleSystems;
 const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
     const renderSyncField = (name, externalID) => {
         const buttonName = !!externalID ? SYNC : PUBLISH;
-        const isDisabled = externalID && externalID.status === SUCCESS ? true : false;
-        const indicator = isDisabled ? SUCCESS : ERROR;
+        const indicator = externalID && externalID.status === SUCCESS ? SUCCESS : ERROR;
 
         const lastUpdated = externalID ? externalID.publishedAt : '';
         // If lastUpdated is a valid date, then format it to a localized and user-friendly format
@@ -33,11 +32,7 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
                     <b>{capitalize(name)}</b> Last updated: {dateToShow}
                 </div>
                 <Can I="update" a="Metadata">
-                    <AtlaskitButton
-                        appearance="primary"
-                        isDisabled={isDisabled}
-                        onClick={() => onSyncPublishClick(name, buttonName)}
-                    >
+                    <AtlaskitButton appearance="primary" onClick={() => onSyncPublishClick(name, buttonName)}>
                         {buttonName}
                     </AtlaskitButton>
                 </Can>

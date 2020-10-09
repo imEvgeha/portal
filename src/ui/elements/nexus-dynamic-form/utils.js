@@ -1,9 +1,9 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {get} from 'lodash';
-import {equalOrIncluded} from '../../../util/Common';
+import {equalOrIncluded, getSortedData} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
-import NexusField from './components/NexusField';
+import NexusField from './components/NexusField/NexusField';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -17,11 +17,16 @@ const getFieldPath = path => {
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
-    return getFieldConfig(field, 'defaultValue', view)
-        ? getFieldConfig(field, 'defaultValue', view)
-        : get(data, getFieldPath(field.path)) !== null
-        ? get(data, getFieldPath(field.path))
-        : '';
+    if (view === VIEWS.CREATE) {
+        return getFieldConfig(field, 'defaultValue', view);
+    }
+    if (field.type === 'dateRange') {
+        return {
+            startDate: get(data, field.path[0]),
+            endDate: get(data, field.path[1]),
+        };
+    }
+    return get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
 };
 
 export const getValidationError = (validationErrors, field) => {
@@ -56,7 +61,12 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
     );
 };
 
-export const getValidationFunction = (value, validations = [], isRequired) => {
+const isEmptyMultiselect = (value, isRequired) => {
+    if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
+};
+
+export const getValidationFunction = (value, validations, {type, isRequired}) => {
+    if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     const isRequiredFunction = {
         name: 'fieldRequired',
     };
@@ -75,6 +85,43 @@ export const getValidationFunction = (value, validations = [], isRequired) => {
     return undefined;
 };
 
+export const formatOptions = (options, optionsConfig) => {
+    const {defaultValuePath, defaultLabelPath} = optionsConfig;
+    const valueField = defaultValuePath !== undefined ? defaultValuePath : 'value';
+    const labelField = defaultLabelPath !== undefined ? defaultLabelPath : 'value';
+
+    const formattedOptions = options.map(opt => {
+        return {
+            label: opt[labelField],
+            value: opt[valueField],
+        };
+    });
+    return sortOptions(formattedOptions);
+};
+
+const sortOptions = options => {
+    const SORT_TYPE = 'label';
+    return getSortedData(options, SORT_TYPE, true);
+};
+
+export const formatValues = values => {
+    Object.keys(values).map(key => {
+        if (values[key] === null) values[key] = [];
+        if (typeof values[key] === 'object') {
+            if (Array.isArray(values[key])) {
+                values[key] = values[key].map(val => {
+                    if (typeof val !== 'string') {
+                        return val.value;
+                    }
+                    return val;
+                });
+            } else if (values[key].value) {
+                values[key] = values[key].value;
+            }
+        }
+    });
+};
+
 export const getAllFields = schema => {
     let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
@@ -90,19 +137,36 @@ export const getAllFields = schema => {
 };
 
 export const getProperValue = (type, value, schema) => {
+    let val = '';
     switch (type) {
         case 'number':
-            return Number(value);
+            val = Number(value);
+        case 'dateRange':
+            val = {
+                [path[0]]: value.startDate,
+                [path[1]]: value.endDate,
+            };
+            break;
         case 'stringInArray':
-            return Array.isArray(value) ? value : [value];
+            val = Array.isArray(value) ? value : [value];
         case 'array':
-            return value ? value.map(v => getProperValues(schema, v)) : [];
+            val = value ? value.map(v => getProperValues(schema, v)) : [];
         default:
-            return value;
+            val = value;
     }
+    return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (fields = {}, getValues, view, initialData, setFieldValue, schema, setDisableSubmit) => {
+export const buildSection = (
+    fields = {},
+    getValues,
+    view,
+    initialData,
+    setFieldValue,
+    schema,
+    setDisableSubmit,
+    selectValues
+) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -121,7 +185,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, initialData, fields[key])}
+                            {renderNexusField(key, view, getValues, initialData, fields[key], selectValues)}
                         </div>
                     ))
                 );
@@ -130,7 +194,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
     );
 };
 
-export const renderNexusField = (key, view, getValues, initialData, field) => {
+export const renderNexusField = (key, view, getValues, initialData, field, selectValues) => {
     return (
         <NexusField
             {...field}
@@ -142,6 +206,7 @@ export const renderNexusField = (key, view, getValues, initialData, field) => {
             formData={getValues()}
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}
+            selectValues={selectValues}
         />
     );
 };

@@ -37,7 +37,7 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
 
         const moveTo = columns.findIndex(col => col.colDef.headerName === columnHeader);
         const moveFrom = updatedMappings.findIndex(col => col.headerName === columnHeader);
-        const movedColumn = updatedMappings.splice(moveFrom, 1)[0];
+        const [movedColumn] = updatedMappings.splice(moveFrom, 1);
         updatedMappings.splice(moveTo, 0, movedColumn);
 
         setUpdatedColDef(updatedMappings);
