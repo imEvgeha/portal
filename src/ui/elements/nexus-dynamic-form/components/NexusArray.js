@@ -174,7 +174,7 @@ const NexusArray = ({
     };
 
     return (
-        <div className="nexus-c-array">
+        <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
             <AKField
                 name={path}
                 isRequired={!!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired)}
@@ -188,6 +188,7 @@ const NexusArray = ({
                             tooltip
                         )}
                         {renderError(error)}
+                        {validationError && <div>{validationError}</div>}
                     </>
                 )}
             </AKField>

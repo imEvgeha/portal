@@ -112,6 +112,7 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             setDisableSubmit={setDisableSubmit}
+                            validationError={getValidationError(initialData.validationErrors, fields[key])}
                             {...fields[key]}
                         />
                     ) : (
