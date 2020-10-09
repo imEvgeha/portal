@@ -92,7 +92,7 @@ export const getProperValue = (type, value, schema) => {
         case 'stringInArray':
             return Array.isArray(value) ? value : [value];
         case 'array':
-            return value.map(v => getProperValues(schema, v));
+            return value ? value.map(v => getProperValues(schema, v)) : [];
         default:
             return value;
     }

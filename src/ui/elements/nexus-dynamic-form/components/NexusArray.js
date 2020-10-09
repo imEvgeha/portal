@@ -32,6 +32,8 @@ const NexusArray = ({
     tooltip,
     dependencies,
     path,
+    validationError,
+    validation,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -176,7 +178,7 @@ const NexusArray = ({
             <AKField
                 name={path}
                 isRequired={!!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired)}
-                // validate={value => getValidationFunction(value, validation)}
+                validate={value => getValidationFunction(value, validation)}
             >
                 {({fieldProps, error}) => (
                     <>
@@ -208,6 +210,8 @@ NexusArray.propTypes = {
     setDisableSubmit: PropTypes.func,
     confirmationContent: PropTypes.string,
     isRequired: PropTypes.bool,
+    validationError: PropTypes.string,
+    validation: PropTypes.array,
     dependencies: PropTypes.array,
 };
 
@@ -221,6 +225,8 @@ NexusArray.defaultProps = {
     setDisableSubmit: undefined,
     confirmationContent: null,
     isRequired: false,
+    validationError: null,
+    validation: [],
     dependencies: [],
 };
 
