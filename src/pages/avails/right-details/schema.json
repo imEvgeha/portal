@@ -38,6 +38,12 @@
                         "path": "format",
                         "isRequired": true
                     },
+                    "startLag": {
+                        "name": "Start Lag",
+                        "type": "string",
+                        "path": "startLag",
+                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
+                    },
                     "licensed": {
                         "name": "Licensed",
                         "type": "boolean",
@@ -113,6 +119,11 @@
                                 { "label": "Hotel", "value": "Hotel" }
                             ]
                         }
+                    },
+                    "keywords": {
+                        "name": "Keywords",
+                        "type": "string",
+                        "path": "keywords"
                     },
                     "rightStatus": {
                         "name": "Right Status",

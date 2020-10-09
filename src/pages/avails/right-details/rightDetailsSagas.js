@@ -11,6 +11,7 @@ const formatSelectValues = values => {
     values.map(opt => {
         const [key] = Object.keys(opt);
         selectValues[key] = cloneDeep(opt[key]);
+        return null;
     });
     return selectValues;
 };
