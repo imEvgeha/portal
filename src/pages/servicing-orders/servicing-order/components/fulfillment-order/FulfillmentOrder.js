@@ -26,8 +26,8 @@ export const FulfillmentOrder = ({
     updatedServices,
     children,
     cancelEditing,
-    save,
-    setSave,
+    isSaved,
+    setIsSaved,
     setRefresh,
     lastOrder,
 }) => {
@@ -103,17 +103,9 @@ export const FulfillmentOrder = ({
         [updatedServices]
     );
 
-    /* useEffect(
-        () => {
-            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [fulfillmentOrder]
-    ); */
-
     useEffect(() => {
-        setIsSaveDisabled(!save);
-    }, [save]);
+        setIsSaveDisabled(!isSaved);
+    }, [isSaved]);
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
@@ -139,7 +131,7 @@ export const FulfillmentOrder = ({
                 text: 'Cancel',
                 onClick: () => {
                     closeModal();
-                    setIsSaveDisabled(true);
+                    setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
                 },
             },
         ];
@@ -155,7 +147,7 @@ export const FulfillmentOrder = ({
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
-        setSave(false);
+        setIsSaved(false);
         setIsSaveDisabled(true);
         setSelectedOrder(lastOrder);
     };
@@ -163,12 +155,10 @@ export const FulfillmentOrder = ({
     const onSaveHandler = () => {
         const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
-        setSave(false);
+        setIsSaved(false);
         setIsSaveDisabled(true);
         setRefresh(prev => !prev);
     };
-
-    // console.log('fulfillmentOrder.js 2: ', fulfillmentOrder, savedFulfillmentOrder, selectedFulfillmentOrder);
 
     return (
         <Page>
@@ -285,22 +275,22 @@ FulfillmentOrder.propTypes = {
     updatedServices: PropTypes.object,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
-    save: PropTypes.bool.isRequired,
-    setSave: PropTypes.func.isRequired,
+    isSaved: PropTypes.bool.isRequired,
+    setIsSaved: PropTypes.func.isRequired,
     setRefresh: PropTypes.func,
     lastOrder: PropTypes.object.isRequired,
 };
 
 FulfillmentOrder.defaultProps = {
     selectedFulfillmentOrder: {},
-    setSelectedOrder: null,
-    setSelectedFulfillmentOrderID: null,
-    fetchFulfillmentOrders: null,
+    setSelectedOrder: () => null,
+    setSelectedFulfillmentOrderID: () => null,
+    fetchFulfillmentOrders: () => null,
     serviceOrder: null,
-    updatedServices: null,
+    updatedServices: () => null,
     children: null,
-    cancelEditing: null,
-    setRefresh: null,
+    cancelEditing: () => null,
+    setRefresh: () => null,
 };
 
 export default FulfillmentOrder;

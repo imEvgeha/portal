@@ -2,7 +2,8 @@ import {get, cloneDeep} from 'lodash';
 import {getMgmAssetByBarcode, getMgmTitleByBarcode} from '../../../servicingOrdersService';
 
 const Loading = 'loading...';
-const TIME_TO_REFRESH = 200;
+const NotFound = 'Not Found';
+const REFRESH_TIME = 500;
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
@@ -46,9 +47,9 @@ export const fetchAssetFields = async barcode => {
 
 export const populateMgmData = (fulfillmentOrders, setRefresh) => {
     if (!Array.isArray(fulfillmentOrders)) return [];
-    const FO = cloneDeep(fulfillmentOrders);
+    const fulfillmentOrdersWithAssetInfo = cloneDeep(fulfillmentOrders);
     // eslint-disable-next-line array-callback-return
-    FO.map(item => {
+    fulfillmentOrdersWithAssetInfo.map(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
@@ -61,26 +62,25 @@ export const populateMgmData = (fulfillmentOrders, setRefresh) => {
                 item.standard = Loading;
                 item.status = Loading;
                 getMgmTitleByBarcode(item.barcode)
-                    // eslint-disable-next-line no-return-assign
-                    .then(res => (item.title = res[0].name || 'Not Found'))
-                    // eslint-disable-next-line no-return-assign
-                    .catch(err => (item.title = 'Not Found'));
+                    .then(res => (item.title = res[0].name || NotFound))
+                    .catch(err => (item.title = NotFound));
                 getMgmAssetByBarcode(item.barcode)
                     .then(res => {
-                        item.version = res.spec || 'Not Found';
-                        item.assetFormat = res.assetFormat || 'Not Found';
-                        item.standard = res.componentAssociations[0].component.standard || 'Not Found';
-                        item.status = res.status || 'Not Found';
-                        // eslint-disable-next-line no-unused-expressions,no-magic-numbers
-                        index === length - 1 ? setTimeout(() => setRefresh(), 500) : null;
+                        const {spec, assetFormat, componentAssociations, status} = res;
+                        item.version = spec || NotFound;
+                        item.assetFormat = assetFormat || NotFound;
+                        item.standard = componentAssociations[0].component.standard || NotFound;
+                        item.status = status || NotFound;
+                        // eslint-disable-next-line no-unused-expressions
+                        index === length - 1 ? setTimeout(() => setRefresh(), REFRESH_TIME) : null;
                     })
                     .catch(err => {
-                        item.version = 'Not Found';
-                        item.status = 'Not Found';
-                        item.assetFormat = 'Not Found';
-                        item.standard = 'Not Found';
+                        item.version = NotFound;
+                        item.status = NotFound;
+                        item.assetFormat = NotFound;
+                        item.standard = NotFound;
                     });
             });
     });
-    return FO;
+    return fulfillmentOrdersWithAssetInfo;
 };

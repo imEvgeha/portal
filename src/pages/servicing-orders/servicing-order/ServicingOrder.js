@@ -21,7 +21,7 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
     const [refresh, setRefresh] = useState(false);
-    const [save, setSave] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         const order =
@@ -118,8 +118,8 @@ const ServicingOrder = ({match}) => {
                         setSelectedSource({...selectedSource});
                         setSelectedOrder({...selectedOrder});
                     }}
-                    save={save}
-                    setSave={setSave}
+                    isSaved={isSaved}
+                    setIsSaved={setIsSaved}
                     setRefresh={setRefresh}
                     lastOrder={lastOrder}
                 >
@@ -128,14 +128,14 @@ const ServicingOrder = ({match}) => {
                         data={prepareRowData(selectedOrder)}
                         setUpdatedServices={setUpdatedServices}
                         isDisabled={isFormDisabled(selectedOrder)}
-                        setSave={setSave}
+                        setIsSaved={setIsSaved}
                     />
                     {selectedSource && (
                         <ServicesTable
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
-                            setSave={setSave}
+                            setIsSaved={setIsSaved}
                         />
                     )}
                 </FulfillmentOrder>

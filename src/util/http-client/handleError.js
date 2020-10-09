@@ -16,6 +16,8 @@ import {addToast, removeToast} from '../../ui/toast/toastActions';
     can pass successToast if needed to show toast on success of a API call
     default success title, icon and autoDismiss are already added
     (if successToast is passed then only these are displayed)
+
+    remove toast after 4 seconds
 */
 
 const showErrorModal = error => {

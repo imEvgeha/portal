@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import {Radio} from '@atlaskit/radio';
-import {isEqual, cloneDeep, flatten} from 'lodash';
+import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -23,7 +23,7 @@ const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
 const Loading = 'loading...';
 
-const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled, setSave}) => {
+const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled, setIsSaved}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
@@ -141,7 +141,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                     };
                     setSources(newSources);
                     setUpdatedServices(sendSources[0]);
-                    setSave(true);
+                    setIsSaved(true);
                 } catch (e) {
                     const prevSources = sources.slice();
                     prevSources[rowIndex] = {
@@ -187,7 +187,7 @@ SourcesTable.propTypes = {
     onSelectedSourceChange: PropTypes.func.isRequired,
     setUpdatedServices: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
-    setSave: PropTypes.func.isRequired,
+    setIsSaved: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {

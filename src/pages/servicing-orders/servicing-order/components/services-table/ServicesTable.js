@@ -19,7 +19,7 @@ const OP_STATUS_COL_INDEX = 4;
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const ServicesTable = ({data, isDisabled, setUpdatedServices, setSave}) => {
+const ServicesTable = ({data, isDisabled, setUpdatedServices, setIsSaved}) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
@@ -100,7 +100,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, setSave}) => {
             setServices(newServices);
             // this change is propogated up to the Servicing Order form to submit
             setUpdatedServices(newServices);
-            setSave(true);
+            setIsSaved(true);
         }
     };
 
@@ -181,7 +181,7 @@ ServicesTable.propTypes = {
     data: PropTypes.object,
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
-    setSave: PropTypes.func.isRequired,
+    setIsSaved: PropTypes.func.isRequired,
 };
 
 ServicesTable.defaultProps = {
