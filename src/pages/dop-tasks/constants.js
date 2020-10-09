@@ -5,6 +5,7 @@ export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
 export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
+export const ACTUAL_OWNER = 'actualOwner';
 export const ALL = '*';
 export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
 export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectid=';
@@ -24,7 +25,7 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
 ];
 
-export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+export const TASK_STATUS_ENUM = ['READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
 
 export const PROJECT_STATUS_ENUM = {
     'BNOT STARTED': 'NOT STARTED',
