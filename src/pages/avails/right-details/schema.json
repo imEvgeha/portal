@@ -36,6 +36,7 @@
                         "name": "Release Year",
                         "type": "string",
                         "path": "releaseYear",
+                        "isRequired": true,
                         "validation": [
                             {
                                 "name": "lengthEqual",
