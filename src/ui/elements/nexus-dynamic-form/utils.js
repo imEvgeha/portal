@@ -142,6 +142,7 @@ export const getProperValue = (type, value, path, schema) => {
     switch (type) {
         case 'number':
             val = Number(value);
+            break;
         case 'dateRange':
             val = {
                 [path[0]]: value.startDate,
