@@ -10,10 +10,12 @@ import './EventManagement.scss';
 
 const EventManagement = props => {
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
 
     const closeEventDrawer = () => {
         setSelectedEvent(null);
+        setSelectedEventId(null);
         setSearchParams('selectedEventId', null);
         gridApi && gridApi.deselectAll();
     };
@@ -55,7 +57,11 @@ const EventManagement = props => {
     const onSelectionChanged = selectedRow => {
         if (selectedRow) {
             const {id} = selectedRow;
-            setSelectedEvent(id);
+            if(URL.isLocalOrDevOrQA()) {
+                setSelectedEventId(id);
+            } else {
+                setSelectedEvent(selectedRow);
+            }
             setSearchParams('selectedEventId', id);
         }
     };
@@ -71,7 +77,7 @@ const EventManagement = props => {
         const params = new URLSearchParams(props.location.search.substring(1));
         const selectedEventId = JSON.parse(params.get('selectedEventId'));
         if (selectedEventId) {
-            setSelectedEvent(selectedEventId);
+            setSelectedEventId(selectedEventId);
         }
     }, []);
 
@@ -131,7 +137,7 @@ const EventManagement = props => {
                     onSortChanged={onSortChanged}
                 />
             </div>
-            {selectedEvent && <EventDrawer id={selectedEvent} onDrawerClose={closeEventDrawer} />}
+            {(selectedEventId || selectedEvent) && <EventDrawer id={selectedEventId} selectedEvent={selectedEvent} onDrawerClose={closeEventDrawer} />}
         </div>
     );
 };
