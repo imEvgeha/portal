@@ -138,6 +138,7 @@ export const getAllFields = schema => {
 
 export const getProperValue = (type, value, path, schema) => {
     let val = '';
+    if (value === null) val = [];
     switch (type) {
         case 'number':
             val = Number(value);
@@ -158,11 +159,11 @@ export const getProperValue = (type, value, path, schema) => {
             val = value;
             if (typeof value === 'object') {
                 if (Array.isArray(value)) {
-                    val = value.map(val => {
-                        if (typeof val !== 'string') {
-                            return val.value;
+                    val = value.map(v => {
+                        if (typeof v !== 'string') {
+                            return v.value;
                         }
-                        return val;
+                        return v;
                     });
                 } else if (value.value) {
                     val = value.value;
