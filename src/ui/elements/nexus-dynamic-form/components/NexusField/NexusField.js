@@ -127,13 +127,21 @@ const NexusField = ({
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             case 'dateRange':
             case 'datetime':
-                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                if (fieldProps.value) {
+                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                }
+                return <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>;
             default:
-                return fieldProps.value ? (
-                    <div>{Array.isArray(fieldProps.value) ? fieldProps.value.join(', ') : fieldProps.value}</div>
-                ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
-                );
+                if (fieldProps.value) {
+                    if (Array.isArray(fieldProps.value)) {
+                        if (fieldProps.value.length) {
+                            return fieldProps.value.join(', ');
+                        }
+                        return <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>;
+                    }
+                    return fieldProps.value;
+                }
+                return <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>;
         }
     };
 
