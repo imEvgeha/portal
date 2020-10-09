@@ -49,10 +49,10 @@ const ServicingOrder = ({match}) => {
                     setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
                     setSelectedOrder(sortedFulfillmentOrders[0]);
                 } else {
-                    const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
+                    let fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
                     );
-
+                    fulfillmentOrders = populateMgmData(fulfillmentOrders, setRefresh);
                     setServiceOrder({
                         ...servicingOrder,
                         fulfillmentOrders,
@@ -94,8 +94,6 @@ const ServicingOrder = ({match}) => {
         const {readiness} = selectedOrder;
         return readiness === 'READY';
     };
-
-    // console.log('selectedOrder:::: ', selectedSource, selectedOrder);
 
     return (
         <div className="servicing-order">
