@@ -180,7 +180,7 @@ const NexusArray = ({
             <AKField
                 name={path}
                 isRequired={required}
-                validate={value => getValidationFunction(value, validation, required)}
+                validate={value => getValidationFunction(value, validation, {type: 'array', isRequired: required})}
             >
                 {({fieldProps, error}) => (
                     <>

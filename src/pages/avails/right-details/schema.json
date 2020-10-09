@@ -227,7 +227,7 @@
                             {
                                 "view": "EDIT",
                                 "type": "required",
-                                "field": "Licensed",
+                                "field": "licensed",
                                 "value": false
                             }
                         ]
@@ -242,7 +242,7 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Licensed",
+                                "field": "licensed",
                                 "value": false
                             }
                         ]

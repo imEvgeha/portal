@@ -146,7 +146,7 @@ const NexusField = ({
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
-                    validate={value => getValidationFunction(value, validation, {type, required})}
+                    validate={value => getValidationFunction(value, validation, {type, isRequired: required})}
                     {...props}
                 >
                     {({fieldProps, error}) => (
