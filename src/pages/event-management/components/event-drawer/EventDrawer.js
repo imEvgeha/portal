@@ -64,7 +64,9 @@ const EventDrawer = ({id, onDrawerClose}) => {
             return getEventById(id).then(evt => {
                 const fetchedEvent = {...get(evt, 'event', null), id};
                 const message = get(fetchedEvent, 'message', {});
-                const headers = {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')};
+                const headers = URL.isLocalOrDevOrQA()
+                    ? {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')}
+                    : fetchedEvent;
                 const attachments = get(message, 'attachments', {});
                 setEvent({
                     message,
