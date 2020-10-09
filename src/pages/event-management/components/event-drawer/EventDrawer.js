@@ -58,14 +58,12 @@ const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
     };
 
     useEffect(() => {
-        setIsLoading(true);
         const getEvent = id => {
+            setIsLoading(true);
             return getEventById(id).then(evt => {
                 const fetchedEvent = {...get(evt, 'event', null), id};
                 const message = get(fetchedEvent, 'message', {});
-                const headers = URL.isLocalOrDevOrQA()
-                    ? {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')}
-                    : fetchedEvent;
+                const headers = {...get(fetchedEvent, 'headers', {}), id: get(fetchedEvent, 'id', '')};
                 const attachments = get(message, 'attachments', {});
                 setEvent({
                     message,
@@ -76,18 +74,24 @@ const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
             });
         };
 
-        if(!selectedEvent && id) {
+        if (!selectedEvent && id) {
             getEvent(id);
         }
     }, []);
 
-    const {message, headers, attachments} = event || selectedEvent || {};
+    const {message, headers, attachments} =
+        event || {
+            message: get(selectedEvent, 'message', {}),
+            headers: selectedEvent || {},
+            attachments: get(selectedEvent, 'message.attachments', {}),
+        } ||
+        {};
 
     return (
         <div className="nexus-c-event-drawer">
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={!!id}
+                isOpen={!!(id || selectedEvent)}
                 isLoading={isLoading}
                 title={DRAWER_TITLE}
                 width="wide"
