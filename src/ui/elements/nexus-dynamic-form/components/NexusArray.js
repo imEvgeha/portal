@@ -6,11 +6,23 @@ import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {CANCEL, DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
-import {buildSection, getFieldConfig, renderNexusField} from '../utils';
+import {buildSection, checkFieldDependencies, getFieldConfig, renderLabel, renderNexusField} from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
 
-const NexusArray = ({name, view, data, fields, getValues, setFieldValue, setDisableSubmit, confirmationContent}) => {
+const NexusArray = ({
+    name,
+    view,
+    data,
+    fields,
+    getValues,
+    setFieldValue,
+    setDisableSubmit,
+    confirmationContent,
+    isRequired,
+    tooltip,
+    dependencies,
+}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
@@ -151,6 +163,11 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, setDisa
 
     return (
         <div className="nexus-c-array">
+            {renderLabel(
+                name,
+                !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired),
+                tooltip
+            )}
             <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>
             <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>
@@ -160,22 +177,28 @@ const NexusArray = ({name, view, data, fields, getValues, setFieldValue, setDisa
 NexusArray.propTypes = {
     name: PropTypes.string.isRequired,
     view: PropTypes.string,
+    tooltip: PropTypes.string,
     data: PropTypes.array,
     fields: PropTypes.object,
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
     setDisableSubmit: PropTypes.func,
     confirmationContent: PropTypes.string,
+    isRequired: PropTypes.bool,
+    dependencies: PropTypes.array,
 };
 
 NexusArray.defaultProps = {
     view: VIEWS.VIEW,
+    tooltip: null,
     data: [],
     fields: {},
     getValues: undefined,
     setFieldValue: undefined,
     setDisableSubmit: undefined,
     confirmationContent: null,
+    isRequired: false,
+    dependencies: [],
 };
 
 export default NexusArray;

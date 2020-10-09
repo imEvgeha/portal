@@ -5,7 +5,7 @@ import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import NexusTextArea from '../../nexus-textarea/NexusTextArea';
-import {checkFieldDependencies, getValidationFunction} from '../utils';
+import {checkFieldDependencies, getValidationFunction, renderLabel} from '../utils';
 import {VIEWS} from '../constants';
 import './NexusField.scss';
 
@@ -79,14 +79,7 @@ const NexusField = ({
             >
                 {({fieldProps, error}) => (
                     <>
-                        <div className="nexus-c-field__label">
-                            {`${label}${checkDependencies('required') || isRequired ? '*' : ''}: `}
-                            {tooltip && (
-                                <span title={tooltip} style={{color: 'grey'}}>
-                                    <i className="far fa-question-circle" />
-                                </span>
-                            )}
-                        </div>
+                        {renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
                         <div className="nexus-c-field__value-section">
                             <div className="nexus-c-field__value">
                                 {view === VIEWS.EDIT || view === VIEWS.CREATE

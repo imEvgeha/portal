@@ -109,11 +109,10 @@ export const buildSection = (fields = {}, getValues, view, initialData, setField
                             name={key}
                             view={view}
                             data={getDefaultValue(fields[key], view, initialData)}
-                            fields={get(fields[key], 'fields')}
-                            confirmationContent={get(fields[key], 'confirmationContent')}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             setDisableSubmit={setDisableSubmit}
+                            {...fields[key]}
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
@@ -156,4 +155,17 @@ export const getProperValues = (schema, values) => {
         }
     });
     return {...properValues};
+};
+
+export const renderLabel = (label, isRequired, tooltip) => {
+    return (
+        <div className="nexus-c-field__label">
+            {`${label}${isRequired ? '*' : ''}: `}
+            {tooltip && (
+                <span title={tooltip} style={{color: 'grey'}}>
+                    <i className="far fa-question-circle" />
+                </span>
+            )}
+        </div>
+    );
 };
