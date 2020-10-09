@@ -11,6 +11,7 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import usePrevious from '../../../../../util/hooks/usePrevious';
+import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {NON_EDITABLE_COLS, SELECT_VALUES} from './Constants';
 import columnDefinitions from './columnDefinitions';
@@ -101,56 +102,59 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onSourceTableChange = async ({type, rowIndex, data}) => {
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            if (barcodes[rowIndex] !== data.barcode) {
-                // call MGM fetch api and update barcode
-                const loadingSources = sources.slice();
-                let loading = data;
-                loading = {
-                    ...loading,
-                    title: Loading,
-                    version: Loading,
-                    assetFormat: Loading,
-                    status: Loading,
-                    standard: Loading,
-                };
-                loadingSources[rowIndex] = loading;
-                setSources(loadingSources);
-                try {
-                    const res = await fetchAssetFields(data.barcode);
-                    const newSources = sources.slice();
-                    const sendSources = sources.slice();
-                    newSources[rowIndex] = {
-                        amsAssetId: data.barcode,
-                        barcode: newSources[rowIndex].barcode,
-                        assetFormat: res.assetFormat,
-                        title: res.title[0].name,
-                        version: res.spec,
-                        status: res.status,
-                        standard: res.componentAssociations[0].component.standard,
-                        externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
+            if (barcodes.find(item => item === data.barcode)) {
+                showToastForErrors(`Barcode ${data.barcode} already exists in list`, {});
+            } else if (barcodes[rowIndex] !== data.barcode) {
+                    // call MGM fetch api and update barcode
+                    const loadingSources = sources.slice();
+                    let loading = data;
+                    loading = {
+                        ...loading,
+                        title: Loading,
+                        version: Loading,
+                        assetFormat: Loading,
+                        status: Loading,
+                        standard: Loading,
                     };
-                    sendSources[0].deteServices[0].deteSources[rowIndex] = {
-                        amsAssetId: data.barcode,
-                        barcode: data.barcode,
-                        assetFormat: res.assetFormat,
-                        title: res.title[0].name,
-                        version: res.spec,
-                        status: res.status,
-                        standard: res.componentAssociations[0].component.standard,
-                        externalSources: sendSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
-                    };
-                    setSources(newSources);
-                    setUpdatedServices(sendSources[0]);
-                    setIsSaved(true);
-                } catch (e) {
-                    const prevSources = sources.slice();
-                    prevSources[rowIndex] = {
-                        ...prevSources[rowIndex],
-                        barcode: barcodes[rowIndex],
-                    };
-                    setSources(prevSources);
+                    loadingSources[rowIndex] = loading;
+                    setSources(loadingSources);
+                    try {
+                        const res = await fetchAssetFields(data.barcode);
+                        const newSources = sources.slice();
+                        const sendSources = sources.slice();
+                        newSources[rowIndex] = {
+                            amsAssetId: data.barcode,
+                            barcode: newSources[rowIndex].barcode,
+                            assetFormat: res.assetFormat,
+                            title: res.title[0].name,
+                            version: res.spec,
+                            status: res.status,
+                            standard: res.componentAssociations[0].component.standard,
+                            externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
+                        };
+                        sendSources[0].deteServices[0].deteSources[rowIndex] = {
+                            amsAssetId: data.barcode,
+                            barcode: data.barcode,
+                            assetFormat: res.assetFormat,
+                            title: res.title[0].name,
+                            version: res.spec,
+                            status: res.status,
+                            standard: res.componentAssociations[0].component.standard,
+                            externalSources:
+                                sendSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
+                        };
+                        setSources(newSources);
+                        setUpdatedServices(sendSources[0]);
+                        setIsSaved(true);
+                    } catch (e) {
+                        const prevSources = sources.slice();
+                        prevSources[rowIndex] = {
+                            ...prevSources[rowIndex],
+                            barcode: barcodes[rowIndex],
+                        };
+                        setSources(prevSources);
+                    }
                 }
-            }
         }
     };
 

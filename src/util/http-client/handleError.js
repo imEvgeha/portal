@@ -34,7 +34,7 @@ const showErrorModal = error => {
     }
 };
 
-const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
+export const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
     let {status, data = {}, message, description} = error || {};
     if (typeof error === 'string') message = error;
 

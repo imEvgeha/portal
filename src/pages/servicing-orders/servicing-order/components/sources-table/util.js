@@ -66,7 +66,7 @@ export const populateMgmData = (fulfillmentOrders, setRefresh) => {
                     .catch(err => (item.title = NotFound));
                 getMgmAssetByBarcode(item.barcode)
                     .then(res => {
-                        const {spec, assetFormat, componentAssociations, status} = res;
+                        const {spec, assetFormat, componentAssociations = [], status} = res;
                         item.version = spec || NotFound;
                         item.assetFormat = assetFormat || NotFound;
                         item.standard = componentAssociations[0].component.standard || NotFound;
