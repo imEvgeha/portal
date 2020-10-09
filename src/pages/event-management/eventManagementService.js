@@ -3,7 +3,7 @@ import config from 'react-global-configuration';
 import {URL} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
-const HEADERS_ONLY = true;
+const HEADERS_ONLY = URL.isLocalOrDevOrQA();
 const FETCH_PAGE_SIZE = 100;
 
 export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
