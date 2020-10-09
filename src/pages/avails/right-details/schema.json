@@ -209,46 +209,6 @@
                 }
             },
             {
-                "title": "Content",
-                "fields": {
-                    "contentType": {
-                        "name": "Content Type",
-                        "type": "string",
-                        "path": "contentType"
-                    },
-                    "availDates": {
-                        "name": "Avail Date Range",
-                        "type": "dateRange",
-                        "dateType": "businessDateTime",
-                        "labels": ["Avail Start", "Avail End"],
-                        "path": ["availStart", "availEnd"],
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "required",
-                                "field": "Licensed",
-                                "value": false
-                            }
-                        ]
-                    },
-                    "dates": {
-                        "name": "Date Range",
-                        "type": "dateRange",
-                        "dateType": "businessDateTime",
-                        "labels": ["Start", "End"],
-                        "path": ["start", "end"],
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "Licensed",
-                                "value": false
-                            }
-                        ]
-                    }
-                }
-            },
-            {
                 "title": "Pricing",
                 "fields": {
                     "srp": {
@@ -649,55 +609,23 @@
         ]
     },
     {
-        "title": "Localization",
+        "title": "Localization and captions",
         "sections": [
             {
                 "title": "Localization",
                 "fields": {}
-            }
-        ]
-    },
-    {
-        "title": "Series",
-        "sections": [
+            },
             {
-                "title": "Series",
+                "title": "Captions",
                 "fields": {}
             }
         ]
     },
     {
-        "title": "Rating",
+        "title": "Other",
         "sections": [
             {
-                "title": "Rating",
-                "fields": {}
-            }
-        ]
-    },
-    {
-        "title": "Pricing",
-        "sections": [
-            {
-                "title": "Pricing",
-                "fields": {}
-            }
-        ]
-    },
-    {
-        "title": "Branding",
-        "sections": [
-            {
-                "title": "Branding",
-                "fields": {}
-            }
-        ]
-    },
-    {
-        "title": "Package",
-        "sections": [
-            {
-                "title": "Package",
+                "title": "Other",
                 "fields": {
                     "originallyReceivedAt": {
                         "name": "Originally Received At",
@@ -717,16 +645,50 @@
                         "type": "datetime",
                         "dateType": "regionalMidnight",
                         "path": "termYearStart"
+                    },
+                    "availDates": {
+                        "name": "Avail Date Range",
+                        "type": "dateRange",
+                        "dateType": "businessDateTime",
+                        "labels": ["Avail Start", "Avail End"],
+                        "path": ["availStart", "availEnd"],
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "required",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "dates": {
+                        "name": "Date Range",
+                        "type": "dateRange",
+                        "dateType": "businessDateTime",
+                        "labels": ["Start", "End"],
+                        "path": ["start", "end"],
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Licensed",
+                                "value": false
+                            }
+                        ]
                     }
                 }
+            },
+            {
+                "title": "Cast",
+                "fields": {}
             }
         ]
     },
     {
-        "title": "Change Log",
+        "title": "Music",
         "sections": [
             {
-                "title": "Change Log",
+                "title": "Music",
                 "fields": {}
             }
         ]

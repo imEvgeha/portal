@@ -7,14 +7,14 @@
 }
 
 .nexus-c-dynamic-form__tab-container {
-    width: 80%;
+    width: calc((100% - 64px) * 0.8);
+    margin: auto;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    border-bottom: 1px solid map-get($neutrals, N40);
     position: fixed;
     top: 131px;
-    // TODO: Change background color for the app.
-    // (Not part of atlaskit's colors, but used as default background)
     background-color: map-get($neutrals, N0);
     z-index: 1;
 }
