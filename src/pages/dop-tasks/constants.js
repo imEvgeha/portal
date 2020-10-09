@@ -4,7 +4,11 @@ export const MY_SAVED_VIEWS_LABEL = 'My Saved Views';
 export const MY_PREDEFINED_VIEWS_LABEL = 'Predefined Views';
 export const SAVED_TABLE_DROPDOWN_LABEL = 'Saved Table View:';
 export const USER = 'user';
+export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ALL = '*';
+export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
+export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectid=';
+export const PAGE_LIMIT = 100;
 
 export const QUEUED_TASKS_OPTIONS = [
     {label: 'My Tasks', value: 'user'},
@@ -20,110 +24,152 @@ export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
 ];
 
+export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
+
+export const PROJECT_STATUS_ENUM = {
+    'BNOT STARTED': 'NOT STARTED',
+    'CIN PROGRESS': 'IN PROGRESS',
+    'CDRELEASE IN PROGRESS': 'RELEASE IN PROGRESS',
+    DCOMPLETED: 'COMPLETED',
+    'ECANCEL IN PROGRESS': 'CANCEL IN PROGRESS',
+    FCANCELLED: 'CANCELLED',
+    'AHHOLD IN PROGRESS': 'HOLD IN PROGRESS',
+    'AIN ERROR': 'IN ERROR',
+};
+
 export const COLUMN_MAPPINGS = [
     {
         colId: 'taskName',
         field: 'taskName',
         headerName: 'Task Name',
+        javaVariableName: 'taskName',
+        enableSearch: true,
+        cellRenderer: 'loadingCellRenderer',
         width: 150,
     },
     {
         colId: 'taskStatus',
         field: 'taskStatus',
+        javaVariableName: 'taskStatus',
         headerName: 'Status',
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        options: TASK_STATUS_ENUM,
         width: 180,
     },
     {
         colId: 'activityEstimatedEndDate',
         field: 'activityEstimatedEndDate',
+        javaVariableName: 'activityEstimatedEndDate',
         headerName: 'Due Date',
-        width: 180,
+        dataType: 'regionalMidnight',
+        searchDataType: 'regionalMidnight',
+        width: 120,
     },
     {
         colId: 'projectName',
         field: 'projectName',
+        javaVariableName: 'projectName',
+        cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
         width: 150,
     },
     {
         colId: 'OrderExternalID',
         field: 'OrderExternalID',
+        javaVariableName: 'OrderExternalID',
         headerName: 'External Order ID',
         width: 150,
     },
     {
         colId: 'Customer',
         field: 'Customer',
+        javaVariableName: 'Customer',
         headerName: 'Customer Name',
         width: 180,
     },
     {
         colId: 'servicingRegion',
         field: 'servicingRegion',
+        javaVariableName: 'servicingRegion',
         headerName: 'Servicing Region',
         width: 120,
     },
     {
         colId: 'potentialOwners',
         field: 'potentialOwners',
+        javaVariableName: 'potentialOwners',
         headerName: 'Work Queue',
         width: 120,
     },
     {
         colId: 'actualOwner',
         field: 'actualOwner',
+        javaVariableName: 'actualOwner',
         headerName: 'Owner',
         width: 120,
     },
     {
         colId: 'activityActualStartDate',
         field: 'activityActualStartDate',
+        javaVariableName: 'activityActualStartDate',
         headerName: 'Actual Start Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
+        hide: true,
     },
     {
         colId: 'activityActualEndDate',
         field: 'activityActualEndDate',
+        javaVariableName: 'activityActualEndDate',
         headerName: 'Actual Completion Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
+        hide: true,
     },
     {
         colId: 'activityPlannedCompletionDate',
         field: 'activityPlannedCompletionDate',
+        javaVariableName: 'activityPlannedCompletionDate',
         headerName: 'Planned Due Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
+        hide: true,
     },
     {
         colId: 'projectStartDate',
         field: 'projectStartDate',
+        javaVariableName: 'projectStartDate',
         headerName: 'Project Start Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
+        hide: true,
     },
     {
         colId: 'projectPlannedCompletionDate',
         field: 'projectPlannedCompletionDate',
+        javaVariableName: 'projectPlannedCompletionDate',
         headerName: 'Project Planned Due Date',
+        dataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
+        hide: true,
     },
     {
         colId: 'projectStatus',
         field: 'projectStatus',
+        javaVariableName: 'projectStatus',
         headerName: 'Project Status',
         width: 120,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        options: Object.values(PROJECT_STATUS_ENUM),
+        hide: true,
     },
-];
-
-export const TASK_STATUS_ENUM = ['CODE', 'READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
-
-export const PROJECT_STATUS_ENUM = [
-    'BNOT STARTED',
-    'CIN PROGRESS',
-    'CDRELEASE IN PROGRESS',
-    'DCOMPLETED',
-    'ECANCEL IN PROGRESS',
-    'FCANCELLED',
-    'AHHOLD IN PROGRESS',
-    'AIN ERROR',
 ];
 
 export const INITIAL_SEARCH_PARAMS = {

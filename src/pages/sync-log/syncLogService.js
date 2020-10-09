@@ -17,13 +17,13 @@ export const getSyncLog = (params, page = 0, size = PAGESIZE) => {
         size,
     });
 
-    const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/externalsystems/search`;
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/publishInfo/search`;
 
     return nexusFetch(`${url}?${qs}`);
 };
 
 const fetchSyncLog = (startDate, endDate) => {
-    const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/externalsystems/export`;
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/publishInfo/export`;
     const qs = querystring.stringify({
         startDate,
         endDate,

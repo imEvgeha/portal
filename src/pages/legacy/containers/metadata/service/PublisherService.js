@@ -5,10 +5,7 @@ import {getSyncQueryParams} from './TitleService';
 
 export const publisherService = {
     getExternalIds: id => {
-        const url =
-            config.get('gateway.publisher') +
-            config.get('gateway.service.publisher') +
-            `/getPublishInfo?&titleId=${id}`;
+        const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/getPublishInfo/${id}`;
         return nexusFetch(url);
     },
 
@@ -24,8 +21,8 @@ export const publisherService = {
     },
 
     syncTitle: (titleId, syncToVZ, syncToMovida) => {
-        const legacySystemName = getSyncQueryParams(syncToVZ, syncToMovida);
-        const params = {legacySystemName, titleId};
+        const externalSystem = getSyncQueryParams(syncToVZ, syncToMovida);
+        const params = {externalSystem, titleId};
         const url = config.get('gateway.publisher') + config.get('gateway.service.publisher') + `/syncTitle`;
 
         return nexusFetch(url, {

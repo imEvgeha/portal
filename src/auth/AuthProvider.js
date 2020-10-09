@@ -5,14 +5,10 @@ import config from 'react-global-configuration';
 import {connect} from 'react-redux';
 import {updateAbility} from '../ability';
 import {store} from '../index';
+import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
-import {
-    loadDashboardState,
-    loadHistoryState,
-    loadCreateRightState,
-    loadDopState,
-} from '../pages/legacy/stores/index';
+import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
 import Loading from '../pages/static/Loading';
 import {injectUser, logout} from './authActions';
 import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
@@ -22,7 +18,15 @@ const MIN_VALIDITY_SEC = 30;
 // eslint-disable-next-line no-magic-numbers
 const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
 
-const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, addUser, getAppOptions, logoutUser}) => {
+const AuthProvider = ({
+    children,
+    options = KEYCLOAK_INIT_OPTIONS,
+    appOptions,
+    addUser,
+    getAppOptions,
+    logoutUser,
+    getSelectValues,
+}) => {
     // excecution until the user is Authenticated
     const [isAuthenticatedUser, setIsAuthenticatedUser] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -58,6 +62,7 @@ const AuthProvider = ({children, options = KEYCLOAK_INIT_OPTIONS, appOptions, ad
                     getAppOptions();
 
                     updateUserToken(token);
+                    getSelectValues();
                 } else {
                     // window.location.reload();
                 }
@@ -124,6 +129,7 @@ const mapDispatchToProps = dispatch => ({
     getAppOptions: () => dispatch(fetchAvailMapping()),
     addUser: payload => dispatch(injectUser(payload)),
     logoutUser: () => dispatch(logout()),
+    getSelectValues: () => dispatch(getSelectValues()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthProvider);

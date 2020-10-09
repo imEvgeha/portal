@@ -1,14 +1,18 @@
-import React, {memo, useEffect} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
+import RightDetailsHeader from './components/RightDetailsHeader';
+import * as detailsSelectors from './rightDetailsSelector';
 import schema from './schema.json';
 
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
+    const containerRef = useRef();
+
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -23,7 +27,15 @@ const RightDetails = ({getRight, updateRight, right, match}) => {
 
     return (
         <div className="nexus-c-right-details">
-            <NexusDynamicForm schema={schema} initialData={right} isEdit onSubmit={values => onSubmit(values)} />
+            <RightDetailsHeader title="Right Details" right={right} history={history} containerRef={containerRef} />
+            <NexusDynamicForm
+                schema={schema}
+                initialData={right}
+                isEdit
+                onSubmit={values => onSubmit(values)}
+                selectValues={selectValues}
+                containerRef={containerRef}
+            />
         </div>
     );
 };
@@ -33,6 +45,8 @@ RightDetails.propTypes = {
     updateRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
+    selectValues: PropTypes.object,
+    history: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
@@ -40,13 +54,17 @@ RightDetails.defaultProps = {
     updateRight: () => null,
     right: {},
     match: {},
+    selectValues: {},
+    history: {},
 };
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
+    const selectValuesSelector = detailsSelectors.selectValuesSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
+        selectValues: selectValuesSelector(state, props),
     });
 };
 

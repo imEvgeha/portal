@@ -4,11 +4,18 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
     try {
         const [response, headers] = await DopTasksService.getTasks(externalFilter, offset + 1, limit);
         const data = response.reduce((acc, obj) => {
-            const {name: taskName = '', status: taskStatus = '', customData = {}, owner = {}, potentialOwner = []} =
-                obj || {};
+            const {
+                name: taskName = '',
+                id = null,
+                status: taskStatus = '',
+                customData = {},
+                owner = {},
+                potentialOwner = [],
+            } = obj || {};
             const {
                 activityEstimatedEndDate = '',
                 projectName = '',
+                projectId = '',
                 OrderExternalID = '',
                 Customer = '',
                 servicingRegion = '',
@@ -26,9 +33,11 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                 ...acc,
                 {
                     taskName,
+                    id,
                     taskStatus,
                     activityEstimatedEndDate,
                     projectName,
+                    projectId,
                     OrderExternalID,
                     Customer,
                     servicingRegion,
@@ -44,7 +53,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
             ];
         }, []);
 
-        const total = headers.get('X-Total-Count');
+        const total = headers.get('X-Total-Count') || data.length;
 
         return new Promise(res => {
             res({
