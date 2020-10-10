@@ -100,61 +100,67 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         : {...columnDefinitions[0], editable: false};
     const newColDef = [barcodeColumn, ...columnDefinitions.filter((item, index) => index !== 0)];
 
-    const onSourceTableChange = async ({type, rowIndex, data}) => {
+    const onSourceTableChange = async ({type, rowIndex, data, api}) => {
+        const prevSources = sources.slice();
+        prevSources[rowIndex] = {
+            ...prevSources[rowIndex],
+            barcode: barcodes[rowIndex],
+        };
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            if (barcodes.find(item => item === data.barcode)) {
-                showToastForErrors(`Barcode ${data.barcode} already exists in list`, {});
+            const barcodeIndex = barcodes.findIndex(item => item === data.barcode);
+            if (barcodeIndex !== -1) {
+                showToastForErrors(null, {
+                    errorToast: {
+                        title: 'Duplicate Entry',
+                        description: `Entry ${data.barcode} already exists in this list`,
+                    },
+                });
+                api.setRowData(prevSources);
             } else if (barcodes[rowIndex] !== data.barcode) {
-                    // call MGM fetch api and update barcode
-                    const loadingSources = sources.slice();
-                    let loading = data;
-                    loading = {
-                        ...loading,
-                        title: Loading,
-                        version: Loading,
-                        assetFormat: Loading,
-                        status: Loading,
-                        standard: Loading,
+                // call MGM fetch api and update barcode
+                const loadingSources = sources.slice();
+                let loading = data;
+                loading = {
+                    ...loading,
+                    title: Loading,
+                    version: Loading,
+                    assetFormat: Loading,
+                    status: Loading,
+                    standard: Loading,
+                };
+                loadingSources[rowIndex] = loading;
+                setSources(loadingSources);
+                try {
+                    const res = await fetchAssetFields(data.barcode);
+                    const newSources = sources.slice();
+                    const sendSources = sources.slice();
+                    newSources[rowIndex] = {
+                        amsAssetId: data.barcode,
+                        barcode: newSources[rowIndex].barcode,
+                        assetFormat: res.assetFormat,
+                        title: res.title[0].name,
+                        version: res.spec,
+                        status: res.status,
+                        standard: res.componentAssociations[0].component.standard,
+                        externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
                     };
-                    loadingSources[rowIndex] = loading;
-                    setSources(loadingSources);
-                    try {
-                        const res = await fetchAssetFields(data.barcode);
-                        const newSources = sources.slice();
-                        const sendSources = sources.slice();
-                        newSources[rowIndex] = {
-                            amsAssetId: data.barcode,
-                            barcode: newSources[rowIndex].barcode,
-                            assetFormat: res.assetFormat,
-                            title: res.title[0].name,
-                            version: res.spec,
-                            status: res.status,
-                            standard: res.componentAssociations[0].component.standard,
-                            externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
-                        };
-                        sendSources[0].deteServices[0].deteSources[rowIndex] = {
-                            amsAssetId: data.barcode,
-                            barcode: data.barcode,
-                            assetFormat: res.assetFormat,
-                            title: res.title[0].name,
-                            version: res.spec,
-                            status: res.status,
-                            standard: res.componentAssociations[0].component.standard,
-                            externalSources:
-                                sendSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
-                        };
-                        setSources(newSources);
-                        setUpdatedServices(sendSources[0]);
-                        setIsSaved(true);
-                    } catch (e) {
-                        const prevSources = sources.slice();
-                        prevSources[rowIndex] = {
-                            ...prevSources[rowIndex],
-                            barcode: barcodes[rowIndex],
-                        };
-                        setSources(prevSources);
-                    }
+                    sendSources[0].deteServices[0].deteSources[rowIndex] = {
+                        ...sendSources[0].deteServices[0].deteSources[rowIndex],
+                        amsAssetId: data.barcode,
+                        barcode: data.barcode,
+                        assetFormat: res.assetFormat,
+                        title: res.title[0].name,
+                        version: res.spec,
+                        status: res.status,
+                        standard: res.componentAssociations[0].component.standard,
+                    };
+                    setSources(newSources);
+                    setUpdatedServices(sendSources[0]);
+                    setIsSaved(true);
+                } catch (e) {
+                    setSources(prevSources);
                 }
+            }
         }
     };
 

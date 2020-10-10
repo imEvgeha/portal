@@ -67,7 +67,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, setIsSaved}) => {
     // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
-            <CustomActionsCellRenderer id={1} classname="nexus-c-services__close-icon">
+            <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
                 {!isDisabled && (
                     <span onClick={() => handleServiceRemoval(rowIndex)}>
                         <EditorCloseIcon />

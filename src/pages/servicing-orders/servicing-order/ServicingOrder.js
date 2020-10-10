@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {get, cloneDeep} from 'lodash';
+import {get} from 'lodash';
 import {URL} from '../../../util/Common';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService} from '../servicingOrdersService';
@@ -8,7 +8,13 @@ import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
-import {prepareRowData, populateMgmData} from './components/sources-table/util';
+import {
+    prepareRowData,
+    populateLoading,
+    fetchAssetInfo,
+    getBarCodes,
+    populateAssetInfo,
+} from './components/sources-table/util';
 import './ServicingOrder.scss';
 
 const ServicingOrder = ({match}) => {
@@ -34,28 +40,44 @@ const ServicingOrder = ({match}) => {
         if (servicingOrder.so_number) {
             try {
                 if (URL.isLocalOrDevOrQA()) {
-                    let {
+                    const {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
-                    fulfillmentOrders = populateMgmData(fulfillmentOrders, setRefresh);
+
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        fulfillmentOrders: populateLoading(fulfillmentOrders),
                         servicingOrderItems,
+                    });
+                    const barcodes = getBarCodes(fulfillmentOrders);
+                    fetchAssetInfo(barcodes).then(assetInfo => {
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                        setServiceOrder({
+                            ...servicingOrder,
+                            fulfillmentOrders: newFulfillmentOrders,
+                            servicingOrderItems,
+                        });
                     });
 
                     const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
                     setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
                     setSelectedOrder(sortedFulfillmentOrders[0]);
                 } else {
-                    let fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
+                    const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
                     );
-                    fulfillmentOrders = populateMgmData(fulfillmentOrders, setRefresh);
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        fulfillmentOrders: populateLoading(fulfillmentOrders),
+                    });
+                    const barcodes = getBarCodes(fulfillmentOrders);
+                    fetchAssetInfo(barcodes).then(assetInfo => {
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                        setServiceOrder({
+                            ...servicingOrder,
+                            fulfillmentOrders: newFulfillmentOrders,
+                        });
                     });
 
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
