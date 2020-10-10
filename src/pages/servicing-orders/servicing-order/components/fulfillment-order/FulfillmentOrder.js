@@ -28,7 +28,6 @@ export const FulfillmentOrder = ({
     cancelEditing,
     isSaved,
     setIsSaved,
-    setRefresh,
     lastOrder,
 }) => {
     const {fieldKeys} = Constants;
@@ -157,7 +156,7 @@ export const FulfillmentOrder = ({
         dispatch(saveFulfillmentOrder(payload));
         setIsSaved(false);
         setIsSaveDisabled(true);
-        setRefresh(prev => !prev);
+        // setRefresh(prev => !prev);
     };
 
     return (
@@ -277,7 +276,6 @@ FulfillmentOrder.propTypes = {
     cancelEditing: PropTypes.func,
     isSaved: PropTypes.bool.isRequired,
     setIsSaved: PropTypes.func.isRequired,
-    setRefresh: PropTypes.func,
     lastOrder: PropTypes.object.isRequired,
 };
 
@@ -290,7 +288,6 @@ FulfillmentOrder.defaultProps = {
     updatedServices: () => null,
     children: null,
     cancelEditing: () => null,
-    setRefresh: () => null,
 };
 
 export default FulfillmentOrder;
