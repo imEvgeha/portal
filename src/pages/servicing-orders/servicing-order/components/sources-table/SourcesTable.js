@@ -28,7 +28,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
-    const barcodes = dataArray.map(item => item.barcode);
+    const barcodes = dataArray.map(item => item.barcode.trim());
 
     // useEffect(() => populateRowData(), [data]);
     useEffect(
@@ -107,16 +107,16 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             barcode: barcodes[rowIndex],
         };
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            const barcodeIndex = barcodes.findIndex(item => item === data.barcode);
+            const barcodeIndex = barcodes.findIndex(item => item === data.barcode.trim());
             if (barcodeIndex !== -1) {
                 showToastForErrors(null, {
                     errorToast: {
                         title: 'Duplicate Entry',
-                        description: `Entry ${data.barcode} already exists in this list`,
+                        description: `Entry ${data.barcode.trim()} already exists in this list`,
                     },
                 });
                 api.setRowData(prevSources);
-            } else if (barcodes[rowIndex] !== data.barcode) {
+            } else if (barcodes[rowIndex] !== data.barcode.trim()) {
                 // call MGM fetch api and update barcode
                 const loadingSources = sources.slice();
                 let loading = data;

@@ -108,7 +108,7 @@ export const getBarCodes = fulfillmentOrders => {
         if (length > 0)
             // eslint-disable-next-line array-callback-return
             item.definition.deteServices[0].deteSources.map((item, index) => {
-                barcodes.add(item.barcode);
+                barcodes.add(item.barcode.trim());
             });
     });
     return [...barcodes];
