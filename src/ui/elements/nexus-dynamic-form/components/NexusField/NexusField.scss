@@ -16,7 +16,7 @@
 
     .nexus-c-field__label {
         width: 35%;
-        color: map-get($neutrals, N800);
+        color: map-get($neutrals, N200);
     }
 
     &.nexus-c-field--error {
@@ -33,6 +33,6 @@
     }
 
     .nexus-c-field__placeholder {
-        color: map-get($neutrals, N100);
+        color: map-get($neutrals, N50);
     }
 }

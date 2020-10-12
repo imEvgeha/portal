@@ -99,7 +99,15 @@
                         "name": "Content Type",
                         "type": "select",
                         "path": "contentType",
-                        "isRequired": true
+                        "isRequired": true,
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "Core TitleId",
+                                "value": "any"
+                            }
+                        ]
                     },
                     "releaseYear": {
                         "name": "Release Year",
