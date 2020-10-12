@@ -26,8 +26,6 @@ export const FulfillmentOrder = ({
     updatedServices,
     children,
     cancelEditing,
-    isSaved,
-    setIsSaved,
     lastOrder,
 }) => {
     const {fieldKeys} = Constants;
@@ -146,7 +144,6 @@ export const FulfillmentOrder = ({
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
-        setIsSaved(false);
         setIsSaveDisabled(true);
         setSelectedOrder(lastOrder);
     };
@@ -154,9 +151,7 @@ export const FulfillmentOrder = ({
     const onSaveHandler = () => {
         const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
-        setIsSaved(false);
         setIsSaveDisabled(true);
-        // setRefresh(prev => !prev);
     };
 
     return (
@@ -274,8 +269,6 @@ FulfillmentOrder.propTypes = {
     updatedServices: PropTypes.object,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
-    isSaved: PropTypes.bool.isRequired,
-    setIsSaved: PropTypes.func.isRequired,
     lastOrder: PropTypes.object.isRequired,
 };
 

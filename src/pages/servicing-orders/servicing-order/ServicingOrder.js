@@ -79,6 +79,7 @@ const ServicingOrder = ({match}) => {
                             ...servicingOrder,
                             fulfillmentOrders: newFulfillmentOrders,
                         });
+                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
                     });
 
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
@@ -141,8 +142,6 @@ const ServicingOrder = ({match}) => {
                         setSelectedSource({...selectedSource});
                         setSelectedOrder({...selectedOrder});
                     }}
-                    isSaved={isSaved}
-                    setIsSaved={setIsSaved}
                     lastOrder={lastOrder}
                 >
                     <SourcesTable
@@ -150,14 +149,12 @@ const ServicingOrder = ({match}) => {
                         data={prepareRowData(selectedOrder)}
                         setUpdatedServices={setUpdatedServices}
                         isDisabled={isFormDisabled(selectedOrder)}
-                        setIsSaved={setIsSaved}
                     />
                     {selectedSource && (
                         <ServicesTable
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
-                            setIsSaved={setIsSaved}
                         />
                     )}
                 </FulfillmentOrder>

@@ -25,7 +25,7 @@ const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
 const Loading = 'loading...';
 
-const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled, setIsSaved}) => {
+const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
@@ -99,9 +99,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const loadingCell = params => {
         if (params.value === 'loading...') {
             return `<img src=${loadingGif} alt="loading..."/>`;
-        } 
-            return params.value;
-        
+        }
+        return params.value;
     };
 
     const barcodeColumn = !isDisabled
@@ -201,7 +200,6 @@ SourcesTable.propTypes = {
     onSelectedSourceChange: PropTypes.func.isRequired,
     setUpdatedServices: PropTypes.func.isRequired,
     isDisabled: PropTypes.bool.isRequired,
-    setIsSaved: PropTypes.func.isRequired,
 };
 
 SourcesTable.defaultProps = {
