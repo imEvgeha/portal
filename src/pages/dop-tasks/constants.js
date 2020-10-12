@@ -7,7 +7,7 @@ export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ACTUAL_OWNER = 'actualOwner';
 export const ALL = '*';
-export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
+export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskid=';
 export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectid=';
 export const PAGE_LIMIT = 100;
 
@@ -45,6 +45,7 @@ export const COLUMN_MAPPINGS = [
         headerName: 'Task Name',
         javaVariableName: 'taskName',
         enableSearch: true,
+        searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         width: 150,
     },
@@ -71,6 +72,8 @@ export const COLUMN_MAPPINGS = [
         colId: 'projectName',
         field: 'projectName',
         javaVariableName: 'projectName',
+        enableSearch: true,
+        searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
         width: 150,
@@ -79,6 +82,8 @@ export const COLUMN_MAPPINGS = [
         colId: 'OrderExternalID',
         field: 'OrderExternalID',
         javaVariableName: 'OrderExternalID',
+        enableSearch: true,
+        searchDataType: 'string',
         headerName: 'External Order ID',
         width: 150,
     },
@@ -87,6 +92,8 @@ export const COLUMN_MAPPINGS = [
         field: 'Customer',
         javaVariableName: 'Customer',
         headerName: 'Customer Name',
+        enableSearch: true,
+        searchDataType: 'string',
         width: 180,
     },
     {
@@ -94,6 +101,8 @@ export const COLUMN_MAPPINGS = [
         field: 'servicingRegion',
         javaVariableName: 'servicingRegion',
         headerName: 'Servicing Region',
+        enableSearch: true,
+        searchDataType: 'string',
         width: 120,
     },
     {
@@ -101,6 +110,8 @@ export const COLUMN_MAPPINGS = [
         field: 'potentialOwners',
         javaVariableName: 'potentialOwners',
         headerName: 'Work Queue',
+        enableSearch: true,
+        searchDataType: 'string',
         width: 120,
     },
     {
@@ -108,6 +119,8 @@ export const COLUMN_MAPPINGS = [
         field: 'actualOwner',
         javaVariableName: 'actualOwner',
         headerName: 'Owner',
+        enableSearch: true,
+        searchDataType: 'string',
         width: 120,
     },
     {

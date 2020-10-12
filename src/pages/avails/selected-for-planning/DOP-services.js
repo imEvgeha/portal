@@ -10,7 +10,12 @@ const DEFAULT_TIMEOUT = 60000;
 const DOPService = {
     getSecurityTicket: token => {
         const url = `${config.get('gateway.DOPUrl')}/AmdocsOSS/Portal/services/LoginWithKeycloak`;
-        return nexusFetch(url, {method: 'post', body: JSON.stringify(token)});
+        return nexusFetch(
+            url,
+            {method: 'post', credentials: 'include', body: JSON.stringify(token)},
+            DEFAULT_TIMEOUT,
+            true
+        );
     },
     getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(

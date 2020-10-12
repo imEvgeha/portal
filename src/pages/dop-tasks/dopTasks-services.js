@@ -19,7 +19,7 @@ const DopTasksService = {
 
 const prepareFilterPayload = (initialParams, externalFilter) => {
     const payload = cloneDeep(initialParams);
-    const {user, taskStatus, projectStatus, sortCriterion = []} = externalFilter || {};
+    const {user, taskName, projectName, taskStatus, projectStatus, sortCriterion = []} = externalFilter || {};
     if (user === USER) {
         payload.filterCriterion[1].value = getUsername(store.getState());
         payload.filterCriterion[1].fieldName = ACTUAL_OWNER;
@@ -27,6 +27,16 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
     if (user === ALL) {
         payload.filterCriterion[1].value = ALL;
         payload.filterCriterion[1].fieldName = POTENTIAL_OWNERS;
+    }
+    if (taskName) {
+        payload.filterCriterion[0].value = taskName;
+        payload.filterCriterion[0].fieldName = 'taskName';
+        payload.filterCriterion[0].operator = 'contain';
+    }
+    if (projectName) {
+        payload.filterCriterion[0].value = projectName;
+        payload.filterCriterion[0].fieldName = 'projectName';
+        payload.filterCriterion[0].operator = 'contain';
     }
     if (taskStatus) {
         payload.filterCriterion[0].value = taskStatus.split(', ').join(',');
