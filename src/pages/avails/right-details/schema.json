@@ -193,6 +193,12 @@
                                 "type": "stringInArray",
                                 "path": "vuContractId"
                             },
+                            "dateWithdrawn": {
+                                "name": "Date Withdrawn",
+                                "type": "datetime",
+                                "dateType": "regionalMidnight",
+                                "path": "dateWithdrawn"
+                            },
                             "comment": {
                                 "name": "Comments",
                                 "type": "string",

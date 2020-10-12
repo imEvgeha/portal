@@ -44,7 +44,7 @@
         "configEndpoint": "/regions"
     },
     {
-        "field": "territory.country",
+        "field": "country",
         "configEndpoint": "/countries"
     }
 ]
