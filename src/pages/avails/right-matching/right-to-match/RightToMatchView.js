@@ -115,20 +115,8 @@ const RightToMatchView = ({
         );
     };
 
-    const columnDefWithRedirectRightId = columnDefs.length
-        ? cloneDeep(columnDefs).map(columnDef => {
-              if (columnDef.field === 'id') {
-                  columnDef.cellRendererParams = {
-                      link: '/avails/rights/',
-                      newTab: false,
-                  };
-              }
-              return columnDef;
-          })
-        : [];
-
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn({headerName: 'Actions'});
-    const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefWithRedirectRightId];
+    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
+    const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefs];
 
     const onDeclareNewRight = () => {
         removeToast();
@@ -164,7 +152,7 @@ const RightToMatchView = ({
     const actionNewButtonColumnDef = defineActionButtonColumn({
         cellRendererFramework: createNewButtonCellRenderer,
     });
-    const updatedFocusedRightColumnDefs = [actionNewButtonColumnDef, ...columnDefWithRedirectRightId];
+    const updatedFocusedRightColumnDefs = [actionNewButtonColumnDef, ...columnDefs];
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleGridEvent = ({type, api}) => {
@@ -259,9 +247,8 @@ const RightToMatchView = ({
     };
 
     const reorderConflictingRightsHeaders = tableName => {
-        if (updatedColumnDefs.length === 1 && updatedColumnDefs[0].headerName === 'Actions') return [];
-        if (updatedFocusedRightColumnDefs.length === 1 && updatedFocusedRightColumnDefs[0].headerName === 'Actions')
-            return [];
+        if (updatedColumnDefs.length === 1) return [];
+        if (updatedFocusedRightColumnDefs.length === 1) return [];
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
         const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
