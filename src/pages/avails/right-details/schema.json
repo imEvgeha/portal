@@ -153,10 +153,14 @@
                         "fields": {
                             "country": {
                                 "name": "Country",
-                                "type": "string",
                                 "path": "country",
                                 "isRequired": true,
-                                "className": "nexus-c-array__field-bold"
+                                "className": "nexus-c-array__field-bold",
+                                "type": "select",
+                                "optionsConfig": {
+                                    "defaultValuePath": "countryCode",
+                                    "defaultLabelPath": "countryName"
+                                }
                             },
                             "selected": {
                                 "name": "Selected",
@@ -173,9 +177,16 @@
                             },
                             "rightContractStatus": {
                                 "name": "Right Contract Status",
-                                "type": "string",
+                                "type": "select",
                                 "path": "rightContractStatus",
-                                "isRequired": true
+                                "isRequired": true,
+                                "optionsConfig": {
+                                    "options": [
+                                        { "label": "Pending", "value": "Pending" },
+                                        { "label": "Pending Manual", "value": "PendingManual" },
+                                        { "label": "Matched Once", "value": "MatchedOnce" }
+                                    ]
+                                }
                             },
                             "vuContractId": {
                                 "name": "VU Contract ID",

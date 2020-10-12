@@ -176,7 +176,7 @@ export const buildSection = (
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData, field, selectValues}) => {
+export const renderNexusField = (key, view, getValues, {initialData={}, field, selectValues}) => {
     return (
         <NexusField
             {...field}
