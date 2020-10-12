@@ -411,7 +411,11 @@ const RightsRepository = ({
 
         // If an ingest is selected, provide only selected rights that also belong to the ingest.
         // Otherwise return all selected rights.
-        return id ? selectedRights.filter(({availHistoryId}) => availHistoryId === id) : selectedRights;
+        return id
+            ? selectedRights.filter(({availHistoryIds}) => {
+                  return !!availHistoryIds.find(avhId => avhId === id);
+              })
+            : selectedRights;
     };
 
     return (
