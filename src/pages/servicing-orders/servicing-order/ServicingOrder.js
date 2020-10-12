@@ -39,10 +39,12 @@ const ServicingOrder = ({match}) => {
         if (servicingOrder.so_number) {
             try {
                 if (URL.isLocalOrDevOrQA()) {
-                    const {
+                    let {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
+
+                    fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
 
                     setServiceOrder({
                         ...servicingOrder,
@@ -57,11 +59,11 @@ const ServicingOrder = ({match}) => {
                             fulfillmentOrders: newFulfillmentOrders,
                             servicingOrderItems,
                         });
+                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                        setSelectedOrder(newFulfillmentOrders[0]);
                     });
 
-                    const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-                    setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
-                    setSelectedOrder(sortedFulfillmentOrders[0]);
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 } else {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number

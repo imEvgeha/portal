@@ -103,8 +103,8 @@ export const FulfillmentOrder = ({
     );
 
     useEffect(() => {
-        setIsSaveDisabled(!isSaved || isEqual(fulfillmentOrder, lastOrder));
-    }, [isSaved, fulfillmentOrder]);
+        setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
+    }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);

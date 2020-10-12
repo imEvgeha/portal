@@ -5,6 +5,7 @@ import {Radio} from '@atlaskit/radio';
 import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping.json';
+import loadingGif from '../../../../../assets/img/loading.gif';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -95,10 +96,21 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         },
     });
 
+    const loadingCell = params => {
+        if (params.value === 'loading...') {
+            return `<img src=${loadingGif} alt="loading..."/>`;
+        } 
+            return params.value;
+        
+    };
+
     const barcodeColumn = !isDisabled
         ? {...columnDefinitions[0], editable: true}
         : {...columnDefinitions[0], editable: false};
-    const newColDef = [barcodeColumn, ...columnDefinitions.filter((item, index) => index !== 0)];
+    let newColDef = [barcodeColumn, ...columnDefinitions.filter((item, index) => index !== 0)];
+    newColDef = newColDef.map(item => {
+        return {...item, cellRenderer: loadingCell};
+    });
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         const prevSources = sources.slice();
@@ -131,32 +143,21 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 loadingSources[rowIndex] = loading;
                 setSources(loadingSources);
                 try {
-                    const res = await fetchAssetFields(data.barcode);
-                    const newSources = sources.slice();
-                    const sendSources = sources.slice();
-                    newSources[rowIndex] = {
-                        amsAssetId: data.barcode,
-                        barcode: newSources[rowIndex].barcode,
-                        assetFormat: res.assetFormat,
-                        title: res.title[0].name,
-                        version: res.spec,
-                        status: res.status,
-                        standard: res.componentAssociations[0].component.standard,
-                        externalSources: newSources[rowIndex].deteServices[0].deteSources[rowIndex].externalSources,
-                    };
-                    sendSources[0].deteServices[0].deteSources[rowIndex] = {
-                        ...sendSources[0].deteServices[0].deteSources[rowIndex],
+                    const {assetFormat, title = [], spec, status, componentAssociations = []} = await fetchAssetFields(
+                        data.barcode
+                    );
+                    const newSources = cloneDeep(sources[0]);
+                    newSources.deteServices[0].deteSources[rowIndex] = {
+                        ...newSources.deteServices[0].deteSources[rowIndex],
                         amsAssetId: data.barcode,
                         barcode: data.barcode,
-                        assetFormat: res.assetFormat,
-                        title: res.title[0].name,
-                        version: res.spec,
-                        status: res.status,
-                        standard: res.componentAssociations[0].component.standard,
+                        assetFormat,
+                        title: title[0].name,
+                        version: spec,
+                        status,
+                        standard: componentAssociations[0].component.standard,
                     };
-                    setSources(newSources);
-                    setUpdatedServices(sendSources[0]);
-                    setIsSaved(true);
+                    setUpdatedServices(newSources);
                 } catch (e) {
                     setSources(prevSources);
                 }
@@ -168,8 +169,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         const dataClone = cloneDeep(dataArray);
         const sourcesArray = [];
         const newDataArray = [];
-        dataClone.length && dataClone.map((item, index) => newDataArray.push(item.deteServices[0].deteSources[index]));
-        newDataArray.map((item, index) => sourcesArray.push({...item, ...dataClone[index]}));
+
+        // eslint-disable-next-line no-return-assign
+        dataClone.length &&
+            dataClone.forEach((item, index) => (newDataArray[index] = item.deteServices[0].deteSources[index]));
+        newDataArray.forEach((item, index) => (sourcesArray[index] = {...item, ...dataClone[index]}));
         setSources(sourcesArray);
     };
 

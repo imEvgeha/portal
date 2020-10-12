@@ -1,10 +1,9 @@
 import {cloneDeep, get} from 'lodash';
-import {getMgmAssetByBarcode, getMgmTitleByBarcode} from '../../../servicingOrdersService';
+import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
 
 const Loading = 'loading...';
 const NotFound = 'Not Found';
 const ApiError = 'API error';
-const REFRESH_TIME = 500;
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
@@ -41,18 +40,14 @@ export const prepareRowData = data => {
 };
 
 export const fetchAssetFields = async barcode => {
-    try {
-        const title = await getMgmTitleByBarcode(barcode);
-        const rest = await getMgmAssetByBarcode(barcode);
-        return {title, ...rest};
-    } catch (e) {
-        return e;
-    }
+    const title = await getDeteTitleByBarcode(barcode);
+    const rest = await getDeteAssetByBarcode(barcode);
+    return {title, ...rest};
 };
 
 export const fetchAssetInfo = async barcodes => {
     const titleRequests = barcodes.map(item => {
-        return getMgmTitleByBarcode(item)
+        return getDeteTitleByBarcode(item)
             .then(res => {
                 const arr = res || [];
                 return {
@@ -72,13 +67,14 @@ export const fetchAssetInfo = async barcodes => {
             });
     });
     const assetRequests = barcodes.map(item => {
-        return getMgmAssetByBarcode(item)
+        return getDeteAssetByBarcode(item)
             .then(res => {
                 const {spec, assetFormat, componentAssociations = [], status} = res;
                 return {
                     barcode: item,
                     version: spec || NotFound,
                     assetFormat: assetFormat || NotFound,
+                    amsAssetId: item,
                     standard: componentAssociations[0].component.standard || NotFound,
                     status: status || NotFound,
                 };
@@ -117,13 +113,13 @@ export const getBarCodes = fulfillmentOrders => {
 // populate asset info in nested fulfillmentorders object
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
     const merged = [];
-    // eslint-disable-next-line array-callback-return
-    arr.map(item => {
+
+    arr.forEach(item => {
         const inx = merged.findIndex(ee => ee.barcode === item.barcode);
         inx !== -1 ? (merged[inx] = {...merged[inx], ...item}) : merged.push(item);
     });
-    // eslint-disable-next-line array-callback-return
-    fulfillmentOrders.map(item => {
+
+    fulfillmentOrders.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
@@ -140,19 +136,21 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
 // show 'loading...' in asset fields temporarily
 export const populateLoading = fulfillmentOrders => {
     const foClone = cloneDeep(fulfillmentOrders);
-    // eslint-disable-next-line array-callback-return
-    foClone.map(item => {
+
+    foClone.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
         if (length > 0) {
-            // eslint-disable-next-line array-callback-return
-            item.definition.deteServices[0].deteSources.map(item => {
-                item.title = Loading;
-                item.version = Loading;
-                item.assetFormat = Loading;
-                item.standard = Loading;
-                item.status = Loading;
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
+                return {
+                    ...item,
+                    title: Loading,
+                    version: Loading,
+                    assetFormat: Loading,
+                    standard: Loading,
+                    status: Loading,
+                };
             });
         }
     });

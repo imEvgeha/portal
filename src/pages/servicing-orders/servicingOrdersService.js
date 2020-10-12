@@ -6,12 +6,12 @@ const baseServicingOrdersURL = config => {
     return `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}`;
 };
 
-const mgmAssetURL = config => {
-    return `${config.get('gateway.mgmBaseUrl')}${config.get('gateway.service.mgmAsset')}`;
+const deteAssetURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteAsset')}`;
 };
 
-const mgmTitleURL = config => {
-    return `${config.get('gateway.mgmBaseUrl')}${config.get('gateway.service.mgmTitle')}`;
+const deteTitleURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteTitle')}`;
 };
 
 // TODO: Use an actual API when ready
@@ -71,13 +71,13 @@ export const exportServicingOrders = servicingOrders => {
     });
 };
 
-export const getMgmTitleByBarcode = barcode => {
-    const url = `${mgmTitleURL(config)}/assetId/${barcode}`;
+export const getDeteTitleByBarcode = barcode => {
+    const url = `${deteTitleURL(config)}/assetId/${barcode}`;
     return nexusFetch(url);
 };
 
-export const getMgmAssetByBarcode = barcode => {
-    const url = `${mgmAssetURL(config)}/${barcode}`;
+export const getDeteAssetByBarcode = barcode => {
+    const url = `${deteAssetURL(config)}/${barcode}`;
     return nexusFetch(url);
 };
 
