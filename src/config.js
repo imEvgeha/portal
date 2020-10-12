@@ -1,4 +1,5 @@
 import config from 'react-global-configuration';
+import {registerApplication} from 'single-spa';
 import {isObject, mergeDeep} from './util/Common';
 import {nexusFetch} from './util/http-client';
 
@@ -98,4 +99,24 @@ export const appConfig = {
     ROOT: '/',
     BASE_URL: process.env.BASE_URI,
     LOCALE: process.env.LOCALE || 'en',
+};
+
+// Single Spa Apps registration
+// child-app names needs to be of the format: "@react-mf/event-management"
+export const registerSingleSpaApps = async () => {
+    let importMap = {};
+    await nexusFetch('/singleSpaApps.json').then(map => {
+        importMap = map;
+        Object.keys(map.imports).map(name => {
+            if (name.includes('-mf')) {
+                registerApplication({
+                    name,
+                    app: () => System.import(name),
+                    activeWhen: name.split('-mf')[1],
+                    // can add customProps here
+                });
+            }
+        });
+    });
+    return importMap;
 };

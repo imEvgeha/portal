@@ -117,7 +117,8 @@
         "styled-components": "^3.2.6",
         "url-search-params-polyfill": "^7.0.0",
         "uuid": "^3.3.2",
-        "whatwg-fetch": "^3.0.0"
+        "whatwg-fetch": "^3.0.0",
+        "single-spa": "latest"
     },
     "devDependencies": {
         "@babel/core": "^7.1.0",

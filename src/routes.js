@@ -1,4 +1,6 @@
 import React from 'react';
+import {get} from 'lodash';
+import {start} from 'single-spa';
 import {canRender} from './ability';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
@@ -64,10 +66,25 @@ export const routes = [
     ...staticPagesRoutes,
 ];
 
-export function routesWithTracking() {
-    return routes.map(route => {
-        route.component = withTracker(route.component);
-
-        return route;
+export function routesWithTracking(importMap) {
+    const imports = get(importMap, 'imports', {});
+    const singleSpaRoutes = [];
+    Object.keys(imports).map(name => {
+        if (name.includes('-mf')) {
+            singleSpaRoutes.push({
+                path: name.split('-mf')[1],
+                component: () => {
+                    start();
+                    return <div key={name} id={`single-spa-application:${name}`} />;
+                },
+            });
+        }
+        return {};
     });
+    return singleSpaRoutes.concat(
+        routes.map(route => {
+            route.component = withTracker(route.component);
+            return route;
+        })
+    );
 }
