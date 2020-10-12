@@ -70,10 +70,10 @@ export const getValidationFunction = (value, validations, {type, isRequired}) =>
     const isRequiredFunction = {
         name: 'fieldRequired',
     };
-    validations = isRequired ? [...validations, isRequiredFunction] : validations;
+    const updatedValidations = isRequired ? [...validations, isRequiredFunction] : validations;
     // load dynamic file
-    if (validations && validations.length > 0) {
-        const promises = validations.map(v =>
+    if (updatedValidations && updatedValidations.length > 0) {
+        const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
                 return f[`${v.name}`](value, v.args);
             })
@@ -147,11 +147,7 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    initialData,
-    setFieldValue,
-    schema,
-    setDisableSubmit,
-    selectValues
+    {initialData, setFieldValue, setDisableSubmit, selectValues}
 ) => {
     return (
         <>
@@ -171,7 +167,7 @@ export const buildSection = (
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, initialData, fields[key], selectValues)}
+                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues})}
                         </div>
                     ))
                 );
@@ -180,7 +176,7 @@ export const buildSection = (
     );
 };
 
-export const renderNexusField = (key, view, getValues, initialData, field, selectValues) => {
+export const renderNexusField = (key, view, getValues, {initialData, field, selectValues}) => {
     return (
         <NexusField
             {...field}

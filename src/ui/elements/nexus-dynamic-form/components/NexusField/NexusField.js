@@ -129,9 +129,8 @@ const NexusField = ({
     const getValue = fieldProps => {
         if(Array.isArray(fieldProps.value)){
             return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
-        } else{
-            return getFieldValue(fieldProps.value)
         }
+        return getFieldValue(fieldProps.value)
     }
 
     const renderFieldViewMode = fieldProps => {

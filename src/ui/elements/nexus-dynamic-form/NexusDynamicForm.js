@@ -78,11 +78,12 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 fields,
                                                 getValues,
                                                 view,
-                                                initialData,
-                                                setFieldValue,
-                                                schema,
-                                                setDisableSubmit,
-                                                selectValues
+                                                {
+                                                    initialData,
+                                                    setFieldValue,
+                                                    setDisableSubmit,
+                                                    selectValues
+                                                }
                                             )}
                                         </Fragment>
                                     ))}

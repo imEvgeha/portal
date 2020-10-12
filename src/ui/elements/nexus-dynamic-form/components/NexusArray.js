@@ -105,8 +105,10 @@ const NexusArray = ({
                                     `${path}[${index}].${key}`,
                                     view,
                                     getValues,
-                                    initialData,
-                                    fields[key]
+                                    {
+                                        initialData,
+                                        field: fields[key]
+                                    }
                                 )}
                             </div>
                         )
