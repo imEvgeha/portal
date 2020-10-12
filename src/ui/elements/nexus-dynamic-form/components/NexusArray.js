@@ -108,7 +108,8 @@ const NexusArray = ({
                                     getValues,
                                     {
                                         initialData,
-                                        field: fields[key]
+                                        field: fields[key],
+                                        selectValues
                                     }
                                 )}
                             </div>
