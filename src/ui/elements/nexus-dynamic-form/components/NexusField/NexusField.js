@@ -119,7 +119,7 @@ const NexusField = ({
     };
 
     const renderFieldViewMode = fieldProps => {
-        if (validationError) {
+        if (validationError && !formData[props.name]) {
             return <div>{validationError}</div>;
         }
         switch (type) {
@@ -148,7 +148,7 @@ const NexusField = ({
     return (
         <ErrorBoundary>
             <div
-                className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''} ${
+                className={`nexus-c-field ${validationError && !formData[props.name] ? 'nexus-c-field--error' : ''} ${
                     HIGHLIGHTED_FIELDS.includes(path) ? 'nexus-c-field--highlighted' : ''
                 }`}
             >
