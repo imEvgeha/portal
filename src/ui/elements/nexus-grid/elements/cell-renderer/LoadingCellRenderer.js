@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import loadingGif from '../../../../../assets/img/loading.gif';
-import {getDeepValue, isObject} from '../../../../../util/Common';
+import {getDeepValue, isObject, URL} from '../../../../../util/Common';
 import './LoadingCellRenderer.scss';
 
 const LoadingCellRenderer = params => {
@@ -18,7 +18,7 @@ const LoadingCellRenderer = params => {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
 
-    const linkTo = link && `${link}${data[linkId] || data.id || data[colId]}`;
+    const linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
 
     let value = getDeepValue(data, field);
     if (isObject(value)) {
