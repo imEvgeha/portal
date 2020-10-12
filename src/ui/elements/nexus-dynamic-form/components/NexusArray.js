@@ -34,6 +34,7 @@ const NexusArray = ({
     path,
     validationError,
     validation,
+    selectValues,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -159,7 +160,7 @@ const NexusArray = ({
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, VIEWS.CREATE, {})}
+                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues})}
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}
@@ -214,6 +215,7 @@ NexusArray.propTypes = {
     validationError: PropTypes.string,
     validation: PropTypes.array,
     dependencies: PropTypes.array,
+    selectValues: PropTypes.object,
 };
 
 NexusArray.defaultProps = {
@@ -229,6 +231,7 @@ NexusArray.defaultProps = {
     validationError: null,
     validation: [],
     dependencies: [],
+    selectValues: {},
 };
 
 export default NexusArray;

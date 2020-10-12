@@ -147,7 +147,7 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    {initialData, setFieldValue, setDisableSubmit, selectValues}
+    {selectValues, initialData, setFieldValue, setDisableSubmit}
 ) => {
     return (
         <>
@@ -158,6 +158,7 @@ export const buildSection = (
                         <NexusArray
                             key={key}
                             view={view}
+                            selectValues={selectValues}
                             data={getDefaultValue(fields[key], view, initialData)}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
