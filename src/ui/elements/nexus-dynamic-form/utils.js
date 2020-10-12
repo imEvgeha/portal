@@ -155,22 +155,6 @@ export const getProperValue = (type, value, path, schema) => {
         case 'array':
             val = value ? value.map(v => getProperValues(schema, v)) : [];
             break;
-        case 'multiselect':
-        case 'select':
-            val = value;
-            if (typeof value === 'object') {
-                if (Array.isArray(value)) {
-                    val = value.map(v => {
-                        if (typeof v !== 'string') {
-                            return v.value;
-                        }
-                        return v;
-                    });
-                } else if (value.value) {
-                    val = value.value;
-                }
-            }
-            break;
         default:
             val = value;
     }
