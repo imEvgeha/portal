@@ -38,31 +38,24 @@
                         "path": "format",
                         "isRequired": true
                     },
-                    "start": {
-                        "name": "License Start",
-                        "type": "datetime",
+                    "dates": {
+                        "name": "License Date Range",
+                        "type": "dateRange",
                         "dateType": "businessDateTime",
-                        "path": "start",
+                        "labels": ["License Start", "License End"],
+                        "path": ["start", "end"],
                         "dependencies": [
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
                                 "field": "Licensed",
                                 "value": false
-                            }
-                        ]
-                    },
-                    "end": {
-                        "name": "License End",
-                        "type": "datetime",
-                        "dateType": "businessDateTime",
-                        "path": "end",
-                        "dependencies": [
+                            },
                             {
                                 "view": "EDIT",
-                                "type": "readOnly",
+                                "type": "required",
                                 "field": "Licensed",
-                                "value": false
+                                "value": true
                             }
                         ]
                     },
@@ -656,21 +649,6 @@
                             {
                                 "view": "EDIT",
                                 "type": "required",
-                                "field": "Licensed",
-                                "value": false
-                            }
-                        ]
-                    },
-                    "dates": {
-                        "name": "Date Range",
-                        "type": "dateRange",
-                        "dateType": "businessDateTime",
-                        "labels": ["Start", "End"],
-                        "path": ["start", "end"],
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
                                 "field": "Licensed",
                                 "value": false
                             }
