@@ -120,6 +120,20 @@ const NexusField = ({
         }
     };
 
+    const getFieldValue = fieldProps => {
+        return fieldProps.value !== undefined
+            ? fieldProps.value
+            : fieldProps
+    }
+
+    const getValue = fieldProps => {
+        if(Array.isArray(fieldProps.value)){
+            return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+        } else{
+            return getFieldValue(fieldProps.value)
+        }
+    }
+
     const renderFieldViewMode = fieldProps => {
         if (validationError) {
             return <div>{validationError}</div>;
@@ -132,7 +146,9 @@ const NexusField = ({
                 return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
             default:
                 return fieldProps.value ? (
-                    <div>{Array.isArray(fieldProps.value) ? fieldProps.value.join(', ') : fieldProps.value}</div>
+                    <div>
+                        {getValue(fieldProps)}
+                    </div>
                 ) : (
                     <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
                 );

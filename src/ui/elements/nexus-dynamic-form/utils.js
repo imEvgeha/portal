@@ -104,24 +104,6 @@ const sortOptions = options => {
     return getSortedData(options, SORT_TYPE, true);
 };
 
-export const formatValues = values => {
-    Object.keys(values).map(key => {
-        if (values[key] === null) values[key] = [];
-        if (typeof values[key] === 'object') {
-            if (Array.isArray(values[key])) {
-                values[key] = values[key].map(val => {
-                    if (typeof val !== 'string') {
-                        return val.value;
-                    }
-                    return val;
-                });
-            } else if (values[key].value) {
-                values[key] = values[key].value;
-            }
-        }
-    });
-};
-
 export const getAllFields = schema => {
     let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
