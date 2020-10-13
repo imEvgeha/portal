@@ -129,7 +129,10 @@ const NexusField = ({
 
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
-            return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+            if (fieldProps.value.length) {
+                return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+            }
+            return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
         }
         return getFieldValue(fieldProps.value);
     };
@@ -146,12 +149,12 @@ const NexusField = ({
                 if (fieldProps.value) {
                     return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
                 }
-                return <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}...`}</div>;
+                return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
                 ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
         }
     };
