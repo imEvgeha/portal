@@ -67,9 +67,10 @@ const ServicingOrder = ({match}) => {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
                     );
+
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        ...fulfillmentOrders,
                     });
                     /*
                     Todo : uncomment below when MGM stories are done
