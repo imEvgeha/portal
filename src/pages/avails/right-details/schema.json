@@ -229,7 +229,7 @@
                                 "name": "Country",
                                 "path": "country",
                                 "isRequired": true,
-                                "className": "nexus-c-array__field-bold",
+                                "className": "nexus-c-array__field-bold area-one",
                                 "type": "select",
                                 "optionsConfig": {
                                     "defaultValuePath": "countryCode",
@@ -241,7 +241,7 @@
                                 "type": "boolean",
                                 "path": "selected",
                                 "isReadOnly": true,
-                                "className": "nexus-c-array__field-inline",
+                                "className": "nexus-c-array__field-inline area-two",
                                 "viewConfig": [
                                     {
                                         "view": "CREATE",
@@ -249,11 +249,20 @@
                                     }
                                 ]
                             },
+                            "dateSelected": {
+                                "name": "Date Selected",
+                                "type": "datetime",
+                                "dateType": "regionalMidnight",
+                                "path": "dateSelected",
+                                "isReadOnly": true,
+                                "className": "area-three"
+                            },
                             "rightContractStatus": {
                                 "name": "Right Contract Status",
                                 "type": "select",
                                 "path": "rightContractStatus",
                                 "isRequired": true,
+                                "className": "area-four",
                                 "optionsConfig": {
                                     "options": [
                                         { "label": "Pending", "value": "Pending" },
@@ -265,18 +274,21 @@
                             "vuContractId": {
                                 "name": "VU Contract ID",
                                 "type": "stringInArray",
-                                "path": "vuContractId"
+                                "path": "vuContractId",
+                                "className": "area-five"
                             },
                             "dateWithdrawn": {
                                 "name": "Date Withdrawn",
                                 "type": "datetime",
                                 "dateType": "regionalMidnight",
-                                "path": "dateWithdrawn"
+                                "path": "dateWithdrawn",
+                                "className": "area-seven"
                             },
                             "comment": {
                                 "name": "Comments",
                                 "type": "string",
-                                "path": "comment"
+                                "path": "comment",
+                                "className": "area-six"
                             }
                         }
                     },
