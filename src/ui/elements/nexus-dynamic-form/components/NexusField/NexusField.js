@@ -8,7 +8,7 @@ import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../../constants';
-import {checkFieldDependencies, getValidationFunction, formatOptions, renderLabel, renderError} from '../../utils';
+import {checkFieldDependencies, getFieldValue, getValidationFunction, formatOptions, renderLabel, renderError} from '../../utils';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
@@ -119,12 +119,6 @@ const NexusField = ({
                 return;
         }
     };
-
-    const getFieldValue = fieldProps => {
-        return fieldProps.value !== undefined
-            ? fieldProps.value
-            : fieldProps
-    }
 
     const getValue = fieldProps => {
         if(Array.isArray(fieldProps.value)){

@@ -118,6 +118,12 @@ export const getAllFields = schema => {
     return allFields;
 };
 
+export const getFieldValue = fieldProps => {
+    return fieldProps.value !== undefined
+        ? fieldProps.value
+        : fieldProps
+}
+
 export const getProperValue = (type, value, path, schema) => {
     let val = '';
     if (value === null) val = [];
@@ -136,6 +142,10 @@ export const getProperValue = (type, value, path, schema) => {
             break;
         case 'array':
             val = value ? value.map(v => getProperValues(schema, v)) : [];
+            break;
+        case 'select':
+        case 'multiselect':
+            val = getFieldValue(value);
             break;
         default:
             val = value;
