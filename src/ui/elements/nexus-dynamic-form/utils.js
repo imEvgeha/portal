@@ -151,6 +151,7 @@ export const getProperValue = (type, value, path, schema) => {
         default:
             val = value;
     }
+    if (value === "") val = null;
     return Array.isArray(path) ? val : {[path]: val};
 };
 
