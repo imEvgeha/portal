@@ -7,7 +7,13 @@ import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumns
 import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
-import {planTerritoriesColumn, planTerritoriesMapping} from './constants';
+import {
+    planTerritoriesColumn,
+    planTerritoriesMapping,
+    territoriesColumn,
+    territoriesMapping,
+    COLUMN_POSITION,
+} from './constants';
 
 const PrePlanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
 
@@ -43,9 +49,9 @@ const PreplanRightsTable = ({
         switch (type) {
             case GRID_EVENTS.FIRST_DATA_RENDERED: {
                 const idIndex = columnDefs.findIndex(e => e.field === 'id');
-                // move column to position of id col position + 8 because we use columnDefs from RightsRepo
-                const columnPosition = 8;
-                columnApi.moveColumn('territory', idIndex + columnPosition);
+                // move column to position of id col position + 7 because we use columnDefs from RightsRepo
+                columnApi.moveColumn('territory', idIndex + COLUMN_POSITION);
+                columnApi.moveColumn('territoryAll', idIndex + COLUMN_POSITION);
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED:
@@ -66,11 +72,11 @@ const PreplanRightsTable = ({
     return (
         <PrePlanGrid
             id="prePlanRightsRepo"
-            columnDefs={[...filteredColumnDefs, planTerritoriesColumn]}
+            columnDefs={[...filteredColumnDefs, planTerritoriesColumn, territoriesColumn]}
             singleClickEdit
             rowSelection="multiple"
             suppressRowClickSelection={true}
-            mapping={[...editedMappings, planTerritoriesMapping]}
+            mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping]}
             rowData={prePlanRepoRights}
             isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}
