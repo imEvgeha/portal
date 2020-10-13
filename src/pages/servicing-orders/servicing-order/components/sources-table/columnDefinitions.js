@@ -3,7 +3,6 @@ const columnDefinitions = [
         colId: 'barcode',
         field: 'barcode',
         headerName: 'Barcode',
-        width: 200,
     },
     {
         colId: 'title',
@@ -11,26 +10,26 @@ const columnDefinitions = [
         headerName: 'Title',
     },
     {
-        colId: 'titleId',
-        field: 'titleId',
-        headerName: 'Title ID',
-        width: 100,
-    },
-    {
-        colId: 'amsAssetId',
-        field: 'amsAssetId',
-        headerName: 'MP Asset ID',
+        colId: 'version',
+        field: 'version',
+        headerName: 'Version',
         width: 100,
     },
     {
         colId: 'assetFormat',
         field: 'assetFormat',
         headerName: 'Asset Format',
+        width: 250,
     },
     {
         colId: 'standard',
         field: 'standard',
         headerName: 'Standard',
+    },
+    {
+        colId: 'status',
+        field: 'status',
+        headerName: 'Status',
     },
 ];
 

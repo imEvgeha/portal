@@ -1,10 +1,19 @@
+import React from 'react';
+import {ErrorMessage} from '@atlaskit/form';
 import {get} from 'lodash';
 import {equalOrIncluded, getSortedData} from '../../../util/Common';
+import NexusArray from './components/NexusArray';
+import NexusField from './components/NexusField/NexusField';
 import {VIEWS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
     return viewConfig && viewConfig[config];
+};
+
+const getFieldPath = path => {
+    const dotIndex = path.indexOf('.');
+    return dotIndex > 0 ? path.substring(dotIndex + 1) : path;
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
@@ -17,7 +26,7 @@ export const getDefaultValue = (field = {}, view, data) => {
             endDate: get(data, field.path[1]),
         };
     }
-    return get(data, field.path) !== null ? get(data, field.path) : '';
+    return get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
 };
 
 export const getValidationError = (validationErrors, field) => {
@@ -58,9 +67,13 @@ const isEmptyMultiselect = (value, isRequired) => {
 
 export const getValidationFunction = (value, validations, {type, isRequired}) => {
     if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
+    const isRequiredFunction = {
+        name: 'fieldRequired',
+    };
+    const updatedValidations = isRequired ? [...validations, isRequiredFunction] : validations;
     // load dynamic file
-    if (validations && validations.length > 0) {
-        const promises = validations.map(v =>
+    if (updatedValidations && updatedValidations.length > 0) {
+        const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
                 return f[`${v.name}`](value, v.args);
             })
@@ -91,40 +104,29 @@ const sortOptions = options => {
     return getSortedData(options, SORT_TYPE, true);
 };
 
-export const formatValues = values => {
-    Object.keys(values).map(key => {
-        if (values[key] === null) values[key] = [];
-        if (typeof values[key] === 'object') {
-            if (Array.isArray(values[key])) {
-                values[key] = values[key].map(val => {
-                    if (typeof val !== 'string') {
-                        return val.value;
-                    }
-                    return val;
-                });
-            } else if (values[key].value) {
-                values[key] = values[key].value;
-            }
-        }
-    });
-};
-
 export const getAllFields = schema => {
-    let allFields = {};
+    let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
     fields.forEach(section => {
-        allFields = {...allFields, ...section};
+        sectionsFields = {...sectionsFields, ...section};
+    });
+    let allFields = sectionsFields;
+    Object.keys(sectionsFields).forEach(key => {
+        const arrayFields = get(sectionsFields[key], 'fields');
+        allFields = {...allFields, ...arrayFields};
     });
     return allFields;
 };
 
-export const getFieldByName = (allFields, name) => {
-    const key = Object.keys(allFields).find(key => allFields[key].name === name);
-    return get(allFields, [key]);
-};
+export const getFieldValue = fieldProps => {
+    return fieldProps.value !== undefined
+        ? fieldProps.value
+        : fieldProps
+}
 
-export const getProperValue = (type, value, path) => {
+export const getProperValue = (type, value, path, schema) => {
     let val = '';
+    if (value === null) val = [];
     switch (type) {
         case 'number':
             val = Number(value);
@@ -135,8 +137,108 @@ export const getProperValue = (type, value, path) => {
                 [path[1]]: value.endDate,
             };
             break;
+        case 'stringInArray':
+            val = Array.isArray(value) ? value : [value];
+            break;
+        case 'array':
+            val = value ? value.map(v => getProperValues(schema, v)) : [];
+            break;
+        case 'select':
+        case 'multiselect':
+            val = getFieldValue(value);
+            break;
         default:
             val = value;
     }
     return Array.isArray(path) ? val : {[path]: val};
+};
+
+export const buildSection = (
+    fields = {},
+    getValues,
+    view,
+    {selectValues, initialData, setFieldValue, setDisableSubmit}
+) => {
+    return (
+        <>
+            {Object.keys(fields).map(key => {
+                return (
+                    !getFieldConfig(fields[key], 'hidden', view) &&
+                    (get(fields[key], 'type') === 'array' ? (
+                        <NexusArray
+                            key={key}
+                            view={view}
+                            selectValues={selectValues}
+                            data={getDefaultValue(fields[key], view, initialData)}
+                            getValues={getValues}
+                            setFieldValue={setFieldValue}
+                            setDisableSubmit={setDisableSubmit}
+                            validationError={getValidationError(initialData.validationErrors, fields[key])}
+                            {...fields[key]}
+                        />
+                    ) : (
+                        <div key={key} className="nexus-c-dynamic-form__field">
+                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues})}
+                        </div>
+                    ))
+                );
+            })}
+        </>
+    );
+};
+
+export const renderNexusField = (key, view, getValues, {initialData={}, field, selectValues}) => {
+    return (
+        <NexusField
+            {...field}
+            id={key}
+            key={key}
+            name={key}
+            label={field.name}
+            view={view}
+            formData={getValues()}
+            validationError={getValidationError(initialData.validationErrors, field)}
+            defaultValue={getDefaultValue(field, view, initialData)}
+            selectValues={selectValues}
+        />
+    );
+};
+
+export const getProperValues = (schema, values) => {
+    // handle values before submit
+    let properValues = {};
+    const allFields = getAllFields(schema);
+    Object.keys(values).forEach(key => {
+        const field = allFields[key];
+        if (field) {
+            const {path} = field;
+            properValues = {
+                ...properValues,
+                ...getProperValue(field.type, values[key], path, schema),
+            };
+        } else {
+            properValues = {
+                ...properValues,
+                ...{[key]: values[key]},
+            };
+        }
+    });
+    return properValues;
+};
+
+export const renderLabel = (label, isRequired, tooltip) => {
+    return (
+        <div className="nexus-c-field__label">
+            {`${label}${isRequired ? '*' : ''}: `}
+            {tooltip && (
+                <span title={tooltip} style={{color: 'grey'}}>
+                    <i className="far fa-question-circle" />
+                </span>
+            )}
+        </div>
+    );
+};
+
+export const renderError = error => {
+    return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
 };
