@@ -5,7 +5,6 @@ exports[`NexusDynamicForm should match snapshot 1`] = `
   className="nexus-c-dynamic-form"
 >
   <Form
-    isDisabled={false}
     onSubmit={[Function]}
   >
     <Component />
