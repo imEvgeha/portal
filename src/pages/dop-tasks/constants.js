@@ -65,7 +65,7 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'activityEstimatedEndDate',
         headerName: 'Due Date',
         dataType: 'regionalMidnight',
-        searchDataType: 'regionalMidnight',
+        searchDataType: 'businessDateTime',
         width: 120,
     },
     {
@@ -210,3 +210,21 @@ export const INITIAL_SEARCH_PARAMS = {
         },
     ],
 };
+
+export const STRING_FIELDS = [
+    'taskName',
+    'projectName',
+    'OrderExternalID',
+    'Customer',
+    'servicingRegion',
+    'potentialOwners',
+    'actualOwner',
+];
+export const DATE_FIELDS = [
+    'activityEstimatedEndDate',
+    'activityActualStartDate',
+    'activityActualEndDate',
+    'activityPlannedCompletionDate',
+    'projectStartDate',
+    'projectPlannedCompletionDate',
+];
