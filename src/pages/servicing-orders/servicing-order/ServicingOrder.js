@@ -79,7 +79,7 @@ const ServicingOrder = ({match}) => {
                     );
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        fulfillmentOrders: populateLoading(fulfillmentOrders),
                     });
                     /*
                     Todo : uncomment below when MGM stories are done
