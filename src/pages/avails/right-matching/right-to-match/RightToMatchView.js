@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import SectionMessage from '@atlaskit/section-message';
-import {cloneDeep, get, isEmpty} from 'lodash';
+import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
@@ -139,20 +139,16 @@ const RightToMatchView = ({
     // eslint-disable-next-line react/prop-types
     const createNewButtonCellRenderer = ({data}) => {
         const {id} = data || {};
-        if (matchingCandidates.length === 0 && id) {
-            return (
-                <CustomActionsCellRenderer id={id || '0'}>
-                    <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
-                </CustomActionsCellRenderer>
-            );
-        }
-        return null;
+        return (
+            <CustomActionsCellRenderer id={id || '0'}>
+                <Button onClick={onNewRightClick}>{NEW_BUTTON}</Button>
+            </CustomActionsCellRenderer>
+        );
     };
 
     const actionNewButtonColumnDef = defineActionButtonColumn({
         cellRendererFramework: createNewButtonCellRenderer,
     });
-    const updatedFocusedRightColumnDefs = [actionNewButtonColumnDef, ...columnDefs];
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
     const handleGridEvent = ({type, api}) => {
@@ -248,14 +244,19 @@ const RightToMatchView = ({
 
     const reorderConflictingRightsHeaders = tableName => {
         if (updatedColumnDefs.length === 1) return [];
-        if (updatedFocusedRightColumnDefs.length === 1) return [];
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
         const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
         const headerNames = ['SKIP', RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = updatedColumnDefs;
-        if (tableName === PENDING_RIGHT) columnDefinitions = updatedFocusedRightColumnDefs;
+        if (tableName === PENDING_RIGHT) {
+            if (matchingCandidates.length === 0 && get(focusedRight, 'id')) {
+                columnDefinitions = [actionNewButtonColumnDef, ...columnDefs];
+            } else {
+                columnDefinitions = [...columnDefs];
+            }
+        }
 
         const reorderedHeaders = sortTableHeaders(columnDefinitions, headerNames);
 
