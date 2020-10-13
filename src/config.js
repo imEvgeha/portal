@@ -102,7 +102,7 @@ export const appConfig = {
 };
 
 // Single Spa Apps registration
-// child-app names needs to be of the format: "@react-mf/event-management"
+// child-app names needs to be of the format: "@portal-mf/event-management"
 export const registerSingleSpaApps = async () => {
     let importMap = {};
     await nexusFetch('/singleSpaApps.json').then(map => {
@@ -112,7 +112,7 @@ export const registerSingleSpaApps = async () => {
                 registerApplication({
                     name,
                     app: () => System.import(name),
-                    activeWhen: name.split('-mf')[1],
+                    activeWhen: name.split('portal-mf')[1],
                     // can add customProps here
                 });
             }

@@ -72,7 +72,7 @@ export function routesWithTracking(importMap) {
     Object.keys(imports).map(name => {
         if (name.includes('-mf')) {
             singleSpaRoutes.push({
-                path: name.split('-mf')[1],
+                path: name.split('portal-mf')[1],
                 component: () => {
                     start();
                     return <div key={name} id={`single-spa-application:${name}`} />;
