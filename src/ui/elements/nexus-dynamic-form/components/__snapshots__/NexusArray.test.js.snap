@@ -2,8 +2,15 @@
 
 exports[`NexusArray should match snapshot 1`] = `
 <div
-  className="nexus-c-array"
+  className="nexus-c-array "
 >
+  <Field
+    isDisabled={false}
+    isRequired={false}
+    validate={[Function]}
+  >
+    <Component />
+  </Field>
   <div
     className="nexus-c-array__add"
   >
@@ -34,16 +41,20 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          dateType=""
           defaultValue={false}
           dependencies={Array []}
           formData={Object {}}
-          id="territory[0].selected"
+          id="undefined[0].selected"
           isReadOnly={true}
           isRequired={false}
-          key="territory[0].selected"
+          key="undefined[0].selected"
           label="Selected"
-          name="territory[0].selected"
+          labels={Array []}
+          name="undefined[0].selected"
+          optionsConfig={Object {}}
           path="territory.selected"
+          selectValues={Object {}}
           tooltip={null}
           type="boolean"
           validation={Array []}
@@ -56,16 +67,20 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          dateType=""
           defaultValue="IL"
           dependencies={Array []}
           formData={Object {}}
-          id="territory[0].country"
+          id="undefined[0].country"
           isReadOnly={false}
           isRequired={false}
-          key="territory[0].country"
+          key="undefined[0].country"
           label="Country"
-          name="territory[0].country"
+          labels={Array []}
+          name="undefined[0].country"
+          optionsConfig={Object {}}
           path="territory.country"
+          selectValues={Object {}}
           tooltip={null}
           type="string"
           validation={Array []}
@@ -91,16 +106,20 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          dateType=""
           defaultValue={false}
           dependencies={Array []}
           formData={Object {}}
-          id="territory[1].selected"
+          id="undefined[1].selected"
           isReadOnly={true}
           isRequired={false}
-          key="territory[1].selected"
+          key="undefined[1].selected"
           label="Selected"
-          name="territory[1].selected"
+          labels={Array []}
+          name="undefined[1].selected"
+          optionsConfig={Object {}}
           path="territory.selected"
+          selectValues={Object {}}
           tooltip={null}
           type="boolean"
           validation={Array []}
@@ -113,16 +132,20 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          dateType=""
           defaultValue="US"
           dependencies={Array []}
           formData={Object {}}
-          id="territory[1].country"
+          id="undefined[1].country"
           isReadOnly={false}
           isRequired={false}
-          key="territory[1].country"
+          key="undefined[1].country"
           label="Country"
-          name="territory[1].country"
+          labels={Array []}
+          name="undefined[1].country"
+          optionsConfig={Object {}}
           path="territory.country"
+          selectValues={Object {}}
           tooltip={null}
           type="string"
           validation={Array []}
