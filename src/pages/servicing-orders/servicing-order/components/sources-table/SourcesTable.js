@@ -30,7 +30,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const previousData = usePrevious(dataArray);
     const barcodes = dataArray.map(item => item.barcode.trim());
 
-    // useEffect(() => populateRowData(), [data]);
     useEffect(
         () => {
             if (!isEqual(dataArray, previousData)) {
@@ -111,7 +110,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     });
 
     // Todo : remove this when dete QA apis are working
-    if (!URL.isLocalOrDev()) newColDef = [columnDefinitions[0]];
+    if (!URL.isLocalOrDevOrQA()) newColDef = [columnDefinitions[0]];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         const prevSources = sources.slice();
@@ -130,7 +129,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 });
                 api.setRowData(prevSources);
             } else if (barcodes[rowIndex] !== data.barcode.trim()) {
-                // call MGM fetch api and update barcode
+                // call DETE fetch api and update barcode
                 const loadingSources = sources.slice();
                 let loading = data;
                 loading = {
@@ -179,7 +178,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
-        <div className={URL.isLocalOrDev() ? 'nexus-c-sources' : 'nexus-c-sources_qa'}>
+        <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>

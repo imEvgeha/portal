@@ -44,32 +44,23 @@ const ServicingOrder = ({match}) => {
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-                    // todo : remove this when dete qa/stg apis are working
-                    if (URL.isLocalOrDev()) {
+
+                    setServiceOrder({
+                        ...servicingOrder,
+                        fulfillmentOrders: showLoading(fulfillmentOrders),
+                        servicingOrderItems,
+                    });
+                    const barcodes = getBarCodes(fulfillmentOrders);
+                    fetchAssetInfo(barcodes).then(assetInfo => {
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
                         setServiceOrder({
                             ...servicingOrder,
-                            fulfillmentOrders: showLoading(fulfillmentOrders),
+                            fulfillmentOrders: newFulfillmentOrders,
                             servicingOrderItems,
                         });
-                        const barcodes = getBarCodes(fulfillmentOrders);
-                        fetchAssetInfo(barcodes).then(assetInfo => {
-                            const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
-                            setServiceOrder({
-                                ...servicingOrder,
-                                fulfillmentOrders: newFulfillmentOrders,
-                                servicingOrderItems,
-                            });
-                            setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                            setSelectedOrder(newFulfillmentOrders[0]);
-                        });
-                    } else {
-                        setServiceOrder({
-                            ...servicingOrder,
-                            fulfillmentOrders,
-                            servicingOrderItems,
-                        });
-                        setSelectedOrder(fulfillmentOrders[0]);
-                    }
+                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                        setSelectedOrder(newFulfillmentOrders[0]);
+                    });
 
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 } else {
