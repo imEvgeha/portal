@@ -24,8 +24,6 @@ const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
-const Loading = 'loading...';
-
 const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
@@ -98,7 +96,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     });
 
     const loadingCell = params => {
-        if (params.value === 'loading...') {
+        if (params.value === ' ') {
             return `<img src=${loadingGif} alt="loading..."/>`;
         }
         return params.value;
@@ -113,7 +111,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     });
 
     // Todo : remove this when dete QA apis are working
-    if (!URL.isLocalOrDev()) newColDef = [...columnDefinitions];
+    if (!URL.isLocalOrDev()) newColDef = [columnDefinitions[0]];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         const prevSources = sources.slice();
@@ -137,11 +135,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 let loading = data;
                 loading = {
                     ...loading,
-                    title: Loading,
-                    version: Loading,
-                    assetFormat: Loading,
-                    status: Loading,
-                    standard: Loading,
+                    title: ' ',
+                    version: ' ',
+                    assetFormat: ' ',
+                    status: ' ',
+                    standard: ' ',
                 };
                 loadingSources[rowIndex] = loading;
                 setSources(loadingSources);
@@ -181,7 +179,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
-        <div className="nexus-c-sources">
+        <div className={URL.isLocalOrDev() ? 'nexus-c-sources' : 'nexus-c-sources_qa'}>
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>

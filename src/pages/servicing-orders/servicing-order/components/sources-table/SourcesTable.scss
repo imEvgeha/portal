@@ -14,3 +14,20 @@
         height: 14rem; // grid height - 5 rows
     }
 }
+
+.nexus-c-sources_qa {
+    // todo remove this class when dete api works ok in QA
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nexus-c-nexus-grid {
+        width: 14rem;
+        height: 14rem; // grid height - 5 rows
+    }
+}

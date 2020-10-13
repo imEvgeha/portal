@@ -10,7 +10,7 @@ import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
     prepareRowData,
-    populateLoading,
+    showLoading,
     fetchAssetInfo,
     getBarCodes,
     populateAssetInfo,
@@ -26,7 +26,6 @@ const ServicingOrder = ({match}) => {
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
-    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         const order =
@@ -49,7 +48,7 @@ const ServicingOrder = ({match}) => {
                     if (URL.isLocalOrDev()) {
                         setServiceOrder({
                             ...servicingOrder,
-                            fulfillmentOrders: populateLoading(fulfillmentOrders),
+                            fulfillmentOrders: showLoading(fulfillmentOrders),
                             servicingOrderItems,
                         });
                         const barcodes = getBarCodes(fulfillmentOrders);
@@ -66,7 +65,7 @@ const ServicingOrder = ({match}) => {
                     } else {
                         setServiceOrder({
                             ...servicingOrder,
-                            fulfillmentOrders: populateLoading(fulfillmentOrders),
+                            fulfillmentOrders,
                             servicingOrderItems,
                         });
                         setSelectedOrder(fulfillmentOrders[0]);
@@ -79,7 +78,7 @@ const ServicingOrder = ({match}) => {
                     );
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: populateLoading(fulfillmentOrders),
+                        fulfillmentOrders,
                     });
                     /*
                     Todo : uncomment below when MGM stories are done
