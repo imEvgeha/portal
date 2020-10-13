@@ -14,11 +14,6 @@ exports[`DateTime should match snapshot 1`] = `
   label=""
   onChange={[Function]}
   onConfirm={[Function]}
-  value={
-    Array [
-      "",
-      "",
-    ]
-  }
+  value=""
 />
 `;

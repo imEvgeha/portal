@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusArray should match snapshot 1`] = `
+<div
+  className="nexus-c-array "
+>
+  <Field
+    isDisabled={false}
+    isRequired={false}
+    validate={[Function]}
+  >
+    <Component />
+  </Field>
+  <div
+    className="nexus-c-array__add"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      className="nexus-c-dynamic-form__add-button"
+      onClick={[Function]}
+    >
+      + Add territory
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+  <div
+    className="nexus-c-array__objects"
+  >
+    <div
+      className="nexus-c-array__object"
+      key="0"
+    >
+      <div
+        className="nexus-c-array__remove-button"
+        onClick={[Function]}
+      >
+        <EditorCloseIcon
+          size="medium"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field selected"
+      >
+        <NexusField
+          dateType=""
+          defaultValue={false}
+          dependencies={Array []}
+          formData={Object {}}
+          id="undefined[0].selected"
+          isReadOnly={true}
+          isRequired={false}
+          key="undefined[0].selected"
+          label="Selected"
+          labels={Array []}
+          name="undefined[0].selected"
+          optionsConfig={Object {}}
+          path="territory.selected"
+          selectValues={Object {}}
+          tooltip={null}
+          type="boolean"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field country"
+      >
+        <NexusField
+          dateType=""
+          defaultValue="IL"
+          dependencies={Array []}
+          formData={Object {}}
+          id="undefined[0].country"
+          isReadOnly={false}
+          isRequired={false}
+          key="undefined[0].country"
+          label="Country"
+          labels={Array []}
+          name="undefined[0].country"
+          optionsConfig={Object {}}
+          path="territory.country"
+          selectValues={Object {}}
+          tooltip={null}
+          type="string"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+    </div>
+    <div
+      className="nexus-c-array__object"
+      key="1"
+    >
+      <div
+        className="nexus-c-array__remove-button"
+        onClick={[Function]}
+      >
+        <EditorCloseIcon
+          size="medium"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field selected"
+      >
+        <NexusField
+          dateType=""
+          defaultValue={false}
+          dependencies={Array []}
+          formData={Object {}}
+          id="undefined[1].selected"
+          isReadOnly={true}
+          isRequired={false}
+          key="undefined[1].selected"
+          label="Selected"
+          labels={Array []}
+          name="undefined[1].selected"
+          optionsConfig={Object {}}
+          path="territory.selected"
+          selectValues={Object {}}
+          tooltip={null}
+          type="boolean"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+      <div
+        className="nexus-c-array__field "
+        key="nexus-c-array__field country"
+      >
+        <NexusField
+          dateType=""
+          defaultValue="US"
+          dependencies={Array []}
+          formData={Object {}}
+          id="undefined[1].country"
+          isReadOnly={false}
+          isRequired={false}
+          key="undefined[1].country"
+          label="Country"
+          labels={Array []}
+          name="undefined[1].country"
+          optionsConfig={Object {}}
+          path="territory.country"
+          selectValues={Object {}}
+          tooltip={null}
+          type="string"
+          validation={Array []}
+          validationError={null}
+          view="EDIT"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
