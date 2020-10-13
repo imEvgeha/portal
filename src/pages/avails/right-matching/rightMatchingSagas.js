@@ -261,7 +261,7 @@ export function* createNewRight(requestMethod, {payload}) {
             type: actionTypes.CREATE_NEW_RIGHT_REQUEST,
             payload: {},
         });
-        yield call(requestMethod, rightId);
+        const response = yield call(requestMethod, rightId);
 
         yield put({
             type: actionTypes.CREATE_NEW_RIGHT_SUCCESS,
@@ -278,6 +278,12 @@ export function* createNewRight(requestMethod, {payload}) {
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
                 description: CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+                actions: [
+                    {
+                        content: 'View Right',
+                        onClick: () => window.open(`/avails/rights/${response.id}`, '_blank'),
+                    },
+                ],
             },
         });
     } catch (error) {
