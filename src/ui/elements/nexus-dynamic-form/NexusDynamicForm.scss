@@ -68,13 +68,13 @@
             align-items: center;
         }
 
-        .nexus-c-field__value-section {
-            width: 100%;
-        }
-
         .nexus-c-field__label {
             width: 25%;
             color: map-get($neutrals, N300);
         }
     }
+}
+
+.nexus-c-field__value-section {
+    width: 100%;
 }
