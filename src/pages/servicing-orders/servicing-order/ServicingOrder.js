@@ -45,23 +45,32 @@ const ServicingOrder = ({match}) => {
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-
-                    setServiceOrder({
-                        ...servicingOrder,
-                        fulfillmentOrders: populateLoading(fulfillmentOrders),
-                        servicingOrderItems,
-                    });
-                    const barcodes = getBarCodes(fulfillmentOrders);
-                    fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                    // todo : remove this when dete qa/stg apis are working
+                    if (URL.isLocalOrDev()) {
                         setServiceOrder({
                             ...servicingOrder,
-                            fulfillmentOrders: newFulfillmentOrders,
+                            fulfillmentOrders: populateLoading(fulfillmentOrders),
                             servicingOrderItems,
                         });
-                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                        setSelectedOrder(newFulfillmentOrders[0]);
-                    });
+                        const barcodes = getBarCodes(fulfillmentOrders);
+                        fetchAssetInfo(barcodes).then(assetInfo => {
+                            const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                            setServiceOrder({
+                                ...servicingOrder,
+                                fulfillmentOrders: newFulfillmentOrders,
+                                servicingOrderItems,
+                            });
+                            setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                            setSelectedOrder(newFulfillmentOrders[0]);
+                        });
+                    } else {
+                        setServiceOrder({
+                            ...servicingOrder,
+                            fulfillmentOrders: populateLoading(fulfillmentOrders),
+                            servicingOrderItems,
+                        });
+                        setSelectedOrder(fulfillmentOrders[0]);
+                    }
 
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 } else {
@@ -70,8 +79,10 @@ const ServicingOrder = ({match}) => {
                     );
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: populateLoading(fulfillmentOrders),
+                        fulfillmentOrders,
                     });
+                    /*
+                    Todo : uncomment below when MGM stories are done
                     const barcodes = getBarCodes(fulfillmentOrders);
                     fetchAssetInfo(barcodes).then(assetInfo => {
                         const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
@@ -81,7 +92,7 @@ const ServicingOrder = ({match}) => {
                         });
                         setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
                     });
-
+                    */
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 }
             } catch (e) {

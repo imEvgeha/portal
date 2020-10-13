@@ -1,7 +1,8 @@
 import {cloneDeep, get} from 'lodash';
+import {URL} from '../../../../../util/Common';
 import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
 
-const Loading = 'loading...';
+const Loading = !URL.isLocalOrDev() ? '' : 'loading...'; // Todo remove check when dete apis are working on qa/stg
 const NotFound = 'Not Found';
 const ApiError = 'API error';
 
