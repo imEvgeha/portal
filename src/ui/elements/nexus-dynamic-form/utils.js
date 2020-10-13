@@ -17,16 +17,17 @@ const getFieldPath = path => {
 };
 
 export const getDefaultValue = (field = {}, view, data) => {
-    if (view === VIEWS.CREATE) {
-        return getFieldConfig(field, 'defaultValue', view);
-    }
     if (field.type === 'dateRange') {
         return {
             startDate: get(data, field.path[0]),
             endDate: get(data, field.path[1]),
         };
     }
-    return get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
+    const value = get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
+    if (view === VIEWS.CREATE && !value) {
+        return getFieldConfig(field, 'defaultValue', view);
+    }
+    return value;
 };
 
 export const getValidationError = (validationErrors, field) => {
@@ -119,7 +120,7 @@ export const getAllFields = schema => {
 };
 
 export const getFieldValue = fieldProps => {
-    return fieldProps.value !== undefined
+    return fieldProps && fieldProps.value !== undefined
         ? fieldProps.value
         : fieldProps
 }
