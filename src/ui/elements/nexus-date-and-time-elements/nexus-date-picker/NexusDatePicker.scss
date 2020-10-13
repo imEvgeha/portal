@@ -1,3 +1,5 @@
+@import '../../../../styles/atlaskit/colors';
+
 .nexus-c-date-picker__read-view-container {
     display: flex;
     align-items: center;
@@ -5,5 +7,5 @@
 }
 
 .read-view-container__placeholder {
-    color: #808080;
+    color: map-get($neutrals, N50);
 }
