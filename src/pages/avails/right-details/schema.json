@@ -81,19 +81,46 @@
                         "name": "Licensor",
                         "type": "select",
                         "path": "licensor",
-                        "isRequired": true
+                        "isRequired": true,
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "territory",
+                                "subfield": "selected",
+                                "value": true
+                            }
+                        ]
                     },
                     "licensee": {
                         "name": "Licensee",
                         "type": "select",
                         "path": "licensee",
-                        "isRequired": true
+                        "isRequired": true,
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "territory",
+                                "subfield": "selected",
+                                "value": true
+                            }
+                        ]
                     },
                     "licenseType": {
                         "name": "License Type",
                         "type": "select",
                         "path": "licenseType",
-                        "isRequired": true
+                        "isRequired": true,
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "territory",
+                                "subfield": "selected",
+                                "value": true
+                            }
+                        ]
                     },
                     "contentType": {
                         "name": "Content Type",
@@ -106,6 +133,13 @@
                                 "type": "readOnly",
                                 "field": "coreTitleId",
                                 "value": "any"
+                            },
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "territory",
+                                "subfield": "selected",
+                                "value": true
                             }
                         ]
                     },

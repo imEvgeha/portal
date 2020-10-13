@@ -46,6 +46,17 @@ export const getValidationError = (validationErrors, field) => {
     return error;
 };
 
+const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
+    let retValue = false;
+    formData[field].map(obj => {
+        if (obj[subfield] === value) {
+            retValue = obj[subfield];
+        }
+        return null;
+    });
+    return retValue;
+};
+
 export const checkFieldDependencies = (type, view, dependencies, formData) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -53,8 +64,11 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 
     return !!(
         foundDependencies &&
-        foundDependencies.some(({field, value}) => {
-            const dependencyValue = get(formData, field);
+        foundDependencies.some(({field, value, subfield}) => {
+            let dependencyValue = get(formData, field);
+            if (Array.isArray(dependencyValue)) {
+                dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
+            }
             // if has value || its value equal to the provided value
             return dependencyValue === value || (!!dependencyValue && value === 'any');
         })
