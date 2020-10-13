@@ -16,6 +16,8 @@ import {addToast, removeToast} from '../../ui/toast/toastActions';
     can pass successToast if needed to show toast on success of a API call
     default success title, icon and autoDismiss are already added
     (if successToast is passed then only these are displayed)
+
+    remove toast after 4 seconds
 */
 
 const showErrorModal = error => {
@@ -32,8 +34,10 @@ const showErrorModal = error => {
     }
 };
 
-const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
-    const {status, data = {}, message, description} = error || {};
+export const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
+    let {status, data = {}, message, description} = error || {};
+    if (typeof error === 'string') message = error;
+
     const ERROR_MODAL = {
         codes: [503],
         title: 'Unexpected error occurred. Please try again later',
@@ -54,29 +58,28 @@ const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) =>
             description: err.description || data.message || message,
         };
     } else {
-        toast = errorToast ? {
-            ...defaultErrorToast,
-            ...errorToast,
-        } : {
-            title: ERROR_MODAL.title,
-            description: description || message || data.message || JSON.stringify(data),
-            icon: ERROR_ICON,
-            actions: ERROR_MODAL.codes.includes(status) ? [
-                {content: 'OK', onClick: () => store.dispatch(removeToast())},
-            ] : [],
-            isWithOverlay: ERROR_MODAL.codes.includes(status),
-        };
+        toast = errorToast
+            ? {
+                  ...defaultErrorToast,
+                  ...errorToast,
+              }
+            : {
+                  title: ERROR_MODAL.title,
+                  description: description || message || data.message || JSON.stringify(data),
+                  icon: ERROR_ICON,
+                  actions: ERROR_MODAL.codes.includes(status)
+                      ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
+                      : [],
+                  isWithOverlay: ERROR_MODAL.codes.includes(status),
+                  isAutoDismiss: true,
+              };
     }
     store.dispatch(addToast(toast));
+    setTimeout(() => store.dispatch(removeToast()), 4000);
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {
-    const {
-        status,
-        statusText,
-        name,
-        errorMessage,
-    } = error || {};
+    const {status, statusText, name, errorMessage} = error || {};
 
     // TODO: this should be removed from http client error handling
     // it considers UI level (modal and toast) and should be called inside ui|redux actions|redux sagas

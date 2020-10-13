@@ -3,9 +3,15 @@ import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
-    return `${config.get('gateway.servicingOrdersUrl')}${config.get(
-        'gateway.service.servicingOrder'
-    )}`;
+    return `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}`;
+};
+
+const deteAssetURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteAsset')}`;
+};
+
+const deteTitleURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteTitle')}`;
 };
 
 // TODO: Use an actual API when ready
@@ -22,9 +28,7 @@ export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams
             queryParams[key] = value;
         }
     });
-    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(
-        sortedParams
-    )}`;
+    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(sortedParams)}`;
     const params = encodedSerialize({...queryParams, page, size});
     return nexusFetch(url, {params});
 };
@@ -65,6 +69,16 @@ export const exportServicingOrders = servicingOrders => {
         method: 'post',
         body: JSON.stringify(servicingOrders),
     });
+};
+
+export const getDeteTitleByBarcode = barcode => {
+    const url = `${deteTitleURL(config)}/assetId/${barcode}`;
+    return nexusFetch(url);
+};
+
+export const getDeteAssetByBarcode = barcode => {
+    const url = `${deteAssetURL(config)}/${barcode}`;
+    return nexusFetch(url);
 };
 
 export const servicingOrdersService = {

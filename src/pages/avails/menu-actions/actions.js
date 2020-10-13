@@ -34,6 +34,7 @@ export const filterOutUnselectedTerritories = rights => {
         return {
             ...right,
             territory: territoriesUnselected,
+            territoryAll: right.territory.map(item => item.country).join(', '),
         };
     });
     return filteredSelectedRights;

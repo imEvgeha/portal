@@ -54,7 +54,7 @@ DateTime.defaultProps = {
     type: '',
     id: '',
     labels: ['', ''],
-    value: ['', ''],
+    value: '',
     isReadOnly: false,
     isDisabled: false,
 };

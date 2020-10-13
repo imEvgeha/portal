@@ -60,3 +60,21 @@
 .nexus-c-dynamic-form__submit-button {
     right: 100px;
 }
+
+.nexus-c-dynamic-form__field {
+    .nexus-c-field {
+        > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .nexus-c-field__label {
+            width: 25%;
+            color: map-get($neutrals, N300);
+        }
+    }
+}
+
+.nexus-c-field__value-section {
+    width: 100%;
+}
