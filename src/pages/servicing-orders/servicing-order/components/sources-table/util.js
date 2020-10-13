@@ -1,4 +1,9 @@
-import {get} from 'lodash';
+import {cloneDeep, get} from 'lodash';
+import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
+
+const Loading = 'loading...';
+const NotFound = 'Not Found';
+const ApiError = 'API error';
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
@@ -16,10 +21,8 @@ export const prepareRowData = data => {
 
     services.forEach(service => {
         const sources = get(service, sourcesKey, []);
-
         sources.map(s => {
             const {barcode} = s;
-
             if (barcode) {
                 const source = get(preparedSources, barcode, {});
                 preparedSources[barcode] = source;
@@ -34,4 +37,122 @@ export const prepareRowData = data => {
     });
 
     return Object.entries(preparedSources).map(([key, value]) => value);
+};
+
+export const fetchAssetFields = async barcode => {
+    const title = await getDeteTitleByBarcode(barcode);
+    const rest = await getDeteAssetByBarcode(barcode);
+    return {title, ...rest};
+};
+
+export const fetchAssetInfo = async barcodes => {
+    const titleRequests = barcodes.map(item => {
+        return getDeteTitleByBarcode(item)
+            .then(res => {
+                const arr = res || [];
+                return {
+                    barcode: item,
+                    title: arr[0].name || NotFound,
+                };
+            })
+            .catch(() => {
+                return {
+                    barcode: item,
+                    title: ApiError,
+                    version: ApiError,
+                    assetFormat: ApiError,
+                    standard: ApiError,
+                    status: ApiError,
+                };
+            });
+    });
+    const assetRequests = barcodes.map(item => {
+        return getDeteAssetByBarcode(item)
+            .then(res => {
+                const {spec, assetFormat, componentAssociations = [], status} = res;
+                return {
+                    barcode: item,
+                    version: spec || NotFound,
+                    assetFormat: assetFormat || NotFound,
+                    amsAssetId: item,
+                    standard: componentAssociations[0].component.standard || NotFound,
+                    status: status || NotFound,
+                };
+            })
+            .catch(() => {
+                return {
+                    barcode: item,
+                    version: ApiError,
+                    assetFormat: ApiError,
+                    standard: ApiError,
+                    status: ApiError,
+                };
+            });
+    });
+    return Promise.all([...titleRequests, ...assetRequests]); // Waiting for all the requests to get resolved.
+};
+
+// get unique barcodes in fulfillment order for optimum api use
+export const getBarCodes = fulfillmentOrders => {
+    if (!Array.isArray(fulfillmentOrders)) return [];
+    const barcodes = new Set();
+    // eslint-disable-next-line array-callback-return
+    fulfillmentOrders.map(item => {
+        const length = Array.isArray(item.definition.deteServices)
+            ? item.definition.deteServices[0].deteSources.length
+            : 0;
+        if (length > 0)
+            // eslint-disable-next-line array-callback-return
+            item.definition.deteServices[0].deteSources.map((item, index) => {
+                barcodes.add(item.barcode.trim());
+            });
+    });
+    return [...barcodes];
+};
+
+// populate asset info in nested fulfillmentorders object
+export const populateAssetInfo = (fulfillmentOrders, arr) => {
+    const merged = [];
+
+    arr.forEach(item => {
+        const inx = merged.findIndex(ee => ee.barcode === item.barcode);
+        inx !== -1 ? (merged[inx] = {...merged[inx], ...item}) : merged.push(item);
+    });
+
+    fulfillmentOrders.forEach(item => {
+        const length = Array.isArray(item.definition.deteServices)
+            ? item.definition.deteServices[0].deteSources.length
+            : 0;
+        if (length > 0) {
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
+                const m = merged.findIndex(ee => ee.barcode === item.barcode);
+                return m !== -1 ? {...merged[m]} : item;
+            });
+        }
+    });
+    return fulfillmentOrders;
+};
+
+// show 'loading...' in asset fields temporarily
+export const populateLoading = fulfillmentOrders => {
+    const foClone = cloneDeep(fulfillmentOrders);
+
+    foClone.forEach(item => {
+        const length = Array.isArray(item.definition.deteServices)
+            ? item.definition.deteServices[0].deteSources.length
+            : 0;
+        if (length > 0) {
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
+                return {
+                    ...item,
+                    title: Loading,
+                    version: Loading,
+                    assetFormat: Loading,
+                    standard: Loading,
+                    status: Loading,
+                };
+            });
+        }
+    });
+    return foClone;
 };

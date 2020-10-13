@@ -4,7 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {cloneDeep, get, isEmpty, isEqual, set} from 'lodash';
+import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
@@ -26,6 +26,7 @@ export const FulfillmentOrder = ({
     updatedServices,
     children,
     cancelEditing,
+    lastOrder,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -91,21 +92,17 @@ export const FulfillmentOrder = ({
         () => {
             const updatedDeteServices = get(updatedServices, 'deteServices');
             const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
-
             set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
             setFulfillmentOrder(fulfillmentOrderClone);
+            setSelectedOrder(fulfillmentOrderClone);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [updatedServices]
     );
 
-    useEffect(
-        () => {
-            setIsSaveDisabled(isEqual(fulfillmentOrder, savedFulfillmentOrder || selectedFulfillmentOrder));
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [fulfillmentOrder]
-    );
+    useEffect(() => {
+        setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
+    }, [fulfillmentOrder]);
 
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
@@ -115,6 +112,7 @@ export const FulfillmentOrder = ({
         get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
             ? openWarningModal(fo)
             : setFulfillmentOrder(fo);
+        setIsSaveDisabled(false);
     };
 
     const openWarningModal = fo => {
@@ -130,6 +128,7 @@ export const FulfillmentOrder = ({
                 text: 'Cancel',
                 onClick: () => {
                     closeModal();
+                    setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
                 },
             },
         ];
@@ -145,11 +144,14 @@ export const FulfillmentOrder = ({
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
+        setIsSaveDisabled(true);
+        setSelectedOrder(lastOrder);
     };
 
     const onSaveHandler = () => {
         const payload = {data: fulfillmentOrder};
         dispatch(saveFulfillmentOrder(payload));
+        setIsSaveDisabled(true);
     };
 
     return (
@@ -267,17 +269,18 @@ FulfillmentOrder.propTypes = {
     updatedServices: PropTypes.object,
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
+    lastOrder: PropTypes.object.isRequired,
 };
 
 FulfillmentOrder.defaultProps = {
     selectedFulfillmentOrder: {},
-    setSelectedOrder: null,
-    setSelectedFulfillmentOrderID: null,
-    fetchFulfillmentOrders: null,
+    setSelectedOrder: () => null,
+    setSelectedFulfillmentOrderID: () => null,
+    fetchFulfillmentOrders: () => null,
     serviceOrder: null,
-    updatedServices: null,
+    updatedServices: () => null,
     children: null,
-    cancelEditing: null,
+    cancelEditing: () => null,
 };
 
 export default FulfillmentOrder;
