@@ -70,7 +70,7 @@ export function routesWithTracking(importMap) {
     const imports = get(importMap, 'imports', {});
     const singleSpaRoutes = [];
     Object.keys(imports).map(name => {
-        if (name.includes('-mf')) {
+        if (name.includes('portal-mf')) {
             singleSpaRoutes.push({
                 path: name.split('portal-mf')[1],
                 component: () => {

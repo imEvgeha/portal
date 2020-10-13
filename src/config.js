@@ -108,7 +108,7 @@ export const registerSingleSpaApps = async () => {
     await nexusFetch('/singleSpaApps.json').then(map => {
         importMap = map;
         Object.keys(map.imports).map(name => {
-            if (name.includes('-mf')) {
+            if (name.includes('portal-mf')) {
                 registerApplication({
                     name,
                     app: () => System.import(name),
