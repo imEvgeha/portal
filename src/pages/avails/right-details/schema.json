@@ -27,7 +27,7 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Core TitleId",
+                                "field": "coreTitleId",
                                 "value": "any"
                             }
                         ]
@@ -48,13 +48,13 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Licensed",
+                                "field": "licensed",
                                 "value": false
                             },
                             {
                                 "view": "EDIT",
                                 "type": "required",
-                                "field": "Licensed",
+                                "field": "licensed",
                                 "value": true
                             }
                         ]
@@ -104,7 +104,7 @@
                             {
                                 "view": "EDIT",
                                 "type": "readOnly",
-                                "field": "Core TitleId",
+                                "field": "coreTitleId",
                                 "value": "any"
                             }
                         ]
@@ -184,6 +184,68 @@
             {
                 "title": "Territory",
                 "fields": {
+                    "territory": {
+                        "name": "Territory",
+                        "type": "array",
+                        "path": "territory",
+                        "isRequired": true,
+                        "confirmationContent": "Alternatively, you can withdraw the territory.",
+                        "fields": {
+                            "country": {
+                                "name": "Country",
+                                "path": "country",
+                                "isRequired": true,
+                                "className": "nexus-c-array__field-bold",
+                                "type": "select",
+                                "optionsConfig": {
+                                    "defaultValuePath": "countryCode",
+                                    "defaultLabelPath": "countryName"
+                                }
+                            },
+                            "selected": {
+                                "name": "Selected",
+                                "type": "boolean",
+                                "path": "selected",
+                                "isReadOnly": true,
+                                "className": "nexus-c-array__field-inline",
+                                "viewConfig": [
+                                    {
+                                        "view": "CREATE",
+                                        "defaultValue": false
+                                    }
+                                ]
+                            },
+                            "rightContractStatus": {
+                                "name": "Right Contract Status",
+                                "type": "select",
+                                "path": "rightContractStatus",
+                                "isRequired": true,
+                                "optionsConfig": {
+                                    "options": [
+                                        { "label": "Pending", "value": "Pending" },
+                                        { "label": "Pending Manual", "value": "PendingManual" },
+                                        { "label": "Matched Once", "value": "MatchedOnce" }
+                                    ]
+                                }
+                            },
+                            "vuContractId": {
+                                "name": "VU Contract ID",
+                                "type": "stringInArray",
+                                "path": "vuContractId"
+                            },
+                            "dateWithdrawn": {
+                                "name": "Date Withdrawn",
+                                "type": "datetime",
+                                "dateType": "regionalMidnight",
+                                "path": "dateWithdrawn"
+                            },
+                            "comment": {
+                                "name": "Comments",
+                                "type": "string",
+                                "path": "comment"
+                            }
+                        }
+                    },
                     "territoryExcluded": {
                         "name": "Territory Excluded",
                         "type": "multiselect",
@@ -657,7 +719,7 @@
                             {
                                 "view": "EDIT",
                                 "type": "required",
-                                "field": "Licensed",
+                                "field": "licensed",
                                 "value": false
                             }
                         ]

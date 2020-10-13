@@ -21,6 +21,11 @@ export const createColumnDefs = payload => {
                 headerName: displayName,
                 colId: sortParamName || queryParamName,
                 cellRenderer: hasLink ? 'loadingCellRenderer' : null,
+                cellRendererParams: hasLink
+                    ? {
+                          link: '/avails/rights/',
+                      }
+                    : {},
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
                 lockPosition: isColumnLocked,

@@ -236,15 +236,6 @@ const RightsRepository = ({
         return columnDef;
     });
 
-    const columnDefsWithRedirect = cloneDeep(columnDefsClone).map(columnDef => {
-        if (columnDef.cellRenderer && ['title', 'id'].includes(columnDef.field)) {
-            columnDef.cellRendererParams = {
-                link: '/avails/rights/',
-            };
-        }
-        return columnDef;
-    });
-
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
     const actionMatchingButtonColumnDef = defineButtonColumn({
         cellRendererFramework: TooltipCellRenderer,
@@ -253,18 +244,18 @@ const RightsRepository = ({
         cellStyle: {overflow: 'visible'},
     });
 
-    const updatedColumnDefs = columnDefsWithRedirect.length
-        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
-        : columnDefsWithRedirect;
+    const updatedColumnDefs = columnDefsClone.length
+        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
+        : columnDefsClone;
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
     });
 
-    const updatedColumnDefsCheckBoxHeader = columnDefsWithRedirect.length
-        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsWithRedirect]
-        : columnDefsWithRedirect;
+    const updatedColumnDefsCheckBoxHeader = columnDefsClone.length
+        ? [checkboxSelectionWithHeaderColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
+        : columnDefsClone;
 
     const onRightsRepositoryGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
