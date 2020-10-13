@@ -11,6 +11,7 @@ import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {URL} from '../../../../../util/Common';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
@@ -110,6 +111,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     newColDef = newColDef.map(item => {
         return {...item, cellRenderer: loadingCell};
     });
+
+    // Todo : remove this when dete QA apis are working
+    if (!URL.isLocalOrDev()) newColDef = [...columnDefinitions];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         const prevSources = sources.slice();
