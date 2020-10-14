@@ -38,7 +38,7 @@ const withOptional = () => WrappedComponent => {
     ComposedComponent.propTypes = {
         ...WrappedComponent.propTypes,
         isOptional: PropTypes.bool,
-        value: PropTypes.string,
+        value: PropTypes.any,
     };
 
     ComposedComponent.defaultProps = {
