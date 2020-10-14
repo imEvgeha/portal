@@ -333,7 +333,7 @@
                             },
                             "priceValue": {
                                 "name": "Price Value",
-                                "type": "number",
+                                "type": "string",
                                 "path": "priceValue",
                                 "className": "area-two"
                             },
