@@ -31,15 +31,22 @@
         align-content: space-between;
 
         > div {
-            flex: 0 32.5%;
-            border: 1px solid map-get($light-neutral-colors, light-neutral-1);
+            flex: 0 47.5%;
             box-sizing: border-box;
             position: relative;
         }
     }
     .nexus-c-array__object {
+        display: grid;
+        grid-template-areas:
+            'one one'
+            'two two'
+            'three three'
+            'four five'
+            'six seven';
         padding: 25px;
         margin-top: 15px;
+        box-shadow: 0.3em 0.3em 1em map-get($light-neutral-colors, light-neutral-1);
     }
     .nexus-c-array__field {
         .nexus-c-field__value {
@@ -58,6 +65,31 @@
                     display: flex;
                 }
             }
+        }
+        &.area-one {
+            grid-area: one;
+            & .nexus-c-field__label {
+                align-self: center;
+            }
+        }
+        &.area-two {
+            grid-area: two;
+        }
+        &.area-three {
+            grid-area: three;
+        }
+        &.area-four {
+            grid-area: four;
+        }
+        &.area-five {
+            grid-area: five;
+        }
+        &.area-six {
+            grid-area: six;
+        }
+        &.area-seven {
+            grid-area: seven;
+            background-color: map-get($yellows, Y50);
         }
     }
 }

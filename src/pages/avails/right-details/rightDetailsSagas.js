@@ -8,7 +8,7 @@ import * as selectors from './rightDetailsSelector';
 
 const formatSelectValues = values => {
     const selectValues = {};
-    values.map(opt => {
+    values.forEach(opt => {
         const [key] = Object.keys(opt);
         selectValues[key] = cloneDeep(opt[key]);
     });

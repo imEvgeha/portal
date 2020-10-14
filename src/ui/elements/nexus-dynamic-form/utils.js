@@ -47,6 +47,16 @@ export const getValidationError = (validationErrors, field) => {
     return error;
 };
 
+const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
+    let retValue = false;
+    formData[field].forEach(obj => {
+        if (obj[subfield] === value) {
+            retValue = obj[subfield];
+        }
+    });
+    return retValue;
+};
+
 export const checkFieldDependencies = (type, view, dependencies, formData) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
@@ -54,8 +64,11 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 
     return !!(
         foundDependencies &&
-        foundDependencies.some(({field, value}) => {
-            const dependencyValue = get(formData, field);
+        foundDependencies.some(({field, value, subfield}) => {
+            let dependencyValue = get(formData, field);
+            if (Array.isArray(dependencyValue)) {
+                dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
+            }
             // if has value || its value equal to the provided value
             return dependencyValue === value || (!!dependencyValue && value === 'any');
         })
@@ -120,10 +133,8 @@ export const getAllFields = schema => {
 };
 
 export const getFieldValue = fieldProps => {
-    return fieldProps && fieldProps.value !== undefined
-        ? fieldProps.value
-        : fieldProps
-}
+    return fieldProps && fieldProps.value !== undefined ? fieldProps.value : fieldProps;
+};
 
 export const getProperValue = (type, value, path, schema) => {
     let val = '';
@@ -151,7 +162,7 @@ export const getProperValue = (type, value, path, schema) => {
         default:
             val = value;
     }
-    if (value === "") val = null;
+    if (value === '') val = null;
     return Array.isArray(path) ? val : {[path]: val};
 };
 
@@ -189,7 +200,7 @@ export const buildSection = (
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData={}, field, selectValues}) => {
+export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues}) => {
     return (
         <NexusField
             {...field}
