@@ -49,11 +49,10 @@ export const getValidationError = (validationErrors, field) => {
 
 const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     let retValue = false;
-    formData[field].map(obj => {
+    formData[field].forEach(obj => {
         if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
-        return null;
     });
     return retValue;
 };
