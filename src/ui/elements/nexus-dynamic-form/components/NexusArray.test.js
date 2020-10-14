@@ -5,7 +5,9 @@ import NexusArray from './NexusArray';
 
 describe('NexusArray', () => {
     let wrapper = null;
-    let setFieldValueMock; let closeModalMock; let setDisableSubmitMock;
+    let setFieldValueMock;
+    let closeModalMock;
+    let setDisableSubmitMock;
 
     const fields = {
         selected: {
