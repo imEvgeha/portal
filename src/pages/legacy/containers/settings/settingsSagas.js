@@ -25,7 +25,7 @@ export function* fetchConfigApiEndpoints(requestMethod) {
 export function* fetchAndStoreConfigApiEndpoints(requestMethod) {
     yield fork(fetchConfigApiEndpoints, requestMethod);
     while (true) {
-        const fetchConfigurationResult  = yield take([
+        const fetchConfigurationResult = yield take([
             actionTypes.FETCH_CONFIG_API_ENDPOINTS_SUCCESS,
             actionTypes.FETCH_CONFIG_API_ENDPOINTS_ERROR,
         ]);

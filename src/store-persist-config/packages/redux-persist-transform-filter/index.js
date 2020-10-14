@@ -7,17 +7,13 @@ export function createFilter(reducerName, inboundPaths, outboundPaths, transform
     return createTransform(
         // inbound
         inboundState => {
-            return inboundPaths
-                ? persistFilter(inboundState, inboundPaths, transformType)
-                : inboundState;
+            return inboundPaths ? persistFilter(inboundState, inboundPaths, transformType) : inboundState;
         },
         // outbound
         outboundState => {
-            return outboundPaths
-                ? persistFilter(outboundState, outboundPaths, transformType)
-                : outboundState;
+            return outboundPaths ? persistFilter(outboundState, outboundPaths, transformType) : outboundState;
         },
-        {'whitelist': [reducerName]}
+        {whitelist: [reducerName]}
     );
 }
 
@@ -71,9 +67,15 @@ export function persistFilter(state, paths = [], transformType = 'whitelist') {
 
                 if (!isEmpty(value)) {
                     if (value instanceof Array) {
-                        set(subset, path.path, get(subset, path.path, subset).filter(() => false));
+                        set(
+                            subset,
+                            path.path,
+                            get(subset, path.path, subset).filter(() => false)
+                        );
                     } else {
-                        forIn(value, (value, key) => { unset(subset, `${path.path}[${key}]`); });
+                        forIn(value, (value, key) => {
+                            unset(subset, `${path.path}[${key}]`);
+                        });
                     }
                 } else {
                     subset = value;
@@ -92,4 +94,3 @@ export function persistFilter(state, paths = [], transformType = 'whitelist') {
 
     return subset;
 }
-

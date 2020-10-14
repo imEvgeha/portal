@@ -9,7 +9,7 @@ import {
     searchFormShowAdvancedSearch,
     searchFormSetAdvancedSearchCriteria,
     resultPageShowSelected,
-    searchFormUpdateTextSearch
+    searchFormUpdateTextSearch,
 } from '../../../stores/actions/avail/dashboard';
 import DashboardTab from './DashboardTab';
 import SearchResultsTab from './SearchResultsTab';
@@ -33,11 +33,10 @@ const mapDispatchToProps = {
     searchFormShowSearchResults,
     searchFormSetAdvancedSearchCriteria,
     resultPageShowSelected,
-    searchFormUpdateTextSearch
+    searchFormUpdateTextSearch,
 };
 
 class DashboardContainer extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {};
@@ -54,44 +53,46 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.availsMapping !== this.props.availsMapping) {
+        if (prevProps.availsMapping !== this.props.availsMapping) {
             this.getSearchCriteriaFromURL();
         }
     }
 
-    getSearchCriteriaFromURL(){
-        if(this.props.location && this.props.location.search){
+    getSearchCriteriaFromURL() {
+        if (this.props.location && this.props.location.search) {
             const sparams = new URLSearchParams(this.props.location.search);
             const dest = sparams.get('back');
-            if(dest){
-                if(['manual-rights-entry', 'fix-errors'].includes(dest)){
+            if (dest) {
+                if (['manual-rights-entry', 'fix-errors'].includes(dest)) {
                     sparams.delete('back');
                     const availHistoryId = sparams.get('availHistoryId');
                     sparams.delete('availHistoryId');
                     this.props.searchFormShowSearchResults(false);
-                    this.context.router.history.push('/avails/history/' + availHistoryId + '/' + dest + '?' + sparams.toString());
+                    this.context.router.history.push(
+                        '/avails/history/' + availHistoryId + '/' + dest + '?' + sparams.toString()
+                    );
                 }
                 return;
             }
         }
 
-        if(!this.props.availsMapping) {
+        if (!this.props.availsMapping) {
             return;
         }
 
-        if(this.props.match.path === RightsURL.availsDashboardUrl){
+        if (this.props.match.path === RightsURL.availsDashboardUrl) {
             this.props.searchFormShowSearchResults(false);
-        }else{
+        } else {
             const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
             let criteria = {text: ''};
-            if(!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(this.props.location.search)){
+            if (!isObjectEmpty(this.props.match.params) || RightsURL.isAdvancedFilter(this.props.location.search)) {
                 criteria = RightsURL.ArraytoFilter(params);
                 this.props.searchFormShowAdvancedSearch(true);
                 this.props.searchFormSetAdvancedSearchCriteria(criteria);
                 this.handleAvailsAdvancedSearch(criteria);
-            }else{
+            } else {
                 const simpleFilter = params.find(param => param.split('=')[0] === 'text');
-                if(simpleFilter && simpleFilter.split('=').length === 2) {
+                if (simpleFilter && simpleFilter.split('=').length === 2) {
                     criteria = {text: decodeURIComponent(simpleFilter.split('=')[1])};
                     this.props.searchFormShowAdvancedSearch(false);
                 }
@@ -122,7 +123,7 @@ class DashboardContainer extends React.Component {
         return (
             <div>
                 <RightsURL />
-                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide': '')}>
+                <div className={'container-fluid vu-free-text-search ' + (this.props.showAdvancedSearch ? 'hide' : '')}>
                     <div>
                         <table style={{width: '100%'}}>
                             <tbody>
@@ -142,7 +143,17 @@ class DashboardContainer extends React.Component {
                                             id="dashboard-avails-advanced-search-btn"
                                             onClick={this.toggleAdvancedSearch}
                                         >
-                                            <i className="fas fa-filter table-top-icon" style={{fontSize: '1.25em', marginLeft: '-3px', marginTop: '6px', padding: '0px'}}> </i>
+                                            <i
+                                                className="fas fa-filter table-top-icon"
+                                                style={{
+                                                    fontSize: '1.25em',
+                                                    marginLeft: '-3px',
+                                                    marginTop: '6px',
+                                                    padding: '0px',
+                                                }}
+                                            >
+                                                {' '}
+                                            </i>
                                         </button>
                                     </td>
                                 </tr>
@@ -150,7 +161,12 @@ class DashboardContainer extends React.Component {
                         </table>
                     </div>
                 </div>
-                <AdvancedSearchPanel location={this.props.location} hide={!this.props.showAdvancedSearch} onSearch={this.handleAvailsAdvancedSearch} onToggleAdvancedSearch={this.toggleAdvancedSearch} />
+                <AdvancedSearchPanel
+                    location={this.props.location}
+                    hide={!this.props.showAdvancedSearch}
+                    onSearch={this.handleAvailsAdvancedSearch}
+                    onToggleAdvancedSearch={this.toggleAdvancedSearch}
+                />
                 {!this.props.showSearchResults && <DashboardTab />}
                 {this.props.showSearchResults && this.props.availsMapping && <SearchResultsTab />}
             </div>
@@ -169,11 +185,11 @@ DashboardContainer.propTypes = {
     showSearchResults: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
-    resultPageShowSelected: PropTypes.func
+    resultPageShowSelected: PropTypes.func,
 };
 
 DashboardContainer.contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

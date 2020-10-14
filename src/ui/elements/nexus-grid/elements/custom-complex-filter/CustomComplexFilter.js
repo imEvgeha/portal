@@ -14,7 +14,9 @@ export class CustomComplexFilter extends React.Component {
     }
 
     onChange = value => {
-        if (!value) { return; } // Filter doesn't persist when switching ingest without this check
+        if (!value) {
+            return;
+        } // Filter doesn't persist when switching ingest without this check
         const {filterChangedCallback} = this.props;
 
         this.setState({value}, filterChangedCallback);
@@ -26,10 +28,10 @@ export class CustomComplexFilter extends React.Component {
 
     getModel = () => {
         const {value} = this.state;
-        return ({
+        return {
             type: 'equals',
             filter: value,
-        });
+        };
     };
 
     isFilterActive = () => {
@@ -47,12 +49,7 @@ export class CustomComplexFilter extends React.Component {
 
         return (
             <div className="nexus-c-custom-complex-filter">
-                <Form
-                    renderer={renderer}
-                    defaultFields={schema}
-                    value={value}
-                    onChange={this.onChange}
-                />
+                <Form renderer={renderer} defaultFields={schema} value={value} onChange={this.onChange} />
             </div>
         );
     }
@@ -69,4 +66,3 @@ CustomComplexFilter.defaultProps = {
 };
 
 export default CustomComplexFilter;
-

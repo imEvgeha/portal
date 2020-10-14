@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
+import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
 import Button from '@atlaskit/button';
 import {getProperPriceFormValues} from './utils';
-import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
+import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
 import RightPriceFields from './RightPriceFields';
-
 
 // TODO: write this from scratch
 // component rerender 11 times
 class RightPriceForm extends React.Component {
-
     onSubmit = data => {
-        const properValues = getProperPriceFormValues(data, this.props.isEdit, this.props.existingPriceList, this.props.priceIndex);
+        const properValues = getProperPriceFormValues(
+            data,
+            this.props.isEdit,
+            this.props.existingPriceList,
+            this.props.priceIndex
+        );
         if (properValues) {
             this.props.onSubmit(properValues);
             this.props.onClose();
@@ -22,7 +25,6 @@ class RightPriceForm extends React.Component {
     };
 
     render() {
-
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -30,9 +32,9 @@ class RightPriceForm extends React.Component {
                         width="medium"
                         onClose={this.props.onClose}
                         components={{
-                            Container: ({ children, className }) => (
+                            Container: ({children, className}) => (
                                 <Form onSubmit={data => this.onSubmit(data)}>
-                                    {({ formProps }) => (
+                                    {({formProps}) => (
                                         <ModalBody>
                                             <form {...formProps} className={className}>
                                                 {children}
@@ -40,10 +42,15 @@ class RightPriceForm extends React.Component {
                                         </ModalBody>
                                     )}
                                 </Form>
-                            )
+                            ),
                         }}
                     >
-                        <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Price Data</ModalHeader>
+                        <ModalHeader>
+                            <p style={{color: '#999', fontWeight: 'bold', fontSize: '11px'}}>
+                                {this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}
+                            </p>
+                            Price Data
+                        </ModalHeader>
                         <RightPriceFields
                             priceTypeOptions={this.props.priceTypeOptions}
                             priceCurrencyOptions={this.props.priceCurrencyOptions}
@@ -73,7 +80,7 @@ RightPriceForm.propTypes = {
     priceCurrencyOptions: PropTypes.array,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
-    existingPriceList: PropTypes.array
+    existingPriceList: PropTypes.array,
 };
 
 RightPriceForm.defaultProps = {

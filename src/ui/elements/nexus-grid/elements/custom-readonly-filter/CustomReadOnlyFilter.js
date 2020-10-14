@@ -17,10 +17,10 @@ export default class CustomReadOnlyFilter extends React.Component {
 
     getModel = () => {
         const {value} = this.state;
-        return ({
+        return {
             type: 'equals',
             filter: value,
-        });
+        };
     };
 
     isFilterActive = () => {

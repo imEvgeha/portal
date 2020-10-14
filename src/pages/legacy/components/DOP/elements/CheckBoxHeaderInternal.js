@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 class CheckBoxHeaderInternal extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             selectAll: false,
-            atLeastOneVisibleSelected: false
+            atLeastOneVisibleSelected: false,
         };
-
     }
 
     componentDidMount() {
@@ -29,20 +27,29 @@ class CheckBoxHeaderInternal extends Component {
             });
             this.setState({selectAll: false, atLeastOneVisibleSelected: false});
             return;
-        } 
+        }
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         selectedNodes.forEach(node => {
             node.setSelected(false);
         });
         this.setState({selectAll: true, atLeastOneVisibleSelected: true});
-    }
+    };
 
     getVisibleNodes = () => {
         const {api} = this.props;
         const visibleRange = api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
-        return api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom)) || [];
+        const bottomOffset =
+            0.7 + (api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
+        return (
+            api
+                .getRenderedNodes()
+                .filter(
+                    ({rowTop, rowHeight}) =>
+                        rowTop + rowHeight * topOffset > visibleRange.top &&
+                        rowTop + rowHeight * bottomOffset < visibleRange.bottom
+                ) || []
+        );
     };
 
     updateState = () => {
@@ -53,14 +60,14 @@ class CheckBoxHeaderInternal extends Component {
 
         if (this.state.atLeastOneVisibleSelected !== atLeastOneVisibleSelected) {
             this.setState({
-                atLeastOneVisibleSelected
+                atLeastOneVisibleSelected,
             });
         }
 
         const selectAll = filtered.length === visibleNodes.length;
         if (this.state.selectAll !== selectAll) {
             this.setState({
-                selectAll
+                selectAll,
             });
         }
     };
@@ -71,13 +78,17 @@ class CheckBoxHeaderInternal extends Component {
         return (
             <span className="ag-selection-checkbox" onClick={this.onCheckBoxClick}>
                 <span
-                    className={`ag-icon ag-icon-checkbox-checked ${atLeastOneVisibleSelected && selectAll ? '' : 'ag-hidden'}`}
+                    className={`ag-icon ag-icon-checkbox-checked ${
+                        atLeastOneVisibleSelected && selectAll ? '' : 'ag-hidden'
+                    }`}
                 />
                 <span
                     className={`ag-icon ag-icon-checkbox-unchecked ${!atLeastOneVisibleSelected ? '' : 'ag-hidden'}`}
                 />
                 <span
-                    className={`ag-icon ag-icon-checkbox-indeterminate ${atLeastOneVisibleSelected && !selectAll ? '' : 'ag-hidden'}`}
+                    className={`ag-icon ag-icon-checkbox-indeterminate ${
+                        atLeastOneVisibleSelected && !selectAll ? '' : 'ag-hidden'
+                    }`}
                 />
             </span>
         );

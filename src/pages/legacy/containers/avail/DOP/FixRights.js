@@ -10,11 +10,8 @@ import {profileService} from '../service/ProfileService';
 import {configurationService} from '../service/ConfigurationService';
 import RightsURL from '../util/RightsURL';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
-import {
-    searchFormSetAdvancedSearchCriteria,
-} from '../../../stores/actions/avail/dashboard';
+import {searchFormSetAdvancedSearchCriteria} from '../../../stores/actions/avail/dashboard';
 import DOP from '../../../../../util/DOP';
-
 
 const mapStateToProps = state => {
     return {
@@ -30,19 +27,18 @@ FixRights.propTypes = {
     availsMapping: PropTypes.object,
     searchFormSetAdvancedSearchCriteria: PropTypes.func,
     location: PropTypes.object,
-    match: PropTypes.object
+    match: PropTypes.object,
 };
 
 FixRights.contextTypes = {
-    router: PropTypes.object
+    router: PropTypes.object,
 };
 
 class FixRights extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            availHistoryId: this.props.match.params.availHistoryIds
+            availHistoryId: this.props.match.params.availHistoryIds,
         };
     }
 
@@ -52,7 +48,9 @@ class FixRights extends React.Component {
             const availHistoryIds = sparams.get('availHistoryIds');
             if (availHistoryIds) {
                 sparams.delete('availHistoryIds');
-                this.context.router.history.replace('/avails/history/' + availHistoryIds + '/fix-errors?' + sparams.toString());
+                this.context.router.history.replace(
+                    '/avails/history/' + availHistoryIds + '/fix-errors?' + sparams.toString()
+                );
                 return;
             }
         }
@@ -63,13 +61,13 @@ class FixRights extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps.availsMapping !== this.props.availsMapping) {
+        if (prevProps.availsMapping !== this.props.availsMapping) {
             this.getSearchCriteriaFromURL();
         }
     }
 
-    getSearchCriteriaFromURL(){
-        if(!this.props.availsMapping) {
+    getSearchCriteriaFromURL() {
+        if (!this.props.availsMapping) {
             return;
         }
         const params = RightsURL.URLtoArray(this.props.location.search, this.props.match.params);
@@ -79,23 +77,23 @@ class FixRights extends React.Component {
         rightSearchHelper.advancedSearch(criteria, false);
     }
 
-    parseLoadedData(response){
-        if(response && response.data){
+    parseLoadedData(response) {
+        if (response && response.data) {
             DOP.setErrorsCount(response.total);
         }
     }
 
-    render(){
+    render() {
         const RightsResultsTable = withRedux(withColumnsReorder(withServerSorting(withRights(ResultsTable))));
         return (
             <div>
                 {this.props.availsMapping && (
-                <RightsResultsTable
-                    availsMapping={this.props.availsMapping}
-                    onDataLoaded={this.parseLoadedData}
-                    nav={{ back: 'fix-errors', params: { availHistoryId: this.state.availHistoryId } }}
-                />
-              )}
+                    <RightsResultsTable
+                        availsMapping={this.props.availsMapping}
+                        onDataLoaded={this.parseLoadedData}
+                        nav={{back: 'fix-errors', params: {availHistoryId: this.state.availHistoryId}}}
+                    />
+                )}
             </div>
         );
     }

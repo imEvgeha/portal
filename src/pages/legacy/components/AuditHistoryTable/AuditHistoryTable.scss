@@ -1,17 +1,17 @@
-.nexus-c-audit-history-table{
-  margin-bottom: 50px;
-  .nexus-c-nexus-grid {
-    height: 250px;
-    .ag-cell{
-      padding: 0;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      text-align: center;
+.nexus-c-audit-history-table {
+    margin-bottom: 50px;
+    .nexus-c-nexus-grid {
+        height: 250px;
+        .ag-cell {
+            padding: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            text-align: center;
+        }
     }
-  }
-  .ag-tooltip-custom{
-    position: absolute;
-    pointer-events: none;
-  }
+    .ag-tooltip-custom {
+        position: absolute;
+        pointer-events: none;
+    }
 }

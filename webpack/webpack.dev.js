@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const paths = require('./paths');
 
-module.exports = (envFile) => ({
+module.exports = envFile => ({
     mode: 'development',
     devtool: (envFile && envFile.SOURCE_MAP) || 'cheap-module-eval-source-map',
     module: {
@@ -16,9 +16,9 @@ module.exports = (envFile) => ({
                     require.resolve('style-loader'),
                     require.resolve('css-loader'),
                     require.resolve('sass-loader'),
-                ]
+                ],
             },
-        ]
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -41,7 +41,7 @@ module.exports = (envFile) => ({
         port: (envFile && envFile.PORT) || 3000,
         historyApiFallback: true,
         watchOptions: {
-            ignored: /node_modules/
+            ignored: /node_modules/,
         },
         clientLogLevel: 'info',
         hot: true,

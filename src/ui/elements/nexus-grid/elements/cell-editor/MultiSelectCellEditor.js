@@ -24,17 +24,17 @@ class MultiSelectCellEditor extends Component {
             });
         }
         return [];
-    }
+    };
 
     isPopup = () => {
         const {options} = this.props;
         return !!options.length;
-    }
+    };
 
     getValue = () => {
         const {value} = this.state;
         return value && value.map(el => el.value);
-    }
+    };
 
     handleChange = value => {
         this.setState({
@@ -73,4 +73,3 @@ MultiSelectCellEditor.defaultProps = {
 };
 
 export default MultiSelectCellEditor;
-

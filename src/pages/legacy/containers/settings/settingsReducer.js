@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const settingsReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case actionTypes.STORE_CONFIG_API_ENDPOINTS:
             return {
                 ...state,

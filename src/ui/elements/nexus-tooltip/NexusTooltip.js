@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
-import { TooltipPrimitive } from '@atlaskit/tooltip/styled';
+import {TooltipPrimitive} from '@atlaskit/tooltip/styled';
 import styled from 'styled-components';
-
 
 const NexusTooltip = ({content, isDisabled, children, hasWhiteBackground = false, ...restProps}) => {
     const InlineDialog = styled(TooltipPrimitive)`
@@ -17,13 +16,8 @@ const NexusTooltip = ({content, isDisabled, children, hasWhiteBackground = false
 
     const additionalProps = hasWhiteBackground ? {...restProps, component: InlineDialog} : restProps;
     return (
-        <Tooltip
-            content={!isDisabled && content}
-            {...additionalProps}
-        >
-            <>
-                {children}
-            </>
+        <Tooltip content={!isDisabled && content} {...additionalProps}>
+            <>{children}</>
         </Tooltip>
     );
 };

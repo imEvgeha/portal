@@ -1,5 +1,5 @@
 export default ({priceTypes, currencies}) => {
-    return ([
+    return [
         {
             id: 'priceType',
             label: 'Price Type',
@@ -9,8 +9,8 @@ export default ({priceTypes, currencies}) => {
             required: true,
             options: [
                 {
-                    items: priceTypes
-                }
+                    items: priceTypes,
+                },
             ],
         },
         {
@@ -29,9 +29,9 @@ export default ({priceTypes, currencies}) => {
             shouldFitContainer: true,
             options: [
                 {
-                    items: currencies
-                }
+                    items: currencies,
+                },
             ],
         },
-    ]);
-}
+    ];
+};

@@ -19,9 +19,7 @@ class AudioLanguageTypeCellEditor extends Component {
     getValue = () => this.state.value;
 
     handleChange = value => {
-        const addedLanguages = value
-            .map(language => language.languageAudioTypes || language)
-            .filter(Boolean);
+        const addedLanguages = value.map(language => language.languageAudioTypes || language).filter(Boolean);
 
         this.setState({value: addedLanguages});
     };
@@ -70,4 +68,3 @@ AudioLanguageTypeCellEditor.defaultProps = {
 AudioLanguageTypeCellEditor.contextType = NexusModalContext;
 
 export default AudioLanguageTypeCellEditor;
-

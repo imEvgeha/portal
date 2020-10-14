@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Button} from 'reactstrap';
 
 export default class CloseableBtn extends Component {
-
     constructor(props) {
         super(props);
         this.state = {};
@@ -16,7 +15,7 @@ export default class CloseableBtn extends Component {
         position: 'absolute',
         padding: '0 10px 0 2px',
         right: '0px',
-        top: '0px'
+        top: '0px',
     };
 
     close(event) {
@@ -37,9 +36,14 @@ export default class CloseableBtn extends Component {
                 style={{width: '100%', textAlign: 'left', position: 'relative', ...this.props.style}}
             >
                 <div style={{width: '100%', overflow: 'hidden', paddingRight: '20px', textOverflow: 'ellipsis'}}>
-                    <small><strong>{this.props.title}</strong>{this.props.value}</small>
+                    <small>
+                        <strong>{this.props.title}</strong>
+                        {this.props.value}
+                    </small>
                 </div>
-                <a href="#" style={this.closeStyle} onClick={this.close} id={this.props.id + '-close-btn'}><span aria-hidden="true">&times;</span></a>
+                <a href="#" style={this.closeStyle} onClick={this.close} id={this.props.id + '-close-btn'}>
+                    <span aria-hidden="true">&times;</span>
+                </a>
             </Button>
         );
     }

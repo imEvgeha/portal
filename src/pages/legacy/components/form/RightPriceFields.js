@@ -11,7 +11,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
     if (currentPrice) {
         priceTypeOptions.forEach(option => {
             if (option.value === priceTypeOptions.priceType) {
-                currentPrice.label = option.label
+                currentPrice.label = option.label;
             }
         });
     }
@@ -31,7 +31,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
 
     const shouldCurrencyBeDisabled = value => {
         return !value || value === 'Tier';
-    }
+    };
 
     const [isCurrencyDisabled, setIsCurrencyDisabled] = useState(
         shouldCurrencyBeDisabled(returnValidData('priceType') && get(currentPrice, 'priceType'))
@@ -40,13 +40,18 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
     const [priceTypeValue, setPriceTypeValue] = useState(
         isEdit
             ? {
-                label: getError('priceType') ? getError('priceType').message : (returnValidData('priceType') && currentPrice['label']),
-                value: returnValidData('priceType') && currentPrice['label']
-            } : ''
+                  label: getError('priceType')
+                      ? getError('priceType').message
+                      : returnValidData('priceType') && currentPrice['label'],
+                  value: returnValidData('priceType') && currentPrice['label'],
+              }
+            : ''
     );
 
     const removeExistingOptions = () => {
-        return existingPriceList ? priceTypeOptions.filter(x => !existingPriceList.find(y => y.priceType === x.value)) : priceTypeOptions;
+        return existingPriceList
+            ? priceTypeOptions.filter(x => !existingPriceList.find(y => y.priceType === x.value))
+            : priceTypeOptions;
     };
 
     const getValidationState = (error, valid) => {
@@ -59,7 +64,7 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
         return 'error';
     };
 
-    const validate = (value) => {
+    const validate = value => {
         if (!value) {
             return 'EMPTY';
         }
@@ -70,28 +75,25 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
         setIsCurrencyDisabled(shouldCurrencyBeDisabled(selectedPriceType.value));
 
         setPriceTypeValue(selectedPriceType);
-    }
+    };
 
     return (
         <>
-            <Field
-                label="Price Type"
-                isRequired
-                name="priceType"
-                validate={validate}
-                defaultValue={priceTypeValue}
-            >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+            <Field label="Price Type" isRequired name="priceType" validate={validate} defaultValue={priceTypeValue}>
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             validationState={getValidationState(error, valid)}
                             styles={{
-                                control: (base) => {
-                                    return getError('priceType', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                control: base => {
+                                    return getError('priceType', rest.value)
+                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
+                                        : {...base, borderColor: '#F4F5F7'};
                                 },
-                                singleValue: base => getError('priceType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                singleValue: base =>
+                                    getError('priceType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
                             value={priceTypeValue}
                             onChange={onPriceTypeChange}
@@ -103,12 +105,8 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
                     </>
                 )}
             </Field>
-            <Field
-                name="priceValue"
-                label="Price Value"
-                isRequired
-            >
-                {({fieldProps: { id, ...rest }, error, meta: { valid }}) => (
+            <Field name="priceValue" label="Price Value" isRequired>
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Textfield
                             id={`text-${id}`}
@@ -129,22 +127,28 @@ const RightPriceFields = ({isEdit, existingPriceList, priceIndex, priceTypeOptio
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('priceCurrency') ? getError('priceCurrency').message : (returnValidData('priceCurrency') && currentPrice['priceCurrency']),
-                            value: returnValidData('priceCurrency') && currentPrice['priceCurrency']
-                        } : ''
+                              label: getError('priceCurrency')
+                                  ? getError('priceCurrency').message
+                                  : returnValidData('priceCurrency') && currentPrice['priceCurrency'],
+                              value: returnValidData('priceCurrency') && currentPrice['priceCurrency'],
+                          }
+                        : ''
                 }
             >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             validationState={getValidationState(error, valid)}
                             styles={{
-                                control: (base) => {
-                                    return getError('priceCurrency', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                control: base => {
+                                    return getError('priceCurrency', rest.value)
+                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
+                                        : {...base, borderColor: '#F4F5F7'};
                                 },
-                                singleValue: base => getError('priceCurrency', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                singleValue: base =>
+                                    getError('priceCurrency', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
                             isSearchable={true}
                             placeholder="Choose Currency"
@@ -163,7 +167,7 @@ RightPriceFields.propTypes = {
     existingPriceList: PropTypes.array,
     priceIndex: PropTypes.number,
     priceTypeOptions: PropTypes.array,
-    priceCurrencyOptions : PropTypes.array
+    priceCurrencyOptions: PropTypes.array,
 };
 
 RightPriceFields.defaultProps = {
@@ -171,7 +175,7 @@ RightPriceFields.defaultProps = {
     existingPriceList: [],
     priceIndex: null,
     priceTypeOptions: [],
-    priceCurrencyOptions : []
+    priceCurrencyOptions: [],
 };
 
 export default RightPriceFields;

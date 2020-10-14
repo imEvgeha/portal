@@ -36,7 +36,6 @@ describe('withColumnsResizing', () => {
         };
         WithLoadingComponent = withColumnsResizing()(Component);
 
-
         const mockStore = configureStore();
         const store = mockStore({
             root: {
@@ -59,4 +58,3 @@ describe('withColumnsResizing', () => {
         expect(wrapper).toMatchSnapshot();
     });
 });
-

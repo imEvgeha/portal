@@ -8,7 +8,12 @@ import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 class CustomDateFloatingFilter extends React.Component {
     constructor(props) {
         super(props);
-        const {column: {colDef: {field}}, currentParentModel} = props;
+        const {
+            column: {
+                colDef: {field},
+            },
+            currentParentModel,
+        } = props;
         const {filter = {}} = currentParentModel() || {};
         this.state = {
             from: filter[`${field}From`] || '',
@@ -19,7 +24,11 @@ class CustomDateFloatingFilter extends React.Component {
     onParentModelChanged = (params = {}) => {
         if (params) {
             const {filter} = params;
-            const {column: {colDef: {field}}} = this.props;
+            const {
+                column: {
+                    colDef: {field},
+                },
+            } = this.props;
             this.setState({
                 from: filter[`${field}From`],
                 to: filter[`${field}To`],
@@ -29,7 +38,9 @@ class CustomDateFloatingFilter extends React.Component {
 
     render() {
         const {from, to} = this.state;
-        const {filterParams: {isUsingTime}} = this.props;
+        const {
+            filterParams: {isUsingTime},
+        } = this.props;
 
         const type = isUsingTime ? DATETIME_FIELDS.TIMESTAMP : DATETIME_FIELDS.REGIONAL_MIDNIGHT;
         const fromDate = from ? `From: ${ISODateToView(from, type)} ` : '';

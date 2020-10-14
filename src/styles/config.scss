@@ -14,24 +14,25 @@ $z-index: (
 
 $colors: (
     primary: #f2f2f2,
-    nexus-primary-color: #939FB5, // TODO: refactor this
-    nexus-secondary-color: #364767,
-    nexus-title-color: #42526E,
-    nexus-title-matching-primary-color: #4B5A74,
+    nexus-primary-color: #939fb5,
+    // TODO: refactor this
+        nexus-secondary-color: #364767,
+    nexus-title-color: #42526e,
+    nexus-title-matching-primary-color: #4b5a74,
     nexus-title-matching-secondary-color: #666,
     nexus-tag-green: rgb(87, 217, 163),
     nexus-tag-yellow: rgb(255, 196, 0),
     nexus-tag-default: rgb(244, 245, 247),
-    nexus-white: #FFFFFF,
-    nexus-light-green: #2AC940,
+    nexus-white: #ffffff,
+    nexus-light-green: #2ac940,
     nexus-light-grey: #a5adba,
     nexus-lighter-grey: #ebedf0,
     nexus-soft-grey: #f5f6f7,
-    nexus-link: #0065FF,
-    warning: #DF1745,
-    nexus-text: #22212E,
-    nexus-error: #F2DEDE,
-    nexus-warning: #DE350B,
+    nexus-link: #0065ff,
+    warning: #df1745,
+    nexus-text: #22212e,
+    nexus-error: #f2dede,
+    nexus-warning: #de350b,
 );
 
 $nexus-font: Arial, Helvetica, sans-serif;
@@ -40,4 +41,3 @@ $nexus-font: Arial, Helvetica, sans-serif;
 $base-size: 14;
 $base-spacing-unit: 4;
 $base-relative-spacing: ($base-spacing-unit / $base-size);
-

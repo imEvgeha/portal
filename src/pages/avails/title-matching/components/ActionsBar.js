@@ -7,10 +7,7 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '../../../../ui/elements/nexus-toast-notification/constants';
-import {
-    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
-    TITLE_MATCH_SUCCESS_MESSAGE,
-} from '../../../../ui/toast/constants';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, TITLE_MATCH_SUCCESS_MESSAGE} from '../../../../ui/toast/constants';
 import withToasts from '../../../../ui/toast/hoc/withToasts';
 import {getDomainName, URL} from '../../../../util/Common';
 import DOP from '../../../../util/DOP';
@@ -49,7 +46,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
                 },
             });
         } else {
-            const updatedRight = {'coreTitleId': matchList[NEXUS].id};
+            const updatedRight = {coreTitleId: matchList[NEXUS].id};
             rightsService.update(updatedRight, rightId);
         }
 
@@ -57,9 +54,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
             title: SUCCESS_TITLE,
             description: TITLE_MATCH_SUCCESS_MESSAGE,
             icon: SUCCESS_ICON,
-            actions: [
-                {content: 'View Title', onClick: onViewTitleClick},
-            ],
+            actions: [{content: 'View Title', onClick: onViewTitleClick}],
             isWithOverlay: true,
         });
     };
@@ -89,10 +84,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
     return (
         <div className="nexus-c-title-matching-custom-actions">
             <ButtonGroup>
-                <Button
-                    onClick={onCancel}
-                    className="nexus-c-button"
-                >
+                <Button onClick={onCancel} className="nexus-c-button">
                     Cancel
                 </Button>
                 <Button

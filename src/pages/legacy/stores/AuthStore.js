@@ -29,6 +29,5 @@ export const store = {
     },
     get token() {
         return this._token || localStorage.getItem('token');
-    }
-
+    },
 };

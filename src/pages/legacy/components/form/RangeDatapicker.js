@@ -6,13 +6,12 @@ import moment from 'moment';
 import {momentToISO} from '../../../../util/Common';
 
 export default class RangeDatapicker extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             invalidStartDate: '',
             invalidEndDate: '',
-            invalidRange: ''
+            invalidRange: '',
         };
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
@@ -21,7 +20,11 @@ export default class RangeDatapicker extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.value.from && this.props.value.to && moment(this.props.value.from) > moment(this.props.value.to)) {
+        if (
+            this.props.value.from &&
+            this.props.value.to &&
+            moment(this.props.value.from) > moment(this.props.value.to)
+        ) {
             if (!this.state.invalidRange && !this.state.invalidStartDate && !this.state.invalidEndDate) {
                 this.props.onInvalid(this.wrongDateRange(true));
             }
@@ -54,10 +57,10 @@ export default class RangeDatapicker extends React.Component {
 
     handleInvalid(name, value) {
         if (value) {
-            this.setState({['invalid' + name +'Date']: INVALID_DATE, invalidRange: ''});
+            this.setState({['invalid' + name + 'Date']: INVALID_DATE, invalidRange: ''});
             this.props.onInvalid(true);
         } else {
-            this.setState({['invalid' + name +'Date']: ''});
+            this.setState({['invalid' + name + 'Date']: ''});
         }
     }
 
@@ -67,8 +70,10 @@ export default class RangeDatapicker extends React.Component {
 
     render() {
         return (
-            <div style={{ maxWidth:'300px', minWidth:'300px', flex:'1 1 300px', margin:'0 10px'}}>
-                { !this.props.hideLabel && <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>}
+            <div style={{maxWidth: '300px', minWidth: '300px', flex: '1 1 300px', margin: '0 10px'}}>
+                {!this.props.hideLabel && (
+                    <label htmlFor="dashboard-avails-search-start-date-text">{this.props.displayName}</label>
+                )}
                 <div className="row justify-content-around">
                     <div style={{width: '45%', paddingLeft: '8px'}}>
                         <NexusDatePicker
@@ -76,24 +81,22 @@ export default class RangeDatapicker extends React.Component {
                             date={this.props.value.from !== undefined ? this.props.value.from : ''}
                             ref={this.refFirstDatePicker}
                             onChange={this.handleChangeStartDate}
-                            onInvalid={(value) => {this.handleInvalid('Start', value);}}
+                            onInvalid={value => {
+                                this.handleInvalid('Start', value);
+                            }}
                             disabled={this.props.disabled}
                             handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidStartDate && (
-                        <small
-                            className="text-danger ml-2"
-                            style={{position: 'absolute'}}
-                        >{this.state.invalidStartDate}
-                        </small>
-)}
+                            <small className="text-danger ml-2" style={{position: 'absolute'}}>
+                                {this.state.invalidStartDate}
+                            </small>
+                        )}
                         {this.state.invalidRange && (
-                        <small
-                            className="text-danger ml-2"
-                            style={{position: 'absolute'}}
-                        >{this.state.invalidRange}
-                        </small>
-)}
+                            <small className="text-danger ml-2" style={{position: 'absolute'}}>
+                                {this.state.invalidRange}
+                            </small>
+                        )}
                     </div>
                     <div>_</div>
                     <div style={{width: '45%', paddingRight: '8px'}}>
@@ -101,17 +104,17 @@ export default class RangeDatapicker extends React.Component {
                             id={this.props.id + '-to'}
                             date={this.props.value.to !== undefined ? this.props.value.to : ''}
                             onChange={this.handleChangeEndDate}
-                            onInvalid={(value) => {this.handleInvalid('End', value);}}
+                            onInvalid={value => {
+                                this.handleInvalid('End', value);
+                            }}
                             disabled={this.props.disabled}
                             handleKeyPress={this.props.handleKeyPress}
                         />
                         {this.state.invalidEndDate && (
-                        <small
-                            className="text-danger ml-2"
-                            style={{position: 'absolute'}}
-                        >{this.state.invalidEndDate}
-                        </small>
-)}
+                            <small className="text-danger ml-2" style={{position: 'absolute'}}>
+                                {this.state.invalidEndDate}
+                            </small>
+                        )}
                     </div>
                 </div>
             </div>
@@ -128,5 +131,5 @@ RangeDatapicker.propTypes = {
     onToDateChange: PropTypes.func,
     onInvalid: PropTypes.func,
     handleKeyPress: PropTypes.func,
-    hideLabel: PropTypes.bool
+    hideLabel: PropTypes.bool,
 };

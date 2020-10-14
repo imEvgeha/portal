@@ -11,4 +11,3 @@ describe('NexusLayout', () => {
         expect(wrapper).toMatchSnapshot();
     });
 });
-

@@ -6,14 +6,22 @@ import {CustomFieldAddText} from '../custom-form-components/CustomFormComponents
 import './AudioLanguageField.scss';
 import {get} from 'lodash';
 
-const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, renderChildren, mappingErrorMessage, isTableMode = false}) => {
+const AudioLanguageField = ({
+    name,
+    audioLanguages,
+    onRemoveClick,
+    onAddClick,
+    renderChildren,
+    mappingErrorMessage,
+    isTableMode = false,
+}) => {
     const getLanguages = () => {
         return audioLanguages.map((lang, i) => (
             <NexusTag
                 key={uid(lang)}
                 text={!!lang.audioType ? `${lang.label} / ${lang.audioType}` : lang.label}
                 value={lang}
-                removeButtonText='Remove'
+                removeButtonText="Remove"
                 onRemove={() => onRemoveClick(lang)}
             />
         ));
@@ -21,25 +29,20 @@ const AudioLanguageField = ({name, audioLanguages, onRemoveClick, onAddClick, re
 
     const getAddButton = () => {
         return (
-            <CustomFieldAddText
-                onClick={onAddClick}
-                id={'right-create-' + name + '-button'}
-            >
+            <CustomFieldAddText onClick={onAddClick} id={'right-create-' + name + '-button'}>
                 Add...
             </CustomFieldAddText>
         );
     };
 
     return (
-        <div className='nexus-c-audio-language-field'>
+        <div className="nexus-c-audio-language-field">
             {isTableMode && getAddButton()}
             {audioLanguages && audioLanguages.length > 0 ? getLanguages() : !isTableMode && getAddButton()}
             {renderChildren()}
             <br />
             {mappingErrorMessage[name] && mappingErrorMessage[name].text && (
-                <small className="text-danger m-2">
-                    {get(mappingErrorMessage, [name, 'text'], '')}
-                </small>
+                <small className="text-danger m-2">{get(mappingErrorMessage, [name, 'text'], '')}</small>
             )}
         </div>
     );
@@ -52,14 +55,14 @@ AudioLanguageField.propTypes = {
     onRemoveClick: PropTypes.func.isRequired,
     mappingErrorMessage: PropTypes.object,
     renderChildren: PropTypes.func,
-    isTableMode: PropTypes.bool
+    isTableMode: PropTypes.bool,
 };
 
 AudioLanguageField.defaultProps = {
     audioLanguages: [],
     renderChildren: () => null,
     mappingErrorMessage: {},
-    isTableMode: false
+    isTableMode: false,
 };
 
 export default AudioLanguageField;

@@ -9,12 +9,7 @@ const selectAll = {
     value: '*',
 };
 
-const NexusCheckboxSelect = ({
-    onCheckboxSelectChange,
-    options,
-    defaultValues,
-    placeholder,
-}) => {
+const NexusCheckboxSelect = ({onCheckboxSelectChange, options, defaultValues, placeholder}) => {
     const [values, setValues] = useState(defaultValues);
     const optionList = options.some(el => !el.isDisabled) ? [selectAll, ...options] : options;
     useEffect(() => {

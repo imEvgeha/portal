@@ -1,12 +1,12 @@
 .nexus-c-date-picker__date-clear-wrapper {
-  display: flex;
-  align-items: center;
-  & > div {
-    flex-grow: 1;
-  }
-  .nexus-c-clear-button {
-    margin-left: 5px;
-    flex-grow: unset;
-    cursor: pointer;
-  }
+    display: flex;
+    align-items: center;
+    & > div {
+        flex-grow: 1;
+    }
+    .nexus-c-clear-button {
+        margin-left: 5px;
+        flex-grow: unset;
+        cursor: pointer;
+    }
 }

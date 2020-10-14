@@ -13,24 +13,30 @@ export const uploadService = {
         formData.append('avail', file);
         const options = {
             headers: {
-              ...(token ? {'Authorization': `Bearer ${token}`} : {}),
-            }
+                ...(token ? {Authorization: `Bearer ${token}`} : {}),
+            },
         };
 
-        if (externalId){
+        if (externalId) {
             params.externalId = externalId;
         }
 
         const queryParams = new URLSearchParams({...params}).toString();
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/upload' +
+        const url =
+            config.get('gateway.url') +
+            config.get('gateway.service.avails') +
+            '/avails/upload' +
             (queryParams && `?${queryParams}`);
         const abortAfter = config.get('avails.upload.http.timeout');
 
-        return nexusFetch(url, {
-            method: 'post',
-            body: formData,
-            ...options,
-        }, abortAfter);
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                body: formData,
+                ...options,
+            },
+            abortAfter
+        );
     },
-
 };

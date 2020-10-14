@@ -17,4 +17,3 @@ describe('NexusCharacterNameModal', () => {
         expect(wrapper).toMatchSnapshot();
     });
 });
-

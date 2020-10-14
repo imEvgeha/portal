@@ -13,12 +13,13 @@ import {CHECKBOX_HEADER, PLAN_TERRITORY_HEADER, SELECT_IGNORE_HEADER} from '../.
 export default function withSelectIgnoreMark(WrappedComponent) {
     // anti-pattern: we should use composition not inheritance inside React apps
     class ComposedComponent extends SelectionTable {
-
         static getDerivedStateFromProps(props, state) {
             if (Array.isArray(props.columns) && props.columns.length !== state.columns.length) {
                 return {
                     ...state,
-                    columns: [...new Set([CHECKBOX_HEADER, SELECT_IGNORE_HEADER, PLAN_TERRITORY_HEADER, ...props.columns])],
+                    columns: [
+                        ...new Set([CHECKBOX_HEADER, SELECT_IGNORE_HEADER, PLAN_TERRITORY_HEADER, ...props.columns]),
+                    ],
                 };
             }
             if (!isEqual(props.columns, state.columns)) {
@@ -39,20 +40,31 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                 rowsProps,
                 table: null,
                 colDef: [],
-                selected:  [],
+                selected: [],
                 selectAll: false,
                 selectNone: true,
                 columns: [...uniqueColumnsSet],
             };
         }
 
-        // TODO - create HOC to dynamically add column (including it position inside table) 
-        // Bug - this method is called twice 
+        // TODO - create HOC to dynamically add column (including it position inside table)
+        // Bug - this method is called twice
         refreshColumns() {
-            const {updatePromotedRights, updatePromotedRightsFullData, parseColumnsSchema, availsMapping, selectedTerritories, useSelectedTerritories} = this.props;
+            const {
+                updatePromotedRights,
+                updatePromotedRightsFullData,
+                parseColumnsSchema,
+                availsMapping,
+                selectedTerritories,
+                useSelectedTerritories,
+            } = this.props;
             const originalColDef = parseColumnsSchema((availsMapping && availsMapping.mappings) || []);
             const colDef = {
-                checkbox_sel: {...defaultSelectionColDef, headerComponentFramework: CheckBoxHeaderInternal, lockVisible: true},
+                checkbox_sel: {
+                    ...defaultSelectionColDef,
+                    headerComponentFramework: CheckBoxHeaderInternal,
+                    lockVisible: true,
+                },
                 select_ignore_sel: {
                     headerName: '',
                     field: SELECT_IGNORE_HEADER,
@@ -64,7 +76,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                     lockPosition: true,
                     cellRenderer: 'selectIgnoreMarkCell',
                     sortable: false,
-                    lockVisible: true
+                    lockVisible: true,
                 },
                 plan_territory: {
                     headerName: 'Plan Territory',
@@ -78,7 +90,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
                         updatePromotedRights,
                         updatePromotedRightsFullData,
                         selectedTerritories,
-                        useSelectedTerritories
+                        useSelectedTerritories,
                     },
                     cellStyle: {height: '100%'},
                     editable: true,
@@ -95,7 +107,10 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             let selected = this.state.table.api.getSelectedRows().slice(0);
             if (this.state.table.api.getDisplayedRowCount() > 0) {
                 this.state.selected.map(sel => {
-                    if (selected.find(rec => (sel.id === rec.id)) === null && this.state.table.api.getRowNode(sel.id) === null) {
+                    if (
+                        selected.find(rec => sel.id === rec.id) === null &&
+                        this.state.table.api.getRowNode(sel.id) === null
+                    ) {
                         selected.push(sel);
                     }
                 });
@@ -114,7 +129,7 @@ export default function withSelectIgnoreMark(WrappedComponent) {
             this.setState({
                 selected: selected,
                 selectNone: !this.isOneVisibleSelected(),
-                selectAll: this.areAllVisibleSelected()
+                selectAll: this.areAllVisibleSelected(),
             });
         }
 
@@ -136,8 +151,8 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         render() {
             const {colDef, columns} = this.state;
             const frameworkComponents = {
-                ...this.props.frameworkComponents, 
-                selectIgnoreMarkCell: selectIgnoreCell, 
+                ...this.props.frameworkComponents,
+                selectIgnoreMarkCell: selectIgnoreCell,
                 selectPlanTerritory: SelectPlanTerritoryRenderer,
             };
 
@@ -171,10 +186,10 @@ export default function withSelectIgnoreMark(WrappedComponent) {
         promotedRights: dopReducer.session.promotedRights,
         promotedRightsFullData: dopReducer.session.promotedRightsFullData,
         selectedTerritories: dopReducer.session.selectedTerritories,
-        useSelectedTerritories: dopReducer.session.useSelectedTerritories
+        useSelectedTerritories: dopReducer.session.useSelectedTerritories,
     });
 
-    const mapDispatchToProps = (dispatch) => ({
+    const mapDispatchToProps = dispatch => ({
         updatePromotedRights: payload => dispatch(updatePromotedRights(payload)),
         updatePromotedRightsFullData: payload => dispatch(updatePromotedRightsFullData(payload)),
     });
