@@ -129,6 +129,20 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
     return fulfillmentOrders;
 };
 
+// remove null or empty deteSources from deteSources array
+export const removeNulls = fulfillmentOrders => {
+    fulfillmentOrders.forEach(item => {
+        const length = Array.isArray(item.definition.deteServices)
+            ? item.definition.deteServices[0].deteSources.length
+            : 0;
+        if (length > 0) {
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.filter(
+                item => item !== null
+            );
+        }
+    });
+};
+
 // make the fields empty in asset fields temporarily...
 export const showLoading = fulfillmentOrders => {
     const foClone = cloneDeep(fulfillmentOrders);
@@ -138,6 +152,9 @@ export const showLoading = fulfillmentOrders => {
             ? item.definition.deteServices[0].deteSources.length
             : 0;
         if (length > 0) {
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.filter(
+                item => item !== null
+            );
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 return {
                     ...item,

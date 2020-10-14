@@ -1,21 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
+import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {Radio} from '@atlaskit/radio';
 import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/sourceTableMapping.json';
+import Add from '../../../../../assets/action-add.svg';
 import loadingGif from '../../../../../assets/img/loading.gif';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import {URL} from '../../../../../util/Common';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {NON_EDITABLE_COLS, SELECT_VALUES} from './Constants';
+import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 import {fetchAssetFields} from './util';
@@ -62,13 +64,13 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         const {barcode} = data || {};
 
         return (
-            <CustomActionsCellRenderer id={barcode}>
+            <div id={barcode}>
                 <Radio
                     name={barcode}
                     isChecked={selectedItem && selectedItem.barcode === barcode}
-                    onChange={() => setSelectedSource(data)}
+                    onChange={() => barcode && setSelectedSource(data)}
                 />
-            </CustomActionsCellRenderer>
+            </div>
         );
     };
 
@@ -92,6 +94,24 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
             return <Badge>{serviceLength}</Badge>;
         },
+    });
+
+    // eslint-disable-next-line react/prop-types
+    const closeButtonCell = ({rowIndex, data}) => {
+        return (
+            <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
+                {!isDisabled && (
+                    <span onClick={() => removeSourceRow(data.barcode)}>
+                        <EditorCloseIcon />
+                    </span>
+                )}
+            </CustomActionsCellRenderer>
+        );
+    };
+
+    const closeButtonColumn = defineButtonColumn({
+        cellRendererFramework: closeButtonCell,
+        cellRendererParams: '',
     });
 
     const loadingCell = params => {
@@ -134,11 +154,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 let loading = data;
                 loading = {
                     ...loading,
-                    title: ' ',
-                    version: ' ',
-                    assetFormat: ' ',
-                    status: ' ',
-                    standard: ' ',
+                    ...cloneDeep(TEMP_SOURCE_ROW),
                 };
                 loadingSources[rowIndex] = loading;
                 setSources(loadingSources);
@@ -165,6 +181,25 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         }
     };
 
+    const addEmptySourceRow = () => {
+        if (sources[sources.length - 1].barcode === '')
+            showToastForErrors(null, {
+                errorToast: {
+                    title: 'Invalid Action',
+                    description: 'Please add one row at a time',
+                },
+            });
+        else setSources([...sources, cloneDeep(INIT_SOURCE_ROW)]);
+    };
+
+    const removeSourceRow = barcode => {
+        const newSources = cloneDeep(sources[0]);
+        newSources.deteServices[0].deteSources = newSources.deteServices[0].deteSources.filter(
+            item => item.barcode !== barcode
+        );
+        setUpdatedServices(newSources);
+    };
+
     const populateRowData = () => {
         const dataClone = cloneDeep(dataArray);
         const sourcesArray = [];
@@ -182,9 +217,14 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
+                {sources.length > 0 && (
+                    <div className="nexus-c-services-table__add-icon">
+                        {!isDisabled && <Add onClick={addEmptySourceRow} />}
+                    </div>
+                )}
             </div>
             <SourceTableGrid
-                columnDefs={[radioButtonColumn, servicesColumn, ...newColDef]}
+                columnDefs={[radioButtonColumn, closeButtonColumn, servicesColumn, ...newColDef]}
                 rowData={sources}
                 domLayout="normal"
                 mapping={mappings}
