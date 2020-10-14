@@ -11,6 +11,7 @@ import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import {URL} from '../../../../../util/Common';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
@@ -23,15 +24,12 @@ const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
-const Loading = 'loading...';
-
 const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
     const barcodes = dataArray.map(item => item.barcode.trim());
 
-    // useEffect(() => populateRowData(), [data]);
     useEffect(
         () => {
             if (!isEqual(dataArray, previousData)) {
@@ -97,7 +95,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     });
 
     const loadingCell = params => {
-        if (params.value === 'loading...') {
+        if (params.value === ' ') {
             return `<img src=${loadingGif} alt="loading..."/>`;
         }
         return params.value;
@@ -110,6 +108,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     newColDef = newColDef.map(item => {
         return {...item, cellRenderer: loadingCell};
     });
+
+    // Todo : remove this when dete QA apis are working
+    if (!URL.isLocalOrDevOrQA()) newColDef = [columnDefinitions[0]];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         const prevSources = sources.slice();
@@ -128,16 +129,16 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 });
                 api.setRowData(prevSources);
             } else if (barcodes[rowIndex] !== data.barcode.trim()) {
-                // call MGM fetch api and update barcode
+                // call DETE fetch api and update barcode
                 const loadingSources = sources.slice();
                 let loading = data;
                 loading = {
                     ...loading,
-                    title: Loading,
-                    version: Loading,
-                    assetFormat: Loading,
-                    status: Loading,
-                    standard: Loading,
+                    title: ' ',
+                    version: ' ',
+                    assetFormat: ' ',
+                    status: ' ',
+                    standard: ' ',
                 };
                 loadingSources[rowIndex] = loading;
                 setSources(loadingSources);
@@ -177,7 +178,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
-        <div className="nexus-c-sources">
+        <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>

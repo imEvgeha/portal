@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {ConnectedRouter} from 'connected-react-router';
 import {createBrowserHistory} from 'history';
@@ -10,7 +11,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import {createKeycloakInstance} from './auth/keycloak';
-import {setEnvConfiguration} from './config';
+import {setEnvConfiguration, registerSingleSpaApps} from './config';
 import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
@@ -47,7 +48,7 @@ const persistor = configurePersistor(store);
 // eslint-disable-next-line
 delete window.__PRELOADED_STATE__;
 
-const App = () => (
+const App = ({importMap}) => (
     <AppContainer>
         <Provider store={store}>
             <AppProviders persistor={persistor}>
@@ -55,7 +56,7 @@ const App = () => (
                     <ErrorBoundary>
                         <Toast />
                         <NexusLayout>
-                            <Router routes={routesWithTracking()} />
+                            <Router routes={routesWithTracking(importMap)} />
                         </NexusLayout>
                     </ErrorBoundary>
                 </ConnectedRouter>
@@ -64,11 +65,21 @@ const App = () => (
     </AppContainer>
 );
 
+App.propTypes = {
+    importMap: PropTypes.object,
+};
+
+App.defaultProps = {
+    importMap: {},
+};
+
 function renderApp() {
     createKeycloakInstance();
     initializeTracker();
     store.runSaga(rootSaga);
-    render(<App />, document.getElementById('app'));
+    registerSingleSpaApps().then(importMap => {
+        render(<App importMap={importMap} />, document.getElementById('app'));
+    });
 }
 
 if (module.hot) {

@@ -145,7 +145,7 @@
                     },
                     "releaseYear": {
                         "name": "Release Year",
-                        "type": "number",
+                        "type": "string",
                         "path": "releaseYear",
                         "validation": [
                             {

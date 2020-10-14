@@ -1,10 +1,6 @@
 import {cloneDeep, get} from 'lodash';
 import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
 
-const Loading = 'loading...';
-const NotFound = 'Not Found';
-const ApiError = 'API error';
-
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
 
@@ -52,17 +48,17 @@ export const fetchAssetInfo = async barcodes => {
                 const arr = res || [];
                 return {
                     barcode: item,
-                    title: arr[0].name || NotFound,
+                    title: arr[0].name || '',
                 };
             })
             .catch(() => {
                 return {
                     barcode: item,
-                    title: ApiError,
-                    version: ApiError,
-                    assetFormat: ApiError,
-                    standard: ApiError,
-                    status: ApiError,
+                    title: '',
+                    version: '',
+                    assetFormat: '',
+                    standard: '',
+                    status: '',
                 };
             });
     });
@@ -72,20 +68,20 @@ export const fetchAssetInfo = async barcodes => {
                 const {spec, assetFormat, componentAssociations = [], status} = res;
                 return {
                     barcode: item,
-                    version: spec || NotFound,
-                    assetFormat: assetFormat || NotFound,
+                    version: spec || '',
+                    assetFormat: assetFormat || '',
                     amsAssetId: item,
-                    standard: componentAssociations[0].component.standard || NotFound,
-                    status: status || NotFound,
+                    standard: componentAssociations[0].component.standard || '',
+                    status: status || '',
                 };
             })
             .catch(() => {
                 return {
                     barcode: item,
-                    version: ApiError,
-                    assetFormat: ApiError,
-                    standard: ApiError,
-                    status: ApiError,
+                    version: '',
+                    assetFormat: '',
+                    standard: '',
+                    status: '',
                 };
             });
     });
@@ -133,8 +129,8 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
     return fulfillmentOrders;
 };
 
-// show 'loading...' in asset fields temporarily
-export const populateLoading = fulfillmentOrders => {
+// make the fields empty in asset fields temporarily...
+export const showLoading = fulfillmentOrders => {
     const foClone = cloneDeep(fulfillmentOrders);
 
     foClone.forEach(item => {
@@ -145,11 +141,11 @@ export const populateLoading = fulfillmentOrders => {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 return {
                     ...item,
-                    title: Loading,
-                    version: Loading,
-                    assetFormat: Loading,
-                    standard: Loading,
-                    status: Loading,
+                    title: ' ',
+                    version: ' ',
+                    assetFormat: ' ',
+                    standard: ' ',
+                    status: ' ',
                 };
             });
         }
