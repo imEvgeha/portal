@@ -320,6 +320,31 @@
             {
                 "title": "Pricing",
                 "fields": {
+                    "pricing": {
+                        "name": "Pricing",
+                        "type": "array",
+                        "path": "pricing",
+                        "fields": {
+                            "priceType": {
+                                "name": "Price Type",
+                                "type": "select",
+                                "path": "priceType",
+                                "className": "area-one"
+                            },
+                            "priceValue": {
+                                "name": "Price Value",
+                                "type": "number",
+                                "path": "priceValue",
+                                "className": "area-two"
+                            },
+                            "priceCurrency": {
+                                "name": "Price Currency",
+                                "type": "select",
+                                "path": "priceCurrency",
+                                "className": "area-three"
+                            }
+                        }
+                    },
                     "srp": {
                         "name": "SRP",
                         "type": "number",
