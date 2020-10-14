@@ -22,3 +22,18 @@ export const planTerritoriesMapping = {
     enableEdit: true,
     required: true,
 };
+
+export const territoriesMapping = {
+    javaVariableName: 'territoryAll',
+    displayName: 'All Territories',
+    dataType: 'string',
+};
+
+export const territoriesColumn = {
+    headerName: 'All Territories',
+    colId: 'territoryAll',
+    field: 'territoryAll',
+    width: 180,
+};
+
+export const COLUMN_POSITION = 7;

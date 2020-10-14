@@ -8,7 +8,13 @@ import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
-import {prepareRowData} from './components/sources-table/util';
+import {
+    prepareRowData,
+    showLoading,
+    fetchAssetInfo,
+    getBarCodes,
+    populateAssetInfo,
+} from './components/sources-table/util';
 import './ServicingOrder.scss';
 
 const ServicingOrder = ({match}) => {
@@ -16,33 +22,47 @@ const ServicingOrder = ({match}) => {
     const [selectedFulfillmentOrderID, setSelectedFulfillmentOrderID] = useState('');
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
+    const [lastOrder, setLastOrder] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
     useEffect(() => {
-        setSelectedOrder(
-            get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {}
-        );
+        const order =
+            get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
+        setSelectedOrder(order);
+        setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
                 if (URL.isLocalOrDevOrQA()) {
-                    const {
+                    let {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
+                    fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
+
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        fulfillmentOrders: showLoading(fulfillmentOrders),
                         servicingOrderItems,
                     });
+                    const barcodes = getBarCodes(fulfillmentOrders);
+                    fetchAssetInfo(barcodes).then(assetInfo => {
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                        setServiceOrder({
+                            ...servicingOrder,
+                            fulfillmentOrders: newFulfillmentOrders,
+                            servicingOrderItems,
+                        });
+                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                        setSelectedOrder(newFulfillmentOrders[0]);
+                    });
 
-                    const sortedFulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-                    setSelectedFulfillmentOrderID(get(sortedFulfillmentOrders, '[0].id', ''));
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 } else {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
@@ -50,9 +70,20 @@ const ServicingOrder = ({match}) => {
 
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders,
+                        ...fulfillmentOrders,
                     });
-
+                    /*
+                    Todo : uncomment below when MGM stories are done
+                    const barcodes = getBarCodes(fulfillmentOrders);
+                    fetchAssetInfo(barcodes).then(assetInfo => {
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                        setServiceOrder({
+                            ...servicingOrder,
+                            fulfillmentOrders: newFulfillmentOrders,
+                        });
+                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                    });
+                    */
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 }
             } catch (e) {
@@ -109,11 +140,17 @@ const ServicingOrder = ({match}) => {
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
                     updatedServices={updatedServices}
-                    cancelEditing={() => setSelectedSource({...selectedSource})}
+                    cancelEditing={() => {
+                        setSelectedSource({...selectedSource});
+                        setSelectedOrder({...selectedOrder});
+                    }}
+                    lastOrder={lastOrder}
                 >
                     <SourcesTable
-                        data={prepareRowData(selectedOrder)}
                         onSelectedSourceChange={handleSelectedSourceChange}
+                        data={prepareRowData(selectedOrder)}
+                        setUpdatedServices={setUpdatedServices}
+                        isDisabled={isFormDisabled(selectedOrder)}
                     />
                     {selectedSource && (
                         <ServicesTable

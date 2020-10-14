@@ -9,6 +9,7 @@
         "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
         "DOPUrl": "https://dop.qa.vubiquity.com:8045",
         "publisher": "https://titlespublishermovida.qa.vubiquity.com",
+        "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
@@ -16,11 +17,14 @@
             "titleV2": "/titles-api/v2",
             "configuration": "/configuration-api/v1",
             "assetManagement": "/api/asset-management/v1",
+            "deteAsset": "/dete-asset-metadata-service/assets",
+            "deteTitle": "/dete-asset-metadata-service/titles",
             "eventApi": "/api/event-api/v1",
             "eventApiV2": "/api/event-api/v2",
             "servicingOrder": "",
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
+            "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
             "publisher": "/publisher/v1"
         }
     },

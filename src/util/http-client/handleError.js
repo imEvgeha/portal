@@ -16,6 +16,8 @@ import {addToast, removeToast} from '../../ui/toast/toastActions';
     can pass successToast if needed to show toast on success of a API call
     default success title, icon and autoDismiss are already added
     (if successToast is passed then only these are displayed)
+
+    remove toast after 4 seconds
 */
 
 const showErrorModal = error => {
@@ -32,8 +34,10 @@ const showErrorModal = error => {
     }
 };
 
-const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
-    const {status, data = {}, message, description} = error || {};
+export const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) => {
+    let {status, data = {}, message, description} = error || {};
+    if (typeof error === 'string') message = error;
+
     const ERROR_MODAL = {
         codes: [503],
         title: 'Unexpected error occurred. Please try again later',
@@ -67,9 +71,11 @@ const showToastForErrors = (error, {errorToast = null, errorCodesToast = []}) =>
                       ? [{content: 'OK', onClick: () => store.dispatch(removeToast())}]
                       : [],
                   isWithOverlay: ERROR_MODAL.codes.includes(status),
+                  isAutoDismiss: true,
               };
     }
     store.dispatch(addToast(toast));
+    setTimeout(() => store.dispatch(removeToast()), 4000);
 };
 
 const handleError = (error, options = {isWithErrorHandling: true}) => {

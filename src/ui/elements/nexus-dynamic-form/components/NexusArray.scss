@@ -1,0 +1,113 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-array {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 5px;
+    &.nexus-c-array--error {
+        background-color: rgb(242, 222, 222);
+        color: rgb(169, 68, 66);
+        .nexus-c-field__label {
+            color: rgb(169, 68, 66);
+        }
+    }
+
+    .nexus-c-field__label {
+        color: map-get($neutrals, N300);
+    }
+    .nexus-c-array__remove-button {
+        cursor: pointer;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+    }
+    .nexus-c-array__add {
+        text-align: right;
+    }
+    .nexus-c-array__objects {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: space-between;
+
+        > div {
+            flex: 0 47.5%;
+            box-sizing: border-box;
+            position: relative;
+        }
+    }
+    .nexus-c-array__object {
+        display: grid;
+        grid-template-areas:
+            'one one'
+            'two two'
+            'three three'
+            'four five'
+            'six seven';
+        padding: 25px;
+        margin-top: 15px;
+        box-shadow: 0.3em 0.3em 1em map-get($light-neutral-colors, light-neutral-1);
+    }
+    .nexus-c-array__field {
+        .nexus-c-field__value {
+            > div {
+                margin-top: 0;
+            }
+        }
+        &.nexus-c-array__field-bold {
+            color: map-get($neutrals, N300);
+            font-weight: bold;
+        }
+        &.nexus-c-array__field-inline,
+        &.nexus-c-array__field-bold {
+            .nexus-c-field {
+                > div {
+                    display: flex;
+                }
+            }
+        }
+        &.area-one {
+            grid-area: one;
+            & .nexus-c-field__label {
+                align-self: center;
+            }
+        }
+        &.area-two {
+            grid-area: two;
+        }
+        &.area-three {
+            grid-area: three;
+        }
+        &.area-four {
+            grid-area: four;
+        }
+        &.area-five {
+            grid-area: five;
+        }
+        &.area-six {
+            grid-area: six;
+        }
+        &.area-seven {
+            grid-area: seven;
+            background-color: map-get($yellows, Y50);
+        }
+    }
+}
+
+.nexus-c-array__modal {
+    .nexus-c-field__value {
+        > div {
+            margin-top: 0;
+        }
+    }
+    .nexus-c-array__modal-buttons {
+        text-align: right;
+        .nexus-c-array__submit-button {
+            margin-right: 6px;
+        }
+    }
+}
+
+.nexus-c-array__modal-title {
+    text-transform: capitalize;
+}

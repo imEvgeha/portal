@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {updateAbility} from '../ability';
 import {store} from '../index';
 import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions';
+import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
@@ -83,6 +84,7 @@ const AuthProvider = ({
 
     const loadUserAccount = async () => {
         const userAccount = await keycloak.loadUserProfile();
+        DOPService.getSecurityTicket({token: keycloak.token});
         addUser({userAccount});
         return userAccount;
     };

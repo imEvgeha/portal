@@ -2,47 +2,16 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
-import NexusField from './components/NexusField/NexusField';
 import SectionTab from './components/SectionTab/SectionTab';
-import {
-    getValidationError,
-    getDefaultValue,
-    getFieldConfig,
-    getAllFields,
-    getFieldByName,
-    getProperValue,
-    formatValues,
-} from './utils';
+import {buildSection, getProperValues} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
     const tabs = schema.map(({title = ''}) => title);
+    const [disableSubmit, setDisableSubmit] = useState(true);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
-
-    const buildSection = (fields = {}, getValues) => {
-        return (
-            <>
-                {Object.keys(fields).map(key => {
-                    return (
-                        !getFieldConfig(fields[key], 'hidden', view) && (
-                            <NexusField
-                                selectValues={selectValues}
-                                key={key}
-                                name={key}
-                                view={view}
-                                formData={getValues()}
-                                validationError={getValidationError(initialData.validationErrors, fields[key])}
-                                defaultValue={getDefaultValue(fields[key], view, initialData)}
-                                {...fields[key]}
-                            />
-                        )
-                    );
-                })}
-            </>
-        );
-    };
 
     const buildTabs = () => {
         return tabs.map(tab => (
@@ -57,7 +26,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
                     appearance="primary"
-                    isDisabled={!dirty || submitting}
+                    isDisabled={(!dirty || submitting) && disableSubmit}
                 >
                     Save changes
                 </Button>
@@ -84,26 +53,14 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
-        formatValues(values);
-        // make keys same as path
-        let properValues = {};
-        const allFields = getAllFields(schema);
-        Object.keys(values).map(key => {
-            const field = getFieldByName(allFields, key);
-            const {path} = field;
-            properValues = {
-                ...properValues,
-                ...getProperValue(field.type, values[key], path),
-            };
-            return null;
-        });
+        const properValues = getProperValues(schema, values);
         onSubmit(properValues);
     };
 
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values)}>
-                {({formProps, dirty, submitting, reset, getValues}) => (
+                {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
                         <div ref={containerRef} className="nexus-c-dynamic-form__tab-container">
@@ -117,7 +74,12 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(fields, getValues)}
+                                            {buildSection(fields, getValues, view, {
+                                                selectValues,
+                                                initialData,
+                                                setFieldValue,
+                                                setDisableSubmit,
+                                            })}
                                         </Fragment>
                                     ))}
                                 </Fragment>

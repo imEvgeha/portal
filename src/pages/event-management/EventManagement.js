@@ -57,7 +57,7 @@ const EventManagement = props => {
     const onSelectionChanged = selectedRow => {
         if (selectedRow) {
             const {id} = selectedRow;
-            if(URL.isLocalOrDevOrQA()) {
+            if (URL.isLocalOrDevOrQA()) {
                 setSelectedEventId(id);
             } else {
                 setSelectedEvent(selectedRow);
@@ -137,7 +137,9 @@ const EventManagement = props => {
                     onSortChanged={onSortChanged}
                 />
             </div>
-            {(selectedEventId || selectedEvent) && <EventDrawer id={selectedEventId} selectedEvent={selectedEvent} onDrawerClose={closeEventDrawer} />}
+            {(selectedEventId || selectedEvent) && (
+                <EventDrawer id={selectedEventId} selectedEvent={selectedEvent} onDrawerClose={closeEventDrawer} />
+            )}
         </div>
     );
 };

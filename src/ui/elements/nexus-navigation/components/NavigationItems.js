@@ -64,7 +64,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
                   },
               ]
             : []),
-        URL.isLocalOrDev() && {
+        URL.isLocalOrDevOrQA() && {
             icon: () => <EditorBulletListIcon size="large" />,
             id: DOP_TASKS,
             tooltip: 'DOP Tasks',

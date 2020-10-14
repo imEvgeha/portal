@@ -1,14 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
-import {Field as AKField, ErrorMessage, CheckboxField} from '@atlaskit/form';
+import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS} from '../../constants';
-import {checkFieldDependencies, getValidationFunction, formatOptions} from '../../utils';
+import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import {
+    checkFieldDependencies,
+    getFieldValue,
+    getValidationFunction,
+    formatOptions,
+    renderLabel,
+    renderError,
+} from '../../utils';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
@@ -27,6 +34,7 @@ const NexusField = ({
     dateType,
     labels,
     optionsConfig,
+    label,
     ...props
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -58,11 +66,12 @@ const NexusField = ({
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
-                return <TextField {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
+            case 'stringInArray':
+                return <TextField {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'textarea':
-                return <NexusTextArea {...fieldProps} placeholder={`Enter ${fieldProps.name}`} />;
+                return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${fieldProps.name}`} />;
+                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${label}`} />;
             case 'boolean':
                 return (
                     <CheckboxField
@@ -118,6 +127,16 @@ const NexusField = ({
         }
     };
 
+    const getValue = fieldProps => {
+        if (Array.isArray(fieldProps.value)) {
+            if (fieldProps.value.length) {
+                return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+            }
+            return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+        }
+        return getFieldValue(fieldProps.value);
+    };
+
     const renderFieldViewMode = fieldProps => {
         if (validationError) {
             return <div>{validationError}</div>;
@@ -127,44 +146,43 @@ const NexusField = ({
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             case 'dateRange':
             case 'datetime':
-                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                if (fieldProps.value) {
+                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                }
+                return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             default:
                 return fieldProps.value ? (
-                    <div>{Array.isArray(fieldProps.value) ? fieldProps.value.join(', ') : fieldProps.value}</div>
+                    <div>{getValue(fieldProps)}</div>
                 ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${fieldProps.name}`}</div>
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
         }
     };
 
+    const required = !!(checkDependencies('required') || isRequired);
     return (
         <ErrorBoundary>
-            <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
+            <div
+                className={`nexus-c-field${validationError ? ' nexus-c-field--error' : ''}${
+                    HIGHLIGHTED_FIELDS.includes(path) ? ' nexus-c-field--highlighted' : ''
+                }`}
+            >
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
-                    validate={value => getValidationFunction(value, validation, {type, isRequired})}
+                    validate={value => getValidationFunction(value, validation, {type, isRequired: required})}
                     {...props}
                 >
                     {({fieldProps, error}) => (
                         <>
-                            <div className="nexus-c-field__label">
-                                {`${fieldProps.name}${checkDependencies('required') || isRequired ? '*' : ''}: `}
-                                {tooltip && (
-                                    <span title={tooltip} style={{color: 'grey'}}>
-                                        <i className="far fa-question-circle" />
-                                    </span>
-                                )}
-                            </div>
+                            {renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {view === VIEWS.EDIT || view === VIEWS.CREATE
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                <div className="nexus-c-field__error">
-                                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                                </div>
+                                {renderError(error)}
                             </div>
                         </>
                     )}
@@ -190,6 +208,7 @@ NexusField.propTypes = {
     path: PropTypes.any,
     dateType: PropTypes.string,
     labels: PropTypes.array,
+    label: PropTypes.string,
 };
 
 NexusField.defaultProps = {
@@ -206,6 +225,7 @@ NexusField.defaultProps = {
     path: null,
     dateType: '',
     labels: [],
+    label: '',
 };
 
 export default NexusField;

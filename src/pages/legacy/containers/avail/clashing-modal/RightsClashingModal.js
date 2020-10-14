@@ -39,16 +39,7 @@ const RightsClashingModal = ({clashingRights, columnDefs}) => {
         if (!columnDefs.length) {
             createRightMatchingColumnDefs();
         } else {
-            const updatedColDef = cloneDeep(columnDefs)
-                .filter(el => columnsToUse.includes(el.field))
-                .map(columnDef => {
-                    if (columnDef.cellRenderer) {
-                        columnDef.cellRendererParams = {
-                            link: '/avails/rights/',
-                        };
-                    }
-                    return columnDef;
-                });
+            const updatedColDef = cloneDeep(columnDefs).filter(el => columnsToUse.includes(el.field));
             setRightsClashingColumnsDef(updatedColDef);
         }
     }, [columnDefs, createRightMatchingColumnDefs]);

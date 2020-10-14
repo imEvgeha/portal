@@ -6,6 +6,14 @@ const baseServicingOrdersURL = config => {
     return `${config.get('gateway.servicingOrdersUrl')}${config.get('gateway.service.servicingOrder')}`;
 };
 
+const deteAssetURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteAsset')}`;
+};
+
+const deteTitleURL = config => {
+    return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteTitle')}`;
+};
+
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
     let queryParams = {};
@@ -61,6 +69,16 @@ export const exportServicingOrders = servicingOrders => {
         method: 'post',
         body: JSON.stringify(servicingOrders),
     });
+};
+
+export const getDeteTitleByBarcode = barcode => {
+    const url = `${deteTitleURL(config)}/assetId/${barcode}`;
+    return nexusFetch(url);
+};
+
+export const getDeteAssetByBarcode = barcode => {
+    const url = `${deteAssetURL(config)}/${barcode}`;
+    return nexusFetch(url);
 };
 
 export const servicingOrdersService = {
