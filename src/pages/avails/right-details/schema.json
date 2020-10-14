@@ -425,7 +425,7 @@
                     },
                     "entryType": {
                         "name": "Entry Type",
-                        "type": "multiselect",
+                        "type": "select",
                         "path": "entryType",
                         "optionsConfig": {
                             "options": [
@@ -467,6 +467,27 @@
                                 "hidden": true
                             }
                         ]
+                    },
+                    "displayTitle": {
+                        "name": "Display Title",
+                        "type": "string",
+                        "path": "displayTitle"
+                    },
+                    "titleLocal": {
+                        "name": "Title Local",
+                        "type": "string",
+                        "path": "titleLocal"
+                    },
+                    "titleStatus": {
+                        "name": "Title Status",
+                        "type": "select",
+                        "path": "titleStatus",
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Pending", "value": "Pending" },
+                                { "label": "Approved", "value": "Approved" }
+                            ]
+                        }
                     }
                 }
             },
