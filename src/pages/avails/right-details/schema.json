@@ -278,11 +278,21 @@
                                 "className": "area-five"
                             },
                             "dateWithdrawn": {
+                                "isOptional": true,
                                 "name": "Date Withdrawn",
                                 "type": "datetime",
-                                "dateType": "regionalMidnight",
-                                "path": "dateWithdrawn",
-                                "className": "area-seven"
+                                "dateType": "timestamp",
+                                "path": "dateSelected",
+                                "viewConfig": [
+                                    {
+                                        "view": "CREATE",
+                                        "defaultValue": "today"
+                                    },
+                                    {
+                                        "view": "EDIT",
+                                        "defaultValue": "2020-07-21T12:53:36.368Z"
+                                    }
+                                ]
                             },
                             "comment": {
                                 "name": "Comments",

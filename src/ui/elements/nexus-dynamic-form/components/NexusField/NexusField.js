@@ -5,9 +5,11 @@ import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
+import {compose} from "redux";
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import withOptional from "../../hoc/withOptional";
 import {
     checkFieldDependencies,
     getFieldValue,
@@ -18,6 +20,10 @@ import {
 } from '../../utils';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
+
+const DateTimeWithOptional = compose(
+    withOptional(),
+)(DateTime);
 
 const NexusField = ({
     selectValues,
@@ -35,6 +41,8 @@ const NexusField = ({
     labels,
     optionsConfig,
     label,
+    isOptional,
+    setFieldValue,
     ...props
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -58,6 +66,8 @@ const NexusField = ({
         type,
         dateType,
         isReadOnly,
+        isOptional,
+        setFieldValue,
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -121,7 +131,7 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
-                return <DateTime {...dateProps} {...fieldProps} />;
+                return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
             default:
                 return;
         }
@@ -209,6 +219,8 @@ NexusField.propTypes = {
     dateType: PropTypes.string,
     labels: PropTypes.array,
     label: PropTypes.string,
+    isOptional: PropTypes.bool,
+    setFieldValue: PropTypes.func,
 };
 
 NexusField.defaultProps = {
@@ -226,6 +238,8 @@ NexusField.defaultProps = {
     dateType: '',
     labels: [],
     label: '',
+    isOptional: false,
+    setFieldValue: null,
 };
 
 export default NexusField;

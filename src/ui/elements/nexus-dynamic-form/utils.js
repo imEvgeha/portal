@@ -49,10 +49,11 @@ export const getValidationError = (validationErrors, field) => {
 
 const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     let retValue = false;
-    formData[field].forEach(obj => {
+    formData[field].map(obj => {
         if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
+        return null;
     });
     return retValue;
 };
@@ -191,7 +192,7 @@ export const buildSection = (
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues})}
+                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues, setFieldValue})}
                         </div>
                     ))
                 );
@@ -200,7 +201,7 @@ export const buildSection = (
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues}) => {
+export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues, setFieldValue}) => {
     return (
         <NexusField
             {...field}
@@ -213,6 +214,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}
+            setFieldValue={setFieldValue}
         />
     );
 };
