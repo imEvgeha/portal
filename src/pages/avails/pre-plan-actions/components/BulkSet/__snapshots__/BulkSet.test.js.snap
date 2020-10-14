@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkSet should match snapshot 1`] = `
+<div
+  className="bulk-set-territories"
+>
+  <div
+    className="bulk-set-territories__label"
+  >
+    Territories
+  </div>
+  <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+    hideSelectedOptions={true}
+    isMulti={true}
+    options={Array []}
+    placeholder="Select territories..."
+  />
+  <div
+    className="bulk-set-territories__label"
+  >
+    Keywords
+  </div>
+  <NexusTextArea
+    notesValue={Array []}
+    onTextChange={[Function]}
+  />
+  <div
+    className="bulk-set-territories__note"
+  >
+    Note: You can separate values by comma.
+  </div>
+</div>
+`;
