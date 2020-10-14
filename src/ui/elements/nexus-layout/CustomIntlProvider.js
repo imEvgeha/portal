@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import {IntlProvider} from 'react-intl';
 import {connect} from 'react-redux';
 
-const CustomIntlProvider = ({children, getLocale}) => (
-    <IntlProvider locale={getLocale.locale}>
-        {children}
-    </IntlProvider>
-);
+const CustomIntlProvider = ({children, getLocale}) => <IntlProvider locale={getLocale.locale}>{children}</IntlProvider>;
 
 CustomIntlProvider.propTypes = {
     children: PropTypes.node.isRequired,

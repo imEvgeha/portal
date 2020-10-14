@@ -2,7 +2,7 @@ const dataTypes = {
     DATE: 'date',
     AUDIO: 'audio',
     RATING: 'rating',
-    METHOD: 'method'
+    METHOD: 'method',
 };
 
 export default {
@@ -11,7 +11,7 @@ export default {
         {
             field: 'updatedBy',
             headerName: 'Author',
-            noStyles: true
+            noStyles: true,
         },
         {
             field: 'method',
@@ -23,7 +23,7 @@ export default {
             field: 'lastUpdateReceivedAt',
             headerName: 'Last Received',
             dataType: dataTypes.DATE,
-            noStyles: true
+            noStyles: true,
         },
         {
             field: 'updatedAt',
@@ -128,9 +128,7 @@ export default {
     RATING_SUBFIELD: 'com.vubiquity.messaging.rights.Rating',
     method: {
         INGEST: 'Ingest',
-        MANUAL: 'Manual'
+        MANUAL: 'Manual',
     },
-    INGEST_ACCOUNTS: [
-        'service-account-avails-client',
-    ],
+    INGEST_ACCOUNTS: ['service-account-avails-client'],
 };

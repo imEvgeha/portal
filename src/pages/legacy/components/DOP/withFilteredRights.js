@@ -7,7 +7,6 @@ import withRightsResultsTable from './withRightsResultsTable';
 
 const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent => {
     class ComposedComponent extends Component {
-
         constructor(props) {
             super(props);
             const rowsProps = {
@@ -32,7 +31,7 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
         componentDidMount() {
             const {colDef, refreshColumns} = this.props;
             this.setState({
-                cols: refreshColumns(colDef)
+                cols: refreshColumns(colDef),
             });
         }
 
@@ -42,24 +41,24 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
 
             if (!isEqual(prevProps.colDef, colDef) || !isEqual(prevProps.columns, columns)) {
                 this.setState({
-                    cols: refreshColumns(colDef)
+                    cols: refreshColumns(colDef),
                 });
             }
 
             if (availTabPageLoading && availTabPageLoading !== prevProps.availTabPageLoading && table) {
-                table.api.setDatasource({ rowCount: null, getRows: this.getRows});
+                table.api.setDatasource({rowCount: null, getRows: this.getRows});
             }
         }
 
         doSearch = (searchCriteria, page, pageSize, sortedParams) => {
             return rightServiceManager.callPlanningSearch(searchCriteria, page, pageSize, sortedParams);
-        }
+        };
 
-        getRows = (params) => {
+        getRows = params => {
             const {table, pageSize} = this.state;
             const {autoRefresh, sort} = this.props;
             const {startRow, failCallback, successCallback} = params;
-            if (table && table.api.getDisplayedRowCount() === 0 && !autoRefresh){
+            if (table && table.api.getDisplayedRowCount() === 0 && !autoRefresh) {
                 table.api.showLoadingOverlay();
             }
 
@@ -69,12 +68,12 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                     console.error(error);
                     failCallback();
                 });
-        }
+        };
 
         parseServerResponse = (response, callback) => {
             const {table} = this.state;
             const {onDataLoaded} = this.props;
-            if (response && response.total > 0){
+            if (response && response.total > 0) {
                 const {data, page, total, size} = response;
                 // if on or after the last page, work out the last row.
                 let lastRow = -1;
@@ -86,28 +85,28 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                     callback(data, lastRow);
                     table.api.hideOverlay();
 
-                    if (typeof onDataLoaded === 'function'){
+                    if (typeof onDataLoaded === 'function') {
                         onDataLoaded(response);
                     }
                 }
                 return;
             }
-            if (table){
+            if (table) {
                 table.api.showNoRowsOverlay();
             }
-        }
+        };
 
         setTable = element => {
             const {setTable} = this.props;
-            if (element){
+            if (element) {
                 element.api.showLoadingOverlay();
                 this.setState({table: element});
 
-                if (typeof setTable === 'function'){
+                if (typeof setTable === 'function') {
                     setTable(element);
                 }
             }
-        }
+        };
 
         render() {
             return (
@@ -118,7 +117,7 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
                     setTable={this.setTable}
                     getRowNodeId={data => data.id}
                 />
-);
+            );
         }
     }
     ComposedComponent.propTypes = {
@@ -132,6 +131,5 @@ const withFilteredRights = (filterBy = {status: 'Ready'}) => WrappedComponent =>
     };
     return withRightsResultsTable(ComposedComponent);
 };
-
 
 export default withFilteredRights;

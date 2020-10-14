@@ -9,24 +9,29 @@ import './AuditHistoryTable.scss';
 const AuditHistoryTable = ({data, focusedRight}) => {
     const [auditData, setAuditData] = useState([]);
     const [columnDefs, setColumnDefs] = useState([]);
-    const { columns, SEPARATION_ROW, HEADER_ROW } = Constants;
+    const {columns, SEPARATION_ROW, HEADER_ROW} = Constants;
 
     useEffect(() => {
         const {eventHistory = []} = data || {};
-        if(!auditData.length && eventHistory.length){
+        if (!auditData.length && eventHistory.length) {
             const tableRows = formatData(data);
-            tableRows.splice(0, 0, {
-                ...focusedRight,
-                ...HEADER_ROW,
-            }, SEPARATION_ROW);
+            tableRows.splice(
+                0,
+                0,
+                {
+                    ...focusedRight,
+                    ...HEADER_ROW,
+                },
+                SEPARATION_ROW
+            );
             setAuditData(tableRows);
         }
     }, [data]);
 
-    useEffect( () => {
-        if(columns.length !== columnDefs.length){
+    useEffect(() => {
+        if (columns.length !== columnDefs.length) {
             const cols = columns.map(col => {
-                const { field, colId, headerName} = col;
+                const {field, colId, headerName} = col;
                 return {
                     field,
                     headerName,
@@ -43,11 +48,11 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     }, [columnDefs]);
 
     return (
-        <div className='nexus-c-audit-history-table'>
+        <div className="nexus-c-audit-history-table">
             <NexusGrid
                 columnDefs={columnDefs}
                 rowData={auditData}
-                frameworkComponents={{ customTooltip: RulesEngineInfo }}
+                frameworkComponents={{customTooltip: RulesEngineInfo}}
             />
         </div>
     );

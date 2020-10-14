@@ -1,70 +1,70 @@
 .dashboard-card-container {
-  padding: 20px;
-  margin: 7px;
-  width: 270px;
-  //height: 180px;
-  vertical-align: middle;
-  text-align: center;
-  border: dashed 2px lightgray;
-  background-color: rgba(0, 0, 0, 0.05);
-  border-spacing: unset;
+    padding: 20px;
+    margin: 7px;
+    width: 270px;
+    //height: 180px;
+    vertical-align: middle;
+    text-align: center;
+    border: dashed 2px lightgray;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-spacing: unset;
 }
 
 .dashboard-card-container:hover {
-  border: dotted 2px gray;
+    border: dotted 2px gray;
 }
 
 .dashboard-card-container:-moz-drag-over {
-  border: dotted 2px white;
+    border: dotted 2px white;
 }
 
 .dashboard-card-icon {
-  font-size: 3em;
-  color: #6c757d;
+    font-size: 3em;
+    color: #6c757d;
 }
 
 .dashboard-card-title {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .dashboard-card-btn {
-  width: 150px;
+    width: 150px;
 }
 
 .lgModalBox {
-  min-width: 80%;
+    min-width: 80%;
 }
 
 .dPicker {
-  float:left;
+    float: left;
 }
 .dPButton {
-  width:40px;
-  margin-left:7px;
-  height:40px;
-  border-radius: 20px;
+    width: 40px;
+    margin-left: 7px;
+    height: 40px;
+    border-radius: 20px;
 }
 .displayDate {
- color:#000; 
- cursor: pointer;
+    color: #000;
+    cursor: pointer;
 }
 
 .displayDate.disabled,
-.displayDate.disabled:hover{
- color: black;
- cursor: text;
+.displayDate.disabled:hover {
+    color: black;
+    cursor: text;
 }
 
-.displayDate:hover{
-  color:#FE6633;
+.displayDate:hover {
+    color: #fe6633;
 }
 
 .dashboard-card {
-  &__label-error {
-    font-size: 14px;
-    color: red;
-  }
-  &__label-info {
-    font-size: 14px;
-  }
+    &__label-error {
+        font-size: 14px;
+        color: red;
+    }
+    &__label-info {
+        font-size: 14px;
+    }
 }

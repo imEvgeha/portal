@@ -2,27 +2,23 @@ import React from 'react';
 import TableHeader from './elements/table-header/TableHeader';
 
 export default function withSelectRightHeader(SelectRightHeaderWrappedComponent) {
-    return (props) => {
-  return (
-      <SelectRightsTableHeader
-          SelectRightHeaderWrappedComponent={SelectRightHeaderWrappedComponent}
-          {...props}
-      />
-);
-};
+    return props => {
+        return (
+            <SelectRightsTableHeader SelectRightHeaderWrappedComponent={SelectRightHeaderWrappedComponent} {...props} />
+        );
+    };
 }
 
 class SelectRightsTableHeader extends React.Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            table: null
+            table: null,
         };
     }
 
-    setTable = (element) => {
+    setTable = element => {
         if (element) {
             this.setState({table: element});
             if (this.props.setTable) {
@@ -36,14 +32,8 @@ class SelectRightsTableHeader extends React.Component {
         return (
             <div>
                 {!hidden && <TableHeader table={this.state.table} />}
-                <SelectRightHeaderWrappedComponent
-                    {...this.props}
-                    setTable={this.setTable}
-                />
+                <SelectRightHeaderWrappedComponent {...this.props} setTable={this.setTable} />
             </div>
         );
     }
 }
-
-
-

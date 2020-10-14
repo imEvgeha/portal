@@ -9,39 +9,39 @@ import DefaultUserIcon from '../../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
 import {
     CustomAddButton,
-    CustomColumn, CustomDeleteButton, CustomDragButton, CustomEllipsis,
-    DraggableContent, ListItemText, ListText, PersonListFlag,
+    CustomColumn,
+    CustomDeleteButton,
+    CustomDragButton,
+    CustomEllipsis,
+    DraggableContent,
+    ListItemText,
+    ListText,
+    PersonListFlag,
 } from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 // TODO: This seems to be extracted from legacy, should be refactored
-const NexusPerson = ({
-    person,
-    index,
-    hasCharacter,
-    showPersonType,
-    onRemove,
-    onEditCharacter,
-}) => {
+const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onEditCharacter}) => {
     return (
         <Draggable draggableId={person.id} index={index}>
             {(provided, snapshot) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                >
-                    <DraggableContent
-                        isDragging={snapshot.isDragging}
-                    >
+                <div ref={provided.innerRef} {...provided.draggableProps}>
+                    <DraggableContent isDragging={snapshot.isDragging}>
                         <Row>
                             <CustomColumn xs={!hasCharacter ? 10 : 5}>
                                 <CustomEllipsis>
                                     <img src={DefaultUserIcon} alt="Person" className="nexus-c-person-avatar" />
                                     {showPersonType && (
                                         <PersonListFlag>
-                                            <span className="nexus-c-person-type"><Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge></span>
+                                            <span className="nexus-c-person-type">
+                                                <Lozenge appearance="default">
+                                                    {getFormatTypeName(person.personType)}
+                                                </Lozenge>
+                                            </span>
                                         </PersonListFlag>
                                     )}
-                                    <CustomEllipsis isInline={true} title={person.displayName}>{person.displayName}</CustomEllipsis>
+                                    <CustomEllipsis isInline={true} title={person.displayName}>
+                                        {person.displayName}
+                                    </CustomEllipsis>
                                 </CustomEllipsis>
                             </CustomColumn>
                             {hasCharacter ? (
@@ -49,16 +49,23 @@ const NexusPerson = ({
                                     <CustomEllipsis className="nexus-c-person-character-container">
                                         <ListText className="nexus-c-person-character">
                                             <PersonListFlag>
-                                                <span className="nexus-c-person-separator"><Lozenge appearance="default">CHARACTER</Lozenge></span>
+                                                <span className="nexus-c-person-separator">
+                                                    <Lozenge appearance="default">CHARACTER</Lozenge>
+                                                </span>
                                             </PersonListFlag>
-                                            {
-                                                person.characterName ? (
-                                                    <ListItemText isEditMode onClick={() => onEditCharacter(index)} title={person.characterName}>
-                                                        {person.characterName}
-                                                    </ListItemText>
-                                                )
-                                                    : <CustomAddButton onClick={() => onEditCharacter(index)}>Add</CustomAddButton>
-                                            }
+                                            {person.characterName ? (
+                                                <ListItemText
+                                                    isEditMode
+                                                    onClick={() => onEditCharacter(index)}
+                                                    title={person.characterName}
+                                                >
+                                                    {person.characterName}
+                                                </ListItemText>
+                                            ) : (
+                                                <CustomAddButton onClick={() => onEditCharacter(index)}>
+                                                    Add
+                                                </CustomAddButton>
+                                            )}
                                         </ListText>
                                     </CustomEllipsis>
                                 </CustomColumn>
@@ -82,7 +89,6 @@ NexusPerson.propTypes = {
     showPersonType: PropTypes.bool,
     onRemove: PropTypes.func,
     onEditCharacter: PropTypes.func,
-
 };
 
 NexusPerson.defaultProps = {

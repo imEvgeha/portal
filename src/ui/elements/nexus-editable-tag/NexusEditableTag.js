@@ -21,26 +21,26 @@ const NexusEditableTag = ({text, remove, save, index, inputWidth}) => {
         setEditing(prev => !prev);
     };
 
-    return (
-        isEditing ? (
-            <input
-                className="nexus-edit-tag-input"
-                style={{width: inputWidth}}
-                value={value}
-                onChange={e => setValue(e.target.value)}
-                onBlur={onBlur}
-                onKeyDown={handleKeyDown}
-                autoFocus
-            />
-        )
-            : (
-                <span className="nexus-edit-tag">
-                    <span onClick={() => setEditing(prev => !prev)} className="nexus-edit-tag__label">
-                        {value}
-                        <span className="nexus-edit-tag__remove-button" onClick={remove}> <EditorCloseIcon size="small" /></span>
-                    </span>
+    return isEditing ? (
+        <input
+            className="nexus-edit-tag-input"
+            style={{width: inputWidth}}
+            value={value}
+            onChange={e => setValue(e.target.value)}
+            onBlur={onBlur}
+            onKeyDown={handleKeyDown}
+            autoFocus
+        />
+    ) : (
+        <span className="nexus-edit-tag">
+            <span onClick={() => setEditing(prev => !prev)} className="nexus-edit-tag__label">
+                {value}
+                <span className="nexus-edit-tag__remove-button" onClick={remove}>
+                    {' '}
+                    <EditorCloseIcon size="small" />
                 </span>
-            )
+            </span>
+        </span>
     );
 };
 

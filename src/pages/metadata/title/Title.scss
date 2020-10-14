@@ -1,39 +1,40 @@
 @import '../../../styles/config';
 
 .nexus-c-metadata-title {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-template-rows: 200px 1fr;
-  height: 100vh;
-  border: 1px solid map-get($colors, nexus-light-grey);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 200px 1fr;
+    height: 100vh;
+    border: 1px solid map-get($colors, nexus-light-grey);
 }
 
 .nexus-c-metadata-title__sections-menu {
-  grid-row: 2/3;
-  grid-column: 1/2;
-  padding: 24px 20px;
-  width: 200px;
-  height: 100%;
-  background-color: map-get($colors, nexus-soft-grey);
+    grid-row: 2/3;
+    grid-column: 1/2;
+    padding: 24px 20px;
+    width: 200px;
+    height: 100%;
+    background-color: map-get($colors, nexus-soft-grey);
 }
 
 .nexus-c-metadata-title__section-tab {
-  display: flex;
-  align-items: center;
-  height: 30px;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color .2s ease;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 
-  &:hover, &--is-active {
-    background-color: map-get($colors, nexus-lighter-grey);
-  }
+    &:hover,
+    &--is-active {
+        background-color: map-get($colors, nexus-lighter-grey);
+    }
 }
 
 .nexus-c-metadata-title__section {
-  grid-row: 2/3;
-  grid-column: 2/3;
-  padding: 36px;
-  height: calc(100vh - 200px);
-  overflow-y: scroll;
+    grid-row: 2/3;
+    grid-column: 2/3;
+    padding: 36px;
+    height: calc(100vh - 200px);
+    overflow-y: scroll;
 }

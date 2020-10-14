@@ -18,18 +18,13 @@ const getAuthStatus = state => {
     return auth.isAuthenticated;
 };
 
-export const createAuthSelector = () => createSelector(
-    getAccessToken, getRefreshToken, getAuthStatus,
-    (token, refreshToken, isAuthenticated) => {
+export const createAuthSelector = () =>
+    createSelector(getAccessToken, getRefreshToken, getAuthStatus, (token, refreshToken, isAuthenticated) => {
         return {
             token,
             refreshToken,
             isAuthenticated,
         };
-    }
-);
+    });
 
-export const getUsername = createSelector(
-    getAuth,
-    auth => get(auth, 'userAccount.username', ''),
-);
+export const getUsername = createSelector(getAuth, auth => get(auth, 'userAccount.username', ''));

@@ -12,7 +12,7 @@ import {
     resultPageSelect,
     resultPageSort,
     resultPageUpdate,
-    resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
 } from '../../../../../stores/actions/metadata/index';
 import {titleServiceManager} from '../../../service/TitleServiceManager';
 import {Link} from 'react-router-dom';
@@ -23,7 +23,7 @@ import {titleService} from '../../../service/TitleService';
 import {formatNumberTwoDigits} from '../../../../../../../util/Common';
 import {defineColumn} from '../../../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
-import { getRepositoryCell} from '../../../../../../avails/utils';
+import {getRepositoryCell} from '../../../../../../avails/utils';
 import getContextMenuItems from '../../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const colDef = [];
@@ -41,7 +41,7 @@ const mapStateToProps = state => {
         titleTabPageSelection: state.titleReducer.session.titleTabPageSelection,
         titleTabPageLoading: state.titleReducer.titleTabPageLoading,
         columnsOrder: state.titleReducer.session.columns,
-        columnsSize: state.titleReducer.session.columnsSize
+        columnsSize: state.titleReducer.session.columnsSize,
     };
 };
 
@@ -49,11 +49,10 @@ const mapDispatchToProps = {
     resultPageUpdate,
     resultPageSort,
     resultPageSelect,
-    resultPageUpdateColumnsOrder
+    resultPageUpdateColumnsOrder,
 };
 
 class TitleResultTable extends React.Component {
-
     table = null;
 
     constructor(props) {
@@ -63,9 +62,8 @@ class TitleResultTable extends React.Component {
             defaultColDef: {
                 sortable: true,
                 resizable: true,
-                cellStyle: this.cellStyle
-            }
-
+                cellStyle: this.cellStyle,
+            },
         };
 
         this.loadingRenderer = this.loadingRenderer.bind(this);
@@ -89,7 +87,7 @@ class TitleResultTable extends React.Component {
     componentDidMount() {
         this.dataSource = {
             rowCount: null, // behave as infinite scroll
-            getRows: this.getRows
+            getRows: this.getRows,
         };
 
         this.updateWindowDimensions();
@@ -105,7 +103,7 @@ class TitleResultTable extends React.Component {
 
     updateWindowDimensions() {
         const offsetTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-        this.setState({ height: (window.innerHeight - offsetTop - 40) + 'px' });
+        this.setState({height: window.innerHeight - offsetTop - 40 + 'px'});
     }
 
     componentDidUpdate(prevProps) {
@@ -121,7 +119,7 @@ class TitleResultTable extends React.Component {
         if (this.props.titleTabPageSort != prevProps.titleTabPageSort) {
             const sortModel = [];
             this.props.titleTabPageSort.map(sortCriteria => {
-                sortModel.push({ colId: sortCriteria.id, sort: sortCriteria.desc ? 'desc' : 'asc' });
+                sortModel.push({colId: sortCriteria.id, sort: sortCriteria.desc ? 'desc' : 'asc'});
             });
 
             const currentSortModel = this.table.api.getSortModel();
@@ -137,26 +135,32 @@ class TitleResultTable extends React.Component {
             if (toChangeSortModel) {
                 this.table.api.setSortModel(sortModel);
             }
-
         }
 
-        if (this.props.titleTabPageLoading != prevProps.titleTabPageLoading && this.props.titleTabPageLoading === true && this.table != null) {
+        if (
+            this.props.titleTabPageLoading != prevProps.titleTabPageLoading &&
+            this.props.titleTabPageLoading === true &&
+            this.table != null
+        ) {
             this.table.api.setDatasource(this.dataSource);
         }
     }
 
     parseColumnsSchema() {
         if (titleMapping) {
-            titleMapping.mappings.map(column => colDef[column.javaVariableName] = {
-                headerName: column.displayName,
-                filter: 'agTextColumnFilter',
-                filterParams: {
-                    filterOptions: ['contains', 'notContains']
-                },
-                field: column.javaVariableName,
-                cellRendererFramework: this.loadingRenderer,
-                width: 623
-            });
+            titleMapping.mappings.map(
+                column =>
+                    (colDef[column.javaVariableName] = {
+                        headerName: column.displayName,
+                        filter: 'agTextColumnFilter',
+                        filterParams: {
+                            filterOptions: ['contains', 'notContains'],
+                        },
+                        field: column.javaVariableName,
+                        cellRendererFramework: this.loadingRenderer,
+                        width: 623,
+                    })
+            );
         }
     }
 
@@ -165,7 +169,7 @@ class TitleResultTable extends React.Component {
         const newSort = [];
         if (sortParams.length > 0) {
             sortParams.map(criteria => {
-                newSort.push({ id: e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort == 'desc' });
+                newSort.push({id: e.columnApi.getColumn(criteria.colId).colDef.field, desc: criteria.sort == 'desc'});
             });
         }
         this.props.resultPageSort(newSort);
@@ -201,7 +205,7 @@ class TitleResultTable extends React.Component {
         e.api.forEachNode(node => {
             if (!node.isSelected()) allLoadedSelected = false;
         });
-        this.props.resultPageSelect({ selected: selected, selectAll: allLoadedSelected });
+        this.props.resultPageSelect({selected: selected, selectAll: allLoadedSelected});
     }
 
     editTitle(newTitle) {
@@ -220,7 +224,7 @@ class TitleResultTable extends React.Component {
             pages: this.props.titleTabPage.pages,
             titles: this.editTitle(title),
             pageSize: this.props.titleTabPage.pageSize,
-            total: this.props.titleTabPage.total
+            total: this.props.titleTabPage.total,
         });
     }
 
@@ -232,7 +236,11 @@ class TitleResultTable extends React.Component {
         if (this.table && this.table.api.getDisplayedRowCount() == 0) {
             this.table.api.showLoadingOverlay();
         }
-        this.doSearch(Math.floor(params.startRow / this.state.pageSize), this.state.pageSize, this.props.titleTabPageSort)
+        this.doSearch(
+            Math.floor(params.startRow / this.state.pageSize),
+            this.state.pageSize,
+            this.props.titleTabPageSort
+        )
             .then(response => {
                 const {data, total} = response || {};
                 if (total > 0) {
@@ -241,7 +249,8 @@ class TitleResultTable extends React.Component {
                 } else {
                     this.table && this.table.api && this.table.api.showNoRowsOverlay();
                 }
-            }).catch((error) => {
+            })
+            .catch(error => {
                 console.error('Unexpected error');
                 console.error(error);
                 params.failCallback();
@@ -254,11 +263,17 @@ class TitleResultTable extends React.Component {
 
         switch (contentType) {
             case SEASON.apiName:
-                return seriesTitleName ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}` : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
+                return seriesTitleName
+                    ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}`
+                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}`;
             case EPISODE.apiName:
-                return seriesTitleName ?
-                    `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`
-                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(episodeNumber)}: ${episodeTitle}`;
+                return seriesTitleName
+                    ? `${seriesTitleName}: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(
+                          episodeNumber
+                      )}: ${episodeTitle}`
+                    : `[SeriesNotFound]: S${formatNumberTwoDigits(seasonNumber)}, E${formatNumberTwoDigits(
+                          episodeNumber
+                      )}: ${episodeTitle}`;
         }
 
         return item.title;
@@ -271,12 +286,12 @@ class TitleResultTable extends React.Component {
             lastRow = data.total;
         }
 
-        const rows = data.data.map((row) => {
+        const rows = data.data.map(row => {
             const contentType = row.contentType.toUpperCase();
 
-            if(contentType === SEASON.apiName) {
+            if (contentType === SEASON.apiName) {
                 row.title = this.getFormatTitle(row, SEASON.apiName);
-            } else if(contentType === EPISODE.apiName) {
+            } else if (contentType === EPISODE.apiName) {
                 row.title = this.getFormatTitle(row, EPISODE.apiName);
             }
 
@@ -298,14 +313,14 @@ class TitleResultTable extends React.Component {
     };
 
     addLoadedItems(data) {
-        const items = data.data.map(e => e.contentType = toPrettyContentTypeIfExist(e.contentType));
+        const items = data.data.map(e => (e.contentType = toPrettyContentTypeIfExist(e.contentType)));
 
         if (items.length > 0) {
             this.props.resultPageUpdate({
                 pages: this.props.titleTabPage.pages + 1,
                 titles: this.props.titleTabPage.titles.concat(items),
                 pageSize: this.props.titleTabPage.pageSize + items.length,
-                total: data.total
+                total: data.total,
             });
         }
     }
@@ -315,14 +330,14 @@ class TitleResultTable extends React.Component {
             pages: 0,
             titles: [],
             pageSize: 0,
-            total: 0
+            total: 0,
         });
     }
 
     onColumnReordered(e) {
         const cols = [];
         e.columnApi.getAllGridColumns().map(column => {
-            if(get(column, 'colDef.headerName', '') !== 'Action') cols.push(column.colDef.field);
+            if (get(column, 'colDef.headerName', '') !== 'Action') cols.push(column.colDef.field);
         });
         this.props.resultPageUpdateColumnsOrder(cols);
     }
@@ -352,24 +367,32 @@ class TitleResultTable extends React.Component {
             const actionColumn = defineColumn({
                 headerName: 'Action',
                 field: 'action',
-                cellRendererFramework: ActionCellRender
+                cellRendererFramework: ActionCellRender,
             });
             this.cols = [actionColumn, ...newCols];
         }
     }
 
-    loadingRenderer = (params) => {
+    loadingRenderer = params => {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if(params.colDef 
-                   && ((e.fieldName === params.colDef.field) 
-                   || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
-                   || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart'))) {
-                    error = e.message + ', error processing field ' + e.originalFieldName +
-                        ' with value ' + e.originalValue +
-                        ' at row ' + e.rowId +
-                        ' from file ' + e.fileName;
+                if (
+                    params.colDef &&
+                    (e.fieldName === params.colDef.field ||
+                        (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') ||
+                        (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart'))
+                ) {
+                    error =
+                        e.message +
+                        ', error processing field ' +
+                        e.originalFieldName +
+                        ' with value ' +
+                        e.originalValue +
+                        ' at row ' +
+                        e.rowId +
+                        ' from file ' +
+                        e.fileName;
                     return;
                 }
             });
@@ -382,35 +405,36 @@ class TitleResultTable extends React.Component {
                     <Link to={'metadata/detail/' + params.data.id}>
                         <div
                             title={error}
-                            style={{ textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null }}
+                            style={{textOverflow: 'ellipsis', overflow: 'hidden', color: error ? '#a94442' : null}}
                         >
                             {content}
                         </div>
                     </Link>
                 );
-            }
-            else return params.value;
+            } else return params.value;
         } else {
             return <img src={LoadingGif} />;
         }
-    }
+    };
 
     cellStyle(params) {
         let error = null;
         if (!params.value && params.data && params.data.validationErrors) {
             params.data.validationErrors.forEach(e => {
-                if (e.fieldName === params.colDef.field 
-                    || (e.fieldName.includes('country') && params.colDef.field === 'territory') 
-                    || (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded')
-                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') 
-                    || (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')) {
+                if (
+                    e.fieldName === params.colDef.field ||
+                    (e.fieldName.includes('country') && params.colDef.field === 'territory') ||
+                    (e.fieldName.includes('territoryExcluded') && params.colDef.field === 'territoryExcluded') ||
+                    (e.fieldName === '[start, availStart]' && params.colDef.field === 'start') ||
+                    (e.fieldName === '[start, availStart]' && params.colDef.field === 'availStart')
+                ) {
                     error = e;
                     return;
                 }
             });
         }
         if (params.colDef.headerName !== '' && error) {
-            return { backgroundColor: '#f2dede' };
+            return {backgroundColor: '#f2dede'};
         } else {
             return null;
         }
@@ -424,10 +448,10 @@ class TitleResultTable extends React.Component {
     //     const filterObj = {
     //         contentType: filter
     //     };
-    //     if(e.api.getFilterModel()) {            
+    //     if(e.api.getFilterModel()) {
     //         this.handleTitleFreeTextSearch(filterObj);
     //     }
-        
+
     // }
     render() {
         return (
@@ -435,44 +459,37 @@ class TitleResultTable extends React.Component {
                 className="ag-theme-balham"
                 style={{
                     height: this.state.height,
-                    width: '100%'
+                    width: '100%',
                 }}
             >
                 <AgGridReact
                     id="titleTable"
                     ref={this.setTable}
-
                     getRowNodeId={data => data.id}
-
                     defaultColDef={this.state.defaultColDef}
                     columnDefs={this.cols}
                     suppressDragLeaveHidesColumns={true}
                     onDragStopped={this.onColumnReordered}
                     onColumnResized={this.onColumnResized}
-
-                    rowBuffer='50'
-                    rowModelType='infinite'
+                    rowBuffer="50"
+                    rowModelType="infinite"
                     paginationPageSize={this.state.pageSize}
-                    infiniteInitialRowCount='0'
-                    cacheOverflowSize='2'
-                    maxConcurrentDatasourceRequests='1'
+                    infiniteInitialRowCount="0"
+                    cacheOverflowSize="2"
+                    maxConcurrentDatasourceRequests="1"
                     datasource={this.dataSource}
-
                     pagination={true}
-
                     onSortChanged={this.onSortChanged}
-
                     // enableFilter
                     // onFilterChanged={this.handleFilterChanged}
 
                     rowSelection="multiple"
                     onSelectionChanged={this.onSelectionChanged}
                     suppressRowClickSelection={true}
-                    headerHeight='52'
-                    rowHeight='48'
+                    headerHeight="52"
+                    rowHeight="48"
                     getContextMenuItems={getContextMenuItems}
                 />
-
             </div>
         );
     }
@@ -488,7 +505,7 @@ TitleResultTable.propTypes = {
     resultPageSelect: PropTypes.func,
     columnsOrder: PropTypes.array,
     columnsSize: PropTypes.object,
-    resultPageUpdateColumnsOrder: PropTypes.func
+    resultPageUpdateColumnsOrder: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleResultTable);

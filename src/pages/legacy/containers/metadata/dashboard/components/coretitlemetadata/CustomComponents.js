@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { Row, Col } from 'reactstrap';
+import styled, {css} from 'styled-components';
+import {Row, Col} from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 
 const PersonListFlag = styled.div`
@@ -12,13 +12,12 @@ const PersonListFlag = styled.div`
 const ListText = styled.div`
     display: flex;
     align-items: center;
-    margin-left: ${props => props.showPersonType ? '10px' : 0};
+    margin-left: ${props => (props.showPersonType ? '10px' : 0)};
 `;
 
 const CustomRow = styled(Row)`
-    border: 1px solid #DDD;
+    border: 1px solid #ddd;
     padding: 10px;
-    
 `;
 
 const CustomColumn = styled(Col)`
@@ -32,54 +31,55 @@ const CustomEllipsis = styled.div`
     display: flex;
     align-items: center;
     text-overflow: ellipsis;
-    ${props => props.isInline && css`
-        display: inline-block;
-    `};
+    ${props =>
+        props.isInline &&
+        css`
+            display: inline-block;
+        `};
 `;
 
 const CustomInput = styled.input`
     padding: 5px;
-    border: ${props => props.isError ? '2px solid #e74c3c' : '2px solid #DFE1E6;'};
-    color: ${props => props.isError ? '#e74c3c' : '#111;'};
-    ${props => props.readOnly && css`
-        margin-bottom: 10px;
-    `};
+    border: ${props => (props.isError ? '2px solid #e74c3c' : '2px solid #DFE1E6;')};
+    color: ${props => (props.isError ? '#e74c3c' : '#111;')};
+    ${props =>
+        props.readOnly &&
+        css`
+            margin-bottom: 10px;
+        `};
     border-radius: 3px;
     outline: none;
-    width: 100%;    
+    width: 100%;
     font-size: 14px;
     &:hover {
-        background: #EBECF0;
-    }   
-
+        background: #ebecf0;
+    }
 `;
 
 const CustomLabel = styled.div`
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 5px;
-    color: ${props => props.isError ? '#DE350B' : '#666'};
+    color: ${props => (props.isError ? '#DE350B' : '#666')};
 `;
 
 const DraggableContent = styled.div`
-    border:${props => props.isDragging ? '2px dotted #111' : '1px solid #DDD'};
+    border: ${props => (props.isDragging ? '2px dotted #111' : '1px solid #DDD')};
     padding: 5px;
-    background-color: #FAFBFC;
+    background-color: #fafbfc;
     width: 97%;
     margin: auto;
-    opacity: ${props => props.isDragging ? '1' : '0.8'};
+    opacity: ${props => (props.isDragging ? '1' : '0.8')};
     &:hover {
-        background-color: #EEE;
+        background-color: #eee;
     }
-`; 
-
-const DroppableContent = styled.div`
-    background-color: ${props => props.isDragging ? '#bdc3c7' : ''};
-    width: 97%;
-    border:${props => props.isDragging ? '2px dotted #111' : ''};
 `;
 
-
+const DroppableContent = styled.div`
+    background-color: ${props => (props.isDragging ? '#bdc3c7' : '')};
+    width: 97%;
+    border: ${props => (props.isDragging ? '2px dotted #111' : '')};
+`;
 
 const ListContainer = styled.div`
     display: flex;
@@ -87,7 +87,6 @@ const ListContainer = styled.div`
     border: 1px solid green;
     justify-content: space-between;
 `;
-
 
 const CustomAddButton = styled.span`
     font-weight: bold;
@@ -102,12 +101,14 @@ const ListItemText = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    ${props => props.isEditMode && css`
-        cursor: pointer;
-        &:hover {
-            color: #2ecc71;
-        }
-    `};
+    ${props =>
+        props.isEditMode &&
+        css`
+            cursor: pointer;
+            &:hover {
+                color: #2ecc71;
+            }
+        `};
 `;
 
 const CustomDeleteButton = styled(FontAwesome)`
@@ -144,5 +145,5 @@ export {
     CustomAddButton,
     ListItemText,
     CustomDeleteButton,
-    CustomDragButton
+    CustomDragButton,
 };

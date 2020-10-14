@@ -33,9 +33,9 @@ const HeaderSection = ({orderDetails, handleFulfillmentOrderChange, selectedFulf
     };
 
     const panelHeaderClassNames = classnames('panel-header__title', {
-        'panel-header__title--open': showFilter
-    })
-    
+        'panel-header__title--open': showFilter,
+    });
+
     return (
         <div className="panel-header">
             <div className={panelHeaderClassNames}>

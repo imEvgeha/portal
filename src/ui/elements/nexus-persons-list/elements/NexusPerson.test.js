@@ -30,4 +30,3 @@ describe('NexusPerson', () => {
         expect(wrapper).toMatchSnapshot();
     });
 });
-

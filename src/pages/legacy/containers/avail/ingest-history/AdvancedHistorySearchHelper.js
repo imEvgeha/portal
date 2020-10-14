@@ -1,17 +1,14 @@
 import {store} from '../../../../../index';
-import {
-    searchFormUpdateAdvancedHistorySearchCriteria
-} from '../../../stores/actions/avail/history';
+import {searchFormUpdateAdvancedHistorySearchCriteria} from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
 import {safeTrim} from '../../../../../util/Common';
 import moment from 'moment';
 import HistoryURL from '../util/HistoryURL';
 
 export const advancedHistorySearchHelper = {
-
-    prepareAdvancedHistorySearchCall: (searchCriteria) => {
+    prepareAdvancedHistorySearchCall: searchCriteria => {
         const response = {};
-        for (const key of Object.keys(searchCriteria) ) {
+        for (const key of Object.keys(searchCriteria)) {
             const criteria = searchCriteria[key];
             if (criteria !== null && criteria !== undefined) {
                 if (!(criteria instanceof Object)) {
@@ -24,7 +21,7 @@ export const advancedHistorySearchHelper = {
                     }
                     if (criteria.to) {
                         const val = moment(criteria.to);
-                        if(criteria.to.indexOf('Z')>-1) val.utc();
+                        if (criteria.to.indexOf('Z') > -1) val.utc();
                         response[key + 'To'] = val.endOf('day').toISOString();
                     }
                 }
@@ -35,15 +32,17 @@ export const advancedHistorySearchHelper = {
 
     clearAdvancedHistorySearchForm: () => {
         HistoryURL.saveHistoryAdvancedFilterUrl({});
-        store.dispatch(searchFormUpdateAdvancedHistorySearchCriteria({
-           received: null,
-           provider: '',
-           status: '',
-        }));
+        store.dispatch(
+            searchFormUpdateAdvancedHistorySearchCriteria({
+                received: null,
+                provider: '',
+                status: '',
+            })
+        );
     },
 
     advancedSearch(searchCriteria) {
         HistoryURL.saveHistoryAdvancedFilterUrl(searchCriteria);
         historyServiceManager.search(this.prepareAdvancedHistorySearchCall(searchCriteria));
-    }
+    },
 };

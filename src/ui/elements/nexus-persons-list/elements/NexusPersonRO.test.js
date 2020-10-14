@@ -15,14 +15,7 @@ describe('NexusPersonRO', () => {
         characterName: 'test2',
     };
     it('should match snapshot', () => {
-        wrapper = shallow(
-            <NexusPersonRO
-                key={uid(person.id, 1)}
-                person={person}
-                showPersonType
-            />
-        );
+        wrapper = shallow(<NexusPersonRO key={uid(person.id, 1)} person={person} showPersonType />);
         expect(wrapper).toMatchSnapshot();
     });
 });
-

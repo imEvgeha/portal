@@ -16,10 +16,7 @@ import {
 } from './constants';
 import './Title.scss';
 
-const Title = ({
-    coreTitleData,
-    editorialTitleData,
-}) => {
+const Title = ({coreTitleData, editorialTitleData}) => {
     const [currentSection, setCurrentSection] = useState(METADATA_TITLE_EDITORIAL_SECTION);
     const {title, releaseYear, type} = coreTitleData || {};
 
@@ -34,11 +31,7 @@ const Title = ({
             case METADATA_TITLE_EXTERNAL_IDS_SECTION:
                 return null;
             case METADATA_TITLE_EDITORIAL_SECTION:
-                return (
-                    <EditorialMetadata
-                        data={editorialTitleData}
-                    />
-                );
+                return <EditorialMetadata data={editorialTitleData} />;
             case METADATA_TITLE_TERRITORIAL_SECTION:
                 return null;
             case METADATA_TITLE_RIGHTS_SECTION:
@@ -52,17 +45,13 @@ const Title = ({
 
     return (
         <div className="nexus-c-metadata-title">
-            <TitleHeader
-                title={title}
-                releaseYear={releaseYear}
-                type={type}
-            />
+            <TitleHeader title={title} releaseYear={releaseYear} type={type} />
             <div className="nexus-c-metadata-title__sections-menu">
                 {METADATA_TITLE_SECTIONS.map((section, index) => (
                     <div
                         className={classNames(
                             'nexus-c-metadata-title__section-tab',
-                            (section === currentSection) && 'nexus-c-metadata-title__section-tab--is-active'
+                            section === currentSection && 'nexus-c-metadata-title__section-tab--is-active'
                         )}
                         key={index}
                         onClick={() => setCurrentSection(section)}
@@ -71,9 +60,7 @@ const Title = ({
                     </div>
                 ))}
             </div>
-            <div className="nexus-c-metadata-title__section">
-                {renderSection(currentSection)}
-            </div>
+            <div className="nexus-c-metadata-title__section">{renderSection(currentSection)}</div>
         </div>
     );
 };

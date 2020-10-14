@@ -3,15 +3,14 @@ import PropTypes from 'prop-types';
 import './SearchComponent.scss';
 
 const SearchComponent = ({onFilterChange}) => {
-
     const [searchBy, setSearchBy] = useState('');
 
-    const handleSearchByChange = (event) => {
+    const handleSearchByChange = event => {
         const {value} = event.target || {};
         setSearchBy(value);
     };
 
-    const handleKeyPress = (e) => {
+    const handleKeyPress = e => {
         if (e.key === 'Enter') {
             onFilterChange(searchBy);
         }
@@ -33,7 +32,7 @@ const SearchComponent = ({onFilterChange}) => {
 };
 
 SearchComponent.propTypes = {
-    onFilterChange: PropTypes.func
+    onFilterChange: PropTypes.func,
 };
 
 export default SearchComponent;

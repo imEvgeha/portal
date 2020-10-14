@@ -1,6 +1,6 @@
 @import '../../../../styles/config';
 
-$border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
+$border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
 
 .nexus-c-sync-log-table {
     height: 100%;
@@ -29,7 +29,7 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
             padding: 5px;
             border-right: $border;
             border-bottom: $border;
-            background: rgba(map_get($colors, nexus-title-color), .1);
+            background: rgba(map_get($colors, nexus-title-color), 0.1);
 
             // fixes content leaking from all table cells
             // see http://agile.vubiquity.com/browse/PORT-2513
@@ -38,7 +38,6 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), .7);
             word-break: break-all;
             hyphens: auto;
         }
-
     }
     &__error-cell {
         text-decoration: underline;

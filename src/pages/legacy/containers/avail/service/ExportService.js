@@ -9,22 +9,34 @@ export const exportService = {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export';
         const data = {columnNames: columns, rightIds: rightsIDs};
 
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(data),
-        }, abortAfter);
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                body: JSON.stringify(data),
+            },
+            abortAfter
+        );
     },
 
     bulkExportAvails: (searchCriteria, columns, sortedParams) => {
         const params = parseAdvancedFilter(searchCriteria);
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + '/avails/export/bulk' + prepareSortMatrixParam(sortedParams);
+        const url =
+            config.get('gateway.url') +
+            config.get('gateway.service.avails') +
+            '/avails/export/bulk' +
+            prepareSortMatrixParam(sortedParams);
         const abortAfter = config.get('avails.export.http.timeout');
         const data = {columnNames: columns};
 
-        return nexusFetch(url, {
-            method: 'post',
-            body: JSON.stringify(data),
-            params: encodedSerialize({...params, page: 0, size: 1}),
-        }, abortAfter);
-    }
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                body: JSON.stringify(data),
+                params: encodedSerialize({...params, page: 0, size: 1}),
+            },
+            abortAfter
+        );
+    },
 };

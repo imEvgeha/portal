@@ -10,11 +10,7 @@ const SelectPlanTerritoryRenderer = ({node, promotedRights}) => {
         result = `${territories.slice(0, 2).join(', ')} (+${territories.slice(2).length})`;
     }
 
-    return (
-        <div className="nexus-select-plan-territory">
-            {result} 
-        </div>
-    );
+    return <div className="nexus-select-plan-territory">{result}</div>;
 };
 
 SelectPlanTerritoryRenderer.propTypes = {
@@ -27,9 +23,8 @@ SelectPlanTerritoryRenderer.defaultProps = {
     promotedRights: null,
 };
 
-const mapStateToProps = (state) => ({
-    promotedRights: state.dopReducer.session.promotedRights
+const mapStateToProps = state => ({
+    promotedRights: state.dopReducer.session.promotedRights,
 });
 
 export default connect(mapStateToProps)(SelectPlanTerritoryRenderer);
-

@@ -1,13 +1,13 @@
 .nexus-c-single-matching__titles-table,
 .nexus-c-single-matching__selected-table {
-  display: none;
+    display: none;
 
-  &--active {
-    display: contents;
-  }
+    &--active {
+        display: contents;
+    }
 }
 
 .nexus-c-single-title-match-toolbar {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }

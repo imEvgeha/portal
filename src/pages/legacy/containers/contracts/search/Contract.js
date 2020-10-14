@@ -31,67 +31,69 @@ const style = {
 };
 
 class Dashboard extends React.Component {
-
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         const arrayOfObjects = () => {
             let arr = [];
             for (let i = 0; i < 13; i++) {
                 arr = arr.concat({
-                    product:
-    <div className={classes.imgContainer}>
-        <Button justIcon color="twitter">
-            <Description />
-        </Button>
-    </div>,
-                    platform:
-    <span>
-        <a href="#" className={classes.tdNameAnchor}>
-            Contract
-        </a>
-        <br />
-        <small className={classes.tdNameSmall}>
-            ID 123456<br />Offer Types: TVOD
-        </small>
-    </span>,
-                                    availibility:
-    <div>
-        <small className={classes.tdNameSmall}>
-            Licensor: Disney<br />Exclusivity: None <br />Region: LATAM
-        </small>
-    </div>,
-                                    type:
-    <span>
-        <small className={classes.tdNameSmall}>
-            Format: SD <br />Start Date: 1/1/19 <br />End Date: 1/1/19
-        </small>
-    </span>, actions:
-    <span>
-        <h4 className={classes.cardIconTitle}>
-            <span className={classes.successText}>
-                <Check className={classes.upArrowCardCategory} /> Valid
-            </span>
-        </h4>
-        <div className={classes.buttonGroup}>
-            <Button
-                color="info"
-                size="sm"
-                round
-                className={classes.firstButton}
-            >
-                <Remove className={classes.icon} />
-            </Button>
-            <Button
-                color="info"
-                size="sm"
-                round
-                className={classes.lastButton}
-            >
-                <Add className={classes.icon} />
-            </Button>
-        </div>
-    </span>
+                    product: (
+                        <div className={classes.imgContainer}>
+                            <Button justIcon color="twitter">
+                                <Description />
+                            </Button>
+                        </div>
+                    ),
+                    platform: (
+                        <span>
+                            <a href="#" className={classes.tdNameAnchor}>
+                                Contract
+                            </a>
+                            <br />
+                            <small className={classes.tdNameSmall}>
+                                ID 123456
+                                <br />
+                                Offer Types: TVOD
+                            </small>
+                        </span>
+                    ),
+                    availibility: (
+                        <div>
+                            <small className={classes.tdNameSmall}>
+                                Licensor: Disney
+                                <br />
+                                Exclusivity: None <br />
+                                Region: LATAM
+                            </small>
+                        </div>
+                    ),
+                    type: (
+                        <span>
+                            <small className={classes.tdNameSmall}>
+                                Format: SD <br />
+                                Start Date: 1/1/19 <br />
+                                End Date: 1/1/19
+                            </small>
+                        </span>
+                    ),
+                    actions: (
+                        <span>
+                            <h4 className={classes.cardIconTitle}>
+                                <span className={classes.successText}>
+                                    <Check className={classes.upArrowCardCategory} /> Valid
+                                </span>
+                            </h4>
+                            <div className={classes.buttonGroup}>
+                                <Button color="info" size="sm" round className={classes.firstButton}>
+                                    <Remove className={classes.icon} />
+                                </Button>
+                                <Button color="info" size="sm" round className={classes.lastButton}>
+                                    <Add className={classes.icon} />
+                                </Button>
+                            </div>
+                        </span>
+                    ),
                 });
             }
             return arr;
@@ -115,26 +117,27 @@ class Dashboard extends React.Component {
                                             Header: 'Product',
                                             accessor: 'product',
                                             sortable: false,
-                                            filterable: false
+                                            filterable: false,
                                         },
                                         {
                                             Header: 'Platform',
-                                            accessor: 'platform'
+                                            accessor: 'platform',
                                         },
                                         {
                                             Header: 'Availibility',
-                                            accessor: 'availibility'
+                                            accessor: 'availibility',
                                         },
                                         {
                                             Header: 'Type',
-                                            accessor: 'type'
+                                            accessor: 'type',
                                         },
                                         {
                                             Header: 'Actions',
                                             accessor: 'actions',
                                             sortable: false,
-                                            filterable: false
-                                        }]}
+                                            filterable: false,
+                                        },
+                                    ]}
                                     defaultPageSize={5}
                                     showPaginationTop
                                     showPaginationBottom={false}
@@ -150,7 +153,7 @@ class Dashboard extends React.Component {
 }
 
 Dashboard.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(style)(Dashboard);

@@ -8,7 +8,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 
-
 // @material-ui/icons
 import Check from '@material-ui/icons/Check';
 import CloudDownload from '@material-ui/icons/CloudDownload';
@@ -29,7 +28,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 
-
 import userProfileStyles from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/userProfileStyles.js';
 import extendedFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/extendedFormsStyle.js';
 import regularFormsStyle from 'material-dashboard-pro-react/dist/assets/jss/material-dashboard-pro-react/views/regularFormsStyle.js';
@@ -41,7 +39,7 @@ const style = {
     ...userProfileStyles,
     ...extendedFormsStyle,
     ...regularFormsStyle,
-    ...dashboardStyle
+    ...dashboardStyle,
 };
 
 class UserProfile extends React.Component {
@@ -50,13 +48,12 @@ class UserProfile extends React.Component {
         this.state = {
             checked: [1, 2],
             simpleSelect: '2',
-            tags: ['Horror', 'Sci-Fi', 'Metadata']
+            tags: ['Horror', 'Sci-Fi', 'Metadata'],
         };
     }
 
-
     handleToggle(value) {
-        const { checked } = this.state;
+        const {checked} = this.state;
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
 
@@ -67,22 +64,22 @@ class UserProfile extends React.Component {
         }
 
         this.setState({
-            checked: newChecked
+            checked: newChecked,
         });
     }
 
     handleSimple = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({[event.target.name]: event.target.value});
     };
     handleChange = name => event => {
-        this.setState({ [name]: event.target.checked });
+        this.setState({[name]: event.target.checked});
     };
     handleTags = regularTags => {
-        this.setState({ tags: regularTags });
-    }
+        this.setState({tags: regularTags});
+    };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         return (
             <div className="use-material-dashboard-pro-react">
                 <GridContainer>
@@ -106,9 +103,7 @@ class UserProfile extends React.Component {
                                 </div>
                                 <h6 className={classes.cardCategory}>Contract Name</h6>
                                 <h4 className={classes.cardTitle}>ID 123456</h4>
-                                <p className={classes.description}>
-                                    Contract description...
-                                </p>
+                                <p className={classes.description}>Contract description...</p>
                             </CardBody>
                         </Card>
                     </GridItem>
@@ -125,34 +120,28 @@ class UserProfile extends React.Component {
                             <CardBody>
                                 <GridContainer xs={12}>
                                     <GridItem xs={12} sm={12} md={6} lg={6}>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Studio
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Studio
@@ -160,7 +149,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -168,34 +157,28 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Licensor
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Licensor
@@ -203,7 +186,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -211,34 +194,28 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Region
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Region
@@ -246,7 +223,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -254,34 +231,28 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Territory
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Territory
@@ -289,7 +260,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -297,34 +268,28 @@ class UserProfile extends React.Component {
                                                 </MenuItem>
                                             </Select>
                                         </FormControl>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Affiliates
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Affiliates
@@ -332,7 +297,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -341,34 +306,28 @@ class UserProfile extends React.Component {
                                             </Select>
                                         </FormControl>
 
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Devices
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Devices
@@ -376,7 +335,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -386,34 +345,28 @@ class UserProfile extends React.Component {
                                         </FormControl>
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6} lg={6}>
-                                        <FormControl
-                                            fullWidth
-                                            className={classes.selectFormControl}
-                                        >
-                                            <InputLabel
-                                                htmlFor="simple-select"
-                                                className={classes.selectLabel}
-                                            >
+                                        <FormControl fullWidth className={classes.selectFormControl}>
+                                            <InputLabel htmlFor="simple-select" className={classes.selectLabel}>
                                                 Offer Types
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    className: classes.selectMenu
+                                                    className: classes.selectMenu,
                                                 }}
                                                 classes={{
-                                                    select: classes.select
+                                                    select: classes.select,
                                                 }}
                                                 value={this.state.simpleSelect}
                                                 onChange={this.handleSimple}
                                                 inputProps={{
                                                     name: 'simpleSelect',
-                                                    id: 'simple-select'
+                                                    id: 'simple-select',
                                                 }}
                                             >
                                                 <MenuItem
                                                     disabled
                                                     classes={{
-                                                        root: classes.selectMenuItem
+                                                        root: classes.selectMenuItem,
                                                     }}
                                                 >
                                                     Choose Offer Type
@@ -421,7 +374,7 @@ class UserProfile extends React.Component {
                                                 <MenuItem
                                                     classes={{
                                                         root: classes.selectMenuItem,
-                                                        selected: classes.selectMenuItemSelected
+                                                        selected: classes.selectMenuItemSelected,
                                                     }}
                                                     value="2"
                                                 >
@@ -432,102 +385,78 @@ class UserProfile extends React.Component {
                                         <br /> <br />
                                         <InputLabel className={classes.label}>Formats</InputLabel> <br />
                                         <FormControlLabel
-                                            control={(
+                                            control={
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(1)}
-                                                    checked={
-                                                        this.state.checked.indexOf(1) !== -1
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    checkedIcon={
-                                                        <Check className={classes.checkedIcon} />
-                                                    }
+                                                    checked={this.state.checked.indexOf(1) !== -1 ? true : false}
+                                                    checkedIcon={<Check className={classes.checkedIcon} />}
                                                     icon={<Check className={classes.uncheckedIcon} />}
                                                     classes={{
                                                         checked: classes.checked,
-                                                        root: classes.checkRoot
+                                                        root: classes.checkRoot,
                                                     }}
                                                 />
-                                              )}
+                                            }
                                             classes={{
-                                                label: classes.label
+                                                label: classes.label,
                                             }}
                                             label="SD"
                                         />
                                         <FormControlLabel
-                                            control={(
+                                            control={
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(2)}
-                                                    checked={
-                                                        this.state.checked.indexOf(2) !== -1
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    checkedIcon={
-                                                        <Check className={classes.checkedIcon} />
-                                                    }
+                                                    checked={this.state.checked.indexOf(2) !== -1 ? true : false}
+                                                    checkedIcon={<Check className={classes.checkedIcon} />}
                                                     icon={<Check className={classes.uncheckedIcon} />}
                                                     classes={{
                                                         checked: classes.checked,
-                                                        root: classes.checkRoot
+                                                        root: classes.checkRoot,
                                                     }}
                                                 />
-                                              )}
+                                            }
                                             classes={{
-                                                label: classes.label
+                                                label: classes.label,
                                             }}
                                             label="HD"
                                         />
                                         <FormControlLabel
-                                            control={(
+                                            control={
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(3)}
-                                                    checked={
-                                                        this.state.checked.indexOf(3) !== -1
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    checkedIcon={
-                                                        <Check className={classes.checkedIcon} />
-                                                    }
+                                                    checked={this.state.checked.indexOf(3) !== -1 ? true : false}
+                                                    checkedIcon={<Check className={classes.checkedIcon} />}
                                                     icon={<Check className={classes.uncheckedIcon} />}
                                                     classes={{
                                                         checked: classes.checked,
-                                                        root: classes.checkRoot
+                                                        root: classes.checkRoot,
                                                     }}
                                                 />
-                                              )}
+                                            }
                                             classes={{
-                                                label: classes.label
+                                                label: classes.label,
                                             }}
                                             label="3D"
                                         />
                                         <FormControlLabel
-                                            control={(
+                                            control={
                                                 <Checkbox
                                                     tabIndex={-1}
                                                     onClick={() => this.handleToggle(4)}
-                                                    checked={
-                                                        this.state.checked.indexOf(4) !== -1
-                                                            ? true
-                                                            : false
-                                                    }
-                                                    checkedIcon={
-                                                        <Check className={classes.checkedIcon} />
-                                                    }
+                                                    checked={this.state.checked.indexOf(4) !== -1 ? true : false}
+                                                    checkedIcon={<Check className={classes.checkedIcon} />}
                                                     icon={<Check className={classes.uncheckedIcon} />}
                                                     classes={{
                                                         checked: classes.checked,
-                                                        root: classes.checkRoot
+                                                        root: classes.checkRoot,
                                                     }}
                                                 />
-                                              )}
+                                            }
                                             classes={{
-                                                label: classes.label
+                                                label: classes.label,
                                             }}
                                             label="4K"
                                         />
@@ -537,7 +466,7 @@ class UserProfile extends React.Component {
                                         <FormControl fullWidth>
                                             <Datetime
                                                 timeFormat={false}
-                                                inputProps={{ placeholder: 'Date Picker Here' }}
+                                                inputProps={{placeholder: 'Date Picker Here'}}
                                             />
                                         </FormControl>
                                         <br /> <br />
@@ -546,7 +475,7 @@ class UserProfile extends React.Component {
                                         <FormControl fullWidth>
                                             <Datetime
                                                 timeFormat={false}
-                                                inputProps={{ placeholder: 'Date Picker Here' }}
+                                                inputProps={{placeholder: 'Date Picker Here'}}
                                             />
                                         </FormControl>
                                     </GridItem>
@@ -564,39 +493,33 @@ class UserProfile extends React.Component {
                                 {/* <CardIcon color="rose">
                   <PermIdentity />
                 </CardIcon> */}
-                                <h4 className={classes.cardIconTitle}>
-                                    Metadata
-                                </h4>
+                                <h4 className={classes.cardIconTitle}>Metadata</h4>
                             </CardHeader>
                             <CardBody>
                                 <GridContainer>
                                     <GridItem xs={12} sm={2}>
-                                        <FormLabel className={classes.labelHorizontal}>
-                                            Metadata Tags
-                                        </FormLabel>
+                                        <FormLabel className={classes.labelHorizontal}>Metadata Tags</FormLabel>
                                     </GridItem>
                                     <GridItem xs={12} sm={10}>
                                         <TagsInput
                                             value={this.state.tags}
                                             onChange={this.handleTags}
-                                            tagProps={{ className: 'react-tagsinput-tag info' }}
+                                            tagProps={{className: 'react-tagsinput-tag info'}}
                                         />
                                     </GridItem>
                                 </GridContainer>
                                 <GridContainer>
                                     <GridItem xs={12} sm={2}>
-                                        <FormLabel className={classes.labelHorizontal}>
-                                            Metadata
-                                        </FormLabel>
+                                        <FormLabel className={classes.labelHorizontal}>Metadata</FormLabel>
                                     </GridItem>
                                     <GridItem xs={12} sm={10}>
                                         <CustomInput
                                             id="help-text"
                                             formControlProps={{
-                                                fullWidth: true
+                                                fullWidth: true,
                                             }}
                                             inputProps={{
-                                                type: 'text'
+                                                type: 'text',
                                             }}
                                             helpText="Metadata input goes here"
                                         />
@@ -604,18 +527,16 @@ class UserProfile extends React.Component {
                                 </GridContainer>
                                 <GridContainer>
                                     <GridItem xs={12} sm={2}>
-                                        <FormLabel className={classes.labelHorizontal}>
-                                            Metadata
-                                        </FormLabel>
+                                        <FormLabel className={classes.labelHorizontal}>Metadata</FormLabel>
                                     </GridItem>
                                     <GridItem xs={12} sm={10}>
                                         <CustomInput
                                             id="help-text"
                                             formControlProps={{
-                                                fullWidth: true
+                                                fullWidth: true,
                                             }}
                                             inputProps={{
-                                                type: 'text'
+                                                type: 'text',
                                             }}
                                             helpText="Metadata input goes here"
                                         />
@@ -623,18 +544,16 @@ class UserProfile extends React.Component {
                                 </GridContainer>
                                 <GridContainer>
                                     <GridItem xs={12} sm={2}>
-                                        <FormLabel className={classes.labelHorizontal}>
-                                            Metadata
-                                        </FormLabel>
+                                        <FormLabel className={classes.labelHorizontal}>Metadata</FormLabel>
                                     </GridItem>
                                     <GridItem xs={12} sm={10}>
                                         <CustomInput
                                             id="help-text"
                                             formControlProps={{
-                                                fullWidth: true
+                                                fullWidth: true,
                                             }}
                                             inputProps={{
-                                                type: 'text'
+                                                type: 'text',
                                             }}
                                             helpText="Metadata input goes here"
                                         />
@@ -642,18 +561,16 @@ class UserProfile extends React.Component {
                                 </GridContainer>
                                 <GridContainer>
                                     <GridItem xs={12} sm={2}>
-                                        <FormLabel className={classes.labelHorizontal}>
-                                            Metadata
-                                        </FormLabel>
+                                        <FormLabel className={classes.labelHorizontal}>Metadata</FormLabel>
                                     </GridItem>
                                     <GridItem xs={12} sm={10}>
                                         <CustomInput
                                             id="help-text"
                                             formControlProps={{
-                                                fullWidth: true
+                                                fullWidth: true,
                                             }}
                                             inputProps={{
-                                                type: 'text'
+                                                type: 'text',
                                             }}
                                             helpText="Metadata input goes here"
                                         />
@@ -666,11 +583,10 @@ class UserProfile extends React.Component {
             </div>
         );
     }
-
 }
 
 UserProfile.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(style)(UserProfile);
