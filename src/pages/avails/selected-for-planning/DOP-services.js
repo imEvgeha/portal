@@ -8,6 +8,15 @@ import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants
 const DEFAULT_TIMEOUT = 60000;
 
 const DOPService = {
+    getSecurityTicket: token => {
+        const url = `${config.get('gateway.DOPUrl')}${config.get('gateway.service.DOPLoginWithKeycloak')}`;
+        return nexusFetch(
+            url,
+            {method: 'post', credentials: 'include', body: JSON.stringify(token)},
+            DEFAULT_TIMEOUT,
+            true
+        );
+    },
     getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(
             'gateway.service.DOPProjectManagementProject'

@@ -24,6 +24,7 @@
             "servicingOrder": "",
             "DOPProjectManagementBase": "/dop/be-services/projectManagement",
             "DOPProjectManagementProject": "/dop/be-services/projectManagement/project",
+            "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
             "publisher": "/publisher/v1"
         }
     },

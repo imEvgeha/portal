@@ -439,6 +439,20 @@
     tiny-invariant "^0.0.3"
     uuid "^3.1.0"
 
+"@atlaskit/form@8.1.4":
+  version "8.1.4"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-8.1.4.tgz#da50cac4e14c44c68000d284cc4275a17aa7631e"
+  integrity sha512-y4gy3KhteQZZIyCRHys6TdBOg4EKGlhKmWn3rAAwQTkHIe98ly26qwwYzhsyEpU1LGMLkpB1znXYHzTeCU+BxQ==
+  dependencies:
+    "@atlaskit/icon" "^21.1.0"
+    "@atlaskit/theme" "^10.0.0"
+    final-form "^4.20.1"
+    final-form-focus "^1.1.2"
+    lodash "^4.17.15"
+    react-uid "^2.2.0"
+    tiny-invariant "^0.0.3"
+    tslib "^2.0.0"
+
 "@atlaskit/form@^7.0.0":
   version "7.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-7.0.0.tgz#272bd2de986fc6f2c7df3b450ac0f2683cbf8c59"
@@ -453,20 +467,6 @@
     shallow-equal "^1.0.0"
     tiny-invariant "^0.0.3"
     tslib "^1.9.3"
-
-"@atlaskit/form@^8.1.4":
-  version "8.1.4"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@atlaskit/form/-/form-8.1.4.tgz#da50cac4e14c44c68000d284cc4275a17aa7631e"
-  integrity sha512-y4gy3KhteQZZIyCRHys6TdBOg4EKGlhKmWn3rAAwQTkHIe98ly26qwwYzhsyEpU1LGMLkpB1znXYHzTeCU+BxQ==
-  dependencies:
-    "@atlaskit/icon" "^21.1.0"
-    "@atlaskit/theme" "^10.0.0"
-    final-form "^4.20.1"
-    final-form-focus "^1.1.2"
-    lodash "^4.17.15"
-    react-uid "^2.2.0"
-    tiny-invariant "^0.0.3"
-    tslib "^2.0.0"
 
 "@atlaskit/icon@13.2.3":
   version "13.2.3"
@@ -22261,6 +22261,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+single-spa@^5.7.0:
+  version "5.7.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/single-spa/-/single-spa-5.7.0.tgz#aff15729360bff0802d2881a274b8d48a41681fb"
+  integrity sha512-EZGhrurlEW4biBBteI1zQt1GvoXyuAyXCo0GJfmgvpAE5329HBm2NBvnExA8wXrgjvtdWGC1Ah5iLamx2w4mfQ==
 
 sisteransi@^0.1.1:
   version "0.1.1"
