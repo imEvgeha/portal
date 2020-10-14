@@ -12,7 +12,6 @@ import {
     checkFieldDependencies,
     getFieldConfig,
     getValidationFunction,
-    renderLabel,
     renderNexusField,
     renderError,
 } from '../utils';
@@ -183,7 +182,6 @@ const NexusArray = ({
             >
                 {({fieldProps, error}) => (
                     <>
-                        {renderLabel(name, required, tooltip)}
                         {renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>
