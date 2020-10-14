@@ -808,7 +808,38 @@
         "sections": [
             {
                 "title": "Music",
-                "fields": {}
+                "fields": {
+                    "isrc": {
+                        "name": "ISRC",
+                        "type": "string",
+                        "path": "isrc"
+                    },
+                    "videoFileName": {
+                        "name": "Video File Name",
+                        "type": "string",
+                        "path": "videoFileName"
+                    },
+                    "screenGrabFileName": {
+                        "name": "Screen Grab FileName",
+                        "type": "string",
+                        "path": "screenGrabFileName"
+                    },
+                    "materialNotes": {
+                        "name": "Material Notes",
+                        "type": "string",
+                        "path": "materialNotes"
+                    },
+                    "supplierSynopsis": {
+                        "name": "Supplier Synopsis",
+                        "type": "string",
+                        "path": "supplierSynopsis"
+                    },
+                    "recordingLabel": {
+                        "name": "Recording Label",
+                        "type": "string",
+                        "path": "recordingLabel"
+                    }
+                }
             }
         ]
     }
