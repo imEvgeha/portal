@@ -282,7 +282,8 @@
                                 "type": "datetime",
                                 "dateType": "regionalMidnight",
                                 "path": "dateWithdrawn",
-                                "className": "area-seven"
+                                "className": "area-seven",
+                                "isHighlighted": true
                             },
                             "comment": {
                                 "name": "Comments",
@@ -438,13 +439,15 @@
                         "name": "Original Right IDs",
                         "type": "string",
                         "path": "originalRightIds",
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "isHighlighted": true
                     },
                     "sourceRightId": {
                         "name": "Source Right ID",
                         "type": "string",
                         "path": "sourceRightId",
-                        "isReadOnly": true
+                        "isReadOnly": true,
+                        "isHighlighted": true
                     }
                 }
             }
