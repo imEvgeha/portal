@@ -282,7 +282,7 @@
                                 "name": "Date Withdrawn",
                                 "type": "datetime",
                                 "dateType": "timestamp",
-                                "path": "dateSelected",
+                                "path": "dateWithdrawn",
                                 "viewConfig": [
                                     {
                                         "view": "CREATE",

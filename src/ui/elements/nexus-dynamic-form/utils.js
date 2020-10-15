@@ -24,7 +24,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         };
     }
     const value = get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
-    if (view === VIEWS.CREATE && !value) {
+    if ((view === VIEWS.CREATE || get(field,'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
     return value;
