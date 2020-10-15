@@ -42,7 +42,6 @@ exports[`NexusArray should match snapshot 1`] = `
       >
         <NexusField
           dateType=""
-          defaultValue={false}
           dependencies={Array []}
           formData={Object {}}
           id="undefined[0].selected"
@@ -68,7 +67,6 @@ exports[`NexusArray should match snapshot 1`] = `
       >
         <NexusField
           dateType=""
-          defaultValue="IL"
           dependencies={Array []}
           formData={Object {}}
           id="undefined[0].country"
@@ -107,7 +105,6 @@ exports[`NexusArray should match snapshot 1`] = `
       >
         <NexusField
           dateType=""
-          defaultValue={false}
           dependencies={Array []}
           formData={Object {}}
           id="undefined[1].selected"
@@ -133,7 +130,6 @@ exports[`NexusArray should match snapshot 1`] = `
       >
         <NexusField
           dateType=""
-          defaultValue="US"
           dependencies={Array []}
           formData={Object {}}
           id="undefined[1].country"
