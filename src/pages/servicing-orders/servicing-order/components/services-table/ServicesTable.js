@@ -40,7 +40,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         () => {
             if (!isEmpty(services)) {
                 const flattenedObject = services[providerServices].map((service, index) => ({
-                    componentId: service.externalServices.externalId,
+                    serviceType: service.externalServices.serviceType,
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
@@ -78,6 +78,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     };
 
     const closeButtonColumn = defineButtonColumn({
+        width: 30,
         cellRendererFramework: closeButtonCell,
         cellRendererParams: services && services[providerServices],
     });
@@ -88,7 +89,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             const currentService = updatedServices[rowIndex];
             // TODO: Super inefficient, need to find a better way
             // Re-mapping the data
-            currentService.externalServices.externalId = data.componentId;
+            currentService.externalServices.serviceType = data.serviceType;
             currentService.externalServices.formatType = data.spec;
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
@@ -115,19 +116,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
 
     const orderingColumn = defineColumn({
         headerName: '#',
-        width: 40,
+        width: 30,
         colId: 'serviceId',
         field: 'serviceId',
         cellRendererFramework: data => {
             return data ? data.rowIndex + 1 : null;
         },
     });
-
-    const recipientColumn = {
-        headerName: 'Recipient',
-        colId: 'recipient',
-        field: 'recipient',
-    };
 
     const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
     const barcode = services.barcode || null;
@@ -144,6 +139,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         }));
     };
 
+    console.log('DATA: ', data);
+
     return (
         <div className="nexus-c-services-table">
             <div className="nexus-c-services-table__header">
@@ -157,14 +154,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             </div>
             <ServicesTableGrid
                 defaultColDef={{valueGetter}}
-                columnDefs={[
-                    orderingColumn,
-                    closeButtonColumn,
-                    // slice column defs to put checkbox before operations status columns
-                    ...columnDefinitions.slice(0, OP_STATUS_COL_INDEX),
-                    recipientColumn,
-                    columnDefinitions[OP_STATUS_COL_INDEX],
-                ]}
+                columnDefs={[orderingColumn, closeButtonColumn, ...columnDefinitions]}
                 rowData={tableData}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}

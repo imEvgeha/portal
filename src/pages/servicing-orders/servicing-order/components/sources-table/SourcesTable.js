@@ -76,7 +76,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const radioButtonColumn = defineColumn({
-        width: 40,
+        width: 35,
         colId: 'radio',
         field: 'radio',
         cellRendererParams: {selectedItem: selectedSource},
@@ -85,7 +85,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const servicesColumn = defineColumn({
         headerName: '#',
-        width: 40,
+        width: 35,
         colId: 'services',
         field: 'services',
         cellRendererFramework: ({data}) => {
@@ -111,6 +111,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const closeButtonColumn = defineButtonColumn({
+        width: 35,
         cellRendererFramework: closeButtonCell,
         cellRendererParams: '',
     });
