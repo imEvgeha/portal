@@ -132,9 +132,7 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
 // remove null or empty deteSources from deteSources array
 export const removeNulls = fulfillmentOrders => {
     fulfillmentOrders.forEach(item => {
-        const length = Array.isArray(item.definition.deteServices)
-            ? item.definition.deteServices[0].deteSources.length
-            : 0;
+        const length = get(item, 'definition.deteServices[0].deteSources.length', 0);
         if (length > 0) {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.filter(
                 item => item !== null
