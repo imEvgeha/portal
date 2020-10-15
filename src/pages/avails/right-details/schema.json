@@ -425,7 +425,7 @@
                     },
                     "entryType": {
                         "name": "Entry Type",
-                        "type": "multiselect",
+                        "type": "select",
                         "path": "entryType",
                         "optionsConfig": {
                             "options": [
@@ -751,22 +751,38 @@
                     "holdbackLanguage": {
                         "name": "Holdback Language",
                         "type": "multiselect",
-                        "path": "holdbackLanguage"
+                        "path": "holdbackLanguage",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "storeLanguage": {
                         "name": "Store Language",
                         "type": "select",
-                        "path": "storeLanguage"
+                        "path": "storeLanguage",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "assetLanguage": {
                         "name": "Asset Language",
                         "type": "select",
-                        "path": "assetLanguage"
+                        "path": "assetLanguage",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "language": {
                         "name": "Language",
                         "type": "string",
-                        "path": "language"
+                        "path": "language",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "languageAudioTypes": {
                         "name": "Language Audio Types",
@@ -806,17 +822,29 @@
                     "requiredFulfillmentLanguages": {
                         "name": "Required Fulfillment Languages",
                         "type": "multiselect",
-                        "path": "requiredFulfillmentLanguages"
+                        "path": "requiredFulfillmentLanguages",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "audioDescription": {
                         "name": "Audio Description",
                         "type": "multiselect",
-                        "path": "audioDescription"
+                        "path": "audioDescription",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "subtitles": {
                         "name": "Subtitles",
                         "type": "multiselect",
-                        "path": "subtitles"
+                        "path": "subtitles",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     }
                 }
             },
