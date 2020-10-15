@@ -2,20 +2,20 @@ import React, {useState} from 'react';
 import PropTypes from "prop-types";
 import {Checkbox} from "@atlaskit/checkbox";
 import {connect} from "react-redux";
-
+import {VIEWS} from '../constants';
 
 const withOptional = () => WrappedComponent => {
 
     const ComposedComponent = props => {
-        const {isOptional, setFieldValue, ...fieldProps} = props;
-        const {value, name} = fieldProps;
-        const [visible, setVisible] = useState(!!(value && value !== ""));
+        const {isOptional, setFieldValue, path, view, ...fieldProps} = props;
+        const {value} = fieldProps;
+        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ""));
 
         const changeCheckboxValue = () => {
             const newVisible = !visible;
             setVisible(newVisible);
             if(!newVisible){
-                setFieldValue(name, "");
+                setFieldValue(path, "");
             }
         };
 

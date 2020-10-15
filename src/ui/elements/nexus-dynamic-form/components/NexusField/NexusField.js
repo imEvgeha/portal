@@ -80,6 +80,8 @@ const NexusField = ({
     const addedProps = {
         isOptional,
         setFieldValue,
+        path,
+        view,
     };
 
     const dateProps = {
@@ -87,8 +89,7 @@ const NexusField = ({
         type,
         dateType,
         isReadOnly,
-        isOptional,
-        setFieldValue,
+        ...addedProps,
     };
 
     const renderFieldEditMode = fieldProps => {
