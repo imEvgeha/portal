@@ -48,12 +48,11 @@ class DashboardContainer extends React.Component {
     }
 
     componentWillMount() {
-        const parentId =  new URLSearchParams(this.props.location.search).get("parentId");
-        const contentType =  new URLSearchParams(this.props.location.search).get("contentType");
+        const parentId = new URLSearchParams(this.props.location.search).get('parentId');
+        const contentType = new URLSearchParams(this.props.location.search).get('contentType');
         if (parentId) {
             this.handleTitleFreeTextSearch({parentId, contentType});
-        }
-        else if(this.props.searchCriteria.parentId) {
+        } else if (this.props.searchCriteria.parentId) {
             this.handleTitleFreeTextSearch({});
         }
     }
@@ -63,7 +62,11 @@ class DashboardContainer extends React.Component {
         if (this.props.location && this.props.location.state) {
             const state = this.props.location.state;
             if (state.titleHistory) {
-                const subTitle = state.titleHistory.ingestType + ', ' + (state.titleHistory.provider ? state.titleHistory.provider + ', ' : '') + moment(state.titleHistory.received).format('llll');
+                const subTitle =
+                    state.titleHistory.ingestType +
+                    ', ' +
+                    (state.titleHistory.provider ? state.titleHistory.provider + ', ' : '') +
+                    moment(state.titleHistory.received).format('llll');
                 const criteria = {titleHistoryIds: {value: state.titleHistory.id, subTitle}};
                 if (state.rowInvalid !== undefined) {
                     criteria.rowInvalid = {value: state.rowInvalid};
@@ -76,7 +79,12 @@ class DashboardContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.searchCriteria.titleHistoryIds && this.props.showSearchResults && this.props.useAdvancedSearch && !this.fromHistory) {
+        if (
+            this.props.searchCriteria.titleHistoryIds &&
+            this.props.showSearchResults &&
+            this.props.useAdvancedSearch &&
+            !this.fromHistory
+        ) {
             this.fromHistory = true;
         }
     }
@@ -94,7 +102,7 @@ class DashboardContainer extends React.Component {
     cleanSelection() {
         const titleTabPageSelection = {
             selected: this.props.selected,
-            selectAll: false
+            selectAll: false,
         };
         this.props.resultPageSelect(titleTabPageSelection);
     }

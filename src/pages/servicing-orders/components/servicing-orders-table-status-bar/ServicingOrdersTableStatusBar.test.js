@@ -10,10 +10,7 @@ describe('ServicingOrdersTableStatusBar', () => {
 
     it('should show the selected row label if there are selected rows', () => {
         const wrapper = shallow(<ServicingOrdersTableStatusBar statusBarInfo={{totalRows: 5, selectedRows: 3}} />);
-        const selectedRowsText = wrapper
-            .find('.nexus-c-servicing-orders-table-status-bar__description')
-            .at(1)
-            .text();
+        const selectedRowsText = wrapper.find('.nexus-c-servicing-orders-table-status-bar__description').at(1).text();
 
         expect(selectedRowsText).toContain('Selected');
     });
@@ -27,9 +24,7 @@ describe('ServicingOrdersTableStatusBar', () => {
 
     it('should show the correct number of total rows', () => {
         const wrapper = shallow(<ServicingOrdersTableStatusBar statusBarInfo={{totalRows: 55, selectedRows: 0}} />);
-        const totalRowsText = wrapper.find('.nexus-c-servicing-orders-table-status-bar__description')
-            .at(0)
-            .text();
+        const totalRowsText = wrapper.find('.nexus-c-servicing-orders-table-status-bar__description').at(0).text();
 
         expect(totalRowsText).toContain('55');
     });

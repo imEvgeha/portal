@@ -1,131 +1,131 @@
 [
-  {
-    "javaVariableName": "system",
-    "displayName": "System",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "displayName",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "title",
-    "displayName": "Title",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "title",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "releaseYear",
-    "displayName": "Release Year",
-    "dataType": "year",
-    "searchDataType": "year",
-    "queryParamName": "releaseYear",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
-    "javaVariableName": "contentType",
-    "displayName": "Content Type",
-    "dataType": "string",
-    "searchDataType": "readonly",
-    "configEndpoint": "/content-types",
-    "queryParamName": "contentType",
-    "readOnly": true,
-    "enableSearch": false,
-    "enableEdit": true,
-    "required": true
-  },
-  {
-    "javaVariableName": "episodic.seriesTitleName",
-    "displayName": "Series",
-    "dataType": "string",
-    "readOnly": true,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "episodic.seasonTitleName",
-    "displayName": "Season",
-    "dataType": "string",
-    "readOnly": true,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "castCrew.director",
-    "displayName": "Director",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "displayName",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "editorialGenres",
-    "displayName": "Genres",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "genres",
-    "readOnly": false,
-    "enableSearch": true,
-    "enableEdit": true,
-    "required": false
-  },
-  {
-    "javaVariableName": "ratings",
-    "displayName": "Rating",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "ratings",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "externalIds.eidrLevel1",
-    "displayName": "EIDR 1",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "displayName",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "externalIds.eidrLevel2",
-    "displayName": "EIDR 2",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "displayName",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  },
-  {
-    "javaVariableName": "castCrew.cast",
-    "displayName": "Cast",
-    "dataType": "string",
-    "searchDataType": "string",
-    "queryParamName": "displayName",
-    "readOnly": false,
-    "enableSearch": false,
-    "enableEdit": false,
-    "required": false
-  }
+    {
+        "javaVariableName": "system",
+        "displayName": "System",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "displayName",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "title",
+        "displayName": "Title",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "title",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "releaseYear",
+        "displayName": "Release Year",
+        "dataType": "year",
+        "searchDataType": "year",
+        "queryParamName": "releaseYear",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "contentType",
+        "displayName": "Content Type",
+        "dataType": "string",
+        "searchDataType": "readonly",
+        "configEndpoint": "/content-types",
+        "queryParamName": "contentType",
+        "readOnly": true,
+        "enableSearch": false,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "episodic.seriesTitleName",
+        "displayName": "Series",
+        "dataType": "string",
+        "readOnly": true,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "episodic.seasonTitleName",
+        "displayName": "Season",
+        "dataType": "string",
+        "readOnly": true,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "castCrew.director",
+        "displayName": "Director",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "displayName",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "editorialGenres",
+        "displayName": "Genres",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "genres",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": false
+    },
+    {
+        "javaVariableName": "ratings",
+        "displayName": "Rating",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "ratings",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "externalIds.eidrLevel1",
+        "displayName": "EIDR 1",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "displayName",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "externalIds.eidrLevel2",
+        "displayName": "EIDR 2",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "displayName",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    },
+    {
+        "javaVariableName": "castCrew.cast",
+        "displayName": "Cast",
+        "dataType": "string",
+        "searchDataType": "string",
+        "queryParamName": "displayName",
+        "readOnly": false,
+        "enableSearch": false,
+        "enableEdit": false,
+        "required": false
+    }
 ]

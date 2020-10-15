@@ -14,7 +14,11 @@
         }
     }
 
+    &.nexus-c-field--highlighted {
+        background-color: map-get($yellows, Y50);
+    }
+
     .nexus-c-field__placeholder {
-        color: map-get($neutrals, N100);
+        color: map-get($neutrals, N50);
     }
 }

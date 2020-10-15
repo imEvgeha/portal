@@ -21,11 +21,7 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
     }, [columns]);
 
     const noAvailSelectedAlert = () => {
-        alertModal.open(
-            'Action required',
-            () => null,
-            {description: 'Please select at least one right'}
-        );
+        alertModal.open('Action required', () => null, {description: 'Please select at least one right'});
     };
 
     const prettyTabName = () => {
@@ -36,42 +32,51 @@ const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, sel
         if (selectedTab !== FATAL) {
             if (getSelected().length === 0) {
                 if (allowDownloadFullTab) {
-                    confirmModal.open('Confirm download',
+                    confirmModal.open(
+                        'Confirm download',
                         exportAvailsCriteria,
                         () => {
                             // Empty because of design confirmModal. The modal will just close on cancel button press.
                         },
-                        {description: `You have select ${prettyTabName()} tab for download.`});
+                        {description: `You have select ${prettyTabName()} tab for download.`}
+                    );
                 } else {
                     noAvailSelectedAlert();
                 }
             } else {
-                confirmModal.open('Confirm download',
+                confirmModal.open(
+                    'Confirm download',
                     exportAvailsByIds,
                     () => {
                         // Empty because of design confirmModal. The modal will just close on cancel button press.
                     },
-                    {description: `You have selected ${getSelected().length} avails for download.`});
+                    {description: `You have selected ${getSelected().length} avails for download.`}
+                );
             }
         }
     };
 
     const exportAvailsByIds = () => {
-        exportService.exportAvails(getSelected().map(({id}) => id), filteredColumns)
+        exportService
+            .exportAvails(
+                getSelected().map(({id}) => id),
+                filteredColumns
+            )
             .then(response => {
                 downloadFile(response);
             });
     };
 
     const exportAvailsCriteria = () => {
-        exportService.bulkExportAvails(exportCriteria, filteredColumns)
-            .then(response => {
-                downloadFile(response);
-            });
+        exportService.bulkExportAvails(exportCriteria, filteredColumns).then(response => {
+            downloadFile(response);
+        });
     };
 
     return (
-        <div className="nexus-download__icon-button" onClick={exportAvails}><DownloadIcon size="large" /></div>
+        <div className="nexus-download__icon-button" onClick={exportAvails}>
+            <DownloadIcon size="large" />
+        </div>
     );
 };
 

@@ -1,6 +1,5 @@
 .dashboard-card-container {
-
-    .dashboard-card-title{
+    .dashboard-card-title {
         margin: 0;
         height: 26px;
     }
@@ -10,7 +9,7 @@
     }
 
     .ag-theme-balham:not(.nexus-c-nexus-grid) {
-        .ag-react-container{
+        .ag-react-container {
             line-height: 25px !important;
         }
         .ag-header-cell {
@@ -46,7 +45,7 @@
         }
     }
 
-    .ag-row{
+    .ag-row {
         cursor: pointer;
     }
 }

@@ -48,4 +48,3 @@ const ingestReducer = (state = initialState, action = {}) => {
 };
 
 export default ingestReducer;
-

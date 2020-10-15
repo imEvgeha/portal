@@ -24,12 +24,14 @@ class TerritoryCellEditor extends Component {
 
     getOptions = () => {
         let {options} = this.props;
-        options = options.filter(rec => (rec.countryCode)).map(rec => {
-            return {
-                label: rec.countryName,
-                value: rec.countryCode,
-            };
-        });
+        options = options
+            .filter(rec => rec.countryCode)
+            .map(rec => {
+                return {
+                    label: rec.countryName,
+                    value: rec.countryCode,
+                };
+            });
         return options;
     };
 
@@ -64,4 +66,3 @@ TerritoryCellEditor.defaultProps = {
 TerritoryCellEditor.contextType = NexusModalContext;
 
 export default TerritoryCellEditor;
-

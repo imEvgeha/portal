@@ -1,6 +1,3 @@
 export default function getContextMenuItems() {
-    return [
-        'copy',
-        'copyWithHeaders',
-    ];
+    return ['copy', 'copyWithHeaders'];
 }

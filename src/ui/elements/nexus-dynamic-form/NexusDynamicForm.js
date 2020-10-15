@@ -74,17 +74,12 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                             <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
                                                 {sectionTitle}
                                             </h3>
-                                            {buildSection(
-                                                fields,
-                                                getValues,
-                                                view,
-                                                {
-                                                    selectValues,
-                                                    initialData,
-                                                    setFieldValue,
-                                                    setDisableSubmit
-                                                }
-                                            )}
+                                            {buildSection(fields, getValues, view, {
+                                                selectValues,
+                                                initialData,
+                                                setFieldValue,
+                                                setDisableSubmit,
+                                            })}
                                         </Fragment>
                                     ))}
                                 </Fragment>

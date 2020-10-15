@@ -4,9 +4,7 @@
 .nexus-c-section-tab {
     display: flex;
     justify-content: center;
-    flex-basis: 100%;
     @include padding(1, 6);
-    border-bottom: 1px solid map-get($neutrals, N40);
     cursor: pointer;
     color: map-get($neutrals, N800);
     transition: color 0.2s ease-in;

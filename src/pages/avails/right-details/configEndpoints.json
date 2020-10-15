@@ -46,5 +46,13 @@
     {
         "field": "country",
         "configEndpoint": "/countries"
+    },
+    {
+        "field": "priceType",
+        "configEndpoint": "/price-types"
+    },
+    {
+        "field": "priceCurrency",
+        "configEndpoint": "/currencies"
     }
 ]

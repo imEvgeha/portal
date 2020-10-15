@@ -4,14 +4,12 @@ import {CHECKBOX_HEADER} from '../../constants/customColumnHeaders';
 import {CheckBoxHeader} from './CheckBoxHeaderInternal';
 
 export default function withSelection(SelectionWrappedComponent) {
-    return (props) => {
-  return <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
-};
-}
+    return props => {
+        return <SelectionTable SelectionWrappedComponent={SelectionWrappedComponent} {...props} />;
+    };
+} // --> OFF
 
-/* eslint react/no-unused-state: 0 */  // --> OFF
-export class SelectionTable extends React.Component {
-
+/* eslint react/no-unused-state: 0 */ export class SelectionTable extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,7 +26,10 @@ export class SelectionTable extends React.Component {
         this.state = {
             table: null,
             colDef: [],
-            selected: this.props.availTabPageSelection && this.props.availTabPageSelection.selected ? this.props.availTabPageSelection.selected : [],
+            selected:
+                this.props.availTabPageSelection && this.props.availTabPageSelection.selected
+                    ? this.props.availTabPageSelection.selected
+                    : [],
             selectAll: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectAll : false,
             selectNone: this.props.availTabPageSelection ? this.props.availTabPageSelection.selectNone : true,
             columns: uniqueColumns,
@@ -49,9 +50,9 @@ export class SelectionTable extends React.Component {
             this.refreshColumns();
         }
         if (prevProps.columns !== this.props.columns) {
-            if(this.props.columns) {
+            if (this.props.columns) {
                 this.setState({columns: [...new Set([CHECKBOX_HEADER, ...this.props.columns])]});
-            }else{
+            } else {
                 this.setState({columns: [CHECKBOX_HEADER]});
             }
         }
@@ -60,7 +61,7 @@ export class SelectionTable extends React.Component {
             this.setState({
                 selected: this.props.availTabPageSelection.selected,
                 selectAll: this.props.availTabPageSelection.selectAll,
-                selectNone: this.props.availTabPageSelection.selectNone
+                selectNone: this.props.availTabPageSelection.selectNone,
             });
         }
     }
@@ -68,7 +69,7 @@ export class SelectionTable extends React.Component {
     onDataLoaded(response) {
         if (this.state.selected.length > 0) {
             this.state.table.api.forEachNode(rowNode => {
-                if (rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0) {
+                if (rowNode.data && this.state.selected.filter(sel => sel.id === rowNode.data.id).length > 0) {
                     rowNode.setSelected(true);
                 }
             });
@@ -97,7 +98,7 @@ export class SelectionTable extends React.Component {
                 this.props.resultPageSelect({
                     selected: this.state.selected,
                     selectAll: allVisibleSelected,
-                    selectNone: !oneVisibleSelected
+                    selectNone: !oneVisibleSelected,
                 });
             }
         }
@@ -107,7 +108,7 @@ export class SelectionTable extends React.Component {
         if (!this.state.table) return;
         this.state.table.api.deselectAll();
         this.state.table.api.forEachNode(rowNode => {
-            if (rowNode.data && this.state.selected.filter(sel => (sel.id === rowNode.data.id)).length > 0) {
+            if (rowNode.data && this.state.selected.filter(sel => sel.id === rowNode.data.id).length > 0) {
                 rowNode.setSelected(true);
             }
         });
@@ -128,24 +129,26 @@ export class SelectionTable extends React.Component {
         let selected = this.state.table.api.getSelectedRows().slice(0);
         if (this.state.table.api.getDisplayedRowCount() > 0) {
             this.state.selected.map(sel => {
-                if (selected.filter(rec => (sel.id === rec.id)).length === 0 && this.state.table.api.getRowNode(sel.id) === null) {
+                if (
+                    selected.filter(rec => sel.id === rec.id).length === 0 &&
+                    this.state.table.api.getRowNode(sel.id) === null
+                ) {
                     selected.push(sel);
                 }
             });
         } else {
-            if (this.state.selected && this.state.selected.length > 0)
-                selected = selected.concat(this.state.selected);
+            if (this.state.selected && this.state.selected.length > 0) selected = selected.concat(this.state.selected);
         }
         this.setState({
             selected: selected,
             selectNone: !this.isOneVisibleSelected(),
-            selectAll: this.areAllVisibleSelected()
+            selectAll: this.areAllVisibleSelected(),
         });
         if (this.props.resultPageSelect) {
             this.props.resultPageSelect({
                 selected: selected,
                 selectNone: !this.isOneVisibleSelected(),
-                selectAll: this.areAllVisibleSelected()
+                selectAll: this.areAllVisibleSelected(),
             });
         }
     }
@@ -153,8 +156,16 @@ export class SelectionTable extends React.Component {
     isOneVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
-        const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
+        const bottomOffset =
+            0.7 +
+            (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.state.table.api
+            .getRenderedNodes()
+            .filter(
+                ({rowTop, rowHeight}) =>
+                    rowTop + rowHeight * topOffset > visibleRange.top &&
+                    rowTop + rowHeight * bottomOffset < visibleRange.bottom
+            );
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
         return selectedNodes.length > 0;
     }
@@ -162,8 +173,16 @@ export class SelectionTable extends React.Component {
     areAllVisibleSelected() {
         const visibleRange = this.state.table.api.getVerticalPixelRange();
         const topOffset = 0.4;
-        const bottomOffset = 0.7 + (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
-        const visibleNodes = this.state.table.api.getRenderedNodes().filter(({rowTop, rowHeight}) => (rowTop + rowHeight * topOffset > visibleRange.top) && (rowTop + rowHeight * bottomOffset < visibleRange.bottom));
+        const bottomOffset =
+            0.7 +
+            (this.state.table.api.headerRootComp.gridPanel.scrollVisibleService.horizontalScrollShowing ? 0.4 : 0);
+        const visibleNodes = this.state.table.api
+            .getRenderedNodes()
+            .filter(
+                ({rowTop, rowHeight}) =>
+                    rowTop + rowHeight * topOffset > visibleRange.top &&
+                    rowTop + rowHeight * bottomOffset < visibleRange.bottom
+            );
         const selectedNodes = visibleNodes.filter(({selected}) => selected);
 
         return visibleNodes.length === selectedNodes.length;
@@ -175,7 +194,7 @@ export class SelectionTable extends React.Component {
 
     refreshColumns() {
         const colDef = {
-            'checkbox_sel': defaultSelectionColDef
+            checkbox_sel: defaultSelectionColDef,
         };
         this.setState({colDef});
     }
@@ -197,17 +216,14 @@ export class SelectionTable extends React.Component {
                 colDef={this.state.colDef}
                 columns={this.state.columns}
                 setTable={this.setTable}
-
                 onDataLoaded={this.onDataLoaded}
-
                 rowSelection="multiple"
                 onSelectionChanged={this.onSelectionChanged}
                 suppressRowClickSelection={true}
                 onBodyScroll={this.onScroll}
-
                 staticDataLoaded={this.staticDataLoaded}
             />
-);
+        );
     }
 }
 
@@ -221,5 +237,5 @@ export const defaultSelectionColDef = {
     suppressSizeToFit: true,
     suppressMovable: true,
     lockPosition: true,
-    headerComponentFramework: CheckBoxHeader
+    headerComponentFramework: CheckBoxHeader,
 };

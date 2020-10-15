@@ -15,7 +15,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
         homeVideoReleaseDate,
         availAnnounceDate,
         theatricalReleaseDate,
-        estReleaseDate
+        estReleaseDate,
     } = data || {};
 
     // Get locale provided by intl
@@ -30,65 +30,71 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
                 <Row style={{padding: '15px'}}>
                     <Col>
                         <b>Locale: </b>
-                        {locale
-                            ? getLanguageByCode(locale, COUNTRY)
-                            : <span style={{color: '#999'}}>Empty</span>}
+                        {locale ? getLanguageByCode(locale, COUNTRY) : <span style={{color: '#999'}}>Empty</span>}
                     </Col>
-                    {boxOffice &&
+                    {boxOffice && (
                         <Col>
                             <b>Box Office: </b>
                             {boxOffice}
                         </Col>
-                    }
+                    )}
                 </Row>
-                {(releaseYear || originalAirDate) &&
+                {(releaseYear || originalAirDate) && (
                     <Row style={{padding: '15px'}}>
                         <Col>
                             <b>Release Year: </b>
-                            {releaseYear
-                                ? releaseYear
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {releaseYear ? releaseYear : <span style={{color: '#999'}}>Empty</span>}
                         </Col>
                         <Col>
                             <b>Original Air Date: </b>
-                            {originalAirDate
-                                ? parseSimulcast(originalAirDate, dateFormat, false)
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {originalAirDate ? (
+                                parseSimulcast(originalAirDate, dateFormat, false)
+                            ) : (
+                                <span style={{color: '#999'}}>Empty</span>
+                            )}
                         </Col>
                     </Row>
-                }
-                {(homeVideoReleaseDate || availAnnounceDate) &&
+                )}
+                {(homeVideoReleaseDate || availAnnounceDate) && (
                     <Row style={{padding: '15px'}}>
                         <Col>
                             <b>Home Video Release Date: </b>
-                            {homeVideoReleaseDate
-                                ? parseSimulcast(homeVideoReleaseDate, dateFormat, false)
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {homeVideoReleaseDate ? (
+                                parseSimulcast(homeVideoReleaseDate, dateFormat, false)
+                            ) : (
+                                <span style={{color: '#999'}}>Empty</span>
+                            )}
                         </Col>
                         <Col>
                             <b>Avail Announce Date: </b>
-                            {availAnnounceDate
-                                ? parseSimulcast(availAnnounceDate, dateFormat, false)
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {availAnnounceDate ? (
+                                parseSimulcast(availAnnounceDate, dateFormat, false)
+                            ) : (
+                                <span style={{color: '#999'}}>Empty</span>
+                            )}
                         </Col>
                     </Row>
-                }
-                {(theatricalReleaseDate || estReleaseDate) &&
+                )}
+                {(theatricalReleaseDate || estReleaseDate) && (
                     <Row style={{padding: '15px'}}>
                         <Col>
                             <b>Theatrical Release Date: </b>
-                            {theatricalReleaseDate
-                                ? parseSimulcast(theatricalReleaseDate, dateFormat, false)
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {theatricalReleaseDate ? (
+                                parseSimulcast(theatricalReleaseDate, dateFormat, false)
+                            ) : (
+                                <span style={{color: '#999'}}>Empty</span>
+                            )}
                         </Col>
                         <Col>
                             <b>EST Release Date: </b>
-                            {estReleaseDate
-                                ? parseSimulcast(estReleaseDate, dateFormat, false)
-                                : <span style={{color: '#999'}}>Empty</span>}
+                            {estReleaseDate ? (
+                                parseSimulcast(estReleaseDate, dateFormat, false)
+                            ) : (
+                                <span style={{color: '#999'}}>Empty</span>
+                            )}
                         </Col>
                     </Row>
-                }
+                )}
             </Container>
         </div>
     );
@@ -96,7 +102,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
 
 TerritoryMetadataTab.propTypes = {
     data: PropTypes.object,
-    getLanguageByCode: PropTypes.func
+    getLanguageByCode: PropTypes.func,
 };
 
 TerritoryMetadataTab.defaultProps = {

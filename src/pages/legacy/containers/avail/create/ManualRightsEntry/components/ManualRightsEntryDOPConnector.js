@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
+import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 // import Button from '@atlaskit/button';
 
 import DOP from '../../../../../../../util/DOP';
@@ -9,7 +9,7 @@ class ManualRightsEntryDOPConnector extends Component {
         super(props);
         this.state = {
             isConfirmOpen: false,
-            isSendingData: false
+            isSendingData: false,
         };
 
         this.showConfirmDialog = this.showConfirmDialog.bind(this);
@@ -21,28 +21,28 @@ class ManualRightsEntryDOPConnector extends Component {
         DOP.setDOPMessageCallback(this.showConfirmDialog);
     }
 
-    showConfirmDialog(){
-        this.setState({isConfirmOpen : true});
+    showConfirmDialog() {
+        this.setState({isConfirmOpen: true});
     }
 
-    onModalApply(){
-        this.setState({isSendingData : true});
+    onModalApply() {
+        this.setState({isSendingData: true});
         DOP.sendInfoToDOP(0, null);
     }
 
-    onModalCancel(){
-        this.setState({isConfirmOpen : false});
+    onModalCancel() {
+        this.setState({isConfirmOpen: false});
         DOP.sendInfoToDOP(1, null);
     }
 
-    render(){
-        const { isConfirmOpen, isSendingData } = this.state;
+    render() {
+        const {isConfirmOpen, isSendingData} = this.state;
         const actions = [
-            { text: 'Cancel', onClick: this.onModalCancel, appearance:'default', isDisabled: isSendingData},
-            { text: 'Apply', onClick: this.onModalApply, appearance:'primary', isLoading: isSendingData},
+            {text: 'Cancel', onClick: this.onModalCancel, appearance: 'default', isDisabled: isSendingData},
+            {text: 'Apply', onClick: this.onModalApply, appearance: 'primary', isLoading: isSendingData},
         ];
 
-        return(
+        return (
             <div>
                 {/*<Button onClick={DOP.mockOnDOPMessage}>DOP Trigger</Button>*/}
                 <ModalTransition>

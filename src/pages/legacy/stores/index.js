@@ -52,7 +52,9 @@ export const saveManualRightEntryState = () => {
 
 const loadFromWebLocalStorage = (name, loadAction, version) => {
     try {
-        const serializedState = localStorage.getItem('state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email);
+        const serializedState = localStorage.getItem(
+            'state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email
+        );
         if (serializedState === null) {
             return undefined;
         }
@@ -66,7 +68,10 @@ const saveToWebLocalStorage = (name, version) => {
     setTimeout(() => {
         try {
             const serializedState = JSON.stringify(store.getState()[name].session);
-            localStorage.setItem('state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email, serializedState);
+            localStorage.setItem(
+                'state-' + name + '-' + version + '-' + store.getState().root.profileInfo.email,
+                serializedState
+            );
         } catch (error) {
             // ignore write errors
         }

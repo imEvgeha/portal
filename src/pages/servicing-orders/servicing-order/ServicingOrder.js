@@ -10,7 +10,7 @@ import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
     prepareRowData,
-    populateLoading,
+    showLoading,
     fetchAssetInfo,
     getBarCodes,
     populateAssetInfo,
@@ -26,7 +26,6 @@ const ServicingOrder = ({match}) => {
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
-    const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
         const order =
@@ -48,7 +47,7 @@ const ServicingOrder = ({match}) => {
 
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: populateLoading(fulfillmentOrders),
+                        fulfillmentOrders: showLoading(fulfillmentOrders),
                         servicingOrderItems,
                     });
                     const barcodes = getBarCodes(fulfillmentOrders);
@@ -68,10 +67,13 @@ const ServicingOrder = ({match}) => {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
                     );
+
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: populateLoading(fulfillmentOrders),
+                        ...fulfillmentOrders,
                     });
+                    /*
+                    Todo : uncomment below when MGM stories are done
                     const barcodes = getBarCodes(fulfillmentOrders);
                     fetchAssetInfo(barcodes).then(assetInfo => {
                         const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
@@ -81,7 +83,7 @@ const ServicingOrder = ({match}) => {
                         });
                         setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
                     });
-
+                    */
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
                 }
             } catch (e) {

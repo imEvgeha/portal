@@ -10,13 +10,13 @@ class HistoryURL extends React.Component {
         HistoryURL.instance = this;
     }
 
-    render(){
-        return('');
+    render() {
+        return '';
     }
 
-    static URLtoArray(url){
+    static URLtoArray(url) {
         let toReturn = [];
-        if(url){
+        if (url) {
             const searchParams = url.substr(1).split('&');
             toReturn = searchParams;
         }
@@ -24,17 +24,17 @@ class HistoryURL extends React.Component {
         return toReturn;
     }
 
-    static ArraytoFilter(params){
-        const options={
+    static ArraytoFilter(params) {
+        const options = {
             status: ['PENDING', 'COMPLETED', 'FAILED', 'MANUAL'],
-            ingestType: ['Email', 'Upload']
+            ingestType: ['Email', 'Upload'],
         };
 
-        const filter = {ingestType : ''};
+        const filter = {ingestType: ''};
 
         params.forEach(param => {
             const vals = param.split('=');
-            if(vals.length === 2){
+            if (vals.length === 2) {
                 let name = vals[0];
                 const val = decodeURIComponent(vals[1]);
                 let subkey = name;
@@ -64,18 +64,18 @@ class HistoryURL extends React.Component {
         return filter;
     }
 
-    static FilterToObj(filter){
+    static FilterToObj(filter) {
         return advancedHistorySearchHelper.prepareAdvancedHistorySearchCall(filter);
     }
 
-    static saveHistoryAdvancedFilterUrl(filter){
+    static saveHistoryAdvancedFilterUrl(filter) {
         const searchParams = this.FilterToObj(filter);
 
         const toReturn = '/avails/history';
 
         const params = [];
         Object.keys(searchParams).forEach(key => {
-            if(searchParams[key]) {
+            if (searchParams[key]) {
                 params.push(key + '=' + encodeURIComponent(searchParams[key]));
             }
         });
@@ -84,8 +84,8 @@ class HistoryURL extends React.Component {
         this.saveURL(URL.keepEmbedded(toReturn + (search ? '?' + search : '')));
     }
 
-    static saveURL(url){
-        if(HistoryURL.instance) {
+    static saveURL(url) {
+        if (HistoryURL.instance) {
             HistoryURL.instance.context.router.history.push(url);
         }
     }

@@ -13,11 +13,11 @@ export default {
         {
             label: 'Upload Attachments',
             type: 'Excel',
-        }
+        },
     ],
     EMAIL_BUTTON: {
         type: 'Email',
-        icon: 'far fa-envelope'
+        icon: 'far fa-envelope',
     },
     REFRESH_INTERVAL: 5 * 1000, //5 seconds
 };

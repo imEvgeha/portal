@@ -4,12 +4,11 @@ import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 
-class ErrorModal extends React.Component{
-
+class ErrorModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: true
+            modal: true,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -17,10 +16,9 @@ class ErrorModal extends React.Component{
         this.refresh = this.refresh.bind(this);
     }
 
-
     toggle() {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
         });
     }
     refresh() {
@@ -34,49 +32,62 @@ class ErrorModal extends React.Component{
     render() {
         let modalBody;
         if (this.props.description) {
-            modalBody = (
-                <ModalBody style={{wordWrap: 'break-word'}}>{this.props.description}</ModalBody>
-            );
+            modalBody = <ModalBody style={{wordWrap: 'break-word'}}>{this.props.description}</ModalBody>;
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} color="danger" backdrop={!this.props.closable ? 'static' : false}>
-                <ModalHeader style={{backgroundColor: '#dc3545'}} toggle={!this.props.closable ? undefined : this.toggle}>{this.props.message}</ModalHeader>
+            <Modal
+                isOpen={this.state.modal}
+                toggle={this.toggle}
+                className={this.props.className}
+                color="danger"
+                backdrop={!this.props.closable ? 'static' : false}
+            >
+                <ModalHeader
+                    style={{backgroundColor: '#dc3545'}}
+                    toggle={!this.props.closable ? undefined : this.toggle}
+                >
+                    {this.props.message}
+                </ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    {
-                        !this.props.closable ? 
-                            <Button color="danger" onClick={this.refresh}>Refresh</Button>
-                        :
-                            <Button color="danger" onClick={this.accept}>{this.props.buttonLabel}</Button>
-                    }
-                    
+                    {!this.props.closable ? (
+                        <Button color="danger" onClick={this.refresh}>
+                            Refresh
+                        </Button>
+                    ) : (
+                        <Button color="danger" onClick={this.accept}>
+                            {this.props.buttonLabel}
+                        </Button>
+                    )}
                 </ModalFooter>
             </Modal>
         );
     }
 }
 
-
 export const errorModal = {
-    open: (message, onApprove, options) =>{
+    open: (message, onApprove, options) => {
         if (options == null) {
             options = {};
         }
         const props = {
             ...options,
             message: message,
-            accept: () => { cleanup();onApprove();}
+            accept: () => {
+                cleanup();
+                onApprove();
+            },
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<ErrorModal {...props} />, wrapper);
-        const cleanup = function() {
+        const cleanup = function () {
             unmountComponentAtNode(wrapper);
-            return setTimeout(function() {
+            return setTimeout(function () {
                 return wrapper.remove();
             });
         };
-    }
+    },
 };
 
 ErrorModal.propTypes = {
@@ -85,7 +96,7 @@ ErrorModal.propTypes = {
     message: PropTypes.string,
     buttonLabel: PropTypes.string,
     accept: PropTypes.func,
-    closable: PropTypes.bool
+    closable: PropTypes.bool,
 };
 
 ErrorModal.defaultProps = {

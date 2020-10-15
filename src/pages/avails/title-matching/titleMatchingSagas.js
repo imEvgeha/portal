@@ -14,7 +14,10 @@ import {
 } from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {URL} from '../../../util/Common';
-import {METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA, METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH} from '../../legacy/constants/action-types';
+import {
+    METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
+    METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,
+} from '../../legacy/constants/action-types';
 import {fetchAndStoreSelectItems} from '../../legacy/containers/avail/availSagas';
 import {createAvailSelectValuesSelector} from '../../legacy/containers/avail/availSelectors';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
@@ -37,7 +40,9 @@ function* fetchFocusedRight(requestMethod, {payload}) {
             payload: focusedRight,
         });
         const {title, releaseYear, contentType} = focusedRight;
-        const {searchParameters: {TITLE, RELEASE_YEAR, CONTENT_TYPE}} = Constants;
+        const {
+            searchParameters: {TITLE, RELEASE_YEAR, CONTENT_TYPE},
+        } = Constants;
         yield put({
             type: METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
             payload: {
@@ -86,7 +91,7 @@ function* mergeAndStoreTitles({payload}) {
             query = query.concat('idsToMerge=');
             matches.forEach((key, index) => {
                 query = `${query}${matchList[key].id}`;
-                if (index < (matches.length - 1)) {
+                if (index < matches.length - 1) {
                     query = query.concat(',');
                 }
             });

@@ -1,22 +1,22 @@
 [
-  {
-    "headerName": "Status",
-    "field": "status",
-    "width": 120
-  },
-  {
-    "headerName": "Attachment",
-    "field": "attachment",
-    "width": 500
-  },
-  {
-    "headerName": "Report Summary",
-    "field": "report",
-    "width": 390
-  },
-  {
-    "headerName": "Error Message",
-    "field": "error",
-    "width": 800
-  }
+    {
+        "headerName": "Status",
+        "field": "status",
+        "width": 120
+    },
+    {
+        "headerName": "Attachment",
+        "field": "attachment",
+        "width": 500
+    },
+    {
+        "headerName": "Report Summary",
+        "field": "report",
+        "width": 390
+    },
+    {
+        "headerName": "Error Message",
+        "field": "error",
+        "width": 800
+    }
 ]

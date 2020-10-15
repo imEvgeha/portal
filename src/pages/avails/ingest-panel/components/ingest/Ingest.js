@@ -7,15 +7,7 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import IngestTitle from '../ingest-title/IngestTitle';
 import './Ingest.scss';
 
-const Ingest = ({
-    received,
-    attachment,
-    isSelected,
-    ingestClick,
-    isInBundle,
-    ingestId,
-    ingestType,
-}) => {
+const Ingest = ({received, attachment, isSelected, ingestClick, isInBundle, ingestId, ingestType}) => {
     const [showReport, setShowReport] = useState(false);
     const {link, status, ingestReport} = attachment;
 
@@ -35,18 +27,16 @@ const Ingest = ({
         >
             <IngestTitle link={link} />
             <div className="nexus-c-avail-ingest__details">
-                {
-                    ingestReport && (
-                        <span
-                            className={
-                                `nexus-c-avail-ingest__chevron nexus-c-avail-ingest__chevron--is-${showReport ? 'opened' : 'closed'}`
-                            }
-                            onClick={onChevronClick}
-                        >
-                            <Chevron />
-                        </span>
-                    )
-                }
+                {ingestReport && (
+                    <span
+                        className={`nexus-c-avail-ingest__chevron nexus-c-avail-ingest__chevron--is-${
+                            showReport ? 'opened' : 'closed'
+                        }`}
+                        onClick={onChevronClick}
+                    >
+                        <Chevron />
+                    </span>
+                )}
                 <div
                     className={classnames(
                         'nexus-c-avail-ingest__status',
@@ -56,9 +46,7 @@ const Ingest = ({
                     <IngestStatus date={received} status={status} ingestType={ingestType} />
                 </div>
             </div>
-            {
-                showReport && ingestReport && <IngestReport report={ingestReport} ingestId={ingestId} />
-            }
+            {showReport && ingestReport && <IngestReport report={ingestReport} ingestId={ingestId} />}
         </div>
     );
 };

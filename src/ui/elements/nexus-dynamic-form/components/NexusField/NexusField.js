@@ -7,8 +7,15 @@ import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS} from '../../constants';
-import {checkFieldDependencies, getFieldValue, getValidationFunction, formatOptions, renderLabel, renderError} from '../../utils';
+import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import {
+    checkFieldDependencies,
+    getFieldValue,
+    getValidationFunction,
+    formatOptions,
+    renderLabel,
+    renderError,
+} from '../../utils';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
@@ -121,11 +128,14 @@ const NexusField = ({
     };
 
     const getValue = fieldProps => {
-        if(Array.isArray(fieldProps.value)){
-            return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+        if (Array.isArray(fieldProps.value)) {
+            if (fieldProps.value.length) {
+                return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
+            }
+            return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
         }
-        return getFieldValue(fieldProps.value)
-    }
+        return getFieldValue(fieldProps.value);
+    };
 
     const renderFieldViewMode = fieldProps => {
         if (validationError) {
@@ -136,14 +146,15 @@ const NexusField = ({
                 return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
             case 'dateRange':
             case 'datetime':
-                return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                if (fieldProps.value) {
+                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                }
+                return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             default:
                 return fieldProps.value ? (
-                    <div>
-                        {getValue(fieldProps)}
-                    </div>
+                    <div>{getValue(fieldProps)}</div>
                 ) : (
-                    <div className="nexus-c-field__placeholder">{`Enter ${label}`}</div>
+                    <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
                 );
         }
     };
@@ -151,7 +162,11 @@ const NexusField = ({
     const required = !!(checkDependencies('required') || isRequired);
     return (
         <ErrorBoundary>
-            <div className={`nexus-c-field ${validationError ? 'nexus-c-field--error' : ''}`}>
+            <div
+                className={`nexus-c-field${validationError ? ' nexus-c-field--error' : ''}${
+                    HIGHLIGHTED_FIELDS.includes(path) ? ' nexus-c-field--highlighted' : ''
+                }`}
+            >
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}

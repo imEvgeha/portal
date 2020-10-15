@@ -22,22 +22,15 @@ import {
     EMPTY_VIEW,
 } from './constants';
 
-const LegacyTitleReconciliationReview = ({
-    createColumnDefs,
-    columnDefs,
-    titles,
-    getReconciliationTitles,
-}) => {
+const LegacyTitleReconciliationReview = ({createColumnDefs, columnDefs, titles, getReconciliationTitles}) => {
     useEffect(() => {
         if (!columnDefs.length) {
             createColumnDefs();
         }
     }, [columnDefs, createColumnDefs]);
 
-    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',')
-        .filter(Boolean);
-    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',')
-        .filter(Boolean);
+    const duplicateIds = URL.getParamIfExists(DUPLICATE_IDS).split(',').filter(Boolean);
+    const masterIds = URL.getParamIfExists(MASTER_IDS).split(',').filter(Boolean);
     const newTitleId = URL.getParamIfExists(MERGED_ID);
 
     useEffect(() => {
@@ -68,9 +61,7 @@ const LegacyTitleReconciliationReview = ({
         <div className="nexus-c-legacy-title-reconciliation-review">
             <NexusTitle>{TITLE}</NexusTitle>
             {!masterIds.length && !newTitleId && !duplicateIds.length ? (
-                <div className="nexus-legacy-title-reconciliation-review__empty">
-                    {EMPTY_VIEW}
-                </div>
+                <div className="nexus-legacy-title-reconciliation-review__empty">{EMPTY_VIEW}</div>
             ) : (
                 <>
                     {!!masterIds.length && (

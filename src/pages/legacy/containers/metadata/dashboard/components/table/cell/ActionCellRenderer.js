@@ -9,7 +9,6 @@ import {getRepositoryName} from '../../../../../../../avails/utils';
 import TitleSystems from '../../../../../../constants/metadata/systems';
 
 const ActionCellRenderer = ({data, storeTitle}) => {
-
     const [isMovidaOrVz, setIsMovidaOrVz] = useState(false);
 
     useEffect(() => {
@@ -20,20 +19,20 @@ const ActionCellRenderer = ({data, storeTitle}) => {
     return (
         <CustomActionsCellRenderer id={`action-${data && data.id}`}>
             {isMovidaOrVz && (
-                <NexusTooltip content='Legacy title reconciliation'>
+                <NexusTooltip content="Legacy title reconciliation">
                     <div>
                         <a
-                            className='nexus-c-metadata-table-action'
+                            className="nexus-c-metadata-table-action"
                             href={`/metadata/detail/${data && data.id}/legacy-title-reconciliation`}
                             onClick={() => storeTitle(data)}
-                            target='_blank'
-                            rel='noopener noreferrer'
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
                             Inspect
                         </a>
                     </div>
                 </NexusTooltip>
-              )}
+            )}
         </CustomActionsCellRenderer>
     );
 };
@@ -48,7 +47,7 @@ ActionCellRenderer.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch => ({
-    storeTitle: payload => dispatch(storeTitle(payload))
+    storeTitle: payload => dispatch(storeTitle(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(ActionCellRenderer);

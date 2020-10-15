@@ -12,18 +12,15 @@ const CustomFieldAddText = styled.div`
 const AddButton = styled.div`
     float: right;
     font-weight: bold;
-    background: #DDD;
+    background: #ddd;
     cursor: pointer;
     padding: 5px;
     border-radius: 3px;
     width: 40px;
     text-align: center;
     &:hover {
-        background: #EEE;
+        background: #eee;
     }
 `;
 
-export {
-    CustomFieldAddText,
-    AddButton
-};
+export {CustomFieldAddText, AddButton};

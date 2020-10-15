@@ -17,12 +17,12 @@ const EventSectionCollapsible = ({title, isInitiallyOpen, header, children}) => 
                 </div>
                 {header}
             </div>
-            <div className={`nexus-c-event-section-collapsible__content
+            <div
+                className={`nexus-c-event-section-collapsible__content
                 ${isOpened ? 'nexus-c-event-section-collapsible__content--active' : ''}`}
             >
                 {children}
             </div>
-
         </div>
     );
 };

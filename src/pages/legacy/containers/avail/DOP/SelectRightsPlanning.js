@@ -20,7 +20,6 @@ import {initialTabFilter} from '../../../constants/DOP/tabFilter';
 
 // we could use here react functional componenent with 'useState()' hook instead of react class component
 class SelectRightsPlanning extends Component {
-
     constructor(props) {
         super(props);
     }
@@ -48,7 +47,7 @@ class SelectRightsPlanning extends Component {
         }
     };
 
-    onFilterChange = (searchBy) => {
+    onFilterChange = searchBy => {
         const {tabFilter, selectedTerritoriesTab, updateRightsFilter} = this.props;
         if (selectedTerritoriesTab !== PENDING_SELECTION) {
             let tabFilterCopy = JSON.parse(JSON.stringify(tabFilter));
@@ -69,7 +68,7 @@ class SelectRightsPlanning extends Component {
             withColumnsReorder,
             withSelectIgnoreMark,
             withServerSorting,
-            withFilteredRights(tabFilter[selectedTerritoriesTab]),
+            withFilteredRights(tabFilter[selectedTerritoriesTab])
         )(ResultsTable);
 
         const SelectedRightsResultsTable = compose(
@@ -111,10 +110,10 @@ const mapStateToProps = ({root, dopReducer}) => ({
     tabFilter: dopReducer.session.tabFilter,
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     fetchAvailMapping: payload => dispatch(fetchAvailMapping(payload)),
     fetchAvailConfiguration: payload => dispatch(fetchAvailConfiguration(payload)),
-    updateRightsFilter: payload => dispatch(updateRightsFilter(payload))
+    updateRightsFilter: payload => dispatch(updateRightsFilter(payload)),
 });
 
 SelectRightsPlanning.propTypes = {
@@ -123,11 +122,11 @@ SelectRightsPlanning.propTypes = {
     fetchAvailConfiguration: PropTypes.func.isRequired,
     selectedTerritoriesTab: PropTypes.string.isRequired,
     updateRightsFilter: PropTypes.func.isRequired,
-    tabFilter: PropTypes.object.isRequired
+    tabFilter: PropTypes.object.isRequired,
 };
 
 SelectRightsPlanning.defaultProps = {
-    availsMapping: null
+    availsMapping: null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectRightsPlanning);

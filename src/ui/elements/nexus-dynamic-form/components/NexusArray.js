@@ -12,7 +12,6 @@ import {
     checkFieldDependencies,
     getFieldConfig,
     getValidationFunction,
-    renderLabel,
     renderNexusField,
     renderError,
 } from '../utils';
@@ -102,16 +101,11 @@ const NexusArray = ({
                                 key={`nexus-c-array__field ${key}`}
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
-                                {renderNexusField(
-                                    `${path}[${index}].${key}`,
-                                    view,
-                                    getValues,
-                                    {
-                                        initialData,
-                                        field: fields[key],
-                                        selectValues
-                                    }
-                                )}
+                                {renderNexusField(`${path}[${index}].${key}`, view, getValues, {
+                                    initialData,
+                                    field: fields[key],
+                                    selectValues,
+                                })}
                             </div>
                         )
                     );
@@ -188,7 +182,6 @@ const NexusArray = ({
             >
                 {({fieldProps, error}) => (
                     <>
-                        {renderLabel(name, required, tooltip)}
                         {renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>
