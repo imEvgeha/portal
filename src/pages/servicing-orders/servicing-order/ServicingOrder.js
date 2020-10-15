@@ -14,7 +14,6 @@ import {
     fetchAssetInfo,
     getBarCodes,
     populateAssetInfo,
-    removeNulls,
 } from './components/sources-table/util';
 import './ServicingOrder.scss';
 
@@ -44,7 +43,6 @@ const ServicingOrder = ({match}) => {
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    removeNulls(fulfillmentOrders);
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
 
                     setServiceOrder({

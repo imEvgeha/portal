@@ -150,7 +150,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 });
                 api.setRowData(prevSources);
             } else if (barcodes[rowIndex] !== data.barcode.trim()) {
-                // call DETE fetch api and update barcode
+                // call DETE fetch api and update barcode.
                 const loadingSources = sources.slice();
                 let loading = data;
                 loading = {
@@ -183,7 +183,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const addEmptySourceRow = () => {
-        if (sources[0].barcode === '')
+        if (sources[sources.length - 1].barcode === '')
             showToastForErrors(null, {
                 errorToast: {
                     title: 'Invalid Action',

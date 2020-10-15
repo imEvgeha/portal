@@ -152,9 +152,6 @@ export const showLoading = fulfillmentOrders => {
             ? item.definition.deteServices[0].deteSources.length
             : 0;
         if (length > 0) {
-            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.filter(
-                item => item !== null
-            );
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 return {
                     ...item,
