@@ -25,6 +25,10 @@ const DateTimeWithOptional = compose(
     withOptional(),
 )(DateTime);
 
+const TextFieldWithOptional = compose(
+    withOptional(),
+)(TextField);
+
 const NexusField = ({
     selectValues,
     path,
@@ -70,6 +74,11 @@ const NexusField = ({
         setFieldValue,
     };
 
+    const addedProps = {
+        isOptional,
+        setFieldValue,
+    };
+
     const renderFieldEditMode = fieldProps => {
         const {options} = optionsConfig;
         const selectFieldProps = {...fieldProps};
@@ -77,11 +86,11 @@ const NexusField = ({
         switch (type) {
             case 'string':
             case 'stringInArray':
-                return <TextField {...fieldProps} placeholder={`Enter ${label}`} />;
+                return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'textarea':
                 return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${label}`} />;
+                return <TextFieldWithOptional {...fieldProps} type="Number" placeholder={`Enter ${label}`} {...addedProps}  />;
             case 'boolean':
                 return (
                     <CheckboxField

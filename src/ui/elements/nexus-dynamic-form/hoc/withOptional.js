@@ -7,7 +7,8 @@ import {connect} from "react-redux";
 const withOptional = () => WrappedComponent => {
 
     const ComposedComponent = props => {
-        const {isOptional, value, name, setFieldValue} = props;
+        const {isOptional, setFieldValue, ...fieldProps} = props;
+        const {value, name} = fieldProps;
         const [visible, setVisible] = useState(!!(value && value !== ""));
 
         const changeCheckboxValue = () => {
@@ -24,13 +25,13 @@ const withOptional = () => WrappedComponent => {
                     <Checkbox onChange={changeCheckboxValue} defaultChecked={visible} />
                     {visible &&
                         <WrappedComponent
-                            {...props}
+                            {...fieldProps}
                         />
                     }
                 </div>
                 :
                 <WrappedComponent
-                    {...props}
+                    {...fieldProps}
                 />
         );
     };
