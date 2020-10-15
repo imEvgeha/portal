@@ -25,6 +25,18 @@ const DateTimeWithOptional = compose(
     withOptional(),
 )(DateTime);
 
+const NexusTextAreaWithOptional = compose(
+    withOptional(),
+)(NexusTextArea);
+
+const CheckboxWithOptional = compose(
+    withOptional(),
+)(Checkbox);
+
+const SelectWithOptional = compose(
+    withOptional(),
+)(Select);
+
 const TextFieldWithOptional = compose(
     withOptional(),
 )(TextField);
@@ -65,16 +77,16 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, formData);
     };
 
+    const addedProps = {
+        isOptional,
+        setFieldValue,
+    };
+
     const dateProps = {
         labels,
         type,
         dateType,
         isReadOnly,
-        isOptional,
-        setFieldValue,
-    };
-
-    const addedProps = {
         isOptional,
         setFieldValue,
     };
@@ -88,7 +100,7 @@ const NexusField = ({
             case 'stringInArray':
                 return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'textarea':
-                return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;
+                return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'number':
                 return <TextFieldWithOptional {...fieldProps} type="Number" placeholder={`Enter ${label}`} {...addedProps}  />;
             case 'boolean':
@@ -99,7 +111,7 @@ const NexusField = ({
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
-                        {({fieldProps}) => <Checkbox {...fieldProps} />}
+                        {({fieldProps}) => <CheckboxWithOptional {...addedProps} {...fieldProps} />}
                     </CheckboxField>
                 );
             case 'select':
@@ -110,10 +122,11 @@ const NexusField = ({
                     };
                 }
                 return (
-                    <Select
+                    <SelectWithOptional
                         {...selectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
+                        {...addedProps}
                     />
                 );
             case 'multiselect':
@@ -125,7 +138,7 @@ const NexusField = ({
                     multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
                 }
                 return (
-                    <Select
+                    <SelectWithOptional
                         {...multiselectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         isMulti
@@ -136,6 +149,7 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
+                        {...addedProps}
                     />
                 );
             case 'dateRange':
