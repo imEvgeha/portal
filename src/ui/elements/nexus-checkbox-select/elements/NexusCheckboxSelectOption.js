@@ -20,15 +20,15 @@ const getPrimitiveStyles = props => {
     const {cx, className, getStyles, isDisabled, isFocused, isSelected} = props;
 
     const styles = {
-        'alignItems': 'center',
-        'backgroundColor': isFocused ? colors.N30 : 'transparent',
-        'color': 'inherit',
-        'display': 'flex',
-        'flexDirection': 'row',
-        'paddingBottom': 4,
+        alignItems: 'center',
+        backgroundColor: isFocused ? colors.N30 : 'transparent',
+        color: 'inherit',
+        display: 'flex',
+        flexDirection: 'row',
+        paddingBottom: 4,
         // eslint-disable-next-line no-magic-numbers
-        'paddingLeft': `${gridSize() * 2}px`,
-        'paddingTop': 4,
+        paddingLeft: `${gridSize() * 2}px`,
+        paddingTop: 4,
 
         ':active': {
             backgroundColor: colors.B50,
@@ -37,7 +37,7 @@ const getPrimitiveStyles = props => {
 
     const augmentedStyles = {...getStyles('option', props), ...styles};
     const bemClasses = {
-        'option': true,
+        option: true,
         'option--is-disabled': isDisabled,
         'option--is-focused': isFocused,
         'option--is-selected': isSelected,
@@ -52,13 +52,7 @@ const backgroundColor = themed({light: colors.N40A, dark: colors.DN10});
 const transparent = themed({light: 'transparent', dark: 'transparent'});
 
 // the primary color represents the outer or background element
-const getPrimaryColor = ({
-    isActive,
-    isDisabled,
-    isFocused,
-    isSelected,
-    ...rest
-}) => {
+const getPrimaryColor = ({isActive, isDisabled, isFocused, isSelected, ...rest}) => {
     let color = backgroundColor;
     if (isDisabled && isSelected) {
         color = themed({light: colors.B75, dark: colors.DN200});
@@ -93,14 +87,7 @@ const getSecondaryColor = ({isActive, isDisabled, isSelected, ...rest}) => {
 
 const NexusCheckboxSelectOption = props => {
     const [isActive, setIsActive] = useState(false);
-    const {
-        getStyles,
-        children,
-        innerProps,
-        innerRef,
-        isDisabled,
-        ...rest
-    } = props;
+    const {getStyles, children, innerProps, innerRef, isDisabled, ...rest} = props;
     const onMouseDown = () => setIsActive(true);
     const onMouseUp = () => setIsActive(false);
     const onMouseLeave = () => setIsActive(false);
@@ -116,29 +103,23 @@ const NexusCheckboxSelectOption = props => {
     const {selectProps, value, options} = rest;
 
     return (
-        <div
-            style={styles}
-            className={`nexus-c-checkbox-select ${classes}`}
-            ref={innerRef}
-            {...updatedProps}
-        >
+        <div style={styles} className={`nexus-c-checkbox-select ${classes}`} ref={innerRef} {...updatedProps}>
             <div className="nexus-c-checkbox-select__checkbox">
-                {value === '*'
-                && selectProps
-                && Array.isArray(selectProps.value)
-                && selectProps.value.length > 0
-                && selectProps.value.length < options.filter(el => !el.isDisabled).length
-                    ? (
-                        <CheckboxIconIndeterminate
-                            primaryColor={getPrimaryColor({...props, isActive})}
-                            secondaryColor={getSecondaryColor({...props, isSelected: true, isActive})}
-                        />
-                    ) : (
-                        <CheckboxIcon
-                            primaryColor={getPrimaryColor({...props, isActive})}
-                            secondaryColor={getSecondaryColor({...props, isActive})}
-                        />
-                    )}
+                {value === '*' &&
+                selectProps &&
+                Array.isArray(selectProps.value) &&
+                selectProps.value.length > 0 &&
+                selectProps.value.length < options.filter(el => !el.isDisabled).length ? (
+                    <CheckboxIconIndeterminate
+                        primaryColor={getPrimaryColor({...props, isActive})}
+                        secondaryColor={getSecondaryColor({...props, isSelected: true, isActive})}
+                    />
+                ) : (
+                    <CheckboxIcon
+                        primaryColor={getPrimaryColor({...props, isActive})}
+                        secondaryColor={getSecondaryColor({...props, isActive})}
+                    />
+                )}
             </div>
             <div
                 className={classnames(

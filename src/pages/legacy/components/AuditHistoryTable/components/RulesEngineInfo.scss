@@ -1,21 +1,20 @@
-.nexus-c-rules-popup{
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 1px 2px 4px #C3C9CD;
-  border: 1px solid #C3C9CD;
-  margin-left: 20px;
-  .nexus-c-rules-popup__header{
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  .nexus-c-rules-popup__content{
-    label{
-      padding-right: 5px;
+.nexus-c-rules-popup {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 1px 2px 4px #c3c9cd;
+    border: 1px solid #c3c9cd;
+    margin-left: 20px;
+    .nexus-c-rules-popup__header {
+        font-weight: bold;
+        margin-bottom: 10px;
     }
-    .nexus-c-rules-popup__content__field{
-      margin-bottom: 5px;
+    .nexus-c-rules-popup__content {
+        label {
+            padding-right: 5px;
+        }
+        .nexus-c-rules-popup__content__field {
+            margin-bottom: 5px;
+        }
     }
-  }
 }
-

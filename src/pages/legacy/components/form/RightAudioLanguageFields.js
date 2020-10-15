@@ -4,13 +4,19 @@ import {ErrorMessage, Field} from '@atlaskit/form';
 import Select from '@atlaskit/select/Select';
 import {get} from 'lodash';
 
-const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLanguageIndex, languageOptions, audioTypesOptions}) => {
-
-    const currentAudioLanguage = Array.isArray(existingAudioLanguageList) && existingAudioLanguageList[audioLanguageIndex];
+const RightAudioLanguageFields = ({
+    isEdit,
+    existingAudioLanguageList,
+    audioLanguageIndex,
+    languageOptions,
+    audioTypesOptions,
+}) => {
+    const currentAudioLanguage =
+        Array.isArray(existingAudioLanguageList) && existingAudioLanguageList[audioLanguageIndex];
     if (currentAudioLanguage) {
         languageOptions.forEach(option => {
             if (option.value === currentAudioLanguage.language) {
-                currentAudioLanguage.label = option.label
+                currentAudioLanguage.label = option.label;
             }
         });
     }
@@ -24,7 +30,9 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
     };
 
     const removeExistingOptions = () => {
-        return existingAudioLanguageList ? languageOptions.filter(x => !existingAudioLanguageList.find(y => y.language === x.value)) : languageOptions;
+        return existingAudioLanguageList
+            ? languageOptions.filter(x => !existingAudioLanguageList.find(y => y.language === x.value))
+            : languageOptions;
     };
 
     const getValidationState = (error, valid) => {
@@ -37,13 +45,12 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
         return 'error';
     };
 
-    const validate = (value) => {
+    const validate = value => {
         if (!value) {
             return 'EMPTY';
         }
         return undefined;
     };
-
 
     const returnValidData = data => {
         return get(existingAudioLanguageList, [audioLanguageIndex, data]) !== null;
@@ -59,22 +66,28 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('language') ? getError('language').message : (returnValidData('language') && currentAudioLanguage['label']),
-                            value: returnValidData('language') && currentAudioLanguage['label']
-                        } : ''
+                              label: getError('language')
+                                  ? getError('language').message
+                                  : returnValidData('language') && currentAudioLanguage['label'],
+                              value: returnValidData('language') && currentAudioLanguage['label'],
+                          }
+                        : ''
                 }
             >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             validationState={getValidationState(error, valid)}
                             styles={{
-                                control: (base) => {
-                                    return getError('language', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                control: base => {
+                                    return getError('language', rest.value)
+                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
+                                        : {...base, borderColor: '#F4F5F7'};
                                 },
-                                singleValue: base => getError('language', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                singleValue: base =>
+                                    getError('language', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
                             isSearchable={true}
                             placeholder="Choose Language"
@@ -83,7 +96,6 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                         {error === 'EMPTY' && <ErrorMessage>This field cannot be empty!</ErrorMessage>}
                     </>
                 )}
-
             </Field>
             <Field
                 label="Audio Type"
@@ -91,22 +103,28 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                 defaultValue={
                     isEdit
                         ? {
-                            label: getError('audioType') ? getError('audioType').message : (returnValidData('audioType') && currentAudioLanguage['audioType']),
-                            value: returnValidData('audioType') && currentAudioLanguage['audioType']
-                        } : ''
+                              label: getError('audioType')
+                                  ? getError('audioType').message
+                                  : returnValidData('audioType') && currentAudioLanguage['audioType'],
+                              value: returnValidData('audioType') && currentAudioLanguage['audioType'],
+                          }
+                        : ''
                 }
             >
-                {({ fieldProps: { id, ...rest }, error, meta: { valid } }) => (
+                {({fieldProps: {id, ...rest}, error, meta: {valid}}) => (
                     <>
                         <Select
                             id={`select-${id}`}
                             {...rest}
                             validationState={getValidationState(error, valid)}
                             styles={{
-                                control: (base) => {
-                                    return getError('audioType', rest.value) ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'} : {...base, borderColor: '#F4F5F7'};
+                                control: base => {
+                                    return getError('audioType', rest.value)
+                                        ? {...base, borderColor: '#F4F5F6', backgroundColor: 'rgb(242, 222, 222)'}
+                                        : {...base, borderColor: '#F4F5F7'};
                                 },
-                                singleValue: base => getError('audioType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
+                                singleValue: base =>
+                                    getError('audioType', rest.value) ? {...base, color: 'rgb(169, 68, 66)'} : base,
                             }}
                             isSearchable={true}
                             placeholder="Choose Audio Type"
@@ -114,7 +132,6 @@ const RightAudioLanguageFields = ({isEdit, existingAudioLanguageList, audioLangu
                         />
                     </>
                 )}
-
             </Field>
         </>
     );
@@ -125,7 +142,7 @@ RightAudioLanguageFields.propTypes = {
     existingAudioLanguageList: PropTypes.array,
     audioLanguageIndex: PropTypes.number,
     languageOptions: PropTypes.array,
-    audioTypesOptions : PropTypes.array
+    audioTypesOptions: PropTypes.array,
 };
 
 RightAudioLanguageFields.defaultProps = {
@@ -133,7 +150,7 @@ RightAudioLanguageFields.defaultProps = {
     existingAudioLanguageList: [],
     audioLanguageIndex: null,
     languageOptions: [],
-    audioTypesOptions : []
+    audioTypesOptions: [],
 };
 
 export default RightAudioLanguageFields;

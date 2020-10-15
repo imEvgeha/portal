@@ -3,17 +3,17 @@ export const titleMapping = {
         {
             displayName: 'Title',
             javaVariableName: 'title',
-            fullTextSearch: 'true'  
+            fullTextSearch: 'true',
         },
         {
             displayName: 'Content Type',
             javaVariableName: 'contentType',
-            fullTextSearch: 'true'
+            fullTextSearch: 'true',
         },
         {
             displayName: 'Release Year',
             javaVariableName: 'releaseYear',
-            fullTextSearch: 'true'
-        }
-    ]
+            fullTextSearch: 'true',
+        },
+    ],
 };

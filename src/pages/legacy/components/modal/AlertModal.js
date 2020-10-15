@@ -4,12 +4,11 @@ import {render, unmountComponentAtNode} from 'react-dom';
 import {ModalBody, ModalFooter, ModalHeader, Modal, Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 
-class AlertModal extends React.Component{
-
+class AlertModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: true
+            modal: true,
         };
 
         this.toggle = this.toggle.bind(this);
@@ -18,7 +17,7 @@ class AlertModal extends React.Component{
 
     toggle() {
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
         });
     }
 
@@ -29,43 +28,54 @@ class AlertModal extends React.Component{
     render() {
         let modalBody;
         if (this.props.description) {
-            modalBody = (
-                <ModalBody style={{wordWrap: 'break-word'}}>{this.props.description}</ModalBody>
-            );
+            modalBody = <ModalBody style={{wordWrap: 'break-word'}}>{this.props.description}</ModalBody>;
         }
 
         return (
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className} fade={false} color="dark" backdrop={false}>
-                <ModalHeader style={{backgroundColor: 'primary'}} toggle={this.toggle}>{this.props.message}</ModalHeader>
+            <Modal
+                isOpen={this.state.modal}
+                toggle={this.toggle}
+                className={this.props.className}
+                fade={false}
+                color="dark"
+                backdrop={false}
+            >
+                <ModalHeader style={{backgroundColor: 'primary'}} toggle={this.toggle}>
+                    {this.props.message}
+                </ModalHeader>
                 {modalBody}
                 <ModalFooter>
-                    <Button color="dark" onClick={this.accept}>{this.props.buttonLabel}</Button>
+                    <Button color="dark" onClick={this.accept}>
+                        {this.props.buttonLabel}
+                    </Button>
                 </ModalFooter>
             </Modal>
         );
     }
 }
 
-
 export const alertModal = {
-    open: (message, onApprove, options) =>{
+    open: (message, onApprove, options) => {
         if (options == null) {
             options = {};
         }
         const props = {
             ...options,
             message: message,
-            accept: () => { cleanup();onApprove();}
+            accept: () => {
+                cleanup();
+                onApprove();
+            },
         };
         const wrapper = document.body.appendChild(document.createElement('div'));
         render(<AlertModal {...props} />, wrapper);
-        const cleanup = function() {
+        const cleanup = function () {
             unmountComponentAtNode(wrapper);
-            return setTimeout(function() {
+            return setTimeout(function () {
                 return wrapper.remove();
             });
         };
-    }
+    },
 };
 
 AlertModal.propTypes = {
@@ -73,7 +83,7 @@ AlertModal.propTypes = {
     className: PropTypes.string,
     message: PropTypes.string,
     buttonLabel: PropTypes.string,
-    accept: PropTypes.func
+    accept: PropTypes.func,
 };
 
 AlertModal.defaultProps = {

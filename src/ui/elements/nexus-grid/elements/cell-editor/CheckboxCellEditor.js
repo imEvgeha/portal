@@ -18,7 +18,7 @@ class CheckboxCellEditor extends Component {
         this.setState(state => ({
             isChecked: !state.isChecked,
         }));
-    }
+    };
 
     inputRef = React.createRef();
 
@@ -46,4 +46,3 @@ CheckboxCellEditor.defaultProps = {
 };
 
 export default CheckboxCellEditor;
-

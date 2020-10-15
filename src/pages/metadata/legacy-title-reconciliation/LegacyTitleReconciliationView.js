@@ -14,12 +14,7 @@ import {getRepositoryCell} from '../../avails/utils';
 import {fetchTitle, reconcileTitles} from '../metadataActions';
 import * as selectors from '../metadataSelectors';
 import CandidatesList from './components/CandidatesList';
-import {
-    TITLE,
-    SECTION_MESSAGE,
-    FOCUSED_TITLE,
-    SAVE_BTN,
-} from './constants';
+import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
@@ -59,7 +54,9 @@ const LegacyTitleReconciliationView = ({
 
     const handleGridEvent = ({type, columnApi, api}) => {
         if (GRID_EVENTS.READY === type) {
-            const directorIndex = columnApi.columnController.columnDefs.findIndex(({field}) => field === 'castCrew.director');
+            const directorIndex = columnApi.columnController.columnDefs.findIndex(
+                ({field}) => field === 'castCrew.director'
+            );
             columnApi.moveColumn('episodeAndSeasonNumber', directorIndex);
         }
     };
@@ -89,7 +86,11 @@ const LegacyTitleReconciliationView = ({
             <CandidatesList
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
-                queryParams={{contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`, title, releaseYear}}
+                queryParams={{
+                    contentType: `${contentType.slice(0, 1)}${contentType.slice(1).toLowerCase()}`,
+                    title,
+                    releaseYear,
+                }}
                 onCandidatesChange={handleCandidatesChange}
             />
             <div className="nexus-c-legacy-title-reconciliation-view__buttons">

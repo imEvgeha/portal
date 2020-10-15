@@ -12,10 +12,7 @@ import createRootReducer from './reducer';
 // eslint-disable-next-line no-unused-vars
 const configureStore = (initialState = {}, history) => {
     const sagaMiddleware = createSagaMiddleware();
-    let middleware = [
-        routerMiddleware(history),
-        sagaMiddleware,
-    ];
+    let middleware = [routerMiddleware(history), sagaMiddleware];
 
     // log redux actions
     if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
@@ -35,12 +32,7 @@ const configureStore = (initialState = {}, history) => {
         return appReducer(state, action);
     };
 
-    const store = createStore(
-        rootReducer,
-        composeWithDevTools(
-            applyMiddleware(...middleware),
-        ),
-    );
+    const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
 
     store.runSaga = sagaMiddleware.run;
 

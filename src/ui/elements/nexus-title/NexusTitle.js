@@ -14,7 +14,7 @@ const NexusTitle = ({title, isSubTitle, isInline, className, children}) => {
             >
                 {children}
             </p>
-            {title && (<div className="nexus-c-title__name">{title}</div>)}
+            {title && <div className="nexus-c-title__name">{title}</div>}
         </div>
     );
 };

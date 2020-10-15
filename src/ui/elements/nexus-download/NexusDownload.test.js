@@ -34,12 +34,15 @@ describe('NexusDownload', () => {
 
         button.simulate('click');
 
-        expect(spy).toHaveBeenCalledWith({
-            content: [JSON.stringify(props.data, null, 2)],
-            options: {
-                type: props.mimeType,
+        expect(spy).toHaveBeenCalledWith(
+            {
+                content: [JSON.stringify(props.data, null, 2)],
+                options: {
+                    type: props.mimeType,
+                },
             },
-        }, props.filename);
+            props.filename
+        );
 
         spy.mockRestore();
     });

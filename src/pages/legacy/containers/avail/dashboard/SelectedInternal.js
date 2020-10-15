@@ -10,24 +10,19 @@ const mapStateToProps = state => {
 };
 
 class SelectedInternal extends Component {
-
-    render(){
-        if(this.props.showSelectedAvails){
+    render() {
+        if (this.props.showSelectedAvails) {
             return (
-                <span
-                    className="nx-container-margin table-top-text"
-                    id="dashboard-selected-avails-number"
-                >Selected items: {this.props.availTabPageSelected.length}
+                <span className="nx-container-margin table-top-text" id="dashboard-selected-avails-number">
+                    Selected items: {this.props.availTabPageSelected.length}
                 </span>
             );
-        }else {
+        } else {
             if (this.props.availTabPageSelected.length) {
                 return (
                     <a href="#" onClick={this.props.toggleShowSelected}>
-                        <span
-                            className="nx-container-margin table-top-text"
-                            id="dashboard-selected-avails-number"
-                        >Selected items: {this.props.availTabPageSelected.length}
+                        <span className="nx-container-margin table-top-text" id="dashboard-selected-avails-number">
+                            Selected items: {this.props.availTabPageSelected.length}
                         </span>
                     </a>
                 );
@@ -40,7 +35,7 @@ class SelectedInternal extends Component {
 SelectedInternal.propTypes = {
     showSelectedAvails: PropTypes.bool,
     availTabPageSelected: PropTypes.array,
-    toggleShowSelected: PropTypes.func
+    toggleShowSelected: PropTypes.func,
 };
 
 export const Selected = connect(mapStateToProps, null)(SelectedInternal);

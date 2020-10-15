@@ -1,11 +1,11 @@
 import jwtDecode from 'jwt-decode';
 
 export const getTokenDuration = token => {
-    return (token.exp * 1000) - new Date().getTime();
+    return token.exp * 1000 - new Date().getTime();
 };
 
 export const isTokenExpired = token => {
-    return token.exp < (new Date().getTime() / 1000);
+    return token.exp < new Date().getTime() / 1000;
 };
 
 export const isTokenValid = (token, url) => {

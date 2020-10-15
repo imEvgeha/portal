@@ -21,20 +21,28 @@ class TerritoryMetadataCreateTab extends Component {
             <AvField
                 type="select"
                 name="locale"
-                label={<span> Locale<span style={{ color: 'red' }}>*</span></span>}
+                label={
+                    <span>
+                        {' '}
+                        Locale<span style={{color: 'red'}}>*</span>
+                    </span>
+                }
                 id="territoryLocal"
                 required={this.props.isRequired}
                 onChange={this.props.handleChange}
                 errorMessage="Field cannot be empty!"
             >
                 <option value="">Select Country</option>
-                {
-                    locale && locale.value.map((e, index) => {
-                        if(e.countryName !== null) {
-                            return <option key={index} value={e.countryCode}>{e.countryName}</option>;
+                {locale &&
+                    locale.value.map((e, index) => {
+                        if (e.countryName !== null) {
+                            return (
+                                <option key={index} value={e.countryCode}>
+                                    {e.countryName}
+                                </option>
+                            );
                         }
-                    })
-                }
+                    })}
             </AvField>
         );
     };
@@ -43,12 +51,8 @@ class TerritoryMetadataCreateTab extends Component {
         return (
             <div id="territoryMetadataCreate">
                 <Container>
-                    <Row style={{ padding: '15px' }}>
-                        <Col>
-                            {
-                                this.renderLocale()
-                            }
-                        </Col>
+                    <Row style={{padding: '15px'}}>
+                        <Col>{this.renderLocale()}</Col>
                         <Col>
                             <AvField
                                 label="Box Office"
@@ -58,13 +62,13 @@ class TerritoryMetadataCreateTab extends Component {
                                 placeholder="Enter Box Office"
                                 onChange={this.props.handleChange}
                                 validate={{
-                                    pattern: { value: '^[0-9]+$' },
-                                    maxLength: { value: 10 }
+                                    pattern: {value: '^[0-9]+$'},
+                                    maxLength: {value: 10},
                                 }}
                             />
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px' }}>
+                    <Row style={{padding: '15px'}}>
                         <Col>
                             <AvField
                                 label="Release Year"
@@ -74,9 +78,9 @@ class TerritoryMetadataCreateTab extends Component {
                                 placeholder="Enter Release Year"
                                 onChange={this.props.handleChange}
                                 validate={{
-                                    pattern: { value: '^[0-9]+$' },
-                                    minLength: { value: 4 },
-                                    maxLength: { value: 4 }
+                                    pattern: {value: '^[0-9]+$'},
+                                    minLength: {value: 4},
+                                    maxLength: {value: 4},
                                 }}
                             />
                         </Col>
@@ -89,7 +93,7 @@ class TerritoryMetadataCreateTab extends Component {
                             />
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px' }}>
+                    <Row style={{padding: '15px'}}>
                         <Col>
                             <NexusDatePicker
                                 label="Home Video Release Date"
@@ -107,7 +111,7 @@ class TerritoryMetadataCreateTab extends Component {
                             />
                         </Col>
                     </Row>
-                    <Row style={{ padding: '15px' }}>
+                    <Row style={{padding: '15px'}}>
                         <Col>
                             <NexusDatePicker
                                 label="Theatrical Release Date"
@@ -136,9 +140,8 @@ TerritoryMetadataCreateTab.propTypes = {
     handleChangeDate: PropTypes.func.isRequired,
     isRequired: PropTypes.bool.isRequired,
     configLocale: PropTypes.array,
-    territories: PropTypes.object
+    territories: PropTypes.object,
 };
-
 
 const mapStateToProps = state => {
     return {

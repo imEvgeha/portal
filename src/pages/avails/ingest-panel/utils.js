@@ -1,7 +1,11 @@
 import {URL} from '../../../util/Common';
 import Constants from './constants';
 
-const {STATUS_LIST, filterKeys: {LICENSOR, STATUS, RECEIVED_FROM, RECEIVED_TO}, URLFilterKeys} = Constants;
+const {
+    STATUS_LIST,
+    filterKeys: {LICENSOR, STATUS, RECEIVED_FROM, RECEIVED_TO},
+    URLFilterKeys,
+} = Constants;
 
 export const getInitialFilters = () => {
     const status = URL.getParamIfExists(URLFilterKeys[STATUS]);

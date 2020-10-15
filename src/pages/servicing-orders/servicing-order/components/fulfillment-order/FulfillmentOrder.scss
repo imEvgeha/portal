@@ -1,43 +1,42 @@
 .fulfillment-order {
-
-  &__title {
-    &--text {
-      font-size: 29px;
-      color: #42526e;
+    &__title {
+        &--text {
+            font-size: 29px;
+            color: #42526e;
+        }
     }
-  }
 
-  &__row {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin-bottom: 1.7rem;  //TODO: Create mixin for calculating spacing
-  }
+    &__row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-bottom: 1.7rem; //TODO: Create mixin for calculating spacing
+    }
 
-  &__header {
-    justify-content: space-between;
-  }
+    &__header {
+        justify-content: space-between;
+    }
 
-  hr {
-    margin: 1.7rem 0;
-  }
+    hr {
+        margin: 1.7rem 0;
+    }
 
-  /* AtlasKit Bugfix */
-  input[disabled] {
-    height: auto;
-  }
+    /* AtlasKit Bugfix */
+    input[disabled] {
+        height: auto;
+    }
 
-  &__button-row {
-    display: flex;
-    justify-content: flex-end;
-    margin: 1.14rem;
-  }
+    &__button-row {
+        display: flex;
+        justify-content: flex-end;
+        margin: 1.14rem;
+    }
 
-  &__input {
-    margin-bottom: 1.14rem;
-  }
+    &__input {
+        margin-bottom: 1.14rem;
+    }
 }
 
 .right-align {
-  text-align: right;
+    text-align: right;
 }

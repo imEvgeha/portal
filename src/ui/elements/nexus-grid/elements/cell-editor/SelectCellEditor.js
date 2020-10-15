@@ -17,7 +17,7 @@ class SelectCellEditor extends Component {
     isPopup = () => {
         const {options} = this.props;
         return !!options.length;
-    }
+    };
 
     // eslint-disable-next-line react/destructuring-assignment
     getValue = () => this.state.value.value;
@@ -48,10 +48,7 @@ class SelectCellEditor extends Component {
 
 SelectCellEditor.propTypes = {
     options: PropTypes.array,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-    ]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 SelectCellEditor.defaultProps = {

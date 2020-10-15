@@ -12,13 +12,7 @@ const Toast = ({toasts, addToast, removeToast}) => {
         setIsOverlayActive(!!isWithOverlay);
     }, [toasts]);
 
-    return (
-        <NexusToastNotification
-            toasts={toasts}
-            addToast={addToast}
-            removeToast={removeToast}
-        />
-    );
+    return <NexusToastNotification toasts={toasts} addToast={addToast} removeToast={removeToast} />;
 };
 
 Toast.propTypes = {

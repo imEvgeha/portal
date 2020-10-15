@@ -1,24 +1,24 @@
 .nexus-c-servicing-orders-table-status-bar {
-  position: absolute;
-  top: calc(100% - 1px);
-  height: 35px;
-  width: 100%;
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border: solid 1px #bdc3c7;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  font-size: 12px;
+    position: absolute;
+    top: calc(100% - 1px);
+    height: 35px;
+    width: 100%;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: solid 1px #bdc3c7;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    font-size: 12px;
 
-  &__description {
-    &:not(:last-of-type) {
-      margin-right: 12px;
+    &__description {
+        &:not(:last-of-type) {
+            margin-right: 12px;
+        }
     }
-  }
 
-  &__value {
-    font-weight: bold;
-  }
+    &__value {
+        font-weight: bold;
+    }
 }

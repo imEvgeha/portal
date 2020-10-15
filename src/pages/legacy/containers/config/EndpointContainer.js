@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import FontAwesome from 'react-fontawesome';
-import styled, { css } from 'styled-components';
+import styled, {css} from 'styled-components';
 import Pagination from '@atlaskit/pagination';
 import {QuickSearch} from '@atlaskit/quick-search';
-import { TextHeader } from '../../components/navigation/CustomNavigationElements';
-import { INPUT_TIMEOUT } from '../../constants/common-ui';
-import { configService } from './service/ConfigService';
-import { getConfigApiValues } from '../../common/CommonConfigService';
+import {TextHeader} from '../../components/navigation/CustomNavigationElements';
+import {INPUT_TIMEOUT} from '../../constants/common-ui';
+import {configService} from './service/ConfigService';
+import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
-import { Can, can } from '../../../../ability';
+import {Can, can} from '../../../../ability';
 import './ConfigUI.scss';
 
 const DataContainer = styled.div`
@@ -30,16 +30,22 @@ const DataBody = styled.div`
 const CustomContainer = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
-    ${props => props.left && css`
-        width: 100%;
-    `}
-    ${props => props.center && css`
-        width: 400px;        
-        margin: auto;
-    `}
-    ${props => props.right && css`
-        float:right;
-    `}
+    ${props =>
+        props.left &&
+        css`
+            width: 100%;
+        `}
+    ${props =>
+        props.center &&
+        css`
+            width: 400px;
+            margin: auto;
+        `}
+    ${props =>
+        props.right &&
+        css`
+            float: right;
+        `}
 `;
 
 const ListContainer = styled.div`
@@ -53,13 +59,13 @@ const ListContainer = styled.div`
 const ListItem = styled.div`
     display: flex;
     justify-content: space-between;
-    border: 1px solid #DDD;
+    border: 1px solid #ddd;
     padding: 10px;
     width: 100%;
     border-radius: 3px;
     margin-top: 2px;
     &:nth-child(even) {
-        background: #F9F9F9;
+        background: #f9f9f9;
     }
 `;
 
@@ -68,11 +74,11 @@ const CustomButton = styled.div`
     font-size: 14px;
     border-radius: 3px;
     cursor: pointer;
-    background: #EBEDF0;
+    background: #ebedf0;
     color: #666;
     padding: 7px 10px 7px;
     &:hover {
-        background: #B8BABC;
+        background: #b8babc;
     }
 `;
 
@@ -81,7 +87,6 @@ export const cache = {};
 const defaultPageSize = 13;
 
 export class EndpointContainer extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -92,7 +97,7 @@ export class EndpointContainer extends Component {
             searchValue: '',
             isLoading: false,
             currentRecord: null,
-            pageSize: defaultPageSize
+            pageSize: defaultPageSize,
         };
 
         this.keyInputTimeout = 0;
@@ -103,33 +108,40 @@ export class EndpointContainer extends Component {
     componentDidMount() {
         const {selectedApi, visible} = this.props;
         this.calculatePageSize();
-        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || [];
-        if(visible) {
+        const fieldNames =
+            (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) ||
+            [];
+        if (visible) {
             this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
         }
-        window.addEventListener('resize', function () {
-            this.calculatePageSize();
-        }.bind(this));
+        window.addEventListener(
+            'resize',
+            function () {
+                this.calculatePageSize();
+            }.bind(this)
+        );
     }
 
     componentDidUpdate(prevProps) {
         const {selectedApi, visible} = this.props;
-        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || [];
-        if(visible && visible !== prevProps.visible){
+        const fieldNames =
+            (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) ||
+            [];
+        if (visible && visible !== prevProps.visible) {
             this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', this.state.searchValue);
         }
     }
 
     calculatePageSize = () => {
         const h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-        const windowViewPort = (h) / 10;
+        const windowViewPort = h / 10;
         const staticSectionVH = windowViewPort > 90 ? 5 : windowViewPort > 50 ? 20 : 30;
         let numberOfItems = Math.ceil((defaultPageSize * (windowViewPort - staticSectionVH)) / 100);
         numberOfItems = numberOfItems <= 0 ? 1 : numberOfItems;
         this.setState({
-            pageSize: numberOfItems
+            pageSize: numberOfItems,
         });
-    }
+    };
 
     loadEndpointData = (page, searchField, searchValue) => {
         const {selectedApi} = this.props;
@@ -142,108 +154,136 @@ export class EndpointContainer extends Component {
                 searchField: searchField,
                 currentPage: page,
             });
-            getConfigApiValues(selectedApi && selectedApi.urls && selectedApi.urls['search'], page - 1, this.state.pageSize, null, searchField, searchValue)
-                .then((res) => {
-                    this.setState({
-                        pages: Array.from({ length: Math.ceil(res.total / this.state.pageSize < 1 ? 1 : res.total / this.state.pageSize) }, (v, k) => k + 1),
-                        data: res.data,
-                        total: res.total,
-                        isLoading: false,
-                    });
+            getConfigApiValues(
+                selectedApi && selectedApi.urls && selectedApi.urls['search'],
+                page - 1,
+                this.state.pageSize,
+                null,
+                searchField,
+                searchValue
+            ).then(res => {
+                this.setState({
+                    pages: Array.from(
+                        {length: Math.ceil(res.total / this.state.pageSize < 1 ? 1 : res.total / this.state.pageSize)},
+                        (v, k) => k + 1
+                    ),
+                    data: res.data,
+                    total: res.total,
+                    isLoading: false,
                 });
+            });
         }, INPUT_TIMEOUT);
     };
 
-    handleTitleFreeTextSearch = (searchValue) => {
+    handleTitleFreeTextSearch = searchValue => {
         const {selectedApi} = this.props;
-        const fieldNames = (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) || []; 
+        const fieldNames =
+            (selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames) ||
+            [];
         this.loadEndpointData(1, fieldNames.length > 0 ? fieldNames[0] : '', searchValue);
     };
 
     onEditRecord(rec) {
-        this.setState({ currentRecord: rec });
+        this.setState({currentRecord: rec});
     }
 
     editRecord(val) {
         const {selectedApi} = this.props;
-        const newVal = { ...this.state.currentRecord, ...val };
+        const newVal = {...this.state.currentRecord, ...val};
         if (newVal.id) {
-            configService.update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
+            configService
+                .update(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal.id, newVal)
                 .then(response => {
                     const data = this.state.data.slice(0);
                     const index = data.findIndex(item => item.id === newVal.id);
                     data[index] = response;
-                    this.setState({ data, currentRecord: null });
-                }
-                );
+                    this.setState({data, currentRecord: null});
+                });
         } else {
-            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal)
-                .then(response => {
-                    const data = this.state.data.slice(0);
-                    data.unshift(response);
-                    if(cache[selectedApi.urls['CRUD']]) {     
-                        cache[selectedApi.urls['CRUD']] = data;
-                    }
-                    this.setState(prevState => ({ data, total: prevState.total + 1, currentRecord: null }));
+            configService.create(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], newVal).then(response => {
+                const data = this.state.data.slice(0);
+                data.unshift(response);
+                if (cache[selectedApi.urls['CRUD']]) {
+                    cache[selectedApi.urls['CRUD']] = data;
                 }
-                );
+                this.setState(prevState => ({data, total: prevState.total + 1, currentRecord: null}));
+            });
         }
-
     }
 
     onNewRecord() {
-        this.setState({ currentRecord: {} });
+        this.setState({currentRecord: {}});
     }
 
-    onRemoveItem = (item) => {
+    onRemoveItem = item => {
         const {selectedApi} = this.props;
         configService.delete(selectedApi && selectedApi.urls && selectedApi.urls['CRUD'], item.id);
         this.loadEndpointData(this.state.currentPage);
     };
 
-    getLabel(selectedApi, item, noEmpty = true){
-        const result = selectedApi && Array.isArray(selectedApi.displayValueFieldNames) && selectedApi.displayValueFieldNames.reduce((acc, curr) => {
-            let result = [...acc];
-            if (item[curr]) {
-                result = [...acc, item[curr]];
-            }
-            return result;
-        }, []);
-        return (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) || (noEmpty && '[id = ' + item.id + ']');
+    getLabel(selectedApi, item, noEmpty = true) {
+        const result =
+            selectedApi &&
+            Array.isArray(selectedApi.displayValueFieldNames) &&
+            selectedApi.displayValueFieldNames.reduce((acc, curr) => {
+                let result = [...acc];
+                if (item[curr]) {
+                    result = [...acc, item[curr]];
+                }
+                return result;
+            }, []);
+        return (
+            (Array.isArray(result) && result.join(selectedApi.displayValueDelimiter || ' ,')) ||
+            (noEmpty && '[id = ' + item.id + ']')
+        );
     }
 
-    render() {        
+    render() {
         const {selectedApi} = this.props;
         const canUpdate = can('update', 'ConfigUI');
         const canCreate = can('create', 'ConfigUI');
 
         return (
             <DataContainer>
-                <TextHeader>{`${selectedApi && selectedApi.displayName} (${this.state.total})`}
+                <TextHeader>
+                    {`${selectedApi && selectedApi.displayName} (${this.state.total})`}
                     {canCreate && this.state.currentRecord === null && (
                         <CustomButton onClick={this.onNewRecord}>
                             <FontAwesome
-
-                                name='plus'
-                                style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '15px', marginRight: '5px'}}
-                                color='#111'
+                                name="plus"
+                                style={{
+                                    marginTop: '5px',
+                                    cursor: 'pointer',
+                                    color: '#666',
+                                    fontSize: '15px',
+                                    marginRight: '5px',
+                                }}
+                                color="#111"
                             />
                             Add
                         </CustomButton>
-                      )}
+                    )}
 
                     <div style={{clear: 'both'}} />
                 </TextHeader>
                 {this.state.currentRecord && (
                     <DataBody>
-                        <CreateEditConfigForm onRemoveItem={this.onRemoveItem} schema={selectedApi && selectedApi.uiSchema} label={this.getLabel(selectedApi, this.state.currentRecord, false)} displayName={selectedApi && selectedApi.displayName} value={this.state.currentRecord} onSubmit={this.editRecord} onCancel={() => this.setState({ currentRecord: null })} />
+                        <CreateEditConfigForm
+                            onRemoveItem={this.onRemoveItem}
+                            schema={selectedApi && selectedApi.uiSchema}
+                            label={this.getLabel(selectedApi, this.state.currentRecord, false)}
+                            displayName={selectedApi && selectedApi.displayName}
+                            value={this.state.currentRecord}
+                            onSubmit={this.editRecord}
+                            onCancel={() => this.setState({currentRecord: null})}
+                        />
                     </DataBody>
-                  )}
+                )}
                 <DataBody>
                     <CustomContainer left>
                         <QuickSearch
                             isLoading={this.state.isLoading}
-                            onSearchInput={({ target }) => {
+                            onSearchInput={({target}) => {
                                 this.handleTitleFreeTextSearch(target.value);
                             }}
                             value={this.state.searchValue}
@@ -256,19 +296,27 @@ export class EndpointContainer extends Component {
                                 if (i < this.state.pageSize) {
                                     return (
                                         <ListItem key={i}>
-                                            {
-                                                canUpdate ? (
-                                                    <a href="#" className="text-truncate" onClick={() => this.onEditRecord(item)}>
-                                                        {label}
-                                                    </a>
-                                                  )
-                                                : <span className="text-truncate">{label}</span>
-                                            }
+                                            {canUpdate ? (
+                                                <a
+                                                    href="#"
+                                                    className="text-truncate"
+                                                    onClick={() => this.onEditRecord(item)}
+                                                >
+                                                    {label}
+                                                </a>
+                                            ) : (
+                                                <span className="text-truncate">{label}</span>
+                                            )}
                                             <Can I="delete" a="ConfigUI">
                                                 <FontAwesome
-                                                    name='times'
-                                                    style={{marginTop: '5px', cursor: 'pointer', color: '#666', fontSize: '16px'}}
-                                                    color='#111'
+                                                    name="times"
+                                                    style={{
+                                                        marginTop: '5px',
+                                                        cursor: 'pointer',
+                                                        color: '#666',
+                                                        fontSize: '16px',
+                                                    }}
+                                                    color="#111"
                                                     onClick={() => this.onRemoveItem(item)}
                                                 />
                                             </Can>
@@ -279,14 +327,15 @@ export class EndpointContainer extends Component {
                         </ListContainer>
                     )}
                     <CustomContainer center>
-                        <Pagination 
+                        <Pagination
                             selectedIndex={this.state.currentPage - 1}
                             pages={this.state.pages}
-                            onChange={(event, newPage) => this.loadEndpointData(newPage, this.state.searchField, this.state.searchValue)} 
+                            onChange={(event, newPage) =>
+                                this.loadEndpointData(newPage, this.state.searchField, this.state.searchValue)
+                            }
                         />
                     </CustomContainer>
                 </DataBody>
-
             </DataContainer>
         );
     }
@@ -299,5 +348,5 @@ EndpointContainer.propTypes = {
 
 EndpointContainer.defaultProps = {
     selectedApi: {},
-    visible: false
+    visible: false,
 };

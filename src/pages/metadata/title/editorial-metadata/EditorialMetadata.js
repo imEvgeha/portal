@@ -4,7 +4,6 @@ import NexusPersonsList from '../../../../ui/elements/nexus-persons-list/NexusPe
 import {CAST_CONFIG, CREW_CONFIG} from '../../../../ui/elements/nexus-persons-list/constants';
 import {getFilteredCastList, getFilteredCrewList} from '../../../legacy/constants/metadata/configAPI';
 
-
 const EditorialMetadata = ({data}) => {
     // TODO: temporary integration of NexusPersonsList here as PoC
     // will be moved after folder structure is implemented
@@ -15,15 +14,11 @@ const EditorialMetadata = ({data}) => {
             {data && data.length > 0 && (
                 <>
                     Read Only
-                    <NexusPersonsList
-                        personsList={getFilteredCastList(data[0].castCrew, false)}
-                        hasCharacter
-                    />
+                    <NexusPersonsList personsList={getFilteredCastList(data[0].castCrew, false)} hasCharacter />
                     <NexusPersonsList
                         uiConfig={CREW_CONFIG}
                         personsList={getFilteredCrewList(data[0].castCrew, false)}
                     />
-
                     Editable
                     <NexusPersonsList
                         uiConfig={CAST_CONFIG}

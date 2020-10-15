@@ -2,15 +2,15 @@ import styled from 'styled-components';
 
 export const SideMenu = styled.div`
     width: 15%;
-    background-color: ${props => props.primary ? '#F1F6F7' : 'white'};
-    float:left;
+    background-color: ${props => (props.primary ? '#F1F6F7' : 'white')};
+    float: left;
     height: calc(100vh - 90px);
-    padding: 15px;    
-    overflow-y: ${props => props.isScrollable ? 'scroll' : 'none'};
+    padding: 15px;
+    overflow-y: ${props => (props.isScrollable ? 'scroll' : 'none')};
 `;
 
 export const TextHeader = styled.span`
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid #ddd;
     display: block;
     width: 95%;
     font-size: 22px;
@@ -19,16 +19,16 @@ export const TextHeader = styled.span`
     color: #273568;
     margin-top: 10px;
     padding-bottom: 10px;
-    padding-left: 15px; 
+    padding-left: 15px;
 `;
 
 export const GroupHeader = styled.div`
-     font-size: 12px;
-     font-weight: bold;
-     color: #666;
-     text-transform: uppercase;
-     margin-top: 40px;
-     padding-left: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+    margin-top: 40px;
+    padding-left: 10px;
 `;
 
 export const ListParent = styled.ul`
@@ -49,6 +49,6 @@ export const ListElement = styled.li`
     font-weight: bold;
     cursor: pointer;
     &:hover {
-        background-color: #E8EDEE;
+        background-color: #e8edee;
     }
 `;

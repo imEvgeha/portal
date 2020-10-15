@@ -27,4 +27,3 @@ BackNavigationByUrl.defaultProps = {
 };
 
 export default BackNavigationByUrl;
-

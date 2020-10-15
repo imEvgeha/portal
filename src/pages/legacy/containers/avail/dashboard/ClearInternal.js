@@ -9,15 +9,11 @@ const mapStateToProps = state => {
     };
 };
 class ClearInternal extends Component {
-
-    render(){
+    render() {
         if (this.props.showSelectedAvails && this.props.availTabPageSelected.length > 0)
             return (
                 <a href="#" onClick={this.props.clearAllSelected}>
-                    <span
-                        className="nx-container-margin table-top-text"
-                        id="dashboard-clear-all-selected"
-                    >
+                    <span className="nx-container-margin table-top-text" id="dashboard-clear-all-selected">
                         Clear All
                     </span>
                 </a>
@@ -29,7 +25,7 @@ class ClearInternal extends Component {
 ClearInternal.propTypes = {
     showSelectedAvails: PropTypes.bool,
     availTabPageSelected: PropTypes.array,
-    clearAllSelected: PropTypes.func
+    clearAllSelected: PropTypes.func,
 };
 
 export const Clear = connect(mapStateToProps, null)(ClearInternal);

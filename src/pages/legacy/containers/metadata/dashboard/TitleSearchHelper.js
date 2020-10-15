@@ -1,20 +1,17 @@
 import {store} from '../../../../../index';
-import {
-    searchFormSetSearchCriteria,
-    searchFormSetAdvancedSearchCriteria,
-} from '../../../stores/actions/metadata/index';
+import {searchFormSetSearchCriteria, searchFormSetAdvancedSearchCriteria} from '../../../stores/actions/metadata/index';
 
 import {titleServiceManager} from '../service/TitleServiceManager';
 import {momentToISO} from '../../../../../util/Common';
 
 export const titleSearchHelper = {
-    loadAdvancedSearchForm: (filter) => {
+    loadAdvancedSearchForm: filter => {
         store.dispatch(searchFormSetAdvancedSearchCriteria(filter));
     },
 
-    prepareAdvancedSearchCall: (searchCriteria) => {
+    prepareAdvancedSearchCall: searchCriteria => {
         const response = {};
-        for (const key of Object.keys(searchCriteria) ) {
+        for (const key of Object.keys(searchCriteria)) {
             const criteria = searchCriteria[key];
             if (criteria) {
                 if (!(criteria instanceof Object) && typeof criteria === 'string') {
@@ -47,6 +44,5 @@ export const titleSearchHelper = {
 
     advancedSearch(searchCriteria) {
         titleServiceManager.search(this.prepareAdvancedSearchCall(searchCriteria));
-    }
-
+    },
 };

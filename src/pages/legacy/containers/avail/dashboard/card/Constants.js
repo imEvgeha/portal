@@ -25,6 +25,6 @@ export default {
             displayName: 'Fatal',
         },
     ],
-    REFRESH_INTERVAL: 5*1000, //5 seconds
+    REFRESH_INTERVAL: 5 * 1000, //5 seconds
     PAGE_SIZE: 100,
 };
