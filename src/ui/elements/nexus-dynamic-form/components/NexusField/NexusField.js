@@ -155,6 +155,7 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
+
                 return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
             default:
                 return;

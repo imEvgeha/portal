@@ -283,6 +283,7 @@
                                 "type": "datetime",
                                 "dateType": "timestamp",
                                 "path": "dateWithdrawn",
+                                "isReadOnly": true,
                                 "viewConfig": [
                                     {
                                         "view": "CREATE",
@@ -290,7 +291,7 @@
                                     },
                                     {
                                         "view": "EDIT",
-                                        "defaultValue": "2020-07-21T12:53:36.368Z"
+                                        "defaultValue": "today"
                                     }
                                 ]
                             },

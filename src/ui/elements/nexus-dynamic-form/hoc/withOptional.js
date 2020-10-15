@@ -8,8 +8,8 @@ const withOptional = () => WrappedComponent => {
 
     const ComposedComponent = props => {
         const {isOptional, setFieldValue, path, view, ...fieldProps} = props;
-        const {value} = fieldProps;
-        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ""));
+        const {value, ...restFieldProps} = fieldProps;
+        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== "" && value !== "today"));
 
         const changeCheckboxValue = () => {
             const newVisible = !visible;
@@ -19,13 +19,20 @@ const withOptional = () => WrappedComponent => {
             }
         };
 
+        const getDateValue = (value) => {
+            const val = value === 'today' ? new Date() : value;
+
+            return val;
+        };
+
         return (
             isOptional?
                 <div className='nexuc-c-with-optional'>
                     <Checkbox onChange={changeCheckboxValue} defaultChecked={visible} />
                     {visible &&
                         <WrappedComponent
-                            {...fieldProps}
+                            {...restFieldProps}
+                            value={getDateValue(value)}
                         />
                     }
                 </div>
