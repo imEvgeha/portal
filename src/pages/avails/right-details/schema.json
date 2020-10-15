@@ -747,11 +747,93 @@
         "sections": [
             {
                 "title": "Localization",
-                "fields": {}
+                "fields": {
+                    "holdbackLanguage": {
+                        "name": "Holdback Language",
+                        "type": "multiselect",
+                        "path": "holdbackLanguage"
+                    },
+                    "storeLanguage": {
+                        "name": "Store Language",
+                        "type": "select",
+                        "path": "storeLanguage"
+                    },
+                    "assetLanguage": {
+                        "name": "Asset Language",
+                        "type": "select",
+                        "path": "assetLanguage"
+                    },
+                    "language": {
+                        "name": "Language",
+                        "type": "string",
+                        "path": "language"
+                    },
+                    "languageAudioTypes": {
+                        "name": "Language Audio Types",
+                        "type": "array",
+                        "path": "languageAudioTypes",
+                        "fields": {
+                            "language": {
+                                "name": "Language",
+                                "type": "select",
+                                "path": "language",
+                                "isRequired": true,
+                                "optionsConfig": {
+                                    "defaultValuePath": "languageCode",
+                                    "defaultLabelPath": "languageName"
+                                }
+                            },
+                            "audioType": {
+                                "name": "Audio Type",
+                                "type": "select",
+                                "path": "audioType"
+                            }
+                        }
+                    },
+                    "localizationType": {
+                        "name": "Localization Type",
+                        "type": "select",
+                        "path": "localizationType",
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "Sub", "value": "Sub" },
+                                { "label": "Dub", "value": "Dub" },
+                                { "label": "Subdub", "value": "Subdub" },
+                                { "label": "Any", "value": "Any" }
+                            ]
+                        }
+                    },
+                    "requiredFulfillmentLanguages": {
+                        "name": "Required Fulfillment Languages",
+                        "type": "multiselect",
+                        "path": "requiredFulfillmentLanguages"
+                    },
+                    "audioDescription": {
+                        "name": "Audio Description",
+                        "type": "multiselect",
+                        "path": "audioDescription"
+                    },
+                    "subtitles": {
+                        "name": "Subtitles",
+                        "type": "multiselect",
+                        "path": "subtitles"
+                    }
+                }
             },
             {
                 "title": "Captions",
-                "fields": {}
+                "fields": {
+                    "captionIncluded": {
+                        "name": "Caption Included",
+                        "type": "boolean",
+                        "path": "captions.captionIncluded"
+                    },
+                    "captionExemption": {
+                        "name": "Caption Exemption",
+                        "type": "number",
+                        "path": "captions.captionExemption"
+                    }
+                }
             }
         ]
     },
