@@ -488,6 +488,11 @@
                                 { "label": "Approved", "value": "Approved" }
                             ]
                         }
+                    },
+                    "companyDisplayCredit": {
+                        "name": "Company Display Credit",
+                        "type": "string",
+                        "path": "companyDisplayCredit"
                     }
                 }
             },
