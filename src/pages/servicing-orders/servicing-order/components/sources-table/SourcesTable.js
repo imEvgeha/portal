@@ -30,6 +30,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
+
     const barcodes = dataArray.map(item => item.barcode.trim());
 
     useEffect(
@@ -182,7 +183,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const addEmptySourceRow = () => {
-        if (sources[sources.length - 1].barcode === '')
+        if (sources[0].barcode === '')
             showToastForErrors(null, {
                 errorToast: {
                     title: 'Invalid Action',
@@ -218,7 +219,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
                 {sources.length > 0 && (
-                    <div className="nexus-c-services-table__add-icon">
+                    <div className="nexus-c-source-table__add-icon">
                         {!isDisabled && <Add onClick={addEmptySourceRow} />}
                     </div>
                 )}
