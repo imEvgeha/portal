@@ -47,7 +47,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
-        width: 150,
+        minWidth: 200,
     },
     {
         colId: 'taskStatus',
@@ -76,7 +76,7 @@ export const COLUMN_MAPPINGS = [
         searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
-        width: 150,
+        minWidth: 200,
     },
     {
         colId: 'OrderExternalID',
@@ -194,13 +194,6 @@ export const INITIAL_SEARCH_PARAMS = {
             operator: 'in',
             logicalAnd: true,
             value: TASK_STATUS_ENUM.join(','),
-        },
-        {
-            fieldName: 'actualOwner',
-            logicalAnd: true,
-            operator: 'equal',
-            value: '',
-            valueDataType: 'String',
         },
     ],
     sortCriterion: [
