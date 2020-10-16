@@ -7,7 +7,7 @@ import HistoryURL from '../util/HistoryURL';
 import PropTypes from 'prop-types';
 import {
     searchFormSetAdvancedHistorySearchCriteria,
-    searchFormSetHistorySearchCriteria
+    searchFormSetHistorySearchCriteria,
 } from '../../../stores/actions/avail/history';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -20,11 +20,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     searchFormSetAdvancedHistorySearchCriteria,
-    searchFormSetHistorySearchCriteria
+    searchFormSetHistorySearchCriteria,
 };
 
 class AvailIngestHistoryContainer extends React.Component {
-
     constructor(props) {
         super(props);
     }
@@ -33,16 +32,19 @@ class AvailIngestHistoryContainer extends React.Component {
         this.getSearchCriteriaFromURL();
     }
 
-
-    getSearchCriteriaFromURL(){
+    getSearchCriteriaFromURL() {
         const params = HistoryURL.URLtoArray(this.props.location.search);
         const criteria = HistoryURL.ArraytoFilter(params);
-        if(criteria.received){
-            if(criteria.received.from && criteria.received.from.indexOf('Z') > -1) {
+        if (criteria.received) {
+            if (criteria.received.from && criteria.received.from.indexOf('Z') > -1) {
                 criteria.received.from = moment.utc(criteria.received.from).local().format('YYYY-MM-DD[T]HH:mm:ss.SSS');
             }
-            if(criteria.received.to && criteria.received.to.indexOf('Z') > -1) {
-                criteria.received.to = moment.utc(criteria.received.to).local().startOf('day').format('YYYY-MM-DD[T]HH:mm:ss.SSS');
+            if (criteria.received.to && criteria.received.to.indexOf('Z') > -1) {
+                criteria.received.to = moment
+                    .utc(criteria.received.to)
+                    .local()
+                    .startOf('day')
+                    .format('YYYY-MM-DD[T]HH:mm:ss.SSS');
             }
         }
         this.props.searchFormSetAdvancedHistorySearchCriteria(criteria);
@@ -70,7 +72,7 @@ class AvailIngestHistoryContainer extends React.Component {
 
 AvailIngestHistoryContainer.propTypes = {
     location: PropTypes.object,
-    searchFormSetAdvancedHistorySearchCriteria: PropTypes.func
+    searchFormSetAdvancedHistorySearchCriteria: PropTypes.func,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvailIngestHistoryContainer);

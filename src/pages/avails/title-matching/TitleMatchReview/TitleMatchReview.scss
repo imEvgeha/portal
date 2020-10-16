@@ -1,13 +1,13 @@
-.nexus-c-title-to-match-review{
-  
-  padding: 15px;
-  >.nexus-c-title {
-    font-weight: normal;
-  }
-  .nexus-c-nexus-grid{
-    height: 300px;
-    .nexus-c-loading-cell-renderer, .nexus-c-loading-cell-renderer__value {
-      overflow: hidden;
+.nexus-c-title-to-match-review {
+    padding: 15px;
+    > .nexus-c-title {
+        font-weight: normal;
     }
-  }
+    .nexus-c-nexus-grid {
+        height: 300px;
+        .nexus-c-loading-cell-renderer,
+        .nexus-c-loading-cell-renderer__value {
+            overflow: hidden;
+        }
+    }
 }

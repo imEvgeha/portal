@@ -43,5 +43,4 @@ SelectedButton.defaultProps = {
     selectedRightsCount: 0,
 };
 
-
 export default SelectedButton;

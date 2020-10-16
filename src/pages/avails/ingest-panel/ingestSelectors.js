@@ -2,25 +2,13 @@ import {createSelector} from 'reselect';
 
 const getIngestReducer = state => state.avails.ingest;
 
-export const getIngests = createSelector(
-    getIngestReducer,
-    ingest => Object.values(ingest.list || {}),
-);
+export const getIngests = createSelector(getIngestReducer, ingest => Object.values(ingest.list || {}));
 
-export const getTotalIngests = createSelector(
-    getIngestReducer,
-    ingest => ingest.total,
-);
+export const getTotalIngests = createSelector(getIngestReducer, ingest => ingest.total);
 
-export const getSelectedIngest = createSelector(
-    getIngestReducer,
-    ingest => ingest.list[ingest.selectedIngestId],
-);
+export const getSelectedIngest = createSelector(getIngestReducer, ingest => ingest.list[ingest.selectedIngestId]);
 
-export const getSelectedAttachmentId = createSelector(
-    getIngestReducer,
-    ingest => ingest.selectedAttachmentId,
-);
+export const getSelectedAttachmentId = createSelector(getIngestReducer, ingest => ingest.selectedAttachmentId);
 
 export const getIngestById = createSelector(
     getIngests,
@@ -30,17 +18,8 @@ export const getIngestById = createSelector(
 
 const getRoot = state => state.root;
 
-export const getSelectValues = createSelector(
-    getRoot,
-    root => root.selectValues,
-);
+export const getSelectValues = createSelector(getRoot, root => root.selectValues);
 
-export const getLicensors = createSelector(
-    getSelectValues,
-    selectValues => selectValues.licensor || [],
-);
+export const getLicensors = createSelector(getSelectValues, selectValues => selectValues.licensor || []);
 
-export const getLicensees = createSelector(
-    getSelectValues,
-    selectValues => selectValues.licensee || [],
-);
+export const getLicensees = createSelector(getSelectValues, selectValues => selectValues.licensee || []);

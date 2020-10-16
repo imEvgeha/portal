@@ -7,14 +7,15 @@ import './NexusPersonRO.scss';
 import DefaultUserIcon from '../../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
 import {
-    CustomColumn, CustomEllipsis, CustomRow,
-    ListItemText, ListText, PersonListFlag,
+    CustomColumn,
+    CustomEllipsis,
+    CustomRow,
+    ListItemText,
+    ListText,
+    PersonListFlag,
 } from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
-const NexusPersonRO = ({
-    person,
-    showPersonType,
-}) => {
+const NexusPersonRO = ({person, showPersonType}) => {
     return (
         <Container>
             <CustomRow>
@@ -24,9 +25,7 @@ const NexusPersonRO = ({
                         {showPersonType && (
                             <PersonListFlag>
                                 <span className="nexus-c-person-type">
-                                    <Lozenge appearance="default">
-                                        {getFormatTypeName(person.personType)}
-                                    </Lozenge>
+                                    <Lozenge appearance="default">{getFormatTypeName(person.personType)}</Lozenge>
                                 </span>
                             </PersonListFlag>
                         )}
@@ -41,13 +40,10 @@ const NexusPersonRO = ({
                             <ListText className="nexus-c-person-character">
                                 <PersonListFlag>
                                     <span className="nexus-c-person-separator">
-                                        <Lozenge appearance="default">CHARACTER
-                                        </Lozenge>
+                                        <Lozenge appearance="default">CHARACTER</Lozenge>
                                     </span>
                                 </PersonListFlag>
-                                <ListItemText title={person.characterName}>
-                                    {person.characterName}
-                                </ListItemText>
+                                <ListItemText title={person.characterName}>{person.characterName}</ListItemText>
                             </ListText>
                         </CustomEllipsis>
                     </CustomColumn>

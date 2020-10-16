@@ -1,136 +1,136 @@
 [
-  {
-    "colId": "eventId",
-    "javaVariableName": "eventId",
-    "field": "eventId",
-    "headerName": "Event ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 200,
-    "width": 260
-  },
-  {
-    "colId": "correlationId",
-    "javaVariableName": "correlationId",
-    "field": "correlationId",
-    "headerName": "Correlation ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 200,
-    "width": 260
-  },
-  {
-    "colId": "eventType",
-    "javaVariableName": "eventType",
-    "field": "eventType",
-    "headerName": "Event Type",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 200
-  },
-  {
-    "colId": "eventSource",
-    "javaVariableName": "eventSource",
-    "field": "eventSource",
-    "headerName": "Event Source",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 200
-  },
-  {
-    "colId": "tenantId",
-    "javaVariableName": "tenantId",
-    "width": 100,
-    "field": "tenantId",
-    "headerName": "Tenant ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 100
-  },
-  {
-    "colId": "objectId",
-    "javaVariableName": "objectId",
-    "width": 100,
-    "field": "objectId",
-    "headerName": "Object ID",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "minWidth": 120
-  },
-  {
-    "colId": "createdTimeStamp",
-    "javaVariableName": "createdTimeStamp",
-    "field": "createdTimeStamp",
-    "headerName": "Created Time Stamp",
-    "dataType": "timestamp",
-    "searchDataType": "timestamp",
-    "enableSearch": true,
-    "minWidth": 240
-  },
-  {
-    "colId": "postedTimeStamp",
-    "javaVariableName": "postedTimeStamp",
-    "field": "postedTimeStamp",
-    "headerName": "Posted Time Stamp",
-    "dataType": "timestamp",
-    "searchDataType": "timestamp",
-    "enableSearch": true,
-    "hide": true
-  },
-  {
-    "colId": "replyTo",
-    "javaVariableName": "replyTo",
-    "field": "replyTo",
-    "headerName": "Reply to",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "hide": true
-  },
-  {
-    "colId": "principal",
-    "javaVariableName": "principal",
-    "field": "principal",
-    "headerName": "Principal",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "hide": true
-  },
-  {
-    "colId": "avroClassName",
-    "javaVariableName": "avroClassName",
-    "field": "avroClassName",
-    "headerName": "Avro class name",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "hide": true
-  },
-  {
-    "colId": "eventClassName",
-    "javaVariableName": "eventClassName",
-    "field": "eventClassName",
-    "headerName": "Event class name",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "hide": true
-  },
-  {
-    "colId": "summary",
-    "javaVariableName": "summary",
-    "field": "summary",
-    "headerName": "Summary",
-    "dataType": "string",
-    "searchDataType": "string",
-    "enableSearch": true,
-    "hide": true
-  }
+    {
+        "colId": "eventId",
+        "javaVariableName": "eventId",
+        "field": "eventId",
+        "headerName": "Event ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 200,
+        "width": 260
+    },
+    {
+        "colId": "correlationId",
+        "javaVariableName": "correlationId",
+        "field": "correlationId",
+        "headerName": "Correlation ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 200,
+        "width": 260
+    },
+    {
+        "colId": "eventType",
+        "javaVariableName": "eventType",
+        "field": "eventType",
+        "headerName": "Event Type",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 200
+    },
+    {
+        "colId": "eventSource",
+        "javaVariableName": "eventSource",
+        "field": "eventSource",
+        "headerName": "Event Source",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 200
+    },
+    {
+        "colId": "tenantId",
+        "javaVariableName": "tenantId",
+        "width": 100,
+        "field": "tenantId",
+        "headerName": "Tenant ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 100
+    },
+    {
+        "colId": "objectId",
+        "javaVariableName": "objectId",
+        "width": 100,
+        "field": "objectId",
+        "headerName": "Object ID",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "minWidth": 120
+    },
+    {
+        "colId": "createdTimeStamp",
+        "javaVariableName": "createdTimeStamp",
+        "field": "createdTimeStamp",
+        "headerName": "Created Time Stamp",
+        "dataType": "timestamp",
+        "searchDataType": "timestamp",
+        "enableSearch": true,
+        "minWidth": 240
+    },
+    {
+        "colId": "postedTimeStamp",
+        "javaVariableName": "postedTimeStamp",
+        "field": "postedTimeStamp",
+        "headerName": "Posted Time Stamp",
+        "dataType": "timestamp",
+        "searchDataType": "timestamp",
+        "enableSearch": true,
+        "hide": true
+    },
+    {
+        "colId": "replyTo",
+        "javaVariableName": "replyTo",
+        "field": "replyTo",
+        "headerName": "Reply to",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "hide": true
+    },
+    {
+        "colId": "principal",
+        "javaVariableName": "principal",
+        "field": "principal",
+        "headerName": "Principal",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "hide": true
+    },
+    {
+        "colId": "avroClassName",
+        "javaVariableName": "avroClassName",
+        "field": "avroClassName",
+        "headerName": "Avro class name",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "hide": true
+    },
+    {
+        "colId": "eventClassName",
+        "javaVariableName": "eventClassName",
+        "field": "eventClassName",
+        "headerName": "Event class name",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "hide": true
+    },
+    {
+        "colId": "summary",
+        "javaVariableName": "summary",
+        "field": "summary",
+        "headerName": "Summary",
+        "dataType": "string",
+        "searchDataType": "string",
+        "enableSearch": true,
+        "hide": true
+    }
 ]

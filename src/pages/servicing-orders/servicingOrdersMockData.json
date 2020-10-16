@@ -1,61 +1,60 @@
 {
-    "data":
-    [
-      {
-        "external_id": "SR00001113",
-        "so_number": "SR0000123456",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "businessPartnerId": "MGM",
-        "clientProfile": "Lorem Ipsum",
-        "sr_due_date": "2020-04-20T00:00:00.000Z",
-        "submitted_date": "2020-04-20T00:00:00.000Z",
-        "status": "completed",
-        "readiness": "completed"
-      },
-      {
-        "external_id": "SR0000123456",
-        "so_number": "SR0000123456",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "businessPartnerId": "MGM",
-        "clientProfile": "Lorem Ipsum",
-        "sr_due_date": "2020-04-20T00:00:00.000Z",
-        "submitted_date": "2020-04-20T00:00:00.000Z",
-        "status": "on hold",
-        "readiness": "completed"
-      },
-      {
-        "external_id": "SR0000123456",
-        "so_number": "SR0000123456",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "businessPartnerId": "MGM",
-        "clientProfile": "Lorem Ipsum",
-        "sr_due_date": "2020-04-20T00:00:00.000Z",
-        "submitted_date": "2020-04-20T00:00:00.000Z",
-        "status": "not started",
-        "readiness": "completed"
-      },
-      {
-        "external_id": "SR0000123456",
-        "so_number": "SR0000123456",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "businessPartnerId": "MGM",
-        "clientProfile": "Lorem Ipsum",
-        "sr_due_date": "2020-04-20T00:00:00.000Z",
-        "submitted_date": "2020-04-20T00:00:00.000Z",
-        "status": "in progress",
-        "readiness": "completed"
-      },
-      {
-        "external_id": "SR0000123456",
-        "so_number": "SR0000123456",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "businessPartnerId": "MGM",
-        "clientProfile": "Lorem Ipsum",
-        "sr_due_date": "2020-04-20T00:00:00.000Z",
-        "submitted_date": "2020-04-20T00:00:00.000Z",
-        "status": "canceled",
-        "readiness": "not configured"
-      }
+    "data": [
+        {
+            "external_id": "SR00001113",
+            "so_number": "SR0000123456",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "businessPartnerId": "MGM",
+            "clientProfile": "Lorem Ipsum",
+            "sr_due_date": "2020-04-20T00:00:00.000Z",
+            "submitted_date": "2020-04-20T00:00:00.000Z",
+            "status": "completed",
+            "readiness": "completed"
+        },
+        {
+            "external_id": "SR0000123456",
+            "so_number": "SR0000123456",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "businessPartnerId": "MGM",
+            "clientProfile": "Lorem Ipsum",
+            "sr_due_date": "2020-04-20T00:00:00.000Z",
+            "submitted_date": "2020-04-20T00:00:00.000Z",
+            "status": "on hold",
+            "readiness": "completed"
+        },
+        {
+            "external_id": "SR0000123456",
+            "so_number": "SR0000123456",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "businessPartnerId": "MGM",
+            "clientProfile": "Lorem Ipsum",
+            "sr_due_date": "2020-04-20T00:00:00.000Z",
+            "submitted_date": "2020-04-20T00:00:00.000Z",
+            "status": "not started",
+            "readiness": "completed"
+        },
+        {
+            "external_id": "SR0000123456",
+            "so_number": "SR0000123456",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "businessPartnerId": "MGM",
+            "clientProfile": "Lorem Ipsum",
+            "sr_due_date": "2020-04-20T00:00:00.000Z",
+            "submitted_date": "2020-04-20T00:00:00.000Z",
+            "status": "in progress",
+            "readiness": "completed"
+        },
+        {
+            "external_id": "SR0000123456",
+            "so_number": "SR0000123456",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "businessPartnerId": "MGM",
+            "clientProfile": "Lorem Ipsum",
+            "sr_due_date": "2020-04-20T00:00:00.000Z",
+            "submitted_date": "2020-04-20T00:00:00.000Z",
+            "status": "canceled",
+            "readiness": "not configured"
+        }
     ],
     "total": 5,
     "page": 0,

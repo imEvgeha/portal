@@ -63,10 +63,7 @@ const FILTERABLE_DATA_TYPES = [
     DATETIME_FIELDS.REGIONAL_MIDNIGHT,
 ];
 
-const MULTISELECT_SEARCHABLE_DATA_TYPES = [
-    'multiselect',
-    'territoryType',
-];
+const MULTISELECT_SEARCHABLE_DATA_TYPES = ['multiselect', 'territoryType'];
 
 const AG_GRID_COLUMN_FILTER = {
     TEXT: 'agTextColumnFilter',
@@ -103,4 +100,3 @@ export {
     AG_GRID_COLUMN_FILTER,
     DEFAULT_SORT_ORDER,
 };
-

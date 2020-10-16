@@ -20,19 +20,11 @@ const getTitlePageNumber = state => {
     return metadata.page;
 };
 
-export const createTitleSelector = () => createSelector(
-    [getTitleId, getTitles],
-    (titleId, titles) => titles[titleId],
-);
+export const createTitleSelector = () => createSelector([getTitleId, getTitles], (titleId, titles) => titles[titleId]);
 
-export const createTitlesSelector = () => createSelector(
-    getTitles,
-    titles => Object.values(titles || {}),
-);
+export const createTitlesSelector = () => createSelector(getTitles, titles => Object.values(titles || {}));
 
-export const createTitlesInfoSelector = () => createSelector(
-    [getTitles, getTitlePageNumber, getTitlePageSize],
-    (titles, page, size) => {
+export const createTitlesInfoSelector = () =>
+    createSelector([getTitles, getTitlePageNumber, getTitlePageSize], (titles, page, size) => {
         return {list: titles, page, size};
-    }
-);
+    });

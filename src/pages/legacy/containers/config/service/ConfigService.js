@@ -11,12 +11,13 @@ export const configService = {
         const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + '/' + endpoint;
         return nexusFetch(url, {
             method: 'post',
-            body: JSON.stringify(data), 
+            body: JSON.stringify(data),
         });
     },
 
     update: (endpoint, id, data) => {
-        const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
+        const url =
+            config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(data),
@@ -24,9 +25,10 @@ export const configService = {
     },
 
     delete: (endpoint, id) => {
-        const url = config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
+        const url =
+            config.get('gateway.configuration') + config.get('gateway.service.configuration') + `/${endpoint}/${id}`;
         return nexusFetch(url, {
             method: 'delete',
         });
-    }
+    },
 };

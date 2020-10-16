@@ -1,28 +1,28 @@
 @import '../../../../styles/config';
 
 .nexus-c-title-header {
-  grid-column: 1/3;
-  display: flex;
-  height: 200px;
-  background-color: map-get($colors, nexus-lighter-grey);
-  border-bottom: 2px solid map-get($colors, nexus-light-grey);
-  align-items: center;
+    grid-column: 1/3;
+    display: flex;
+    height: 200px;
+    background-color: map-get($colors, nexus-lighter-grey);
+    border-bottom: 2px solid map-get($colors, nexus-light-grey);
+    align-items: center;
 }
 
 .nexus-c-title-header__artwork-container {
-  display: flex;
-  justify-content: center;
-  width: 200px;
-  padding: 24px;
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    padding: 24px;
 }
 
 .nexus-c-title-header__artwork {
-  width: 100px;
-  height: 140px;
-  background-color: map-get($colors, nexus-primary-color);
+    width: 100px;
+    height: 140px;
+    background-color: map-get($colors, nexus-primary-color);
 }
 
 .nexus-c-title-header__info-container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }

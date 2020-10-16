@@ -1,13 +1,13 @@
 @import '../../../../../../../styles/config.scss';
 
 .nexus-c-manual-rights-entry__fatal_view {
-  display: flex;
-  flex-direction: column;
-  background: map-get($colors, nexus-white);
-  overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background: map-get($colors, nexus-white);
+    overflow: auto;
 }
 
 .nexus-c-manual-rights-entry__fatal_row {
-  padding: 5px;
-  border-bottom: 1px groove rgb(33, 37, 41);
+    padding: 5px;
+    border-bottom: 1px groove rgb(33, 37, 41);
 }

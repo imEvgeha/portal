@@ -1,5 +1,5 @@
 export default (languages, audioTypes) => {
-    return ([
+    return [
         {
             id: 'audioTypeLanguage',
             label: 'Language',
@@ -8,8 +8,8 @@ export default (languages, audioTypes) => {
             shouldFitContainer: true,
             options: [
                 {
-                    items: languages
-                }
+                    items: languages,
+                },
             ],
         },
         {
@@ -20,9 +20,9 @@ export default (languages, audioTypes) => {
             shouldFitContainer: true,
             options: [
                 {
-                    items: audioTypes
-                }
+                    items: audioTypes,
+                },
             ],
         },
-    ]);
-}
+    ];
+};

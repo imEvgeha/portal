@@ -12,9 +12,7 @@ describe('NexusTab', () => {
     };
 
     beforeEach(() => {
-        wrapper = shallow(
-            <NexusTab {...props} />
-        );
+        wrapper = shallow(<NexusTab {...props} />);
     });
 
     it('should match snapshot', () => {

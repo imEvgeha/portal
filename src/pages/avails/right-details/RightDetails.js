@@ -60,11 +60,10 @@ RightDetails.defaultProps = {
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
-    const selectValuesSelector = detailsSelectors.selectValuesSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
-        selectValues: selectValuesSelector(state, props),
+        selectValues: detailsSelectors.selectValuesSelector(state, props),
     });
 };
 

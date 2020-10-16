@@ -1,19 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
+import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
 import Button from '@atlaskit/button';
-import { RIGHTS_CREATE, RIGHTS_EDIT } from '../../constants/constant-variables';
-import { ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {RIGHTS_CREATE, RIGHTS_EDIT} from '../../constants/constant-variables';
+import {ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import RightAudioLanguageFields from './RightAudioLanguageFields';
 import {getProperAudioLanguageFormValues} from './utils';
 
 // TODO: write this from scratch
 // component rerender 11 times
 class RightAudioLanguageForm extends React.Component {
-
     onSubmit = data => {
-        const properValues = getProperAudioLanguageFormValues(data, this.props.isEdit, this.props.existingAudioLanguageList, this.props.audioLanguageIndex);
+        const properValues = getProperAudioLanguageFormValues(
+            data,
+            this.props.isEdit,
+            this.props.existingAudioLanguageList,
+            this.props.audioLanguageIndex
+        );
         if (properValues) {
             this.props.onSubmit(properValues);
             this.props.onClose();
@@ -21,7 +25,6 @@ class RightAudioLanguageForm extends React.Component {
     };
 
     render() {
-
         return (
             <ModalTransition>
                 {this.props.isOpen && (
@@ -29,9 +32,9 @@ class RightAudioLanguageForm extends React.Component {
                         width="medium"
                         onClose={this.props.onClose}
                         components={{
-                            Container: ({ children, className }) => (
+                            Container: ({children, className}) => (
                                 <Form onSubmit={data => this.onSubmit(data)}>
-                                    {({ formProps }) => (
+                                    {({formProps}) => (
                                         <ModalBody>
                                             <form {...formProps} className={`${className} audio-language-form`}>
                                                 {children}
@@ -39,10 +42,15 @@ class RightAudioLanguageForm extends React.Component {
                                         </ModalBody>
                                     )}
                                 </Form>
-                            )
+                            ),
                         }}
                     >
-                        <ModalHeader><p style={{ color: '#999', fontWeight: 'bold', fontSize: '11px' }}>{this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}</p>Audio Language Data</ModalHeader>
+                        <ModalHeader>
+                            <p style={{color: '#999', fontWeight: 'bold', fontSize: '11px'}}>
+                                {this.props.isEdit ? RIGHTS_EDIT : RIGHTS_CREATE}
+                            </p>
+                            Audio Language Data
+                        </ModalHeader>
                         <RightAudioLanguageFields
                             languageOptions={this.props.languageOptions}
                             audioTypesOptions={this.props.audioTypesOptions}
@@ -72,7 +80,7 @@ RightAudioLanguageForm.propTypes = {
     audioTypesOptions: PropTypes.array,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,
-    existingAudioLanguageList: PropTypes.array
+    existingAudioLanguageList: PropTypes.array,
 };
 
 RightAudioLanguageForm.defaultProps = {

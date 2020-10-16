@@ -1,7 +1,7 @@
 import React from 'react';
 import {isEqual} from 'lodash';
 
-export default function withColumnsReorder(WrappedComponent){
+export default function withColumnsReorder(WrappedComponent) {
     return class extends React.Component {
         constructor(props) {
             super(props);
@@ -15,12 +15,12 @@ export default function withColumnsReorder(WrappedComponent){
                 table: null,
                 columns: this.props.columnsOrder ? this.props.columnsOrder : [],
                 cols: [],
-                columnsSize: {}
+                columnsSize: {},
             };
         }
 
         componentDidMount() {
-            if(this.props.availsMapping) {
+            if (this.props.availsMapping) {
                 this.refreshColumns();
             }
         }
@@ -45,21 +45,25 @@ export default function withColumnsReorder(WrappedComponent){
                 }
             });
             this.setState({columns});
-            if (typeof updateColumnsOrder === 'function'){
+            if (typeof updateColumnsOrder === 'function') {
                 updateColumnsOrder(columns);
             }
         }
 
         onColumnResized(e) {
-            if(e.finished){
-                this.setState({columnsSize:{...this.state.columnsSize, [e.column.colDef.field] : e.column.actualWidth}});
+            if (e.finished) {
+                this.setState({
+                    columnsSize: {...this.state.columnsSize, [e.column.colDef.field]: e.column.actualWidth},
+                });
             }
         }
 
         refreshColumns() {
             const {columnsOrder, availsMapping, updateColumnsOrder} = this.props;
             if (!columnsOrder) {
-                const columns = availsMapping.mappings.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName);
+                const columns = availsMapping.mappings
+                    .filter(({dataType}) => dataType)
+                    .map(({javaVariableName}) => javaVariableName);
                 this.setState({columns});
                 if (updateColumnsOrder) {
                     updateColumnsOrder(columns);
@@ -67,20 +71,20 @@ export default function withColumnsReorder(WrappedComponent){
             }
         }
 
-        setTable(element){
-            if(element){
-                this.setState({table:element});
-                if(this.props.setTable){
+        setTable(element) {
+            if (element) {
+                this.setState({table: element});
+                if (this.props.setTable) {
                     this.props.setTable(element);
                 }
             }
         }
 
-        render(){
+        render() {
             return (
                 <WrappedComponent
                     {...this.props}
-                    defaultColDef={{...this.props.defaultColDef, resizable:true}}
+                    defaultColDef={{...this.props.defaultColDef, resizable: true}}
                     setTable={this.setTable}
                     columns={this.state.columns}
                     columnsSize={this.state.columnsSize}
@@ -88,7 +92,7 @@ export default function withColumnsReorder(WrappedComponent){
                     onDragStopped={this.onColumnReordered}
                     onColumnResized={this.onColumnResized}
                 />
-);
+            );
         }
     };
 }

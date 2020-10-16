@@ -1,10 +1,7 @@
 import {push} from 'connected-react-router';
 import {get} from 'lodash';
 import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
-import {
-    SUCCESS_ICON,
-    SUCCESS_TITLE,
-} from '../../ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {normalizeDataForStore, URL} from '../../util/Common';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
@@ -66,10 +63,7 @@ export function* fetchAndStoreTitle(action) {
     yield fork(fetchTitle, action);
 
     while (true) {
-        const {type, payload} = yield take([
-            actionTypes.FETCH_TITLE_SUCCESS,
-            actionTypes.FETCH_TITLE_ERROR,
-        ]);
+        const {type, payload} = yield take([actionTypes.FETCH_TITLE_SUCCESS, actionTypes.FETCH_TITLE_ERROR]);
 
         if (type === actionTypes.FETCH_TITLE_SUCCESS) {
             yield put({
@@ -110,7 +104,7 @@ export function* fetchReconciliationTitles(action) {
 export function* getReconciliationTitles(action) {
     const {list} = yield select(selectors.createTitlesInfoSelector());
     const {ids = []} = action.payload || {};
-    const titleIdsToFetch = ids.filter(id => !(Object.keys(list || {}).includes(id))) || [];
+    const titleIdsToFetch = ids.filter(id => !Object.keys(list || {}).includes(id)) || [];
 
     if (!titleIdsToFetch) {
         return;
@@ -158,10 +152,7 @@ export function* fetchAndStoreTitles(action) {
     yield fork(fetchTitles, action);
 
     while (true) {
-        const {type, payload} = yield take([
-            actionTypes.FETCH_TITLES_SUCCESS,
-            actionTypes.FETCH_TITLES_ERROR,
-        ]);
+        const {type, payload} = yield take([actionTypes.FETCH_TITLES_SUCCESS, actionTypes.FETCH_TITLES_ERROR]);
 
         if (type === actionTypes.FETCH_TITLES_SUCCESS) {
             const {page, size, data} = payload || {};

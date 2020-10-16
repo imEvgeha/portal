@@ -7,7 +7,10 @@ import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {defineEpisodeAndSeasonNumberColumn, getLinkableColumnDefs} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {
+    defineEpisodeAndSeasonNumberColumn,
+    getLinkableColumnDefs,
+} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -26,7 +29,7 @@ const TitlesTable = compose(
     withSideBar(),
     withFilterableColumns(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
-    withSorting(),
+    withSorting()
 )(NexusGrid);
 
 const RightsMatchingTitlesTable = ({
@@ -41,13 +44,11 @@ const RightsMatchingTitlesTable = ({
     isDisabled,
 }) => {
     const updateColumnDefs = columnDefs => {
-        return columnDefs.map(columnDef => (
-            {
-                ...columnDef,
-                valueFormatter: createValueFormatter(columnDef),
-                cellRenderer: 'loadingCellRenderer',
-            }
-        ));
+        return columnDefs.map(columnDef => ({
+            ...columnDef,
+            valueFormatter: createValueFormatter(columnDef),
+            cellRenderer: 'loadingCellRenderer',
+        }));
     };
     const updatedColumns = updateColumnDefs(mappings);
 
@@ -69,7 +70,6 @@ const RightsMatchingTitlesTable = ({
                         onChange={event => handleMatchClick(data, repoName, event.target.checked)}
                     />
                 ) : null}
-
             </CustomActionsCellRenderer>
         );
     };

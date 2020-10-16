@@ -1,40 +1,40 @@
-@import "../../../styles/config";
+@import '../../../styles/config';
 .nexus-edit-tag-input {
-  color: rgb(37, 56, 88);
-  font-size: 0.9rem;
-  &:focus {
-    border: none;
-  }
+    color: rgb(37, 56, 88);
+    font-size: 0.9rem;
+    &:focus {
+        border: none;
+    }
 }
 .nexus-edit-tag {
-  height: 20px;
-  border-radius: 3px;
-  line-height: 1;
-  background-color: map-get($colors, nexus-tag-default);
-  overflow: scroll;
-  margin: 6px;
-  padding: 3px 3px 0;
+    height: 20px;
+    border-radius: 3px;
+    line-height: 1;
+    background-color: map-get($colors, nexus-tag-default);
+    overflow: scroll;
+    margin: 6px;
+    padding: 3px 3px 0;
 }
 
-.nexus-edit-tag__label{
-  color: rgb(37, 56, 88);
-  cursor: default;
-  margin-left: 2px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 0.8em;
-  display: inline-block;
+.nexus-edit-tag__label {
+    color: rgb(37, 56, 88);
+    cursor: default;
+    margin-left: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 0.8em;
+    display: inline-block;
 }
 
 .nexus-edit-tag__remove-button {
-  width: 16px;
-  height: 16px;
-  border: none;
-  background: rgb(244, 245, 247);
-  box-sizing: border-box;
-  cursor: pointer;
+    width: 16px;
+    height: 16px;
+    border: none;
+    background: rgb(244, 245, 247);
+    box-sizing: border-box;
+    cursor: pointer;
 
-  &:hover {
-    color: red;
-  }
+    &:hover {
+        color: red;
+    }
 }

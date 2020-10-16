@@ -188,7 +188,7 @@ export const FulfillmentOrder = ({
                                 <label htmlFor="notes">Notes:</label>
                                 <NexusTextArea
                                     name="notes"
-                                    onTextChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
+                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
                                     isDisabled={isFormDisabled}
                                 />

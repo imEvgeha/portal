@@ -1,5 +1,5 @@
 export default (priceTypes, currencies) => {
-    return ([
+    return [
         {
             id: 'priceType',
             label: 'Price Type',
@@ -8,8 +8,8 @@ export default (priceTypes, currencies) => {
             shouldFitContainer: true,
             options: [
                 {
-                    items: priceTypes
-                }
+                    items: priceTypes,
+                },
             ],
         },
         {
@@ -27,17 +27,15 @@ export default (priceTypes, currencies) => {
             shouldFitContainer: true,
             options: [
                 {
-                    items: currencies
-                }
+                    items: currencies,
+                },
             ],
             visibleWhen: [
                 {
-                    'field': 'priceType',
-                    'isNot': [
-                        'Tier'
-                    ]
-                }
-            ]
+                    field: 'priceType',
+                    isNot: ['Tier'],
+                },
+            ],
         },
-    ]);
-}
+    ];
+};

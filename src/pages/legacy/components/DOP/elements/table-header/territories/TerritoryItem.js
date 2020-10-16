@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const TerritoryTag = styled.div`
     padding: 5px;
-    border: 1px solid #EEE;
+    border: 1px solid #eee;
     color: #111;
     font-weight: bold;
     display: inline-block;

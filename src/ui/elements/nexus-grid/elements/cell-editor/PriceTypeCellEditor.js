@@ -19,9 +19,7 @@ class PriceTypeCellEditor extends Component {
     getValue = () => this.state.value;
 
     handleChange = value => {
-        const addedPriceTypes = value
-            .map(price => price.pricing || price)
-            .filter(Boolean);
+        const addedPriceTypes = value.map(price => price.pricing || price).filter(Boolean);
         this.setState({value: addedPriceTypes});
     };
 
@@ -69,4 +67,3 @@ PriceTypeCellEditor.defaultProps = {
 PriceTypeCellEditor.contextType = NexusModalContext;
 
 export default PriceTypeCellEditor;
-

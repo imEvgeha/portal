@@ -1,195 +1,195 @@
 {
-  "servicingOrder": {
-    "data": {
-      "external_id": "SR00001113",
-      "soID": "123",
-      "customer": "MGM",
-      "orderId": "order123",
-      "creationDate": "10/09/2020",
-      "createdBy": "John Wick",
-      "configured_pr_id": "pr_xTAGT",
-      "fulfillmentOrders": [
-        {
-          "fulfillmentOrderId": "VU000134567-001",
-          "dueDate": "10/05/2021",
-          "status": "completed",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "billTo": "MGM",
-          "rateCard": "MGM Rate Card",
-          "servicer": "DETE",
-          "recipient": "QuanVision",
-          "startDate": "07/05/2021",
-          "fs": "DETE",
-          "definition": {
-            "deteSources": [
-              {
-                "amsAssetId": "DA16129",
-                "barcode": "DA16129",
-                "externalSources": {
-                  "externalId": "DA16129",
-                  "externalSystem": "VSOM",
-                  "assetFormat": "VIDEO_CONFORMANCEGROUP",
-                  "assetType": "DETE_FILE"
+    "servicingOrder": {
+        "data": {
+            "external_id": "SR00001113",
+            "soID": "123",
+            "customer": "MGM",
+            "orderId": "order123",
+            "creationDate": "10/09/2020",
+            "createdBy": "John Wick",
+            "configured_pr_id": "pr_xTAGT",
+            "fulfillmentOrders": [
+                {
+                    "fulfillmentOrderId": "VU000134567-001",
+                    "dueDate": "10/05/2021",
+                    "status": "completed",
+                    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "billTo": "MGM",
+                    "rateCard": "MGM Rate Card",
+                    "servicer": "DETE",
+                    "recipient": "QuanVision",
+                    "startDate": "07/05/2021",
+                    "fs": "DETE",
+                    "definition": {
+                        "deteSources": [
+                            {
+                                "amsAssetId": "DA16129",
+                                "barcode": "DA16129",
+                                "externalSources": {
+                                    "externalId": "DA16129",
+                                    "externalSystem": "VSOM",
+                                    "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                    "assetType": "DETE_FILE"
+                                },
+                                "startDate": "2020-05-19T15:13:13.731-03:00",
+                                "deteServices": [
+                                    {
+                                        "type": "Subtitles",
+                                        "version": "French",
+                                        "standard": "Forced",
+                                        "operationalStatus": "In Progress",
+                                        "componentId": "LOL-123",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "MGM",
+                                        "sourceStandard": "_1080_23_976"
+                                    },
+                                    {
+                                        "type": "Audio",
+                                        "version": "French",
+                                        "standard": "5.1",
+                                        "operationalStatus": "On Hold",
+                                        "componentId": "FML-897",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "Vubiquity",
+                                        "sourceStandard": "_1080_23_979"
+                                    }
+                                ]
+                            },
+                            {
+                                "amsAssetId": "DA16130",
+                                "barcode": "DA16130",
+                                "externalSources": {
+                                    "externalId": "DA16130",
+                                    "externalSystem": "VSOM",
+                                    "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                    "assetType": "DETE_FILE"
+                                },
+                                "startDate": "2020-05-19T15:13:13.731-03:00",
+                                "deteServices": [
+                                    {
+                                        "type": "Subtitles",
+                                        "version": "French",
+                                        "standard": "Forced",
+                                        "operationalStatus": "In Progress",
+                                        "componentId": "LOL-123",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "MGM",
+                                        "sourceStandard": "_1080_23_976"
+                                    },
+                                    {
+                                        "type": "Audio",
+                                        "version": "French",
+                                        "standard": "5.1",
+                                        "operationalStatus": "On Hold",
+                                        "componentId": "FML-897",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "Vubiquity",
+                                        "sourceStandard": "_1080_23_979"
+                                    }
+                                ]
+                            },
+                            {
+                                "amsAssetId": "DA16132",
+                                "barcode": "DA16132",
+                                "externalSources": {
+                                    "externalId": "DA16132",
+                                    "externalSystem": "VSOM1",
+                                    "assetFormat": "VIDEO_",
+                                    "assetType": "DETE_FILE"
+                                },
+                                "startDate": "2020-05-19T15:13:13.731-03:00",
+                                "deteServices": [
+                                    {
+                                        "type": "Subtitles",
+                                        "version": "French",
+                                        "standard": "Forced",
+                                        "operationalStatus": "In Progress",
+                                        "componentId": "LOL-123",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "MGM",
+                                        "sourceStandard": "_1080_23_976"
+                                    },
+                                    {
+                                        "type": "Audio",
+                                        "version": "French",
+                                        "standard": "5.1",
+                                        "operationalStatus": "On Hold",
+                                        "componentId": "FML-897",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "Vubiquity",
+                                        "sourceStandard": "_1080_23_979"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "priority": 5
                 },
-                "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": [
-                  {
-                    "type": "Subtitles",
-                    "version": "French",
-                    "standard": "Forced",
-                    "operationalStatus": "In Progress",
-                    "componentId": "LOL-123",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "MGM",
-                    "sourceStandard": "_1080_23_976"
-                  },
-                  {
-                    "type": "Audio",
-                    "version": "French",
-                    "standard": "5.1",
-                    "operationalStatus": "On Hold",
-                    "componentId": "FML-897",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "Vubiquity",
-                    "sourceStandard": "_1080_23_979"
-                  }
-                ]
-              },
-              {
-                "amsAssetId": "DA16130",
-                "barcode": "DA16130",
-                "externalSources": {
-                  "externalId": "DA16130",
-                  "externalSystem": "VSOM",
-                  "assetFormat": "VIDEO_CONFORMANCEGROUP",
-                  "assetType": "DETE_FILE"
+                {
+                    "fulfillmentOrderId": "VU000134597-002",
+                    "dueDate": "09/05/2021",
+                    "status": "in-progress",
+                    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "billTo": "WB",
+                    "rateCard": "WB Rate Card",
+                    "servicer": "MGM",
+                    "recipient": "QuanVision2",
+                    "startDate": "07/05/2021",
+                    "fs": "MGM",
+                    "definition": {
+                        "mgmSources": [
+                            {
+                                "amsAssetId": "DA16129",
+                                "barcode": "DA16129",
+                                "externalSources": {
+                                    "externalId": "DA16129",
+                                    "externalSystem": "VSOM",
+                                    "assetFormat": "VIDEO_CONFORMANCEGROUP",
+                                    "assetType": "MGM_FILE"
+                                },
+                                "startDate": "2020-05-19T15:13:13.731-03:00",
+                                "mgmServices": [
+                                    {
+                                        "type": "Subtitles",
+                                        "version": "French",
+                                        "standard": "Forced",
+                                        "operationalStatus": "In Progress",
+                                        "componentId": "LOL-123",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "MGM",
+                                        "sourceStandard": "_1080_23_976"
+                                    },
+                                    {
+                                        "type": "Audio",
+                                        "version": "French",
+                                        "standard": "5.1",
+                                        "operationalStatus": "On Hold",
+                                        "componentId": "FML-897",
+                                        "spec": "M-DBS-2398 SCC",
+                                        "addRecipient": "Vubiquity",
+                                        "sourceStandard": "_1080_23_979"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "priority": 2
                 },
-                "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": [
-                  {
-                    "type": "Subtitles",
-                    "version": "French",
-                    "standard": "Forced",
-                    "operationalStatus": "In Progress",
-                    "componentId": "LOL-123",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "MGM",
-                    "sourceStandard": "_1080_23_976"
-                  },
-                  {
-                    "type": "Audio",
-                    "version": "French",
-                    "standard": "5.1",
-                    "operationalStatus": "On Hold",
-                    "componentId": "FML-897",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "Vubiquity",
-                    "sourceStandard": "_1080_23_979"
-                  }
-                ]
-              },
-              {
-                "amsAssetId": "DA16132",
-                "barcode": "DA16132",
-                "externalSources": {
-                  "externalId": "DA16132",
-                  "externalSystem": "VSOM1",
-                  "assetFormat": "VIDEO_",
-                  "assetType": "DETE_FILE"
-                },
-                "startDate": "2020-05-19T15:13:13.731-03:00",
-                "deteServices": [
-                  {
-                    "type": "Subtitles",
-                    "version": "French",
-                    "standard": "Forced",
-                    "operationalStatus": "In Progress",
-                    "componentId": "LOL-123",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "MGM",
-                    "sourceStandard": "_1080_23_976"
-                  },
-                  {
-                    "type": "Audio",
-                    "version": "French",
-                    "standard": "5.1",
-                    "operationalStatus": "On Hold",
-                    "componentId": "FML-897",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "Vubiquity",
-                    "sourceStandard": "_1080_23_979"
-                  }
-                ]
-              }
+                {
+                    "fulfillmentOrderId": "VU000134597-003",
+                    "dueDate": "09/05/2021",
+                    "status": "on-hold",
+                    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                    "billTo": "WB",
+                    "rateCard": "WB Rate Card",
+                    "servicer": "DETE2",
+                    "priority": 10,
+                    "startDate": "07/05/2021"
+                }
             ]
-          },
-          "priority": 5
         },
-        {
-          "fulfillmentOrderId": "VU000134597-002",
-          "dueDate": "09/05/2021",
-          "status": "in-progress",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "billTo": "WB",
-          "rateCard": "WB Rate Card",
-          "servicer": "MGM",
-          "recipient": "QuanVision2",
-          "startDate": "07/05/2021",
-          "fs": "MGM",
-          "definition": {
-            "mgmSources": [
-              {
-                "amsAssetId": "DA16129",
-                "barcode": "DA16129",
-                "externalSources": {
-                  "externalId": "DA16129",
-                  "externalSystem": "VSOM",
-                  "assetFormat": "VIDEO_CONFORMANCEGROUP",
-                  "assetType": "MGM_FILE"
-                },
-                "startDate": "2020-05-19T15:13:13.731-03:00",
-                "mgmServices": [
-                  {
-                    "type": "Subtitles",
-                    "version": "French",
-                    "standard": "Forced",
-                    "operationalStatus": "In Progress",
-                    "componentId": "LOL-123",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "MGM",
-                    "sourceStandard": "_1080_23_976"
-                  },
-                  {
-                    "type": "Audio",
-                    "version": "French",
-                    "standard": "5.1",
-                    "operationalStatus": "On Hold",
-                    "componentId": "FML-897",
-                    "spec": "M-DBS-2398 SCC",
-                    "addRecipient": "Vubiquity",
-                    "sourceStandard": "_1080_23_979"
-                  }
-                ]
-              }
-            ]
-          },
-          "priority": 2
-        },
-        {
-          "fulfillmentOrderId": "VU000134597-003",
-          "dueDate": "09/05/2021",
-          "status": "on-hold",
-          "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          "billTo": "WB",
-          "rateCard": "WB Rate Card",
-          "servicer": "DETE2",
-          "priority": 10,
-          "startDate": "07/05/2021"
-        }
-      ]
-    },
-    "total": 1,
-    "page": 0,
-    "size": 1
-  }
+        "total": 1,
+        "page": 0,
+        "size": 1
+    }
 }

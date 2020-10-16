@@ -3,20 +3,11 @@ import PropTypes from 'prop-types';
 
 import './TitleHeader.scss';
 
-const TitleHeader = ({
-    title,
-    releaseYear,
-    type,
-    artwork,
-}) => {
+const TitleHeader = ({title, releaseYear, type, artwork}) => {
     return (
         <div className="nexus-c-title-header">
             <div className="nexus-c-title-header__artwork-container">
-                <img
-                    className="nexus-c-title-header__artwork"
-                    src={artwork}
-                    alt="title header artwork"
-                />
+                <img className="nexus-c-title-header__artwork" src={artwork} alt="title header artwork" />
             </div>
             <div className="nexus-c-title-header__info-container">
                 <h2 className="info-container__title">{title}</h2>

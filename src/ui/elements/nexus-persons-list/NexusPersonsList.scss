@@ -1,25 +1,24 @@
 .nexus-c-persons-list {
-  width: 575px;
-  min-height: 160px;
+    width: 575px;
+    min-height: 160px;
 }
 
 .nexus-c-persons-list__group {
-  overFlow-x: hidden;
+    overflow-x: hidden;
 }
 
 .nexus-c-persons-list__add {
-  margin-top: 5px;
-  border: none;
-  border-radius: 3px;
-  width: 97%;
+    margin-top: 5px;
+    border: none;
+    border-radius: 3px;
+    width: 97%;
 
-  &.invalid {
-    border: 2px solid red;
-  }
+    &.invalid {
+        border: 2px solid red;
+    }
 }
 
 .nexus-c-persons-list__add-error {
-  color: #e74c3c;
-  font-weight: bold;
+    color: #e74c3c;
+    font-weight: bold;
 }
-

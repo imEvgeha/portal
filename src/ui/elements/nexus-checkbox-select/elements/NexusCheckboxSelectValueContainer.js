@@ -12,11 +12,7 @@ const NexusCheckboxSelectValueContainer = ({children, ...props}) => {
         });
     }
 
-    return (
-        <components.ValueContainer {...props}>
-            {toBeRendered}
-        </components.ValueContainer>
-    );
+    return <components.ValueContainer {...props}>{toBeRendered}</components.ValueContainer>;
 };
 
 NexusCheckboxSelectValueContainer.propTypes = {

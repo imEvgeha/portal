@@ -1,7 +1,7 @@
-@import "./variables";
-@import "~bootstrap/scss/bootstrap";
-@import "~react-datepicker/dist/react-datepicker";
+@import './variables';
+@import '~bootstrap/scss/bootstrap';
+@import '~react-datepicker/dist/react-datepicker';
 
 .fade:not(.show) {
-  opacity: initial;
+    opacity: initial;
 }

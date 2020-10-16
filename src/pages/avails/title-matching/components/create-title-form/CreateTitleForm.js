@@ -14,11 +14,7 @@ import {rightsService} from '../../../../legacy/containers/avail/service/RightsS
 import {titleService} from '../../../../legacy/containers/metadata/service/TitleService';
 import constants from './CreateTitleFormConstants';
 
-const {
-    NEW_TITLE_LABEL_CANCEL,
-    NEW_TITLE_LABEL_SUBMIT,
-    getTitleFormSchema,
-} = constants;
+const {NEW_TITLE_LABEL_CANCEL, NEW_TITLE_LABEL_SUBMIT, getTitleFormSchema} = constants;
 
 // Building a URL where user can check the newly created title
 // (Opens in new tab)
@@ -26,12 +22,7 @@ const onViewTitleClick = id => {
     window.open(`${getDomainName()}/metadata/detail/${id}`, '_blank');
 };
 
-const CreateTitleForm = ({
-    close,
-    focusedRight,
-    addToast,
-    bulkTitleMatch,
-}) => {
+const CreateTitleForm = ({close, focusedRight, addToast, bulkTitleMatch}) => {
     const [error, setError] = useState();
     const {
         id: focusedId,
@@ -86,31 +77,33 @@ const CreateTitleForm = ({
         }
 
         // Submit the title to back-end
-        titleService.createTitleWithoutErrorModal(title).then(res => {
-            const titleId = res.id;
-            addToast({
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                actions: [{content: 'View title', onClick: () => onViewTitleClick(titleId)}],
-            });
-            if (URL.isEmbedded()) {
-                DOP.setErrorsCount(0);
-                DOP.setData({
-                    match: {
-                        rightId: focusedId,
-                        titleId: res.id,
-                    },
+        titleService
+            .createTitleWithoutErrorModal(title)
+            .then(res => {
+                const titleId = res.id;
+                addToast({
+                    title: SUCCESS_TITLE,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                    description: constants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
+                    actions: [{content: 'View title', onClick: () => onViewTitleClick(titleId)}],
                 });
-            } else if (bulkTitleMatch) {
-                bulkTitleMatch(titleId, true);
-            } else {
-                const updatedRight = {coreTitleId: res.id};
-                rightsService.update(updatedRight, focusedId);
-            }
-            close();
-        })
+                if (URL.isEmbedded()) {
+                    DOP.setErrorsCount(0);
+                    DOP.setData({
+                        match: {
+                            rightId: focusedId,
+                            titleId: res.id,
+                        },
+                    });
+                } else if (bulkTitleMatch) {
+                    bulkTitleMatch(titleId, true);
+                } else {
+                    const updatedRight = {coreTitleId: res.id};
+                    rightsService.update(updatedRight, focusedId);
+                }
+                close();
+            })
             .catch(error => {
                 const {message: {description, bindingResult} = {}} = error;
 
@@ -120,30 +113,19 @@ const CreateTitleForm = ({
 
     return (
         <div className="nexus-c-create-title-form">
-            <Form
-                renderer={renderer}
-                onChange={(value, isFilled) => setTitleValue({...value, isFilled})}
-            >
+            <Form renderer={renderer} onChange={(value, isFilled) => setTitleValue({...value, isFilled})}>
                 <div className="nexus-c-create-title-form__fields">
                     <FormFragment defaultFields={getTitleFormSchema(initialState)} />
                 </div>
             </Form>
             {error && (
                 <div className="nexus-c-create-title-form__error-message">
-                    <ErrorMessage>
-                        {error}
-                    </ErrorMessage>
+                    <ErrorMessage>{error}</ErrorMessage>
                 </div>
             )}
             <div className="nexus-c-create-title-form__action-buttons">
-                <Button onClick={close}>
-                    {NEW_TITLE_LABEL_CANCEL}
-                </Button>
-                <Button
-                    onClick={() => submitTitle(titleValue)}
-                    isDisabled={!titleValue.isFilled}
-                    appearance="primary"
-                >
+                <Button onClick={close}>{NEW_TITLE_LABEL_CANCEL}</Button>
+                <Button onClick={() => submitTitle(titleValue)} isDisabled={!titleValue.isFilled} appearance="primary">
                     {NEW_TITLE_LABEL_SUBMIT}
                 </Button>
             </div>

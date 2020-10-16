@@ -22,22 +22,23 @@ class CustomComplexFloatingFilter extends React.Component {
         const {value = {}} = this.state;
         const arrayContent = [];
         let keyContent = '';
-        isObject(value) && Object.keys(value).forEach(key => {
-            keyContent = '';
-            if (value[key]) {
-                if (Array.isArray(value[key])) {
-                    if (value[key].length > 0) {
-                        keyContent = value[key].join(', ');
+        isObject(value) &&
+            Object.keys(value).forEach(key => {
+                keyContent = '';
+                if (value[key]) {
+                    if (Array.isArray(value[key])) {
+                        if (value[key].length > 0) {
+                            keyContent = value[key].join(', ');
+                        }
+                    } else {
+                        keyContent = value[key];
                     }
-                } else {
-                    keyContent = value[key];
-                }
 
-                if (keyContent) {
-                    arrayContent.push(`${key}: ${keyContent}`);
+                    if (keyContent) {
+                        arrayContent.push(`${key}: ${keyContent}`);
+                    }
                 }
-            }
-        });
+            });
 
         const content = arrayContent.join(' ');
 

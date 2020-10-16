@@ -51,4 +51,3 @@ DateTimeCellEditor.defaultProps = {
 };
 
 export default DateTimeCellEditor;
-

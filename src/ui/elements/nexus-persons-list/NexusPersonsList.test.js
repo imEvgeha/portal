@@ -34,13 +34,7 @@ describe('NexusPersonsList', () => {
         },
     ];
     it('should match snapshot', () => {
-        wrapper = shallow(
-            <NexusPersonsList
-                personsList={personsList}
-                hasCharacter
-            />
-        );
+        wrapper = shallow(<NexusPersonsList personsList={personsList} hasCharacter />);
         expect(wrapper).toMatchSnapshot();
     });
 });
-
