@@ -1,8 +1,7 @@
 import React, {useState, useRef, useContext} from 'react';
 import PropTypes from 'prop-types';
-import Spinner from '@atlaskit/spinner';
 import classNames from 'classnames';
-import {uniq} from 'lodash';
+import {uniq, cloneDeep} from 'lodash';
 import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
@@ -18,7 +17,14 @@ import './PrePlanActions.scss';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import DOPService from '../selected-for-planning/DOP-services';
 import {STATUS_CHECK_HEADER, STATUS_CHECK_MSG} from '../selected-rights-actions/constants';
-import {ADD_TO_SELECTED_PLANNING, REMOVE_PRE_PLAN_TAB, getSuccessToastMsg, NO_TERRITORIES_SELECTED} from './constants';
+import BulkSet from './components/BulkSet/BulkSet';
+import {
+    ADD_TO_SELECTED_PLANNING,
+    REMOVE_PRE_PLAN_TAB,
+    getSuccessToastMsg,
+    NO_TERRITORIES_SELECTED,
+    BULK_SET,
+} from './constants';
 
 export const PrePlanActions = ({
     selectedPrePlanRights,
@@ -30,6 +36,9 @@ export const PrePlanActions = ({
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
+    const [territories, setTerritories] = useState([]);
+    const [keywords, setKeywords] = useState('');
+
     const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
     const clickHandler = () => setMenuOpened(!menuOpened);
@@ -134,6 +143,39 @@ export const PrePlanActions = ({
             .catch(() => setIsFetchDOP(false));
     };
 
+    const bulkSetInTable = () => {
+        const bulkTerritories = territories.map(t => t.value);
+        const rightsList = cloneDeep(prePlanRepoRights);
+        rightsList.forEach(right => {
+            right.territory.forEach(t => {
+                if (bulkTerritories.includes(t.country)) {
+                    t.selected = true;
+                    right.keywords = Array.from(new Set(`${keywords},${right.keywords}`.split(','))).join(',');
+                }
+            });
+        });
+        setPreplanRights({[username]: rightsList});
+        closeModal();
+    };
+
+    const openBulkSetModal = () => {
+        setMenuOpened(false);
+        openModal(<BulkSet setTerritories={setTerritories} setKeywords={setKeywords} />, {
+            title: BULK_SET,
+            actions: [
+                {
+                    text: 'Set',
+                    onClick: bulkSetInTable,
+                },
+                {
+                    text: 'Cancel',
+                    onClick: closeModal,
+                },
+            ],
+            width: 'small',
+        });
+    };
+
     const dispatchSuccessToast = noOfItems => {
         addToast({
             title: SUCCESS_TITLE,
@@ -143,6 +185,24 @@ export const PrePlanActions = ({
             isWithOverlay: false,
         });
     };
+
+    const actions = [
+        {
+            id: 'remove-pre-plan',
+            label: REMOVE_PRE_PLAN_TAB,
+            onClick: removeRightsFromPrePlan,
+        },
+        {
+            id: 'bulk-set-territories-keywords',
+            label: BULK_SET,
+            onClick: openBulkSetModal,
+        },
+        {
+            id: 'add-to-select-for-planning',
+            label: ADD_TO_SELECTED_PLANNING,
+            onClick: addToSelectedForPlanning,
+        },
+    ];
 
     return (
         <>
@@ -154,38 +214,21 @@ export const PrePlanActions = ({
                         menuOpened && 'nexus-c-selected-rights-actions__menu--is-open'
                     )}
                 >
-                    <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            selectedPrePlanRights.length &&
-                                isFetchDOP === false &&
-                                'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
-                        data-test-id="add-to-pre-plan"
-                        onClick={selectedPrePlanRights.length ? addToSelectedForPlanning : null}
-                    >
-                        <div>
-                            {ADD_TO_SELECTED_PLANNING}
-                            {isFetchDOP && (
-                                <span>
-                                    {' '}
-                                    <Spinner size="small" />
-                                </span>
+                    {actions.map(({id, label, onClick}) => (
+                        <div
+                            className={classNames(
+                                'nexus-c-selected-rights-actions__menu-item',
+                                selectedPrePlanRights.length &&
+                                    isFetchDOP === false &&
+                                    'nexus-c-selected-rights-actions__menu-item--is-active'
                             )}
+                            key={id}
+                            data-test-id={id}
+                            onClick={selectedPrePlanRights.length ? onClick : null}
+                        >
+                            <div>{label}</div>
                         </div>
-                    </div>
-                    <div
-                        className={classNames(
-                            'nexus-c-selected-rights-actions__menu-item',
-                            selectedPrePlanRights.length &&
-                                isFetchDOP === false &&
-                                'nexus-c-selected-rights-actions__menu-item--is-active'
-                        )}
-                        data-test-id="remove-pre-plan"
-                        onClick={selectedPrePlanRights.length ? removeRightsFromPrePlan : null}
-                    >
-                        <div>{REMOVE_PRE_PLAN_TAB}</div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </>

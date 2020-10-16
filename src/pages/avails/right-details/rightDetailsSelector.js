@@ -8,5 +8,9 @@ const getRightDetailsOptionsReducer = state => {
 export const areValidSelector = () =>
     createSelector(getRightDetailsOptionsReducer, rightDetailsOptions => rightDetailsOptions.areValid || true);
 
-export const selectValuesSelector = () =>
-    createSelector(getRightDetailsOptionsReducer, rightDetailsOptions => rightDetailsOptions.selectValues || {});
+export const selectValuesSelector = createSelector(
+    getRightDetailsOptionsReducer,
+    rightDetailsOptions => rightDetailsOptions.selectValues || {}
+);
+
+export const countryOptionsSelector = createSelector(selectValuesSelector, selectValues => selectValues.country || []);

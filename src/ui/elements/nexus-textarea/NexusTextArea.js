@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import TextArea from '@atlaskit/textarea';
 
 const NexusTextArea = ({onTextChange, notesValue, ...restProps}) => (
-    <TextArea appearance="standard" onChange={onTextChange} minimumRows={5} value={notesValue} {...restProps} />
+    <TextArea
+        appearance="standard"
+        onChange={e => onTextChange(e.target.value)}
+        minimumRows={5}
+        value={notesValue}
+        {...restProps}
+    />
 );
 
 NexusTextArea.propTypes = {

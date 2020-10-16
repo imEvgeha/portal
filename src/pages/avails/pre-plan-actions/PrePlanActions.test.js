@@ -53,13 +53,13 @@ describe('PrePlanActions', () => {
         wrapper = null;
     });
 
-    describe('Remove Rights Action', () => {
+    it('should match snapshot', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+
+    describe('Pre-plan Actions', () => {
         beforeEach(() => {
             wrapper = shallow(<PrePlanActions selectedPrePlanRights={[]} store={store} />);
-        });
-
-        it('should match snapshot', () => {
-            expect(wrapper).toMatchSnapshot();
         });
 
         it('should disable "Remove from Pre-Plan" option when no rights are selected', () => {
@@ -68,11 +68,16 @@ describe('PrePlanActions', () => {
         });
 
         it('should disable "Add to Selected For Planning" option when no rights are selected', () => {
-            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-pre-plan"]');
+            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-select-for-planning"]');
             expect(addToSelectedRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
         });
 
-        it('should enable both option when some rights are selected', () => {
+        it('should disable bulk set option when no rights are selected', () => {
+            const bulkSetOption = wrapper.find('[data-test-id="bulk-set-territories-keywords"]');
+            expect(bulkSetOption.hasClass(`${menuItemClass}--is-active`)).toBe(false);
+        });
+
+        it('should enable all options when some rights are selected', () => {
             const setPreplanRights = jest.fn();
             const setSelectedPrePlanRights = jest.fn();
 
@@ -87,12 +92,14 @@ describe('PrePlanActions', () => {
                 />
             );
             const removeRightsOption = wrapper.find('[data-test-id="remove-pre-plan"]');
-            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-pre-plan"]');
+            const addToSelectedRightsOption = wrapper.find('[data-test-id="add-to-select-for-planning"]');
             expect(removeRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
             expect(addToSelectedRightsOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
             removeRightsOption.simulate('click');
             expect(setPreplanRights).toHaveBeenCalled();
             expect(setSelectedPrePlanRights).toHaveBeenCalled();
+            const bulkSetOption = wrapper.find('[data-test-id="bulk-set-territories-keywords"]');
+            expect(bulkSetOption.hasClass(`${menuItemClass}--is-active`)).toBe(true);
         });
     });
 });
