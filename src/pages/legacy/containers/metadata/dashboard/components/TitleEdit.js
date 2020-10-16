@@ -524,6 +524,11 @@ class TitleEdit extends Component {
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
                 this.loadExternalIds(titleId);
+                this.props.addToast({
+                    title: 'Sync Title Success',
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: false,
+                });
                 return true;
             })
             .catch(() => {
