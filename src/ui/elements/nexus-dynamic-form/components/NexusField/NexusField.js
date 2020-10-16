@@ -7,7 +7,7 @@ import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import {VIEWS} from '../../constants';
 import {
     checkFieldDependencies,
     getFieldValue,
@@ -20,6 +20,7 @@ import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
 const NexusField = ({
+    isHighlighted,
     selectValues,
     path,
     type,
@@ -164,7 +165,7 @@ const NexusField = ({
         <ErrorBoundary>
             <div
                 className={`nexus-c-field${validationError ? ' nexus-c-field--error' : ''}${
-                    HIGHLIGHTED_FIELDS.includes(path) ? ' nexus-c-field--highlighted' : ''
+                    isHighlighted ? ' nexus-c-field--highlighted' : ''
                 }`}
             >
                 <AKField
@@ -209,6 +210,7 @@ NexusField.propTypes = {
     dateType: PropTypes.string,
     labels: PropTypes.array,
     label: PropTypes.string,
+    isHighlighted: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -226,6 +228,7 @@ NexusField.defaultProps = {
     dateType: '',
     labels: [],
     label: '',
+    isHighlighted: false,
 };
 
 export default NexusField;

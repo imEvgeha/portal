@@ -32,7 +32,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 
     const onScroll = event => {
         let toShrink = false;
-        const SHRINK_BOUNDARY = 50;
+        const SHRINK_BOUNDARY = 25;
         if (event.target.scrollTop > SHRINK_BOUNDARY) toShrink = true;
         setIsShrinked(toShrink);
     };
