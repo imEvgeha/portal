@@ -1,4 +1,3 @@
-import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {getUsername} from '../../auth/authSelectors';
 import {store} from '../../index';
@@ -28,6 +27,7 @@ const DopTasksService = {
 
 const prepareFilterPayload = (initialParams, externalFilter) => {
     const payload = initialParams;
+    const activeFilters = Object.keys(externalFilter);
 
     Object.entries(externalFilter).map(([key, val]) => {
         if (STRING_FIELDS.includes(key)) {
@@ -138,7 +138,9 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
         }
         return null;
     });
-
+    payload.filterCriterion = payload.filterCriterion.filter(
+        entry => activeFilters.includes(entry.fieldName) || [ACTUAL_OWNER, POTENTIAL_OWNERS].includes(entry.fieldName)
+    );
     return payload;
 };
 
