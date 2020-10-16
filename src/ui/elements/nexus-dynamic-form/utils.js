@@ -151,7 +151,11 @@ export const getProperValue = (type, value, path, schema) => {
             };
             break;
         case 'stringInArray':
-            val = Array.isArray(value) ? value : [value];
+            if(!value){
+                val = [];
+            } else {
+                val = Array.isArray(value) ? value : [value];
+            }
             break;
         case 'array':
             val = value ? value.map(v => getProperValues(schema, v)) : [];
