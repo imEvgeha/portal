@@ -11,7 +11,7 @@ import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
+const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncing}) => {
     const renderSyncField = (name, externalID) => {
         const buttonName = !!externalID ? SYNC : PUBLISH;
         const indicator = externalID && externalID.status === SUCCESS ? SUCCESS : ERROR;
@@ -32,7 +32,11 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
                     <b>{capitalize(name)}</b> Last updated: {dateToShow}
                 </div>
                 <Can I="update" a="Metadata">
-                    <AtlaskitButton appearance="primary" onClick={() => onSyncPublishClick(name, buttonName)}>
+                    <AtlaskitButton
+                        appearance="primary"
+                        onClick={() => onSyncPublishClick(name, buttonName)}
+                        isLoading={buttonName === SYNC ? isSyncing : undefined}
+                    >
                         {buttonName}
                     </AtlaskitButton>
                 </Can>
@@ -53,10 +57,12 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs}) => {
 PublishVzMovida.propTypes = {
     onSyncPublishClick: PropTypes.func.isRequired,
     externalIDs: PropTypes.array,
+    isSyncing: PropTypes.bool,
 };
 
 PublishVzMovida.defaultProps = {
     externalIDs: null,
+    isSyncing: false,
 };
 
 export default PublishVzMovida;
