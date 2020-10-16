@@ -284,16 +284,7 @@
                                 "dateType": "timestamp",
                                 "path": "dateWithdrawn",
                                 "isReadOnly": true,
-                                "viewConfig": [
-                                    {
-                                        "view": "CREATE",
-                                        "defaultValue": "today"
-                                    },
-                                    {
-                                        "view": "EDIT",
-                                        "defaultValue": "today"
-                                    }
-                                ]
+                                "useCurrentDate": true
                             },
                             "comment": {
                                 "name": "Comments",

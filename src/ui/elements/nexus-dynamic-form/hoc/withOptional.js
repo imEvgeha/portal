@@ -7,9 +7,9 @@ import {VIEWS} from '../constants';
 const withOptional = () => WrappedComponent => {
 
     const ComposedComponent = props => {
-        const {isOptional, setFieldValue, path, view, ...fieldProps} = props;
+        const {isOptional, useCurrentDate, setFieldValue, path, view, ...fieldProps} = props;
         const {value, ...restFieldProps} = fieldProps;
-        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== "" && value !== "today"));
+        const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ""));
 
         const changeCheckboxValue = () => {
             const newVisible = !visible;
@@ -20,7 +20,7 @@ const withOptional = () => WrappedComponent => {
         };
 
         const getDateValue = (value) => {
-            const val = value === 'today' ? new Date() : value;
+            const val = useCurrentDate ? new Date() : value;
 
             return val;
         };

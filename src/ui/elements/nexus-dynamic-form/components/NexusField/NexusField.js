@@ -59,6 +59,7 @@ const NexusField = ({
     label,
     isOptional,
     setFieldValue,
+    useCurrentDate,
     ...props
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -89,6 +90,7 @@ const NexusField = ({
         type,
         dateType,
         isReadOnly,
+        useCurrentDate,
         ...addedProps,
     };
 
@@ -246,6 +248,7 @@ NexusField.propTypes = {
     label: PropTypes.string,
     isOptional: PropTypes.bool,
     setFieldValue: PropTypes.func,
+    useCurrentDate: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -265,6 +268,7 @@ NexusField.defaultProps = {
     label: '',
     isOptional: false,
     setFieldValue: null,
+    useCurrentDate: false,
 };
 
 export default NexusField;
