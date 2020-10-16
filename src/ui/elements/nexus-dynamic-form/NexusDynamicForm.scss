@@ -15,12 +15,13 @@
     border-bottom: 1px solid map-get($neutrals, N40);
     position: fixed;
     top: 131px;
+    transition: top linear 0.5s;
     background-color: map-get($neutrals, N0);
     z-index: 1;
 }
 
 .nexus-c-dynamic-form__tab-content {
-    @include padding(48, 0, 0, 0);
+    @include padding(32, 0, 0, 0);
 }
 
 .nexus-c-dynamic-form__tab {
