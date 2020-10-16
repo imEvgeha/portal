@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {cloneDeep, get, isEmpty} from 'lodash';
@@ -10,6 +10,7 @@ import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
+import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import columnDefinitions from './columnDefinitions';
@@ -25,6 +26,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -76,6 +78,22 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             </CustomActionsCellRenderer>
         );
     };
+
+    // eslint-disable-next-line react/prop-types
+    const componentsCell = ({rowIndex}) => {
+        return (
+            <div>
+                <div onClick={() => openModal(<button onClick={closeModal} />)}>
+                    <button onClick={closeModal} />
+                </div>
+            </div>
+        );
+    };
+
+    const componentsColumn = defineButtonColumn({
+        width: 200,
+        cellRendererFramework: componentsCell,
+    });
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
@@ -161,6 +179,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
                 onGridEvent={handleRowDataChange}
+                frameworkComponents={{componentsCell}}
             />
         </div>
     );

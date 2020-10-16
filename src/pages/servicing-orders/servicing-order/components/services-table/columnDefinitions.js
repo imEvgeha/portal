@@ -10,10 +10,25 @@ const columnDefinitions = [
         width: 250,
     },
     {
+        colId: 'assetType',
+        field: 'assetType',
+        dataSource: 'assetType',
+        headerName: 'Asset Type',
+        width: 250,
+    },
+    {
         colId: 'spec',
         field: 'spec',
         dataSource: 'spec',
         headerName: 'Spec',
+        width: 200,
+    },
+    {
+        colId: 'components',
+        field: 'components',
+        dataSource: 'components',
+        headerName: 'Components',
+        cellRenderer: 'componentsCell',
         width: 200,
     },
     {

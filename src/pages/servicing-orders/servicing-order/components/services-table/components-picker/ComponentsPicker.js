@@ -1,159 +1,63 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
+import CheckIcon from '@atlaskit/icon/glyph/check';
+import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
+import Tag from '@atlaskit/tag';
 import Textfield from '@atlaskit/textfield';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
-import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
-import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
-import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
-import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
-import {getValidDate} from '../../../../../util/utils';
-import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
-import {saveFulfillmentOrder} from '../../servicingOrderActions';
-import Constants from './constants';
-import './FulfillmentOrder.scss';
+import './ComponentsPicker.scss';
 
-export const FulfillmentOrder = ({
-    selectedFulfillmentOrder = {},
-    setSelectedOrder,
-    setSelectedFulfillmentOrderID,
-    fetchFulfillmentOrders,
-    serviceOrder,
-    updatedServices,
-    children,
-    cancelEditing,
-    lastOrder,
-}) => {
-    const {fieldKeys} = Constants;
-    const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
-    const [fulfillmentOrder, setFulfillmentOrder] = useState(
-        cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder)
+// eslint-disable-next-line react/prop-types
+const Header = ({heading, title, barcode}) => {
+    return (
+        <div className="picker__header">
+            <h1>{heading}</h1>
+            <h2>{title}</h2>
+            <p>{barcode}</p>
+        </div>
     );
-    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
-    const [isFormDisabled, setIsFormDisabled] = useState(false);
-    const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
-    const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
-    const dispatch = useDispatch();
+};
 
-    const ModalContent = (
-        <>
-            <p>
-                You are about to set a Fulfillment Order&apos;s readiness status to &quot;Ready&quot;. No further edits
-                will be possible.
-            </p>
-            <p>Do you wish to continue?</p>
-        </>
+// eslint-disable-next-line react/prop-types
+const Footer = ({warning, onCancel, onSave}) => {
+    return (
+        <div className="picker__footer">
+            <p>{warning}</p>
+            <Button onClick={onCancel}>cancel</Button>
+            <Button appearance="primary" onClick={onSave}>
+                save
+            </Button>
+        </div>
     );
-    const modalHeading = 'Warning';
+};
 
-    // runs when a fulfillment order has been successfully edited and saved
-    // 1. re-fetches all the fulfillment orders
-    // 2. dispatches action with a value other than 'SUCCESS' so that this effect only runs once on a successful edit
-    useEffect(
-        () => {
-            if (isSuccess && isSuccess !== 'ALREADY_SET') {
-                fetchFulfillmentOrders(serviceOrder).then(() => {
-                    setSavedFulfillmentOrder(null);
-                    setFulfillmentOrder(fulfillmentOrder);
-                    setSelectedOrder(fulfillmentOrder);
-                    setSelectedFulfillmentOrderID(get(fulfillmentOrder, 'id', ''));
-                    dispatch({
-                        type: SAVE_FULFILLMENT_ORDER_SUCCESS,
-                        payload: 'ALREADY_SET',
-                    });
-                });
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [isSuccess]
+// eslint-disable-next-line react/prop-types
+const ListItem = ({item}) => {
+    return (
+        <div>
+            <CheckIcon />
+            <Tag text={item} />
+            <EditorRemoveIcon />
+        </div>
     );
+};
 
-    useEffect(
-        () => {
-            if (!isEmpty(selectedFulfillmentOrder)) {
-                setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
-
-                // Disable form if status is READY
-                get(selectedFulfillmentOrder, fieldKeys.READINESS, '') === 'READY'
-                    ? setIsFormDisabled(true)
-                    : setIsFormDisabled(false);
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selectedFulfillmentOrder, savedFulfillmentOrder]
+// eslint-disable-next-line react/prop-types
+const SummaryPanel = ({list = []}) => {
+    return (
+        <div className="picker__summary-panel">
+            {list.map(item => (
+                <ListItem item={item} />
+            ))}
+        </div>
     );
+};
 
-    // effect runs when the services table is updated
-    useEffect(
-        () => {
-            const updatedDeteServices = get(updatedServices, 'deteServices');
-            const fulfillmentOrderClone = cloneDeep(fulfillmentOrder);
-            set(fulfillmentOrderClone, 'definition.deteServices', updatedDeteServices);
-            setFulfillmentOrder(fulfillmentOrderClone);
-            setSelectedOrder(fulfillmentOrderClone);
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [updatedServices]
-    );
-
-    useEffect(() => {
-        setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
-    }, [fulfillmentOrder]);
-
-    const onFieldChange = (path, value) => {
-        const fo = cloneDeep(fulfillmentOrder);
-        set(fo, path, value);
-
-        // Show warning modal when status is set to READY
-        get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
-            ? openWarningModal(fo)
-            : setFulfillmentOrder(fo);
-        setIsSaveDisabled(false);
-    };
-
-    const openWarningModal = fo => {
-        const actions = [
-            {
-                text: 'Continue',
-                onClick: () => {
-                    closeModal();
-                    setFulfillmentOrder(fo);
-                },
-            },
-            {
-                text: 'Cancel',
-                onClick: () => {
-                    closeModal();
-                    setIsSaveDisabled(isEqual(fulfillmentOrder, lastOrder));
-                },
-            },
-        ];
-        openModal(ModalContent, {title: modalHeading, width: 'small', actions});
-    };
-
-    const readinessOption = fulfillmentOrder
-        ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
-        : {};
-
-    const {openModal, closeModal} = useContext(NexusModalContext);
-
-    const onCancel = () => {
-        setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
-        cancelEditing();
-        setIsSaveDisabled(true);
-        setSelectedOrder(lastOrder);
-    };
-
-    const onSaveHandler = () => {
-        const payload = {data: fulfillmentOrder};
-        dispatch(saveFulfillmentOrder(payload));
-        setIsSaveDisabled(true);
-    };
-
+export const ComponentsPicker = () => {
     return (
         <Page>
             <div style={{width: '85%'}}>

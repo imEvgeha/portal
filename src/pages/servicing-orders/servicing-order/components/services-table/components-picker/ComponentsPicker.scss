@@ -1,0 +1,10 @@
+.picker {
+    &__header {
+    }
+    &__summary-panel {
+        display: flex;
+        flex-direction: column;
+    }
+    &__footer {
+    }
+}
