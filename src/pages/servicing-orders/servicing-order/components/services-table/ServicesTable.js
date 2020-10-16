@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
+import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
@@ -70,7 +70,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
                 {!isDisabled && (
                     <span onClick={() => handleServiceRemoval(rowIndex)}>
-                        <EditorCloseIcon />
+                        <EditorRemoveIcon size="medium" primaryColor="grey" />
                     </span>
                 )}
             </CustomActionsCellRenderer>

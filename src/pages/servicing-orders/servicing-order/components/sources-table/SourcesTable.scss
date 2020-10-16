@@ -31,3 +31,16 @@
         height: 14rem; // grid height - 5 rows
     }
 }
+
+.nexus-c-source-table__add-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px 0 auto;
+
+    svg {
+        height: 15px;
+        width: 15px;
+        cursor: pointer;
+    }
+}

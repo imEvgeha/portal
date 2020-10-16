@@ -1,0 +1,10 @@
+@import '../../../../../styles/config';
+
+.bulk-set-territories {
+    &__label {
+        margin: 15px 0 5px;
+    }
+    &__note {
+        color: map-get($colors, nexus-light-grey);
+    }
+}
