@@ -14,6 +14,7 @@ import {
     getValidationFunction,
     renderNexusField,
     renderError,
+    renderLabel,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
@@ -183,6 +184,7 @@ const NexusArray = ({
             >
                 {({fieldProps, error}) => (
                     <>
+                        {renderLabel(name, required, tooltip)}
                         {renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>

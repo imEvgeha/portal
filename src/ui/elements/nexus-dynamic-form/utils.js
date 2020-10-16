@@ -11,11 +11,6 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
-const getFieldPath = path => {
-    const dotIndex = path.indexOf('.');
-    return dotIndex > 0 ? path.substring(dotIndex + 1) : path;
-};
-
 export const getDefaultValue = (field = {}, view, data) => {
     if (field.type === 'dateRange') {
         return {
@@ -23,7 +18,7 @@ export const getDefaultValue = (field = {}, view, data) => {
             endDate: get(data, field.path[1]),
         };
     }
-    const value = get(data, field.path) !== null ? get(data, getFieldPath(field.path)) : '';
+    const value = get(data, field.path) !== null ? get(data, field.path) : '';
     if ((view === VIEWS.CREATE || get(field,'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }

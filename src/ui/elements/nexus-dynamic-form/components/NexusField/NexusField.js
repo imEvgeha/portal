@@ -8,7 +8,7 @@ import {get, cloneDeep} from 'lodash';
 import {compose} from "redux";
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import {VIEWS} from '../../constants';
 import withOptional from "../../hoc/withOptional";
 import {
     checkFieldDependencies,
@@ -42,6 +42,7 @@ const TextFieldWithOptional = compose(
 )(TextField);
 
 const NexusField = ({
+    isHighlighted,
     selectValues,
     path,
     type,
@@ -201,7 +202,7 @@ const NexusField = ({
         <ErrorBoundary>
             <div
                 className={`nexus-c-field${validationError ? ' nexus-c-field--error' : ''}${
-                    HIGHLIGHTED_FIELDS.includes(path) ? ' nexus-c-field--highlighted' : ''
+                    isHighlighted ? ' nexus-c-field--highlighted' : ''
                 }`}
             >
                 <AKField
@@ -249,6 +250,7 @@ NexusField.propTypes = {
     isOptional: PropTypes.bool,
     setFieldValue: PropTypes.func,
     useCurrentDate: PropTypes.bool,
+    isHighlighted: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -269,6 +271,7 @@ NexusField.defaultProps = {
     isOptional: false,
     setFieldValue: null,
     useCurrentDate: false,
+    isHighlighted: false,
 };
 
 export default NexusField;
