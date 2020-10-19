@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import Tag from '@atlaskit/tag';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
@@ -14,6 +15,8 @@ import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusMod
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import columnDefinitions from './columnDefinitions';
+import ComponentsPicker from './components-picker/ComponentsPicker';
+import {dummyData} from './components-picker/constants';
 import './ServicesTable.scss';
 
 const OP_STATUS_COL_INDEX = 4;
@@ -26,6 +29,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const [components, setComponents] = useState(dummyData.audioSummary || []);
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     useEffect(() => {
@@ -49,6 +53,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                     recipient: service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId || '',
                     operationalStatus: service.status,
                     rowIndex: index,
+                    rowHeight: 50,
                 }));
                 setTableData(flattenedObject);
             }
@@ -83,17 +88,20 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
     const componentsCell = ({rowIndex}) => {
         return (
             <div>
-                <div onClick={() => openModal(<button onClick={closeModal} />)}>
-                    <button onClick={closeModal} />
+                <div
+                    onClick={() =>
+                        openModal(<ComponentsPicker data={dummyData} closeModal={closeModal} save={setComponents} />, {
+                            width: 'large',
+                        })
+                    }
+                >
+                    {components.map(item => (
+                        <Tag text={item} key={item} />
+                    ))}
                 </div>
             </div>
         );
     };
-
-    const componentsColumn = defineButtonColumn({
-        width: 200,
-        cellRendererFramework: componentsCell,
-    });
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
@@ -157,7 +165,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         }));
     };
 
-    console.log('DATA: ', data);
+    // console.log('DATA: ', data);
 
     return (
         <div className="nexus-c-services-table">
@@ -171,7 +179,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
                 </div>
             </div>
             <ServicesTableGrid
-                defaultColDef={{valueGetter}}
+                defaultColDef={{...valueGetter, sortable: true, resizable: true}}
                 columnDefs={[orderingColumn, closeButtonColumn, ...columnDefinitions]}
                 rowData={tableData}
                 domLayout="autoHeight"

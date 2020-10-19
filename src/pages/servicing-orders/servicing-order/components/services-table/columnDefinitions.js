@@ -30,6 +30,7 @@ const columnDefinitions = [
         headerName: 'Components',
         cellRenderer: 'componentsCell',
         width: 200,
+        autoHeight: true,
     },
     {
         colId: 'doNotStartBefore',

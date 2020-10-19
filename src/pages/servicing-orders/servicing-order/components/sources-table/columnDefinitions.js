@@ -13,13 +13,11 @@ const columnDefinitions = [
         colId: 'version',
         field: 'version',
         headerName: 'Version',
-        width: 100,
     },
     {
         colId: 'assetFormat',
         field: 'assetFormat',
         headerName: 'Asset Format',
-        width: 250,
     },
     {
         colId: 'standard',
