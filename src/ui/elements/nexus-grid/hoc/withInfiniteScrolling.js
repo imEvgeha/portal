@@ -104,6 +104,11 @@ const withInfiniteScrolling = ({
                         props.setTotalCount(total);
                     }
 
+                    if (typeof props.setDisplayedRows === 'function' && isMounted.current) {
+                        const count = (page + 1) * pageSize;
+                        props.setDisplayedRows(count >= total ? total : count);
+                    }
+
                     if (total > 0) {
                         let lastRow = -1;
                         if ((page + 1) * size >= total) {
@@ -191,6 +196,7 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.propTypes,
         onGridEvent: PropTypes.func,
         setTotalCount: PropTypes.func,
+        setDisplayedRows: PropTypes.func,
         successDataFetchCallback: PropTypes.func,
         onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
@@ -201,6 +207,7 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.defaultProps,
         onGridEvent: null,
         setTotalCount: null,
+        setDisplayedRows: () => null,
         successDataFetchCallback: null,
         onAddAdditionalField: null,
         params: null,

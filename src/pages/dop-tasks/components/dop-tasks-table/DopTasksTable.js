@@ -95,12 +95,22 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
         };
     });
 
-    const getPaginationData = ({api}) => {
-        const pageSize = api.paginationGetPageSize();
-        const totalCount = api.paginationGetRowCount();
-        if (totalCount > 0) {
-            setPaginationData({pageSize, totalCount});
-        }
+    const setTotalCount = total => {
+        setPaginationData(prevData => {
+            return {
+                ...prevData,
+                totalCount: total,
+            };
+        });
+    };
+
+    const setDisplayedRows = count => {
+        setPaginationData(prevData => {
+            return {
+                ...prevData,
+                pageSize: count,
+            };
+        });
     };
 
     const onGridReady = ({type, api}) => {
@@ -151,9 +161,8 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
                 suppressRowClickSelection
                 onSortChanged={onSortChanged}
                 onGridEvent={onGridReady}
-                pagination={true}
-                suppressPaginationPanel={true}
-                onPaginationChanged={getPaginationData}
+                setTotalCount={setTotalCount}
+                setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
             />
             <DopTasksTableStatusBar paginationData={paginationData} />
