@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
@@ -31,14 +31,12 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({user}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
     });
-    const [externalFilter, setExternalFilter] = useState({
-        user,
-    });
+
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
         if (col.colId === 'taskName') {
             return {
@@ -97,17 +95,6 @@ const DopTasksTable = ({user}) => {
         };
     });
 
-    useEffect(() => {
-        if (externalFilter.user !== user) {
-            setExternalFilter(prevData => {
-                return {
-                    ...prevData,
-                    user,
-                };
-            });
-        }
-    }, [user]);
-
     const getPaginationData = ({api}) => {
         const pageSize = api.paginationGetPageSize();
         const totalCount = api.paginationGetRowCount();
@@ -119,9 +106,11 @@ const DopTasksTable = ({user}) => {
     const onGridReady = ({type, api}) => {
         const {READY} = GRID_EVENTS;
         switch (type) {
-            case READY:
+            case READY: {
                 api.sizeColumnsToFit();
+                setGridApi(api);
                 break;
+            }
             default:
                 break;
         }
@@ -173,11 +162,15 @@ const DopTasksTable = ({user}) => {
 };
 
 DopTasksTable.propTypes = {
-    user: PropTypes.string,
+    externalFilter: PropTypes.object,
+    setExternalFilter: PropTypes.func,
+    setGridApi: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
-    user: USER,
+    externalFilter: USER,
+    setExternalFilter: () => null,
+    setGridApi: () => null,
 };
 
 export default DopTasksTable;

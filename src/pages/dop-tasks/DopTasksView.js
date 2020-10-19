@@ -12,20 +12,59 @@ import {USER} from './constants';
 import './DopTasksView.scss';
 
 export const DopTasksView = ({toggleRefreshGridData}) => {
-    const [user, setUser] = useState(USER);
+    const [externalFilter, setExternalFilter] = useState({
+        user: USER,
+    });
+    const [gridApi, setGridApi] = useState(null);
+
+    const changeUser = user => {
+        setExternalFilter(prevState => {
+            return {
+                ...prevState,
+                user,
+            };
+        });
+    };
+
+    const applySavedTableDropDownFilter = filter => {
+        switch (filter) {
+            case 'open': {
+                const filterInstance = gridApi.getFilterInstance('taskStatus');
+                filterInstance.setModel({
+                    filterType: 'set',
+                    values: ['READY', 'IN PROGRESS'],
+                });
+                gridApi.setSortModel([
+                    {
+                        colId: 'taskStatus',
+                        sort: 'asc',
+                    },
+                ]);
+                gridApi.onFilterChanged();
+                break;
+            }
+
+            default:
+            // no-op
+        }
+    };
 
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
-                <QueuedTasks setUser={setUser} />
-                <SavedTableDropdown />
+                <QueuedTasks setUser={changeUser} />
+                <SavedTableDropdown applySavedTableDropDownFilter={applySavedTableDropDownFilter} />
                 <IconButton
                     icon={() => <RefreshIcon size="large" />}
                     onClick={() => toggleRefreshGridData(true)}
                     label="Refresh"
                 />
             </DopTasksHeader>
-            <DopTasksTable user={user} />
+            <DopTasksTable
+                externalFilter={externalFilter}
+                setExternalFilter={setExternalFilter}
+                setGridApi={setGridApi}
+            />
         </div>
     );
 };
