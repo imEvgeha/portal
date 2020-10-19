@@ -528,6 +528,11 @@ class TitleEdit extends Component {
                 this.setState({
                     isSyncing: false,
                 });
+                this.props.addToast({
+                    title: 'Sync Title Success',
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: false,
+                });
                 return true;
             })
             .catch(() => {

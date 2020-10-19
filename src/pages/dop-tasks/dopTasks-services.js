@@ -1,4 +1,3 @@
-import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {getUsername} from '../../auth/authSelectors';
 import {store} from '../../index';
@@ -27,18 +26,45 @@ const DopTasksService = {
 };
 
 const prepareFilterPayload = (initialParams, externalFilter) => {
-    const payload = cloneDeep(initialParams);
+    const payload = initialParams;
+    const activeFilters = Object.keys(externalFilter);
 
     Object.entries(externalFilter).map(([key, val]) => {
         if (STRING_FIELDS.includes(key)) {
-            payload.filterCriterion[0].value = val;
-            payload.filterCriterion[0].fieldName = key;
-            payload.filterCriterion[0].operator = 'contain';
+            let updatedField = false;
+            payload.filterCriterion.forEach((item, index) => {
+                if (item.fieldName === key) {
+                    updatedField = true;
+                    payload.filterCriterion[index].value = val;
+                    payload.filterCriterion[index].fieldName = key;
+                    payload.filterCriterion[index].operator = 'contain';
+                }
+            });
+            if (!updatedField) {
+                payload.filterCriterion.push({
+                    value: val,
+                    fieldName: key,
+                    operator: 'contain',
+                    valueDataType: 'String',
+                    logicalAnd: true,
+                });
+            }
         }
         if (key === 'taskStatus') {
-            payload.filterCriterion[0].value = val.split(', ').join(',');
-            payload.filterCriterion[0].fieldName = key;
-            payload.filterCriterion[0].operator = 'in';
+            const taskStatusIndex = payload.filterCriterion.findIndex(item => item.fieldName === 'taskStatus');
+            if (taskStatusIndex > -1) {
+                payload.filterCriterion[taskStatusIndex].value = val.split(', ').join(',');
+                payload.filterCriterion[taskStatusIndex].fieldName = key;
+                payload.filterCriterion[taskStatusIndex].operator = 'in';
+            } else {
+                payload.filterCriterion.push({
+                    value: val.split(', ').join(','),
+                    fieldName: key,
+                    operator: 'in',
+                    valueDataType: 'String',
+                    logicalAnd: true,
+                });
+            }
         }
         if (key === 'projectStatus') {
             const projectStatuses = val.split(', ');
@@ -52,35 +78,69 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
                 });
                 return null;
             });
-            payload.filterCriterion[0].value = filterResult.join(',');
-            payload.filterCriterion[0].fieldName = key;
-            payload.filterCriterion[0].operator = 'in';
+            const projectStatusIndex = payload.filterCriterion.findIndex(item => item.fieldName === 'projectStatus');
+            if (projectStatusIndex > -1) {
+                payload.filterCriterion[projectStatusIndex].value = filterResult.join(',');
+                payload.filterCriterion[projectStatusIndex].fieldName = key;
+                payload.filterCriterion[projectStatusIndex].operator = 'in';
+            } else {
+                payload.filterCriterion.push({
+                    value: filterResult.join(','),
+                    fieldName: key,
+                    operator: 'in',
+                    valueDataType: 'String',
+                    logicalAnd: true,
+                });
+            }
         }
         if (DATE_FIELDS.includes(key)) {
             const [dateFrom, dateTo = null] = Object.values(val) || [];
-            payload.filterCriterion[0].value = dateFrom;
-            payload.filterCriterion[0].fieldName = key;
-            payload.filterCriterion[0].operator = 'equal';
-            payload.filterCriterion[0].valueDataType = 'Date';
-            if (dateTo) {
-                payload.filterCriterion[0].otherValue = dateTo;
-                payload.filterCriterion[0].operator = 'between';
+            const dateIndex = payload.filterCriterion.findIndex(item => item.fieldName === key);
+            if (dateIndex > -1) {
+                payload.filterCriterion[dateIndex].value = dateFrom;
+                payload.filterCriterion[dateIndex].fieldName = key;
+                payload.filterCriterion[dateIndex].operator = 'equal';
+                payload.filterCriterion[dateIndex].valueDataType = 'Date';
+                if (dateTo) {
+                    payload.filterCriterion[dateIndex].otherValue = dateTo;
+                    payload.filterCriterion[dateIndex].operator = 'between';
+                }
+            } else {
+                payload.filterCriterion.push({
+                    value: dateFrom,
+                    fieldName: key,
+                    operator: 'equal',
+                    valueDataType: 'Date',
+                    logicalAnd: true,
+                    ...(dateTo && {otherValue: dateTo, operator: 'between'}),
+                });
             }
         }
-        if (key === 'user' && val === USER) {
-            payload.filterCriterion[payload.filterCriterion.length - 1].value = getUsername(store.getState());
-            payload.filterCriterion[payload.filterCriterion.length - 1].fieldName = ACTUAL_OWNER;
-        }
-        if (key === 'user' && val === ALL) {
-            payload.filterCriterion[payload.filterCriterion.length - 1].value = ALL;
-            payload.filterCriterion[payload.filterCriterion.length - 1].fieldName = POTENTIAL_OWNERS;
+        if (key === 'user') {
+            const userIndex = payload.filterCriterion.findIndex(
+                item => item.fieldName === POTENTIAL_OWNERS || item.fieldName === ACTUAL_OWNER
+            );
+            if (userIndex > -1) {
+                payload.filterCriterion[userIndex].value = val === USER ? getUsername(store.getState()) : ALL;
+                payload.filterCriterion[userIndex].fieldName = val === USER ? ACTUAL_OWNER : POTENTIAL_OWNERS;
+            } else {
+                payload.filterCriterion.push({
+                    value: val === USER ? getUsername(store.getState()) : ALL,
+                    fieldName: val === USER ? ACTUAL_OWNER : POTENTIAL_OWNERS,
+                    logicalAnd: true,
+                    operator: 'equal',
+                    valueDataType: 'String',
+                });
+            }
         }
         if (key === 'sortCriterion' && val.length) {
             payload.sortCriterion = val;
         }
         return null;
     });
-
+    payload.filterCriterion = payload.filterCriterion.filter(
+        entry => activeFilters.includes(entry.fieldName) || [ACTUAL_OWNER, POTENTIAL_OWNERS].includes(entry.fieldName)
+    );
     return payload;
 };
 

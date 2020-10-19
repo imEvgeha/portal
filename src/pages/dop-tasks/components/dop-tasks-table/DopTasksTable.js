@@ -4,6 +4,7 @@ import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -115,6 +116,17 @@ const DopTasksTable = ({user}) => {
         }
     };
 
+    const onGridReady = ({type, api}) => {
+        const {READY} = GRID_EVENTS;
+        switch (type) {
+            case READY:
+                api.sizeColumnsToFit();
+                break;
+            default:
+                break;
+        }
+    };
+
     const onSortChanged = ({api}) => {
         // get sorting column and prepare data for passing it as a payload instead of url params (not supported by DOP api)
         const sortModel = api.getSortModel();
@@ -149,6 +161,7 @@ const DopTasksTable = ({user}) => {
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onSortChanged={onSortChanged}
+                onGridEvent={onGridReady}
                 pagination={true}
                 suppressPaginationPanel={true}
                 onPaginationChanged={getPaginationData}
