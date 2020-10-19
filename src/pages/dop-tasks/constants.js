@@ -17,8 +17,8 @@ export const QUEUED_TASKS_OPTIONS = [
 ];
 
 export const SAVED_TABLE_SELECT_OPTIONS = [
-    {label: 'Open', value: 'open'},
     {label: 'All', value: 'all'},
+    {label: 'Open', value: 'open'},
     {label: 'With Errors', value: 'withErrors'},
     {label: 'On Hold', value: 'onHold'},
     {label: 'Changed in last 24 hours', value: 'changedInLast24Hours'},
