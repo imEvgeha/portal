@@ -80,7 +80,7 @@ const withInfiniteScrolling = ({
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = {
+            let filterParams = {
                 ...filterBy(filterModel, props.prepareFilterParams, filtersInBody),
                 ...props.externalFilter,
             };
@@ -92,11 +92,12 @@ const withInfiniteScrolling = ({
                 gridApi.showLoadingOverlay();
             }
 
+            filterParams = cleanObject(filterParams, true);
             const preparedParams = filtersInBody
                 ? parsedParams
                 : {
                       ...parsedParams,
-                      ...cleanObject(filterParams, true),
+                      ...filterParams,
                   };
 
             const body = filtersInBody ? filterParams : {};
