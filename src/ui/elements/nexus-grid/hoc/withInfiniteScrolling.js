@@ -22,6 +22,7 @@ import {
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS,
     fetchData,
+    filtersInBody = false,
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
@@ -79,7 +80,10 @@ const withInfiniteScrolling = ({
                     object[key] = props.params[key];
                     return object;
                 }, {});
-            const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
+            const filterParams = {
+                ...filterBy(filterModel, props.prepareFilterParams, filtersInBody),
+                ...props.externalFilter,
+            };
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -88,15 +92,19 @@ const withInfiniteScrolling = ({
                 gridApi.showLoadingOverlay();
             }
 
-            const preparedParams = {
-                ...parsedParams,
-                ...cleanObject(filterParams, true),
-            };
+            const preparedParams = filtersInBody
+                ? parsedParams
+                : {
+                      ...parsedParams,
+                      ...cleanObject(filterParams, true),
+                  };
+
+            const body = filtersInBody ? filterParams : {};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
-            fetchData(preparedParams, pageNumber, pageSize, sortParams)
+            fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 

@@ -125,7 +125,7 @@ const parseAdvancedFilter = function (searchCriteria) {
     return params;
 };
 
-const parseAdvancedFilterV2 = function (searchCriteria) {
+const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
     const rootStore = store.getState().root;
     const mappings = rootStore.availsMapping.mappings;
     let params = {};
@@ -152,6 +152,12 @@ const parseAdvancedFilterV2 = function (searchCriteria) {
                 ({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key
             );
             let keyValue = (map && map.queryParamName) || key;
+            if (filtersInBody && map.searchDataType === 'multiselect') {
+                // change key - add List
+                keyValue = `${keyValue}List`;
+                //change value to array
+            }
+
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
@@ -180,7 +186,7 @@ export const rightsService = {
         return nexusFetch(url, {params});
     },
 
-    advancedSearch: (searchCriteria, page, size, sortedParams) => {
+    advancedSearch: (searchCriteria, page, size, sortedParams, body) => {
         const queryParams = parseAdvancedFilter(searchCriteria);
         const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
             sortedParams

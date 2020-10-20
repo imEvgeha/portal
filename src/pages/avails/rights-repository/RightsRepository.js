@@ -48,7 +48,7 @@ const RightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
-    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
+    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
