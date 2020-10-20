@@ -245,6 +245,7 @@ NexusField.propTypes = {
     label: PropTypes.string,
     isOptional: PropTypes.bool,
     setFieldValue: PropTypes.func,
+    // eslint-disable-next-line react/boolean-prop-naming
     useCurrentDate: PropTypes.bool,
     isHighlighted: PropTypes.bool,
 };
