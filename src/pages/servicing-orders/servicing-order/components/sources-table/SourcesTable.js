@@ -232,7 +232,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             }
         }
     }, [sources.length]);
-    console.log('sources.length: ', sources.length);
 
     return (
         <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>

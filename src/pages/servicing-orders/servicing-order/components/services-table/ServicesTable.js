@@ -23,7 +23,7 @@ const OP_STATUS_COL_INDEX = 4;
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
+const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray}) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
@@ -90,9 +90,14 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
             <div>
                 <div
                     onClick={() =>
-                        openModal(<ComponentsPicker data={dummyData} closeModal={closeModal} save={setComponents} />, {
-                            width: 'large',
-                        })
+                        isDisabled
+                            ? null
+                            : openModal(
+                                  <ComponentsPicker data={dummyData} closeModal={closeModal} save={setComponents} />,
+                                  {
+                                      width: 'large',
+                                  }
+                              )
                     }
                 >
                     {components.map(item => (
@@ -165,7 +170,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices}) => {
         }));
     };
 
-    // console.log('DATA: ', data);
+    // console.log('componentsArray: ', componentsArray);
 
     return (
         <div className="nexus-c-services-table">
@@ -197,12 +202,14 @@ ServicesTable.propTypes = {
     data: PropTypes.object,
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
+    components: PropTypes.array,
 };
 
 ServicesTable.defaultProps = {
     data: null,
     isDisabled: false,
     setUpdatedServices: () => null,
+    components: [],
 };
 
 export default ServicesTable;
