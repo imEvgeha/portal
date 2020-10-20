@@ -142,10 +142,6 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 continue;
             }
             if (value instanceof Object) {
-                params = {
-                    ...params,
-                    ...value,
-                };
                 continue;
             }
             const map = mappings.find(
