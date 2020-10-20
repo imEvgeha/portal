@@ -146,11 +146,13 @@ export const PrePlanActions = ({
     const bulkSetInTable = () => {
         const bulkTerritories = territories.map(t => t.value);
         const rightsList = cloneDeep(prePlanRepoRights);
-        rightsList.forEach(right => {
+        let updatedRight = {};
+        selectedPrePlanRights.forEach(right => {
             right.territory.forEach(t => {
                 if (bulkTerritories.includes(t.country)) {
-                    t.selected = true;
-                    right.keywords = Array.from(new Set(`${keywords},${right.keywords}`.split(','))).join(',');
+                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
+                    updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                    updatedRight.keywords = Array.from(new Set(`${keywords},${right.keywords}`.split(','))).join(',');
                 }
             });
         });
