@@ -115,14 +115,19 @@ class TitleEdit extends Component {
             });
     }
 
-    loadExternalIds(titleId) {
+    loadExternalIds(titleId, titleSystem = null) {
         isNexusTitle(titleId) &&
             publisherService
                 .getExternalIds(titleId)
                 .then(response => {
-                    this.setState({
-                        externalIDs: response,
-                    });
+                    this.setState(
+                        {
+                            externalIDs: response,
+                        },
+                        () => {
+                            if (titleSystem) this.checkSyncResult(titleSystem);
+                        }
+                    );
                 })
                 .catch(() => {
                     console.error('Unable to load Extrernal IDs data');
@@ -544,12 +549,11 @@ class TitleEdit extends Component {
         return publisherService
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
-                this.loadExternalIds(titleId);
+                const titleSystem = syncToVZ ? 'vz' : 'movida';
+                this.loadExternalIds(titleId, titleSystem);
                 this.setState({
                     isSyncing: false,
                 });
-                const titleSystem = syncToVZ ? 'vz' : 'movida';
-                this.checkSyncResult(titleSystem);
                 return true;
             })
             .catch(() => {
