@@ -19,7 +19,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         };
     }
     const value = get(data, field.path) !== null ? get(data, field.path) : '';
-    if (view === VIEWS.CREATE && !value) {
+    if ((view === VIEWS.CREATE || get(field,'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
     return value;
@@ -44,10 +44,11 @@ export const getValidationError = (validationErrors, field) => {
 
 const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     let retValue = false;
-    formData[field].forEach(obj => {
+    formData[field].map(obj => {
         if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
+        return null;
     });
     return retValue;
 };
@@ -145,7 +146,11 @@ export const getProperValue = (type, value, path, schema) => {
             };
             break;
         case 'stringInArray':
-            val = Array.isArray(value) ? value : [value];
+            if(!value){
+                val = [];
+            } else {
+                val = Array.isArray(value) ? value : [value];
+            }
             break;
         case 'array':
             val = value ? value.map(v => getProperValues(schema, v)) : [];
@@ -186,7 +191,7 @@ export const buildSection = (
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues})}
+                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues, setFieldValue})}
                         </div>
                     ))
                 );
@@ -195,7 +200,7 @@ export const buildSection = (
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues}) => {
+export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues, setFieldValue}) => {
     return (
         <NexusField
             {...field}
@@ -208,6 +213,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}
+            setFieldValue={setFieldValue}
         />
     );
 };
