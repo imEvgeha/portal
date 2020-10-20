@@ -1,4 +1,4 @@
-import React, {useState, useRef, useContext} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
@@ -37,7 +37,12 @@ export const PrePlanActions = ({
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
+    const [bulkUpdate, setBulkUpdate] = useState([]);
     const [keywords, setKeywords] = useState('');
+
+    useEffect(() => {
+        bulkSetInTable();
+    }, [bulkUpdate]);
 
     const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -146,11 +151,16 @@ export const PrePlanActions = ({
     const bulkSetInTable = () => {
         const bulkTerritories = territories.map(t => t.value);
         const rightsList = cloneDeep(prePlanRepoRights);
-        rightsList.forEach(right => {
+        let updatedRight = {};
+        selectedPrePlanRights.forEach(right => {
             right.territory.forEach(t => {
                 if (bulkTerritories.includes(t.country)) {
-                    t.selected = true;
-                    right.keywords = Array.from(new Set(`${keywords},${right.keywords}`.split(','))).join(',');
+                    // eslint-disable-next-line prefer-destructuring
+                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
+                    updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                    updatedRight.keywords = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(
+                        ','
+                    );
                 }
             });
         });
@@ -165,7 +175,7 @@ export const PrePlanActions = ({
             actions: [
                 {
                     text: 'Set',
-                    onClick: bulkSetInTable,
+                    onClick: () => setBulkUpdate(!bulkUpdate),
                 },
                 {
                     text: 'Cancel',

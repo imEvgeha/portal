@@ -1,5 +1,5 @@
-import DOPService from '../../DOP-services';
-import {EXCLUDED_STATUSES} from '../../constants';
+import DOPService from './DOP-services.js';
+import {EXCLUDED_STATUSES} from './constants.js';
 
 export const prepareSelectForPlanningData = async (sort, offset, limit) => {
     try {
