@@ -21,7 +21,6 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
     }, []);
 
     const onSubmit = values => {
-        console.log(values);
         updateRight(values);
     };
 
