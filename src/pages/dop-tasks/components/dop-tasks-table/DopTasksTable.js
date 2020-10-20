@@ -1,4 +1,4 @@
-import React, {useState, memo} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
@@ -119,6 +119,7 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
+                console.log(api.getFilterModel());
                 break;
             }
             default:
@@ -182,4 +183,4 @@ DopTasksTable.defaultProps = {
     setGridApi: () => null,
 };
 
-export default memo(DopTasksTable);
+export default DopTasksTable;
