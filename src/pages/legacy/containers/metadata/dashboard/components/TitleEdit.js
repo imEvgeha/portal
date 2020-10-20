@@ -532,6 +532,7 @@ class TitleEdit extends Component {
                     title: 'Sync Title Success',
                     icon: SUCCESS_ICON,
                     isWithOverlay: false,
+                    isAutoDismiss: true,
                 });
                 return true;
             })
@@ -543,6 +544,7 @@ class TitleEdit extends Component {
                     title: 'Sync Title Failed',
                     icon: ERROR_ICON,
                     isWithOverlay: false,
+                    isAutoDismiss: true,
                 });
                 return false;
             });
