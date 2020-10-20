@@ -155,7 +155,8 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             if (filtersInBody && map.searchDataType === 'multiselect') {
                 // change key - add List
                 keyValue = `${keyValue}List`;
-                //change value to array
+                //  Convert Comma Separated String into an Array
+                value = value.split(', ');
             }
 
             if (map && map.searchDataType === 'string') {
