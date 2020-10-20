@@ -150,7 +150,7 @@ export const PrePlanActions = ({
         selectedPrePlanRights.forEach(right => {
             right.territory.forEach(t => {
                 if (bulkTerritories.includes(t.country)) {
-                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
+                    updatedRight = {...rightsList.filter(r => r.id === right.id)[0]};
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
                     updatedRight.keywords = Array.from(new Set(`${keywords},${right.keywords}`.split(','))).join(',');
                 }
