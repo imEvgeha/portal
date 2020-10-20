@@ -106,6 +106,7 @@ const NexusArray = ({
                                     initialData,
                                     field: fields[key],
                                     selectValues,
+                                    setFieldValue,
                                 })}
                             </div>
                         )
@@ -156,7 +157,7 @@ const NexusArray = ({
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues})}
+                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues, setFieldValue})}
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}

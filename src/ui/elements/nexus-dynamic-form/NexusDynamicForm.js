@@ -53,7 +53,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     const handleOnSubmit = values => {
         setView(VIEWS.VIEW);
-        const properValues = getProperValues(schema, values);
+        const properValues =  getProperValues(schema, values);
         onSubmit(properValues);
     };
 
