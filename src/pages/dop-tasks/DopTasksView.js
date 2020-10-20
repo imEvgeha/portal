@@ -8,6 +8,7 @@ import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
+import {applyPredefinedTopTasksTableFilter} from './utils';
 import {USER} from './constants';
 import './DopTasksView.scss';
 
@@ -27,26 +28,7 @@ export const DopTasksView = ({toggleRefreshGridData}) => {
     };
 
     const applySavedTableDropDownFilter = filter => {
-        switch (filter) {
-            case 'open': {
-                const filterInstance = gridApi.getFilterInstance('taskStatus');
-                filterInstance.setModel({
-                    filterType: 'set',
-                    values: ['READY', 'IN PROGRESS'],
-                });
-                gridApi.setSortModel([
-                    {
-                        colId: 'taskStatus',
-                        sort: 'asc',
-                    },
-                ]);
-                gridApi.onFilterChanged();
-                break;
-            }
-
-            default:
-            // no-op
-        }
+        applyPredefinedTopTasksTableFilter(gridApi, filter);
     };
 
     return (

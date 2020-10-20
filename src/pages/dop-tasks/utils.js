@@ -74,3 +74,64 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
         });
     }
 };
+
+export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
+    switch (filter) {
+        case 'open': {
+            clearAllDopTasksFilters(gridApi);
+            const filterInstance = gridApi.getFilterInstance('taskStatus');
+            filterInstance.setModel({
+                filterType: 'set',
+                values: ['READY', 'IN PROGRESS'],
+            });
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'all': {
+            clearAllDopTasksFilters(gridApi);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'withErrors': {
+            clearAllDopTasksFilters(gridApi);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        default:
+        // no-op
+    }
+};
+
+const clearAllDopTasksFilters = api => {
+    if (api) {
+        api.setFilterModel(null);
+        api.destroyFilter('activityEstimatedEndDate');
+        api.destroyFilter('activityActualStartDate');
+        api.destroyFilter('activityActualEndDate');
+        api.destroyFilter('activityPlannedCompletionDate');
+        api.destroyFilter('projectStartDate');
+        api.destroyFilter('projectPlannedCompletionDate');
+        api.setFilterModel({
+            activityEstimatedEndDate: {},
+            activityActualStartDate: {},
+            activityActualEndDate: {},
+            activityPlannedCompletionDate: {},
+            projectStartDate: {},
+            projectPlannedCompletionDate: {},
+        });
+    }
+};
+
+const sortTaskStatus = api => {
+    if (api) {
+        api.setSortModel([
+            {
+                colId: 'taskStatus',
+                sort: 'asc',
+            },
+        ]);
+    }
+};

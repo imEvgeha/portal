@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
@@ -182,4 +182,4 @@ DopTasksTable.defaultProps = {
     setGridApi: () => null,
 };
 
-export default DopTasksTable;
+export default memo(DopTasksTable);
