@@ -5,11 +5,11 @@ import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
-import {compose} from "redux";
+import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../../constants';
-import withOptional from "../../hoc/withOptional";
+import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
     getFieldValue,
@@ -21,25 +21,15 @@ import {
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
-const DateTimeWithOptional = compose(
-    withOptional(),
-)(DateTime);
+const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 
-const NexusTextAreaWithOptional = compose(
-    withOptional(),
-)(NexusTextArea);
+const NexusTextAreaWithOptional = compose(withOptionalCheckbox())(NexusTextArea);
 
-const CheckboxWithOptional = compose(
-    withOptional(),
-)(Checkbox);
+const CheckboxWithOptional = compose(withOptionalCheckbox())(Checkbox);
 
-const SelectWithOptional = compose(
-    withOptional(),
-)(Select);
+const SelectWithOptional = compose(withOptionalCheckbox())(Select);
 
-const TextFieldWithOptional = compose(
-    withOptional(),
-)(TextField);
+const TextFieldWithOptional = compose(withOptionalCheckbox())(TextField);
 
 const NexusField = ({
     isHighlighted,
@@ -106,7 +96,14 @@ const NexusField = ({
             case 'textarea':
                 return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'number':
-                return <TextFieldWithOptional {...fieldProps} type="Number" placeholder={`Enter ${label}`} {...addedProps}  />;
+                return (
+                    <TextFieldWithOptional
+                        {...fieldProps}
+                        type="Number"
+                        placeholder={`Enter ${label}`}
+                        {...addedProps}
+                    />
+                );
             case 'boolean':
                 return (
                     <CheckboxField
@@ -158,7 +155,6 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
-
                 return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
             default:
                 return;

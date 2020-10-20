@@ -4,7 +4,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {connect} from 'react-redux';
 import {VIEWS} from '../constants';
 
-const withOptional = () => WrappedComponent => {
+const withOptionalCheckbox = () => WrappedComponent => {
     const ComposedComponent = props => {
         const {isOptional, useCurrentDate, setFieldValue, path, view, ...fieldProps} = props;
         const {value, ...restFieldProps} = fieldProps;
@@ -48,4 +48,4 @@ const withOptional = () => WrappedComponent => {
     return connect()(ComposedComponent);
 };
 
-export default withOptional;
+export default withOptionalCheckbox;
