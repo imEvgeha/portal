@@ -79,11 +79,7 @@ export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
     switch (filter) {
         case 'open': {
             clearAllDopTasksFilters(gridApi);
-            const filterInstance = gridApi.getFilterInstance('taskStatus');
-            filterInstance.setModel({
-                filterType: 'set',
-                values: ['READY', 'IN PROGRESS'],
-            });
+            setTaskStatusFilter(gridApi, ['READY', 'IN PROGRESS']);
             sortTaskStatus(gridApi);
             gridApi.onFilterChanged();
             break;
@@ -94,8 +90,23 @@ export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
             gridApi.onFilterChanged();
             break;
         }
-        case 'withErrors': {
+        case 'notStarted': {
             clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['READY']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'inProgress': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['IN PROGRESS']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'closed': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['COMPLETED', 'EXITED', 'OBSOLETE']);
             sortTaskStatus(gridApi);
             gridApi.onFilterChanged();
             break;
@@ -105,7 +116,16 @@ export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
     }
 };
 
-const clearAllDopTasksFilters = api => {
+const setTaskStatusFilter = (gridApi, values) => {
+    const filterInstance = gridApi.getFilterInstance('taskStatus');
+    filterInstance.setModel({
+        filterType: 'set',
+        values,
+    });
+};
+
+export const clearAllDopTasksFilters = api => {
+    // aggrid setFilterModel function does not clear date filters, needs to be cleared and created manually
     if (api) {
         api.setFilterModel(null);
         api.destroyFilter('activityEstimatedEndDate');

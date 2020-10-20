@@ -19,10 +19,9 @@ export const QUEUED_TASKS_OPTIONS = [
 export const SAVED_TABLE_SELECT_OPTIONS = [
     {label: 'All', value: 'all'},
     {label: 'Open', value: 'open'},
-    {label: 'With Errors', value: 'withErrors'},
-    {label: 'On Hold', value: 'onHold'},
-    {label: 'Changed in last 24 hours', value: 'changedInLast24Hours'},
-    {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
+    {label: 'Not Started', value: 'notStarted'},
+    {label: 'In Progress', value: 'inProgress'},
+    {label: 'Closed', value: 'closed'},
 ];
 
 export const TASK_STATUS_ENUM = ['READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
