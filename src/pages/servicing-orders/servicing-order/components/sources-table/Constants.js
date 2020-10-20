@@ -7,15 +7,19 @@ export const SELECT_VALUES = {
 };
 
 export const INIT_SOURCE_ROW = {
-    barcode: ' ',
+    barcode: '',
     title: '',
-    titleId: '',
-    amsAssetId: '',
+    version: '',
     assetFormat: '',
     standard: '',
-    assetStatus: '',
-    shipVia: '',
-    shipListId: '',
-    startDate: '',
+    status: '',
     fs: '',
+};
+
+export const TEMP_SOURCE_ROW = {
+    title: ' ',
+    version: ' ',
+    assetFormat: ' ',
+    status: ' ',
+    standard: ' ',
 };

@@ -14,6 +14,7 @@ import {
     getValidationFunction,
     renderNexusField,
     renderError,
+    renderLabel,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
@@ -105,6 +106,7 @@ const NexusArray = ({
                                     initialData,
                                     field: fields[key],
                                     selectValues,
+                                    setFieldValue,
                                 })}
                             </div>
                         )
@@ -155,7 +157,7 @@ const NexusArray = ({
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues})}
+                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues, setFieldValue})}
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}
@@ -182,6 +184,7 @@ const NexusArray = ({
             >
                 {({fieldProps, error}) => (
                     <>
+                        {renderLabel(name, required, tooltip)}
                         {renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>

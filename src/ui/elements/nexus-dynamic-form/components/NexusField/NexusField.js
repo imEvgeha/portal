@@ -5,9 +5,11 @@ import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
 import {get, cloneDeep} from 'lodash';
+import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS, HIGHLIGHTED_FIELDS} from '../../constants';
+import {VIEWS} from '../../constants';
+import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {
     checkFieldDependencies,
     getFieldValue,
@@ -19,7 +21,18 @@ import {
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
+const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
+
+const NexusTextAreaWithOptional = compose(withOptionalCheckbox())(NexusTextArea);
+
+const CheckboxWithOptional = compose(withOptionalCheckbox())(Checkbox);
+
+const SelectWithOptional = compose(withOptionalCheckbox())(Select);
+
+const TextFieldWithOptional = compose(withOptionalCheckbox())(TextField);
+
 const NexusField = ({
+    isHighlighted,
     selectValues,
     path,
     type,
@@ -35,6 +48,9 @@ const NexusField = ({
     labels,
     optionsConfig,
     label,
+    isOptional,
+    setFieldValue,
+    useCurrentDate,
     ...props
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -53,11 +69,20 @@ const NexusField = ({
         return checkFieldDependencies(type, view, dependencies, formData);
     };
 
+    const addedProps = {
+        isOptional,
+        setFieldValue,
+        path,
+        view,
+    };
+
     const dateProps = {
         labels,
         type,
         dateType,
         isReadOnly,
+        useCurrentDate,
+        ...addedProps,
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -67,11 +92,18 @@ const NexusField = ({
         switch (type) {
             case 'string':
             case 'stringInArray':
-                return <TextField {...fieldProps} placeholder={`Enter ${label}`} />;
+                return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'textarea':
-                return <NexusTextArea {...fieldProps} placeholder={`Enter ${label}`} />;
+                return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'number':
-                return <TextField {...fieldProps} type="Number" placeholder={`Enter ${label}`} />;
+                return (
+                    <TextFieldWithOptional
+                        {...fieldProps}
+                        type="Number"
+                        placeholder={`Enter ${label}`}
+                        {...addedProps}
+                    />
+                );
             case 'boolean':
                 return (
                     <CheckboxField
@@ -80,7 +112,7 @@ const NexusField = ({
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
-                        {({fieldProps}) => <Checkbox {...fieldProps} />}
+                        {({fieldProps}) => <CheckboxWithOptional {...addedProps} {...fieldProps} />}
                     </CheckboxField>
                 );
             case 'select':
@@ -91,10 +123,11 @@ const NexusField = ({
                     };
                 }
                 return (
-                    <Select
+                    <SelectWithOptional
                         {...selectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
+                        {...addedProps}
                     />
                 );
             case 'multiselect':
@@ -106,7 +139,7 @@ const NexusField = ({
                     multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
                 }
                 return (
-                    <Select
+                    <SelectWithOptional
                         {...multiselectFieldProps}
                         options={options !== undefined ? options : fetchedOptions}
                         isMulti
@@ -117,11 +150,12 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
+                        {...addedProps}
                     />
                 );
             case 'dateRange':
             case 'datetime':
-                return <DateTime {...dateProps} {...fieldProps} />;
+                return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
             default:
                 return;
         }
@@ -164,7 +198,7 @@ const NexusField = ({
         <ErrorBoundary>
             <div
                 className={`nexus-c-field${validationError ? ' nexus-c-field--error' : ''}${
-                    HIGHLIGHTED_FIELDS.includes(path) ? ' nexus-c-field--highlighted' : ''
+                    isHighlighted ? ' nexus-c-field--highlighted' : ''
                 }`}
             >
                 <AKField
@@ -209,6 +243,11 @@ NexusField.propTypes = {
     dateType: PropTypes.string,
     labels: PropTypes.array,
     label: PropTypes.string,
+    isOptional: PropTypes.bool,
+    setFieldValue: PropTypes.func,
+    // eslint-disable-next-line react/boolean-prop-naming
+    useCurrentDate: PropTypes.bool,
+    isHighlighted: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -226,6 +265,10 @@ NexusField.defaultProps = {
     dateType: '',
     labels: [],
     label: '',
+    isOptional: false,
+    setFieldValue: null,
+    useCurrentDate: false,
+    isHighlighted: false,
 };
 
 export default NexusField;

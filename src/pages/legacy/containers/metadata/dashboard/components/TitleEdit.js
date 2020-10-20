@@ -89,6 +89,7 @@ class TitleEdit extends Component {
             ratingForCreate: {},
             externalIDs: null,
             validationErrors: new Set(),
+            isSyncing: false,
         };
     }
 
@@ -524,9 +525,20 @@ class TitleEdit extends Component {
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
                 this.loadExternalIds(titleId);
+                this.setState({
+                    isSyncing: false,
+                });
+                this.props.addToast({
+                    title: 'Sync Title Success',
+                    icon: SUCCESS_ICON,
+                    isWithOverlay: false,
+                });
                 return true;
             })
             .catch(() => {
+                this.setState({
+                    isSyncing: false,
+                });
                 this.props.addToast({
                     title: 'Sync Title Failed',
                     icon: ERROR_ICON,
@@ -1292,6 +1304,9 @@ class TitleEdit extends Component {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
         if (buttonName === SYNC) {
+            this.setState({
+                isSyncing: true,
+            });
             this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
         } else {
             this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
@@ -1336,6 +1351,7 @@ class TitleEdit extends Component {
                                                     <PublishVzMovida
                                                         onSyncPublishClick={this.onSyncPublishClick}
                                                         externalIDs={this.state.externalIDs}
+                                                        isSyncing={this.state.isSyncing}
                                                     />
                                                     <Can I="update" a="Metadata">
                                                         <Button
