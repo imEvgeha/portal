@@ -520,6 +520,26 @@ class TitleEdit extends Component {
             });
     };
 
+    checkSyncResult = titleSystem => {
+        this.state.externalIDs.forEach(externalId => {
+            if (externalId.externalSystem === titleSystem) {
+                externalId.errors.length === 0
+                    ? this.props.addToast({
+                          title: 'Sync Title Success',
+                          icon: SUCCESS_ICON,
+                          isWithOverlay: false,
+                          isAutoDismiss: true,
+                      })
+                    : this.props.addToast({
+                          title: 'Sync Title Failed',
+                          icon: ERROR_ICON,
+                          isWithOverlay: false,
+                          isAutoDismiss: true,
+                      });
+            }
+        });
+    };
+
     titleSync = (titleId, syncToVZ, syncToMovida) => {
         return publisherService
             .syncTitle(titleId, syncToVZ, syncToMovida)
@@ -528,12 +548,8 @@ class TitleEdit extends Component {
                 this.setState({
                     isSyncing: false,
                 });
-                this.props.addToast({
-                    title: 'Sync Title Success',
-                    icon: SUCCESS_ICON,
-                    isWithOverlay: false,
-                    isAutoDismiss: true,
-                });
+                const titleSystem = syncToVZ ? 'vz' : 'movida';
+                this.checkSyncResult(titleSystem);
                 return true;
             })
             .catch(() => {
