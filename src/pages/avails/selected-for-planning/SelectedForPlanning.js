@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
-import NexusGrid from '../../../../../ui/elements/nexus-grid/NexusGrid';
-import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withInfiniteScrolling from '../../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSideBar from '../../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from '../../constants';
+import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
+import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {prepareSelectForPlanningData} from './utils';
+import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 
 const SelectedForPlanningTable = compose(
     withColumnsResizing(),
