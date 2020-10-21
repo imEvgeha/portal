@@ -53,7 +53,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
             ];
         }, []);
 
-        const total = headers.get('X-Total-Count') || data.length;
+        const total = parseInt(headers.get('X-Total-Count') || data.length);
 
         return new Promise(res => {
             res({
@@ -72,5 +72,86 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                 data: [],
             });
         });
+    }
+};
+
+export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
+    switch (filter) {
+        case 'open': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['READY', 'IN PROGRESS']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'all': {
+            clearAllDopTasksFilters(gridApi);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'notStarted': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['READY']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'inProgress': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['IN PROGRESS']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        case 'closed': {
+            clearAllDopTasksFilters(gridApi);
+            setTaskStatusFilter(gridApi, ['COMPLETED', 'EXITED', 'OBSOLETE']);
+            sortTaskStatus(gridApi);
+            gridApi.onFilterChanged();
+            break;
+        }
+        default:
+        // no-op
+    }
+};
+
+const setTaskStatusFilter = (gridApi, values) => {
+    const filterInstance = gridApi.getFilterInstance('taskStatus');
+    filterInstance.setModel({
+        filterType: 'set',
+        values,
+    });
+};
+
+export const clearAllDopTasksFilters = api => {
+    // aggrid setFilterModel function does not clear date filters, needs to be cleared and created manually
+    if (api) {
+        api.setFilterModel(null);
+        api.destroyFilter('activityEstimatedEndDate');
+        api.destroyFilter('activityActualStartDate');
+        api.destroyFilter('activityActualEndDate');
+        api.destroyFilter('activityPlannedCompletionDate');
+        api.destroyFilter('projectStartDate');
+        api.destroyFilter('projectPlannedCompletionDate');
+        api.setFilterModel({
+            activityEstimatedEndDate: {},
+            activityActualStartDate: {},
+            activityActualEndDate: {},
+            activityPlannedCompletionDate: {},
+            projectStartDate: {},
+            projectPlannedCompletionDate: {},
+        });
+    }
+};
+
+const sortTaskStatus = api => {
+    if (api) {
+        api.setSortModel([
+            {
+                colId: 'taskStatus',
+                sort: 'asc',
+            },
+        ]);
     }
 };

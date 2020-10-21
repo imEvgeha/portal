@@ -21,7 +21,12 @@ const DopTasksService = {
         const url = `${config.get('gateway.DOPUrl')}/dop/be-services/taskManagement/task/search`;
         const payload = prepareFilterPayload(INITIAL_SEARCH_PARAMS, externalFilter);
         const body = {...payload, offset, limit};
-        return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
+        return nexusFetch(
+            url,
+            {method: 'post', credentials: 'include', body: JSON.stringify(body)},
+            DEFAULT_TIMEOUT,
+            true
+        );
     },
 };
 
