@@ -2,6 +2,7 @@ import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
 import authReducer from './auth/authReducer';
 import availsReducer from './pages/avails/availsReducer';
+import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
 import eventManagementReducer from './pages/event-management/eventManagementReducer';
 import settings from './pages/legacy/containers/settings/settingsReducer';
 import dopReducer from './pages/legacy/stores/reducers/DOP/dopReducer';
@@ -16,7 +17,13 @@ import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
 import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
 import syncLogReducer from './pages/sync-log/syncLogReducer';
-import {authPersistConfig, availsPersistConfig, createPersistReducer, rootPersistConfig} from './store-persist-config';
+import {
+    authPersistConfig,
+    availsPersistConfig,
+    createPersistReducer,
+    rootPersistConfig,
+    dopTasksPersistConfig,
+} from './store-persist-config';
 import uiReducer from './ui/uiReducer';
 
 const createRootReducer = routerHistory =>
@@ -41,6 +48,7 @@ const createRootReducer = routerHistory =>
         eventManagement: eventManagementReducer,
         servicingOrders: servicingOrdersReducer,
         syncLog: syncLogReducer,
+        dopTasks: createPersistReducer(dopTasksPersistConfig, dopTasksReducer),
         ui: uiReducer,
         auth: createPersistReducer(authPersistConfig, authReducer),
     });

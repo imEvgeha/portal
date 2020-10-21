@@ -13,7 +13,7 @@ import {
 } from '../../constants';
 import './SavedTableDropdown.scss';
 
-const SavedTableDropdown = ({applySavedTableDropDownFilter}) => {
+const SavedTableDropdown = ({applySavedTableDropDownFilter, saveUserDefinedFilter}) => {
     const [selectedItem, setSelectedItem] = useState(SAVED_TABLE_SELECT_OPTIONS[0]);
     const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
 
@@ -41,7 +41,7 @@ const SavedTableDropdown = ({applySavedTableDropDownFilter}) => {
                                 <IconButton
                                     icon={() => <CheckIcon size="small" />}
                                     size="small"
-                                    onClick={() => null}
+                                    onClick={saveUserDefinedFilter}
                                     label="Save"
                                 />
                                 <IconButton
@@ -67,10 +67,12 @@ const SavedTableDropdown = ({applySavedTableDropDownFilter}) => {
 
 SavedTableDropdown.propTypes = {
     applySavedTableDropDownFilter: PropTypes.func,
+    saveUserDefinedFilter: PropTypes.func,
 };
 
 SavedTableDropdown.defaultProps = {
     applySavedTableDropDownFilter: () => null,
+    saveUserDefinedFilter: () => null,
 };
 
 export default SavedTableDropdown;
