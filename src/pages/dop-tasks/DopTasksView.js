@@ -8,24 +8,45 @@ import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
 import DopTasksTable from './components/dop-tasks-table/DopTasksTable';
 import QueuedTasks from './components/queued-tasks/QueuedTasks';
 import SavedTableDropdown from './components/saved-table-dropdown/SavedTableDropdown';
+import {applyPredefinedTopTasksTableFilter} from './utils';
 import {USER} from './constants';
 import './DopTasksView.scss';
 
 export const DopTasksView = ({toggleRefreshGridData}) => {
-    const [user, setUser] = useState(USER);
+    const [externalFilter, setExternalFilter] = useState({
+        user: USER,
+    });
+    const [gridApi, setGridApi] = useState(null);
+
+    const changeUser = user => {
+        setExternalFilter(prevState => {
+            return {
+                ...prevState,
+                user,
+            };
+        });
+    };
+
+    const applySavedTableDropDownFilter = filter => {
+        applyPredefinedTopTasksTableFilter(gridApi, filter);
+    };
 
     return (
         <div className="nexus-c-dop-tasks-view">
             <DopTasksHeader>
-                <QueuedTasks setUser={setUser} />
-                <SavedTableDropdown />
+                <QueuedTasks setUser={changeUser} />
+                <SavedTableDropdown applySavedTableDropDownFilter={applySavedTableDropDownFilter} />
                 <IconButton
                     icon={() => <RefreshIcon size="large" />}
                     onClick={() => toggleRefreshGridData(true)}
                     label="Refresh"
                 />
             </DopTasksHeader>
-            <DopTasksTable user={user} />
+            <DopTasksTable
+                externalFilter={externalFilter}
+                setExternalFilter={setExternalFilter}
+                setGridApi={setGridApi}
+            />
         </div>
     );
 };

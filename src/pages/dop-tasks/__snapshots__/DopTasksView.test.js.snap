@@ -10,7 +10,9 @@ exports[`DopTasksView should match snapshot 1`] = `
     <QueuedTasks
       setUser={[Function]}
     />
-    <SavedTableDropdown />
+    <SavedTableDropdown
+      applySavedTableDropDownFilter={[Function]}
+    />
     <IconButton
       icon={[Function]}
       label="Refresh"
@@ -18,7 +20,13 @@ exports[`DopTasksView should match snapshot 1`] = `
     />
   </DopTasksHeader>
   <DopTasksTable
-    user="user"
+    externalFilter={
+      Object {
+        "user": "user",
+      }
+    }
+    setExternalFilter={[Function]}
+    setGridApi={[Function]}
   />
 </div>
 `;
