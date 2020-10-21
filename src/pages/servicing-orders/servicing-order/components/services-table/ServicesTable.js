@@ -31,11 +31,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [recipientsOptions, setRecipientsOptions] = useState([]);
     const [components, setComponents] = useState(dummyData.audioSummary || []);
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const [audioComponents, setAudioComponents] = useState([]);
+
+    const deteComponents = componentsArray.find(item => item.barcode === data.barcode);
 
     useEffect(() => {
         if (!isEmpty(data)) {
             const recp = data.deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId;
             recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
+            setAudioComponents(get(deteComponents, 'components.audioComponents', []));
             setProviderServices(`${data.fs.toLowerCase()}Services`);
             setServices(data);
             setOriginalServices(data);
@@ -46,7 +50,11 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         () => {
             if (!isEmpty(services)) {
                 const flattenedObject = services[providerServices].map((service, index) => ({
-                    serviceType: service.externalServices.serviceType,
+                    serviceType:
+                        service.externalServices.serviceType === 'DETE Recipient'
+                            ? SELECT_VALUES.serviceType[0]
+                            : SELECT_VALUES.serviceType[1],
+                    assetType: service.externalServices.assetType,
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
@@ -90,10 +98,18 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             <div>
                 <div
                     onClick={() =>
-                        isDisabled
+                        isDisabled || tableData[rowIndex].assetType === 'Video'
                             ? null
                             : openModal(
-                                  <ComponentsPicker data={dummyData} closeModal={closeModal} save={setComponents} />,
+                                  <ComponentsPicker
+                                      data={{
+                                          assetType: tableData[rowIndex].assetType,
+                                          barcode: data.barcode,
+                                          audioComponentArray: deteComponents.components.audioComponents,
+                                      }}
+                                      closeModal={closeModal}
+                                      save={setComponents}
+                                  />,
                                   {
                                       width: 'large',
                                   }
@@ -114,13 +130,39 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: services && services[providerServices],
     });
 
+    const componentColumn = {
+        colId: 'components',
+        field: 'components',
+        dataSource: 'components',
+        headerName: 'Components',
+        autoHeight: true,
+        width: 200,
+        cellRendererFramework: componentsCell,
+        cellRendererParams: audioComponents,
+    };
+
+    const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));
+
+    // set service type value to save to api based on service type and asset type drop down selected
+    const setOrderServiceType = (serviceType, assetType) => {
+        const service = '';
+        if (serviceType === 'Process & Deliver') return 'DETE Recipient';
+        else if (serviceType === 'DETE Ingest') {
+            if (assetType === 'Video') return 'Master';
+            else if (assetType === 'Subtitles' || assetType === 'Closed Captioning' || assetType === 'Audio')
+                return assetType;
+        }
+        return service;
+    };
     const handleRowDataChange = ({rowIndex, type, data}) => {
+        console.log('row changed, data: ', data);
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
             const updatedServices = cloneDeep(services[providerServices]);
             const currentService = updatedServices[rowIndex];
             // TODO: Super inefficient, need to find a better way
             // Re-mapping the data
-            currentService.externalServices.serviceType = data.serviceType;
+            currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
+            currentService.externalServices.assetType = data.assetType;
             currentService.externalServices.formatType = data.spec;
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
@@ -169,8 +211,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             enableEdit: false,
         }));
     };
-
-    // console.log('componentsArray: ', componentsArray);
+    console.log('tableData: ', tableData);
 
     return (
         <div className="nexus-c-services-table">
@@ -185,14 +226,14 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             </div>
             <ServicesTableGrid
                 defaultColDef={{...valueGetter, sortable: true, resizable: true}}
-                columnDefs={[orderingColumn, closeButtonColumn, ...columnDefinitions]}
+                columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
                 rowData={tableData}
                 domLayout="autoHeight"
                 onGridReady={params => params.api.sizeColumnsToFit()}
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
                 onGridEvent={handleRowDataChange}
-                frameworkComponents={{componentsCell}}
+                // frameworkComponents={{componentsCell}}
             />
         </div>
     );

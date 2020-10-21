@@ -25,12 +25,6 @@ const columnDefinitions = [
     },
     {
         colId: 'components',
-        field: 'components',
-        dataSource: 'components',
-        headerName: 'Components',
-        cellRenderer: 'componentsCell',
-        width: 200,
-        autoHeight: true,
     },
     {
         colId: 'doNotStartBefore',

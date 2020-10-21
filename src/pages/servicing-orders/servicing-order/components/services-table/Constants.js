@@ -17,7 +17,7 @@ export const SELECT_VALUES = {
     addRecipient: ['MGM', 'Vubiquity'],
     sourceStandard: ['_1080_23_976'],
     serviceType: ['Process & Deliver', 'DETE Ingest'],
-    assetType: ['Audio', 'Video', 'Subtitles', 'Closed Captioning'],
+    assetType: ['', 'Audio', 'Video', 'Subtitles', 'Closed Captioning'],
 };
 
 export const TABLE_ROW = {

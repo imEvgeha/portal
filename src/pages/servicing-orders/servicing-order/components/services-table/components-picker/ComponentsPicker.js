@@ -7,8 +7,9 @@ import CheckIcon from '@atlaskit/icon/glyph/check';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Tag from '@atlaskit/tag';
+import {get} from 'lodash';
 import './ComponentsPicker.scss';
-import {header, rows} from './constants';
+import {header, rows, createDynamicRows} from './constants';
 
 // eslint-disable-next-line react/prop-types
 const Header = ({heading, title, barcode}) => {
@@ -81,7 +82,10 @@ const SummaryPanel = ({list = []}) => {
 };
 
 // eslint-disable-next-line react/prop-types
-const SelectionPanel = ({languageOptions, trackConfiguration}) => {
+const SelectionPanel = ({data}) => {
+    // eslint-disable-next-line react/prop-types
+    const {languageOptions, trackConfiguration, language, setLanguage, track, setTrack} = data;
+
     return (
         <div>
             <b>Step 1: Filter Language and Track configuration</b>
@@ -101,7 +105,8 @@ const SelectionPanel = ({languageOptions, trackConfiguration}) => {
                         name="language-select"
                         className="picker__select"
                         options={languageOptions}
-                        value={languageOptions[0]}
+                        value={language}
+                        onChange={val => setLanguage(val)}
                     />
                 </div>
                 <div>
@@ -111,7 +116,8 @@ const SelectionPanel = ({languageOptions, trackConfiguration}) => {
                         name="track-select"
                         className="picker__select"
                         options={trackConfiguration}
-                        value={trackConfiguration[0]}
+                        value={track}
+                        onChange={val => setTrack(val)}
                     />
                 </div>
             </div>
@@ -128,21 +134,68 @@ const AddtoService = () => {
     );
 };
 
-export const ComponentsPicker = ({data = {}, closeModal, save}) => {
-    const {audioSummary, audioChannels, title, barcode, languageOptions, trackConfiguration} = data;
+const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) => {
+    console.log(' lang, track ', lang, track);
+    const audioComponent = audioComponentArray.find(
+        item => item.language === lang.value && item.trackConfiguration === track.value
+    );
+    console.log(' audioComponent found: ', audioComponent);
+    return get(audioComponent, 'components', []);
+};
+
+// eslint-disable-next-line react/prop-types
+const AudioComponentsPicker = ({data}) => {
+    const [language, setLanguage] = useState('');
+    const [track, setTrack] = useState('');
+
+    // eslint-disable-next-line react/prop-types
+    const {audioSummary, title, barcode, audioComponentArray = []} = data;
+    const audioChannels = getAudioChannelsForLangTrack(language, track, audioComponentArray);
+
+    const languageOptions = audioComponentArray.map(item => {
+        const lang = get(item, 'language', '');
+        return {value: lang, label: lang};
+    });
+
+    const trackConfiguration = audioComponentArray.map(item => {
+        const track = get(item, 'trackConfiguration', '');
+        return {value: track, label: track};
+    });
+
+    const selectionData = {
+        languageOptions,
+        trackConfiguration,
+        language,
+        setLanguage,
+        track,
+        setTrack,
+    };
+
+    console.log('audioChannels ', audioChannels);
+
     return (
         <div>
             <Header heading="Add Audio Components" title={title} barcode={barcode} />
             <hr className="solid" />
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <SelectionPanel languageOptions={languageOptions} trackConfiguration={trackConfiguration} />
-                    <AudioChannelsTable dataRows={audioChannels} />
+                    <SelectionPanel data={selectionData} />
+                    <AudioChannelsTable dataRows={createDynamicRows(audioChannels)} />
                     <AddtoService />
                 </div>
                 <SummaryPanel list={audioSummary} />
             </div>
             <hr className="solid" />
+        </div>
+    );
+};
+
+export const ComponentsPicker = ({data, closeModal, save}) => {
+    console.log('component picker data: ', data);
+    const {audioSummary, title, barcode, components, assetType} = data;
+    return (
+        <div>
+            {assetType === 'Audio' && <AudioComponentsPicker data={data} />}
             <Footer onCancel={closeModal} onSave={save} />
         </div>
     );

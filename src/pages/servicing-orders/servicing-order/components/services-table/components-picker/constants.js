@@ -116,7 +116,7 @@ export const rows = [
     },
 ];
 
-const createDynamicRows = rowsArray => {
+export const createDynamicRows = rowsArray => {
     return rowsArray.map((item, index) => {
         return {
             key: index,
@@ -207,6 +207,8 @@ const audioChannelsArray = [
         componentId: '4445',
     },
 ];
+
+export const createAudioData = data => {};
 
 export const dummyData = {
     title: 'test title',
