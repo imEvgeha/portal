@@ -199,7 +199,7 @@ export const rightsService = {
             '/rights/search' +
             prepareSortMatrixParam(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params, method: 'post', body: JSON.stringify(body)}, 90000);
+        return nexusFetch(url, {params, method: 'post', body: JSON.stringify(body)});
     },
 
     create: (right, options = {isWithErrorHandling: true}) => {

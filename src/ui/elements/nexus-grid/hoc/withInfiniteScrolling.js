@@ -77,7 +77,11 @@ const withInfiniteScrolling = ({
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
-                    object[key] = props.params[key];
+                    if (filtersInBody) {
+                        object[`${key}List`] = [props.params[key]];
+                    } else {
+                        object[key] = props.params[key];
+                    }
                     return object;
                 }, {});
             let filterParams = {
@@ -94,13 +98,18 @@ const withInfiniteScrolling = ({
 
             filterParams = cleanObject(filterParams, true);
             const preparedParams = filtersInBody
-                ? parsedParams
+                ? {}
                 : {
                       ...parsedParams,
                       ...filterParams,
                   };
 
-            const body = filtersInBody ? filterParams : {};
+            const body = filtersInBody
+                ? {
+                      ...parsedParams,
+                      ...filterParams,
+                  }
+                : {};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
