@@ -8,10 +8,11 @@ import * as selectors from './rightDetailsSelector';
 
 const formatSelectValues = values => {
     const selectValues = {};
-    values.forEach(opt => {
-        const [key] = Object.keys(opt);
-        selectValues[key] = cloneDeep(opt[key]);
-    });
+    if (values.length)
+        values.forEach(opt => {
+            const [key] = Object.keys(opt);
+            selectValues[key] = cloneDeep(opt[key]);
+        });
     return selectValues;
 };
 
