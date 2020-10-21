@@ -278,12 +278,15 @@
                                 "className": "area-five"
                             },
                             "dateWithdrawn": {
+                                "isOptional": true,
                                 "name": "Date Withdrawn",
                                 "type": "datetime",
-                                "dateType": "regionalMidnight",
+                                "dateType": "timestamp",
                                 "path": "dateWithdrawn",
                                 "className": "area-seven",
-                                "isHighlighted": true
+                                "isHighlighted": true,
+                                "isReadOnly": true,
+                                "useCurrentDate": true
                             },
                             "comment": {
                                 "name": "Comments",
