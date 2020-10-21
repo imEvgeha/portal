@@ -155,6 +155,10 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 value = value.split(', ');
             }
 
+            if (map && map.searchDataType === 'boolean') {
+                value = JSON.parse(value);
+            }
+
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
