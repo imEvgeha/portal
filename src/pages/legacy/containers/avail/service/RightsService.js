@@ -183,7 +183,7 @@ export const rightsService = {
         return nexusFetch(url, {params});
     },
 
-    advancedSearch: (searchCriteria, page, size, sortedParams, body) => {
+    advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = parseAdvancedFilter(searchCriteria);
         const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights${prepareSortMatrixParam(
             sortedParams
@@ -192,14 +192,14 @@ export const rightsService = {
         return nexusFetch(url, {params});
     },
 
-    advancedSearchV2: (queryParams, page, size, sortedParams) => {
+    advancedSearchV2: (queryParams, page, size, sortedParams, body) => {
         const url =
             config.get('gateway.url') +
             config.get('gateway.service.avails') +
-            '/rights' +
+            '/rights/search' +
             prepareSortMatrixParam(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params});
+        return nexusFetch(url, {params, method: 'post', body: JSON.stringify(body)}, 90000);
     },
 
     create: (right, options = {isWithErrorHandling: true}) => {
