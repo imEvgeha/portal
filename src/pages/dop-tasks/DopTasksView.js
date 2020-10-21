@@ -36,11 +36,13 @@ export const DopTasksView = ({toggleRefreshGridData}) => {
             <DopTasksHeader>
                 <QueuedTasks setUser={changeUser} />
                 <SavedTableDropdown applySavedTableDropDownFilter={applySavedTableDropDownFilter} />
-                <IconButton
-                    icon={() => <RefreshIcon size="large" />}
-                    onClick={() => toggleRefreshGridData(true)}
-                    label="Refresh"
-                />
+                <div className="nexus-c-dop-tasks-view__refresh-btn">
+                    <IconButton
+                        icon={() => <RefreshIcon size="large" />}
+                        onClick={() => toggleRefreshGridData(true)}
+                        label="Refresh"
+                    />
+                </div>
             </DopTasksHeader>
             <DopTasksTable
                 externalFilter={externalFilter}

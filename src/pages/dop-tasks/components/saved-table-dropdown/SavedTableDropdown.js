@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
-import TextField from '@atlaskit/textfield';
+import {FieldTextStateless} from '@atlaskit/field-text';
+import CheckIcon from '@atlaskit/icon/glyph/check';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import IconButton from '../../../../ui/atlaskit/icon-button/IconButton';
 import {
     MY_SAVED_VIEWS_LABEL,
     MY_PREDEFINED_VIEWS_LABEL,
@@ -12,6 +15,7 @@ import './SavedTableDropdown.scss';
 
 const SavedTableDropdown = ({applySavedTableDropDownFilter}) => {
     const [selectedItem, setSelectedItem] = useState(SAVED_TABLE_SELECT_OPTIONS[0]);
+    const [showTextFieldActions, setShowTextFieldsActions] = useState(false);
 
     const setSelectedValue = item => {
         setSelectedItem(item);
@@ -25,8 +29,28 @@ const SavedTableDropdown = ({applySavedTableDropDownFilter}) => {
                 <DropdownMenu shouldFitContainer appearance="tall" trigger={selectedItem.label} triggerType="button">
                     <DropdownItemGroup title={MY_SAVED_VIEWS_LABEL}>
                         <div className="nexus-c-dop-tasks-dropdown__textfield">
-                            <TextField placeholder="New View..." />
+                            <FieldTextStateless
+                                shouldFitContainer
+                                placeholder="New View..."
+                                onFocus={() => setShowTextFieldsActions(true)}
+                                onBlur={() => setShowTextFieldsActions(false)}
+                            />
                         </div>
+                        {showTextFieldActions && (
+                            <div className="nexus-c-dop-tasks-dropdown__textfield-actions">
+                                <IconButton
+                                    icon={() => <CheckIcon size="small" />}
+                                    size="small"
+                                    onClick={() => null}
+                                    label="Save"
+                                />
+                                <IconButton
+                                    icon={() => <CrossIcon size="small" />}
+                                    onClick={() => setShowTextFieldsActions(false)}
+                                    label="Cancel"
+                                />
+                            </div>
+                        )}
                     </DropdownItemGroup>
                     <DropdownItemGroup title={MY_PREDEFINED_VIEWS_LABEL}>
                         {SAVED_TABLE_SELECT_OPTIONS.map(item => (
