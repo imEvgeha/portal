@@ -45,7 +45,11 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             };
         case 'boolean':
             return ({value}) => {
-                if (javaVariableName === 'updatedCatalogReceived' || javaVariableName === 'bonusRight') {
+                if (
+                    javaVariableName === 'updatedCatalogReceived' ||
+                    javaVariableName === 'bonusRight' ||
+                    javaVariableName === 'territory.withdrawn'
+                ) {
                     switch (value) {
                         case true:
                         case 'true':
@@ -155,6 +159,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                     result = value.filter(option => option.selected).map(option => option.country);
                 }
                 return result;
+            };
+        case 'territory.withdrawn':
+            return params => {
+                const {data = {}} = params || {};
+                if (data && Array.isArray(data[javaVariableName])) {
+                    const items = data[javaVariableName]
+                        .filter(item => item.withdrawn)
+                        .map(item => item.country)
+                        .join(', ');
+                    return [items];
+                }
             };
         default:
             return ({value}) => value;
