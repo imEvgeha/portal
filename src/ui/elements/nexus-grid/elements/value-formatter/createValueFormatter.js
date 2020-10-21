@@ -45,11 +45,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             };
         case 'boolean':
             return ({value}) => {
-                if (
-                    javaVariableName === 'updatedCatalogReceived' ||
-                    javaVariableName === 'bonusRight' ||
-                    javaVariableName === 'territory.withdrawn'
-                ) {
+                if (javaVariableName === 'updatedCatalogReceived' || javaVariableName === 'bonusRight') {
                     switch (value) {
                         case true:
                         case 'true':
