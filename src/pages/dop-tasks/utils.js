@@ -75,7 +75,7 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
     }
 };
 
-export const applyPredefinedTopTasksTableFilter = (gridApi, filter) => {
+export const applyPredefinedTableView = (gridApi, filter) => {
     switch (filter) {
         case 'open': {
             clearAllDopTasksFilters(gridApi);

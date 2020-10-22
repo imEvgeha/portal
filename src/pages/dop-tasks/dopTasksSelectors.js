@@ -5,5 +5,4 @@ const getDopTasksReducer = state => {
     return dopTasks;
 };
 
-export const createFilterModelSelector = () =>
-    createSelector(getDopTasksReducer, dopTasks => dopTasks.filterModel || {});
+export const createGridStateSelector = () => createSelector(getDopTasksReducer, dopTasks => dopTasks.gridState || {});

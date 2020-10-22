@@ -56,7 +56,7 @@ export const dopTasksPersistConfig = {
     version: 0,
     storage,
     stateReconciler: autoMergeLevel2,
-    whitelist: ['filterModel'],
+    whitelist: ['gridState'],
     transforms: [
         // createWhitelistFilter('rights', ['list']) // second argument = persisted keys
     ],

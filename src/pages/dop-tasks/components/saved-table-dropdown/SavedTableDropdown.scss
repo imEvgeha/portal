@@ -42,9 +42,10 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    @include margin(0, 2, 2, 0);
 
     .nexus-c-icon-button {
-        @include margin(0, 2, 0, 0);
+        @include margin(0, 0, 0, 1);
 
         span {
             width: 100%;

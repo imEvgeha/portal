@@ -1,17 +1,17 @@
 import * as actionTypes from './dopTasksActionTypes';
 
 const initialState = {
-    filterModel: {},
+    gridState: {},
 };
 
 const dopTasksReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
     switch (type) {
         case actionTypes.SET_DOP_TASKS_USER_FILTER: {
-            const {filterModel = {}} = state;
+            const {gridState = {}} = state;
             return {
                 ...state,
-                filterModel: {...filterModel, ...payload},
+                gridState: {...gridState, ...payload},
             };
         }
         default:
