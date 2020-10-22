@@ -7,7 +7,7 @@ import CheckIcon from '@atlaskit/icon/glyph/check';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Tag from '@atlaskit/tag';
-import {get, uniqBy, groupBy, pickBy} from 'lodash';
+import {get, uniqBy, groupBy, pickBy, values} from 'lodash';
 import './ComponentsPicker.scss';
 import {header, rows, createDynamicRows} from './constants';
 
@@ -196,10 +196,16 @@ const AudioComponentsPicker = ({data}) => {
 
     const saveComponentsLocally = () => {
         // setComponents(prev => uniqBy([...prev,...selectedRows],v => [v.channelNumber, v.language].join()));
-        console.log('save to local componentns: ', Object.values(components).join(), components);
+        const ca = values(components).map(item => values(item));
+        console.log('save to local componentns, selectedRows: ', components, selectedRows, ...values(components), [
+            ...[...values(components), ...selectedRows],
+        ]);
         setComponents(prev => {
             return Object.keys(prev).length
-                ? groupBy([...Object.values(prev).join(), ...selectedRows], v => [v.language, v.trackConfig].join())
+                ? groupBy(
+                      uniqBy([...values(prev), ...selectedRows], v => [v.channelNumber, v.language].join()),
+                      v => [v.language, v.trackConfig].join()
+                  )
                 : groupBy([...selectedRows], v => [v.language, v.trackConfig].join());
         });
     };
@@ -218,11 +224,7 @@ const AudioComponentsPicker = ({data}) => {
         setTrack,
     };
 
-    console.log('components list', Object.keys(components));
-    console.log(
-        'grouped components: ',
-        groupBy(components, v => [v.language, v.trackConfig].join())
-    );
+    console.log('components, list', components, Object.keys(components));
     //  console.log('audioChannels ', audioChannels);
 
     return (
