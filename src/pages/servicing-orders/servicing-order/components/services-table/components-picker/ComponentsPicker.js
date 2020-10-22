@@ -7,7 +7,7 @@ import CheckIcon from '@atlaskit/icon/glyph/check';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Tag from '@atlaskit/tag';
-import {get} from 'lodash';
+import {get, uniqBy, groupBy, pickBy} from 'lodash';
 import './ComponentsPicker.scss';
 import {header, rows, createDynamicRows} from './constants';
 
@@ -38,44 +38,43 @@ const Footer = ({warning, onCancel, onSave}) => {
 };
 
 // eslint-disable-next-line react/prop-types
-const AudioChannelsTable = ({dataRows = rows}) => {
+const AudioChannelsTable = ({dataRows}) => {
     return (
         <div className="picker__audio-panel">
             <b>Step 2: Select Audio Channels</b>
             <div className="picker__audio-panel-table">
-                <DynamicTable
-                    head={header}
-                    rows={dataRows}
-                    rowsPerPage={5}
-                    defaultPage={1}
-                    loadingSpinnerSize="large"
-                    isLoading={false}
-                />
+                <DynamicTable head={header} rows={dataRows} rowsPerPage={5} defaultPage={1} />
             </div>
         </div>
     );
 };
 
 // eslint-disable-next-line react/prop-types
-const ListItem = ({item}) => {
+const ListItem = ({item, onDelete}) => {
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px'}}>
             <div>
                 <CheckIcon size="medium" primaryColor="grey" />
+                {/* eslint-disable-next-line react/prop-types */}
                 <Tag text={item} />
             </div>
-            <EditorRemoveIcon size="medium" primaryColor="grey" />
+            <div onClick={onDelete}>
+                <EditorRemoveIcon size="medium" primaryColor="grey" />
+            </div>
         </div>
     );
 };
 
+/* <ListItem key={`${item.language}${item.trackConfig}${item.channelNumber}`} item={item} onDelete={()=>onDelete(item)}/> */
 // eslint-disable-next-line react/prop-types
-const SummaryPanel = ({list = []}) => {
+const SummaryPanel = ({list = [], setComponents, remove}) => {
+    // const onDelete = item => setComponents(list.filter(row=> `${row.channelNumber}${row.trackConfig}` !== `${item.channelNumber}${item.trackConfig}`));
+    const onDelete = key => remove(key);
     return (
         <div className="picker__summary-panel">
             <HelperMessage>Audio Service Summary</HelperMessage>
             {list.map(item => (
-                <ListItem key={item} item={item} />
+                <ListItem key={item} item={item} onDelete={() => onDelete(item)} />
             ))}
         </div>
     );
@@ -99,7 +98,7 @@ const SelectionPanel = ({data}) => {
                 }}
             >
                 <div>
-                    <HelperMessage>Language</HelperMessage>
+                    <HelperMessage>Language / MFX</HelperMessage>
                     <Select
                         id="language-select"
                         name="language-select"
@@ -125,21 +124,22 @@ const SelectionPanel = ({data}) => {
     );
 };
 
-const AddtoService = () => {
+// eslint-disable-next-line react/prop-types
+const AddtoService = ({isEnabled, onClick, count}) => {
     return (
         <div className="picker__service-panel">
-            <b>Step 3: Add to Service</b>
-            <Button onClick={null}>Add to service</Button>
+            <b>Step 3: Add to Service ({count})</b>
+            <Button appearance="primary" isDisabled={!isEnabled} onClick={onClick}>
+                Add to service ({count})
+            </Button>
         </div>
     );
 };
 
 const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) => {
-    console.log(' lang, track ', lang, track);
     const audioComponent = audioComponentArray.find(
         item => item.language === lang.value && item.trackConfiguration === track.value
     );
-    console.log(' audioComponent found: ', audioComponent);
     return get(audioComponent, 'components', []);
 };
 
@@ -147,20 +147,67 @@ const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) => {
 const AudioComponentsPicker = ({data}) => {
     const [language, setLanguage] = useState('');
     const [track, setTrack] = useState('');
+    const [tableRows, setTableRows] = useState([]);
+    const [selectedRows, setSelectedRows] = useState([]);
+    // eslint-disable-next-line react/prop-types
+    // eslint-disable-next-line react/prop-types
+    const [components, setComponents] = useState(data.audioSummary || {});
 
     // eslint-disable-next-line react/prop-types
     const {audioSummary, title, barcode, audioComponentArray = []} = data;
+
+    const languageOptions = uniqBy(
+        audioComponentArray.map(item => {
+            const lang = get(item, 'language', '');
+            return {value: lang, label: lang};
+        }),
+        'value'
+    );
+
+    const trackConfiguration = uniqBy(
+        audioComponentArray.map(item => {
+            const track = get(item, 'trackConfiguration', '');
+            return {value: track, label: track};
+        }),
+        'value'
+    );
+
     const audioChannels = getAudioChannelsForLangTrack(language, track, audioComponentArray);
 
-    const languageOptions = audioComponentArray.map(item => {
-        const lang = get(item, 'language', '');
-        return {value: lang, label: lang};
+    const checkboxData = audioChannels.map(item => {
+        return {
+            isChecked: false,
+            ...item,
+        };
     });
 
-    const trackConfiguration = audioComponentArray.map(item => {
-        const track = get(item, 'trackConfiguration', '');
-        return {value: track, label: track};
-    });
+    useEffect(() => {
+        setLanguage(languageOptions[0]);
+        setTrack(trackConfiguration[0]);
+    }, [data]);
+
+    useEffect(() => {
+        setTableRows(checkboxData);
+    }, [language, track]);
+
+    useEffect(() => {
+        setSelectedRows(tableRows.filter(item => item.isChecked === true));
+    }, [tableRows]);
+
+    const saveComponentsLocally = () => {
+        // setComponents(prev => uniqBy([...prev,...selectedRows],v => [v.channelNumber, v.language].join()));
+        console.log('save to local componentns: ', Object.values(components).join(), components);
+        setComponents(prev => {
+            return Object.keys(prev).length
+                ? groupBy([...Object.values(prev).join(), ...selectedRows], v => [v.language, v.trackConfig].join())
+                : groupBy([...selectedRows], v => [v.language, v.trackConfig].join());
+        });
+    };
+
+    const removeComponent = keytoRemove => {
+        const newComponents = pickBy(components, (_, key) => key !== keytoRemove);
+        setComponents(newComponents);
+    };
 
     const selectionData = {
         languageOptions,
@@ -171,7 +218,12 @@ const AudioComponentsPicker = ({data}) => {
         setTrack,
     };
 
-    console.log('audioChannels ', audioChannels);
+    console.log('components list', Object.keys(components));
+    console.log(
+        'grouped components: ',
+        groupBy(components, v => [v.language, v.trackConfig].join())
+    );
+    //  console.log('audioChannels ', audioChannels);
 
     return (
         <div>
@@ -180,10 +232,14 @@ const AudioComponentsPicker = ({data}) => {
             <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <SelectionPanel data={selectionData} />
-                    <AudioChannelsTable dataRows={createDynamicRows(audioChannels)} />
-                    <AddtoService />
+                    <AudioChannelsTable dataRows={createDynamicRows(tableRows, setTableRows)} />
+                    <AddtoService
+                        isEnabled={selectedRows.length}
+                        onClick={saveComponentsLocally}
+                        count={selectedRows.length}
+                    />
                 </div>
-                <SummaryPanel list={audioSummary} />
+                <SummaryPanel list={Object.keys(components)} setComponents={setComponents} remove={removeComponent} />
             </div>
             <hr className="solid" />
         </div>

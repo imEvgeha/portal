@@ -1,11 +1,21 @@
 import React from 'react';
-import {Radio} from '@atlaskit/radio';
+import {Checkbox} from '@atlaskit/checkbox';
+
+// eslint-disable-next-line react/prop-types
+const Check = ({name, isChecked, toggle}) => (
+    <Checkbox
+        /* eslint-disable-next-line no-alert */
+        onChange={event => toggle(name, event.target.checked)}
+        name={name}
+        isChecked={isChecked}
+    />
+);
 
 export const header = {
     cells: [
         {
             key: 'radio',
-            content: <Radio />,
+            content: <Check name="header" />,
             width: 5,
         },
         {
@@ -45,7 +55,6 @@ export const rows = [
     {
         key: '1',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -57,7 +66,6 @@ export const rows = [
     {
         key: '2',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -69,7 +77,6 @@ export const rows = [
     {
         key: '3',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -81,7 +88,6 @@ export const rows = [
     {
         key: '4',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -93,7 +99,6 @@ export const rows = [
     {
         key: '5',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -105,7 +110,6 @@ export const rows = [
     {
         key: '6',
         cells: [
-            {key: '10-radio', content: <Radio />},
             {key: '11-Channel', content: 1},
             {key: '12-track', content: 5.1},
             {key: '13-pos', content: 'Left'},
@@ -116,12 +120,19 @@ export const rows = [
     },
 ];
 
-export const createDynamicRows = rowsArray => {
+export const createDynamicRows = (rowsArray, toggleRows) => {
+    const setData = (name, isChecked) => {
+        const newData = rowsArray.map(item => (item.channelNumber === name ? {...item, isChecked} : item));
+        toggleRows(newData);
+    };
     return rowsArray.map((item, index) => {
         return {
             key: index,
             cells: [
-                {key: `${index}-radio`, content: <Radio />},
+                {
+                    key: `${index}-checkbox`,
+                    content: <Check name={item.channelNumber} isChecked={item.isChecked} toggle={setData} />,
+                },
                 {key: `${index}-channel`, content: item.sourceChannel},
                 {key: `${index}-track`, content: item.trackConfig},
                 {key: `${index}-pos`, content: item.channelPosition},

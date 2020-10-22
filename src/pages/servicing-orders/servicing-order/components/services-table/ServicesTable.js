@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
+import Tooltip from '@atlaskit/tooltip';
 import {cloneDeep, get, isEmpty} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
@@ -32,8 +33,14 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [components, setComponents] = useState(dummyData.audioSummary || []);
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [audioComponents, setAudioComponents] = useState([]);
+    const [gridApi, setGridApi] = useState(null);
 
     const deteComponents = componentsArray.find(item => item.barcode === data.barcode);
+
+    const onGridReady = params => {
+        setGridApi(params.api);
+        params.api.sizeColumnsToFit();
+    };
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -94,11 +101,14 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
 
     // eslint-disable-next-line react/prop-types
     const componentsCell = ({rowIndex}) => {
+        let toolTipContent = '';
+        if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(tableData[rowIndex], 'assetType', '')))
+            toolTipContent = 'Selection not available for this Asset type';
         return (
-            <div>
+            <Tooltip content={toolTipContent}>
                 <div
                     onClick={() =>
-                        isDisabled || tableData[rowIndex].assetType === 'Video'
+                        isDisabled || toolTipContent
                             ? null
                             : openModal(
                                   <ComponentsPicker
@@ -120,7 +130,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                         <Tag text={item} key={item} />
                     ))}
                 </div>
-            </div>
+            </Tooltip>
         );
     };
 
@@ -138,7 +148,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         autoHeight: true,
         width: 200,
         cellRendererFramework: componentsCell,
-        cellRendererParams: audioComponents,
+        cellRendererParams: audioComponents && tableData,
     };
 
     const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));
@@ -229,10 +239,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
                 rowData={tableData}
                 domLayout="autoHeight"
-                onGridReady={params => params.api.sizeColumnsToFit()}
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
                 onGridEvent={handleRowDataChange}
+                onGridReady={onGridReady}
                 // frameworkComponents={{componentsCell}}
             />
         </div>
