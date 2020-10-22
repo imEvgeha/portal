@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
+import Flag, {FlagGroup} from '@atlaskit/flag';
+import {colors} from '@atlaskit/theme';
+import Tick from '@atlaskit/icon/glyph/check-circle';
+import Error from '@atlaskit/icon/glyph/error';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -26,10 +30,14 @@ import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON, ERROR_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
-import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
 import {SYNC} from './publish/PublishConstants';
+
+const ICONS = {
+    SUCCESS_ICON: <Tick label={`${SUCCESS_ICON} icon`} primaryColor={colors.G300} />,
+    ERROR_ICON: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
+};
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -90,6 +98,7 @@ class TitleEdit extends Component {
             externalIDs: null,
             validationErrors: new Set(),
             isSyncing: false,
+            flags: [],
         };
     }
 
@@ -525,22 +534,27 @@ class TitleEdit extends Component {
             });
     };
 
+    addToastToFlags = isSuccess => {
+        const updatedFlags = cloneDeep(this.state.flags);
+        const icon = isSuccess ? ICONS.SUCCESS_ICON : ICONS.ERROR_ICON;
+        const label = isSuccess ? 'Sync Title Success' : 'Sync Title Failed';
+        updatedFlags.push(<Flag key={updatedFlags.length} title={label} icon={icon} />);
+        this.setState({
+            flags: updatedFlags,
+        });
+        setTimeout(() => {
+            const removedFlags = cloneDeep(this.state.flags);
+            removedFlags.shift();
+            this.setState({
+                flags: removedFlags,
+            });
+        }, 3000);
+    };
+
     checkSyncResult = titleSystem => {
         this.state.externalIDs.forEach(externalId => {
             if (externalId.externalSystem === titleSystem) {
-                externalId.errors.length === 0
-                    ? this.props.addToast({
-                          title: 'Sync Title Success',
-                          icon: SUCCESS_ICON,
-                          isWithOverlay: false,
-                          isAutoDismiss: true,
-                      })
-                    : this.props.addToast({
-                          title: 'Sync Title Failed',
-                          icon: ERROR_ICON,
-                          isWithOverlay: false,
-                          isAutoDismiss: true,
-                      });
+                externalId.errors.length === 0 ? this.addToastToFlags(true) : this.addToastToFlags(false);
             }
         });
     };
@@ -560,12 +574,7 @@ class TitleEdit extends Component {
                 this.setState({
                     isSyncing: false,
                 });
-                this.props.addToast({
-                    title: 'Sync Title Failed',
-                    icon: ERROR_ICON,
-                    isWithOverlay: false,
-                    isAutoDismiss: true,
-                });
+                this.addToastToFlags(false);
                 return false;
             });
     };
@@ -1445,6 +1454,7 @@ class TitleEdit extends Component {
                             handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
                         />
                     </AvForm>
+                    <FlagGroup>{this.state.flags}</FlagGroup>
                 </>
             </EditPage>
         );
