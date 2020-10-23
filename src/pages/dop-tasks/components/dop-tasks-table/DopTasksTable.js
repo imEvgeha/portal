@@ -31,7 +31,7 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -113,13 +113,13 @@ const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi}) => {
         });
     };
 
-    const onGridReady = ({type, api}) => {
+    const onGridReady = ({type, api, columnApi}) => {
         const {READY} = GRID_EVENTS;
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
-                console.log(api.getFilterModel());
+                setColumnApi(columnApi);
                 break;
             }
             default:
@@ -175,12 +175,14 @@ DopTasksTable.propTypes = {
     externalFilter: PropTypes.object,
     setExternalFilter: PropTypes.func,
     setGridApi: PropTypes.func,
+    setColumnApi: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
     externalFilter: USER,
     setExternalFilter: () => null,
     setGridApi: () => null,
+    setColumnApi: () => null,
 };
 
 export default DopTasksTable;

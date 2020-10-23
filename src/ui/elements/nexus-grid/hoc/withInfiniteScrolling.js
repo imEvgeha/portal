@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {omit, isEqual} from 'lodash';
+import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
 import {cleanObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
@@ -71,8 +71,12 @@ const withInfiniteScrolling = ({
                 updateData(fetchData, gridApi);
             }
         }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
-
-        const getRows = (params, fetchData, gridApi) => {
+        /**
+         * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
+         * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model
+         * is reset to default state (AG-142)
+         */
+        const getRows = debounce((params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
@@ -162,7 +166,7 @@ const withInfiniteScrolling = ({
                         props.setDataLoading(false);
                     }
                 });
-        };
+        }, 0);
 
         const updateData = (fetchData, gridApi) => {
             hasBeenCalledRef.current = true;
