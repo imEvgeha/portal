@@ -133,12 +133,12 @@ export const createDynamicRows = (rowsArray, toggleRows) => {
                     key: `${index}-checkbox`,
                     content: <Check name={item.channelNumber} isChecked={item.isChecked} toggle={setData} />,
                 },
-                {key: `${index}-channel`, content: item.sourceChannel},
+                {key: `${index}-channel`, content: item.sourceChannelNumber},
                 {key: `${index}-track`, content: item.trackConfig},
                 {key: `${index}-pos`, content: item.channelPosition},
                 {key: `${index}-type`, content: item.contentType},
                 {key: `${index}-lang`, content: item.language},
-                {key: `${index}-compId`, content: item.componentId},
+                {key: `${index}-compId`, content: item.componentID},
             ],
         };
     });

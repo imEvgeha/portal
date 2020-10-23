@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import {cloneDeep, get, isEmpty} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, omit, groupBy} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import Add from '../../../../../assets/action-add.svg';
@@ -62,6 +62,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                             ? SELECT_VALUES.serviceType[0]
                             : SELECT_VALUES.serviceType[1],
                     assetType: service.externalServices.assetType,
+                    components: service.details || [],
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
@@ -77,6 +78,21 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [services]
     );
+
+    const handleComponentsEdit = (index, components) => {
+        const newRow = cloneDeep(tableData[index]);
+        newRow.components = [...Object.keys(components)];
+        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
+        const update = cloneDeep(services);
+        const temp = flattenDeep(Object.values(components)).map(item => {
+            return {...item, typeAttribute: 'audioDetail'};
+        });
+        update.deteServices[index].details = temp.map(item => omit(item, ['isChecked']));
+        // typeAttribute": "audioDetail"
+        // setServices(update);
+        setUpdatedServices(update);
+        console.log('service to send: ', update);
+    };
 
     const handleServiceRemoval = index => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
@@ -107,28 +123,33 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         return (
             <Tooltip content={toolTipContent}>
                 <div
-                    onClick={() =>
-                        isDisabled || toolTipContent
+                    style={{minHeight: '25px'}}
+                    onClick={() => {
+                        return isDisabled || toolTipContent
                             ? null
                             : openModal(
                                   <ComponentsPicker
                                       data={{
                                           assetType: tableData[rowIndex].assetType,
                                           barcode: data.barcode,
+                                          title: data.title || 'test title',
+                                          audioSummary: tableData[rowIndex].components,
                                           audioComponentArray: deteComponents.components.audioComponents,
                                       }}
                                       closeModal={closeModal}
-                                      save={setComponents}
+                                      save={handleComponentsEdit}
+                                      index={rowIndex}
                                   />,
                                   {
                                       width: 'large',
                                   }
-                              )
-                    }
+                              );
+                    }}
                 >
-                    {components.map(item => (
-                        <Tag text={item} key={item} />
-                    ))}
+                    {tableData[rowIndex] &&
+                        Object.keys(
+                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig])
+                        ).map(item => <Tag key={item} text={item} />)}
                 </div>
             </Tooltip>
         );
@@ -148,7 +169,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         autoHeight: true,
         width: 200,
         cellRendererFramework: componentsCell,
-        cellRendererParams: audioComponents && tableData,
+        cellRendererParams: {audioComponents, tableData},
     };
 
     const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));
@@ -165,7 +186,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         return service;
     };
     const handleRowDataChange = ({rowIndex, type, data}) => {
-        console.log('row changed, data: ', data);
         if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
             const updatedServices = cloneDeep(services[providerServices]);
             const currentService = updatedServices[rowIndex];
@@ -221,7 +241,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             enableEdit: false,
         }));
     };
-    console.log('tableData: ', tableData);
+    console.log('data ', data);
 
     return (
         <div className="nexus-c-services-table">
@@ -243,7 +263,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
                 onGridEvent={handleRowDataChange}
                 onGridReady={onGridReady}
-                // frameworkComponents={{componentsCell}}
             />
         </div>
     );

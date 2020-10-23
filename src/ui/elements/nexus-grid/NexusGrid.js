@@ -17,6 +17,7 @@ const NexusGrid = ({
     isGridHidden,
     frameworkComponents,
     dragStopped,
+    onGridReady,
     ...restProps
 }) => {
     const isMounted = useRef(true);
@@ -54,7 +55,7 @@ const NexusGrid = ({
                 getContextMenuItems={getContextMenuItems}
                 rowData={rowData}
                 suppressPropertyNamesCheck
-                onGridReady={handleGridEvent}
+                onGridReady={onGridReady || handleGridEvent}
                 onGridSizeChanged={onGridSizeChanged}
                 onSelectionChanged={debounce(handleGridEvent, SELECTION_DELAY)}
                 onCellValueChanged={handleGridEvent}
@@ -85,6 +86,7 @@ NexusGrid.propTypes = {
     isGridHidden: PropTypes.bool,
     frameworkComponents: PropTypes.object,
     dragStopped: PropTypes.func,
+    onGridReady: PropTypes.func,
 };
 
 NexusGrid.defaultProps = {
@@ -95,6 +97,7 @@ NexusGrid.defaultProps = {
     isGridHidden: false,
     frameworkComponents: {},
     dragStopped: null,
+    onGridReady: null,
 };
 
 export default NexusGrid;
