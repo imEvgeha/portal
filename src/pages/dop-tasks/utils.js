@@ -155,3 +155,14 @@ const sortTaskStatus = api => {
         ]);
     }
 };
+
+export const insertNewGridModel = (viewId, userDefinedGridStates, model) => {
+    const newUserData = userDefinedGridStates.slice();
+    const foundIndex = newUserData.findIndex(obj => obj.id === viewId);
+    if (foundIndex > -1) {
+        newUserData[foundIndex] = model;
+    } else {
+        newUserData.push(model);
+    }
+    return newUserData;
+};

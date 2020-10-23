@@ -7,7 +7,7 @@ const initialState = {
 const dopTasksReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
     switch (type) {
-        case actionTypes.SET_DOP_TASKS_USER_FILTER: {
+        case actionTypes.SET_DOP_TASKS_USER_DEFINED_GRID_STATE: {
             const {gridState = {}} = state;
             return {
                 ...state,

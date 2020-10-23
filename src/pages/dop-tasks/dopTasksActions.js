@@ -1,6 +1,6 @@
 import * as actionTypes from './dopTasksActionTypes';
 
-export const setDopTasksUserFilter = payload => ({
-    type: actionTypes.SET_DOP_TASKS_USER_FILTER,
+export const setDopTasksUserDefinedGridState = payload => ({
+    type: actionTypes.SET_DOP_TASKS_USER_DEFINED_GRID_STATE,
     payload,
 });
