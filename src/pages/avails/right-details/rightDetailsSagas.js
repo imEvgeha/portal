@@ -25,7 +25,7 @@ export function* getSelectValuesSaga() {
     );
     const areValid = yield select(selectors.areValidSelector());
     if (areValid) {
-        const selectValues = yield formatSelectValues(fetchedOptions);
+        const selectValues = formatSelectValues(fetchedOptions);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
             payload: selectValues,
