@@ -156,6 +156,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 }
                 return result;
             };
+        case 'territory.withdrawn':
+            return params => {
+                const {data = {}} = params || {};
+                if (data && Array.isArray(data[javaVariableName])) {
+                    const items = data[javaVariableName]
+                        .filter(item => item.withdrawn)
+                        .map(item => item.country)
+                        .join(', ');
+                    return [items];
+                }
+            };
         default:
             return ({value}) => value;
     }
