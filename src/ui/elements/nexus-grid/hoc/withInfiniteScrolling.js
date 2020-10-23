@@ -22,6 +22,7 @@ import {
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS,
     fetchData,
+    filtersInBody = false,
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
@@ -76,10 +77,17 @@ const withInfiniteScrolling = ({
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
-                    object[key] = props.params[key];
+                    if (filtersInBody) {
+                        object[`${key}List`] = [props.params[key]];
+                    } else {
+                        object[key] = props.params[key];
+                    }
                     return object;
                 }, {});
-            const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
+            let filterParams = {
+                ...filterBy(filterModel, props.prepareFilterParams, filtersInBody),
+                ...props.externalFilter,
+            };
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -88,15 +96,25 @@ const withInfiniteScrolling = ({
                 gridApi.showLoadingOverlay();
             }
 
-            const preparedParams = {
-                ...parsedParams,
-                ...cleanObject(filterParams, true),
-            };
+            filterParams = cleanObject(filterParams, true);
+            const preparedParams = filtersInBody
+                ? {}
+                : {
+                      ...parsedParams,
+                      ...filterParams,
+                  };
+
+            const body = filtersInBody
+                ? {
+                      ...parsedParams,
+                      ...filterParams,
+                  }
+                : {};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
-            fetchData(preparedParams, pageNumber, pageSize, sortParams)
+            fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
