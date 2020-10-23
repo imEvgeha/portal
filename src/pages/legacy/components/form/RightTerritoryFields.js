@@ -222,7 +222,7 @@ const RightTerritoryFields = ({
                         locale={locale}
                         placeholder={dateFormat}
                         id="dateWithdrawn"
-                        defaultValue={dateWithdrawn}
+                        value={value ? value : dateWithdrawn ? dateWithdrawn : ''}
                         onChange={val => onChangeDateWithdrawn(val, rest.onChange)}
                         isReturningTime={false}
                         isDisabled={isFromCreatePage || (isEdit && isBonusRight)}
