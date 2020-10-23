@@ -70,7 +70,7 @@ const SavedTableDropdown = ({
                                 />
                                 <IconButton
                                     icon={() => <CrossIcon size="small" />}
-                                    onClick={() => setShowTextFieldsActions(false)}
+                                    onClick={() => setUserInput('')}
                                     label="Cancel"
                                 />
                             </div>
