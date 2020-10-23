@@ -547,9 +547,9 @@ class TitleEdit extends Component {
     addToastToFlags = isSuccess => {
         const icon = isSuccess ? ICONS.SUCCESS_ICON : ICONS.ERROR_ICON;
         const label = isSuccess ? 'Sync Title Success' : 'Sync Title Failed';
+        const uniqueId = Date.now();
         this.setState(prevState => {
-            const updatedFlags = cloneDeep(prevState.flags);
-            const uniqueId = Date.now();
+            const updatedFlags = prevState.flags.slice();
             updatedFlags.push(<Flag id={uniqueId} key={uniqueId} title={label} icon={icon} />);
             return {
                 flags: updatedFlags,
@@ -557,8 +557,10 @@ class TitleEdit extends Component {
         });
         setTimeout(() => {
             this.setState(prevState => {
+                const id = prevState.flags.length > 0 ? prevState.flags[0].props.id : null;
+                const updatedFlags = id === uniqueId ? prevState.flags.slice(1) : prevState.flags;
                 return {
-                    flags: prevState.flags.slice(1),
+                    flags: updatedFlags,
                 };
             });
         }, 3000);
