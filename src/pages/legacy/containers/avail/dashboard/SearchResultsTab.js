@@ -11,8 +11,7 @@ import withRights from '../../../components/avails/ServerRightsResultsTable';
 import withLocalRights, {AVAILS_SELECTION} from '../../../components/avails/LocalRightsResultsTable';
 import withRedux from '../../../components/avails/SaveStateTable';
 import ResultsTable from '../../../components/common/ResultsTable';
-import NexusSpinner from '../../../../../ui/elements/nexus-spinner/NexusSpinner';
-import AuditHistoryTable from '../../../components/AuditHistoryTable/AuditHistoryTable';
+import AuditHistory from './AuditHistory';
 import {store} from '../../../../../index';
 import {
     resultPageUpdateColumnsOrder,
@@ -27,7 +26,6 @@ import {Selected} from './SelectedInternal';
 import {Total} from './TotalInternal';
 import {Reports} from './ReportsInternal';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
-import {getRightsHistory} from '../../../../avails/availsService';
 import './DashboardContainer.scss';
 
 const RightsResultsTable = withRedux(withColumnsReorder(withSelection(withServerSorting(withRights(ResultsTable)))));
@@ -102,23 +100,7 @@ class SearchResultsTab extends React.Component {
                 onClick: closeModal,
             },
         ];
-        openModal(NexusSpinner, title, '100%', actions);
-
-        const ids = selectedRights.map(e => e.id);
-        getRightsHistory(ids).then(rightsEventHistory => {
-            openModal(
-                <div>
-                    {selectedRights.map((right, index) => (
-                        <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
-                    ))}
-                </div>,
-                {
-                    title,
-                    width: '100%',
-                    actions,
-                }
-            );
-        });
+        openModal(<AuditHistory selectedRights={selectedRights} />, {title, width: '100%', actions});
     };
 
     render() {
