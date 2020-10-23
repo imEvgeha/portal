@@ -4,8 +4,14 @@ import {Checkbox} from '@atlaskit/checkbox';
 
 const SELECT_ALL = 'selectAll';
 
-const ColumnCustomizationModal = ({close, config, availsMapping}) => {
+const ColumnCustomizationModal = ({importHideShowColumns, config, availsMapping}) => {
     const [hideShowColumns, setHideShowColumns] = useState(config);
+
+    const updateHideShowColumns = config => {
+        importHideShowColumns(config);
+        setHideShowColumns(config);
+    };
+
     const isAllSelected = config => {
         let allSelected = true;
         for (const key in config) {
@@ -21,7 +27,7 @@ const ColumnCustomizationModal = ({close, config, availsMapping}) => {
         const newHideShowColumns = {...hideShowColumns};
         newHideShowColumns[id].checked = !newHideShowColumns[id].checked;
         newHideShowColumns[SELECT_ALL].checked = isAllSelected(newHideShowColumns);
-        setHideShowColumns(newHideShowColumns);
+        updateHideShowColumns(newHideShowColumns);
     };
 
     const toggleSelectAll = selectAllKey => {
@@ -37,31 +43,7 @@ const ColumnCustomizationModal = ({close, config, availsMapping}) => {
                 }
                 newHideShowColumns[column.javaVariableName].checked = newValue;
             });
-        setHideShowColumns(newHideShowColumns);
-    };
-
-    const saveColumns = () => {
-        const cols = columns.slice();
-        // remove all hidden columns
-        Object.keys(hideShowColumns).forEach(key => {
-            if (hideShowColumns[key].checked === false) {
-                const position = cols.indexOf(key);
-                if (position > -1) {
-                    cols.splice(position, 1);
-                }
-            }
-        });
-        // add new visible columns
-        Object.keys(hideShowColumns).forEach(key => {
-            if (hideShowColumns[key].checked === true) {
-                const position = cols.indexOf(key);
-                if (position === -1) {
-                    cols.push(key);
-                }
-            }
-        });
-
-        updateColumnsOrder(cols);
+        updateHideShowColumns(newHideShowColumns);
     };
 
     const buildModalContent = config => {
@@ -97,12 +79,12 @@ export default ColumnCustomizationModal;
 
 ColumnCustomizationModal.propTypes = {
     config: PropTypes.object,
-    close: PropTypes.func,
+    importHideShowColumns: PropTypes.func,
     availsMapping: PropTypes.object,
 };
 
 ColumnCustomizationModal.defaultProps = {
     config: {},
-    close: null,
+    importHideShowColumns: null,
     availsMapping: {},
 };
