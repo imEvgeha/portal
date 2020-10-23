@@ -534,19 +534,32 @@ class TitleEdit extends Component {
             });
     };
 
+    handleToastDismiss = id => {
+        if (this.state.flags && this.state.flags[0].props.id === id) {
+            this.setState(prevState => {
+                return {
+                    flags: prevState.flags.slice(1),
+                };
+            });
+        }
+    };
+
     addToastToFlags = isSuccess => {
-        const updatedFlags = cloneDeep(this.state.flags);
         const icon = isSuccess ? ICONS.SUCCESS_ICON : ICONS.ERROR_ICON;
         const label = isSuccess ? 'Sync Title Success' : 'Sync Title Failed';
-        updatedFlags.push(<Flag key={updatedFlags.length} title={label} icon={icon} />);
-        this.setState({
-            flags: updatedFlags,
+        this.setState(prevState => {
+            const updatedFlags = cloneDeep(prevState.flags);
+            const uniqueId = Date.now();
+            updatedFlags.push(<Flag id={uniqueId} key={uniqueId} title={label} icon={icon} />);
+            return {
+                flags: updatedFlags,
+            };
         });
         setTimeout(() => {
-            const removedFlags = cloneDeep(this.state.flags);
-            removedFlags.shift();
-            this.setState({
-                flags: removedFlags,
+            this.setState(prevState => {
+                return {
+                    flags: prevState.flags.slice(1),
+                };
             });
         }, 3000);
     };
@@ -1454,7 +1467,7 @@ class TitleEdit extends Component {
                             handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
                         />
                     </AvForm>
-                    <FlagGroup>{this.state.flags}</FlagGroup>
+                    <FlagGroup onDismissed={this.handleToastDismiss}>{this.state.flags}</FlagGroup>
                 </>
             </EditPage>
         );
