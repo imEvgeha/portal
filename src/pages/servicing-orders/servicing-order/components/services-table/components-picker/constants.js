@@ -4,6 +4,10 @@ export const NOSELECTION = 'Selection not available for this asset at the moment
 export const header = {
     cells: [
         {
+            key: 0,
+            content: 'checkbox',
+        },
+        {
             key: 1,
             content: 'Source Channel',
             width: 10,

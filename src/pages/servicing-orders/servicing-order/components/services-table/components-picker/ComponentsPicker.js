@@ -10,17 +10,19 @@ import SectionMessage from '@atlaskit/section-message';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import {differenceBy, flattenDeep, forIn, get, groupBy, pickBy, trimEnd, uniqBy} from 'lodash';
+import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
 import './ComponentsPicker.scss';
-import {Check, createDynamicTableRows} from './pickerUtils';
+import {Check, createDynamicTableRows, getAudioChannelsForLangTrack, getToolTipText} from './pickerUtils';
 import {header, NOAUDIOEXISTS, NOSELECTION} from './constants';
 
 const Header = ({heading, title, barcode}) => {
     return (
         <div className="picker__header">
             <h3>{heading}</h3>
-            <b>{title}</b>
-            <p>{barcode}</p>
+            <div className="picker__header-title">
+                <b>{title}</b>
+                <p>{barcode}</p>
+            </div>
         </div>
     );
 };
@@ -40,9 +42,9 @@ const Footer = ({warning, onCancel, onSave, isSummaryChanged}) => {
 };
 
 const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
-    const [checkedAll, setChekedAll] = useState(false);
+    const [checkedAll, setCheckedAll] = useState(false);
     const setToggle = () => {
-        setChekedAll(prev => !prev);
+        setCheckedAll(prev => !prev);
     };
 
     useEffect(() => {
@@ -50,8 +52,8 @@ const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
     }, [checkedAll]);
 
     header.cells[0] = {
-        key: 'radio',
-        content: <Check name="header" isChecked={checkedAll} toggle={setToggle} />,
+        key: 'check',
+        content: <Check name="header-check" isChecked={checkedAll} toggle={setToggle} />,
         width: 5,
     };
 
@@ -59,7 +61,13 @@ const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
         <div className="picker__audio-panel">
             <b>Step 2: Select Audio Channels</b>
             <div className="picker__audio-panel-table">
-                <DynamicTable head={header} rows={dataRows} rowsPerPage={5} defaultPage={1} />
+                {dataRows.length === 0 ? (
+                    <SectionMessage>
+                        <p>No Channels found for this combination</p>
+                    </SectionMessage>
+                ) : (
+                    <DynamicTable head={header} rows={dataRows} rowsPerPage={5} defaultPage={1} />
+                )}
             </div>
         </div>
     );
@@ -147,13 +155,6 @@ const AddToService = ({isEnabled, onClick, count}) => {
     );
 };
 
-const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) => {
-    const audioComponent = audioComponentArray.find(
-        item => item.language === lang.value && item.trackConfiguration === track.value
-    );
-    return get(audioComponent, 'components', []);
-};
-
 const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     const [language, setLanguage] = useState('');
     const [track, setTrack] = useState('');
@@ -236,8 +237,8 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         );
     };
 
-    const removeComponent = keytoRemove => {
-        const newComponents = pickBy(components, (_, key) => key !== keytoRemove);
+    const removeComponent = keyToRemove => {
+        const newComponents = pickBy(components, (_, key) => key !== keyToRemove);
         setComponents(newComponents);
     };
 
@@ -250,19 +251,7 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         setTrack,
     };
 
-    const getToolTipText = () => {
-        const list = [];
-        forIn(components, (val, key) => {
-            let tooltip = '';
-            val.forEach((item, index) => {
-                tooltip += `${(index + 1).toString()}. ${item.channelPosition}, `;
-            });
-            list.push({name: key, tooltip: trimEnd(tooltip, ', ')});
-        });
-        return list;
-    };
-
-    const componentsWithToolTipText = getToolTipText();
+    const componentsWithToolTipText = getToolTipText(components);
 
     const saveComponentsInRow = () => {
         save(index, components);
