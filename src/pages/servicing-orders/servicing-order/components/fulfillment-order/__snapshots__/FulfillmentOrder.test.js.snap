@@ -6,11 +6,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
   isBannerOpen={false}
 >
   <div
-    style={
-      Object {
-        "width": "85%",
-      }
-    }
+    className="fulfillment-order__section"
   >
     <WithTheme(AkGridColumn)>
       <div
