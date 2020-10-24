@@ -156,7 +156,7 @@ export const FulfillmentOrder = ({
 
     return (
         <Page>
-            <div style={{width: '85%'}}>
+            <div className="fulfillment-order__section">
                 <GridColumn>
                     <div className="fulfillment-order">
                         <div className="fulfillment-order__row fulfillment-order__header">
