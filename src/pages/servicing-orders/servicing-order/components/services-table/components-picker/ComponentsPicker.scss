@@ -8,6 +8,15 @@
             font-size: 12px;
         }
     }
+    &__outer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &__inner {
+        display: flex;
+        flex-direction: column;
+    }
     &__audio-panel {
         margin-top: 10px;
         padding-right: 5px;

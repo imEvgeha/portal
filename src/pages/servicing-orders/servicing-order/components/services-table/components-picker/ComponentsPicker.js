@@ -1,20 +1,20 @@
-import React, {useContext, useEffect, useState} from 'react';
+/* eslint react/prop-types: 0 */
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DynamicTable from '@atlaskit/dynamic-table';
-import Flag from '@atlaskit/flag';
 import {HelperMessage} from '@atlaskit/form';
 import CheckIcon from '@atlaskit/icon/glyph/check';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
+import SectionMessage from '@atlaskit/section-message';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import {get, uniqBy, groupBy, pickBy, forIn, flattenDeep, trimEnd, omit} from 'lodash';
+import {differenceBy, flattenDeep, forIn, get, groupBy, pickBy, trimEnd, uniqBy} from 'lodash';
 import './ComponentsPicker.scss';
-import {header, rows, createDynamicRows} from './constants';
+import {Check, createDynamicTableRows} from './pickerUtils';
+import {header, NOAUDIOEXISTS, NOSELECTION} from './constants';
 
-// eslint-disable-next-line react/prop-types
 const Header = ({heading, title, barcode}) => {
     return (
         <div className="picker__header">
@@ -25,14 +25,13 @@ const Header = ({heading, title, barcode}) => {
     );
 };
 
-// eslint-disable-next-line react/prop-types
-const Footer = ({warning, onCancel, onSave, count}) => {
+const Footer = ({warning, onCancel, onSave, isSummaryChanged}) => {
     return (
         <div className="picker__footer">
             <p>{warning}</p>
             <div className="picker__footer-buttons">
                 <Button onClick={onCancel}>Cancel</Button>
-                <Button appearance="primary" onClick={onSave} isDisabled={count === 0}>
+                <Button appearance="primary" onClick={onSave} isDisabled={!isSummaryChanged}>
                     save
                 </Button>
             </div>
@@ -40,8 +39,22 @@ const Footer = ({warning, onCancel, onSave, count}) => {
     );
 };
 
-// eslint-disable-next-line react/prop-types
-const AudioChannelsTable = ({dataRows}) => {
+const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
+    const [checkedAll, setChekedAll] = useState(false);
+    const setToggle = () => {
+        setChekedAll(prev => !prev);
+    };
+
+    useEffect(() => {
+        checkedAll ? checkAll() : unCheckAll();
+    }, [checkedAll]);
+
+    header.cells[0] = {
+        key: 'radio',
+        content: <Check name="header" isChecked={checkedAll} toggle={setToggle} />,
+        width: 5,
+    };
+
     return (
         <div className="picker__audio-panel">
             <b>Step 2: Select Audio Channels</b>
@@ -52,7 +65,6 @@ const AudioChannelsTable = ({dataRows}) => {
     );
 };
 
-// eslint-disable-next-line react/prop-types
 const ListItem = ({item, onDelete}) => {
     return (
         <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px'}}>
@@ -68,10 +80,7 @@ const ListItem = ({item, onDelete}) => {
     );
 };
 
-/* <ListItem key={`${item.language}${item.trackConfig}${item.channelNumber}`} item={item} onDelete={()=>onDelete(item)}/> */
-// eslint-disable-next-line react/prop-types
-const SummaryPanel = ({list = [], setComponents, remove}) => {
-    // const onDelete = item => setComponents(list.filter(row=> `${row.channelNumber}${row.trackConfig}` !== `${item.channelNumber}${item.trackConfig}`));
+const SummaryPanel = ({list = [], remove}) => {
     const onDelete = key => remove(key);
     return (
         <div className="picker__summary-panel">
@@ -85,9 +94,7 @@ const SummaryPanel = ({list = [], setComponents, remove}) => {
     );
 };
 
-// eslint-disable-next-line react/prop-types
 const SelectionPanel = ({data}) => {
-    // eslint-disable-next-line react/prop-types
     const {languageOptions, trackConfiguration, language, setLanguage, track, setTrack} = data;
 
     return (
@@ -129,8 +136,7 @@ const SelectionPanel = ({data}) => {
     );
 };
 
-// eslint-disable-next-line react/prop-types
-const AddtoService = ({isEnabled, onClick, count}) => {
+const AddToService = ({isEnabled, onClick, count}) => {
     return (
         <div className="picker__service-panel">
             <b>Step 3: Add to Service ({count})</b>
@@ -148,18 +154,13 @@ const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) => {
     return get(audioComponent, 'components', []);
 };
 
-// eslint-disable-next-line react/prop-types
 const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     const [language, setLanguage] = useState('');
     const [track, setTrack] = useState('');
     const [tableRows, setTableRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
-    // eslint-disable-next-line react/prop-types
-    // eslint-disable-next-line react/prop-types
     const [components, setComponents] = useState(groupBy(data.audioSummary, v => [v.language, v.trackConfig] || {}));
-
-    // eslint-disable-next-line react/prop-types
-    const {audioSummary, title, barcode, audioComponentArray = []} = data;
+    const {title, barcode, audioComponentArray = []} = data;
 
     const languageOptions = uniqBy(
         audioComponentArray.map(item => {
@@ -186,6 +187,11 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         };
     });
 
+    const flattenComponents = flattenDeep(Object.values(components));
+    const isSummaryChanged =
+        differenceBy(flattenComponents, data.audioSummary, 'componentID').length > 0 ||
+        flattenComponents.length !== data.audioSummary.length;
+
     useEffect(() => {
         setLanguage(languageOptions[0]);
         setTrack(trackConfiguration[0]);
@@ -200,8 +206,6 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     }, [tableRows]);
 
     const saveComponentsLocally = () => {
-        // setComponents(prev => uniqBy([...prev,...selectedRows],v => [v.channelNumber, v.language].join()));
-
         setComponents(prev => {
             return Object.keys(prev).length
                 ? groupBy(
@@ -214,17 +218,20 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         });
         setSelectedRows([]);
         unCheckAll();
-        console.log(
-            'save to local componentns, selectedRows: ',
-            flattenDeep(Object.values(components)),
-            flattenDeep([...Object.values(components), ...selectedRows])
-        );
     };
 
     const unCheckAll = () => {
         setTableRows(prev =>
             prev.map(item => {
                 return {...item, isChecked: false};
+            })
+        );
+    };
+
+    const checkAll = () => {
+        setTableRows(prev =>
+            prev.map(item => {
+                return {...item, isChecked: true};
             })
         );
     };
@@ -243,15 +250,12 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         setTrack,
     };
 
-    console.log('components', components);
-    //  console.log('audioChannels ', audioChannels);
-
     const getToolTipText = () => {
         const list = [];
         forIn(components, (val, key) => {
             let tooltip = '';
             val.forEach((item, index) => {
-                tooltip += `${(index + 1).toString()  }. ${  item.channelPosition  }, `;
+                tooltip += `${(index + 1).toString()}. ${item.channelPosition}, `;
             });
             list.push({name: key, tooltip: trimEnd(tooltip, ', ')});
         });
@@ -269,11 +273,15 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
         <div>
             <Header heading="Add Audio Components" title={title} barcode={barcode} />
             <hr className="solid" />
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div className="picker__outer">
+                <div className="picker__inner">
                     <SelectionPanel data={selectionData} />
-                    <AudioChannelsTable dataRows={createDynamicRows(tableRows, setTableRows)} />
-                    <AddtoService
+                    <AudioChannelsTable
+                        dataRows={createDynamicTableRows(tableRows, setTableRows)}
+                        checkAll={checkAll}
+                        unCheckAll={unCheckAll}
+                    />
+                    <AddToService
                         isEnabled={selectedRows.length}
                         onClick={saveComponentsLocally}
                         count={selectedRows.length}
@@ -282,34 +290,29 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
                 <SummaryPanel list={componentsWithToolTipText} setComponents={setComponents} remove={removeComponent} />
             </div>
             <hr className="solid" />
-            <Footer onCancel={closeModal} onSave={saveComponentsInRow} count={Object.keys(components).length} />
+            <Footer onCancel={closeModal} onSave={saveComponentsInRow} isSummaryChanged={isSummaryChanged} />
         </div>
     );
 };
 
-const notAvailableFlag = desc => (
-    <Flag
-        icon={<ErrorIcon primaryColor="red" label="Info" />}
-        description={desc}
-        id="1"
-        key="1"
-        title="Not Available"
-    />
+const notAvailableMsg = (desc, barcode) => (
+    <SectionMessage title="Not Available">
+        <p>{`Barcode ${barcode} :${desc}`}</p>
+    </SectionMessage>
 );
 
 export const ComponentsPicker = ({data, closeModal, save, index}) => {
-    console.log('component picker data: ', data);
-    const {audioComponentArray, assetType} = data;
+    const {audioComponentArray, assetType, barcode} = data;
     return (
         <div>
             {assetType === 'Audio' ? (
                 audioComponentArray.length ? (
                     <AudioComponentsPicker data={data} closeModal={closeModal} save={save} index={index} />
                 ) : (
-                    notAvailableFlag('Audio channels does not exists for this barcode. Try another barcode.')
+                    notAvailableMsg(NOAUDIOEXISTS, barcode)
                 )
             ) : (
-                notAvailableFlag('Selection not available for this asset at the moment.')
+                notAvailableMsg(NOSELECTION, barcode)
             )}
         </div>
     );

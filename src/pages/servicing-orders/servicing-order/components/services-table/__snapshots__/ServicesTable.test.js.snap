@@ -41,7 +41,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "sortable": false,
           "suppressMovable": true,
           "suppressSizeToFit": true,
-          "width": 40,
+          "width": 30,
         },
         Object {
           "cellEditorFramework": undefined,
@@ -58,66 +58,101 @@ exports[`ServicesTable should match snapshot 1`] = `
           "sortable": false,
           "suppressMovable": true,
           "suppressSizeToFit": true,
-          "width": 40,
+          "width": 30,
         },
         Object {
-          "colId": "componentId",
-          "dataSource": "componentId",
-          "field": "componentId",
-          "headerName": "Component ID",
+          "colId": "serviceType",
+          "dataSource": "serviceType",
+          "field": "serviceType",
+          "headerName": "Service Type",
+          "width": 250,
+        },
+        Object {
+          "colId": "assetType",
+          "dataSource": "assetType",
+          "field": "assetType",
+          "headerName": "Asset Type",
+          "width": 250,
         },
         Object {
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
           "headerName": "Spec",
+          "width": 200,
+        },
+        Object {
+          "autoHeight": true,
+          "cellRendererFramework": [Function],
+          "cellRendererParams": Object {
+            "audioComponents": Array [],
+            "tableData": Array [],
+          },
+          "colId": "components",
+          "dataSource": "components",
+          "field": "components",
+          "headerName": "Components",
+          "width": 500,
         },
         Object {
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
           "valueFormatter": [Function],
-          "width": 320,
+          "width": 300,
         },
         Object {
           "colId": "priority",
           "dataSource": "priority",
           "field": "priority",
           "headerName": "Priority",
+          "width": 160,
         },
         Object {
           "colId": "recipient",
           "field": "recipient",
           "headerName": "Recipient",
+          "width": 160,
         },
         Object {
           "colId": "operationalStatus",
           "field": "operationalStatus",
           "headerName": "Operational Status",
+          "width": 250,
         },
       ]
     }
     defaultColDef={
       Object {
-        "valueGetter": [Function],
+        "resizable": true,
+        "sortable": true,
       }
     }
     domLayout="autoHeight"
     mapping={
       Array [
         Object {
-          "dataType": "string",
-          "displayName": "Component ID",
+          "dataType": "select",
+          "displayName": "Service Type",
           "enableEdit": true,
           "enableSearch": true,
-          "javaVariableName": "componentId",
-          "queryParamName": "componentId",
+          "javaVariableName": "serviceType",
+          "queryParamName": "serviceType",
           "readOnly": false,
           "required": true,
-          "searchDataType": "string",
         },
         Object {
-          "dataType": "string",
+          "dataType": "select",
+          "displayName": "Asset Type",
+          "enableEdit": true,
+          "enableSearch": true,
+          "javaVariableName": "assetType",
+          "queryParamName": "assetType",
+          "readOnly": false,
+          "required": true,
+        },
+        Object {
+          "dataType": "select",
           "displayName": "Spec",
           "enableEdit": true,
           "enableSearch": true,
@@ -125,7 +160,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "queryParamName": "spec",
           "readOnly": false,
           "required": true,
-          "searchDataType": "string",
         },
         Object {
           "dataType": "businessDateTime",
@@ -177,6 +211,13 @@ exports[`ServicesTable should match snapshot 1`] = `
           "MGM",
           "Vubiquity",
         ],
+        "assetType": Array [
+          "",
+          "Audio",
+          "Video",
+          "Subtitles",
+          "Closed Captioning",
+        ],
         "componentId": Array [
           "LOL-123",
         ],
@@ -195,11 +236,16 @@ exports[`ServicesTable should match snapshot 1`] = `
           "50",
         ],
         "recipient": Array [],
+        "serviceType": Array [
+          "Process & Deliver",
+          "DETE Ingest",
+        ],
         "sourceStandard": Array [
           "_1080_23_976",
         ],
         "spec": Array [
           "M-DBS-2396 SCC",
+          "TBD",
         ],
         "standard": Array [
           Object {

@@ -17,10 +17,7 @@ import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
-import {dummyData} from './components-picker/constants';
 import './ServicesTable.scss';
-
-const OP_STATUS_COL_INDEX = 4;
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
@@ -30,12 +27,16 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
-    const [components, setComponents] = useState(dummyData.audioSummary || []);
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [audioComponents, setAudioComponents] = useState([]);
     const [gridApi, setGridApi] = useState(null);
 
     const deteComponents = componentsArray.find(item => item.barcode === data.barcode);
+
+    const title =
+        data.title ||
+        get(data, 'deteServices[0].deteSources', []).find(item => item.barcode === data.barcode).title ||
+        '';
 
     const onGridReady = params => {
         setGridApi(params.api);
@@ -84,14 +85,12 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         newRow.components = [...Object.keys(components)];
         setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
         const update = cloneDeep(services);
-        const temp = flattenDeep(Object.values(components)).map(item => {
-            return {...item, typeAttribute: 'audioDetail'};
+        const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
+            return {...item, typeAttribute: tableData[index].assetType === 'Audio' ? 'audioDetail' : 'textDetail'};
         });
-        update.deteServices[index].details = temp.map(item => omit(item, ['isChecked']));
-        // typeAttribute": "audioDetail"
-        // setServices(update);
+
+        update.deteServices[index].details = serviceWithComponents.map(item => omit(item, ['isChecked']));
         setUpdatedServices(update);
-        console.log('service to send: ', update);
     };
 
     const handleServiceRemoval = index => {
@@ -132,9 +131,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                                       data={{
                                           assetType: tableData[rowIndex].assetType,
                                           barcode: data.barcode,
-                                          title: data.title || 'test title',
+                                          title,
                                           audioSummary: tableData[rowIndex].components,
-                                          audioComponentArray: deteComponents.components.audioComponents,
+                                          audioComponentArray: get(deteComponents, 'components.audioComponents', []),
                                       }}
                                       closeModal={closeModal}
                                       save={handleComponentsEdit}
@@ -167,7 +166,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         dataSource: 'components',
         headerName: 'Components',
         autoHeight: true,
-        width: 200,
+        width: 500,
         cellRendererFramework: componentsCell,
         cellRendererParams: {audioComponents, tableData},
     };
@@ -192,17 +191,16 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             // TODO: Super inefficient, need to find a better way
             // Re-mapping the data
             currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
+            if (data.assetType !== currentService.externalServices.assetType) currentService.details = []; // make components empty when assetType changes
             currentService.externalServices.assetType = data.assetType;
             currentService.externalServices.formatType = data.spec;
             currentService.overrideStartDate = data.doNotStartBefore || '';
             currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
-            // eslint-disable-next-line max-len
             currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
             currentService.status = data.operationalStatus;
 
             const newServices = {...services, [providerServices]: updatedServices};
             setServices(newServices);
-            // this change is propogated up to the Servicing Order form to submit
             setUpdatedServices(newServices);
         }
     };
@@ -211,6 +209,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         const updatedService = cloneDeep(services[`${providerServices}`]);
         const blankService = cloneDeep(SERVICE_SCHEMA);
         blankService.deteSources[0].barcode = data.barcode;
+        blankService.externalServices.externalId = get(data, 'deteServices[0].externalServices.externalId', '');
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
@@ -241,7 +240,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             enableEdit: false,
         }));
     };
-    console.log('data ', data);
 
     return (
         <div className="nexus-c-services-table">

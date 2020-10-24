@@ -36,7 +36,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onGridReady = params => {
         setGridApi(params.api);
-        params.api.sizeColumnsToFit();
+        // params.api.sizeColumnsToFit();
     };
 
     useEffect(

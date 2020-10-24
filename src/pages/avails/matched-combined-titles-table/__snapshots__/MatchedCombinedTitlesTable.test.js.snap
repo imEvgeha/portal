@@ -414,6 +414,7 @@ exports[`MatchedCombinedTitlesTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
+    onGridReady={null}
     rowData={null}
     rowSelection="single"
     setRowData={null}

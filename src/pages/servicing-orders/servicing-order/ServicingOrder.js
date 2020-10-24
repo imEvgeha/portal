@@ -59,8 +59,9 @@ const ServicingOrder = ({match}) => {
                             fulfillmentOrders: newFulfillmentOrders,
                             servicingOrderItems,
                         });
-                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                        setSelectedOrder(newFulfillmentOrders[0]);
+                        // Todo remove below comments after nothing is broken in SO page. kbora
+                        // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                        // setSelectedOrder(newFulfillmentOrders[0]);
                         setComponents(assetInfo[1]);
                     });
 

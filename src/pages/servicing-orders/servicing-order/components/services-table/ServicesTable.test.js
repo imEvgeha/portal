@@ -11,6 +11,7 @@ describe('ServicesTable', () => {
             assetFormat: 'VIDEO_CONFORMANCEGROUP',
             assetType: 'DETE_FILE',
             barcode: 'DA16129',
+            title: 'test title',
             deteServices: [
                 {
                     type: 'Subtitles',

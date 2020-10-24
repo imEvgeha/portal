@@ -13,7 +13,7 @@ export const SELECT_VALUES = {
     ],
     priority: ['10', '20', '60', '50'],
     componentId: ['LOL-123'],
-    spec: ['M-DBS-2396 SCC'],
+    spec: ['M-DBS-2396 SCC', 'TBD'],
     addRecipient: ['MGM', 'Vubiquity'],
     sourceStandard: ['_1080_23_976'],
     serviceType: ['Process & Deliver', 'DETE Ingest'],
