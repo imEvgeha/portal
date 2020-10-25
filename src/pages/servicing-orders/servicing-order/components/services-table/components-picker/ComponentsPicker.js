@@ -13,7 +13,7 @@ import Tooltip from '@atlaskit/tooltip';
 import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
 import './ComponentsPicker.scss';
 import {Check, createDynamicTableRows, getAudioChannelsForLangTrack, getToolTipText} from './pickerUtils';
-import {header, NOAUDIOEXISTS, NOSELECTION} from './constants';
+import {header, CHANNEL_EXISTS, NO_AUDIO_EXISTS, NO_SELECTION_AVAILABLE} from './constants';
 
 const Header = ({heading, title, barcode}) => {
     return (
@@ -30,7 +30,9 @@ const Header = ({heading, title, barcode}) => {
 const Footer = ({warning, onCancel, onSave, isSummaryChanged}) => {
     return (
         <div className="picker__footer">
-            <p>{warning}</p>
+            <HelperMessage>
+                <span className="picker__footer-warning">{warning}</span>
+            </HelperMessage>
             <div className="picker__footer-buttons">
                 <Button onClick={onCancel}>Cancel</Button>
                 <Button appearance="primary" onClick={onSave} isDisabled={!isSummaryChanged}>
@@ -161,6 +163,7 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     const [tableRows, setTableRows] = useState([]);
     const [selectedRows, setSelectedRows] = useState([]);
     const [components, setComponents] = useState(groupBy(data.audioSummary, v => [v.language, v.trackConfig] || {}));
+    const [warningText, setWarningText] = useState('');
     const {title, barcode, audioComponentArray = []} = data;
 
     const languageOptions = uniqBy(
@@ -189,9 +192,12 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     });
 
     const flattenComponents = flattenDeep(Object.values(components));
+
     const isSummaryChanged =
         differenceBy(flattenComponents, data.audioSummary, 'componentID').length > 0 ||
         flattenComponents.length !== data.audioSummary.length;
+
+    const selectedVsSummaryDiff = differenceBy(selectedRows, flattenComponents, 'componentID').length > 0;
 
     useEffect(() => {
         setLanguage(languageOptions[0]);
@@ -205,6 +211,10 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     useEffect(() => {
         setSelectedRows(tableRows.filter(item => item.isChecked === true));
     }, [tableRows]);
+
+    useEffect(() => {
+        setWarningText(!selectedVsSummaryDiff && selectedRows.length ? CHANNEL_EXISTS : '');
+    }, [selectedRows]);
 
     const saveComponentsLocally = () => {
         setComponents(prev => {
@@ -240,6 +250,10 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     const removeComponent = keyToRemove => {
         const newComponents = pickBy(components, (_, key) => key !== keyToRemove);
         setComponents(newComponents);
+        if (selectedRows.length > 0) {
+            setSelectedRows([]);
+            unCheckAll();
+        }
     };
 
     const selectionData = {
@@ -271,7 +285,7 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
                         unCheckAll={unCheckAll}
                     />
                     <AddToService
-                        isEnabled={selectedRows.length}
+                        isEnabled={selectedRows.length && !warningText}
                         onClick={saveComponentsLocally}
                         count={selectedRows.length}
                     />
@@ -279,7 +293,12 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
                 <SummaryPanel list={componentsWithToolTipText} setComponents={setComponents} remove={removeComponent} />
             </div>
             <hr className="solid" />
-            <Footer onCancel={closeModal} onSave={saveComponentsInRow} isSummaryChanged={isSummaryChanged} />
+            <Footer
+                onCancel={closeModal}
+                onSave={saveComponentsInRow}
+                isSummaryChanged={isSummaryChanged}
+                warning={warningText}
+            />
         </div>
     );
 };
@@ -298,10 +317,10 @@ export const ComponentsPicker = ({data, closeModal, save, index}) => {
                 audioComponentArray.length ? (
                     <AudioComponentsPicker data={data} closeModal={closeModal} save={save} index={index} />
                 ) : (
-                    notAvailableMsg(NOAUDIOEXISTS, barcode)
+                    notAvailableMsg(NO_AUDIO_EXISTS, barcode)
                 )
             ) : (
-                notAvailableMsg(NOSELECTION, barcode)
+                notAvailableMsg(NO_SELECTION_AVAILABLE, barcode)
             )}
         </div>
     );

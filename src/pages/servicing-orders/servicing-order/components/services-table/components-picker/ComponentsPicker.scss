@@ -20,6 +20,7 @@
     &__inner {
         display: flex;
         flex-direction: column;
+        width: 95%;
     }
     &__audio-panel {
         margin-top: 10px;
@@ -49,6 +50,9 @@
         display: flex;
         justify-content: space-between;
         padding-top: 10px;
+        &-warning {
+            color: red;
+        }
         &-buttons {
             width: 140px;
             display: flex;

@@ -14,7 +14,7 @@ import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
@@ -117,14 +117,20 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     // eslint-disable-next-line react/prop-types
     const componentsCell = ({rowIndex}) => {
         let toolTipContent = '';
-        if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(tableData[rowIndex], 'assetType', '')))
-            toolTipContent = 'Selection not available for this Asset type';
+        if (!isDisabled) {
+            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(tableData[rowIndex], 'assetType', ''))) {
+                toolTipContent = NO_SELECTION;
+            } else {
+                toolTipContent = CLICK_FOR_SELECTION;
+            }
+        }
+
         return (
             <Tooltip content={toolTipContent}>
                 <div
                     style={{minHeight: '25px'}}
                     onClick={() => {
-                        return isDisabled || toolTipContent
+                        return isDisabled || toolTipContent !== CLICK_FOR_SELECTION
                             ? null
                             : openModal(
                                   <ComponentsPicker

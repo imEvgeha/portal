@@ -77,3 +77,6 @@ export const SERVICE_SCHEMA = {
     sequence: '',
     status: '',
 };
+
+export const NO_SELECTION = 'Selection not available for this Asset type';
+export const CLICK_FOR_SELECTION = 'Click to add / edit components';

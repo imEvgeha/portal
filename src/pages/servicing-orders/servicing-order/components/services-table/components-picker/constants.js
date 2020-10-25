@@ -1,5 +1,6 @@
-export const NOAUDIOEXISTS = 'Audio channels does not exists for this barcode. Try another barcode.';
-export const NOSELECTION = 'Selection not available for this asset at the moment.';
+export const NO_AUDIO_EXISTS = 'Audio channels does not exists for this barcode. Try another barcode.';
+export const NO_SELECTION_AVAILABLE = 'Selection not available for this asset at the moment.';
+export const CHANNEL_EXISTS = 'Selected channels already exists in Audio Service Summary';
 
 export const header = {
     cells: [
