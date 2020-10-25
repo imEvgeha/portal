@@ -34,9 +34,12 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const deteComponents = componentsArray.find(item => item.barcode === data.barcode);
 
     const title =
-        data.title ||
-        get(data, 'deteServices[0].deteSources', []).find(item => item.barcode === data.barcode).title ||
-        '';
+        get(data, 'title', '') ||
+        get(
+            get(data, 'deteServices[0].deteSources', []).find(item => item.barcode === data.barcode),
+            'title',
+            ''
+        );
 
     const onGridReady = params => {
         setGridApi(params.api);
