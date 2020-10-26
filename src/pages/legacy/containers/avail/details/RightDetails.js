@@ -1564,6 +1564,7 @@ class RightDetails extends React.Component {
                                         isEdit={this.state.isEdit}
                                         options={options}
                                         isBonusRight={this.state.right.bonusRight}
+                                        territory={this.state.territory}
                                     />
                                 </>
                             )}

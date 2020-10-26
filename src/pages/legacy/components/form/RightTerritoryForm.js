@@ -12,8 +12,18 @@ import {getProperTerritoryFormValues} from './utils';
 // component rerender 11 times
 class RightTerritoryForm extends React.Component {
     onSubmit = data => {
+        const {territory} = this.props;
+        let dataWithWithdrawn = data;
+        if (territory && Array.isArray(territory) && territory.length > 0) {
+            if (this.props.territoryIndex && this.props.territoryIndex >= 0) {
+                if (territory[this.props.territoryIndex].hasOwnProperty('withdrawn')) {
+                    const withdrawn = territory[this.props.territoryIndex].withdrawn;
+                    dataWithWithdrawn = {...dataWithWithdrawn, withdrawn: withdrawn};
+                }
+            }
+        }
         const properValues = getProperTerritoryFormValues(
-            data,
+            dataWithWithdrawn,
             this.props.isEdit,
             this.props.existingTerritoryList,
             this.props.territoryIndex
@@ -83,12 +93,14 @@ RightTerritoryForm.propTypes = {
     isFromCreatePage: PropTypes.bool,
     existingTerritoryList: PropTypes.array,
     isBonusRight: PropTypes.bool,
+    territory: PropTypes.array,
 };
 
 RightTerritoryForm.defaultProps = {
     isEdit: false,
     isFromCreatePage: false,
     isBonusRight: false,
+    territory: [],
 };
 
 export default RightTerritoryForm;
