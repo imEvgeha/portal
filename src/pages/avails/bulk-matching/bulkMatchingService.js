@@ -10,12 +10,12 @@ export const getAffectedRights = params => {
     return nexusFetch(url);
 };
 
-export const getExistingBonusRights = (sourceRightId, coreTitleId = '') => {
-    const params = {sourceRightId};
+export const getExistingBonusRights = (sourceRightIdList, coreTitleId = '') => {
+    const params = {sourceRightIdList};
     if (coreTitleId) {
         params.coreTitleId = coreTitleId;
     }
-    return rightsService.advancedSearchV2(params, 0, EXISTING_BONUS_RIGHTS_PAGE_SIZE);
+    return rightsService.advancedSearchV2({}, 0, EXISTING_BONUS_RIGHTS_PAGE_SIZE, {}, params);
 };
 
 export const getRestrictedTitles = params => {
