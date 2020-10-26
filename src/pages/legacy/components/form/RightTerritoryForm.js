@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {get} from 'lodash';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 import Form from '@atlaskit/form';
 import Button from '@atlaskit/button';
@@ -12,15 +13,12 @@ import {getProperTerritoryFormValues} from './utils';
 // component rerender 11 times
 class RightTerritoryForm extends React.Component {
     onSubmit = data => {
-        const {territory} = this.props;
+        const {territory, territoryIndex} = this.props;
         let dataWithWithdrawn = data;
-        if (territory && Array.isArray(territory) && territory.length > 0) {
-            if (this.props.territoryIndex && this.props.territoryIndex >= 0) {
-                if (territory[this.props.territoryIndex].hasOwnProperty('withdrawn')) {
-                    const withdrawn = territory[this.props.territoryIndex].withdrawn;
-                    dataWithWithdrawn = {...dataWithWithdrawn, withdrawn: withdrawn};
-                }
-            }
+        const isValidIndex = territoryIndex !== null && territoryIndex !== undefined && territoryIndex >= 0;
+        if (territory && isValidIndex && territory[territoryIndex].hasOwnProperty('withdrawn')) {
+            const withdrawn = get(territory[territoryIndex], 'withdrawn');
+            dataWithWithdrawn = {...dataWithWithdrawn, withdrawn: withdrawn};
         }
         const properValues = getProperTerritoryFormValues(
             dataWithWithdrawn,
