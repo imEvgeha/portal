@@ -30,6 +30,7 @@ exports[`NexusDrawer should match snapshot 1`] = `
             </div>
             <IconButton
               icon={[Function]}
+              isDisabled={false}
               label="Close Drawer"
               onClick={[Function]}
             />

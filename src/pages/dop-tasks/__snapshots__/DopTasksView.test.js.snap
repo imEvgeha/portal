@@ -11,13 +11,22 @@ exports[`DopTasksView should match snapshot 1`] = `
       setUser={[Function]}
     />
     <SavedTableDropdown
-      applySavedTableDropDownFilter={[Function]}
+      removeUserDefinedGridState={[Function]}
+      saveUserDefinedGridState={[Function]}
+      selectPredefinedTableView={[Function]}
+      selectUserDefinedTableView={[Function]}
+      userDefinedGridStates={Array []}
     />
-    <IconButton
-      icon={[Function]}
-      label="Refresh"
-      onClick={[Function]}
-    />
+    <div
+      className="nexus-c-dop-tasks-view__refresh-btn"
+    >
+      <IconButton
+        icon={[Function]}
+        isDisabled={false}
+        label="Refresh"
+        onClick={[Function]}
+      />
+    </div>
   </DopTasksHeader>
   <DopTasksTable
     externalFilter={
@@ -25,6 +34,7 @@ exports[`DopTasksView should match snapshot 1`] = `
         "user": "user",
       }
     }
+    setColumnApi={[Function]}
     setExternalFilter={[Function]}
     setGridApi={[Function]}
   />

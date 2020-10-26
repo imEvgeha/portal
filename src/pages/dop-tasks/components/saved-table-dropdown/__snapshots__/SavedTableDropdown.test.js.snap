@@ -36,8 +36,13 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
         <div
           className="nexus-c-dop-tasks-dropdown__textfield"
         >
-          <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+          <WithAnalyticsContext(WithAnalyticsEvents(FieldTextStateless))
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
             placeholder="New View..."
+            shouldFitContainer={true}
+            value=""
           />
         </div>
       </DropdownItemGroup>

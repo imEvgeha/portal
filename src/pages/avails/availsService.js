@@ -17,5 +17,5 @@ export const getRightsHistory = searchIds => {
 };
 
 export const getLinkedToOriginalRights = (params, pageSize) => {
-    return rightsService.advancedSearchV2(params, 0, pageSize);
+    return rightsService.advancedSearchV2({}, 0, pageSize, {}, params);
 };

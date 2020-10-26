@@ -6,7 +6,7 @@ import Tooltip from '@atlaskit/tooltip';
 
 const GRID_SIZE_MULTIPLIER = 4;
 
-const IconButton = ({icon, onClick, label}) => {
+const IconButton = ({icon, onClick, label, isDisabled}) => {
     const Icon = icon;
 
     return (
@@ -15,6 +15,7 @@ const IconButton = ({icon, onClick, label}) => {
                 <Button
                     appearance="subtle"
                     onClick={onClick}
+                    isDisabled={isDisabled}
                     iconBefore={<Icon label={label} />}
                     theme={(currentTheme, themeProps) => {
                         const {buttonStyles, ...rest} = currentTheme(themeProps);
@@ -41,10 +42,12 @@ IconButton.propTypes = {
     icon: PropTypes.func.isRequired,
     onClick: PropTypes.func,
     label: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool,
 };
 
 IconButton.defaultProps = {
     onClick: () => null,
+    isDisabled: false,
 };
 
 export default IconButton;
