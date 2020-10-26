@@ -11,7 +11,7 @@ const AuditHistory = ({selectedRights}) => {
         getRightsHistory(ids).then(rightsEventHistory => {
             setEventsHistory(rightsEventHistory);
         });
-    });
+    }, [selectedRights]);
 
     const buildModalContent = () => {
         if (eventsHistory) {
