@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import {cloneDeep, flattenDeep, get, isEmpty, omit, groupBy} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import Add from '../../../../../assets/action-add.svg';
