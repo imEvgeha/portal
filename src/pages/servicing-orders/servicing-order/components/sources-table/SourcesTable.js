@@ -17,7 +17,7 @@ import {URL} from '../../../../../util/Common';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from './Constants';
+import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW, TABLE_HEIGHT} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 import {fetchAssetFields} from './util';
@@ -30,8 +30,14 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
+    const [gridApi, setGridApi] = useState(null);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
+
+    const onGridReady = params => {
+        setGridApi(params.api);
+        // params.api.sizeColumnsToFit();
+    };
 
     useEffect(
         () => {
@@ -76,7 +82,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const radioButtonColumn = defineColumn({
-        width: 40,
+        width: 35,
         colId: 'radio',
         field: 'radio',
         cellRendererParams: {selectedItem: selectedSource},
@@ -85,7 +91,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const servicesColumn = defineColumn({
         headerName: '#',
-        width: 40,
+        width: 35,
         colId: 'services',
         field: 'services',
         cellRendererFramework: ({data}) => {
@@ -111,6 +117,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const closeButtonColumn = defineButtonColumn({
+        width: 35,
         cellRendererFramework: closeButtonCell,
         cellRendererParams: '',
     });
@@ -190,7 +197,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                     description: 'Please add one row at a time',
                 },
             });
-        else setSources([...sources, cloneDeep(INIT_SOURCE_ROW)]);
+        else {
+            setSources([...sources, cloneDeep(INIT_SOURCE_ROW)]);
+        }
     };
 
     const removeSourceRow = barcode => {
@@ -213,6 +222,17 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         setSources(sourcesArray);
     };
 
+    useEffect(() => {
+        // show last empty row in case new row is added
+        const len = sources.length;
+        if (len >= TABLE_HEIGHT) {
+            const lastRow = sources[len - 1];
+            if (lastRow && lastRow.barcode === '') {
+                gridApi.ensureIndexVisible(len - 1);
+            }
+        }
+    }, [sources.length]);
+
     return (
         <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
             <div className="nexus-c-sources__header">
@@ -226,12 +246,16 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             </div>
             <SourceTableGrid
                 columnDefs={[radioButtonColumn, closeButtonColumn, servicesColumn, ...newColDef]}
+                defaultColDef={{
+                    flex: 1,
+                    sortable: true,
+                }}
                 rowData={sources}
                 domLayout="normal"
-                mapping={mappings}
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
+                onGridReady={onGridReady}
             />
         </div>
     );

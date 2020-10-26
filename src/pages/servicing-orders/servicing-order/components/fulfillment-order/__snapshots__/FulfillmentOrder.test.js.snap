@@ -5,7 +5,9 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
   bannerHeight={52}
   isBannerOpen={false}
 >
-  <WithTheme(AkGrid)>
+  <div
+    className="fulfillment-order__section"
+  >
     <WithTheme(AkGridColumn)>
       <div
         className="fulfillment-order"
@@ -180,6 +182,6 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
         <hr />
       </div>
     </WithTheme(AkGridColumn)>
-  </WithTheme(AkGrid)>
+  </div>
 </AkPage>
 `;
