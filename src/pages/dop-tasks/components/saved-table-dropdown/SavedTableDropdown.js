@@ -36,11 +36,16 @@ const SavedTableDropdown = ({
 
     const filterRemovalHandler = (e, item) => {
         e.stopPropagation();
+        if (selectedItem.value === item) {
+            setSelectedItem(SAVED_TABLE_SELECT_OPTIONS[0]);
+            selectPredefinedTableView(SAVED_TABLE_SELECT_OPTIONS[0].value);
+        }
         removeUserDefinedGridState(item);
     };
 
     const saveButtonHandler = () => {
         saveUserDefinedGridState(userInput);
+        setSelectedItem({label: userInput, value: userInput});
         setUserInput('');
     };
 

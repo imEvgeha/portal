@@ -21,7 +21,7 @@ const withColumnsResizing = ({colDef = AG_GRID_DEF_COL_DEF, defaultColDef} = {})
         const [columnsSize, setColumnsSize] = useState(existingTableColumnsSize);
 
         const handleColumnResized = e => {
-            if (e.finished) {
+            if (e.finished && e.column) {
                 const updatedColumnsSize = {...columnsSize, [e.column.colDef.colId]: e.column.actualWidth};
                 setColumnsSize(updatedColumnsSize);
                 id && updateGridColumnsSize(id, updatedColumnsSize);
