@@ -92,7 +92,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             return {...item, typeAttribute: tableData[index].assetType === 'Audio' ? 'audioDetail' : 'textDetail'};
         });
 
-        update.deteServices[index].details = serviceWithComponents.map(item => omit(item, ['isChecked']));
+        update.deteServices[index].details = serviceWithComponents.map(item => {
+            delete item['isChecked'];
+            return item;
+        });
         setUpdatedServices(update);
     };
 
