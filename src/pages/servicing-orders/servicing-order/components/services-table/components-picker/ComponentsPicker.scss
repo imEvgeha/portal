@@ -46,6 +46,13 @@
         width: 280px;
         border-left: 1px solid #bbb;
     }
+    &__selection-panel {
+        display: flex;
+        flex-direction: row;
+        width: 340px;
+        justify-content: space-between;
+        padding: 10px;
+    }
     &__footer {
         display: flex;
         justify-content: space-between;

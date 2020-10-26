@@ -2,17 +2,6 @@ import React from 'react';
 import {Checkbox} from '@atlaskit/checkbox';
 import {forIn, get, trimEnd} from 'lodash';
 
-// eslint-disable-next-line react/prop-types
-export const Check = ({name, isChecked, toggle}) => (
-    <Checkbox
-        /* eslint-disable-next-line no-alert */
-        id={name}
-        onChange={event => toggle(name, event.target.checked)}
-        name={name}
-        isChecked={isChecked}
-    />
-);
-
 export const getToolTipText = components => {
     const list = [];
     forIn(components, (val, key) => {
@@ -43,7 +32,13 @@ export const createDynamicTableRows = (rowsArray, toggleRows) => {
             cells: [
                 {
                     key: `${index}-checkbox`,
-                    content: <Check name={item.channelNumber} isChecked={item.isChecked} toggle={setData} />,
+                    content: (
+                        <Checkbox
+                            name={item.channelNumber}
+                            isChecked={item.isChecked}
+                            onChange={event => setData(item.channelNumber, event.target.checked)}
+                        />
+                    ),
                 },
                 {key: `${index}-channel`, content: item.sourceChannelNumber},
                 {key: `${index}-track`, content: item.trackConfig},
