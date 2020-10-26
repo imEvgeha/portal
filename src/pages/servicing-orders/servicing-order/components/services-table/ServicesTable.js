@@ -31,7 +31,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [audioComponents, setAudioComponents] = useState([]);
     const [gridApi, setGridApi] = useState(null);
 
-    const deteComponents = componentsArray.find(item => item.barcode === data.barcode);
+    const deteComponents = componentsArray.find(item => item && item.barcode === data.barcode);
 
     const title =
         get(data, 'title', '') ||
