@@ -210,7 +210,10 @@ export const SelectedRightsActions = ({
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        openModal(<BulkDelete rights={[]} onClose={closeModal} />, {title: BULK_DELETE_HEADER, width: 'large'});
+        openModal(<BulkDelete rights={selectedRights} onClose={closeModal} />, {
+            title: BULK_DELETE_HEADER,
+            width: 'large',
+        });
     };
 
     const openAuditHistoryModal = () => {
