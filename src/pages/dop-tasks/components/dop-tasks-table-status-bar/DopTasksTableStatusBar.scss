@@ -2,8 +2,6 @@
 @import '../../../../styles/atlaskit/mixins';
 
 .nexus-c-dop-tasks-table-status-bar {
-    display: flex;
-    align-items: center;
     width: 100%;
     background-color: map-get($colors, nexus-white);
     border-bottom: 1px solid map-get($colors, nexus-light-grey);
@@ -13,4 +11,12 @@
     @include heading(h200);
     @include margin(0);
     @include padding(0, 0, 0, 2);
+}
+
+.nexus-c-dop-tasks-table-status-bar__description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
