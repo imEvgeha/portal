@@ -934,7 +934,11 @@
                     "productionStudio": {
                         "name": "Production Studio",
                         "type": "select",
-                        "path": "productionStudio"
+                        "path": "productionStudio",
+                        "optionsConfig": {
+                            "defaultValuePath": "name",
+                            "defaultLabelPath": "name"
+                        }
                     },
                     "otherTerms": {
                         "name": "Other Terms",
@@ -1000,7 +1004,11 @@
                     "genres": {
                         "name": "Genres",
                         "type": "multiselect",
-                        "path": "genres"
+                        "path": "genres",
+                        "optionsConfig": {
+                            "defaultValuePath": "name",
+                            "defaultLabelPath": "name"
+                        }
                     },
                     "reLicence": {
                         "name": "Re-License",
