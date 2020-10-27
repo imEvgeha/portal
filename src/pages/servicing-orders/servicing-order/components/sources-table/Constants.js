@@ -6,6 +6,8 @@ export const SELECT_VALUES = {
     shipListId: ['Vubiquity', 'Receipient'],
 };
 
+export const TABLE_HEIGHT = 5;
+
 export const INIT_SOURCE_ROW = {
     barcode: '',
     title: '',

@@ -1,0 +1,81 @@
+.picker {
+    &__header {
+        margin-top: 15px;
+        &-title {
+            margin-top: 5px;
+            b {
+                font-size: 13.5px;
+            }
+            p {
+                font-size: 11.5px;
+                margin-top: 1px;
+            }
+        }
+    }
+    &__outer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+    }
+    &__audio-panel {
+        margin-top: 10px;
+        padding-right: 5px;
+        padding-top: 10px;
+        &-table {
+            font-size: 11px;
+            margin-top: 10px;
+            height: 290px;
+        }
+    }
+    &__service-panel {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-right: 10px;
+    }
+    &__summary-panel {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        width: 280px;
+        //Todo: check for tags and mixins
+        border-left: 1px solid #bbb;
+    }
+    &__selection-panel {
+        display: flex;
+        flex-direction: row;
+        width: 340px;
+        justify-content: space-between;
+        padding: 10px;
+    }
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        &-warning {
+            color: red;
+        }
+        &-buttons {
+            width: 140px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+    &__select {
+        width: 140px;
+    }
+}
+
+b {
+    font-size: 12px;
+}
+
+hr.solid {
+    border-top: 1px solid #bbb;
+}
