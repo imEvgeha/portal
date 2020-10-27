@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import EditorErrorIcon from '@atlaskit/icon/glyph/editor/error';
+import Button from '@atlaskit/button';
 import {ErrorMessage, Field} from '@atlaskit/form';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {useIntl} from 'react-intl';
@@ -7,6 +10,7 @@ import Select from '@atlaskit/select/Select';
 import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
 import {getValidDate} from '../../../../util/utils';
+import './RightTerritoryFields.scss';
 
 const RightTerritoryFields = ({
     isEdit,
@@ -21,6 +25,10 @@ const RightTerritoryFields = ({
     const {dateSelected = '', selected = false, dateWithdrawn = ''} =
         typeof territoryIndex === 'number' && territoryIndex >= 0 ? existingTerritoryList[territoryIndex] : {};
     const [showErrorDateWithdrawn, setShowErrorDateWithdrawn] = useState(false);
+
+    const [showClearButton, setShowClearButton] = useState(false);
+    const dateRef = useRef();
+
     const getError = (field, value, errorList = errors) => {
         const error = errorList.find(({subField}) => subField === field);
         if (error && (!value || value.label === error.message)) {
@@ -68,13 +76,25 @@ const RightTerritoryFields = ({
     };
 
     const onChangeDateWithdrawn = (val, restOnChange) => {
-        const today = new Date();
-        const updatedDate = getValidDate(val) !== getValidDate(today) ? '' : val;
-        setShowErrorDateWithdrawn(updatedDate === '');
-        if (updatedDate === '') {
-            return false;
+        if (val === 'clear') {
+            restOnChange('');
         } else {
-            restOnChange(updatedDate);
+            const today = new Date();
+            const updatedDate = getValidDate(val) !== getValidDate(today) ? '' : val;
+            setShowErrorDateWithdrawn(updatedDate === '');
+            if (updatedDate === '') {
+                return false;
+            } else {
+                setShowClearButton(true);
+                restOnChange(updatedDate);
+            }
+        }
+    };
+
+    const clearDateWithdrawn = () => {
+        if (dateRef.current) {
+            setShowClearButton(false);
+            dateRef.current.props.onChange('clear');
         }
     };
 
@@ -218,6 +238,7 @@ const RightTerritoryFields = ({
             <Field name="dateWithdrawn" defaultValue="" label="DATE WITHDRAWN">
                 {({fieldProps: {id, value, ...rest}}) => (
                     <DatePicker
+                        ref={dateRef}
                         name="dateWithdrawn"
                         locale={locale}
                         placeholder={dateFormat}
@@ -229,6 +250,17 @@ const RightTerritoryFields = ({
                     />
                 )}
             </Field>
+            {showClearButton && (
+                <Button
+                    appearance="subtle-link"
+                    onClick={clearDateWithdrawn}
+                    className={classnames('nexus-c-right-territory-fields__close-button', {
+                        'nexus-c-right-territory-fields__close-button--date-selected': isEdit && dateSelected,
+                    })}
+                >
+                    <EditorErrorIcon />
+                </Button>
+            )}
             {showErrorDateWithdrawn && <ErrorMessage> Only the current date can be selected </ErrorMessage>}
             <Field
                 label="COMMENTS"
