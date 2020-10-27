@@ -37,13 +37,14 @@ const getProperTerritoryFormValues = (data, isEdit, existingTerritoryList, terri
                 : isEdit
                 ? existingTerritoryList[territoryIndex]['dateWithdrawn']
                 : '',
+            withdrawn: data.hasOwnProperty('withdrawn') ? data.withdrawn : null,
         };
         const updatedObject = {};
         for (const objectField in newObject) {
             if (newObject[objectField]) {
                 updatedObject[objectField] = newObject[objectField];
             } else {
-                if (objectField === 'selected') {
+                if (objectField === 'selected' || objectField === 'withdrawn') {
                     updatedObject[objectField] = false;
                 } else {
                     updatedObject[objectField] = null;
