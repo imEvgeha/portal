@@ -7,8 +7,10 @@
     align-items: center;
     @include margin(6);
 
-    .nexus-c-icon-button {
+    .nexus-c-dop-tasks-view__refresh-btn {
         margin-left: auto;
+    }
+    .nexus-c-icon-button {
         background-color: map-get($neutrals, N30);
     }
 }

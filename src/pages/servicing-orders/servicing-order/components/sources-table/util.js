@@ -1,4 +1,4 @@
-import {cloneDeep, get} from 'lodash';
+import {cloneDeep, get, set} from 'lodash';
 import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
 
 export const prepareRowData = data => {
@@ -35,6 +35,55 @@ export const prepareRowData = data => {
     return Object.entries(preparedSources).map(([key, value]) => value);
 };
 
+// extract relevant info from componentAssociations array and return for display in UI
+const getComponentsInfo = componentArray => {
+    const componentsObject = {audioComponents: [], subtitleComponents: [], captionComponents: []};
+    componentArray
+        .filter(item => item.component.componentType === 'AudioConfigurationComponent')
+        .forEach((item, index) => {
+            set(componentsObject, `audioComponents[${index}].trackConfiguration`, item.component.trackConfiguration);
+            set(
+                componentsObject,
+                `audioComponents[${index}].language`,
+                item.component.language || item.component.content
+            );
+            set(componentsObject, `audioComponents[${index}].contentType`, item.component.content);
+            set(componentsObject, `audioComponents[${index}].components`, []);
+            const components = get(item, 'component.components', []);
+            components.forEach((comp, inx) => {
+                set(componentsObject, `audioComponents[${index}].components[${inx}].channelNumber`, comp.channelNumber);
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].channelPosition`,
+                    comp.channelPosition
+                );
+                set(componentsObject, `audioComponents[${index}].components[${inx}].componentID`, comp.deteId);
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].sourceChannelNumber`,
+                    comp.sourceChannelNumber
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].contentType`,
+                    componentsObject.audioComponents[index].contentType
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].trackConfig`,
+                    componentsObject.audioComponents[index].trackConfiguration
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].language`,
+                    componentsObject.audioComponents[index].language
+                );
+            });
+        });
+
+    return componentsObject;
+};
+
 export const fetchAssetFields = async barcode => {
     const title = await getDeteTitleByBarcode(barcode);
     const rest = await getDeteAssetByBarcode(barcode);
@@ -42,6 +91,7 @@ export const fetchAssetFields = async barcode => {
 };
 
 export const fetchAssetInfo = async barcodes => {
+    const components = [];
     const titleRequests = barcodes.map(item => {
         return getDeteTitleByBarcode(item)
             .then(res => {
@@ -62,16 +112,20 @@ export const fetchAssetInfo = async barcodes => {
                 };
             });
     });
-    const assetRequests = barcodes.map(item => {
+    const assetRequests = barcodes.map((item, index) => {
         return getDeteAssetByBarcode(item)
             .then(res => {
-                const {spec, assetFormat, componentAssociations = [], status} = res;
+                const {spec, assetFormat, status} = res;
+                components[index] = {
+                    barcode: item,
+                    components: getComponentsInfo(get(res, 'componentAssociations', [])),
+                };
                 return {
                     barcode: item,
                     version: spec || '',
                     assetFormat: assetFormat || '',
                     amsAssetId: item,
-                    standard: componentAssociations[0].component.standard || '',
+                    standard: get(res, 'componentAssociations[0].component.standard', ''),
                     status: status || '',
                 };
             })
@@ -85,7 +139,7 @@ export const fetchAssetInfo = async barcodes => {
                 };
             });
     });
-    return Promise.all([...titleRequests, ...assetRequests]); // Waiting for all the requests to get resolved.
+    return [await Promise.all([...titleRequests, ...assetRequests]), components]; // Waiting for all the requests to get resolved.
 };
 
 // get unique barcodes in fulfillment order for optimum api use
@@ -127,6 +181,18 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
         }
     });
     return fulfillmentOrders;
+};
+
+// remove null or empty deteSources from deteSources array
+export const removeNulls = fulfillmentOrders => {
+    fulfillmentOrders.forEach(item => {
+        const length = get(item, 'definition.deteServices[0].deteSources.length', 0);
+        if (length > 0) {
+            item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.filter(
+                item => item !== null
+            );
+        }
+    });
 };
 
 // make the fields empty in asset fields temporarily...

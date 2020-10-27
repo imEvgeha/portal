@@ -32,7 +32,24 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           "sortable": false,
           "suppressMovable": true,
           "suppressSizeToFit": true,
-          "width": 40,
+          "width": 35,
+        },
+        Object {
+          "cellEditorFramework": undefined,
+          "cellRendererFramework": [Function],
+          "cellRendererParams": "",
+          "colId": "",
+          "editable": false,
+          "field": "buttons",
+          "headerName": "",
+          "lockPosition": true,
+          "menuTabs": Array [],
+          "pinned": "left",
+          "resizable": false,
+          "sortable": false,
+          "suppressMovable": true,
+          "suppressSizeToFit": true,
+          "width": 35,
         },
         Object {
           "cellRendererFramework": [Function],
@@ -46,7 +63,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           "sortable": false,
           "suppressMovable": true,
           "suppressSizeToFit": true,
-          "width": 40,
+          "width": 35,
         },
         Object {
           "cellRenderer": [Function],
@@ -66,14 +83,12 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
           "colId": "version",
           "field": "version",
           "headerName": "Version",
-          "width": 100,
         },
         Object {
           "cellRenderer": [Function],
           "colId": "assetFormat",
           "field": "assetFormat",
           "headerName": "Asset Format",
-          "width": 250,
         },
         Object {
           "cellRenderer": [Function],
@@ -89,122 +104,13 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
         },
       ]
     }
-    domLayout="normal"
-    mapping={
-      Array [
-        Object {
-          "dataType": "string",
-          "displayName": "Barcode",
-          "enableEdit": true,
-          "enableSearch": false,
-          "javaVariableName": "barcode",
-          "readOnly": false,
-          "required": true,
-        },
-        Object {
-          "dataType": "string",
-          "displayName": "Title",
-          "enableEdit": false,
-          "enableSearch": false,
-          "javaVariableName": "title",
-          "queryParamName": "title",
-          "readOnly": true,
-          "required": true,
-        },
-        Object {
-          "dataType": "string",
-          "displayName": "Title ID",
-          "enableEdit": false,
-          "enableSearch": false,
-          "javaVariableName": "titleId",
-          "readOnly": true,
-          "required": true,
-          "searchDataType": "string",
-        },
-        Object {
-          "dataType": "string",
-          "displayName": "MP Asset ID",
-          "enableEdit": false,
-          "enableSearch": true,
-          "javaVariableName": "amsAssetId",
-          "readOnly": true,
-          "required": true,
-          "searchDataType": "string",
-        },
-        Object {
-          "dataType": "string",
-          "displayName": "Asset Format",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "assetFormat",
-          "readOnly": false,
-          "required": true,
-        },
-        Object {
-          "dataType": "string",
-          "displayName": "Standard",
-          "enableEdit": false,
-          "enableSearch": true,
-          "javaVariableName": "standard",
-          "readOnly": true,
-          "required": true,
-          "searchDataType": "string",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Asset Status",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "assetStatus",
-          "options": Array [
-            "IN",
-            "Being Fixed",
-            "Being Made",
-          ],
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Ship Via",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "shipVia",
-          "options": Array [
-            "Aspera",
-            "Smart Jogs",
-          ],
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "select",
-          "displayName": "Ship List ID",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "shipListId",
-          "options": Array [
-            "Vubiquity",
-            "Receipient",
-          ],
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "select",
-        },
-        Object {
-          "dataType": "businessDateTime",
-          "displayName": "Do not start before",
-          "enableEdit": true,
-          "enableSearch": true,
-          "javaVariableName": "startDate",
-          "readOnly": false,
-          "required": true,
-          "searchDataType": "businessDateTime",
-        },
-      ]
+    defaultColDef={
+      Object {
+        "flex": 1,
+        "sortable": true,
+      }
     }
+    domLayout="normal"
     notEditableColumns={
       Array [
         "title",
@@ -214,6 +120,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
+    onGridReady={[Function]}
     rowData={Array []}
     selectValues={
       Object {

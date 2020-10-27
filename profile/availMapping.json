@@ -106,6 +106,17 @@
             "required": true
         },
         {
+            "javaVariableName": "territory",
+            "displayName": "Withdrawn",
+            "dataType": "territory.withdrawn",
+            "searchDataType": "territory.withdrawn",
+            "queryParamName": "withdrawn",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
+        },
+        {
             "javaVariableName": "licensee",
             "displayName": "Licensee",
             "dataType": "select",

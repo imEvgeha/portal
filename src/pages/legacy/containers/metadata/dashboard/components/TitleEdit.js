@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {AvForm} from 'availity-reactstrap-validation';
 import {Col, Row} from 'reactstrap';
 import Button from '@atlaskit/button';
+import Flag, {FlagGroup} from '@atlaskit/flag';
+import {colors} from '@atlaskit/theme';
+import Tick from '@atlaskit/icon/glyph/check-circle';
+import Error from '@atlaskit/icon/glyph/error';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -26,10 +30,14 @@ import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, WARNING_ICON, ERROR_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
-import {URL} from '../../../../../../util/Common';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
 import {SYNC} from './publish/PublishConstants';
+
+const ICONS = {
+    SUCCESS_ICON: <Tick label={`${SUCCESS_ICON} icon`} primaryColor={colors.G300} />,
+    ERROR_ICON: <Error label={`${ERROR_ICON} icon`} primaryColor={colors.R300} />,
+};
 
 const CURRENT_TAB = 0;
 const CREATE_TAB = 'CREATE_TAB';
@@ -89,6 +97,8 @@ class TitleEdit extends Component {
             ratingForCreate: {},
             externalIDs: null,
             validationErrors: new Set(),
+            isSyncing: false,
+            flags: [],
         };
     }
 
@@ -114,14 +124,19 @@ class TitleEdit extends Component {
             });
     }
 
-    loadExternalIds(titleId) {
+    loadExternalIds(titleId, titleSystem = null) {
         isNexusTitle(titleId) &&
             publisherService
                 .getExternalIds(titleId)
                 .then(response => {
-                    this.setState({
-                        externalIDs: response,
-                    });
+                    this.setState(
+                        {
+                            externalIDs: response,
+                        },
+                        () => {
+                            if (titleSystem) this.checkSyncResult(titleSystem);
+                        }
+                    );
                 })
                 .catch(() => {
                     console.error('Unable to load Extrernal IDs data');
@@ -519,19 +534,62 @@ class TitleEdit extends Component {
             });
     };
 
+    handleToastDismiss = id => {
+        if (this.state.flags && this.state.flags[0].props.id === id) {
+            this.setState(prevState => {
+                return {
+                    flags: prevState.flags.slice(1),
+                };
+            });
+        }
+    };
+
+    addToastToFlags = isSuccess => {
+        const icon = isSuccess ? ICONS.SUCCESS_ICON : ICONS.ERROR_ICON;
+        const label = isSuccess ? 'Sync Title Success' : 'Sync Title Failed';
+        const uniqueId = Date.now();
+        this.setState(prevState => {
+            const updatedFlags = prevState.flags.slice();
+            updatedFlags.push(<Flag id={uniqueId} key={uniqueId} title={label} icon={icon} />);
+            return {
+                flags: updatedFlags,
+            };
+        });
+        setTimeout(() => {
+            this.setState(prevState => {
+                const id = prevState.flags.length > 0 ? prevState.flags[0].props.id : null;
+                const updatedFlags = id === uniqueId ? prevState.flags.slice(1) : prevState.flags;
+                return {
+                    flags: updatedFlags,
+                };
+            });
+        }, 3000);
+    };
+
+    checkSyncResult = titleSystem => {
+        this.state.externalIDs.forEach(externalId => {
+            if (externalId.externalSystem === titleSystem) {
+                externalId.errors.length === 0 ? this.addToastToFlags(true) : this.addToastToFlags(false);
+            }
+        });
+    };
+
     titleSync = (titleId, syncToVZ, syncToMovida) => {
         return publisherService
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
-                this.loadExternalIds(titleId);
+                const titleSystem = syncToVZ ? 'vz' : 'movida';
+                this.loadExternalIds(titleId, titleSystem);
+                this.setState({
+                    isSyncing: false,
+                });
                 return true;
             })
             .catch(() => {
-                this.props.addToast({
-                    title: 'Sync Title Failed',
-                    icon: ERROR_ICON,
-                    isWithOverlay: false,
+                this.setState({
+                    isSyncing: false,
                 });
+                this.addToastToFlags(false);
                 return false;
             });
     };
@@ -1292,6 +1350,9 @@ class TitleEdit extends Component {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
         if (buttonName === SYNC) {
+            this.setState({
+                isSyncing: true,
+            });
             this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
         } else {
             this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
@@ -1336,6 +1397,7 @@ class TitleEdit extends Component {
                                                     <PublishVzMovida
                                                         onSyncPublishClick={this.onSyncPublishClick}
                                                         externalIDs={this.state.externalIDs}
+                                                        isSyncing={this.state.isSyncing}
                                                     />
                                                     <Can I="update" a="Metadata">
                                                         <Button
@@ -1407,6 +1469,7 @@ class TitleEdit extends Component {
                             handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
                         />
                     </AvForm>
+                    <FlagGroup onDismissed={this.handleToastDismiss}>{this.state.flags}</FlagGroup>
                 </>
             </EditPage>
         );

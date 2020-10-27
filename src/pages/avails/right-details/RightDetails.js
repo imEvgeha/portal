@@ -21,7 +21,6 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
     }, []);
 
     const onSubmit = values => {
-        console.log(values);
         updateRight(values);
     };
 
@@ -60,11 +59,10 @@ RightDetails.defaultProps = {
 
 const mapStateToProps = () => {
     const rightSelector = selectors.getRightDetailsRightsSelector();
-    const selectValuesSelector = detailsSelectors.selectValuesSelector();
 
     return (state, props) => ({
         right: rightSelector(state, props),
-        selectValues: selectValuesSelector(state, props),
+        selectValues: detailsSelectors.selectValuesSelector(state, props),
     });
 };
 

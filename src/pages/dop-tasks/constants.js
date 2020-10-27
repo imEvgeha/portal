@@ -7,8 +7,8 @@ export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ACTUAL_OWNER = 'actualOwner';
 export const ALL = '*';
-export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskid=';
-export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectid=';
+export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
+export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';
 export const PAGE_LIMIT = 100;
 
 export const QUEUED_TASKS_OPTIONS = [
@@ -17,12 +17,11 @@ export const QUEUED_TASKS_OPTIONS = [
 ];
 
 export const SAVED_TABLE_SELECT_OPTIONS = [
-    {label: 'Open', value: 'open'},
     {label: 'All', value: 'all'},
-    {label: 'With Errors', value: 'withErrors'},
-    {label: 'On Hold', value: 'onHold'},
-    {label: 'Changed in last 24 hours', value: 'changedInLast24Hours'},
-    {label: 'Changed in last 5 days', value: 'changedInLast5Days'},
+    {label: 'Open', value: 'open'},
+    {label: 'Not Started', value: 'notStarted'},
+    {label: 'In Progress', value: 'inProgress'},
+    {label: 'Closed', value: 'closed'},
 ];
 
 export const TASK_STATUS_ENUM = ['READY', 'IN PROGRESS', 'COMPLETED', 'EXITED', 'OBSOLETE'];
@@ -47,7 +46,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
-        width: 150,
+        minWidth: 200,
     },
     {
         colId: 'taskStatus',
@@ -76,7 +75,7 @@ export const COLUMN_MAPPINGS = [
         searchDataType: 'string',
         cellRenderer: 'loadingCellRenderer',
         headerName: 'Project Name',
-        width: 150,
+        minWidth: 200,
     },
     {
         colId: 'OrderExternalID',
@@ -194,13 +193,6 @@ export const INITIAL_SEARCH_PARAMS = {
             operator: 'in',
             logicalAnd: true,
             value: TASK_STATUS_ENUM.join(','),
-        },
-        {
-            fieldName: 'actualOwner',
-            logicalAnd: true,
-            operator: 'equal',
-            value: '',
-            valueDataType: 'String',
         },
     ],
     sortCriterion: [

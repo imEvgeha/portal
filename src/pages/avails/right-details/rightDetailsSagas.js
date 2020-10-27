@@ -8,10 +8,12 @@ import * as selectors from './rightDetailsSelector';
 
 const formatSelectValues = values => {
     const selectValues = {};
-    values.forEach(opt => {
-        const [key] = Object.keys(opt);
-        selectValues[key] = cloneDeep(opt[key]);
-    });
+    if (values) {
+        values.forEach(opt => {
+            const [key] = Object.keys(opt);
+            selectValues[key] = cloneDeep(opt[key]);
+        });
+    }
     return selectValues;
 };
 
@@ -23,7 +25,7 @@ export function* getSelectValuesSaga() {
     );
     const areValid = yield select(selectors.areValidSelector());
     if (areValid) {
-        const selectValues = yield formatSelectValues(fetchedOptions);
+        const selectValues = formatSelectValues(fetchedOptions);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
             payload: selectValues,

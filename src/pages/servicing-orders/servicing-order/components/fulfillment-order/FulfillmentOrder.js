@@ -156,7 +156,7 @@ export const FulfillmentOrder = ({
 
     return (
         <Page>
-            <Grid>
+            <div className="fulfillment-order__section">
                 <GridColumn>
                     <div className="fulfillment-order">
                         <div className="fulfillment-order__row fulfillment-order__header">
@@ -188,7 +188,7 @@ export const FulfillmentOrder = ({
                                 <label htmlFor="notes">Notes:</label>
                                 <NexusTextArea
                                     name="notes"
-                                    onTextChange={e => onFieldChange(fieldKeys.NOTES, e.target.value)}
+                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
                                     isDisabled={isFormDisabled}
                                 />
@@ -255,7 +255,7 @@ export const FulfillmentOrder = ({
                         {children}
                     </div>
                 </GridColumn>
-            </Grid>
+            </div>
         </Page>
     );
 };

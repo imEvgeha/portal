@@ -1,7 +1,7 @@
 import {isEmpty} from 'lodash';
 
 // grid filter
-export const filterBy = (filterObject, prepareFilter = params => params) => {
+export const filterBy = (filterObject, prepareFilter = params => params, filtersInBody) => {
     const ALLOWED_TYPES_OPERAND = ['equals', 'range'];
     const FILTER_TYPES = ['set'];
     if (!isEmpty(filterObject)) {
@@ -21,7 +21,7 @@ export const filterBy = (filterObject, prepareFilter = params => params) => {
             return object;
         }, {});
 
-        return prepareFilter(filterParams);
+        return prepareFilter(filterParams, filtersInBody);
     }
     return {};
 };

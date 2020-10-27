@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
@@ -30,14 +31,12 @@ const DopTasksTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchDopTasksData})
 )(NexusGrid);
 
-const DopTasksTable = ({user}) => {
+const DopTasksTable = ({externalFilter, setExternalFilter, setGridApi, setColumnApi}) => {
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
     });
-    const [externalFilter, setExternalFilter] = useState({
-        user,
-    });
+
     const formattedValueColDefs = COLUMN_MAPPINGS.map(col => {
         if (col.colId === 'taskName') {
             return {
@@ -96,22 +95,35 @@ const DopTasksTable = ({user}) => {
         };
     });
 
-    useEffect(() => {
-        if (externalFilter.user !== user) {
-            setExternalFilter(prevData => {
-                return {
-                    ...prevData,
-                    user,
-                };
-            });
-        }
-    }, [user]);
+    const setTotalCount = total => {
+        setPaginationData(prevData => {
+            return {
+                ...prevData,
+                totalCount: total,
+            };
+        });
+    };
 
-    const getPaginationData = ({api}) => {
-        const pageSize = api.paginationGetPageSize();
-        const totalCount = api.paginationGetRowCount();
-        if (totalCount > 0) {
-            setPaginationData({pageSize, totalCount});
+    const setDisplayedRows = count => {
+        setPaginationData(prevData => {
+            return {
+                ...prevData,
+                pageSize: count,
+            };
+        });
+    };
+
+    const onGridReady = ({type, api, columnApi}) => {
+        const {READY} = GRID_EVENTS;
+        switch (type) {
+            case READY: {
+                api.sizeColumnsToFit();
+                setGridApi(api);
+                setColumnApi(columnApi);
+                break;
+            }
+            default:
+                break;
         }
     };
 
@@ -149,9 +161,9 @@ const DopTasksTable = ({user}) => {
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onSortChanged={onSortChanged}
-                pagination={true}
-                suppressPaginationPanel={true}
-                onPaginationChanged={getPaginationData}
+                onGridEvent={onGridReady}
+                setTotalCount={setTotalCount}
+                setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
             />
             <DopTasksTableStatusBar paginationData={paginationData} />
@@ -160,11 +172,17 @@ const DopTasksTable = ({user}) => {
 };
 
 DopTasksTable.propTypes = {
-    user: PropTypes.string,
+    externalFilter: PropTypes.object,
+    setExternalFilter: PropTypes.func,
+    setGridApi: PropTypes.func,
+    setColumnApi: PropTypes.func,
 };
 
 DopTasksTable.defaultProps = {
-    user: USER,
+    externalFilter: USER,
+    setExternalFilter: () => null,
+    setGridApi: () => null,
+    setColumnApi: () => null,
 };
 
 export default DopTasksTable;

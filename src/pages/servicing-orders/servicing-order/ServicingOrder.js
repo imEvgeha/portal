@@ -23,6 +23,7 @@ const ServicingOrder = ({match}) => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
+    const [components, setComponents] = useState([]);
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -52,14 +53,16 @@ const ServicingOrder = ({match}) => {
                     });
                     const barcodes = getBarCodes(fulfillmentOrders);
                     fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo[0]);
                         setServiceOrder({
                             ...servicingOrder,
                             fulfillmentOrders: newFulfillmentOrders,
                             servicingOrderItems,
                         });
-                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                        setSelectedOrder(newFulfillmentOrders[0]);
+                        // Todo remove below comments after nothing is broken in SO page. kbora
+                        // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                        // setSelectedOrder(newFulfillmentOrders[0]);
+                        setComponents(assetInfo[1]);
                     });
 
                     setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
@@ -157,6 +160,7 @@ const ServicingOrder = ({match}) => {
                             data={selectedSource}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
+                            components={components}
                         />
                     )}
                 </FulfillmentOrder>

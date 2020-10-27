@@ -24,8 +24,8 @@ export function* storeLinkedToOriginalRights({payload}) {
     try {
         const rightIds = rights.map(right => right.id);
         const [rightsWithSourceRightId, rightsWithOriginalRightIds] = yield all([
-            call(getLinkedToOriginalRights, {sourceRightId: rightIds}, DEFAULT_PAGE_SIZE),
-            call(getLinkedToOriginalRights, {originalRightIds: rightIds}, DEFAULT_PAGE_SIZE),
+            call(getLinkedToOriginalRights, {sourceRightIdList: rightIds}, DEFAULT_PAGE_SIZE),
+            call(getLinkedToOriginalRights, {originalRightIdsList: rightIds}, DEFAULT_PAGE_SIZE),
         ]);
         const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
         const dependencyRights = {};

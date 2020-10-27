@@ -36,8 +36,13 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
         <div
           className="nexus-c-dop-tasks-dropdown__textfield"
         >
-          <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+          <WithAnalyticsContext(WithAnalyticsEvents(FieldTextStateless))
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
             placeholder="New View..."
+            shouldFitContainer={true}
+            value=""
           />
         </div>
       </DropdownItemGroup>
@@ -45,40 +50,34 @@ exports[`SavedTableDropdown should match snapshot 1`] = `
         title="Predefined Views"
       >
         <WithItemClick(WithItemFocus(Item))
-          key="open"
-          onClick={[Function]}
-        >
-          Open
-        </WithItemClick(WithItemFocus(Item))>
-        <WithItemClick(WithItemFocus(Item))
           key="all"
           onClick={[Function]}
         >
           All
         </WithItemClick(WithItemFocus(Item))>
         <WithItemClick(WithItemFocus(Item))
-          key="withErrors"
+          key="open"
           onClick={[Function]}
         >
-          With Errors
+          Open
         </WithItemClick(WithItemFocus(Item))>
         <WithItemClick(WithItemFocus(Item))
-          key="onHold"
+          key="notStarted"
           onClick={[Function]}
         >
-          On Hold
+          Not Started
         </WithItemClick(WithItemFocus(Item))>
         <WithItemClick(WithItemFocus(Item))
-          key="changedInLast24Hours"
+          key="inProgress"
           onClick={[Function]}
         >
-          Changed in last 24 hours
+          In Progress
         </WithItemClick(WithItemFocus(Item))>
         <WithItemClick(WithItemFocus(Item))
-          key="changedInLast5Days"
+          key="closed"
           onClick={[Function]}
         >
-          Changed in last 5 days
+          Closed
         </WithItemClick(WithItemFocus(Item))>
       </DropdownItemGroup>
     </DropdownMenu>

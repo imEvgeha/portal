@@ -125,7 +125,7 @@ const parseAdvancedFilter = function (searchCriteria) {
     return params;
 };
 
-const parseAdvancedFilterV2 = function (searchCriteria) {
+const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
     const rootStore = store.getState().root;
     const mappings = rootStore.availsMapping.mappings;
     let params = {};
@@ -142,16 +142,23 @@ const parseAdvancedFilterV2 = function (searchCriteria) {
                 continue;
             }
             if (value instanceof Object) {
-                params = {
-                    ...params,
-                    ...value,
-                };
                 continue;
             }
             const map = mappings.find(
                 ({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key
             );
             let keyValue = (map && map.queryParamName) || key;
+            if (filtersInBody && map.searchDataType === 'multiselect') {
+                // change key - add List
+                keyValue = `${keyValue}List`;
+                //  Convert Comma Separated String into an Array
+                value = value.split(', ');
+            }
+
+            if (map && map.searchDataType === 'boolean') {
+                value = JSON.parse(value);
+            }
+
             if (map && map.searchDataType === 'string') {
                 if (isQuoted(value)) {
                     value = value.substr(1, value.length - 2);
@@ -189,14 +196,14 @@ export const rightsService = {
         return nexusFetch(url, {params});
     },
 
-    advancedSearchV2: (queryParams, page, size, sortedParams) => {
+    advancedSearchV2: (queryParams, page, size, sortedParams, body) => {
         const url =
             config.get('gateway.url') +
             config.get('gateway.service.avails') +
-            '/rights' +
+            '/rights/search' +
             prepareSortMatrixParam(sortedParams);
         const params = encodedSerialize({...queryParams, page, size});
-        return nexusFetch(url, {params});
+        return nexusFetch(url, {params, method: 'post', body: JSON.stringify(body)});
     },
 
     create: (right, options = {isWithErrorHandling: true}) => {

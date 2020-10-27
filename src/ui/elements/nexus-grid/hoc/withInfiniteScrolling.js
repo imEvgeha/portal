@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {omit, isEqual} from 'lodash';
+import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
 import {cleanObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
@@ -22,6 +22,7 @@ import {
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS,
     fetchData,
+    filtersInBody = false,
     rowBuffer = ROW_BUFFER,
     paginationPageSize = PAGINATION_PAGE_SIZE,
     cacheOverflowSize = CACHE_OVERFLOW_SIZE,
@@ -70,16 +71,27 @@ const withInfiniteScrolling = ({
                 updateData(fetchData, gridApi);
             }
         }, [gridApi, props.isDatasourceEnabled, props.externalFilter]);
-
-        const getRows = (params, fetchData, gridApi) => {
+        /**
+         * aggrid issue: getRows needs to be called with debounce (wait = 0, invocation is deferred until to the next tick)
+         * in order to avoid subsequently calling fetchData with the same params every time filter, sort and columns model
+         * is reset to default state (AG-142)
+         */
+        const getRows = debounce((params, fetchData, gridApi) => {
             const {startRow, successCallback, failCallback, filterModel, sortModel, context} = params || {};
             const parsedParams = Object.keys(props.params || {})
                 .filter(key => !filterModel.hasOwnProperty(key))
                 .reduce((object, key) => {
-                    object[key] = props.params[key];
+                    if (filtersInBody) {
+                        object[`${key}List`] = [props.params[key]];
+                    } else {
+                        object[key] = props.params[key];
+                    }
                     return object;
                 }, {});
-            const filterParams = {...filterBy(filterModel, props.prepareFilterParams), ...props.externalFilter};
+            let filterParams = {
+                ...filterBy(filterModel, props.prepareFilterParams, filtersInBody),
+                ...props.externalFilter,
+            };
             const sortParams = sortBy(sortModel);
             const pageSize = paginationPageSize || PAGINATION_PAGE_SIZE;
             const pageNumber = Math.floor(startRow / pageSize);
@@ -88,20 +100,35 @@ const withInfiniteScrolling = ({
                 gridApi.showLoadingOverlay();
             }
 
-            const preparedParams = {
-                ...parsedParams,
-                ...cleanObject(filterParams, true),
-            };
+            filterParams = cleanObject(filterParams, true);
+            const preparedParams = filtersInBody
+                ? {}
+                : {
+                      ...parsedParams,
+                      ...filterParams,
+                  };
+
+            const body = filtersInBody
+                ? {
+                      ...parsedParams,
+                      ...filterParams,
+                  }
+                : {};
 
             if (typeof props.setDataLoading === 'function' && isMounted.current) {
                 props.setDataLoading(true);
             }
-            fetchData(preparedParams, pageNumber, pageSize, sortParams)
+            fetchData(preparedParams, pageNumber, pageSize, sortParams, body)
                 .then(response => {
                     const {page = pageNumber, size = pageSize, total = 0, data} = response || {};
 
                     if (typeof props.setTotalCount === 'function' && isMounted.current) {
                         props.setTotalCount(total);
+                    }
+
+                    if (typeof props.setDisplayedRows === 'function' && isMounted.current) {
+                        const count = (page + 1) * pageSize;
+                        props.setDisplayedRows(count >= total ? total : count);
                     }
 
                     if (total > 0) {
@@ -139,7 +166,7 @@ const withInfiniteScrolling = ({
                         props.setDataLoading(false);
                     }
                 });
-        };
+        }, 0);
 
         const updateData = (fetchData, gridApi) => {
             hasBeenCalledRef.current = true;
@@ -191,6 +218,7 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.propTypes,
         onGridEvent: PropTypes.func,
         setTotalCount: PropTypes.func,
+        setDisplayedRows: PropTypes.func,
         successDataFetchCallback: PropTypes.func,
         onAddAdditionalField: PropTypes.func,
         params: PropTypes.object,
@@ -201,6 +229,7 @@ const withInfiniteScrolling = ({
         ...WrappedComponent.defaultProps,
         onGridEvent: null,
         setTotalCount: null,
+        setDisplayedRows: () => null,
         successDataFetchCallback: null,
         onAddAdditionalField: null,
         params: null,

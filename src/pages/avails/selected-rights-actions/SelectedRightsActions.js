@@ -6,14 +6,12 @@ import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
-import NexusSpinner from '../../../ui/elements/nexus-spinner/NexusSpinner';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
-import AuditHistoryTable from '../../legacy/components/AuditHistoryTable/AuditHistoryTable';
-import {getRightsHistory} from '../availsService';
+import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
 import BulkDelete from '../bulk-delete/BulkDelete';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
@@ -210,11 +208,13 @@ export const SelectedRightsActions = ({
 
     const openBulkDeleteModal = () => {
         // to do - pass rights for deletion when api is ready
-        openModal(<BulkDelete rights={[]} onClose={closeModal} />, {title: BULK_DELETE_HEADER, width: 'large'});
+        openModal(<BulkDelete rights={selectedRights} onClose={closeModal} />, {
+            title: BULK_DELETE_HEADER,
+            width: 'large',
+        });
     };
 
     const openAuditHistoryModal = () => {
-        const ids = selectedRights.map(e => e.id);
         const title = `Audit History (${selectedRights.length})`;
 
         const actions = [
@@ -223,22 +223,7 @@ export const SelectedRightsActions = ({
                 onClick: closeModal,
             },
         ];
-        openModal(NexusSpinner, {title, width: '100%', actions});
-
-        getRightsHistory(ids).then(rightsEventHistory => {
-            openModal(
-                <div>
-                    {selectedRights.map((right, index) => (
-                        <AuditHistoryTable key={right.id} focusedRight={right} data={rightsEventHistory[index]} />
-                    ))}
-                </div>,
-                {
-                    title,
-                    width: '100%',
-                    actions,
-                }
-            );
-        });
+        openModal(<AuditHistory selectedRights={selectedRights} />, {title, width: '100%', actions});
     };
 
     const onCloseStatusCheckModal = () => {

@@ -10,15 +10,33 @@ exports[`DopTasksView should match snapshot 1`] = `
     <QueuedTasks
       setUser={[Function]}
     />
-    <SavedTableDropdown />
-    <IconButton
-      icon={[Function]}
-      label="Refresh"
-      onClick={[Function]}
+    <SavedTableDropdown
+      removeUserDefinedGridState={[Function]}
+      saveUserDefinedGridState={[Function]}
+      selectPredefinedTableView={[Function]}
+      selectUserDefinedTableView={[Function]}
+      userDefinedGridStates={Array []}
     />
+    <div
+      className="nexus-c-dop-tasks-view__refresh-btn"
+    >
+      <IconButton
+        icon={[Function]}
+        isDisabled={false}
+        label="Refresh"
+        onClick={[Function]}
+      />
+    </div>
   </DopTasksHeader>
   <DopTasksTable
-    user="user"
+    externalFilter={
+      Object {
+        "user": "user",
+      }
+    }
+    setColumnApi={[Function]}
+    setExternalFilter={[Function]}
+    setGridApi={[Function]}
   />
 </div>
 `;

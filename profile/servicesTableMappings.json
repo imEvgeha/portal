@@ -1,10 +1,19 @@
 [
     {
-        "javaVariableName": "componentId",
-        "displayName": "Component ID",
-        "dataType": "string",
-        "searchDataType": "string",
-        "queryParamName": "componentId",
+        "javaVariableName": "serviceType",
+        "displayName": "Service Type",
+        "dataType": "select",
+        "queryParamName": "serviceType",
+        "readOnly": false,
+        "enableSearch": true,
+        "enableEdit": true,
+        "required": true
+    },
+    {
+        "javaVariableName": "assetType",
+        "displayName": "Asset Type",
+        "dataType": "select",
+        "queryParamName": "assetType",
         "readOnly": false,
         "enableSearch": true,
         "enableEdit": true,
@@ -13,8 +22,7 @@
     {
         "javaVariableName": "spec",
         "displayName": "Spec",
-        "dataType": "string",
-        "searchDataType": "string",
+        "dataType": "select",
         "queryParamName": "spec",
         "readOnly": false,
         "enableSearch": true,

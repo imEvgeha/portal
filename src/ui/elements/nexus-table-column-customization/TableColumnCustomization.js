@@ -1,60 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
 import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import './TableColumnCustomization.scss';
+import ColumnCustomizationModal from './ColumnCustomizationModal';
 
 const SELECT_ALL = 'selectAll';
 const SELECT_ALL_DISPLAY_NAME = 'Select All';
 
 const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) => {
-    const [hideShowColumns, setHideShowColumns] = useState();
     const {openModal, closeModal} = useContext(NexusModalContext);
-
-    useEffect(() => {
-        if (hideShowColumns) {
-            const actions = [
-                {
-                    text: 'Save',
-                    onClick: () => {
-                        closeModal();
-                        saveColumns();
-                    },
-                },
-                {
-                    text: 'Cancel',
-                    onClick: closeModal,
-                },
-            ];
-            openModal(buildModalContent(hideShowColumns), {title: 'Select Visible Columns', width: 'small', actions});
-        }
-    }, [hideShowColumns]);
-
-    const createConfigForColumnCustomization = () => {
-        const config = {};
-        availsMapping.mappings
-            .filter(({dataType}) => dataType)
-            .forEach(column => {
-                if (column.javaVariableName === 'title') {
-                    return '';
-                }
-                const checked = columns.indexOf(column.javaVariableName) > -1;
-
-                config[column.javaVariableName] = {
-                    id: column.id,
-                    label: column.displayName,
-                    checked,
-                };
-            });
-
-        config[SELECT_ALL] = {
-            label: SELECT_ALL_DISPLAY_NAME,
-            checked: isAllSelected(config),
-        };
-
-        setHideShowColumns(config);
-    };
+    const [hideShowColumns, setHideShowColumns] = useState();
 
     const isAllSelected = config => {
         let allSelected = true;
@@ -66,28 +22,60 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         }
         return allSelected;
     };
+    useEffect(() => {
+        if (availsMapping && columns) {
+            const config = {};
+            availsMapping &&
+                availsMapping.mappings
+                    .filter(({dataType}) => dataType)
+                    .forEach(column => {
+                        if (column.javaVariableName === 'title') {
+                            return '';
+                        }
+                        const checked = columns.indexOf(column.javaVariableName) > -1;
 
-    const toggleColumn = id => {
-        const newHideShowColumns = {...hideShowColumns};
-        newHideShowColumns[id].checked = !newHideShowColumns[id].checked;
-        newHideShowColumns[SELECT_ALL].checked = isAllSelected(newHideShowColumns);
-        setHideShowColumns(newHideShowColumns);
-    };
+                        config[column.javaVariableName] = {
+                            id: column.id,
+                            label: column.displayName,
+                            checked,
+                        };
+                    });
 
-    const toggleSelectAll = selectAllKey => {
-        const newHideShowColumns = {...hideShowColumns};
-        const newValue = !newHideShowColumns[selectAllKey].checked;
-        newHideShowColumns[selectAllKey].checked = newValue;
+            config[SELECT_ALL] = {
+                label: SELECT_ALL_DISPLAY_NAME,
+                checked: isAllSelected(config),
+            };
+            setHideShowColumns(config);
+        }
+    }, [availsMapping, columns]);
 
-        availsMapping.mappings
-            .filter(({dataType}) => dataType)
-            .forEach(column => {
-                if (column.javaVariableName === 'title') {
-                    return '';
-                }
-                newHideShowColumns[column.javaVariableName].checked = newValue;
-            });
-        setHideShowColumns(newHideShowColumns);
+    const createConfigForColumnCustomization = () => {
+        const actions = [
+            {
+                text: 'Save',
+                onClick: () => {
+                    closeModal();
+                    saveColumns();
+                },
+            },
+            {
+                text: 'Cancel',
+                onClick: closeModal,
+            },
+        ];
+        openModal(
+            <ColumnCustomizationModal
+                importHideShowColumns={setHideShowColumns}
+                availsMapping={availsMapping}
+                close={closeModal}
+                config={hideShowColumns}
+            />,
+            {
+                title: 'Select Visible Columns',
+                width: 'small',
+                actions,
+            }
+        );
     };
 
     const saveColumns = () => {
@@ -112,32 +100,6 @@ const TableColumnCustomization = ({availsMapping, columns, updateColumnsOrder}) 
         });
 
         updateColumnsOrder(cols);
-    };
-
-    const buildModalContent = config => {
-        const options = [buildCheckBox(SELECT_ALL, toggleSelectAll)];
-        for (const key in config) {
-            if (key === SELECT_ALL) {
-                continue;
-            }
-            options.push(buildCheckBox(key, toggleColumn));
-        }
-
-        return <div> {options} </div>;
-    };
-
-    let buildCheckBox = (key, onChange) => {
-        const data = hideShowColumns[key];
-        return (
-            <Checkbox
-                key={key}
-                id={data.id}
-                name={data.id}
-                label={data.label}
-                onChange={() => onChange(key)}
-                isChecked={data.checked}
-            />
-        );
     };
 
     const buildConfigAndOpenModal = () => {

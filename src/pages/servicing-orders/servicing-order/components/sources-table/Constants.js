@@ -6,16 +6,22 @@ export const SELECT_VALUES = {
     shipListId: ['Vubiquity', 'Receipient'],
 };
 
+export const TABLE_HEIGHT = 5;
+
 export const INIT_SOURCE_ROW = {
-    barcode: ' ',
+    barcode: '',
     title: '',
-    titleId: '',
-    amsAssetId: '',
+    version: '',
     assetFormat: '',
     standard: '',
-    assetStatus: '',
-    shipVia: '',
-    shipListId: '',
-    startDate: '',
+    status: '',
     fs: '',
+};
+
+export const TEMP_SOURCE_ROW = {
+    title: ' ',
+    version: ' ',
+    assetFormat: ' ',
+    status: ' ',
+    standard: ' ',
 };

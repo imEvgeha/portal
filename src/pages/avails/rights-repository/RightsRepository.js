@@ -34,7 +34,7 @@ import {
     createRightMatchingColumnDefsSelector,
 } from '../right-matching/rightMatchingSelectors';
 import DOPService from '../selected-for-planning/DOP-services';
-import SelectedForPlanning from '../selected-for-planning/components/SelectedForPlanning/SelectedForPlanning';
+import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
@@ -48,7 +48,7 @@ const RightsRepositoryTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
-    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2}),
+    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
