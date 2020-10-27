@@ -170,6 +170,8 @@ export const PrePlanActions = ({
 
     const openBulkSetModal = () => {
         setMenuOpened(false);
+        setTerritories([]);
+        setKeywords('');
         openModal(<BulkSet setTerritories={setTerritories} setKeywords={setKeywords} />, {
             title: BULK_SET,
             actions: [
