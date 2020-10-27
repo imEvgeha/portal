@@ -109,11 +109,6 @@ export const formatData = data => {
                 if (field === RATING) {
                     const subField = path.split('/')[4];
                     if (subField) {
-                        row[field] = {
-                            [RATING_SUBFIELD]: {
-                                [subField]: get(row, [field, RATING_SUBFIELD, subField], ''),
-                            },
-                        };
                         if (op === 'remove') {
                             row[`${subField}Deleted`] = true;
                         }
