@@ -916,12 +916,6 @@
                             }
                         ]
                     },
-                    "termYearStart": {
-                        "name": "Term Year Start",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "termYearStart"
-                    },
                     "availDates": {
                         "name": "Avail Date Range",
                         "type": "dateRange",
@@ -936,6 +930,187 @@
                                 "value": false
                             }
                         ]
+                    },
+                    "productionStudio": {
+                        "name": "Production Studio",
+                        "type": "select",
+                        "path": "productionStudio"
+                    },
+                    "otherTerms": {
+                        "name": "Other Terms",
+                        "type": "string",
+                        "path": "otherTerms"
+                    },
+                    "otherInstructions": {
+                        "name": "Other Instructions",
+                        "type": "string",
+                        "path": "otherInstructions"
+                    },
+                    "description": {
+                        "name": "Description",
+                        "type": "string",
+                        "path": "description"
+                    },
+                    "any": {
+                        "name": "Any",
+                        "type": "string",
+                        "path": "any"
+                    },
+                    "serviceProvider": {
+                        "name": "Service Provider",
+                        "type": "string",
+                        "path": "serviceProvider"
+                    },
+                    "contractualCategory": {
+                        "name": "Contractual Category",
+                        "type": "string",
+                        "path": "contractualCategory"
+                    },
+                    "exceptionFlag": {
+                        "name": "Exception Flag",
+                        "type": "boolean",
+                        "path": "exceptionFlag"
+                    },
+                    "materialDeliveryDate": {
+                        "name": "Material Delivery Date",
+                        "type": "datetime",
+                        "dateType": "regionalMidnight",
+                        "path": "materialDeliveryDate"
+                    },
+                    "metadata": {
+                        "name": "Metadata",
+                        "type": "string",
+                        "path": "metadata"
+                    },
+                    "packageLabel": {
+                        "name": "Package Label",
+                        "type": "string",
+                        "path": "packageLabel"
+                    },
+                    "exclusive": {
+                        "name": "Exclusive",
+                        "type": "boolean",
+                        "path": "exclusive"
+                    },
+                    "exclusiveAttributes": {
+                        "name": "Exclusive Attributes",
+                        "type": "boolean",
+                        "path": "exclusiveAttributes"
+                    },
+                    "genres": {
+                        "name": "Genres",
+                        "type": "multiselect",
+                        "path": "genres"
+                    },
+                    "reLicence": {
+                        "name": "Re-License",
+                        "type": "boolean",
+                        "path": "reLicence"
+                    },
+                    "reWork": {
+                        "name": "Re-Work",
+                        "type": "string",
+                        "path": "reWork"
+                    },
+                    "totalRuntime": {
+                        "name": "Total Runtime",
+                        "type": "string",
+                        "path": "totalRuntime"
+                    },
+                    "startTime": {
+                        "name": "Start Time",
+                        "type": "string",
+                        "path": "startTime"
+                    },
+                    "windowDuration": {
+                        "name": "Window Duration",
+                        "type": "string",
+                        "path": "windowDuration"
+                    },
+                    "rentalDuration": {
+                        "name": "Rental Duration",
+                        "type": "number",
+                        "path": "rentalDuration"
+                    },
+                    "watchDuration": {
+                        "name": "Watch Duration",
+                        "type": "number",
+                        "path": "watchDuration"
+                    },
+                    "productionYear": {
+                        "name": "Production Year",
+                        "type": "number",
+                        "path": "productionYear"
+                    },
+                    "hdr": {
+                        "name": "HDR",
+                        "type": "select",
+                        "path": "hdr",
+                        "optionsConfig": {
+                            "options": [
+                                { "label": "DV", "value": "DV" },
+                                { "label": "DolbyVision", "value": "DolbyVision" },
+                                { "label": "HDR10", "value": "HDR10" }
+                            ]
+                        }
+                    },
+                    "wcg": {
+                        "name": "WCG",
+                        "type": "boolean",
+                        "path": "wcg"
+                    },
+                    "hfr": {
+                        "name": "HFR",
+                        "type": "boolean",
+                        "path": "hfr"
+                    },
+                    "ngAudio": {
+                        "name": "NG Audio",
+                        "type": "select",
+                        "path": "ngAudio"
+                    },
+                    "bonus": {
+                        "name": "Bonus",
+                        "type": "string",
+                        "path": "bonus"
+                    },
+                    "download": {
+                        "name": "Download",
+                        "type": "string",
+                        "path": "download"
+                    },
+                    "brandingRights": {
+                        "name": "Branding Rights",
+                        "type": "boolean",
+                        "path": "brandingRights"
+                    },
+                    "brandingRightsAttributes": {
+                        "name": "Branding Rights Attributes",
+                        "type": "string",
+                        "path": "brandingRightsAttributes"
+                    },
+                    "copyright": {
+                        "name": "Copyright",
+                        "type": "string",
+                        "path": "copyright"
+                    },
+                    "groupIdentity": {
+                        "name": "Group Identity",
+                        "type": "string",
+                        "path": "groupIdentity"
+                    },
+                    "updatedCatalogReceivedAt": {
+                        "name": "Updated Catalog Received At",
+                        "type": "datetime",
+                        "dateType": "timestamp",
+                        "path": "updatedCatalogReceivedAt",
+                        "isReadOnly": true
+                    },
+                    "updatedCatalogReceived": {
+                        "name": "Updated Catalog Received",
+                        "type": "boolean",
+                        "path": "updatedCatalogReceived",
+                        "isReadOnly": true
                     }
                 }
             },
