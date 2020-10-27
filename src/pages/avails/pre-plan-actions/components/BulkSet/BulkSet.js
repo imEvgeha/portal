@@ -10,7 +10,7 @@ import './BulkSet.scss';
 
 const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
     const [options, setOptions] = useState([]);
-    const [keywordsLocal, setKeywordsLocal] = useState([]);
+    const [keywordsLocal, setKeywordsLocal] = useState('');
 
     useEffect(() => {
         if (options.length === 0) {
