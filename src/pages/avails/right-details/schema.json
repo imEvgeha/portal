@@ -1051,7 +1051,18 @@
                     "productionYear": {
                         "name": "Production Year",
                         "type": "string",
-                        "path": "productionYear"
+                        "path": "productionYear",
+                        "validation": [
+                            {
+                                "name": "lengthEqual",
+                                "args": {
+                                    "length": 4
+                                }
+                            },
+                            {
+                                "name": "isYear"
+                            }
+                        ]
                     },
                     "hdr": {
                         "name": "HDR",
