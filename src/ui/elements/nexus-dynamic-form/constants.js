@@ -24,4 +24,5 @@ export const TABS_MAPPINGS = [
     {tabName: 'Music', id: 'Music'},
 ];
 
-export const INCORRECT_YEAR = 'INCORRECT YEAR';
+export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
+export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';
