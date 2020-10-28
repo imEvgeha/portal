@@ -153,6 +153,9 @@
                                 "args": {
                                     "length": 4
                                 }
+                            },
+                            {
+                                "name": "isYear"
                             }
                         ]
                     },
