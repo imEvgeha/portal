@@ -1031,7 +1031,12 @@
                     "startTime": {
                         "name": "Start Time",
                         "type": "string",
-                        "path": "startTime"
+                        "path": "startTime",
+                        "validation": [
+                            {
+                                "name": "isTime"
+                            }
+                        ]
                     },
                     "windowDuration": {
                         "name": "Window Duration",
