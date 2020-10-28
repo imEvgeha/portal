@@ -37,12 +37,7 @@ export const PrePlanActions = ({
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
-    const [bulkUpdate, setBulkUpdate] = useState([]);
     const [keywords, setKeywords] = useState('');
-
-    useEffect(() => {
-        bulkSetInTable();
-    }, [bulkUpdate]);
 
     const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -170,12 +165,14 @@ export const PrePlanActions = ({
 
     const openBulkSetModal = () => {
         setMenuOpened(false);
+        setTerritories([]);
+        setKeywords('');
         openModal(<BulkSet setTerritories={setTerritories} setKeywords={setKeywords} />, {
             title: BULK_SET,
             actions: [
                 {
                     text: 'Set',
-                    onClick: () => setBulkUpdate(!bulkUpdate),
+                    onClick: bulkSetInTable,
                 },
                 {
                     text: 'Cancel',

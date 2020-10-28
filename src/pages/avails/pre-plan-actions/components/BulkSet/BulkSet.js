@@ -10,7 +10,7 @@ import './BulkSet.scss';
 
 const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
     const [options, setOptions] = useState([]);
-    const [keywordsLocal, setKeywordsLocal] = useState([]);
+    const [keywordsLocal, setKeywordsLocal] = useState('');
 
     useEffect(() => {
         if (options.length === 0) {
@@ -37,7 +37,7 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
                 options={options}
                 hideSelectedOptions
                 placeholder="Select territories..."
-                onChange={setTerritories}
+                onChange={i => setTerritories(i)}
             />
             <div className="bulk-set-territories__label">Keywords</div>
             <NexusTextArea notesValue={keywordsLocal} onTextChange={onChange} />
