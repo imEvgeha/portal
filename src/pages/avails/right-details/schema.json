@@ -998,7 +998,7 @@
                     },
                     "exclusiveAttributes": {
                         "name": "Exclusive Attributes",
-                        "type": "boolean",
+                        "type": "string",
                         "path": "exclusiveAttributes"
                     },
                     "genres": {
@@ -1047,7 +1047,7 @@
                     },
                     "productionYear": {
                         "name": "Production Year",
-                        "type": "number",
+                        "type": "string",
                         "path": "productionYear"
                     },
                     "hdr": {
