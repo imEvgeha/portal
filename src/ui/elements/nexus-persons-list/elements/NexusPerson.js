@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
 import {Draggable} from 'react-beautiful-dnd';
 import {Row} from 'reactstrap';
+import {uid} from 'react-uid';
 import './NexusPerson.scss';
 import DefaultUserIcon from '../../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
@@ -22,7 +23,7 @@ import {
 // TODO: This seems to be extracted from legacy, should be refactored
 const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onEditCharacter}) => {
     return (
-        <Draggable draggableId={person.id} index={index}>
+        <Draggable draggableId={uid(person.id, index)} index={index}>
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps}>
                     <DraggableContent isDragging={snapshot.isDragging}>

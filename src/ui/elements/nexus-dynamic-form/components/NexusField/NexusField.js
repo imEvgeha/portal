@@ -157,6 +157,8 @@ const NexusField = ({
             case 'dateRange':
             case 'datetime':
                 return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
+            case 'castCrew':
+                return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
             default:
                 return;
         }
