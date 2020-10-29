@@ -39,6 +39,8 @@ const NexusTableToolbar = ({
     username,
     singleRightMatch,
     setSingleRightMatch,
+    prePlanColumnApi,
+    prePlanGridApi,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
@@ -88,13 +90,16 @@ const NexusTableToolbar = ({
                         setActiveTab={setActiveTab}
                     />
                     <NexusTableExportDropdown
-                        isSelectedOptionActive={activeTab === RIGHTS_SELECTED_TAB}
+                        activeTab={activeTab}
                         selectedRows={selectedRows}
                         rightsFilter={rightsFilter}
                         rightColumnApi={rightColumnApi}
                         selectedRightColumnApi={selectedRightColumnApi}
                         selectedRightGridApi={selectedRightGridApi}
+                        prePlanColumnApi={prePlanColumnApi}
+                        prePlanGridApi={prePlanGridApi}
                         totalRows={totalRows}
+                        prePlanRightsCount={prePlanRightsCount}
                     />
                 </div>
             )}
@@ -128,6 +133,8 @@ NexusTableToolbar.propTypes = {
     setIsPlanningTabRefreshed: PropTypes.func.isRequired,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
+    prePlanColumnApi: PropTypes.object,
+    prePlanGridApi: PropTypes.object,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -145,6 +152,8 @@ NexusTableToolbar.defaultProps = {
     selectedPrePlanRights: [],
     singleRightMatch: [],
     setSingleRightMatch: () => null,
+    prePlanColumnApi: {},
+    prePlanGridApi: {},
 };
 
 export default NexusTableToolbar;
