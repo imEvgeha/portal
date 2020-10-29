@@ -95,11 +95,12 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
     };
 
     const removePerson = person => {
-        setPersons(
-            persons.filter(entry => {
-                return entry.id !== person.id;
-            })
-        );
+        const updatedPersons = persons.filter(entry => {
+            return entry.id !== person.id;
+        });
+        const isCast = uiConfig.type === CAST;
+        setPersons(updatedPersons);
+        updateCastCrew(updatedPersons, isCast);
         notify();
     };
 
