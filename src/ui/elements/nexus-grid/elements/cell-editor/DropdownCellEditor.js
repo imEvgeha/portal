@@ -11,7 +11,7 @@ class DropdownCellEditor extends Component {
         const optionsDisabled = data[disabledOptionsKey];
 
         this.state = {
-            value: this.prepareDataForSelect(options, optionsDisabled),
+            value: options && options.length ? this.prepareDataForSelect(options, optionsDisabled) : [],
         };
     }
 
