@@ -61,12 +61,14 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         </div>
                     ))}
                     <div className="nexus-c-avails-ingest__download">
-                        <NexusTooltip content="Upload Attachment">
-                            <UploadIcon
-                                className="nexus-c-avails-ingest__download-icon"
-                                onClick={() => downloadIngestFile(attachment)}
-                            />
-                        </NexusTooltip>
+                        {status === 'FAILED' && (
+                            <NexusTooltip content="Upload Attachment">
+                                <UploadIcon
+                                    className="nexus-c-avails-ingest__download-icon"
+                                    onClick={() => downloadIngestFile(attachment)}
+                                />
+                            </NexusTooltip>
+                        )}
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
                                 className="nexus-c-avails-ingest__upload-icon"
