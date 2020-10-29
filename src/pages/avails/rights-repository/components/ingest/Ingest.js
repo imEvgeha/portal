@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
+import UploadIcon from '../../../../../assets/action-upload.svg';
 import Email from '../../../../../assets/email.svg';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
@@ -60,9 +61,15 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         </div>
                     ))}
                     <div className="nexus-c-avails-ingest__download">
+                        <NexusTooltip content="Upload Attachment">
+                            <UploadIcon
+                                className="nexus-c-avails-ingest__download-icon"
+                                onClick={() => downloadIngestFile(attachment)}
+                            />
+                        </NexusTooltip>
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
-                                className="nexus-c-avails-ingest__download-icon"
+                                className="nexus-c-avails-ingest__upload-icon"
                                 onClick={() => downloadIngestFile(attachment)}
                             />
                         </NexusTooltip>

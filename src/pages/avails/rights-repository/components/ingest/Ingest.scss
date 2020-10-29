@@ -68,12 +68,12 @@
 
     &__download {
         @include margin(0, 5);
+        display: flex;
     }
 
     &__download,
     &__email {
         svg {
-            @include addSpacing(height, 7);
             @include addSpacing(width, 7);
             fill: map-get($mid-neutral-colors, mid-neutral-7);
             cursor: pointer;
