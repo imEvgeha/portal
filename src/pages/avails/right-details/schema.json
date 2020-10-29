@@ -1142,8 +1142,13 @@
                 }
             },
             {
-                "title": "Cast",
-                "fields": {}
+                "title": "Cast & Crew",
+                "fields": {
+                    "castCrew": {
+                        "type": "castCrew",
+                        "path": "castCrew"
+                    }
+                }
             }
         ]
     },

@@ -18,6 +18,7 @@ import {
     renderLabel,
     renderError,
 } from '../../utils';
+import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
@@ -184,6 +185,8 @@ const NexusField = ({
                     return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+            case 'castCrew':
+                return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={false} />;
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
