@@ -103,6 +103,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
     const onCharacterSubmit = newCharacterName => {
         modalData.selectedPerson.characterName = newCharacterName;
         setPersons(persons);
+        closeModal();
         notify();
     };
 

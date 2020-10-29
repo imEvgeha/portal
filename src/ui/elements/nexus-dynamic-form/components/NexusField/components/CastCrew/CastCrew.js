@@ -27,7 +27,7 @@ const CastCrew = ({persons, isEdit}) => {
                 <NexusPersonsList
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
-                    hasCharacter={false}
+                    hasCharacter={isEdit}
                     showPersonType={true}
                     onChange={null}
                     isEdit={isEdit}
