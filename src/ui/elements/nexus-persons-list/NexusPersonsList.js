@@ -33,12 +33,16 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
         }
     };
 
+    const searchInputChanged = val => {
+        setSearchText(val);
+    };
+
     const loadOptions = () => {
         const {type} = uiConfig;
         if (searchText.length < 2) return [];
         if (type === CAST) {
-            return searchPerson(searchText, PERSONS_PER_REQUEST, type).then(res =>
-                getFilteredCastList(res, true).map(e => {
+            return searchPerson(searchText, PERSONS_PER_REQUEST, type, true).then(res =>
+                getFilteredCastList(res.data, true, true).map(e => {
                     return {
                         id: e.id,
                         name: e.displayName,
@@ -49,7 +53,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
             );
         } else {
             return searchPerson(searchText, PERSONS_PER_REQUEST, type).then(res =>
-                getFilteredCrewList(res, true).map(e => {
+                getFilteredCrewList(res.data, true).map(e => {
                     return {
                         id: e.id,
                         name: e.displayName,
@@ -166,7 +170,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
                                         width="100%"
                                         loadOptions={loadOptions}
                                         value={searchText}
-                                        onInputChange={setSearchText}
+                                        onInputChange={searchInputChanged}
                                         onSelection={validateAndAddPerson}
                                         placeholder={uiConfig.newLabel}
                                     />

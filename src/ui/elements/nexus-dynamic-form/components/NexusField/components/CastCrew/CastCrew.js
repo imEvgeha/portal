@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {ACTOR} from '../../../../../../../pages/legacy/constants/metadata/configAPI';
 import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList';
 import {CAST_CONFIG, CREW_CONFIG} from '../../../../../nexus-persons-list/constants';
 import './CastCrew.scss';
@@ -7,14 +8,14 @@ import './CastCrew.scss';
 const CastCrew = ({persons, isEdit}) => {
     const [cast, setCast] = useState(
         persons
-            .filter(person => person.personType === 'Actor')
+            .filter(person => person.personType === ACTOR)
             .map((e, index) => {
                 return {...e, id: index};
             })
     );
     const [crew, setCrew] = useState(
         persons
-            .filter(person => person.personType !== 'Actor')
+            .filter(person => person.personType !== ACTOR)
             .map((e, index) => {
                 return {...e, id: index};
             })
