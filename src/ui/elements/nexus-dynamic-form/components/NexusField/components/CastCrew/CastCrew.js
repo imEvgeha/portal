@@ -5,7 +5,7 @@ import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList
 import {CAST_CONFIG, CREW_CONFIG} from '../../../../../nexus-persons-list/constants';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit}) => {
+const CastCrew = ({persons, isEdit, onChange}) => {
     const [cast, setCast] = useState(
         persons
             .filter(person => person.personType === ACTOR)
@@ -21,6 +21,16 @@ const CastCrew = ({persons, isEdit}) => {
             })
     );
 
+    const updateCastCrew = (value, isCast) => {
+        if (isCast) {
+            setCast(value);
+            onChange([...value, ...crew]);
+        } else {
+            setCrew(value);
+            onChange([...value, ...cast]);
+        }
+    };
+
     return (
         <div className="nexus-c-cast-crew">
             <div className="nexus-c-cast-crew__card">
@@ -31,6 +41,7 @@ const CastCrew = ({persons, isEdit}) => {
                     showPersonType={true}
                     onChange={null}
                     isEdit={isEdit}
+                    updateCastCrew={updateCastCrew}
                 />
             </div>
             <div className="nexus-c-cast-crew__card">
@@ -41,6 +52,7 @@ const CastCrew = ({persons, isEdit}) => {
                     showPersonType={true}
                     onChange={null}
                     isEdit={isEdit}
+                    updateCastCrew={updateCastCrew}
                 />
             </div>
         </div>
@@ -50,11 +62,13 @@ const CastCrew = ({persons, isEdit}) => {
 CastCrew.propTypes = {
     isEdit: PropTypes.bool,
     persons: PropTypes.array,
+    onChange: PropTypes.func,
 };
 
 CastCrew.defaultProps = {
     isEdit: false,
     persons: [],
+    onChange: () => null,
 };
 
 export default CastCrew;

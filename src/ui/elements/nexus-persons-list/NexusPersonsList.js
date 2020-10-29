@@ -20,7 +20,7 @@ import NexusPersonRO from './elements/NexusPersonRO';
 import {CAST_CONFIG} from './constants';
 import './NexusPersonsList.scss';
 
-const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, onChange, isEdit}) => {
+const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, onChange, isEdit, updateCastCrew}) => {
     const [persons, setPersons] = useState(personsList || []);
     const [isLastEntryValid, setLastIsEntryValid] = useState(true);
     const [searchText, setSearchText] = useState('');
@@ -87,7 +87,10 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
     };
 
     const addPerson = person => {
-        setPersons([...[person], ...persons]);
+        const updatedPersons = [...[person], ...persons];
+        const isCast = uiConfig.type === CAST;
+        setPersons(updatedPersons);
+        updateCastCrew(updatedPersons, isCast);
         notify();
     };
 
@@ -233,6 +236,7 @@ NexusPersonsList.propTypes = {
     hasCharacter: PropTypes.bool,
     showPersonType: PropTypes.bool,
     isEdit: PropTypes.bool,
+    updateCastCrew: PropTypes.func,
 };
 
 NexusPersonsList.defaultProps = {
@@ -241,6 +245,7 @@ NexusPersonsList.defaultProps = {
     hasCharacter: false,
     showPersonType: true,
     isEdit: false,
+    updateCastCrew: () => null,
 };
 
 export default NexusPersonsList;
