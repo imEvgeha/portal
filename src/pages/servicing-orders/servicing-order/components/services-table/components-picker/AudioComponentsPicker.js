@@ -1,5 +1,5 @@
 /* eslint react/prop-types: 0 */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';

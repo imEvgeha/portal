@@ -48,7 +48,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            const recp = data.deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId;
+            const recp = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
             recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
             setAudioComponents(get(deteComponents, 'components.audioComponents', []));
             setProviderServices(`${data.fs.toLowerCase()}Services`);
@@ -65,7 +65,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
                             : SELECT_VALUES.serviceType[1],
-                    assetType: service.externalServices.assetType,
+                    assetType: service.externalServices.assetType || '',
                     components: service.details || [],
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',

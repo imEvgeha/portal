@@ -34,9 +34,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const barcodes = dataArray.map(item => item.barcode.trim());
 
-    const onGridReady = params => {
-        setGridApi(params.api);
-        // params.api.sizeColumnsToFit();
+    const onGridReady = ({type, api}) => {
+        setGridApi(api);
+        type === 'READY' && api.sizeColumnsToFit();
     };
 
     useEffect(
@@ -137,7 +137,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         return {...item, cellRenderer: loadingCell};
     });
 
-    // Todo : remove this when dete QA apis are working
+    // Todo : remove this when dete stg apis are working
     if (!URL.isLocalOrDevOrQA()) newColDef = [columnDefinitions[0]];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {

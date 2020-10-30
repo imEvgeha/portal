@@ -35,6 +35,52 @@ export const prepareRowData = data => {
     return Object.entries(preparedSources).map(([key, value]) => value);
 };
 
+const getAudioComponents = componentArray => {
+    const AudioComponents = [];
+    componentArray
+        .filter(item => item.component.componentType === 'AudioConfigurationComponent')
+        .forEach((item, index) => {
+            set(componentsObject, `audioComponents[${index}].trackConfiguration`, item.component.trackConfiguration);
+            set(
+                componentsObject,
+                `audioComponents[${index}].language`,
+                item.component.language || item.component.content
+            );
+            set(componentsObject, `audioComponents[${index}].contentType`, item.component.content);
+            set(componentsObject, `audioComponents[${index}].components`, []);
+            const components = get(item, 'component.components', []);
+            components.forEach((comp, inx) => {
+                set(componentsObject, `audioComponents[${index}].components[${inx}].channelNumber`, comp.channelNumber);
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].channelPosition`,
+                    comp.channelPosition
+                );
+                set(componentsObject, `audioComponents[${index}].components[${inx}].componentID`, comp.deteId);
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].sourceChannelNumber`,
+                    comp.sourceChannelNumber
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].contentType`,
+                    componentsObject.audioComponents[index].contentType
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].trackConfig`,
+                    componentsObject.audioComponents[index].trackConfiguration
+                );
+                set(
+                    componentsObject,
+                    `audioComponents[${index}].components[${inx}].language`,
+                    componentsObject.audioComponents[index].language
+                );
+            });
+        });
+};
+
 // extract relevant info from componentAssociations array and return for display in UI
 const getComponentsInfo = componentArray => {
     const componentsObject = {audioComponents: [], subtitleComponents: [], captionComponents: []};
