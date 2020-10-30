@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import config from 'react-global-configuration';
 import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
-import UploadIcon from '../../../../../assets/action-upload.svg';
 import Email from '../../../../../assets/email.svg';
 import {NexusTooltip} from '../../../../../ui/elements';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
 import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
+import ReuploadIngestButton from '../../../ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 import Constants from '../../../ingest-panel/constants';
 import {DOP_PROJECT_URL} from '../../../selected-for-planning/constants';
 import './Ingest.scss';
@@ -61,14 +61,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         </div>
                     ))}
                     <div className="nexus-c-avails-ingest__download">
-                        {status === 'FAILED' && (
-                            <NexusTooltip content="Upload Attachment">
-                                <UploadIcon
-                                    className="nexus-c-avails-ingest__download-icon"
-                                    onClick={() => downloadIngestFile(attachment)}
-                                />
-                            </NexusTooltip>
-                        )}
+                        {status === 'FAILED' && <ReuploadIngestButton attachment={attachment} />}
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
                                 className="nexus-c-avails-ingest__upload-icon"
