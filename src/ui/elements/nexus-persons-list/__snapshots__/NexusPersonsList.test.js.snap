@@ -85,5 +85,14 @@ exports[`NexusPersonsList should match snapshot 1`] = `
       </ListGroup>
     </CardBody>
   </Card>
+  <NexusCharacterNameModal
+    characterName=""
+    closeModal={[Function]}
+    displayName=""
+    isModalOpen={false}
+    onChange={[Function]}
+    onSubmit={[Function]}
+    value=""
+  />
 </Fragment>
 `;
