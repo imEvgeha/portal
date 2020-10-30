@@ -5,8 +5,13 @@ import {ErrorMessage} from '@atlaskit/form';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import ModalCustomInput from './ModalCustomInput';
 import ModalCustomLabel from './ModalCustomLabel';
-
-const MAX_CHAR_NAME_LENGTH = 100;
+import {
+    ADD_CHARACTER_NAME,
+    EDIT_CHARACTER_NAME,
+    EMPTY_CHARACTER_ERROR,
+    LONG_CHARACTER_ERROR,
+    MAX_CHARACTER_NAME_LENGTH,
+} from '../constants';
 
 const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onSubmit}) => {
     const [val, setVal] = useState(defaultVal || '');
@@ -35,14 +40,14 @@ const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onS
 
     useEffect(() => {
         if (isEmpty(val)) {
-            setError('Character name cannot be empty!');
+            setError(EMPTY_CHARACTER_ERROR);
             setIsValid(false);
-        } else if (val.trim().length < MAX_CHAR_NAME_LENGTH) {
+        } else if (val.trim().length >= MAX_CHARACTER_NAME_LENGTH) {
+            setError(LONG_CHARACTER_ERROR);
+            setIsValid(false);
+        } else {
             setError(null);
             setIsValid(true);
-        } else {
-            setError('Character name must be less than 100 characters long!');
-            setIsValid(false);
         }
     }, [val]);
 
@@ -54,7 +59,7 @@ const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onS
 
     return (
         <Modal isOpen={isModalOpen} toggle={onCancel}>
-            <ModalHeader toggle={onCancel}>{defaultVal ? 'Edit' : 'Add'} Character Name</ModalHeader>
+            <ModalHeader toggle={onCancel}>{defaultVal ? EDIT_CHARACTER_NAME : ADD_CHARACTER_NAME}</ModalHeader>
             <ModalBody>
                 <ModalCustomLabel htmlFor="displayName">Display Name</ModalCustomLabel>
                 <ModalCustomInput isReadOnly={true} name="displayName" value={hint || ''} />
