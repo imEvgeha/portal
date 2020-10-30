@@ -8,7 +8,7 @@ import {uid} from 'react-uid';
 import {ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
 import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
 import {DroppableContent} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
-import {searchPerson} from '../../../pages/legacy/containers/metadata/service/ConfigService';
+import {searchPerson} from './utils';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
 import NexusPerson from './elements/NexusPerson';
 import NexusPersonRO from './elements/NexusPersonRO';
