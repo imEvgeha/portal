@@ -12,3 +12,5 @@ export const CREW_CONFIG = {
     listLabel: 'Crew List',
     htmlFor: 'new-person-crew',
 };
+
+export const ACTOR = 'Actor';

@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {ACTOR} from '../../../../../../../pages/legacy/constants/metadata/configAPI';
 import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList';
-import {CAST_CONFIG, CREW_CONFIG} from '../../../../../nexus-persons-list/constants';
+import {ACTOR, CAST_CONFIG, CREW_CONFIG} from '../../../../../nexus-persons-list/constants';
 import './CastCrew.scss';
 
 const CastCrew = ({persons, isEdit, onChange}) => {
@@ -39,7 +38,6 @@ const CastCrew = ({persons, isEdit, onChange}) => {
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
                     showPersonType={true}
-                    onChange={null}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                 />
@@ -50,7 +48,6 @@ const CastCrew = ({persons, isEdit, onChange}) => {
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}
                     showPersonType={true}
-                    onChange={null}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                 />
