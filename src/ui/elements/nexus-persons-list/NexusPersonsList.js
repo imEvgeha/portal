@@ -218,17 +218,15 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
                     </ListGroup>
                 </CardBody>
             </Card>
-            {isEdit && (
-                <NexusCharacterNameModal
-                    onSubmit={onCharacterSubmit}
-                    displayName={modalData.displayName}
-                    characterName={modalData.characterName}
-                    value={modalInputValue}
-                    onChange={onModalInputChanged}
-                    isModalOpen={isModalOpen}
-                    closeModal={closeModal}
-                />
-            )}
+            <NexusCharacterNameModal
+                onSubmit={onCharacterSubmit}
+                displayName={modalData.displayName}
+                characterName={modalData.characterName}
+                value={modalInputValue}
+                onChange={onModalInputChanged}
+                isModalOpen={isModalOpen}
+                closeModal={closeModal}
+            />
         </>
     );
 };
