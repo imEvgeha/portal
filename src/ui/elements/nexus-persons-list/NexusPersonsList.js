@@ -20,18 +20,12 @@ import NexusPersonRO from './elements/NexusPersonRO';
 import {CAST_CONFIG} from './constants';
 import './NexusPersonsList.scss';
 
-const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, onChange, isEdit, updateCastCrew}) => {
+const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, isEdit, updateCastCrew}) => {
     const [persons, setPersons] = useState(personsList || []);
     const [isLastEntryValid, setLastIsEntryValid] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const notify = () => {
-        if (typeof onChange === 'function') {
-            onChange(persons);
-        }
-    };
 
     const searchInputChanged = val => {
         setSearchText(val);
@@ -91,7 +85,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
         const isCast = uiConfig.type === CAST;
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
-        notify();
     };
 
     const removePerson = person => {
@@ -101,14 +94,12 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
         const isCast = uiConfig.type === CAST;
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
-        notify();
     };
 
     const onCharacterSubmit = newCharacterName => {
         modalData.selectedPerson.characterName = newCharacterName;
         setPersons(persons);
         closeModal();
-        notify();
     };
 
     const closeModal = () => {
@@ -139,7 +130,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
             return;
         }
         setPersons(reorder(persons, result.source.index, result.destination.index));
-        notify();
     };
 
     const makeDraggableContainer = content => {
