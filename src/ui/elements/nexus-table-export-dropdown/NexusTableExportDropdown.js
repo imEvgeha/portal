@@ -24,6 +24,7 @@ const NexusTableExportDropdown = ({
     prePlanGridApi,
     prePlanRightsCount,
     mapping,
+    username,
 }) => {
     const [mappingColumnNames, setMappingColumnNames] = useState();
     const [tooltipContent, setTooltipContent] = useState();
@@ -66,32 +67,54 @@ const NexusTableExportDropdown = ({
     };
 
     const onAllColumnsExportClick = () => {
-        if (activeTab === RIGHTS_SELECTED_TAB) {
-            const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
-            exportService
-                .exportAvails(getSelectedRightIds(selectedRightGridApi), allDisplayedColumns)
-                .then(response => downloadFile(response));
-        } else {
-            const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
-            const {external, column} = rightsFilter;
-            exportService
-                .bulkExportAvails({...external, ...column}, allDisplayedColumns)
-                .then(response => downloadFile(response));
+        switch (activeTab) {
+            case RIGHTS_SELECTED_TAB: {
+                const allDisplayedColumns = getAllDisplayedColumns(selectedRightColumnApi);
+                exportService
+                    .exportAvails(getSelectedRightIds(selectedRightGridApi), allDisplayedColumns)
+                    .then(response => downloadFile(response));
+                break;
+            }
+            case RIGHTS_TAB: {
+                const allDisplayedColumns = getAllDisplayedColumns(rightColumnApi);
+                const {external, column} = rightsFilter;
+                exportService
+                    .bulkExportAvails({...external, ...column}, allDisplayedColumns)
+                    .then(response => downloadFile(response));
+                break;
+            }
+            case PRE_PLAN_TAB: {
+                dowloadTableReport(true);
+                break;
+            }
+            default:
+            // no-op
         }
     };
 
     const onVisibleColumnsExportClick = () => {
-        if (activeTab === RIGHTS_SELECTED_TAB) {
-            const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
-            exportService
-                .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
-                .then(response => downloadFile(response));
-        } else {
-            const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
-            const {external, column} = rightsFilter;
-            exportService
-                .bulkExportAvails({...external, ...column}, visibleColumns)
-                .then(response => downloadFile(response));
+        switch (activeTab) {
+            case RIGHTS_SELECTED_TAB: {
+                const visibleColumns = getDownloadableColumns(selectedRightColumnApi.getAllDisplayedColumns());
+                exportService
+                    .exportAvails(getSelectedRightIds(selectedRightGridApi), visibleColumns)
+                    .then(response => downloadFile(response));
+                break;
+            }
+            case RIGHTS_TAB: {
+                const visibleColumns = getDownloadableColumns(rightColumnApi.getAllDisplayedColumns());
+                const {external, column} = rightsFilter;
+                exportService
+                    .bulkExportAvails({...external, ...column}, visibleColumns)
+                    .then(response => downloadFile(response));
+                break;
+            }
+            case PRE_PLAN_TAB: {
+                dowloadTableReport(false);
+                break;
+            }
+            default:
+            // no-op
         }
     };
 
@@ -106,6 +129,30 @@ const NexusTableExportDropdown = ({
         return allDisplayedColumns;
     };
 
+    const dowloadTableReport = allColumns => {
+        const currentTime = new Date();
+        prePlanGridApi.exportDataAsExcel({
+            processCellCallback: params => {
+                const {column} = params || {};
+                const {colDef} = column || {};
+                const {headerName} = colDef || {};
+                const {value = []} = params || {};
+                if (['Plan Territories', 'Selected'].includes(headerName)) {
+                    return value.filter(item => item.selected).map(item => item.country);
+                }
+                if (headerName === 'Withdrawn') {
+                    return value.filter(item => item.withdrawn).map(item => item.country);
+                }
+                return value;
+            },
+            fileName: `Pre_Plan_Report_${username}_${currentTime.getFullYear()}-${
+                currentTime.getMonth() + 1
+            }-${currentTime.getDate()}`,
+            columnKeys: preparePrePlanExportColumns(prePlanColumnApi),
+            allColumns,
+        });
+    };
+
     const getDownloadableColumns = (columns = []) => {
         const headerFields = new Set(); // no duplicates
         columns.map(({colDef: {field} = {}}) => {
@@ -117,11 +164,19 @@ const NexusTableExportDropdown = ({
         return Array.from(headerFields);
     };
 
+    const preparePrePlanExportColumns = api => {
+        const columns = api
+            .getAllDisplayedColumns()
+            .map(({colDef: {field} = {}}) => field)
+            .filter(col => !['action', 'buttons'].includes(col));
+        return columns;
+    };
+
     const renderDropdown = () => {
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger="Export"
+                trigger={activeTab === PRE_PLAN_TAB ? 'Download Report' : 'Export'}
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >
@@ -152,6 +207,7 @@ NexusTableExportDropdown.propTypes = {
     prePlanGridApi: PropTypes.object,
     mapping: PropTypes.array.isRequired,
     prePlanRightsCount: PropTypes.number,
+    username: PropTypes.string,
 };
 
 NexusTableExportDropdown.defaultProps = {
@@ -159,6 +215,7 @@ NexusTableExportDropdown.defaultProps = {
     prePlanColumnApi: {},
     prePlanGridApi: {},
     prePlanRightsCount: 0,
+    username: '',
 };
 
 const mapStateToProps = () => {
