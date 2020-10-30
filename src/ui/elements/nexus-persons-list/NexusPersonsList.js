@@ -7,7 +7,7 @@ import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import {ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
 import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
-import {DroppableContent} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+import DroppableContent from './elements/DroppableContent';
 import {searchPerson} from './utils';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
 import NexusPerson from './elements/NexusPerson';
