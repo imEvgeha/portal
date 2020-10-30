@@ -11,8 +11,8 @@ import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncing}) => {
-    const renderSyncField = (name, externalID) => {
+const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncingVZ, isSyncingMovida}) => {
+    const renderSyncField = (name, externalID, isSyncing) => {
         const buttonName = !!externalID ? SYNC : PUBLISH;
         const indicator = externalID && externalID.status === SUCCESS ? SUCCESS : ERROR;
 
@@ -48,8 +48,8 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncing}) => {
     const movidaExternalID = externalIDs && externalIDs.find(e => e.externalSystem === MOVIDA);
     return (
         <>
-            {renderSyncField(VZ, vzExternalID)}
-            {renderSyncField(MOVIDA, movidaExternalID)}
+            {renderSyncField(VZ, vzExternalID, isSyncingVZ)}
+            {renderSyncField(MOVIDA, movidaExternalID, isSyncingMovida)}
         </>
     );
 };
@@ -57,12 +57,14 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncing}) => {
 PublishVzMovida.propTypes = {
     onSyncPublishClick: PropTypes.func.isRequired,
     externalIDs: PropTypes.array,
-    isSyncing: PropTypes.bool,
+    isSyncingVZ: PropTypes.bool,
+    isSyncingMovida: PropTypes.bool,
 };
 
 PublishVzMovida.defaultProps = {
     externalIDs: null,
-    isSyncing: false,
+    isSyncingVZ: false,
+    isSyncingMovida: false,
 };
 
 export default PublishVzMovida;
