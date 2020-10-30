@@ -58,6 +58,9 @@
 
 .nexus-c-attachment {
     display: flex;
+    > div {
+        width: 100%;
+    }
 }
 
 .nexus-c-status-tag-old {
