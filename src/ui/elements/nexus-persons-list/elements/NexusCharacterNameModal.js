@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {
-    CustomInput,
-    CustomLabel,
-} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+import ModalCustomInput from './ModalCustomInput';
+import ModalCustomLabel from './ModalCustomLabel';
 
 const MAX_CHAR_NAME_LENGTH = 100;
 
@@ -58,12 +56,12 @@ const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onS
         <Modal isOpen={isModalOpen} toggle={onCancel}>
             <ModalHeader toggle={onCancel}>{defaultVal ? 'Edit' : 'Add'} Character Name</ModalHeader>
             <ModalBody>
-                <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
-                <CustomInput readOnly name="displayName" disabled={true} value={hint || ''} />
-                <CustomLabel isError={!isValid} htmlFor="characterName">
+                <ModalCustomLabel htmlFor="displayName">Display Name</ModalCustomLabel>
+                <ModalCustomInput isReadOnly={true} name="displayName" value={hint || ''} />
+                <ModalCustomLabel isError={!isValid} htmlFor="characterName">
                     Character Name
-                </CustomLabel>
-                <CustomInput
+                </ModalCustomLabel>
+                <ModalCustomInput
                     isError={!isValid}
                     onChange={value => handleChange(value)}
                     placeholder="Character Name"

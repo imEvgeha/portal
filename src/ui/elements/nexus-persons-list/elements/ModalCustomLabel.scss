@@ -1,0 +1,12 @@
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-modal-custom-label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: map-get($neutrals, N200);
+}
+
+.nexus-c-modal-custom-label--is-error {
+    color: map-get($reds, R400);
+}
