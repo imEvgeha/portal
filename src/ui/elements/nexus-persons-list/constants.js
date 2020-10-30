@@ -14,3 +14,5 @@ export const CREW_CONFIG = {
 };
 
 export const ACTOR = 'Actor';
+export const CAST = 'CAST';
+export const PERSONS_PER_REQUEST = 1000;
