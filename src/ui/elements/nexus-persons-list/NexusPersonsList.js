@@ -156,7 +156,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
                             {isEdit && (
                                 <div className={`nexus-c-persons-list__add ${isLastEntryValid ? '' : 'invalid'}`}>
                                     <UserPicker
-                                        id={uiConfig.htmlFor}
+                                        fieldId={uiConfig.htmlFor}
                                         width="100%"
                                         loadOptions={loadOptions}
                                         value={searchText}
