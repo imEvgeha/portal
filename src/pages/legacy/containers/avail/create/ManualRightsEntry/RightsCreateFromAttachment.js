@@ -28,6 +28,7 @@ import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constant
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
+import UploadIcon from '../../../../../../assets/action-upload.svg';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
 
@@ -117,21 +118,30 @@ class RightsCreateFromAttachment extends React.Component {
                 <StatusTag status={value} />
             </div>
         ),
-        attachment: ({value}) => (
-            <NexusTooltip
-                content={
-                    <div>
-                        {ATTACHMENT_TOOLTIP}
-                        <div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div>
+        attachment: ({value, data}) => (
+            <div className="nexus-c-attachment">
+                <NexusTooltip
+                    content={
+                        <div>
+                            {ATTACHMENT_TOOLTIP}
+                            <div className="nexus-c-attachment-name">{this.formatAttachmentName(value.link)}</div>
+                        </div>
+                    }
+                >
+                    <div className="nexus-c-attachment-link-old">
+                        <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
+                            <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
+                        </AkButton>
                     </div>
-                }
-            >
-                <div className="nexus-c-attachment-link-old">
-                    <AkButton appearance="link" onClick={() => this.getDownloadLink(value)}>
-                        <>{typeof value.link === 'string' && this.formatAttachmentName(value.link)}</>
-                    </AkButton>
-                </div>
-            </NexusTooltip>
+                </NexusTooltip>
+                {data.attachment.status === 'FAILED' && (
+                    <NexusTooltip content="Upload Attachment">
+                        <UploadIcon
+                        // onClick={() => downloadIngestFile(attachment)}
+                        />
+                    </NexusTooltip>
+                )}
+            </div>
         ),
         error: ({value}) => (
             <div className="nexus-c-attachment-error-old">
