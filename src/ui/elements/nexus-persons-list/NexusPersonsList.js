@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {cloneDeep} from 'lodash';
 import {Label} from '@atlaskit/field-base';
 import UserPicker from '@atlaskit/user-picker';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
@@ -21,6 +22,8 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
     const [searchText, setSearchText] = useState('');
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedPersonIndex, setSelectedPersonIndex] = useState(null);
+    const [modalInputValue, setModalInputValue] = useState('');
 
     const searchInputChanged = val => {
         setSearchText(val);
@@ -91,25 +94,38 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
         updateCastCrew(updatedPersons, isCast);
     };
 
-    const onCharacterSubmit = newCharacterName => {
-        modalData.selectedPerson.characterName = newCharacterName;
-        setPersons(persons);
+    const onCharacterSubmit = () => {
+        const updatedPersons = cloneDeep(persons);
+        const isCast = uiConfig.type === CAST;
+        updatedPersons[selectedPersonIndex].characterName = modalInputValue;
+        setPersons(updatedPersons);
+        setSelectedPersonIndex(null);
+        setModalInputValue('');
+        updateCastCrew(updatedPersons, isCast);
         closeModal();
     };
 
     const closeModal = () => {
         setModalData({});
         setIsModalOpen(false);
+        setSelectedPersonIndex(null);
+        setModalInputValue('');
     };
 
     const openModal = id => {
+        setSelectedPersonIndex(id);
         const selectedPerson = persons && persons[id];
+        setModalInputValue(selectedPerson.characterName);
         setModalData({
-            selectedPerson: selectedPerson,
             characterName: selectedPerson.characterName,
             displayName: selectedPerson.displayName,
         });
         setIsModalOpen(true);
+    };
+
+    const onModalInputChanged = event => {
+        const {value} = event.target;
+        setModalInputValue(value);
     };
 
     const reorder = (list, startIndex, endIndex) => {
@@ -205,8 +221,10 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
             {isEdit && (
                 <NexusCharacterNameModal
                     onSubmit={onCharacterSubmit}
-                    hint={modalData.displayName}
-                    defaultVal={modalData.characterName}
+                    displayName={modalData.displayName}
+                    characterName={modalData.characterName}
+                    value={modalInputValue}
+                    onChange={onModalInputChanged}
                     isModalOpen={isModalOpen}
                     closeModal={closeModal}
                 />
