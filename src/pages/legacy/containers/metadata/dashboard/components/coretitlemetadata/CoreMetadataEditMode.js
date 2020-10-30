@@ -128,7 +128,6 @@ class CoreMetadataEditMode extends Component {
     };
 
     render() {
-        const {legacyIds} = this.props.data;
         const vzExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === VZ);
         const movidaExternalID =
             this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === MOVIDA);
@@ -394,11 +393,7 @@ class CoreMetadataEditMode extends Component {
                                 type="text"
                                 name="vzTitleId"
                                 id="vzTitleId"
-                                value={
-                                    URL.isLocalOrDev()
-                                        ? get(vzExternalID, 'externalTitleId', '')
-                                        : get(legacyIds, 'vz.vzTitleId', '')
-                                }
+                                value={get(vzExternalID, 'externalTitleId', '')}
                                 placeholder="VZ ID"
                                 validate={{
                                     maxLength: {value: 200},
@@ -432,11 +427,7 @@ class CoreMetadataEditMode extends Component {
                                 type="text"
                                 name="movidaId"
                                 id="movidaId"
-                                value={
-                                    URL.isLocalOrDev()
-                                        ? get(movidaExternalID, 'externalId', '')
-                                        : get(legacyIds, 'movida.movidaId', '')
-                                }
+                                value={get(movidaExternalID, 'externalId', '')}
                                 placeholder="Movie ID"
                                 validate={{
                                     maxLength: {value: 200},
@@ -471,11 +462,7 @@ class CoreMetadataEditMode extends Component {
                                 type="text"
                                 name="movidaTitleId"
                                 id="movidaTitleId"
-                                value={
-                                    URL.isLocalOrDev()
-                                        ? get(movidaExternalID, 'externalTitleId', '')
-                                        : get(legacyIds, 'movida.movidaTitleId', '')
-                                }
+                                value={get(movidaExternalID, 'externalTitleId', '')}
                                 placeholder="Movida Title ID"
                             />
                         </Col>
@@ -490,11 +477,7 @@ class CoreMetadataEditMode extends Component {
                                 type="text"
                                 name="vzId"
                                 id="vzId"
-                                value={
-                                    URL.isLocalOrDev()
-                                        ? get(vzExternalID, 'externalId', '')
-                                        : get(legacyIds, 'vz.vzId', '')
-                                }
+                                value={get(vzExternalID, 'externalId', '')}
                                 placeholder="VZ ID"
                                 validate={{
                                     maxLength: {value: 200},

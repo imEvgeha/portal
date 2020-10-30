@@ -17,7 +17,7 @@ const {MOVIDA, VZ} = TitleSystems;
 class CoreMetadataReadOnlyMode extends Component {
     render() {
         const {externalIds, id, legacyIds} = this.props.data;
-        const nexusTitle = URL.isLocalOrDev() && isNexusTitle(id);
+        const nexusTitle = isNexusTitle(id);
         const vzExternalID = this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === VZ);
         const movidaExternalID =
             this.props.externalIDs && this.props.externalIDs.find(e => e.externalSystem === MOVIDA);
