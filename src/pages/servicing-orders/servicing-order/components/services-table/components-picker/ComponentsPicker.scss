@@ -43,14 +43,21 @@
         display: flex;
         flex-direction: column;
         padding: 10px;
-        width: 280px;
+        width: 310px;
         //Todo: check for tags and mixins
         border-left: 1px solid #bbb;
+    }
+    &__list-item {
+        display: flex;
+        justify-content: space-between;
+        span {
+            font-size: 11px;
+        }
     }
     &__selection-panel {
         display: flex;
         flex-direction: row;
-        width: 340px;
+        width: 90%;
         justify-content: space-between;
         padding: 10px;
     }
@@ -68,7 +75,7 @@
         }
     }
     &__select {
-        width: 140px;
+        width: 210px;
     }
 }
 

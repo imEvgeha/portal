@@ -1,5 +1,5 @@
 /* eslint react/prop-types: 0 */
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
@@ -77,7 +77,7 @@ const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
 
 const ListItem = ({item, onDelete}) => {
     return (
-        <div style={{display: 'flex', justifyContent: 'space-between', fontSize: '11px'}}>
+        <div className="picker__list-item">
             <div>
                 <CheckIcon size="medium" primaryColor="grey" />
                 {/* eslint-disable-next-line react/prop-types */}
@@ -158,32 +158,47 @@ const AudioComponentsPicker = ({data, closeModal, save, index}) => {
     const [warningText, setWarningText] = useState('');
     const {title, barcode, audioComponentArray = []} = data;
 
-    const languageOptions = uniqBy(
-        audioComponentArray.map(item => {
-            const lang = get(item, 'language', '');
-            return {value: lang, label: lang};
-        }),
-        'value'
+    const languageOptions = useMemo(
+        () =>
+            uniqBy(
+                audioComponentArray.map(item => {
+                    const lang = get(item, 'language', '');
+                    return {value: lang, label: lang};
+                }),
+                'value'
+            ),
+        []
     );
 
-    const trackConfiguration = uniqBy(
-        audioComponentArray.map(item => {
-            const track = get(item, 'trackConfiguration', '');
-            return {value: track, label: track};
-        }),
-        'value'
+    const trackConfiguration = useMemo(
+        () =>
+            uniqBy(
+                audioComponentArray.map(item => {
+                    const track = get(item, 'trackConfiguration', '');
+                    return {value: track, label: track};
+                }),
+                'value'
+            ),
+        []
     );
 
-    const audioChannels = getAudioChannelsForLangTrack(language, track, audioComponentArray);
+    const audioChannels = useMemo(() => getAudioChannelsForLangTrack(language, track, audioComponentArray), [
+        language,
+        track,
+    ]);
 
-    const checkboxData = audioChannels.map(item => {
-        return {
-            isChecked: false,
-            ...item,
-        };
-    });
+    const checkboxData = useMemo(
+        () =>
+            audioChannels.map(item => {
+                return {
+                    isChecked: false,
+                    ...item,
+                };
+            }),
+        [language, track]
+    );
 
-    const flattenComponents = flattenDeep(Object.values(components));
+    const flattenComponents = useMemo(() => flattenDeep(Object.values(components)), [components]);
 
     const isSummaryChanged =
         differenceBy(flattenComponents, data.audioSummary, 'componentID').length > 0 ||
