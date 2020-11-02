@@ -106,7 +106,7 @@ export const appConfig = {
 // child-app names needs to be of the format: "@portal-mf/event-management"
 export const registerSingleSpaApps = async () => {
     let importMap = {};
-    await nexusFetch('/singleSpaApps.json').then(map => {
+    await nexusFetch('/importMap.json').then(map => {
         importMap = map;
         Object.keys(map.imports).map(name => {
             if (name.includes('portal-mf')) {
