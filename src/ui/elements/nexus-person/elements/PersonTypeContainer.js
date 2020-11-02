@@ -9,7 +9,7 @@ const PersonTypeContainer = ({personType, personName}) => {
         <div className="nexus-c-person-type-container">
             <img src={DefaultUserIcon} alt="Person" className="nexus-c-person-type-container__img" />
             <Lozenge appearance="default">{personType}</Lozenge>
-            <span>{personName}</span>
+            <span className="nexus-c-person-type-container__name">{personName}</span>
         </div>
     );
 };

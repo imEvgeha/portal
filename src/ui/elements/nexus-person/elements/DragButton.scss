@@ -2,11 +2,9 @@
 @import '../../../../styles/atlaskit/colors';
 
 .nexus-c-drag-button {
-    @include margin(0, 0, 0, 1.25);
+    @include margin(0);
+    @include padding(0);
     cursor: move;
-    position: absolute;
-    right: 25px;
-    top: 5px;
     &:hover {
         color: map-get($blues, B200);
     }

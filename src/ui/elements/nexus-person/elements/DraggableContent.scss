@@ -1,0 +1,19 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-draggable-content {
+    border: 1px solid map-get($neutrals, N40);
+    @include padding(1.25);
+    background-color: map-get($neutrals, N10);
+    width: 97%;
+    margin: auto;
+    opacity: 1;
+    &:hover {
+        background-color: map-get($neutrals, N30);
+    }
+}
+
+.nexus-c-draggable-content--dragging {
+    border: 2px dotted map-get($darkModeNeutrals, DN20);
+    opacity: 0.8;
+}

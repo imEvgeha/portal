@@ -5,7 +5,7 @@ import './DragButton.scss';
 const DragButton = props => {
     return (
         <div {...props} className="nexus-c-drag-button">
-            <MenuExpandIcon />
+            <MenuExpandIcon size="medium" label="" />
         </div>
     );
 };

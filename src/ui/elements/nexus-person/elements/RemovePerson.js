@@ -7,7 +7,7 @@ import './RemovePerson.scss';
 const RemovePerson = ({onClick}) => {
     return (
         <Button className="nexus-c-remove-person" onClick={onClick} appearance="subtle-link">
-            <EditorCloseIcon label="X" />
+            <EditorCloseIcon size="medium" label="" />
         </Button>
     );
 };

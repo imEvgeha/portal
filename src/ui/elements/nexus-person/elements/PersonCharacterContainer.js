@@ -2,18 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
-import classnames from 'classnames';
 import PersonCharacterItem from './PersonCharacterItem';
 import './PersonCharacterContainer.scss';
 
-const PersonCharacterContainer = ({isShown, characterName, index, onEditCharacter}) => {
+const PersonCharacterContainer = ({characterName, index, onEditCharacter}) => {
     return (
-        <div
-            className={classnames('nexus-c-person-character-container', {
-                'nexus-c-person-character-container--show': isShown,
-            })}
-        >
-            <div className="nexus-c-person-character-container__tag">
+        <div className="nexus-c-person-character-container">
+            <div>
                 <Lozenge appearance="default">CHARACTER</Lozenge>
             </div>
             {characterName ? (
@@ -28,14 +23,12 @@ const PersonCharacterContainer = ({isShown, characterName, index, onEditCharacte
 };
 
 PersonCharacterContainer.propTypes = {
-    isShown: PropTypes.bool,
     characterName: PropTypes.string,
     index: PropTypes.number.isRequired,
     onEditCharacter: PropTypes.func.isRequired,
 };
 
 PersonCharacterContainer.defaultProps = {
-    isShown: false,
     characterName: '',
 };
 

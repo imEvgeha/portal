@@ -5,42 +5,33 @@ import RemovePerson from './elements/RemovePerson';
 import DragButton from './elements/DragButton';
 import PersonCharacterContainer from './elements/PersonCharacterContainer';
 import PersonTypeContainer from './elements/PersonTypeContainer';
+import DraggableContent from './elements/DraggableContent';
 import {Draggable} from 'react-beautiful-dnd';
-import {Row} from 'reactstrap';
 import {uid} from 'react-uid';
 import './NexusPerson.scss';
-import {
-    CustomColumn,
-    DraggableContent,
-} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
-// TODO: This seems to be extracted from legacy, should be refactored
-const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onEditCharacter}) => {
+const NexusPerson = ({person, index, hasCharacter, onRemove, onEditCharacter}) => {
     return (
         <Draggable draggableId={uid(person.id, index)} index={index}>
             {(provided, snapshot) => (
                 <div ref={provided.innerRef} {...provided.draggableProps}>
                     <DraggableContent isDragging={snapshot.isDragging}>
-                        <Row>
-                            <CustomColumn xs={!hasCharacter ? 10 : 5}>
-                                <PersonTypeContainer personName={person.displayName} personType={person.personType} />
-                            </CustomColumn>
-                            {hasCharacter ? (
-                                <CustomColumn xs={5}>
+                        <div className="nexus-c-nexus-person">
+                            <PersonTypeContainer personName={person.displayName} personType={person.personType} />
+                            <div className="nexus-c-nexus-person__character">
+                                {hasCharacter ? (
                                     <PersonCharacterContainer
-                                        className="nexus-c-person-character"
                                         index={index}
                                         onEditCharacter={onEditCharacter}
                                         characterName={person.characterName}
-                                        isShown={true}
                                     />
-                                </CustomColumn>
-                            ) : null}
-                            <CustomColumn xs={2}>
+                                ) : null}
+                            </div>
+                            <div className="nexus-c-nexus-person__character-buttons">
                                 <RemovePerson onClick={onRemove} />
                                 <DragButton {...provided.dragHandleProps} />
-                            </CustomColumn>
-                        </Row>
+                            </div>
+                        </div>
                     </DraggableContent>
                 </div>
             )}
