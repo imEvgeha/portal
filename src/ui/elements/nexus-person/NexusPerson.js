@@ -5,6 +5,7 @@ import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import RemovePerson from './elements/RemovePerson';
 import DragButton from './elements/DragButton';
+import PersonCharacterContainer from './elements/PersonCharacterContainer';
 import {Draggable} from 'react-beautiful-dnd';
 import {Row} from 'reactstrap';
 import {uid} from 'react-uid';
@@ -16,7 +17,6 @@ import {
     CustomEllipsis,
     DraggableContent,
     ListItemText,
-    ListText,
     PersonListFlag,
 } from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
@@ -48,7 +48,7 @@ const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onE
                             {hasCharacter ? (
                                 <CustomColumn xs={5}>
                                     <CustomEllipsis className="nexus-c-person-character-container">
-                                        <ListText className="nexus-c-person-character">
+                                        <PersonCharacterContainer className="nexus-c-person-character">
                                             <PersonListFlag>
                                                 <span className="nexus-c-person-separator">
                                                     <Lozenge appearance="default">CHARACTER</Lozenge>
@@ -65,7 +65,7 @@ const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onE
                                             ) : (
                                                 <Button onClick={() => onEditCharacter(index)}>Add</Button>
                                             )}
-                                        </ListText>
+                                        </PersonCharacterContainer>
                                     </CustomEllipsis>
                                 </CustomColumn>
                             ) : null}

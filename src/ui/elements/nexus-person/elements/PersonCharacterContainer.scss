@@ -1,0 +1,10 @@
+@import '../../../../styles/atlaskit/mixins';
+
+.nexus-c-person-character-container {
+    display: flex;
+    align-items: center;
+}
+
+.nexus-c-person-character-container--show {
+    @include margin(0, 0, 0, 2.5);
+}
