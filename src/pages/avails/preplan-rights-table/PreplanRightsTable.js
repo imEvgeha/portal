@@ -25,6 +25,8 @@ const PreplanRightsTable = ({
     username,
     setPreplanRights,
     setSelectedPrePlanRights,
+    setPrePlanColumnApi,
+    setPrePlanGridApi,
 }) => {
     const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'territoryCountry');
     const editedMappings = mapping
@@ -45,6 +47,11 @@ const PreplanRightsTable = ({
     const onGridReady = ({type, columnApi, api, data}) => {
         const result = [];
         switch (type) {
+            case GRID_EVENTS.READY: {
+                setPrePlanColumnApi(columnApi);
+                setPrePlanGridApi(api);
+                break;
+            }
             case GRID_EVENTS.FIRST_DATA_RENDERED: {
                 const idIndex = columnDefs.findIndex(e => e.field === 'id');
                 // move column to position of id col position + 7 because we use columnDefs from RightsRepo
@@ -91,12 +98,16 @@ PreplanRightsTable.propTypes = {
     activeTab: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     setSelectedPrePlanRights: PropTypes.func.isRequired,
+    setPrePlanColumnApi: PropTypes.func,
+    setPrePlanGridApi: PropTypes.func,
 };
 
 PreplanRightsTable.defaultProps = {
     columnDefs: [],
     mapping: null,
     prePlanRepoRights: [],
+    setPrePlanColumnApi: () => null,
+    setPrePlanGridApi: () => null,
 };
 
 export default PreplanRightsTable;

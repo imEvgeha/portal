@@ -87,8 +87,10 @@ const RightsRepository = ({
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [selectedColumnApi, setSelectedColumnApi] = useState();
+    const [prePlanColumnApi, setPrePlanColumnApi] = useState(null);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
+    const [prePlanGridApi, setPrePlanGridApi] = useState();
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
@@ -447,6 +449,8 @@ const RightsRepository = ({
                 username={username}
                 singleRightMatch={singleRightMatch}
                 setSingleRightMatch={setSingleRightMatch}
+                prePlanColumnApi={prePlanColumnApi}
+                prePlanGridApi={prePlanGridApi}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -488,6 +492,8 @@ const RightsRepository = ({
                 activeTab={activeTab}
                 mapping={mapping}
                 setPreplanRights={setPreplanRights}
+                setPrePlanColumnApi={setPrePlanColumnApi}
+                setPrePlanGridApi={setPrePlanGridApi}
                 setSelectedPrePlanRights={setSelectedPrePlanRights}
                 username={username}
             />
