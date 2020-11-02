@@ -97,7 +97,8 @@ class TitleEdit extends Component {
             ratingForCreate: {},
             externalIDs: null,
             validationErrors: new Set(),
-            isSyncing: false,
+            isSyncingVZ: false,
+            isSyncingMovida: false,
             flags: [],
         };
     }
@@ -575,19 +576,20 @@ class TitleEdit extends Component {
     };
 
     titleSync = (titleId, syncToVZ, syncToMovida) => {
+        const syncProp = syncToVZ ? 'isSyncingVZ' : 'isSyncingMovida';
         return publisherService
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
                 const titleSystem = syncToVZ ? 'vz' : 'movida';
                 this.loadExternalIds(titleId, titleSystem);
                 this.setState({
-                    isSyncing: false,
+                    [syncProp]: false,
                 });
                 return true;
             })
             .catch(() => {
                 this.setState({
-                    isSyncing: false,
+                    [syncProp]: false,
                 });
                 this.addToastToFlags(false);
                 return false;
@@ -1349,9 +1351,10 @@ class TitleEdit extends Component {
     onSyncPublishClick = (name, buttonName) => {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
+        const syncProp = syncToVz ? 'isSyncingVZ' : 'isSyncingMovida';
         if (buttonName === SYNC) {
             this.setState({
-                isSyncing: true,
+                [syncProp]: true,
             });
             this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
         } else {
@@ -1397,7 +1400,8 @@ class TitleEdit extends Component {
                                                     <PublishVzMovida
                                                         onSyncPublishClick={this.onSyncPublishClick}
                                                         externalIDs={this.state.externalIDs}
-                                                        isSyncing={this.state.isSyncing}
+                                                        isSyncingVZ={this.state.isSyncingVZ}
+                                                        isSyncingMovida={this.state.isSyncingMovida}
                                                     />
                                                     <Can I="update" a="Metadata">
                                                         <Button
