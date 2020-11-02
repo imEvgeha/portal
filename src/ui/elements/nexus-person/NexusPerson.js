@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import RemovePerson from './elements/RemovePerson';
 import DragButton from './elements/DragButton';
@@ -16,7 +15,6 @@ import {
     CustomColumn,
     CustomEllipsis,
     DraggableContent,
-    ListItemText,
     PersonListFlag,
 } from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
@@ -48,24 +46,13 @@ const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onE
                             {hasCharacter ? (
                                 <CustomColumn xs={5}>
                                     <CustomEllipsis className="nexus-c-person-character-container">
-                                        <PersonCharacterContainer className="nexus-c-person-character">
-                                            <PersonListFlag>
-                                                <span className="nexus-c-person-separator">
-                                                    <Lozenge appearance="default">CHARACTER</Lozenge>
-                                                </span>
-                                            </PersonListFlag>
-                                            {person.characterName ? (
-                                                <ListItemText
-                                                    isEditMode
-                                                    onClick={() => onEditCharacter(index)}
-                                                    title={person.characterName}
-                                                >
-                                                    {person.characterName}
-                                                </ListItemText>
-                                            ) : (
-                                                <Button onClick={() => onEditCharacter(index)}>Add</Button>
-                                            )}
-                                        </PersonCharacterContainer>
+                                        <PersonCharacterContainer
+                                            className="nexus-c-person-character"
+                                            index={index}
+                                            onEditCharacter={onEditCharacter}
+                                            characterName={person.characterName}
+                                            isShown={true}
+                                        />
                                     </CustomEllipsis>
                                 </CustomColumn>
                             ) : null}
