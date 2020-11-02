@@ -158,9 +158,12 @@ export const PrePlanActions = ({
                     // eslint-disable-next-line prefer-destructuring
                     updatedRight = rightsList.filter(r => r.id === right.id)[0];
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    updatedRight.keywords = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(
-                        ','
-                    );
+                    let keywordsStr = '';
+                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                    updatedRight.keywords =
+                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
+                            ? keywordsStr.slice(0, -1)
+                            : keywordsStr;
                 }
             });
         });
