@@ -1,8 +1,8 @@
 import React, {useCallback, useContext} from 'react';
 import PropTypes from 'prop-types';
 import UploadIcon from '../../../../../../assets/action-upload.svg';
-import {NexusTooltip} from '../../../../../../ui/elements';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
+import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import InputForm from '../InputForm/InputForm';
 
 const TITLE = 'Avail Ingest';
@@ -33,7 +33,7 @@ const ReuploadIngestButton = ({attachment}) => {
 
     return (
         <NexusTooltip content="Upload Attachment">
-            <UploadIcon className="nexus-c-avails-ingest__download-icon" onClick={() => reUploadIngestFile()} />
+            <UploadIcon className="nexus-c-avails-ingest__download-icon" onClick={reUploadIngestFile} />
         </NexusTooltip>
     );
 };

@@ -28,7 +28,6 @@ import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constant
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
-import UploadIcon from '../../../../../../assets/action-upload.svg';
 import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
