@@ -37,7 +37,6 @@ const CastCrew = ({persons, isEdit, onChange}) => {
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
-                    showPersonType={true}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                 />
@@ -47,7 +46,6 @@ const CastCrew = ({persons, isEdit, onChange}) => {
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}
-                    showPersonType={true}
                     isEdit={isEdit}
                     updateCastCrew={updateCastCrew}
                 />
