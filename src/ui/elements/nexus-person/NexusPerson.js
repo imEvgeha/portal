@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import RemovePerson from './elements/RemovePerson';
+import DragButton from './elements/DragButton';
 import {Draggable} from 'react-beautiful-dnd';
 import {Row} from 'reactstrap';
 import {uid} from 'react-uid';
@@ -12,7 +13,6 @@ import DefaultUserIcon from '../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../pages/legacy/constants/metadata/configAPI';
 import {
     CustomColumn,
-    CustomDragButton,
     CustomEllipsis,
     DraggableContent,
     ListItemText,
@@ -71,7 +71,7 @@ const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onE
                             ) : null}
                             <CustomColumn xs={2}>
                                 <RemovePerson onClick={onRemove} />
-                                <CustomDragButton name="bars" {...provided.dragHandleProps} />
+                                <DragButton {...provided.dragHandleProps} />
                             </CustomColumn>
                         </Row>
                     </DraggableContent>
