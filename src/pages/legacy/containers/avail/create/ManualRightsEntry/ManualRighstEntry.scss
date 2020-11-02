@@ -56,6 +56,13 @@
     }
 }
 
+.nexus-c-attachment {
+    display: flex;
+    > div {
+        width: 100%;
+    }
+}
+
 .nexus-c-status-tag-old {
     display: flex;
     justify-content: center;

@@ -1,6 +1,7 @@
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {keycloak} from '../../../../../auth/keycloak';
+import {isString} from 'lodash';
 
 // currently FETCH API doesn't support upload progress calculation
 // for upload progress we should switch upload to XHR (XMLHttpRequest) or
@@ -10,7 +11,11 @@ export const uploadService = {
     uploadAvail: ({file, externalId, params = {}, ...rest}) => {
         const {token} = keycloak || {};
         const formData = new FormData();
-        formData.append('avail', file);
+        if (isString(file)) {
+            formData.append('s3Link', file);
+        } else {
+            formData.append('avail', file);
+        }
         const options = {
             headers: {
                 ...(token ? {Authorization: `Bearer ${token}`} : {}),
