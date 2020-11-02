@@ -1,7 +1,8 @@
+@import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
 .nexus-c-persons-list {
-    min-height: 160px;
+    @include addSpacing('min-height', 40);
 }
 
 .nexus-c-persons-list__group {
@@ -9,7 +10,7 @@
 }
 
 .nexus-c-persons-list__add {
-    margin-top: 5px;
+    @include margin(1.25, 0, 0, 0);
     border: none;
     border-radius: 3px;
     width: 97%;
