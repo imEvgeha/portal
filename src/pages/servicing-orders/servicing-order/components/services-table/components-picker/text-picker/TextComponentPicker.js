@@ -6,8 +6,7 @@ import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
 import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
 import {Header, Footer, SummaryPanel, AddToService} from '../ComponentsPicker';
-import {getToolTipText} from '../pickerUtils';
-import {CHANNEL_EXISTS, header} from '../constants';
+import TextSummaryPanel from './TextSummaryPanel';
 import './TextComponentPicker.scss';
 
 const SelectionPanel = ({data}) => {
@@ -15,7 +14,7 @@ const SelectionPanel = ({data}) => {
 
     return (
         <div>
-            <b>Step 1: Filter Language and Track configuration</b>
+            <b>Step 1: Select Configuration</b>
             <div className="text-picker__selection-panel">
                 <div>
                     <HelperMessage>Language / MFX</HelperMessage>
@@ -44,7 +43,7 @@ const SelectionPanel = ({data}) => {
     );
 };
 
-const TextComponentsPicker = ({data, closeModal, save, index}) => {
+const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     const [language, setLanguage] = useState('');
     const [format, setFormat] = useState('');
     const [componentId, setComponentId] = useState('');
@@ -97,31 +96,15 @@ const TextComponentsPicker = ({data, closeModal, save, index}) => {
     }, [data]);
 
     useEffect(() => {
-        setWarningText(doesComponentExistInSummary ? CHANNEL_EXISTS : '');
+        setWarningText(doesComponentExistInSummary ? 'Component already in summary' : '');
     }, [format, language]);
 
     const saveComponentsLocally = () => {
-        setComponents(prev => {
-            return Object.keys(prev).length
-                ? groupBy(
-                      uniqBy(flattenDeep([...Object.values(components), ...selectedRows]), v =>
-                          [v.channelNumber, v.language, v.trackConfig].join()
-                      ),
-                      v => [v.language, v.trackConfig].join()
-                  )
-                : groupBy([...selectedRows], v => [v.language, v.trackConfig].join());
-        });
-        setSelectedRows([]);
-        unCheckAll();
+        setComponents([...components, {language: language.value, format: format.value, componentID: componentId}]);
     };
 
-    const removeComponent = keyToRemove => {
-        const newComponents = pickBy(components, (_, key) => key !== keyToRemove);
-        setComponents(newComponents);
-        if (selectedRows.length > 0) {
-            setSelectedRows([]);
-            unCheckAll();
-        }
+    const removeComponent = compId => {
+        setComponents(prev => prev.filter(item => item.componentID !== compId));
     };
 
     const selectionData = {
@@ -133,10 +116,9 @@ const TextComponentsPicker = ({data, closeModal, save, index}) => {
         setFormat,
     };
 
-    const componentsWithToolTipText = getToolTipText(components);
-
     const saveComponentsInRow = () => {
-        save(index, components);
+        console.log(components);
+        saveComponentData(index, components);
         closeModal();
     };
 
@@ -155,7 +137,7 @@ const TextComponentsPicker = ({data, closeModal, save, index}) => {
                     />
                     <AddToService isEnabled={!warningText} onClick={saveComponentsLocally} />
                 </div>
-                <SummaryPanel list={componentsWithToolTipText} setComponents={setComponents} remove={removeComponent} />
+                <TextSummaryPanel list={components} setComponents={setComponents} remove={removeComponent} />
             </div>
             <hr className="solid" />
             <Footer
@@ -171,7 +153,7 @@ const TextComponentsPicker = ({data, closeModal, save, index}) => {
 TextComponentsPicker.propTypes = {
     data: PropTypes.object.isRequired,
     closeModal: PropTypes.func.isRequired,
-    save: PropTypes.func.isRequired,
+    saveComponentData: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
 };
 

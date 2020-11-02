@@ -99,7 +99,12 @@ export const ComponentsPicker = ({data, closeModal, saveComponentData, index}) =
                 );
             if (['Closed Captioning', 'Subtitles'].includes(assetType))
                 return (
-                    <TextComponentPicker index={index} closeModal={closeModal} save={saveComponentData} data={data} />
+                    <TextComponentPicker
+                        index={index}
+                        closeModal={closeModal}
+                        saveComponentData={saveComponentData}
+                        data={data}
+                    />
                 );
         }
         return notAvailableMsg(NO_AUDIO_EXISTS, barcode);
