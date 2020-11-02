@@ -26,9 +26,7 @@ const PreplanRightsTable = ({
     setPreplanRights,
     setSelectedPrePlanRights,
 }) => {
-    const filteredColumnDefs = columnDefs.filter(
-        columnDef => columnDef.colId !== 'selected' && columnDef.colId !== 'territoryCountry'
-    );
+    const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'territoryCountry');
     const editedMappings = mapping
         .filter(mapping => mapping.javaVariableName !== 'territory')
         .map(mapping => {
