@@ -27,7 +27,7 @@ const ReuploadIngestButton = ({attachment}) => {
 
     return (
         <NexusTooltip content="Upload Attachment">
-            <UploadIcon className="nexus-c-avails-ingest__download-icon" onClick={reUploadIngestFile} />
+            <UploadIcon className="nexus-c-avails-ingest__upload-icon" onClick={reUploadIngestFile} />
         </NexusTooltip>
     );
 };
