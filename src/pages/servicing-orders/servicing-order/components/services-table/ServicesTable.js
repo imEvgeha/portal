@@ -41,9 +41,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             ''
         );
 
-    const onGridReady = params => {
-        setGridApi(params.api);
-        params.api.sizeColumnsToFit();
+    const onGridReady = ({type, api}) => {
+        setGridApi(api);
+        type === 'READY' && api.sizeColumnsToFit();
     };
 
     useEffect(() => {
