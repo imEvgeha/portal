@@ -5,6 +5,7 @@ import CrossCircle from '../../../../../assets/action-cross-circle.svg';
 import DownloadIcon from '../../../../../assets/action-download.svg';
 import Email from '../../../../../assets/email.svg';
 import {NexusTooltip} from '../../../../../ui/elements';
+import {URL} from '../../../../../util/Common';
 import IngestReport from '../../../ingest-panel/components/ingest-report/IngestReport';
 import IngestStatus from '../../../ingest-panel/components/ingest-status/IngestStatus';
 import IngestTitle from '../../../ingest-panel/components/ingest-title/IngestTitle';
@@ -61,7 +62,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         </div>
                     ))}
                     <div className="nexus-c-avails-ingest__download">
-                        {status === 'FAILED' && <ReuploadIngestButton attachment={attachment} />}
+                        {URL.isLocalOrDev() && status === 'FAILED' && <ReuploadIngestButton attachment={attachment} />}
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
                                 className="nexus-c-avails-ingest__download-icon"

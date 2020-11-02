@@ -134,7 +134,9 @@ class RightsCreateFromAttachment extends React.Component {
                         </AkButton>
                     </div>
                 </NexusTooltip>
-                {data.attachment.status === 'FAILED' && <ReuploadIngestButton attachment={data.attachment} />}
+                {URL.isLocalOrDev() && data.attachment.status === 'FAILED' && (
+                    <ReuploadIngestButton attachment={data.attachment} />
+                )}
             </div>
         ),
         error: ({value}) => (
