@@ -64,7 +64,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         {status === 'FAILED' && <ReuploadIngestButton attachment={attachment} />}
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
-                                className="nexus-c-avails-ingest__upload-icon"
+                                className="nexus-c-avails-ingest__download-icon"
                                 onClick={() => downloadIngestFile(attachment)}
                             />
                         </NexusTooltip>

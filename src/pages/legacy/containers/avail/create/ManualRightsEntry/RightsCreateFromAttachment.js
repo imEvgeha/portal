@@ -29,6 +29,7 @@ import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntr
 import Constants from './Constants.js';
 import './ManualRighstEntry.scss';
 import UploadIcon from '../../../../../../assets/action-upload.svg';
+import ReuploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/reupload-ingest-button/ReuploadIngestButton';
 
 const {REFRESH_INTERVAL, ATTACHMENT_TOOLTIP, EMAIL_BUTTON} = Constants;
 
@@ -134,13 +135,7 @@ class RightsCreateFromAttachment extends React.Component {
                         </AkButton>
                     </div>
                 </NexusTooltip>
-                {data.attachment.status === 'FAILED' && (
-                    <NexusTooltip content="Upload Attachment">
-                        <UploadIcon
-                        // onClick={() => downloadIngestFile(attachment)}
-                        />
-                    </NexusTooltip>
-                )}
+                {data.attachment.status === 'FAILED' && <ReuploadIngestButton attachment={data.attachment} />}
             </div>
         ),
         error: ({value}) => (
