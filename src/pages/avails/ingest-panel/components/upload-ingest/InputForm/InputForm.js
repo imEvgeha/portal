@@ -126,9 +126,10 @@ const InputForm = ({
 
     const uploadHandler = () => {
         closeModalCallback();
+        const fileParam = attachment && attachment.link ? attachment.link : file;
         const params = {
             serviceRegion: serviceRegion.value,
-            file,
+            file: fileParam,
             closeModal: closeModalCallback,
         };
 
