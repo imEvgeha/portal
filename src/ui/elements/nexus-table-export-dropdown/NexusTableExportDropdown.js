@@ -11,6 +11,7 @@ import {
     SELECTED_FOR_PLANNING_TAB,
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
+    IN_PROGRESS,
 } from '../../../pages/avails/rights-repository/constants';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
 import {downloadFile} from '../../../util/Common';
@@ -172,6 +173,9 @@ const NexusTableExportDropdown = ({
                 }
                 if (headerName === 'Withdrawn') {
                     return value.filter(item => item.withdrawn).map(item => item.country);
+                }
+                if (headerName === 'DOP Status') {
+                    return IN_PROGRESS;
                 }
                 return value;
             },
