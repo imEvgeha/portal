@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import {Draggable} from 'react-beautiful-dnd';
 import {Row} from 'reactstrap';
@@ -9,7 +10,6 @@ import './NexusPerson.scss';
 import DefaultUserIcon from '../../../assets/img/default-user.png';
 import {getFormatTypeName} from '../../../pages/legacy/constants/metadata/configAPI';
 import {
-    CustomAddButton,
     CustomColumn,
     CustomDeleteButton,
     CustomDragButton,
@@ -63,9 +63,7 @@ const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onE
                                                     {person.characterName}
                                                 </ListItemText>
                                             ) : (
-                                                <CustomAddButton onClick={() => onEditCharacter(index)}>
-                                                    Add
-                                                </CustomAddButton>
+                                                <Button onClick={() => onEditCharacter(index)}>Add</Button>
                                             )}
                                         </ListText>
                                     </CustomEllipsis>
