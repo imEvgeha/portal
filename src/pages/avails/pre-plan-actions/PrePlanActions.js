@@ -38,6 +38,11 @@ export const PrePlanActions = ({
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
     const [keywords, setKeywords] = useState('');
+    const [bulkUpdate, setBulkUpdate] = useState([]);
+
+    useEffect(() => {
+        bulkSetInTable();
+    }, [bulkUpdate]);
 
     const node = useRef();
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -153,9 +158,12 @@ export const PrePlanActions = ({
                     // eslint-disable-next-line prefer-destructuring
                     updatedRight = rightsList.filter(r => r.id === right.id)[0];
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    updatedRight.keywords = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(
-                        ','
-                    );
+                    let keywordsStr = '';
+                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                    updatedRight.keywords =
+                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
+                            ? keywordsStr.slice(0, -1)
+                            : keywordsStr;
                 }
             });
         });
@@ -172,7 +180,7 @@ export const PrePlanActions = ({
             actions: [
                 {
                     text: 'Set',
-                    onClick: bulkSetInTable,
+                    onClick: () => setBulkUpdate(!bulkUpdate),
                 },
                 {
                     text: 'Cancel',
