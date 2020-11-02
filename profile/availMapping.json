@@ -6,6 +6,7 @@
             "dataType": "string",
             "readOnly": true,
             "enableSearch": false,
+            "queryParamName": "id",
             "enableEdit": true,
             "required": false
         },

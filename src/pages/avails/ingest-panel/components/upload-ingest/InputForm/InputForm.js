@@ -33,9 +33,11 @@ const InputForm = ({
     isUploading,
     openModalCallback,
     closeModalCallback,
+    attachment,
 }) => {
     const {serviceRegion: ingestServiceRegion, licensor: ingestLicensor, ingestType} = ingestData || {};
-
+    const {link} = attachment;
+    const fileName = link && link.split('/').pop();
     const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
@@ -124,9 +126,10 @@ const InputForm = ({
 
     const uploadHandler = () => {
         closeModalCallback();
+        const fileParam = attachment && attachment.link ? attachment.link : file;
         const params = {
             serviceRegion: serviceRegion.value,
-            file,
+            file: fileParam,
             closeModal: closeModalCallback,
         };
 
@@ -196,9 +199,9 @@ const InputForm = ({
             <div className="manual-ingest-config__grid">
                 <div className="manual-ingest-config--file-name">
                     <label className="manual-ingest-config__label">File</label>
-                    <span>{file.name}</span>
+                    <span>{fileName || file.name}</span>
                 </div>
-                <Button onClick={browseClick} className="manual-ingest-config__grid--browse">
+                <Button isDisabled={!!fileName} onClick={browseClick} className="manual-ingest-config__grid--browse">
                     Browse
                 </Button>
             </div>
@@ -313,6 +316,7 @@ InputForm.propTypes = {
     file: PropTypes.object,
     isUploading: PropTypes.bool,
     ingestData: PropTypes.object,
+    attachment: PropTypes.object,
 };
 
 InputForm.defaultProps = {
@@ -325,6 +329,7 @@ InputForm.defaultProps = {
     file: {},
     isUploading: false,
     ingestData: {},
+    attachment: {},
 };
 
 const mapStateToProps = state => {

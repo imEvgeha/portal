@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReuploadIngestButton should match snapshot 1`] = `
+<NexusTooltip
+  content="Upload Attachment"
+  hasWhiteBackground={false}
+  isDisabled={false}
+>
+  <[object Object]
+    className="nexus-c-avails-ingest__upload-icon"
+    onClick={[Function]}
+  />
+</NexusTooltip>
+`;
