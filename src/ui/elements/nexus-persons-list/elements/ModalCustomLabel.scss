@@ -1,10 +1,9 @@
+@import '../../../../styles/atlaskit/mixins';
 @import '../../../../styles/atlaskit/colors';
 
 .nexus-c-modal-custom-label {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: map-get($neutrals, N200);
+    @include heading(h400);
+    @include margin(0, 0, 1.25, 0);
 }
 
 .nexus-c-modal-custom-label--is-error {

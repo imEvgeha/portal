@@ -1,5 +1,4 @@
 import config from 'react-global-configuration';
-import {nexusFetch} from '../../../util/http-client/index';
 import {
     ACTOR,
     CAST,
@@ -10,7 +9,8 @@ import {
     AWARD,
     RECORDING_ARTIST,
     VOICE_TALENT,
-} from './constants';
+} from '../../../ui/elements/nexus-persons-list/constants';
+import {nexusFetch} from '../../../util/http-client/index';
 
 const createMultiCastPersonTypePath = () => {
     const value = `${ACTOR},${ANIMATED_CHARACTER},${AWARD},${RECORDING_ARTIST},${VOICE_TALENT}&`.toLowerCase();

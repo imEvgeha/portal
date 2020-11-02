@@ -1,7 +1,8 @@
+@import '../../../../styles/atlaskit/mixins';
 @import '../../../../styles/atlaskit/colors';
 
 .nexus-c-modal-custom-input {
-    padding: 5px;
+    @include padding(2);
     border: 2px solid map-get($neutrals, N40);
     border-radius: 3px;
     color: map-get($darkModeNeutrals, DN20);
@@ -19,5 +20,5 @@
 }
 
 .nexus-c-modal-custom-input--read-only {
-    margin-bottom: 10px;
+    @include margin(0, 0, 2.5, 0);
 }

@@ -9,7 +9,7 @@ import {uid} from 'react-uid';
 import {ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
 import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
 import DroppableContent from './elements/DroppableContent';
-import {searchPerson} from './utils';
+import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
 import NexusPerson from './elements/NexusPerson';
 import NexusPersonRO from './elements/NexusPersonRO';
