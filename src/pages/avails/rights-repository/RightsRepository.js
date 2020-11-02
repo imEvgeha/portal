@@ -87,10 +87,12 @@ const RightsRepository = ({
     const [gridApi, setGridApi] = useState();
     const [columnApi, setColumnApi] = useState();
     const [selectedColumnApi, setSelectedColumnApi] = useState();
+    const [prePlanGridApi, setPrePlanGridApi] = useState();
     const [prePlanColumnApi, setPrePlanColumnApi] = useState(null);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
     const [selectedGridApi, setSelectedGridApi] = useState();
-    const [prePlanGridApi, setPrePlanGridApi] = useState();
+    const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
+    const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
@@ -451,6 +453,8 @@ const RightsRepository = ({
                 setSingleRightMatch={setSingleRightMatch}
                 prePlanColumnApi={prePlanColumnApi}
                 prePlanGridApi={prePlanGridApi}
+                selectedForPlanningColumnApi={selectedForPlanningColumnApi}
+                selectedForPlanningGridApi={selectedForPlanningGridApi}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -498,7 +502,12 @@ const RightsRepository = ({
                 username={username}
             />
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
-                <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
+                <SelectedForPlanning
+                    activeTab={activeTab}
+                    isPlanningTabRefreshed={isPlanningTabRefreshed}
+                    setSelectedForPlanningGridApi={setSelectedForPlanningGridApi}
+                    setSelectedForPlanningColumnApi={setSelectedForPlanningColumnApi}
+                />
             )}
         </div>
     );

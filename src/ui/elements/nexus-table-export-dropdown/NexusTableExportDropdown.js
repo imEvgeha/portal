@@ -4,7 +4,14 @@ import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-
 import {connect} from 'react-redux';
 import './NexusTableExportDropdown.scss';
 import * as selectors from '../../../pages/avails/right-matching/rightMatchingSelectors';
-import {RIGHTS_SELECTED_TAB, RIGHTS_TAB, PRE_PLAN_TAB} from '../../../pages/avails/rights-repository/constants';
+import {
+    RIGHTS_SELECTED_TAB,
+    RIGHTS_TAB,
+    PRE_PLAN_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+    PREPLAN_REPORT,
+    SELECTED_FOR_PLANNING_REPORT,
+} from '../../../pages/avails/rights-repository/constants';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
 import {downloadFile} from '../../../util/Common';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
@@ -22,7 +29,10 @@ const NexusTableExportDropdown = ({
     selectedRightGridApi,
     prePlanColumnApi,
     prePlanGridApi,
+    selectedForPlanningColumnApi,
+    selectedForPlanningGridApi,
     prePlanRightsCount,
+    planningRightsCount,
     mapping,
     username,
 }) => {
@@ -52,6 +62,8 @@ const NexusTableExportDropdown = ({
             setTooltipContent(TOOLTIP_MSG_MAX_ROWS);
             disable = true;
         } else if (activeTab === PRE_PLAN_TAB && prePlanRightsCount === 0) {
+            disable = true;
+        } else if (activeTab === SELECTED_FOR_PLANNING_TAB && planningRightsCount === 0) {
             disable = true;
         }
         setIsDisabled(disable);
@@ -84,7 +96,16 @@ const NexusTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                dowloadTableReport(true);
+                dowloadTableReport(true, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                break;
+            }
+            case SELECTED_FOR_PLANNING_TAB: {
+                dowloadTableReport(
+                    true,
+                    selectedForPlanningGridApi,
+                    selectedForPlanningColumnApi,
+                    SELECTED_FOR_PLANNING_REPORT
+                );
                 break;
             }
             default:
@@ -110,7 +131,16 @@ const NexusTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                dowloadTableReport(false);
+                dowloadTableReport(false, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                break;
+            }
+            case SELECTED_FOR_PLANNING_TAB: {
+                dowloadTableReport(
+                    false,
+                    selectedForPlanningGridApi,
+                    selectedForPlanningColumnApi,
+                    SELECTED_FOR_PLANNING_REPORT
+                );
                 break;
             }
             default:
@@ -129,9 +159,9 @@ const NexusTableExportDropdown = ({
         return allDisplayedColumns;
     };
 
-    const dowloadTableReport = allColumns => {
+    const dowloadTableReport = (allColumns, gridApi, columnApi, fileName) => {
         const currentTime = new Date();
-        prePlanGridApi.exportDataAsExcel({
+        gridApi.exportDataAsExcel({
             processCellCallback: params => {
                 const {column} = params || {};
                 const {colDef} = column || {};
@@ -145,10 +175,10 @@ const NexusTableExportDropdown = ({
                 }
                 return value;
             },
-            fileName: `Pre_Plan_Report_${username}_${currentTime.getFullYear()}-${
+            fileName: `${fileName}_${username}_${currentTime.getFullYear()}-${
                 currentTime.getMonth() + 1
             }-${currentTime.getDate()}`,
-            columnKeys: preparePrePlanExportColumns(prePlanColumnApi),
+            columnKeys: preparePrePlanExportColumns(columnApi),
             allColumns,
         });
     };
@@ -176,7 +206,7 @@ const NexusTableExportDropdown = ({
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger={activeTab === PRE_PLAN_TAB ? 'Download Report' : 'Export'}
+                trigger={[PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export'}
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >
@@ -205,8 +235,11 @@ NexusTableExportDropdown.propTypes = {
     selectedRightColumnApi: PropTypes.object.isRequired,
     prePlanColumnApi: PropTypes.object,
     prePlanGridApi: PropTypes.object,
+    selectedForPlanningColumnApi: PropTypes.object,
+    selectedForPlanningGridApi: PropTypes.object,
     mapping: PropTypes.array.isRequired,
     prePlanRightsCount: PropTypes.number,
+    planningRightsCount: PropTypes.number,
     username: PropTypes.string,
 };
 
@@ -214,7 +247,10 @@ NexusTableExportDropdown.defaultProps = {
     activeTab: RIGHTS_TAB,
     prePlanColumnApi: {},
     prePlanGridApi: {},
+    selectedForPlanningColumnApi: {},
+    selectedForPlanningGridApi: {},
     prePlanRightsCount: 0,
+    planningRightsCount: 0,
     username: '',
 };
 
