@@ -1,6 +1,6 @@
-@import '../../../../../../styles/atlaskit/mixins';
+@import '../../../../../../../styles/atlaskit/mixins';
 
-.picker {
+.text-picker {
     &__header {
         @include margin(5, 0, 0, 0);
         &-title {
@@ -21,7 +21,7 @@
     &__inner {
         display: flex;
         flex-direction: column;
-        //width: 95%;
+        @include addSpacing('height', 55);
     }
     &__audio-panel {
         @include margin(3, 0, 0, 0);
@@ -56,10 +56,11 @@
     }
     &__selection-panel {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         width: 90%;
         justify-content: space-between;
         @include padding(3, 0, 0, 0);
+        @include addSpacing('height', 30);
     }
     &__footer {
         display: flex;

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
@@ -28,10 +28,11 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const [audioComponents, setAudioComponents] = useState([]);
     const [gridApi, setGridApi] = useState(null);
 
-    const deteComponents = componentsArray.find(item => item && item.barcode === data.barcode);
+    const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
+        data.barcode,
+    ]);
 
     const title =
         get(data, 'title', '') ||
@@ -50,7 +51,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         if (!isEmpty(data)) {
             const recp = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
             recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
-            setAudioComponents(get(deteComponents, 'components.audioComponents', []));
             setProviderServices(`${data.fs.toLowerCase()}Services`);
             setServices(data);
             setOriginalServices(data);
@@ -107,6 +107,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         setUpdatedServices(newServices);
     };
 
+    const getComponentsForPicker = assetType => {
+        if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
+        else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
+        else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
+        return [];
+    };
+
     // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
@@ -144,15 +151,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                                           assetType: tableData[rowIndex].assetType,
                                           barcode: data.barcode,
                                           title,
-                                          audioSummary: tableData[rowIndex].components,
-                                          audioComponentArray: get(deteComponents, 'components.audioComponents', []),
+                                          compSummary: tableData[rowIndex].components,
+                                          componentArray: getComponentsForPicker(tableData[rowIndex].assetType),
                                       }}
                                       closeModal={closeModal}
-                                      save={handleComponentsEdit}
+                                      saveComponentData={handleComponentsEdit}
                                       index={rowIndex}
                                   />,
                                   {
-                                      width: 'large',
+                                      width: tableData[rowIndex].assetType === 'Audio' ? 'x-large' : 'large',
                                   }
                               );
                     }}
@@ -178,9 +185,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         dataSource: 'components',
         headerName: 'Components',
         autoHeight: true,
-        width: 500,
+        width: 250,
         cellRendererFramework: componentsCell,
-        cellRendererParams: {audioComponents, tableData},
+        cellRendererParams: {data, tableData},
     };
 
     const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));

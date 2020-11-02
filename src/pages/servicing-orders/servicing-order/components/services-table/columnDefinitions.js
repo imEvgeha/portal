@@ -7,18 +7,21 @@ const columnDefinitions = [
         field: 'serviceType',
         dataSource: 'serviceType',
         headerName: 'Service Type',
+        width: 150,
     },
     {
         colId: 'assetType',
         field: 'assetType',
         dataSource: 'assetType',
         headerName: 'Asset Type',
+        width: 150,
     },
     {
         colId: 'spec',
         field: 'spec',
         dataSource: 'spec',
         headerName: 'Spec',
+        width: 150,
     },
     {
         colId: 'components',
@@ -27,6 +30,7 @@ const columnDefinitions = [
         colId: 'doNotStartBefore',
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
+        width: 220,
         valueFormatter: params => ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
     },
     {
@@ -34,16 +38,19 @@ const columnDefinitions = [
         field: 'priority',
         dataSource: 'priority',
         headerName: 'Priority',
+        width: 90,
     },
     {
         colId: 'recipient',
         field: 'recipient',
         headerName: 'Recipient',
+        width: 160,
     },
     {
         colId: 'operationalStatus',
         field: 'operationalStatus',
         headerName: 'Operational Status',
+        width: 200,
     },
 ];
 
