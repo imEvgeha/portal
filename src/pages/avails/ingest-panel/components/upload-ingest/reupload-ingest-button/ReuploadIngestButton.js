@@ -1,4 +1,4 @@
-import React, {useCallback, useContext} from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import UploadIcon from '../../../../../../assets/action-upload.svg';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
@@ -9,20 +9,14 @@ const TITLE = 'Avail Ingest';
 
 const ReuploadIngestButton = ({attachment}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const openModalCallback = useCallback((node, params) => openModal(node, params), []);
-    const closeModalCallback = useCallback(() => closeModal(), []);
-
-    const closeUploadModal = useCallback(() => {
-        closeModalCallback();
-    }, []);
 
     const buildForm = () => {
         return (
             <InputForm
-                closeModal={closeUploadModal}
+                closeModal={closeModal}
                 attachment={attachment}
-                openModalCallback={openModalCallback}
-                closeModalCallback={closeModalCallback}
+                openModalCallback={openModal}
+                closeModalCallback={closeModal}
             />
         );
     };
