@@ -6,8 +6,8 @@ import {Draggable} from 'react-beautiful-dnd';
 import {Row} from 'reactstrap';
 import {uid} from 'react-uid';
 import './NexusPerson.scss';
-import DefaultUserIcon from '../../../../assets/img/default-user.png';
-import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
+import DefaultUserIcon from '../../../assets/img/default-user.png';
+import {getFormatTypeName} from '../../../pages/legacy/constants/metadata/configAPI';
 import {
     CustomAddButton,
     CustomColumn,
@@ -18,7 +18,7 @@ import {
     ListItemText,
     ListText,
     PersonListFlag,
-} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 // TODO: This seems to be extracted from legacy, should be refactored
 const NexusPerson = ({person, index, hasCharacter, showPersonType, onRemove, onEditCharacter}) => {

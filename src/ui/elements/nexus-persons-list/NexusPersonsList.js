@@ -11,8 +11,8 @@ import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/co
 import DroppableContent from './elements/DroppableContent';
 import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
-import NexusPerson from './elements/NexusPerson';
-import NexusPersonRO from './elements/NexusPersonRO';
+import NexusPerson from '../nexus-person/NexusPerson';
+import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {CAST, CAST_CONFIG, PERSONS_PER_REQUEST} from './constants';
 import './NexusPersonsList.scss';
 

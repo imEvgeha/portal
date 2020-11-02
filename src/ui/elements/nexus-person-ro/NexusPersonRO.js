@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
 import {Container, Row} from 'reactstrap';
 import './NexusPersonRO.scss';
-import DefaultUserIcon from '../../../../assets/img/default-user.png';
-import {getFormatTypeName} from '../../../../pages/legacy/constants/metadata/configAPI';
+import DefaultUserIcon from '../../../assets/img/default-user.png';
+import {getFormatTypeName} from '../../../pages/legacy/constants/metadata/configAPI';
 import {
     CustomColumn,
     CustomEllipsis,
@@ -13,7 +13,7 @@ import {
     ListItemText,
     ListText,
     PersonListFlag,
-} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+} from '../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
 
 const NexusPersonRO = ({person, showPersonType}) => {
     return (
