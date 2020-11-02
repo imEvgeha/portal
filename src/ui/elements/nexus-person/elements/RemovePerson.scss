@@ -1,0 +1,15 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-remove-person {
+    @include margin(0, 1.25, 0, 0);
+    cursor: pointer;
+    position: absolute;
+    right: 45px;
+    top: 6px;
+    > span {
+        &:hover {
+            color: map-get($reds, R400);
+        }
+    }
+}
