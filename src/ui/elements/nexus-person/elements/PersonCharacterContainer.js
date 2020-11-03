@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import Lozenge from '@atlaskit/lozenge';
 import PersonCharacterItem from './PersonCharacterItem';
 import './PersonCharacterContainer.scss';

@@ -214,7 +214,8 @@ const NexusField = ({
                 >
                     {({fieldProps, error}) => (
                         <>
-                            {renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
+                            {type !== 'castCrew' &&
+                                renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {view === VIEWS.EDIT || view === VIEWS.CREATE
