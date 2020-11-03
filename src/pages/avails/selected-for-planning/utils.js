@@ -1,5 +1,5 @@
-import DOPService from './DOP-services.js';
-import {EXCLUDED_STATUSES} from './constants.js';
+import DOPService from './DOP-services';
+import {EXCLUDED_STATUSES} from './constants';
 
 export const prepareSelectForPlanningData = async (sort, offset, limit) => {
     try {
@@ -31,7 +31,7 @@ export const prepareSelectForPlanningData = async (sort, offset, limit) => {
         });
         // Convert object to an array
         data = Object.values(data);
-        const total = headers.get('X-Total-Count') || data.length;
+        const total = parseInt(headers.get('X-Total-Count') || data.length);
         return new Promise(res => {
             res({
                 page: offset,

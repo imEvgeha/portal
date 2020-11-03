@@ -84,13 +84,15 @@ const RightsRepository = ({
 }) => {
     const isMounted = useRef(true);
     const [totalCount, setTotalCount] = useState(0);
-    const [gridApi, setGridApi] = useState();
-    const [columnApi, setColumnApi] = useState();
-    const [selectedColumnApi, setSelectedColumnApi] = useState();
+    const [gridApi, setGridApi] = useState(null);
+    const [columnApi, setColumnApi] = useState(null);
+    const [selectedColumnApi, setSelectedColumnApi] = useState(null);
+    const [prePlanGridApi, setPrePlanGridApi] = useState();
     const [prePlanColumnApi, setPrePlanColumnApi] = useState(null);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
-    const [selectedGridApi, setSelectedGridApi] = useState();
-    const [prePlanGridApi, setPrePlanGridApi] = useState();
+    const [selectedGridApi, setSelectedGridApi] = useState(null);
+    const [selectedForPlanningGridApi, setSelectedForPlanningGridApi] = useState(null);
+    const [selectedForPlanningColumnApi, setSelectedForPlanningColumnApi] = useState(null);
     const [selectedRepoRights, setSelectedRepoRights] = useState([]);
     const previousExternalStatusFilter = usePrevious(get(rightsFilter, ['external', 'status']));
     const [attachment, setAttachment] = useState();
@@ -204,7 +206,7 @@ const RightsRepository = ({
     useEffect(() => {
         DOPService.getUsersProjectsList(1, 1)
             .then(([response, headers]) => {
-                const total = headers.get('X-Total-Count') || response.length;
+                const total = parseInt(headers.get('X-Total-Count') || response.length);
                 if (isMounted.current) {
                     setPlanningRightsCount(total);
                 }
@@ -451,6 +453,8 @@ const RightsRepository = ({
                 setSingleRightMatch={setSingleRightMatch}
                 prePlanColumnApi={prePlanColumnApi}
                 prePlanGridApi={prePlanGridApi}
+                selectedForPlanningColumnApi={selectedForPlanningColumnApi}
+                selectedForPlanningGridApi={selectedForPlanningGridApi}
             />
             <RightsRepositoryTable
                 id="rightsRepo"
@@ -498,7 +502,12 @@ const RightsRepository = ({
                 username={username}
             />
             {activeTab === SELECTED_FOR_PLANNING_TAB && (
-                <SelectedForPlanning activeTab={activeTab} isPlanningTabRefreshed={isPlanningTabRefreshed} />
+                <SelectedForPlanning
+                    activeTab={activeTab}
+                    isPlanningTabRefreshed={isPlanningTabRefreshed}
+                    setSelectedForPlanningGridApi={setSelectedForPlanningGridApi}
+                    setSelectedForPlanningColumnApi={setSelectedForPlanningColumnApi}
+                />
             )}
         </div>
     );
