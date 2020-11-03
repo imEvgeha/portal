@@ -12,11 +12,13 @@ const PersonCharacterContainer = ({characterName, index, onEditCharacter}) => {
                 <Lozenge appearance="default">CHARACTER</Lozenge>
             </div>
             {characterName ? (
-                <PersonCharacterItem isEdit={true} onClick={() => onEditCharacter(index)}>
+                <PersonCharacterItem isEdit={true} index={index} onClick={onEditCharacter}>
                     {characterName}
                 </PersonCharacterItem>
             ) : (
-                <Button onClick={() => onEditCharacter(index)}>Add</Button>
+                <div className="nexus-c-person-character-container__add" onClick={() => onEditCharacter(index)}>
+                    +Add
+                </div>
             )}
         </div>
     );
