@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import {Label} from '@atlaskit/field-base';
@@ -24,6 +24,11 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPersonIndex, setSelectedPersonIndex] = useState(null);
     const [modalInputValue, setModalInputValue] = useState('');
+
+    useEffect(() => {
+        const updatedPersons = [...personsList];
+        setPersons(updatedPersons);
+    }, [personsList]);
 
     const searchInputChanged = val => {
         setSearchText(val);
