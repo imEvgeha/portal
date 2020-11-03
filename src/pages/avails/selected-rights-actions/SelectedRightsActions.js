@@ -12,7 +12,8 @@ import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
 import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
-import BulkDelete from '../bulk-delete/BulkDelete';
+import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
+import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
@@ -206,9 +207,23 @@ export const SelectedRightsActions = ({
         });
     };
 
+    const openDeleteConfirmationModal = () => {
+        openModal(
+            <BulkDeleteConfirmation
+                onSubmit={openBulkDeleteModal}
+                onClose={closeModal}
+                rightsCount={selectedRights.length}
+            />,
+            {
+                title: BULK_DELETE_HEADER,
+                width: 'small',
+            }
+        );
+    };
+
     const openBulkDeleteModal = () => {
-        // to do - pass rights for deletion when api is ready
-        openModal(<BulkDelete rights={selectedRights} onClose={closeModal} />, {
+        closeModal();
+        openModal(<NexusBulkDelete rights={selectedRights} onClose={closeModal} />, {
             title: BULK_DELETE_HEADER,
             width: 'large',
         });
@@ -381,7 +396,7 @@ export const SelectedRightsActions = ({
                                         'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
                                     })}
                                     data-test-id="mark-as-deleted"
-                                    onClick={() => (isDeletable ? openBulkDeleteModal() : null)}
+                                    onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
                                 >
                                     <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
                                         <div>{MARK_DELETED}</div>

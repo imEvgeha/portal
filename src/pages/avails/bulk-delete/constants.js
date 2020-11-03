@@ -29,8 +29,7 @@ export const HEADER = {
     ],
 };
 
-export const BULK_DELETE_WARNING_MSG =
-    'You have selected one or more rights to be marked as deleted. Making a right as deleted means it can no longer be used.';
+export const BULK_DELETE_WARNING_MSG = num => `Permanently delete ${num} Rights?`;
 export const BULK_DELETE_LINKED_RIGHT_MSG = 'The following linked TPR/Bonus rights will also be marked as deleted:';
 export const BULK_DELETE_CONTINUE_MSG = 'How would you like to continue?';
 export const BULK_DELETE_BTN_DELETE = 'Mark as Deleted';
