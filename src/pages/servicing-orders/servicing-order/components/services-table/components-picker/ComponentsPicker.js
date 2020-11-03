@@ -3,14 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {HelperMessage} from '@atlaskit/form';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import SectionMessage from '@atlaskit/section-message';
-import Tag from '@atlaskit/tag';
-import Tooltip from '@atlaskit/tooltip';
 import './ComponentsPicker.scss';
 import AudioComponentsPicker from './audio-picker/AudioComponentsPicker';
 import TextComponentPicker from './text-picker/TextComponentPicker';
-import {NO_AUDIO_EXISTS, NO_SELECTION_AVAILABLE} from './constants';
+import {NO_COMP_EXISTS} from './constants';
 
 const notAvailableMsg = (desc, barcode) => (
     <SectionMessage title="Not Available">
@@ -46,35 +43,11 @@ export const Footer = ({warning, onCancel, onSave, isSummaryChanged}) => {
     );
 };
 
-export const ListItem = ({item, onDelete}) => {
-    return (
-        <div className="picker__list-item">
-            <Tag text={item} />
-            <div onClick={onDelete}>
-                <EditorRemoveIcon size="medium" primaryColor="grey" />
-            </div>
-        </div>
-    );
-};
-
-export const SummaryPanel = ({list = [], remove}) => {
-    const onDelete = key => remove(key);
-    return (
-        <div className="picker__summary-panel">
-            <HelperMessage>Audio Service Summary</HelperMessage>
-            {list.map(item => (
-                <Tooltip key={item.name} content={item.tooltip}>
-                    <ListItem item={item.name} onDelete={() => onDelete(item.name)} />
-                </Tooltip>
-            ))}
-        </div>
-    );
-};
-
-export const AddToService = ({isEnabled, onClick, count}) => {
+export const AddToService = ({isEnabled, onClick, count, type}) => {
+    const step = type === 'Audio' ? '3' : '2';
     return (
         <div className="picker__service-panel">
-            <b>Step 3: {`Add to service ${count ? `(${count})` : ''}`}</b>
+            <b>{` Step ${step}: Add to service ${count ? `(${count})` : ''}`}</b>
             <Button appearance="primary" isDisabled={!isEnabled} onClick={onClick}>
                 {`Add to service ${count ? `(${count})` : ''}`}
             </Button>
@@ -83,7 +56,6 @@ export const AddToService = ({isEnabled, onClick, count}) => {
 };
 
 export const ComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
-    console.log('data at component picker: ', data);
     const {componentArray, assetType, barcode} = data;
 
     const resolvePickerType = () => {
@@ -107,7 +79,7 @@ export const ComponentsPicker = ({data, closeModal, saveComponentData, index}) =
                     />
                 );
         }
-        return notAvailableMsg(NO_AUDIO_EXISTS, barcode);
+        return notAvailableMsg(NO_COMP_EXISTS, barcode);
     };
     return <div>{resolvePickerType()}</div>;
 };

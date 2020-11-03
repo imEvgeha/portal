@@ -1,20 +1,17 @@
 /* eslint react/prop-types: 0 */
 import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import {Checkbox} from '@atlaskit/checkbox';
 import DynamicTable from '@atlaskit/dynamic-table';
 import {HelperMessage} from '@atlaskit/form';
-import CheckIcon from '@atlaskit/icon/glyph/check';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import SectionMessage from '@atlaskit/section-message';
 import Select from '@atlaskit/select/dist/cjs/Select';
-import Tag from '@atlaskit/tag';
-import Tooltip from '@atlaskit/tooltip';
 import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
-import {Header, Footer, SummaryPanel, AddToService} from '../ComponentsPicker';
+import {Header, Footer, AddToService} from '../ComponentsPicker';
 import {createDynamicTableRows, getAudioChannelsForLangTrack, getToolTipText} from '../pickerUtils';
-import {CHANNEL_EXISTS, header} from '../constants';
+import AudioSummaryPanel from './AudioSummaryPanel';
+import {AUDIO_CHANNEL_EXISTS, header} from '../constants';
+import './AudioComponentPicker.scss';
 
 const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
     const [checkedAll, setCheckedAll] = useState(false);
@@ -33,9 +30,9 @@ const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
     };
 
     return (
-        <div className="picker__audio-panel">
+        <div className="audio-picker__audio-panel">
             <b>Step 2: Select Audio Channels</b>
-            <div className="picker__audio-panel-table">
+            <div className="audio-picker__audio-panel-table">
                 {dataRows.length === 0 ? (
                     <SectionMessage>
                         <p>No Channels found for this combination</p>
@@ -54,13 +51,13 @@ const SelectionPanel = ({data}) => {
     return (
         <div>
             <b>Step 1: Filter Language and Track configuration</b>
-            <div className="picker__selection-panel">
+            <div className="audio-picker__selection-panel">
                 <div>
                     <HelperMessage>Language / MFX</HelperMessage>
                     <Select
                         id="language-select"
                         name="language-select"
-                        className="picker__select"
+                        className="audio-picker__select"
                         options={languageOptions}
                         value={language}
                         onChange={val => setLanguage(val)}
@@ -71,7 +68,7 @@ const SelectionPanel = ({data}) => {
                     <Select
                         id="track-select"
                         name="track-select"
-                        className="picker__select"
+                        className="audio-picker__select"
                         options={trackConfiguration}
                         value={track}
                         onChange={val => setTrack(val)}
@@ -153,7 +150,7 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
     }, [tableRows]);
 
     useEffect(() => {
-        setWarningText(!selectedVsSummaryDiff && selectedRows.length ? CHANNEL_EXISTS : '');
+        setWarningText(!selectedVsSummaryDiff && selectedRows.length ? AUDIO_CHANNEL_EXISTS : '');
     }, [selectedRows]);
 
     const saveComponentsLocally = () => {
@@ -216,8 +213,8 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
         <div>
             <Header heading="Add Audio Components" title={title} barcode={barcode} />
             <hr className="solid" />
-            <div className="picker__outer">
-                <div className="picker__inner">
+            <div className="audio-picker__outer">
+                <div className="audio-picker__inner">
                     <SelectionPanel data={selectionData} />
                     <AudioChannelsTable
                         dataRows={createDynamicTableRows(tableRows, setTableRows)}
@@ -228,9 +225,14 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
                         isEnabled={selectedRows.length && !warningText}
                         onClick={saveComponentsLocally}
                         count={selectedRows.length}
+                        type="Audio"
                     />
                 </div>
-                <SummaryPanel list={componentsWithToolTipText} setComponents={setComponents} remove={removeComponent} />
+                <AudioSummaryPanel
+                    list={componentsWithToolTipText}
+                    setComponents={setComponents}
+                    remove={removeComponent}
+                />
             </div>
             <hr className="solid" />
             <Footer

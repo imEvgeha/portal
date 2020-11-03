@@ -5,7 +5,6 @@ import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {Radio} from '@atlaskit/radio';
 import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';
-import mappings from '../../../../../../profile/sourceTableMapping.json';
 import Add from '../../../../../assets/action-add.svg';
 import loadingGif from '../../../../../assets/img/loading.gif';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -17,7 +16,7 @@ import {URL} from '../../../../../util/Common';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW, TABLE_HEIGHT} from './Constants';
+import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from './Constants';
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 import {fetchAssetFields} from './util';
@@ -30,14 +29,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
-    const [gridApi, setGridApi] = useState(null);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
-
-    const onGridReady = ({type, api}) => {
-        setGridApi(api);
-        type === 'READY' && api.sizeColumnsToFit();
-    };
 
     useEffect(
         () => {
@@ -141,51 +134,64 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     if (!URL.isLocalOrDevOrQA()) newColDef = [columnDefinitions[0]];
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
-        const prevSources = sources.slice();
-        prevSources[rowIndex] = {
-            ...prevSources[rowIndex],
-            barcode: barcodes[rowIndex],
-        };
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED) {
-            const barcodeIndex = barcodes.findIndex(item => item === data.barcode.trim());
-            if (barcodeIndex !== -1) {
-                showToastForErrors(null, {
-                    errorToast: {
-                        title: 'Duplicate Entry',
-                        description: `Entry ${data.barcode.trim()} already exists in this list`,
-                    },
-                });
-                api.setRowData(prevSources);
-            } else if (barcodes[rowIndex] !== data.barcode.trim()) {
-                // call DETE fetch api and update barcode.
-                const loadingSources = sources.slice();
-                let loading = data;
-                loading = {
-                    ...loading,
-                    ...cloneDeep(TEMP_SOURCE_ROW),
-                };
-                loadingSources[rowIndex] = loading;
-                setSources(loadingSources);
-                try {
-                    const {assetFormat, title = [], spec, status, componentAssociations = []} = await fetchAssetFields(
-                        data.barcode
-                    );
-                    const newSources = cloneDeep(sources[0]);
-                    newSources.deteServices[0].deteSources[rowIndex] = {
-                        ...newSources.deteServices[0].deteSources[rowIndex],
-                        amsAssetId: data.barcode,
-                        barcode: data.barcode,
-                        assetFormat,
-                        title: title[0].name,
-                        version: spec,
-                        status,
-                        standard: componentAssociations[0].component.standard,
-                    };
-                    setUpdatedServices(newSources);
-                } catch (e) {
-                    setSources(prevSources);
-                }
+        switch (type) {
+            case GRID_EVENTS.READY: {
+                api.sizeColumnsToFit();
+                break;
             }
+            case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                const prevSources = sources.slice();
+                prevSources[rowIndex] = {
+                    ...prevSources[rowIndex],
+                    barcode: barcodes[rowIndex],
+                };
+                const barcodeIndex = barcodes.findIndex(item => item === data.barcode.trim());
+                if (barcodeIndex !== -1) {
+                    showToastForErrors(null, {
+                        errorToast: {
+                            title: 'Duplicate Entry',
+                            description: `Entry ${data.barcode.trim()} already exists in this list`,
+                        },
+                    });
+                    api.setRowData(prevSources);
+                } else if (barcodes[rowIndex] !== data.barcode.trim()) {
+                    // call DETE fetch api and update barcode.
+                    const loadingSources = sources.slice();
+                    let loading = data;
+                    loading = {
+                        ...loading,
+                        ...cloneDeep(TEMP_SOURCE_ROW),
+                    };
+                    loadingSources[rowIndex] = loading;
+                    setSources(loadingSources);
+                    try {
+                        const {
+                            assetFormat,
+                            title = [],
+                            spec,
+                            status,
+                            componentAssociations = [],
+                        } = await fetchAssetFields(data.barcode);
+                        const newSources = cloneDeep(sources[0]);
+                        newSources.deteServices[0].deteSources[rowIndex] = {
+                            ...newSources.deteServices[0].deteSources[rowIndex],
+                            amsAssetId: data.barcode,
+                            barcode: data.barcode,
+                            assetFormat,
+                            title: title[0].name,
+                            version: spec,
+                            status,
+                            standard: componentAssociations[0].component.standard,
+                        };
+                        setUpdatedServices(newSources);
+                    } catch (e) {
+                        setSources(prevSources);
+                    }
+                }
+                break;
+            }
+            default:
+                break;
         }
     };
 
@@ -222,17 +228,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         setSources(sourcesArray);
     };
 
-    useEffect(() => {
-        // show last empty row in case new row is added
-        const len = sources.length;
-        if (len >= TABLE_HEIGHT) {
-            const lastRow = sources[len - 1];
-            if (lastRow && lastRow.barcode === '') {
-                gridApi.ensureIndexVisible(len - 1);
-            }
-        }
-    }, [sources.length]);
-
     return (
         <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
             <div className="nexus-c-sources__header">
@@ -255,7 +250,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
-                onGridReady={onGridReady}
             />
         </div>
     );

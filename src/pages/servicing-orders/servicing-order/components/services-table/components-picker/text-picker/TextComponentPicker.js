@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import {HelperMessage} from '@atlaskit/form';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import {differenceBy, flattenDeep, get, groupBy, pickBy, uniqBy} from 'lodash';
-import {Header, Footer, SummaryPanel, AddToService} from '../ComponentsPicker';
+import {differenceBy, get, uniqBy} from 'lodash';
+import {Header, Footer, AddToService} from '../ComponentsPicker';
 import TextSummaryPanel from './TextSummaryPanel';
+import {TEXT_COMP_EXISTS} from '../constants';
 import './TextComponentPicker.scss';
 
 const SelectionPanel = ({data}) => {
@@ -76,28 +77,25 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     );
 
     useEffect(() => {
+        setLanguage(languageOptions[0]);
+        setFormat(formatOptions[0]);
+        setComponents(data.compSummary);
+    }, [data]);
+
+    useEffect(() => {
         const componentID = get(
             componentArray.find(item => item.language === language.value && item.format === format.value),
             'componentID',
             ''
         );
         setComponentId(componentID);
-    }, [language, format]);
+        const doesComponentExistInSummary = components.findIndex(item => item.componentID === componentID) !== -1;
+        setWarningText(doesComponentExistInSummary ? TEXT_COMP_EXISTS : '');
+    }, [language, format, components]);
 
     const isSummaryChanged =
         differenceBy(components, data.compSummary, 'componentID').length > 0 ||
         components.length !== data.compSummary.length;
-
-    const doesComponentExistInSummary = components.findIndex(item => item.componentID === componentId) !== -1;
-
-    useEffect(() => {
-        setLanguage(languageOptions[0]);
-        setFormat(formatOptions[0]);
-    }, [data]);
-
-    useEffect(() => {
-        setWarningText(doesComponentExistInSummary ? 'Component already in summary' : '');
-    }, [format, language]);
 
     const saveComponentsLocally = () => {
         setComponents([...components, {language: language.value, format: format.value, componentID: componentId}]);
@@ -117,7 +115,6 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     };
 
     const saveComponentsInRow = () => {
-        console.log(components);
         saveComponentData(index, components);
         closeModal();
     };
@@ -126,16 +123,19 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
         <div>
             <Header heading="Add Text Components" title={title} barcode={barcode} />
             <hr className="solid" />
-            <div className="picker__outer">
+            <div className="text-picker__outer">
                 <div className="text-picker__inner">
                     <SelectionPanel data={selectionData} />
-                    <Textfield
-                        name="componentID"
-                        isReadOnly={true}
-                        defaultValue={componentId}
-                        style={{height: '40px'}}
-                    />
-                    <AddToService isEnabled={!warningText} onClick={saveComponentsLocally} />
+                    <div className="text-picker__component">
+                        <HelperMessage>Component ID</HelperMessage>
+                        <Textfield
+                            name="componentID"
+                            isReadOnly={true}
+                            defaultValue={componentId}
+                            style={{height: '40px'}}
+                        />
+                    </div>
+                    <AddToService isEnabled={!warningText} onClick={saveComponentsLocally} type="text" />
                 </div>
                 <TextSummaryPanel list={components} setComponents={setComponents} remove={removeComponent} />
             </div>

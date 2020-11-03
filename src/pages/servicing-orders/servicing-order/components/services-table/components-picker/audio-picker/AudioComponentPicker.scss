@@ -1,6 +1,6 @@
 @import '../../../../../../../styles/atlaskit/mixins';
 
-.text-picker {
+.audio-picker {
     &__outer {
         display: flex;
         flex-direction: row;
@@ -9,13 +9,15 @@
     &__inner {
         display: flex;
         flex-direction: column;
-        @include addSpacing('height', 75);
-        @include addSpacing('width', 120);
     }
-    &__component {
-        @include margin(4, 0, 7, 0);
-        @include padding(3, 3, 0, 0);
-        @include addSpacing('width', 83);
+    &__audio-panel {
+        @include margin(3, 0, 0, 0);
+        @include padding(5, 3, 0, 0);
+        &-table {
+            font-size: 0.8rem;
+            @include margin(5, 0, 0, 0);
+            @include addSpacing('height', 75);
+        }
     }
     &__summary-panel {
         display: flex;
@@ -26,6 +28,7 @@
     }
     &__list-item {
         @include addSpacing('padding-top', 1);
+        @include addSpacing('padding-right', 2);
         display: flex;
         justify-content: space-between;
         span {
@@ -34,13 +37,11 @@
     }
     &__selection-panel {
         display: flex;
-        flex-direction: column;
-        width: 90%;
+        flex-direction: row;
         justify-content: space-between;
-        @include padding(3, 0, 0, 0);
-        @include addSpacing('height', 30);
+        @include padding(3, 5, 3, 0);
     }
     &__select {
-        @include addSpacing('width', 80);
+        @include addSpacing('width', 70);
     }
 }

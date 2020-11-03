@@ -4,12 +4,12 @@ import {HelperMessage} from '@atlaskit/form';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
-import './TextComponentPicker.scss';
+import './AudioComponentPicker.scss';
 
 // eslint-disable-next-line react/prop-types
-export const ListItem = ({item, onDelete}) => {
+const ListItem = ({item, onDelete}) => {
     return (
-        <div className="text-picker__list-item">
+        <div className="audio-picker__list-item">
             <Tag text={item} />
             <div onClick={onDelete}>
                 <EditorRemoveIcon size="medium" primaryColor="grey" />
@@ -18,29 +18,25 @@ export const ListItem = ({item, onDelete}) => {
     );
 };
 
-const TextSummaryPanel = ({list = [], remove}) => {
+const AudioSummaryPanel = ({list = [], remove}) => {
     const onDelete = key => remove(key);
-
     return (
-        <div className="text-picker__summary-panel">
-            <HelperMessage>Text Service Summary</HelperMessage>
+        <div className="audio-picker__summary-panel">
+            <HelperMessage>Audio Service Summary</HelperMessage>
             {list.map(item => (
-                <Tooltip
-                    key={item.componentID}
-                    content={`${item.language}, ${item.format}, Component ID ${item.componentID}`}
-                >
-                    <ListItem item={`${item.language}  ${item.format}`} onDelete={() => onDelete(item.componentID)} />
+                <Tooltip key={item.name} content={item.tooltip}>
+                    <ListItem item={item.name} onDelete={() => onDelete(item.name)} />
                 </Tooltip>
             ))}
         </div>
     );
 };
 
-TextSummaryPanel.propTypes = {
+AudioSummaryPanel.propTypes = {
     list: PropTypes.array.isRequired,
     remove: PropTypes.func.isRequired,
 };
 
-TextSummaryPanel.defaultProps = {};
+AudioSummaryPanel.defaultProps = {};
 
-export default TextSummaryPanel;
+export default AudioSummaryPanel;

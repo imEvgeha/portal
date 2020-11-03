@@ -28,7 +28,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const [gridApi, setGridApi] = useState(null);
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
         data.barcode,
@@ -41,11 +40,6 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             'title',
             ''
         );
-
-    const onGridReady = ({type, api}) => {
-        setGridApi(api);
-        type === 'READY' && api.sizeColumnsToFit();
-    };
 
     useEffect(() => {
         if (!isEmpty(data)) {
@@ -203,24 +197,34 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         }
         return service;
     };
-    const handleRowDataChange = ({rowIndex, type, data}) => {
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
-            const updatedServices = cloneDeep(services[providerServices]);
-            const currentService = updatedServices[rowIndex];
-            // TODO: Super inefficient, need to find a better way
-            // Re-mapping the data
-            currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
-            if (data.assetType !== currentService.externalServices.assetType) currentService.details = []; // make components empty when assetType changes
-            currentService.externalServices.assetType = data.assetType;
-            currentService.externalServices.formatType = data.spec;
-            currentService.overrideStartDate = data.doNotStartBefore || '';
-            currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
-            currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
-            currentService.status = data.operationalStatus;
+    const handleTableChange = ({rowIndex, type, api, data}) => {
+        switch (type) {
+            case GRID_EVENTS.READY: {
+                api.sizeColumnsToFit();
+                break;
+            }
+            case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                const updatedServices = cloneDeep(services[providerServices]);
+                const currentService = updatedServices[rowIndex];
+                // TODO: Super inefficient, need to find a better way
+                // Re-mapping the data
+                currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
+                if (data.assetType !== currentService.externalServices.assetType) currentService.details = []; // make components empty when assetType changes
+                currentService.externalServices.assetType = data.assetType;
+                currentService.externalServices.formatType = data.spec;
+                currentService.overrideStartDate = data.doNotStartBefore || '';
+                currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
+                    data.priority;
+                currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                currentService.status = data.operationalStatus;
 
-            const newServices = {...services, [providerServices]: updatedServices};
-            setServices(newServices);
-            setUpdatedServices(newServices);
+                const newServices = {...services, [providerServices]: updatedServices};
+                setServices(newServices);
+                setUpdatedServices(newServices);
+                break;
+            }
+            default:
+                break;
         }
     };
 
@@ -278,8 +282,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 domLayout="autoHeight"
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
-                onGridEvent={handleRowDataChange}
-                onGridReady={onGridReady}
+                onGridEvent={handleTableChange}
             />
         </div>
     );

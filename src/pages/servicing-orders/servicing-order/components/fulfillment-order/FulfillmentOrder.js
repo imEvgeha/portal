@@ -213,7 +213,7 @@ export const FulfillmentOrder = ({
                                 </div>
                                 <div className="fulfillment-order__input">
                                     <NexusDatePicker
-                                        id="dueDate"
+                                        id="ff_startDate"
                                         label="Start Date"
                                         value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
                                         onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
@@ -241,7 +241,7 @@ export const FulfillmentOrder = ({
                                 </div>
                                 <div className="fulfillment-order__input">
                                     <NexusDatePicker
-                                        id="dueDate"
+                                        id="ff_dueDate"
                                         label="Due Date"
                                         value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
                                         onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
