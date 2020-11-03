@@ -16,7 +16,7 @@ import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import {CAST, CAST_CONFIG, PERSONS_PER_REQUEST} from './constants';
 import './NexusPersonsList.scss';
 
-const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, isEdit, updateCastCrew}) => {
+const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew}) => {
     const [persons, setPersons] = useState(personsList || []);
     const [isLastEntryValid, setLastIsEntryValid] = useState(true);
     const [searchText, setSearchText] = useState('');
@@ -196,7 +196,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
                                                           person={person}
                                                           index={i}
                                                           hasCharacter={hasCharacter}
-                                                          showPersonType={showPersonType}
                                                           onRemove={() => removePerson(person)}
                                                           onEditCharacter={index => openModal(index)}
                                                       />
@@ -205,13 +204,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, showPersonType, 
                                       )
                                     : persons &&
                                       persons.map((person, i) => {
-                                          return (
-                                              <NexusPersonRO
-                                                  key={uid(person.id, i)}
-                                                  person={person}
-                                                  showPersonType={showPersonType}
-                                              />
-                                          );
+                                          return <NexusPersonRO key={uid(person.id, i)} person={person} />;
                                       })}
                             </Label>
                         </Label>
@@ -236,7 +229,6 @@ NexusPersonsList.propTypes = {
     personsList: PropTypes.array,
     uiConfig: PropTypes.object,
     hasCharacter: PropTypes.bool,
-    showPersonType: PropTypes.bool,
     isEdit: PropTypes.bool,
     updateCastCrew: PropTypes.func,
 };
@@ -245,7 +237,6 @@ NexusPersonsList.defaultProps = {
     personsList: [],
     uiConfig: CAST_CONFIG,
     hasCharacter: false,
-    showPersonType: true,
     isEdit: false,
     updateCastCrew: () => null,
 };

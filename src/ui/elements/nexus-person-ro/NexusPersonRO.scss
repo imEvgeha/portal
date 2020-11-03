@@ -1,20 +1,15 @@
-.nexus-c-person-avatar {
-    width: 30px;
-    height: 30px;
-}
-
-.nexus-c-person-type {
-    margin-left: 10px;
-}
-
-.nexus-c-person-character-container {
+.nexus-c-nexus-person-ro {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-.nexus-c-person-character {
-    width: 100%;
-}
-
-.nexus-c-person-separator {
-    margin-left: 10px;
+.nexus-c-nexus-person-ro__character {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    > span {
+        margin-right: 5px;
+    }
 }
