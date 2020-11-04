@@ -342,12 +342,14 @@
                                 "name": "Price Type",
                                 "type": "select",
                                 "path": "priceType",
+                                "isRequired": true,
                                 "className": "area-one"
                             },
                             "priceValue": {
                                 "name": "Price Value",
                                 "type": "string",
                                 "path": "priceValue",
+                                "isRequired": true,
                                 "className": "area-two"
                             },
                             "priceCurrency": {
