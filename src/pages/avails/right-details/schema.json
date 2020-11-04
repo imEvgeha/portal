@@ -431,17 +431,12 @@
                             }
                         ]
                     },
-                    "termYearStart": {
-                        "name": "Term Year Start",
-                        "type": "datetime",
+                    "termDates": {
+                        "name": "Term Year Range",
+                        "type": "dateRange",
                         "dateType": "regionalMidnight",
-                        "path": "termYearStart"
-                    },
-                    "termYearEnd": {
-                        "name": "Term Year End",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "termYearEnd"
+                        "labels": ["Term Year Start", "Term Year End"],
+                        "path": ["termYearStart", "termYearEnd"]
                     },
                     "imdbLink": {
                         "name": "IMDB Link",
