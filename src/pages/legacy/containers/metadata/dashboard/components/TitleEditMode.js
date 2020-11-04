@@ -357,7 +357,7 @@ class TitleEditMode extends Component {
                                     type="select"
                                     name="metadataStatus"
                                     id="metadataStatus"
-                                    onChange={e => this.props.handleOnChangeEdit(e)}
+                                    onChange={this.props.handleOnChangeEdit}
                                     defaultValue={metadataStatus ? metadataStatus : ''}
                                 >
                                     <option value="">Select Metadata Status</option>
