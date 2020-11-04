@@ -13,6 +13,7 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import columnDefinitions from './columnDefinitions';
@@ -184,7 +185,22 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: {data, tableData},
     };
 
-    const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));
+    const statusCol = {
+        // eslint-disable-next-line react/prop-types
+        cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
+        cellRendererParams: {tableData},
+    };
+
+    const colDef = columnDefinitions.map(item => {
+        switch (item.colId) {
+            case 'components':
+                return componentColumn;
+            case 'operationalStatus':
+                return {...item, ...statusCol};
+            default:
+                return item;
+        }
+    });
 
     // set service type value to save to api based on service type and asset type drop down selected
     const setOrderServiceType = (serviceType, assetType) => {

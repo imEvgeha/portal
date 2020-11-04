@@ -32,7 +32,8 @@
         background: #ffc400;
     }
 
-    &--fo-not-started {
+    &--fo-not-started,
+    &--ready {
         background: map-get($light-neutral-colors, light-neutral-1);
     }
 
