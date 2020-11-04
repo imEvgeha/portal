@@ -393,7 +393,12 @@
                     "daysFromLVR": {
                         "name": "Days From LVR",
                         "type": "number",
-                        "path": "daysFromLVR"
+                        "path": "daysFromLVR",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "suppressionLiftDate": {
                         "name": "Suppression Lift Date",
@@ -417,7 +422,12 @@
                     "termYear": {
                         "name": "Term Year",
                         "type": "number",
-                        "path": "termYear"
+                        "path": "termYear",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "termYearStart": {
                         "name": "Term Year Start",
