@@ -175,13 +175,22 @@
                         "name": "Platform Category",
                         "type": "multiselect",
                         "path": "platformCategory",
-                        "isRequired": true,
+                        "tooltip": "Required for US Licensee",
                         "optionsConfig": {
                             "options": [
                                 { "label": "Residential", "value": "Residential" },
                                 { "label": "Hotel", "value": "Hotel" }
                             ]
-                        }
+                        },
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "required",
+                                "field": "territory",
+                                "subfield": "country",
+                                "value": "US"
+                            }
+                        ]
                     },
                     "keywords": {
                         "name": "Keywords",
