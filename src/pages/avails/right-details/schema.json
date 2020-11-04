@@ -149,12 +149,6 @@
                         "path": "releaseYear",
                         "validation": [
                             {
-                                "name": "lengthEqual",
-                                "args": {
-                                    "length": 4
-                                }
-                            },
-                            {
                                 "name": "isYear"
                             }
                         ]
@@ -1058,12 +1052,6 @@
                         "type": "string",
                         "path": "productionYear",
                         "validation": [
-                            {
-                                "name": "lengthEqual",
-                                "args": {
-                                    "length": 4
-                                }
-                            },
                             {
                                 "name": "isYear"
                             }
