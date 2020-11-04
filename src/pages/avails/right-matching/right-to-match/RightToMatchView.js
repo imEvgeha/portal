@@ -8,12 +8,9 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import {AG_GRID_COLUMN_FILTER, GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import {AG_GRID_COLUMN_FILTER} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {
-    defineCheckboxSelectionColumn,
-    defineActionButtonColumn,
-} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineActionButtonColumn} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {WARNING_TITLE, WARNING_ICON} from '../../../../ui/elements/nexus-toast-notification/constants';
@@ -39,7 +36,6 @@ import {
     CONFLICTING_RIGHTS,
     CANCEL_BUTTON,
     MATCH_BUTTON,
-    STATUS_FOR_MATCHING,
     SECTION_MESSAGE,
 } from '../rightMatchingConstants';
 import * as selectors from '../rightMatchingSelectors';
@@ -70,8 +66,6 @@ const RightToMatchView = ({
     storeMatchedRights,
     validateRights,
 }) => {
-    const [isMatchEnabled, setIsMatchEnabled] = useState(false);
-    const [selectedRows, setSelectedRows] = useState([]);
     const [matchingCandidates, setMatchingCandidates] = useState([]);
     const [newPendingRight, setNewPendingRight] = useState([]);
     const {params = {}} = match;
@@ -115,8 +109,7 @@ const RightToMatchView = ({
         );
     };
 
-    const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
-    const updatedColumnDefs = [checkboxSelectionColumnDef, ...columnDefs];
+    const updatedColumnDefs = [...columnDefs];
 
     const onDeclareNewRight = () => {
         removeToast();
@@ -151,20 +144,9 @@ const RightToMatchView = ({
     });
     const updatedFocusedRight = focusedRight && rightId === focusedRight.id ? [focusedRight] : [];
 
-    const handleGridEvent = ({type, api}) => {
-        const {SELECTION_CHANGED} = GRID_EVENTS;
-        if (type === SELECTION_CHANGED) {
-            const selectedRows = api.getSelectedRows();
-            setSelectedRows(selectedRows);
-            setIsMatchEnabled(
-                selectedRows.length && selectedRows.some(right => STATUS_FOR_MATCHING.includes(right.status))
-            );
-        }
-    };
-
     const handleMatchClick = () => {
-        if (Array.isArray(selectedRows) && selectedRows.length > 0) {
-            const matchedRightIds = selectedRows.map(el => el.id);
+        if (Array.isArray(matchingCandidates) && matchingCandidates.length > 0) {
+            const matchedRightIds = matchingCandidates.map(el => el.id);
             validateRights({
                 rightId,
                 setMatchingCandidates,
@@ -172,7 +154,7 @@ const RightToMatchView = ({
                 rightData: get(newPendingRight, '[0]', ''),
                 selectedRights: matchedRightIds,
                 callback: () => {
-                    storeMatchedRights({rightsForMatching: selectedRows});
+                    storeMatchedRights({rightsForMatching: matchingCandidates});
                     if (mergeRights) {
                         return history.push(URL.keepEmbedded(`${location.pathname}/preview`));
                     }
@@ -247,7 +229,7 @@ const RightToMatchView = ({
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
         const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
-        const headerNames = ['SKIP', RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
+        const headerNames = [RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
         let columnDefinitions = updatedColumnDefs;
         if (tableName === PENDING_RIGHT) {
@@ -306,7 +288,6 @@ const RightToMatchView = ({
                     id="rightsMatchingRepo"
                     columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
                     mapping={mapping}
-                    onGridEvent={handleGridEvent}
                     rowSelection="multiple"
                     rowData={matchingCandidates}
                     suppressRowClickSelection={true}
@@ -330,12 +311,7 @@ const RightToMatchView = ({
                     >
                         {CANCEL_BUTTON}
                     </Button>
-                    <Button
-                        className="nexus-c-button"
-                        appearance="primary"
-                        onClick={handleMatchClick}
-                        isDisabled={!isMatchEnabled}
-                    >
+                    <Button className="nexus-c-button" appearance="primary" onClick={handleMatchClick}>
                         {MATCH_BUTTON}
                     </Button>
                 </ButtonGroup>
