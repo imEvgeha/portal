@@ -19,7 +19,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         };
     }
     const value = get(data, field.path) !== null ? get(data, field.path) : '';
-    if ((view === VIEWS.CREATE || get(field,'isOptional')) && !value) {
+    if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
     return value;
@@ -72,7 +72,7 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
-    if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
+    if (isRequired && (value === null || (value && value.length === 0))) return 'THIS FIELD IS REQUIRED';
 };
 
 export const getValidationFunction = (value, validations, {type, isRequired}) => {
@@ -146,7 +146,7 @@ export const getProperValue = (type, value, path, schema) => {
             };
             break;
         case 'stringInArray':
-            if(!value){
+            if (!value) {
                 val = [];
             } else {
                 val = Array.isArray(value) ? value : [value];
@@ -191,7 +191,12 @@ export const buildSection = (
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues, setFieldValue})}
+                            {renderNexusField(key, view, getValues, {
+                                initialData,
+                                field: fields[key],
+                                selectValues,
+                                setFieldValue,
+                            })}
                         </div>
                     ))
                 );
