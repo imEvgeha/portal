@@ -9,6 +9,7 @@
     &__inner {
         display: flex;
         flex-direction: column;
+        @include addSpacing('width', 150);
     }
     &__audio-panel {
         @include margin(3, 0, 0, 0);

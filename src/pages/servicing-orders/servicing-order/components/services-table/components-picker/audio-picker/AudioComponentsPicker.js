@@ -13,7 +13,7 @@ import AudioSummaryPanel from './AudioSummaryPanel';
 import {AUDIO_CHANNEL_EXISTS, header} from '../constants';
 import './AudioComponentPicker.scss';
 
-const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
+export const AudioChannelsTable = ({dataRows, checkAll, unCheckAll}) => {
     const [checkedAll, setCheckedAll] = useState(false);
     const setToggle = () => {
         setCheckedAll(prev => !prev);
@@ -158,7 +158,7 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
             return Object.keys(prev).length
                 ? groupBy(
                       uniqBy(flattenDeep([...Object.values(components), ...selectedRows]), v =>
-                          [v.channelNumber, v.language, v.trackConfig].join()
+                          [v.sourceChannelNumber, v.language, v.trackConfig].join()
                       ),
                       v => [v.language, v.trackConfig].join()
                   )

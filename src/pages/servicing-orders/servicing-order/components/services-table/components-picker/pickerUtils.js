@@ -23,7 +23,7 @@ export const getAudioChannelsForLangTrack = (lang, track, audioComponentArray) =
 
 export const createDynamicTableRows = (rowsArray, toggleRows) => {
     const setData = (name, isChecked) => {
-        const newData = rowsArray.map(item => (item.channelNumber === name ? {...item, isChecked} : item));
+        const newData = rowsArray.map(item => (item.sourceChannelNumber === name ? {...item, isChecked} : item));
         toggleRows(newData);
     };
     return rowsArray.map((item, index) => {
@@ -36,7 +36,7 @@ export const createDynamicTableRows = (rowsArray, toggleRows) => {
                         <Checkbox
                             name={item.channelNumber}
                             isChecked={item.isChecked}
-                            onChange={event => setData(item.channelNumber, event.target.checked)}
+                            onChange={event => setData(item.sourceChannelNumber, event.target.checked)}
                         />
                     ),
                 },
