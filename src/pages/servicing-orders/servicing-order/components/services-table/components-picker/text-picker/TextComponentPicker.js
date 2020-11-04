@@ -7,7 +7,7 @@ import Textfield from '@atlaskit/textfield';
 import {differenceBy, get, uniqBy} from 'lodash';
 import {Header, Footer, AddToService} from '../ComponentsPicker';
 import TextSummaryPanel from './TextSummaryPanel';
-import {TEXT_COMP_EXISTS} from '../constants';
+import {TEXT_COMP_EXISTS, TEXT_COMP_NOTFOUND} from '../constants';
 import './TextComponentPicker.scss';
 
 const SelectionPanel = ({data}) => {
@@ -92,6 +92,10 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
         const doesComponentExistInSummary = components.findIndex(item => item.componentID === componentID) !== -1;
         setWarningText(doesComponentExistInSummary ? TEXT_COMP_EXISTS : '');
     }, [language, format, components]);
+
+    useEffect(() => {
+        !componentId && setWarningText(TEXT_COMP_NOTFOUND);
+    }, [componentId]);
 
     const isSummaryChanged =
         differenceBy(components, data.compSummary, 'componentID').length > 0 ||
