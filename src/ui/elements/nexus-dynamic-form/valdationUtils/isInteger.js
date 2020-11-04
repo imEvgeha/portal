@@ -1,9 +1,9 @@
-import {INCORRECT_VALUE} from '../constants';
+import {INCORRECT_INTEGER} from '../constants';
 
 export function isInteger(value) {
     const integerPattern = /^\d+$/;
     if (value && !integerPattern.test(value)) {
-        return INCORRECT_VALUE;
+        return INCORRECT_INTEGER;
     }
     return undefined;
 }

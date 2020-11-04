@@ -544,7 +544,12 @@
                     "seasonNumber": {
                         "name": "Season Number",
                         "type": "number",
-                        "path": "episodic.seasonNumber"
+                        "path": "episodic.seasonNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "episodeTitle": {
                         "name": "Episode Title",
@@ -559,7 +564,12 @@
                     "episodeNumber": {
                         "name": "Episode Number",
                         "type": "number",
-                        "path": "episodic.episodeNumber"
+                        "path": "episodic.episodeNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "volumeTitle": {
                         "name": "Volume Title",
@@ -574,7 +584,12 @@
                     "volumeNumber": {
                         "name": "Volume Number",
                         "type": "number",
-                        "path": "episodic.volumeNumber"
+                        "path": "episodic.volumeNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "distributionNumber": {
                         "name": "Distribution Number",
@@ -589,12 +604,22 @@
                     "episodeCount": {
                         "name": "Episode Count",
                         "type": "number",
-                        "path": "episodic.episodeCount"
+                        "path": "episodic.episodeCount",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "seasonCount": {
                         "name": "Season Count",
                         "type": "number",
-                        "path": "episodic.seasonCount"
+                        "path": "episodic.seasonCount",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     }
                 }
             }
@@ -907,7 +932,12 @@
                     "captionExemption": {
                         "name": "Caption Exemption",
                         "type": "number",
-                        "path": "captions.captionExemption"
+                        "path": "captions.captionExemption",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     }
                 }
             }
