@@ -333,24 +333,6 @@ class CoreMetadataEditMode extends Component {
                             />
                         </Col>
                         <Col md={1}>
-                            <Label for="licensorTitleId">Licensor Title ID</Label>
-                        </Col>
-                        <Col>
-                            <AvField
-                                type="text"
-                                onChange={e => this.props.handleOnExternalIds(e)}
-                                name="licensorTitleId"
-                                id="licensorTitleId"
-                                value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : ''}
-                                placeholder="Licensor Title ID"
-                                validate={{
-                                    maxLength: {value: 200},
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{marginTop: '10px'}}>
-                        <Col md={1}>
                             <Label for="isan">ISAN</Label>
                         </Col>
                         <Col>
@@ -361,6 +343,24 @@ class CoreMetadataEditMode extends Component {
                                 id="isan"
                                 value={this.props.data.externalIds ? this.props.data.externalIds.isan : ''}
                                 placeholder="ISAN"
+                                validate={{
+                                    maxLength: {value: 200},
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    <Row style={{marginTop: '10px'}}>
+                        <Col md={1}>
+                            <Label for="licensorTitleId">Licensors</Label>
+                        </Col>
+                        <Col>
+                            <AvField
+                                type="text"
+                                onChange={e => this.props.handleOnExternalIds(e)}
+                                name="licensorTitleId"
+                                id="licensorTitleId"
+                                value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : ''}
+                                placeholder="Licensor Title ID"
                                 validate={{
                                     maxLength: {value: 200},
                                 }}
