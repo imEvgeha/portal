@@ -55,7 +55,7 @@ module.exports = envKeys => ({
             {from: 'profile/availMapping.json'},
             {from: 'profile/titleMatchingMappings.json'},
             {from: 'profile/titleMatchingRightMappings.json'},
-            {from: 'profile/singleSpaApps.json'},
+            {from: 'profile/importMap.json'},
         ]),
     ],
 });

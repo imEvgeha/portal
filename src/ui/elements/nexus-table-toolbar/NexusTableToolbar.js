@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
 import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
-import {
-    RIGHTS_SELECTED_TAB,
-    RIGHTS_TAB,
-    PRE_PLAN_TAB,
-    SELECTED_FOR_PLANNING_TAB,
-} from '../../../pages/avails/rights-repository/constants';
+import {RIGHTS_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB} from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import NexusTab from './components/NexusTab';
@@ -39,6 +34,10 @@ const NexusTableToolbar = ({
     username,
     singleRightMatch,
     setSingleRightMatch,
+    prePlanColumnApi,
+    prePlanGridApi,
+    selectedForPlanningColumnApi,
+    selectedForPlanningGridApi,
 }) => {
     return (
         <div className="nexus-c-table-toolbar">
@@ -88,13 +87,20 @@ const NexusTableToolbar = ({
                         setActiveTab={setActiveTab}
                     />
                     <NexusTableExportDropdown
-                        isSelectedOptionActive={activeTab === RIGHTS_SELECTED_TAB}
+                        activeTab={activeTab}
                         selectedRows={selectedRows}
                         rightsFilter={rightsFilter}
                         rightColumnApi={rightColumnApi}
                         selectedRightColumnApi={selectedRightColumnApi}
                         selectedRightGridApi={selectedRightGridApi}
+                        prePlanColumnApi={prePlanColumnApi}
+                        prePlanGridApi={prePlanGridApi}
+                        selectedForPlanningColumnApi={selectedForPlanningColumnApi}
+                        selectedForPlanningGridApi={selectedForPlanningGridApi}
                         totalRows={totalRows}
+                        prePlanRightsCount={prePlanRightsCount}
+                        planningRightsCount={planningRightsCount}
+                        username={username}
                     />
                 </div>
             )}
@@ -128,6 +134,10 @@ NexusTableToolbar.propTypes = {
     setIsPlanningTabRefreshed: PropTypes.func.isRequired,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
+    prePlanColumnApi: PropTypes.object,
+    prePlanGridApi: PropTypes.object,
+    selectedForPlanningColumnApi: PropTypes.object,
+    selectedForPlanningGridApi: PropTypes.object,
 };
 
 NexusTableToolbar.defaultProps = {
@@ -145,6 +155,10 @@ NexusTableToolbar.defaultProps = {
     selectedPrePlanRights: [],
     singleRightMatch: [],
     setSingleRightMatch: () => null,
+    prePlanColumnApi: {},
+    prePlanGridApi: {},
+    selectedForPlanningColumnApi: {},
+    selectedForPlanningGridApi: {},
 };
 
 export default NexusTableToolbar;

@@ -12,6 +12,7 @@ exports[`BulkSet should match snapshot 1`] = `
   <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
     hideSelectedOptions={true}
     isMulti={true}
+    onChange={[Function]}
     options={Array []}
     placeholder="Select territories..."
   />
@@ -21,7 +22,7 @@ exports[`BulkSet should match snapshot 1`] = `
     Keywords
   </div>
   <NexusTextArea
-    notesValue={Array []}
+    notesValue=""
     onTextChange={[Function]}
   />
   <div

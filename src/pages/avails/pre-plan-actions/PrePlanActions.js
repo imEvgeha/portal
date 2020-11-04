@@ -37,8 +37,8 @@ export const PrePlanActions = ({
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
-    const [bulkUpdate, setBulkUpdate] = useState([]);
     const [keywords, setKeywords] = useState('');
+    const [bulkUpdate, setBulkUpdate] = useState([]);
 
     useEffect(() => {
         bulkSetInTable();
@@ -158,9 +158,12 @@ export const PrePlanActions = ({
                     // eslint-disable-next-line prefer-destructuring
                     updatedRight = rightsList.filter(r => r.id === right.id)[0];
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    updatedRight.keywords = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(
-                        ','
-                    );
+                    let keywordsStr = '';
+                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                    updatedRight.keywords =
+                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
+                            ? keywordsStr.slice(0, -1)
+                            : keywordsStr;
                 }
             });
         });
@@ -170,6 +173,8 @@ export const PrePlanActions = ({
 
     const openBulkSetModal = () => {
         setMenuOpened(false);
+        setTerritories([]);
+        setKeywords('');
         openModal(<BulkSet setTerritories={setTerritories} setKeywords={setKeywords} />, {
             title: BULK_SET,
             actions: [
