@@ -109,8 +109,6 @@ const RightToMatchView = ({
         );
     };
 
-    const updatedColumnDefs = [...columnDefs];
-
     const onDeclareNewRight = () => {
         removeToast();
         createNewRight({rightId, redirectPath: previousPageRoute});
@@ -225,13 +223,13 @@ const RightToMatchView = ({
     };
 
     const reorderConflictingRightsHeaders = tableName => {
-        if (updatedColumnDefs.length === 1) return [];
+        if (columnDefs.length === 1) return [];
 
         const {PENDING_RIGHT, CONFLICTING_RIGHTS} = TABLE_NAMES;
         const {RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END} = TABLE_HEADERS;
         const headerNames = [RIGHT_ID, TITLE, TERRITORY, FORMAT, AVAIL_START, AVAIL_END, START, END];
 
-        let columnDefinitions = updatedColumnDefs;
+        let columnDefinitions = columnDefs;
         if (tableName === PENDING_RIGHT) {
             if (matchingCandidates.length === 0 && get(focusedRight, 'id')) {
                 columnDefinitions = [actionNewButtonColumnDef, ...columnDefs];
@@ -255,67 +253,71 @@ const RightToMatchView = ({
                 </Link>
                 <span>{RIGHT_TO_MATCH_TITLE}</span>
             </NexusTitle>
-            <div className="nexus-c-right-to-match-view__table-header">
-                <NexusTitle isSubTitle isInline>
-                    {PENDING_RIGHT}
-                </NexusTitle>
-                {!mergeRights && (
-                    <RightToMatchNavigation
-                        searchParams={{availHistoryIds}}
-                        focusedRightId={rightId}
-                        focusedRight={focusedRight}
-                        availHistoryIds={availHistoryIds}
-                        history={history}
-                    />
-                )}
-            </div>
-            <div className="nexus-c-right-to-match-view__focused-right">
-                <IncomingRightNexusGrid
-                    id="incomingRightRightsMatching"
-                    columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.PENDING_RIGHT)}
-                    rowData={newPendingRight.length ? newPendingRight : updatedFocusedRight}
-                    domLayout="autoHeight"
-                />
-            </div>
-            <SectionMessage appearance="info">
-                <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
-            </SectionMessage>
-            <div className="nexus-c-right-to-match-view__rights-to-match">
-                <NexusTitle isSubTitle>
-                    {CONFLICTING_RIGHTS} {`(${matchingCandidates.length})`}
-                </NexusTitle>
-                <RightRepositoryNexusGrid
-                    id="rightsMatchingRepo"
-                    columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
-                    mapping={mapping}
-                    rowSelection="multiple"
-                    rowData={matchingCandidates}
-                    suppressRowClickSelection={true}
-                    floatingFilter={true}
-                    defaultColDef={{
-                        filter: AG_GRID_COLUMN_FILTER.TEXT,
-                        sortable: true,
-                    }}
-                    columnTypes={{
-                        dateColumn: {
-                            filter: false,
-                        },
-                    }}
-                />
-            </div>
-            <div className="nexus-c-right-to-match-view__buttons">
-                <ButtonGroup>
-                    <Button
-                        className="nexus-c-button"
-                        onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
-                    >
-                        {CANCEL_BUTTON}
-                    </Button>
-                    <Button className="nexus-c-button" appearance="primary" onClick={handleMatchClick}>
-                        {MATCH_BUTTON}
-                    </Button>
-                </ButtonGroup>
-            </div>
+            {columnDefs && columnDefs.length > 0 && (
+                <>
+                    <div className="nexus-c-right-to-match-view__table-header">
+                        <NexusTitle isSubTitle isInline>
+                            {PENDING_RIGHT}
+                        </NexusTitle>
+                        {!mergeRights && (
+                            <RightToMatchNavigation
+                                searchParams={{availHistoryIds}}
+                                focusedRightId={rightId}
+                                focusedRight={focusedRight}
+                                availHistoryIds={availHistoryIds}
+                                history={history}
+                            />
+                        )}
+                    </div>
+                    <div className="nexus-c-right-to-match-view__focused-right">
+                        <IncomingRightNexusGrid
+                            id="incomingRightRightsMatching"
+                            columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.PENDING_RIGHT)}
+                            rowData={newPendingRight.length ? newPendingRight : updatedFocusedRight}
+                            domLayout="autoHeight"
+                        />
+                    </div>
+                    <SectionMessage appearance="info">
+                        <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
+                    </SectionMessage>
+                    <div className="nexus-c-right-to-match-view__rights-to-match">
+                        <NexusTitle isSubTitle>
+                            {CONFLICTING_RIGHTS} {`(${matchingCandidates.length})`}
+                        </NexusTitle>
+                        <RightRepositoryNexusGrid
+                            id="rightsMatchingRepo"
+                            columnDefs={reorderConflictingRightsHeaders(TABLE_NAMES.CONFLICTING_RIGHTS)}
+                            mapping={mapping}
+                            rowSelection="multiple"
+                            rowData={matchingCandidates}
+                            suppressRowClickSelection={true}
+                            floatingFilter={true}
+                            defaultColDef={{
+                                filter: AG_GRID_COLUMN_FILTER.TEXT,
+                                sortable: true,
+                            }}
+                            columnTypes={{
+                                dateColumn: {
+                                    filter: false,
+                                },
+                            }}
+                        />
+                    </div>
+                    <div className="nexus-c-right-to-match-view__buttons">
+                        <ButtonGroup>
+                            <Button
+                                className="nexus-c-button"
+                                onClick={() => history.push(URL.keepEmbedded(previousPageRoute))}
+                            >
+                                {CANCEL_BUTTON}
+                            </Button>
+                            <Button className="nexus-c-button" appearance="primary" onClick={handleMatchClick}>
+                                {MATCH_BUTTON}
+                            </Button>
+                        </ButtonGroup>
+                    </div>
+                </>
+            )}
         </div>
     );
 };
