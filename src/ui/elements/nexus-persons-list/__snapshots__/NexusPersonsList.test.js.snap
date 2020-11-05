@@ -48,7 +48,6 @@ exports[`NexusPersonsList should match snapshot 1`] = `
                   "personType": "Actor",
                 }
               }
-              showPersonType={true}
             />
             <NexusPersonRO
               key="idx-1"
@@ -63,7 +62,6 @@ exports[`NexusPersonsList should match snapshot 1`] = `
                   "personType": "Actor",
                 }
               }
-              showPersonType={true}
             />
             <NexusPersonRO
               key="idx-2"
@@ -78,12 +76,20 @@ exports[`NexusPersonsList should match snapshot 1`] = `
                   "personType": "Actor",
                 }
               }
-              showPersonType={true}
             />
           </Label>
         </Label>
       </ListGroup>
     </CardBody>
   </Card>
+  <NexusCharacterNameModal
+    characterName=""
+    closeModal={[Function]}
+    displayName=""
+    isModalOpen={false}
+    onChange={[Function]}
+    onSubmit={[Function]}
+    value=""
+  />
 </Fragment>
 `;

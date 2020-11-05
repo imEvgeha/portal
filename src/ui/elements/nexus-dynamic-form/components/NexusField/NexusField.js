@@ -18,6 +18,7 @@ import {
     renderLabel,
     renderError,
 } from '../../utils';
+import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
 
@@ -156,6 +157,8 @@ const NexusField = ({
             case 'dateRange':
             case 'datetime':
                 return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
+            case 'castCrew':
+                return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
             default:
                 return;
         }
@@ -184,6 +187,8 @@ const NexusField = ({
                     return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+            case 'castCrew':
+                return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={false} />;
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
@@ -209,7 +214,8 @@ const NexusField = ({
                 >
                     {({fieldProps, error}) => (
                         <>
-                            {renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
+                            {type !== 'castCrew' &&
+                                renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {view === VIEWS.EDIT || view === VIEWS.CREATE
