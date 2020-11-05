@@ -19,7 +19,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         };
     }
     const value = get(data, field.path) !== null ? get(data, field.path) : '';
-    if ((view === VIEWS.CREATE || get(field,'isOptional')) && !value) {
+    if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
     return value;
@@ -146,7 +146,7 @@ export const getProperValue = (type, value, path, schema) => {
             };
             break;
         case 'stringInArray':
-            if(!value){
+            if (!value) {
                 val = [];
             } else {
                 val = Array.isArray(value) ? value : [value];
@@ -191,7 +191,12 @@ export const buildSection = (
                         />
                     ) : (
                         <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, {initialData, field: fields[key], selectValues, setFieldValue})}
+                            {renderNexusField(key, view, getValues, {
+                                initialData,
+                                field: fields[key],
+                                selectValues,
+                                setFieldValue,
+                            })}
                         </div>
                     ))
                 );
@@ -253,6 +258,6 @@ export const renderLabel = (label, isRequired, tooltip) => {
     );
 };
 
-export const renderError = error => {
+export const renderError = (fieldProps, error) => {
     return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
 };

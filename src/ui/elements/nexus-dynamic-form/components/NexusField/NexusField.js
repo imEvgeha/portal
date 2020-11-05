@@ -222,7 +222,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {renderError(error)}
+                                {renderError({...fieldProps}, error)}
                             </div>
                         </>
                     )}
