@@ -1086,12 +1086,22 @@
                     "rentalDuration": {
                         "name": "Rental Duration",
                         "type": "number",
-                        "path": "rentalDuration"
+                        "path": "rentalDuration",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "watchDuration": {
                         "name": "Watch Duration",
                         "type": "number",
-                        "path": "watchDuration"
+                        "path": "watchDuration",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "productionYear": {
                         "name": "Production Year",
