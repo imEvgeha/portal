@@ -1,0 +1,17 @@
+@import '../../../styles/atlaskit/mixins';
+
+.nexus-c-nexus-person-ro {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.nexus-c-nexus-person-ro__character {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    > span {
+        @include margin(0, 1.25, 0, 0);
+    }
+}

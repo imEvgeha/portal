@@ -1,0 +1,11 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-drag-button {
+    @include margin(0);
+    @include padding(0);
+    cursor: move;
+    &:hover {
+        color: map-get($blues, B200);
+    }
+}

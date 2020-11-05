@@ -35,35 +35,38 @@ exports[`NexusCharacterNameModal should match snapshot 1`] = `
     toggle={[Function]}
     wrapTag="div"
   >
-    Edit
-     Character Name
+    Add Character Name
   </ModalHeader>
   <ModalBody
     tag="div"
   >
-    <styled.div
+    <ModalCustomLabel
       htmlFor="displayName"
+      isError={false}
     >
       Display Name
-    </styled.div>
-    <styled.input
-      disabled={true}
+    </ModalCustomLabel>
+    <ModalCustomInput
+      isError={false}
+      isReadOnly={true}
       name="displayName"
-      readOnly={true}
-      value="hint"
+      onChange={[Function]}
+      placeholder={null}
+      value=""
     />
-    <styled.div
+    <ModalCustomLabel
       htmlFor="characterName"
       isError={false}
     >
       Character Name
-    </styled.div>
-    <styled.input
+    </ModalCustomLabel>
+    <ModalCustomInput
       isError={false}
+      isReadOnly={false}
       name="characterName"
       onChange={[Function]}
       placeholder="Character Name"
-      value="test"
+      value=""
     />
   </ModalBody>
   <ModalFooter

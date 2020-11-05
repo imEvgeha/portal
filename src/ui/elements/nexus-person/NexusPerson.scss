@@ -1,0 +1,23 @@
+@import '../../../styles/atlaskit/mixins';
+
+.nexus-c-nexus-person {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 42.5% 42.5% 15%;
+}
+
+.nexus-c-nexus-person__character {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nexus-c-nexus-person__character-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    > button {
+        @include margin(0);
+        @include padding(0);
+    }
+}

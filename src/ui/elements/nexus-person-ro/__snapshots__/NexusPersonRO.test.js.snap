@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusPersonRO should match snapshot 1`] = `
+<div
+  className="nexus-c-nexus-person-ro"
+>
+  <PersonTypeContainer
+    personName="Amaka Obi"
+    personType="Actor"
+  />
+  <div
+    className="nexus-c-nexus-person-ro__character"
+  >
+    <Lozenge
+      appearance="default"
+      isBold={false}
+      maxWidth={200}
+    >
+      CHARACTER
+    </Lozenge>
+    <span>
+      test2
+    </span>
+  </div>
+</div>
+`;
