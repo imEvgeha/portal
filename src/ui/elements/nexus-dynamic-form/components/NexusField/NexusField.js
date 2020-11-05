@@ -61,6 +61,10 @@ const NexusField = ({
             if (Object.keys(selectValues).length) {
                 let options = cloneDeep(selectValues[path]);
                 options = formatOptions(options, optionsConfig);
+                if (type === 'select' && !isRequired) {
+                    const deselectOption = {label: 'Deselect...', value: null};
+                    options.unshift(deselectOption);
+                }
                 setFetchedOptions(options);
             }
         }
