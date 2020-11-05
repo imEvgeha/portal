@@ -24,6 +24,7 @@ const ServicingOrder = ({match}) => {
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
+    const [deteErrors, setDeteErrors] = useState([]);
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -45,6 +46,7 @@ const ServicingOrder = ({match}) => {
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
+                    setDeteErrors(fulfillmentOrders.errors || []);
 
                     setServiceOrder({
                         ...servicingOrder,
@@ -161,6 +163,7 @@ const ServicingOrder = ({match}) => {
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
                             components={components}
+                            deteErrors={deteErrors}
                         />
                     )}
                 </FulfillmentOrder>

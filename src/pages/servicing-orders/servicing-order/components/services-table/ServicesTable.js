@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
@@ -15,14 +16,17 @@ import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withE
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, OPERATIONAL_ERRORS} from './Constants';
+import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray}) => {
+const errorIcon = `<i class='fas fa-exclamation-triangle' style='color:red' />`;
+
+const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray, deteErrors}) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
@@ -174,18 +178,19 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: services && services[providerServices],
     });
 
-    const componentColumn = {
-        colId: 'components',
-        field: 'components',
-        dataSource: 'components',
-        headerName: 'Components',
-        autoHeight: true,
-        width: 250,
+    const componentCol = {
         cellRendererFramework: componentsCell,
         cellRendererParams: {data, tableData},
     };
 
     const statusCol = {
+        headerComponentParams: {menuIcon: errorIcon},
+        headerComponentFramework: () => (
+            <div onClick={() => openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)}>
+                Operational Status <ErrorIcon size="small" primaryColor="red" />
+            </div>
+        ),
+        sortable: false,
         // eslint-disable-next-line react/prop-types
         cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
         cellRendererParams: {tableData},
@@ -194,7 +199,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
-                return componentColumn;
+                return {...item, ...componentCol};
             case 'operationalStatus':
                 return {...item, ...statusCol};
             default:
@@ -293,6 +298,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             </div>
             <ServicesTableGrid
                 defaultColDef={{...valueGetter, sortable: true, resizable: true}}
+                isMenuHidden={false}
                 columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
                 rowData={tableData}
                 domLayout="autoHeight"
@@ -309,6 +315,7 @@ ServicesTable.propTypes = {
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
+    deteErrors: PropTypes.array,
 };
 
 ServicesTable.defaultProps = {
@@ -316,6 +323,7 @@ ServicesTable.defaultProps = {
     isDisabled: false,
     setUpdatedServices: () => null,
     components: [],
+    deteErrors: [],
 };
 
 export default ServicesTable;
