@@ -1,4 +1,6 @@
 @import '../../../styles/atlaskit/mixins';
+@import '../../../styles/config';
+@import '../../../styles/atlaskit/colors';
 
 .nexus-c-bulk-delete {
     height: 100%;
@@ -7,11 +9,10 @@
 
 .nexus-c-bulk-delete__message {
     @include margin(0, 0, 5, 0);
+    color: map-get($neutrals, N800);
 }
 
 .nexus-c-bulk-delete__container {
-    @include addSpacing('max-height', 100);
-    @include addSpacing('height', 100);
     overflow: auto;
 }
 
@@ -20,10 +21,6 @@
 }
 
 .nexus-c-bulk-delete__tag {
-    div {
-        margin-left: -10px;
-        width: 100%;
-    }
     span {
         margin: 0;
         width: 100%;
@@ -31,4 +28,97 @@
         justify-content: center;
         align-items: center;
     }
+}
+
+.nexus-c-bulk-delete__heading {
+    display: flex;
+    flex-direction: row;
+}
+
+.nexus-c-bulk-delete__selected,
+.nexus-c-bulk-delete__affected {
+    width: 50%;
+    @include heading(h500);
+    border-bottom: 2px solid map-get($neutrals, N40);
+    @include margin(0, 10, 0, 0);
+    @include padding(0, 0, 3, 0);
+}
+
+.nexus-c-bulk-delete__results {
+    @include addSpacing('max-height', 80);
+    @include addSpacing('height', 80);
+    overflow: auto;
+}
+
+.nexus-c-bulk-delete__rights {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    button,
+    span {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.nexus-c-bulk-delete__selected-right {
+    width: 50%;
+    height: 100%;
+}
+
+.nexus-c-bulk-delete__affected-rights {
+    width: 50%;
+}
+
+.nexus-c-bulk-delete__selected-right-id-row,
+.nexus-c-bulk-delete__selected-right-title-row,
+.nexus-c-bulk-delete__affected-linked-id-row,
+.nexus-c-bulk-delete__affected-title-row,
+.nexus-c-bulk-delete__affected-tpr-row,
+.nexus-c-bulk-delete__affected-bonus-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    align-items: center;
+    @include padding(1, 0, 1, 0);
+}
+
+.nexus-c-bulk-delete__selected-right-title-row,
+.nexus-c-bulk-delete__affected-bonus-row {
+    @include margin(0, 10, 0, 0);
+    border-bottom: 1px solid map-get($neutrals, N40);
+}
+
+.nexus-c-bulk-delete__checkbox {
+    @include addSpacing('min-width', 10);
+
+    label {
+        margin: 0;
+    }
+}
+
+.nexus-c-bulk-delete__selected-right-id-label,
+.nexus-c-bulk-delete__selected-right-title-label {
+    @include addSpacing('min-width', 20);
+    color: map-get($neutrals, N200);
+}
+
+.nexus-c-bulk-delete__affected-linked-id-label,
+.nexus-c-bulk-delete__affected-title-label,
+.nexus-c-bulk-delete__affected-tpr-label,
+.nexus-c-bulk-delete__affected-bonus-label {
+    @include addSpacing('min-width', 35);
+    color: map-get($neutrals, N200);
+}
+
+.nexus-c-bulk-delete__affected-tpr-label {
+    align-self: flex-start;
+    @include padding(1.6, 0, 0, 0);
+}
+
+.nexus-c-bulk-delete__affected-title,
+.nexus-c-bulk-delete__selected-title {
+    color: map-get($neutrals, N800);
 }
