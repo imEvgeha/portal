@@ -349,11 +349,30 @@ class CoreMetadataEditMode extends Component {
                             />
                         </Col>
                     </Row>
-                    <Row style={{marginTop: '10px'}}>
+                    <Row style={{borderTop: '1px solid lightgray', marginTop: '10px', paddingTop: '15px'}}>
                         <Col md={1}>
                             <Label for="licensorTitleId">Licensors</Label>
                         </Col>
-                        <Col>
+                        <Col md={3}>
+                            <AvField
+                                type="select"
+                                name="Licensors"
+                                id="Licensors"
+                                value={this.state.licensor}
+                                onChange={this.handleOnLicensorChange}
+                            >
+                                <option value="">Select Licensor</option>
+                                {this.props.configLicensors &&
+                                    this.props.configLicensors.value.map(e => {
+                                        return (
+                                            <option key={e.value} value={e.value}>
+                                                {e.value}
+                                            </option>
+                                        );
+                                    })}
+                            </AvField>
+                        </Col>
+                        <Col md={3}>
                             <AvField
                                 type="text"
                                 onChange={e => this.props.handleOnExternalIds(e)}
@@ -365,6 +384,17 @@ class CoreMetadataEditMode extends Component {
                                     maxLength: {value: 200},
                                 }}
                             />
+                        </Col>
+                        <Col md={2}>
+                            <Button id="btnAddLicensor" onClick={null} appearance="primary">
+                                Add Licensor
+                            </Button>
+                        </Col>
+                    </Row>
+                    <Row style={{borderBottom: '1px solid lightgray', paddingBottom: '15px'}}>
+                        <Col md={1}></Col>
+                        <Col md={8}>
+                            <NexusTagsContainer data={this.state.msvAssociationIds} saveData={this.handleMSVIDs} />
                         </Col>
                     </Row>
                     <Row style={{marginTop: '10px'}}>
