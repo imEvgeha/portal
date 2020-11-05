@@ -1035,7 +1035,8 @@
                     "windowDuration": {
                         "name": "Window Duration",
                         "type": "string",
-                        "path": "windowDuration"
+                        "path": "windowDuration",
+                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
                     },
                     "rentalDuration": {
                         "name": "Rental Duration",
