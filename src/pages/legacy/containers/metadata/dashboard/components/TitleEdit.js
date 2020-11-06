@@ -276,6 +276,15 @@ class TitleEdit extends Component {
         });
     };
 
+    handleLicensorsOnChange = licensors => {
+        this.setState({
+            editedForm: {
+                ...this.state.editedForm,
+                licensors,
+            },
+        });
+    };
+
     handleChangeSeries = e => {
         const newEpisodic = {
             ...this.state.editedForm.episodic,
@@ -479,6 +488,7 @@ class TitleEdit extends Component {
                 handleOnChangeEdit={this.handleOnChangeEdit}
                 handleCategoryOnChangeEdit={this.handleCategoryOnChangeEdit}
                 setValidationError={this.setValidationError}
+                handleLicensorsOnChange={this.handleLicensorsOnChange}
             />
         );
     };
