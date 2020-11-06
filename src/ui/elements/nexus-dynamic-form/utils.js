@@ -166,12 +166,7 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (
-    fields = {},
-    getValues,
-    view,
-    {selectValues, initialData, setFieldValue, setDisableSubmit}
-) => {
+export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue}) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -185,7 +180,6 @@ export const buildSection = (
                             data={getDefaultValue(fields[key], view, initialData)}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
-                            setDisableSubmit={setDisableSubmit}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
                             {...fields[key]}
                         />
