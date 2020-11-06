@@ -4,7 +4,7 @@ import {get} from 'lodash';
 import {equalOrIncluded, getSortedData} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
-import {VIEWS} from './constants';
+import {VIEWS, FIELD_REQUIRED} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
@@ -72,7 +72,7 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
-    if (isRequired && value === null) return 'THIS FIELD IS REQUIRED';
+    if (isRequired && value === null) return FIELD_REQUIRED;
 };
 
 export const getValidationFunction = (value, validations, {type, isRequired}) => {
