@@ -118,6 +118,11 @@ export function* updateRight({payload}) {
                 description: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });
+    } finally {
+        yield put({
+            type: actionTypes.GET_RIGHT,
+            payload,
+        });
     }
 }
 
