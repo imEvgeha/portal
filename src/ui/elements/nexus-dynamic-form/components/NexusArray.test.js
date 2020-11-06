@@ -1,5 +1,4 @@
 import React from 'react';
-import {Field as AKField} from '@atlaskit/form';
 import {shallow} from 'enzyme';
 import NexusArray from './NexusArray';
 
@@ -7,7 +6,6 @@ describe('NexusArray', () => {
     let wrapper = null;
     let setFieldValueMock;
     let closeModalMock;
-    let setDisableSubmitMock;
 
     const fields = {
         selected: {
@@ -48,7 +46,6 @@ describe('NexusArray', () => {
 
     beforeEach(() => {
         setFieldValueMock = jest.fn();
-        setDisableSubmitMock = jest.fn();
         closeModalMock = jest.fn();
         const props = {
             name: 'territory',
@@ -58,7 +55,6 @@ describe('NexusArray', () => {
             defaultValue: 'rght_zrp8g',
             getValues: () => {},
             setFieldValue: setFieldValueMock,
-            setDisableSubmit: setDisableSubmitMock,
             closeModal: closeModalMock,
         };
 
@@ -84,11 +80,10 @@ describe('NexusArray', () => {
         expect(nexusArrayFields.length).toEqual(4);
     });
 
-    it('should render 2 remove buttons and onClick the field value should be updated and submit button should be enable', () => {
+    it('should render 2 remove buttons and onClick the field value should be updated', () => {
         const nexusRemoveButtons = wrapper.find('.nexus-c-array__remove-button');
         expect(nexusRemoveButtons.length).toEqual(2);
         nexusRemoveButtons.at(0).simulate('click');
         expect(setFieldValueMock.mock.calls.length).toEqual(1);
-        expect(setDisableSubmitMock.mock.calls.length).toEqual(1);
     });
 });
