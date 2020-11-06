@@ -2,9 +2,10 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
+import moment from 'moment';
 import SectionTab from './components/SectionTab/SectionTab';
 import {buildSection, getProperValues} from './utils';
-import {VIEWS} from './constants';
+import {VIEWS, DATES} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
@@ -50,10 +51,25 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         );
     };
 
+    const validDateRange = values => {
+        let areValid = true;
+        Object.keys(values).forEach(key => {
+            if (DATES.includes(key)) {
+                const {startDate, endDate} = values[key];
+                if (moment(startDate).isAfter(endDate) || moment(endDate).isBefore(startDate)) {
+                    areValid = false;
+                }
+            }
+        });
+        return areValid;
+    };
+
     const handleOnSubmit = values => {
-        setView(VIEWS.VIEW);
-        const properValues = getProperValues(schema, values);
-        onSubmit(properValues);
+        if (validDateRange(values)) {
+            setView(VIEWS.VIEW);
+            const properValues = getProperValues(schema, values);
+            onSubmit(properValues);
+        }
     };
 
     return (
