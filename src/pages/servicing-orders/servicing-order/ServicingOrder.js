@@ -120,8 +120,8 @@ const ServicingOrder = ({match}) => {
     };
 
     const isFormDisabled = selectedOrder => {
-        const {readiness} = selectedOrder;
-        return readiness === 'READY';
+        const {readiness, tenant} = selectedOrder;
+        return readiness === 'READY' || tenant === 'WB';
     };
 
     return (

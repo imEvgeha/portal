@@ -65,48 +65,70 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "serviceType",
           "field": "serviceType",
           "headerName": "Service Type",
-          "width": 250,
+          "width": 150,
         },
         Object {
           "colId": "assetType",
           "dataSource": "assetType",
           "field": "assetType",
           "headerName": "Asset Type",
-          "width": 250,
+          "width": 150,
         },
         Object {
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
           "headerName": "Spec",
-          "width": 200,
+          "width": 150,
         },
         Object {
           "autoHeight": true,
           "cellRendererFramework": [Function],
           "cellRendererParams": Object {
-            "audioComponents": Array [],
+            "data": Object {
+              "amsAssetId": "DA16129",
+              "assetFormat": "VIDEO_CONFORMANCEGROUP",
+              "assetType": "DETE_FILE",
+              "barcode": "DA16129",
+              "deteServices": Array [
+                Object {
+                  "addRecipient": "MGM",
+                  "componentId": "LOL-123",
+                  "operationalStatus": "In Progress",
+                  "sourceStandard": "_1080_23_976",
+                  "spec": "M-DBS-2398 SCC",
+                  "standard": "Forced",
+                  "type": "Subtitles",
+                  "version": "French",
+                },
+              ],
+              "externalId": "DA16129",
+              "externalSystem": "VSOM",
+              "fs": "DETE",
+              "startDate": "2020-05-19T15:13:13.731-03:00",
+              "title": "test title",
+            },
             "tableData": Array [],
           },
           "colId": "components",
           "dataSource": "components",
           "field": "components",
           "headerName": "Components",
-          "width": 500,
+          "width": 250,
         },
         Object {
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
           "valueFormatter": [Function],
-          "width": 300,
+          "width": 220,
         },
         Object {
           "colId": "priority",
           "dataSource": "priority",
           "field": "priority",
           "headerName": "Priority",
-          "width": 160,
+          "width": 90,
         },
         Object {
           "colId": "recipient",
@@ -118,7 +140,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "colId": "operationalStatus",
           "field": "operationalStatus",
           "headerName": "Operational Status",
-          "width": 250,
+          "width": 200,
         },
       ]
     }
@@ -203,7 +225,6 @@ exports[`ServicesTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
-    onGridReady={[Function]}
     rowData={Array []}
     selectValues={
       Object {
