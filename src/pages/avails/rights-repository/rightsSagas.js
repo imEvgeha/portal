@@ -3,7 +3,9 @@ import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     ERROR_ICON,
-    ERROR_TITLE,
+    UPDATE_RIGHT_FAILED,
+    UPDATE_RIGHT_SUCCESS_MESSAGE,
+    MAX_CHARS,
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
@@ -99,7 +101,7 @@ export function* updateRight({payload}) {
                 title: SUCCESS_TITLE,
                 icon: SUCCESS_ICON,
                 isAutoDismiss: true,
-                description: `Right is successfully uploaded.`,
+                description: UPDATE_RIGHT_SUCCESS_MESSAGE,
             },
         });
     } catch (error) {
@@ -110,10 +112,10 @@ export function* updateRight({payload}) {
         yield put({
             type: ADD_TOAST,
             payload: {
-                title: ERROR_TITLE,
+                title: UPDATE_RIGHT_FAILED,
                 icon: ERROR_ICON,
                 isAutoDismiss: true,
-                description: `Right upload failed.`,
+                description: `${error.message.message.slice(0, MAX_CHARS)}...`,
             },
         });
     }
