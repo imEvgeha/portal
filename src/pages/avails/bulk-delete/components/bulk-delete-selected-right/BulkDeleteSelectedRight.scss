@@ -1,0 +1,36 @@
+@import '../../../../../styles/atlaskit/mixins';
+
+.nexus-c-bulk-delete-selected-right__id-row,
+.nexus-c-bulk-delete-selected-right__title-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    align-items: center;
+    @include padding(1, 0, 1, 0);
+}
+
+.nexus-c-bulk-delete-selected-right__title-row {
+    @include margin(0, 10, 0, 0);
+    border-bottom: 1px solid map-get($neutrals, N40);
+}
+
+.nexus-c-bulk-delete-selected-right__checkbox {
+    @include addSpacing('min-width', 10);
+
+    label {
+        margin: 0;
+    }
+}
+
+.nexus-c-bulk-delete-selected-right__id-label,
+.nexus-c-bulk-delete-selected-right__title-label {
+    @include addSpacing('min-width', 20);
+    @include heading(h200);
+    @include margin(0);
+    color: map-get($neutrals, N200);
+}
+
+.nexus-c-bulk-delete-selected-right__title {
+    color: map-get($neutrals, N800);
+}

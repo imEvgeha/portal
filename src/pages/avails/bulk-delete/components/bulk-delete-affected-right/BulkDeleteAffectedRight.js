@@ -11,29 +11,31 @@ const BulkDeleteAffectedRight = ({
     renderCustomTypeTag,
 }) => {
     return (
-        <div className="nexus-c-bulk-delete-affected-entry" key={rightId}>
-            <div className="nexus-c-bulk-delete__affected-linked-id-row">
-                <div className="nexus-c-bulk-delete__affected-linked-id-label">Linked Right ID</div>
-                <div className="nexus-c-bulk-delete__affected-linked-id">{renderLinkableRightId(rightId)}</div>
-                <div className="nexus-c-bulk-delete__affected-linked-tag">{renderCustomTypeTag('TPR')}</div>
+        <div className="nexus-c-bulk-delete-affected-right">
+            <div className="nexus-c-bulk-delete-affected-right__linked-id-row">
+                <div className="nexus-c-bulk-delete-affected-right__linked-id-label">Linked Right ID</div>
+                <div className="nexus-c-bulk-delete-affected-right__linked-id">{renderLinkableRightId(rightId)}</div>
+                <div className="nexus-c-bulk-delete-affected-right__linked-tag">
+                    {renderCustomTypeTag(sourceRightId ? 'Bonus' : 'TPR')}
+                </div>
             </div>
-            <div className="nexus-c-bulk-delete__affected-title-row">
-                <div className="nexus-c-bulk-delete__affected-title-label">Title</div>
-                <div className="nexus-c-bulk-delete__affected-title">{title}</div>
+            <div className="nexus-c-bulk-delete-affected-right__title-row">
+                <div className="nexus-c-bulk-delete-affected-right__title-label">Title</div>
+                <div className="nexus-c-bulk-delete-affected-right__title">{title}</div>
             </div>
-            <div className="nexus-c-bulk-delete__affected-tpr-row">
-                <div className="nexus-c-bulk-delete__affected-tpr-label">TPR Original Rights</div>
-                <div className="nexus-c-bulk-delete__affected-tpr-ids">
+            <div className="nexus-c-bulk-delete-affected-right__tpr-row">
+                <div className="nexus-c-bulk-delete-affected-right__tpr-label">TPR Original Rights</div>
+                <div className="nexus-c-bulk-delete-affected-right__tpr-ids">
                     {originalRightIds.map(id => (
-                        <div className="nexus-c-bulk-delete__affected-tpr-id" key={id}>
+                        <div className="nexus-c-bulk-delete-affected-right__tpr-id" key={id}>
                             {renderLinkableRightId(id)}
                         </div>
                     ))}
                 </div>
             </div>
-            <div className="nexus-c-bulk-delete__affected-bonus-row">
-                <div className="nexus-c-bulk-delete__affected-bonus-label">Bonus Source Right</div>
-                <div className="nexus-c-bulk-delete__affected-bonus-id">
+            <div className="nexus-c-bulk-delete-affected-right__bonus-row">
+                <div className="nexus-c-bulk-delete-affected-right__bonus-label">Bonus Source Right</div>
+                <div className="nexus-c-bulk-delete-affected-right__bonus-id">
                     {sourceRightId ? renderLinkableRightId(sourceRightId) : null}
                 </div>
             </div>

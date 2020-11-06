@@ -5,18 +5,18 @@ import './BulkDeleteSelectedRight.scss';
 
 const BulkDeleteSelectedRight = ({rightId, title, isSelected, renderLinkableRightId, onCheckedChanged}) => {
     return (
-        <div className="nexus-c-bulk-delete__selected-right">
-            <div className="nexus-c-bulk-delete__selected-right-id-row">
-                <div className="nexus-c-bulk-delete__checkbox">
+        <div className="nexus-c-bulk-delete-selected-right">
+            <div className="nexus-c-bulk-delete-selected-right__id-row">
+                <div className="nexus-c-bulk-delete-selected-right__checkbox">
                     <Checkbox isChecked={isSelected} onChange={() => onCheckedChanged(rightId)} />
                 </div>
-                <div className="nexus-c-bulk-delete__selected-right-id-label">Right ID</div>
-                <div className="nexus-c-bulk-delete__selected-right-id">{renderLinkableRightId(rightId)}</div>
+                <div className="nexus-c-bulk-delete-selected-right__id-label">Right ID</div>
+                <div className="nexus-c-bulk-delete-selected-right__id">{renderLinkableRightId(rightId)}</div>
             </div>
-            <div className="nexus-c-bulk-delete__selected-right-title-row">
-                <div className="nexus-c-bulk-delete__checkbox" />
-                <div className="nexus-c-bulk-delete__selected-right-title-label">Title</div>
-                <div className="nexus-c-bulk-delete__selected-title">{title}</div>
+            <div className="nexus-c-bulk-delete-selected-right__title-row">
+                <div className="nexus-c-bulk-delete-selected-right__checkbox" />
+                <div className="nexus-c-bulk-delete-selected-right__title-label">Title</div>
+                <div className="nexus-c-bulk-delete-selected-right__title">{title}</div>
             </div>
         </div>
     );

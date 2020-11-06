@@ -20,16 +20,6 @@
     @include margin(0, 0, 5, 0);
 }
 
-.nexus-c-bulk-delete__tag {
-    span {
-        margin: 0;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
 .nexus-c-bulk-delete__heading {
     display: flex;
     flex-direction: row;
@@ -67,60 +57,17 @@
 .nexus-c-bulk-delete__affected-wrapper {
     display: flex;
     flex-direction: column;
+    width: 50%;
 }
 
-.nexus-c-bulk-delete__selected-right-id-row,
-.nexus-c-bulk-delete__selected-right-title-row,
-.nexus-c-bulk-delete__affected-linked-id-row,
-.nexus-c-bulk-delete__affected-title-row,
-.nexus-c-bulk-delete__affected-tpr-row,
-.nexus-c-bulk-delete__affected-bonus-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    overflow: auto;
-    align-items: center;
-    @include padding(1, 0, 1, 0);
-}
-
-.nexus-c-bulk-delete__selected-right-title-row,
-.nexus-c-bulk-delete__affected-bonus-row {
-    @include margin(0, 10, 0, 0);
-    border-bottom: 1px solid map-get($neutrals, N40);
-}
-
-.nexus-c-bulk-delete__checkbox {
-    @include addSpacing('min-width', 10);
-
-    label {
+.nexus-c-bulk-delete__tag {
+    span {
+        @include addSpacing('min-width', 10);
+        @include padding(0, 1);
         margin: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-}
-
-.nexus-c-bulk-delete__selected-right-id-label,
-.nexus-c-bulk-delete__selected-right-title-label {
-    @include addSpacing('min-width', 20);
-    @include heading(h200);
-    @include margin(0);
-    color: map-get($neutrals, N200);
-}
-
-.nexus-c-bulk-delete__affected-linked-id-label,
-.nexus-c-bulk-delete__affected-title-label,
-.nexus-c-bulk-delete__affected-tpr-label,
-.nexus-c-bulk-delete__affected-bonus-label {
-    @include addSpacing('min-width', 35);
-    @include heading(h200);
-    @include margin(0);
-    color: map-get($neutrals, N200);
-}
-
-.nexus-c-bulk-delete__affected-tpr-label {
-    align-self: flex-start;
-    @include padding(2, 0, 0, 0);
-}
-
-.nexus-c-bulk-delete__affected-title,
-.nexus-c-bulk-delete__selected-title {
-    color: map-get($neutrals, N800);
 }
