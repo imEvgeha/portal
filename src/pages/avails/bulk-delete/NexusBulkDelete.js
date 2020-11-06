@@ -27,7 +27,7 @@ export const NexusBulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRight
 
     useEffect(() => {
         if (!isEmpty(rightsWithDeps)) {
-            console.log(rightsWithDeps);
+            setTableData(rightsWithDeps);
         }
     }, [rightsWithDeps]);
 
@@ -43,12 +43,12 @@ export const NexusBulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRight
         </div>
     );
 
-    // const deselectRightForDeletion = key => {
-    //     const selectedRight = tableData[key];
-    //     selectedRight.isSelected = !selectedRight.isSelected;
-    //     setTableData({...tableData});
-    // };
-
+    const deselectRightsForDeletion = key => {
+        const selectedRight = tableData[key];
+        selectedRight.isSelected = !selectedRight.isSelected;
+        setTableData({...tableData});
+    };
+    console.log(tableData);
     return (
         <div className="nexus-c-bulk-delete">
             <div className="nexus-c-bulk-delete__container">
@@ -59,34 +59,39 @@ export const NexusBulkDelete = ({rights, onClose, rightsWithDeps, getLinkedRight
                 </div>
                 <div className="nexus-c-bulk-delete__results">
                     <div className="nexus-c-bulk-delete__rights">
-                        {!isEmpty(rightsWithDeps) &&
-                            Object.entries(rightsWithDeps).map(([key, value]) => {
-                                return (
-                                    <>
+                        {!isEmpty(tableData) && (
+                            <>
+                                <div className="nexus-c-bulk-delete__selected-wrapper">
+                                    {Object.keys(tableData).map(key => (
                                         <BulkDeleteSelectedRight
+                                            key={key}
                                             rightId={key}
-                                            title={value.original.title}
+                                            title={rightsWithDeps[key].original.title}
+                                            isSelected={rightsWithDeps[key].isSelected}
                                             renderLinkableRightId={renderLinkableRightId}
-                                            onCheckedChanged={() => null}
+                                            onCheckedChanged={deselectRightsForDeletion}
                                         />
-                                        <div className="nexus-c-bulk-delete__affected-rights">
-                                            {value.dependencies.map(depRight => {
-                                                return (
-                                                    <BulkDeleteAffectedRight
-                                                        key={depRight.id}
-                                                        rightId={depRight.id}
-                                                        sourceRightId={depRight.sourceRightId}
-                                                        originalRightIds={depRight.originalRightIds}
-                                                        title={depRight.title}
-                                                        renderLinkableRightId={renderLinkableRightId}
-                                                        renderCustomTypeTag={renderCustomTypeTag}
-                                                    />
-                                                );
-                                            })}
-                                        </div>
-                                    </>
-                                );
-                            })}
+                                    ))}
+                                </div>
+                                <div className="nexus-c-bulk-delete__affected-wrapper">
+                                    {Object.values(tableData).map(value =>
+                                        value.dependencies.map(depRight => {
+                                            return (
+                                                <BulkDeleteAffectedRight
+                                                    key={depRight.id}
+                                                    rightId={depRight.id}
+                                                    sourceRightId={depRight.sourceRightId}
+                                                    originalRightIds={depRight.originalRightIds}
+                                                    title={depRight.title}
+                                                    renderLinkableRightId={renderLinkableRightId}
+                                                    renderCustomTypeTag={renderCustomTypeTag}
+                                                />
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
