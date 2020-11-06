@@ -225,7 +225,7 @@ export const SelectedRightsActions = ({
         closeModal();
         openModal(<NexusBulkDelete rights={selectedRights} onClose={closeModal} />, {
             title: BULK_DELETE_HEADER,
-            width: 'x-large',
+            width: 'large',
         });
     };
 

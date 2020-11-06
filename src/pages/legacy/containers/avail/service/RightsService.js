@@ -241,6 +241,25 @@ export const rightsService = {
             isWithErrorHandling,
         });
     },
+
+    delete: (selectedRightIds, impactedRightIds) => {
+        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/delete`;
+        const data = {
+            selectedRightIds,
+            impactedRightIds,
+        };
+        return nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
+    },
+
+    findBonusAndTPRsToBeDeleted: selectedRightIds => {
+        const url = `${config.get('gateway.url')}${config.get(
+            'gateway.service.avails'
+        )}/rights/findBonusAndTPRsToBeDeleted`;
+        const data = {
+            selectedRightIds,
+        };
+        return nexusFetch(url, {method: 'post', body: JSON.stringify(data)});
+    },
 };
 
 export {parseAdvancedFilter, parseAdvancedFilterV2};

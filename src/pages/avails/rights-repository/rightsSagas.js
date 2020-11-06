@@ -1,8 +1,10 @@
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
-import {getLinkedToOriginalRights} from '../availsService';
+import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
+import rightMatchingReducer from '../right-matching/rightMatchingReducer';
 import * as actionTypes from './rightsActionTypes';
-import {DEFAULT_PAGE_SIZE} from './constants';
 
 export function* storeRightsFilter({payload}) {
     try {
@@ -18,35 +20,87 @@ export function* storeRightsFilter({payload}) {
     }
 }
 
+// export function* storeLinkedToOriginalRights({payload}) {
+//     const {rights} = payload || {};
+
+//     try {
+//         const rightIds = rights.map(right => right.id);
+//         const [rightsWithSourceRightId, rightsWithOriginalRightIds] = yield all([
+//             call(getLinkedToOriginalRights, {sourceRightIdList: rightIds}, DEFAULT_PAGE_SIZE),
+//             call(getLinkedToOriginalRights, {originalRightIdsList: rightIds}, DEFAULT_PAGE_SIZE),
+//         ]);
+//         const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
+//         const dependencyRights = {};
+//         rights.map(right => {
+//             const foundDependencies = mergedDependencies.filter(
+//                 dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
+//             );
+//             if (foundDependencies && foundDependencies.length) {
+//                 dependencyRights[right.id] = {
+//                     original: right,
+//                     dependencies: [...foundDependencies],
+//                     isSelected: true,
+//                 };
+//             }
+//             return null;
+//         });
+
+//         yield put({
+//             type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
+//             payload: dependencyRights,
+//         });
+//     } catch (error) {
+//         yield put({
+//             type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR,
+//             payload: error,
+//             error: true,
+//         });
+//     }
+// }
+
 export function* storeLinkedToOriginalRights({payload}) {
     const {rights} = payload || {};
 
     try {
         const rightIds = rights.map(right => right.id);
-        const [rightsWithSourceRightId, rightsWithOriginalRightIds] = yield all([
-            call(getLinkedToOriginalRights, {sourceRightIdList: rightIds}, DEFAULT_PAGE_SIZE),
-            call(getLinkedToOriginalRights, {originalRightIdsList: rightIds}, DEFAULT_PAGE_SIZE),
-        ]);
-        const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
-        const dependencyRights = {};
-        rights.map(right => {
-            const foundDependencies = mergedDependencies.filter(
+        const response = yield call(getLinkedToOriginalRightsV2, rightIds);
+        console.log(response);
+        const rightsWithDeps = {};
+        const rightIdsWithoutDeps = [];
+        rights.forEach(right => {
+            const foundDependencies = response.filter(
                 dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
             );
-            if (foundDependencies && foundDependencies.length) {
-                dependencyRights[right.id] = {
+            if (foundDependencies.length) {
+                rightsWithDeps[right.id] = {
                     original: right,
                     dependencies: [...foundDependencies],
                     isSelected: true,
                 };
+            } else {
+                rightIdsWithoutDeps.push(right.id);
             }
-            return null;
         });
-
-        yield put({
-            type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
-            payload: dependencyRights,
-        });
+        if (rightIdsWithoutDeps.length) {
+            // yield call(bulkDeleteRights, rightIdsWithoutDeps);
+            yield put({
+                type: ADD_TOAST,
+                payload: {
+                    title: SUCCESS_TITLE,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                    description: `${rightIdsWithoutDeps.length} ${
+                        rightIdsWithoutDeps.length === 1 ? 'Right' : 'Rights'
+                    } deleted`,
+                },
+            });
+        }
+        if (Object.keys(rightsWithDeps).length) {
+            yield put({
+                type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
+                payload: rightsWithDeps,
+            });
+        }
     } catch (error) {
         yield put({
             type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR,

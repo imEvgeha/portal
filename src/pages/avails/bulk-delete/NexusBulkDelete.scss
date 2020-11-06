@@ -102,6 +102,8 @@
 .nexus-c-bulk-delete__selected-right-id-label,
 .nexus-c-bulk-delete__selected-right-title-label {
     @include addSpacing('min-width', 20);
+    @include heading(h200);
+    @include margin(0);
     color: map-get($neutrals, N200);
 }
 
@@ -110,6 +112,8 @@
 .nexus-c-bulk-delete__affected-tpr-label,
 .nexus-c-bulk-delete__affected-bonus-label {
     @include addSpacing('min-width', 35);
+    @include heading(h200);
+    @include margin(0);
     color: map-get($neutrals, N200);
 }
 
