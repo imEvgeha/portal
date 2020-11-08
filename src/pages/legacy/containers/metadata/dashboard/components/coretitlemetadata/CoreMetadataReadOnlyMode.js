@@ -196,7 +196,10 @@ class CoreMetadataReadOnlyMode extends Component {
                                                 <Alert color="light">
                                                     <b style={{color: '#000'}}>Licensors:</b>
                                                     {this.props.data.licensors.map(item => (
-                                                        <span title={`${item.licensor} : ${item.licensorTitleId}`}>
+                                                        <span
+                                                            key={item.licensor}
+                                                            title={`${item.licensor} : ${item.licensorTitleId}`}
+                                                        >
                                                             <Tag text={`${item.licensor} : ${item.licensorTitleId}`} />
                                                         </span>
                                                     ))}
