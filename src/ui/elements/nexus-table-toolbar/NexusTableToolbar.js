@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './NexusTableToolbar.scss';
 import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
-import {RIGHTS_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB} from '../../../pages/avails/rights-repository/constants';
+import {
+    RIGHTS_TAB,
+    RIGHTS_SELECTED_TAB,
+    PRE_PLAN_TAB,
+    SELECTED_FOR_PLANNING_TAB,
+} from '../../../pages/avails/rights-repository/constants';
 import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
 import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
 import NexusTab from './components/NexusTab';
@@ -81,11 +86,13 @@ const NexusTableToolbar = ({
 
             {hasDownloadButton && (
                 <div className="nexus-c-table-toolbar__button-container">
-                    <SelectedButton
-                        selectedRightsCount={selectedRightsCount}
-                        activeTab={activeTab}
-                        setActiveTab={setActiveTab}
-                    />
+                    {[RIGHTS_TAB, RIGHTS_SELECTED_TAB].includes(activeTab) && (
+                        <SelectedButton
+                            selectedRightsCount={selectedRightsCount}
+                            activeTab={activeTab}
+                            setActiveTab={setActiveTab}
+                        />
+                    )}
                     <NexusTableExportDropdown
                         activeTab={activeTab}
                         selectedRows={selectedRows}

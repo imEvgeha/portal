@@ -1,0 +1,10 @@
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-droppable-content {
+    width: 97%;
+}
+
+.nexus-c-droppable-content--dragging {
+    background-color: map-get($neutrals, N50);
+    border: 2px dotted map-get($darkModeNeutrals, DN20);
+}

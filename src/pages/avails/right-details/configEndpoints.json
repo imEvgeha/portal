@@ -86,5 +86,17 @@
     {
         "field": "subtitles",
         "configEndpoint": "/languages"
+    },
+    {
+        "field": "productionStudio",
+        "configEndpoint": "/production-studios"
+    },
+    {
+        "field": "genres",
+        "configEndpoint": "/genres"
+    },
+    {
+        "field": "ngAudio",
+        "configEndpoint": "/ng-audios"
     }
 ]

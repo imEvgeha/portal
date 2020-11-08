@@ -3,32 +3,24 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import ModalCustomInput from './ModalCustomInput';
+import ModalCustomLabel from './ModalCustomLabel';
 import {
-    CustomInput,
-    CustomLabel,
-} from '../../../../pages/legacy/containers/metadata/dashboard/components/coretitlemetadata/CustomComponents';
+    ADD_CHARACTER_NAME,
+    EDIT_CHARACTER_NAME,
+    EMPTY_CHARACTER_ERROR,
+    LONG_CHARACTER_ERROR,
+    MAX_CHARACTER_NAME_LENGTH,
+} from '../constants';
 
-const MAX_CHAR_NAME_LENGTH = 100;
-
-const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onSubmit}) => {
-    const [val, setVal] = useState(defaultVal || '');
+const NexusCharacterNameModal = ({displayName, characterName, value, onChange, isModalOpen, closeModal, onSubmit}) => {
     const [isValid, setIsValid] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        setVal(defaultVal);
-    }, [defaultVal]);
-
     const onCancel = () => {
-        setVal(defaultVal);
         if (typeof closeModal === 'function') {
             closeModal();
         }
-    };
-
-    const handleChange = e => {
-        const {value} = e.target;
-        setVal(value);
     };
 
     const isEmpty = str => {
@@ -36,39 +28,39 @@ const NexusCharacterNameModal = ({hint, defaultVal, isModalOpen, closeModal, onS
     };
 
     useEffect(() => {
-        if (isEmpty(val)) {
-            setError('Character name cannot be empty!');
+        if (isEmpty(value)) {
+            setError(EMPTY_CHARACTER_ERROR);
             setIsValid(false);
-        } else if (val.trim().length < MAX_CHAR_NAME_LENGTH) {
+        } else if (value.trim().length >= MAX_CHARACTER_NAME_LENGTH) {
+            setError(LONG_CHARACTER_ERROR);
+            setIsValid(false);
+        } else {
             setError(null);
             setIsValid(true);
-        } else {
-            setError('Character name must be less than 100 characters long!');
-            setIsValid(false);
         }
-    }, [val]);
+    }, [value]);
 
     const handleSubmit = () => {
         if (typeof onSubmit === 'function') {
-            onSubmit(val);
+            onSubmit();
         }
     };
 
     return (
         <Modal isOpen={isModalOpen} toggle={onCancel}>
-            <ModalHeader toggle={onCancel}>{defaultVal ? 'Edit' : 'Add'} Character Name</ModalHeader>
+            <ModalHeader toggle={onCancel}>{characterName ? EDIT_CHARACTER_NAME : ADD_CHARACTER_NAME}</ModalHeader>
             <ModalBody>
-                <CustomLabel htmlFor="displayName">Display Name</CustomLabel>
-                <CustomInput readOnly name="displayName" disabled={true} value={hint || ''} />
-                <CustomLabel isError={!isValid} htmlFor="characterName">
+                <ModalCustomLabel htmlFor="displayName">Display Name</ModalCustomLabel>
+                <ModalCustomInput isReadOnly={true} name="displayName" value={displayName || ''} />
+                <ModalCustomLabel isError={!isValid} htmlFor="characterName">
                     Character Name
-                </CustomLabel>
-                <CustomInput
+                </ModalCustomLabel>
+                <ModalCustomInput
                     isError={!isValid}
-                    onChange={value => handleChange(value)}
+                    onChange={value => onChange(value)}
                     placeholder="Character Name"
                     name="characterName"
-                    value={val || ''}
+                    value={value || ''}
                 />
                 {!isValid && <ErrorMessage>{error}</ErrorMessage>}
             </ModalBody>
@@ -88,13 +80,17 @@ NexusCharacterNameModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isModalOpen: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
-    defaultVal: PropTypes.string,
-    hint: PropTypes.string,
+    characterName: PropTypes.string,
+    displayName: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
 };
 
 NexusCharacterNameModal.defaultProps = {
-    defaultVal: '',
-    hint: '',
+    characterName: '',
+    displayName: '',
+    value: '',
+    onChange: () => null,
 };
 
 export default NexusCharacterNameModal;

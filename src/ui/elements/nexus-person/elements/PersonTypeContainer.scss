@@ -1,0 +1,23 @@
+@import '../../../../styles/atlaskit/mixins';
+
+.nexus-c-person-type-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nexus-c-person-type-container__img {
+    height: 25px;
+    width: 25px;
+    @include margin(0, 1.25, 0, 1.25);
+}
+
+.nexus-c-person-type-container__name {
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    @include margin(0, 0, 0, 1.25);
+}
