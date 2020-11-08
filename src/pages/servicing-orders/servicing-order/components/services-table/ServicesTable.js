@@ -16,7 +16,7 @@ import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withE
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, OPERATIONAL_ERRORS} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, ErrorTestRows} from './Constants';
 import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
@@ -186,9 +186,15 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const statusCol = {
         headerComponentParams: {menuIcon: errorIcon},
         headerComponentFramework: () => (
-            <div onClick={() => openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)}>
-                Operational Status <ErrorIcon size="small" primaryColor="red" />
-            </div>
+            <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
+                <div
+                    onClick={() =>
+                        deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null
+                    }
+                >
+                    Operational Status <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
+                </div>
+            </Tooltip>
         ),
         sortable: false,
         // eslint-disable-next-line react/prop-types
