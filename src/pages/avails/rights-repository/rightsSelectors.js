@@ -17,3 +17,6 @@ export const createRightsFilterSelector = () => createSelector(getRightsReducer,
 
 export const createRightsWithDependenciesSelector = () =>
     createSelector(getRightsReducer, rights => rights.rightsWithDependencies || {});
+
+export const createDeletedRightsCountSelector = () =>
+    createSelector(getRightsReducer, rights => rights.deletedRightsCount || 0);

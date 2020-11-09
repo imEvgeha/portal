@@ -20,51 +20,13 @@ export function* storeRightsFilter({payload}) {
     }
 }
 
-// export function* storeLinkedToOriginalRights({payload}) {
-//     const {rights} = payload || {};
-
-//     try {
-//         const rightIds = rights.map(right => right.id);
-//         const [rightsWithSourceRightId, rightsWithOriginalRightIds] = yield all([
-//             call(getLinkedToOriginalRights, {sourceRightIdList: rightIds}, DEFAULT_PAGE_SIZE),
-//             call(getLinkedToOriginalRights, {originalRightIdsList: rightIds}, DEFAULT_PAGE_SIZE),
-//         ]);
-//         const mergedDependencies = [...rightsWithSourceRightId.data, ...rightsWithOriginalRightIds.data];
-//         const dependencyRights = {};
-//         rights.map(right => {
-//             const foundDependencies = mergedDependencies.filter(
-//                 dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
-//             );
-//             if (foundDependencies && foundDependencies.length) {
-//                 dependencyRights[right.id] = {
-//                     original: right,
-//                     dependencies: [...foundDependencies],
-//                     isSelected: true,
-//                 };
-//             }
-//             return null;
-//         });
-
-//         yield put({
-//             type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
-//             payload: dependencyRights,
-//         });
-//     } catch (error) {
-//         yield put({
-//             type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR,
-//             payload: error,
-//             error: true,
-//         });
-//     }
-// }
-
-export function* storeLinkedToOriginalRights({payload}) {
-    const {rights} = payload || {};
+export function* fetchLinkedToOriginalRights({payload}) {
+    const {rights, closeModal} = payload || {};
 
     try {
         const rightIds = rights.map(right => right.id);
         const response = yield call(getLinkedToOriginalRightsV2, rightIds);
-        console.log(response);
+        closeModal();
         const rightsWithDeps = {};
         const rightIdsWithoutDeps = [];
         rights.forEach(right => {
@@ -98,7 +60,7 @@ export function* storeLinkedToOriginalRights({payload}) {
         if (Object.keys(rightsWithDeps).length) {
             yield put({
                 type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
-                payload: rightsWithDeps,
+                payload: {rightsWithDeps, deletedRightsCount: rightIdsWithoutDeps.length},
             });
         }
     } catch (error) {
@@ -153,6 +115,6 @@ export function* rightsWatcher() {
         takeEvery(actionTypes.GET_RIGHT, getRight),
         takeEvery(actionTypes.UPDATE_RIGHT, updateRight),
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
-        takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, storeLinkedToOriginalRights),
+        takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, fetchLinkedToOriginalRights),
     ]);
 }
