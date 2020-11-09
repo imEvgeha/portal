@@ -118,7 +118,7 @@ class CoreMetadataEditMode extends Component {
             ...this.state.licensors,
             {id: licensoreObj.id, licensor: this.state.licensorSelected, licensorTitleId: this.state.licensorTitleId},
         ];
-        this.setState({licensors: newLicensors, ...defaultAddLicensorsState});
+        this.setState(prevState => ({...prevState, licensors: newLicensors, ...defaultAddLicensorsState}));
         this.props.handleLicensorsOnChange(newLicensors);
     };
 

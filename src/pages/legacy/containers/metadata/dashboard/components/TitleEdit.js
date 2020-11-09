@@ -277,12 +277,9 @@ class TitleEdit extends Component {
     };
 
     handleLicensorsOnChange = licensors => {
-        this.setState({
-            editedForm: {
-                ...this.state.editedForm,
-                licensors,
-            },
-        });
+        this.setState(prevState => ({
+            editedForm: {...prevState.editedForm, licensors},
+        }));
     };
 
     handleChangeSeries = e => {
