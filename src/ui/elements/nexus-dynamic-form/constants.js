@@ -26,5 +26,3 @@ export const TABS_MAPPINGS = [
 
 export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
 export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';
-
-export const DATES = ['dates', 'availDates', 'termDates'];

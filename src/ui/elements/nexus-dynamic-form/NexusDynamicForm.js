@@ -4,8 +4,8 @@ import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import moment from 'moment';
 import SectionTab from './components/SectionTab/SectionTab';
-import {buildSection, getProperValues} from './utils';
-import {VIEWS, DATES} from './constants';
+import {buildSection, getProperValues, getAllFields} from './utils';
+import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
@@ -53,14 +53,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     const validDateRange = values => {
         let areValid = true;
-        Object.keys(values).forEach(key => {
-            if (DATES.includes(key)) {
+        const allFields = getAllFields(schema);
+        Object.keys(allFields)
+            .filter(key => allFields[key].type === 'dateRange')
+            .forEach(key => {
                 const {startDate, endDate} = values[key];
                 if (moment(startDate).isAfter(endDate) || moment(endDate).isBefore(startDate)) {
                     areValid = false;
                 }
-            }
-        });
+            });
         return areValid;
     };
 
