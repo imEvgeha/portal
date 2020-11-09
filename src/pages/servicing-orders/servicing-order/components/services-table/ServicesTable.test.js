@@ -1,5 +1,7 @@
 import React from 'react';
 import {shallow} from 'enzyme';
+import {ErrorTestRows} from "./Constants";
+import ErrorsList from './ErrorsList';
 import ServicesTable from './ServicesTable';
 
 describe('ServicesTable', () => {
@@ -46,5 +48,12 @@ describe('ServicesTable', () => {
 
     it('renders table subtitle', () => {
         expect(wrapper.find('.nexus-c-services-table__subtitle').text()).toEqual('Barcode: ');
+    });
+});
+
+describe('Error list test', () => {
+    const wrapper = shallow(<ErrorsList errors={ErrorTestRows} />);
+    it('should match snapshot', () => {
+        expect(wrapper).toMatchSnapshot();
     });
 });

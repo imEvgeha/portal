@@ -61,11 +61,11 @@
     {
         "javaVariableName": "operationalStatus",
         "displayName": "Operational Status",
-        "dataType": "select",
+        "dataType": "string",
         "queryParamName": "operationalStatus",
         "readOnly": true,
         "enableSearch": true,
-        "enableEdit": true,
+        "enableEdit": false,
         "required": true
     }
 ]
