@@ -11,6 +11,7 @@ exports[`BulkDeleteActions should match snapshot 1`] = `
       appearance="danger"
       className="nexus-c-bulk-delete-actions__delete-btn"
       isDisabled={false}
+      isLoading={false}
       onClick={[MockFunction]}
     >
       Delete 0 Rights

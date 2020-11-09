@@ -7,14 +7,17 @@ exports[`BulkDelete should match snapshot 1`] = `
   <div
     className="nexus-c-bulk-delete__message"
   >
-    You have selected one or more rights to be marked as deleted. Making a right as deleted means it can no longer be used.
+    <Component />
   </div>
   <div
     className="nexus-c-bulk-delete__container"
   />
   <BulkDeleteActions
+    isDisabled={false}
+    isLoading={false}
     onClose={[Function]}
     onSubmit={[Function]}
+    rightsDeletionCount={0}
   />
 </div>
 `;

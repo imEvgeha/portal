@@ -50,9 +50,12 @@ const rightsReducer = (state = initialState, action = {}) => {
         }
 
         case actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS:
+        case actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR:
+        case actionTypes.BULK_DELETE_SELECTED_RIGHTS_ERROR:
             return {
                 ...state,
                 rightsWithDependencies: {},
+                deletedRightsCount: 0,
             };
         case actionTypes.ADD_RIGHTS_FILTER_SUCCESS: {
             const {external, column} = state.filter || {};

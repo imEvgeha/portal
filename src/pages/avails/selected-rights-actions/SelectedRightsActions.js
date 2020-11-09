@@ -25,7 +25,7 @@ import {
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
-import {getLinkedRights, clearLinkedRights} from '../rights-repository/rightsActions';
+import {getLinkedRights, clearLinkedRights, bulkDeleteRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {
     BULK_MATCH,
@@ -62,6 +62,7 @@ export const SelectedRightsActions = ({
     rightsWithDeps,
     getLinkedRights,
     clearLinkedRights,
+    bulkDeleteRights,
     deletedRightsCount,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
@@ -219,10 +220,22 @@ export const SelectedRightsActions = ({
         clearLinkedRights();
     };
 
+    const bulkDeleteSelectedAffectedRights = rightsWithDeps => {
+        let selectedRightIds = [];
+        let impactedRightIds = [];
+        Object.values(rightsWithDeps)
+            .filter(item => item.isSelected)
+            .forEach(item => {
+                selectedRightIds = [...selectedRightIds, item.original.id];
+                impactedRightIds = [...impactedRightIds, ...item.dependencies.map(right => right.id)];
+            });
+        bulkDeleteRights({selectedRightIds, impactedRightIds, closeModal, toggleRefreshGridData});
+    };
+
     const openDeleteConfirmationModal = () => {
         openModal(
             <BulkDeleteConfirmation
-                onSubmit={() => getLinkedRights({rights: selectedRights, closeModal})}
+                onSubmit={() => getLinkedRights({rights: selectedRights, closeModal, toggleRefreshGridData})}
                 onClose={closeModalAndClearDependentRights}
                 rightsCount={selectedRights.length}
             />,
@@ -238,7 +251,7 @@ export const SelectedRightsActions = ({
             <NexusBulkDelete
                 rightsWithDeps={rightsWithDeps}
                 onClose={closeModalAndClearDependentRights}
-                onSubmit={() => null}
+                onSubmit={bulkDeleteSelectedAffectedRights}
                 deletedRightsCount={deletedRightsCount}
             />,
             {
@@ -467,6 +480,7 @@ SelectedRightsActions.propTypes = {
     rightsWithDeps: PropTypes.object,
     getLinkedRights: PropTypes.func,
     clearLinkedRights: PropTypes.func,
+    bulkDeleteRights: PropTypes.func,
     deletedRightsCount: PropTypes.number,
 };
 
@@ -481,6 +495,7 @@ SelectedRightsActions.defaultProps = {
     rightsWithDeps: {},
     getLinkedRights: () => null,
     clearLinkedRights: () => null,
+    bulkDeleteRights: () => null,
     deletedRightsCount: 0,
 };
 
@@ -498,6 +513,7 @@ const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
     getLinkedRights: payload => dispatch(getLinkedRights(payload)),
     clearLinkedRights: () => dispatch(clearLinkedRights()),
+    bulkDeleteRights: payload => dispatch(bulkDeleteRights(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withToasts(SelectedRightsActions));

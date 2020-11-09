@@ -12,6 +12,7 @@ import './NexusBulkDelete.scss';
 
 export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRightsCount}) => {
     const [tableData, setTableData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (!isEmpty(rightsWithDeps)) {
@@ -37,8 +38,16 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
         setTableData({...tableData});
     };
 
+    const onSubmitHandler = () => {
+        setIsLoading(true);
+        onSubmit(tableData);
+    };
+
     const getSelectedRightsCount = rightsWithDeps => {
-        return Object.values(rightsWithDeps).reduce((acc, i) => acc + i.dependencies.length + 1, 0);
+        return Object.values(rightsWithDeps).reduce(
+            (acc, i) => (i.isSelected ? acc + i.dependencies.length + 1 : acc),
+            0
+        );
     };
 
     return (
@@ -68,20 +77,22 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
                                     ))}
                                 </div>
                                 <div className="nexus-c-bulk-delete__affected-wrapper">
-                                    {Object.values(tableData).map(value =>
-                                        value.dependencies.map(depRight => {
-                                            return (
-                                                <BulkDeleteAffectedRight
-                                                    key={depRight.id}
-                                                    rightId={depRight.id}
-                                                    sourceRightId={depRight.sourceRightId}
-                                                    originalRightIds={depRight.originalRightIds}
-                                                    title={depRight.title}
-                                                    renderLinkableRightId={renderLinkableRightId}
-                                                    renderCustomTypeTag={renderCustomTypeTag}
-                                                />
-                                            );
-                                        })
+                                    {Object.values(tableData).map(
+                                        value =>
+                                            value.isSelected &&
+                                            value.dependencies.map(depRight => {
+                                                return (
+                                                    <BulkDeleteAffectedRight
+                                                        key={depRight.id}
+                                                        rightId={depRight.id}
+                                                        sourceRightId={depRight.sourceRightId}
+                                                        originalRightIds={depRight.originalRightIds}
+                                                        title={depRight.title}
+                                                        renderLinkableRightId={renderLinkableRightId}
+                                                        renderCustomTypeTag={renderCustomTypeTag}
+                                                    />
+                                                );
+                                            })
                                     )}
                                 </div>
                             </>
@@ -91,8 +102,10 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
             </div>
             <BulkDeleteActions
                 onClose={onClose}
-                onSubmit={onSubmit}
+                onSubmit={onSubmitHandler}
                 rightsDeletionCount={getSelectedRightsCount(tableData)}
+                isLoading={isLoading}
+                isDisabled={getSelectedRightsCount(tableData) === 0}
             />
         </div>
     );

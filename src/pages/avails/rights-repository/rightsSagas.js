@@ -3,7 +3,6 @@ import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-noti
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';
-import rightMatchingReducer from '../right-matching/rightMatchingReducer';
 import * as actionTypes from './rightsActionTypes';
 
 export function* storeRightsFilter({payload}) {
@@ -21,7 +20,7 @@ export function* storeRightsFilter({payload}) {
 }
 
 export function* fetchLinkedToOriginalRights({payload}) {
-    const {rights, closeModal} = payload || {};
+    const {rights, closeModal, toggleRefreshGridData} = payload || {};
 
     try {
         const rightIds = rights.map(right => right.id);
@@ -43,8 +42,9 @@ export function* fetchLinkedToOriginalRights({payload}) {
                 rightIdsWithoutDeps.push(right.id);
             }
         });
+        // rights that have no deps are immediately deleted
         if (rightIdsWithoutDeps.length) {
-            // yield call(bulkDeleteRights, rightIdsWithoutDeps);
+            yield call(bulkDeleteRights, rightIdsWithoutDeps);
             yield put({
                 type: ADD_TOAST,
                 payload: {
@@ -64,11 +64,45 @@ export function* fetchLinkedToOriginalRights({payload}) {
             });
         }
     } catch (error) {
+        closeModal();
         yield put({
             type: actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR,
             payload: error,
             error: true,
         });
+    } finally {
+        toggleRefreshGridData(true);
+    }
+}
+
+export function* bulkDeleteSelectedRights({payload}) {
+    const {selectedRightIds, impactedRightIds, closeModal, toggleRefreshGridData} = payload || {};
+
+    try {
+        yield call(bulkDeleteRights, selectedRightIds, impactedRightIds);
+        const count = selectedRightIds.length + impactedRightIds.length;
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: `${count} ${count === 1 ? 'Right' : 'Rights'} deleted`,
+            },
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.BULK_DELETE_SELECTED_RIGHTS_ERROR,
+            payload: error,
+            error: true,
+        });
+    } finally {
+        yield put({
+            type: actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS,
+            payload: {},
+        });
+        closeModal();
+        toggleRefreshGridData(true);
     }
 }
 
@@ -116,5 +150,6 @@ export function* rightsWatcher() {
         takeEvery(actionTypes.UPDATE_RIGHT, updateRight),
         takeEvery(actionTypes.ADD_RIGHTS_FILTER, storeRightsFilter),
         takeEvery(actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS, fetchLinkedToOriginalRights),
+        takeEvery(actionTypes.BULK_DELETE_SELECTED_RIGHTS, bulkDeleteSelectedRights),
     ]);
 }

@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import {BULK_DELETE_BTN_CANCEL} from '../../constants';
 import './BulkDeleteActions.scss';
 
-const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading}) => {
+const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading, isDisabled}) => {
     return (
         <div className="nexus-c-bulk-delete-actions__wrapper">
             <div className="nexus-c-bulk-delete-actions__btn-wrapper">
@@ -12,8 +12,8 @@ const BulkDeleteActions = ({onClose, onSubmit, rightsDeletionCount, isLoading}) 
                     appearance="danger"
                     onClick={onSubmit}
                     className="nexus-c-bulk-delete-actions__delete-btn"
-                    isDisabled={false}
                     isLoading={isLoading}
+                    isDisabled={isDisabled}
                 >
                     {`Delete ${rightsDeletionCount} Rights`}
                 </Button>
@@ -35,6 +35,7 @@ BulkDeleteActions.propTypes = {
     onSubmit: PropTypes.func,
     rightsDeletionCount: PropTypes.number,
     isLoading: PropTypes.bool,
+    isDisabled: PropTypes.bool,
 };
 
 BulkDeleteActions.defaultProps = {
@@ -42,6 +43,7 @@ BulkDeleteActions.defaultProps = {
     onSubmit: () => null,
     rightsDeletionCount: 0,
     isLoading: false,
+    isDisabled: false,
 };
 
 export default BulkDeleteActions;
