@@ -25,6 +25,11 @@ const columnDefinitions = [
     },
     {
         colId: 'components',
+        field: 'components',
+        dataSource: 'components',
+        headerName: 'Components',
+        autoHeight: true,
+        width: 250,
     },
     {
         colId: 'doNotStartBefore',
