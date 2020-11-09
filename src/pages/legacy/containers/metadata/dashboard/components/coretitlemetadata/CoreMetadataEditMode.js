@@ -126,7 +126,7 @@ class CoreMetadataEditMode extends Component {
         const newLicensors = this.state.licensors.filter(
             item => `${item.licensor} : ${item.licensorTitleId}` !== licensorName
         );
-        this.setState({licensors: newLicensors});
+        this.setState(prevState => ({...prevState, licensors: newLicensors}));
         this.props.handleLicensorsOnChange(newLicensors);
     };
 
