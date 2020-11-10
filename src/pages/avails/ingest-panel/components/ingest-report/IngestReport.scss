@@ -39,7 +39,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        @include padding(0.5, 2);
+        @include margin(0.5, 2);
         @include addSpacing(min-width, 5.5);
         @include addSpacing(min-height, 5);
         @include addSpacing(border-radius, 8);
