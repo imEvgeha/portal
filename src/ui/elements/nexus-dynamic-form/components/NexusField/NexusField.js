@@ -1,23 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, CheckboxField} from '@atlaskit/form';
-import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
-import {get, cloneDeep} from 'lodash';
+import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
+import NexusSelect from '../../../nexus-select/NexusSelect';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
-import {
-    checkFieldDependencies,
-    getFieldValue,
-    getValidationFunction,
-    formatOptions,
-    renderLabel,
-    renderError,
-} from '../../utils';
+import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import './NexusField.scss';
@@ -27,8 +20,6 @@ const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
 const NexusTextAreaWithOptional = compose(withOptionalCheckbox())(NexusTextArea);
 
 const CheckboxWithOptional = compose(withOptionalCheckbox())(Checkbox);
-
-const SelectWithOptional = compose(withOptionalCheckbox())(Select);
 
 const TextFieldWithOptional = compose(withOptionalCheckbox())(TextField);
 
@@ -54,18 +45,6 @@ const NexusField = ({
     useCurrentDate,
     ...props
 }) => {
-    const [fetchedOptions, setFetchedOptions] = useState([]);
-
-    useEffect(() => {
-        if ((type === 'select' || type === 'multiselect') && optionsConfig.options === undefined) {
-            if (Object.keys(selectValues).length) {
-                let options = cloneDeep(selectValues[path]);
-                options = formatOptions(options, optionsConfig);
-                setFetchedOptions(options);
-            }
-        }
-    }, [selectValues]);
-
     const checkDependencies = type => {
         return checkFieldDependencies(type, view, dependencies, formData);
     };
@@ -87,7 +66,6 @@ const NexusField = ({
     };
 
     const renderFieldEditMode = fieldProps => {
-        const {options} = optionsConfig;
         const selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
@@ -124,11 +102,16 @@ const NexusField = ({
                     };
                 }
                 return (
-                    <SelectWithOptional
-                        {...selectFieldProps}
-                        options={options !== undefined ? options : fetchedOptions}
+                    <NexusSelect
+                        fieldProps={selectFieldProps}
+                        type={type}
+                        optionsConfig={optionsConfig}
+                        selectValues={selectValues}
+                        path={path}
+                        isRequired={isRequired}
+                        isMultiselect={false}
+                        addedProps={addedProps}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
-                        {...addedProps}
                     />
                 );
             case 'multiselect':
@@ -140,10 +123,15 @@ const NexusField = ({
                     multiselectFieldProps.value = fieldProps.value.map(val => ({label: val, value: val}));
                 }
                 return (
-                    <SelectWithOptional
-                        {...multiselectFieldProps}
-                        options={options !== undefined ? options : fetchedOptions}
-                        isMulti
+                    <NexusSelect
+                        fieldProps={multiselectFieldProps}
+                        type={type}
+                        optionsConfig={optionsConfig}
+                        selectValues={selectValues}
+                        path={path}
+                        isRequired={isRequired}
+                        isMultiselect={true}
+                        addedProps={addedProps}
                         defaultValue={
                             fieldProps.value
                                 ? fieldProps.value.map(val => {
@@ -151,7 +139,6 @@ const NexusField = ({
                                   })
                                 : undefined
                         }
-                        {...addedProps}
                     />
                 );
             case 'dateRange':
@@ -222,7 +209,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {renderError(error)}
+                                {renderError({...fieldProps}, error)}
                             </div>
                         </>
                     )}
