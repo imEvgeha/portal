@@ -172,13 +172,22 @@
                         "name": "Platform Category",
                         "type": "multiselect",
                         "path": "platformCategory",
-                        "isRequired": true,
+                        "tooltip": "Required for US Licensee",
                         "optionsConfig": {
                             "options": [
                                 { "label": "Residential", "value": "Residential" },
                                 { "label": "Hotel", "value": "Hotel" }
                             ]
-                        }
+                        },
+                        "dependencies": [
+                            {
+                                "view": "EDIT",
+                                "type": "required",
+                                "field": "territory",
+                                "subfield": "country",
+                                "value": "US"
+                            }
+                        ]
                     },
                     "keywords": {
                         "name": "Keywords",
@@ -330,12 +339,14 @@
                                 "name": "Price Type",
                                 "type": "select",
                                 "path": "priceType",
+                                "isRequired": true,
                                 "className": "area-one"
                             },
                             "priceValue": {
                                 "name": "Price Value",
                                 "type": "string",
                                 "path": "priceValue",
+                                "isRequired": true,
                                 "className": "area-two"
                             },
                             "priceCurrency": {
@@ -381,7 +392,12 @@
                     "daysFromLVR": {
                         "name": "Days From LVR",
                         "type": "number",
-                        "path": "daysFromLVR"
+                        "path": "daysFromLVR",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "suppressionLiftDate": {
                         "name": "Suppression Lift Date",
@@ -405,19 +421,19 @@
                     "termYear": {
                         "name": "Term Year",
                         "type": "number",
-                        "path": "termYear"
+                        "path": "termYear",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
-                    "termYearStart": {
-                        "name": "Term Year Start",
-                        "type": "datetime",
+                    "termDates": {
+                        "name": "Term Year Range",
+                        "type": "dateRange",
                         "dateType": "regionalMidnight",
-                        "path": "termYearStart"
-                    },
-                    "termYearEnd": {
-                        "name": "Term Year End",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "termYearEnd"
+                        "labels": ["Term Year Start", "Term Year End"],
+                        "path": ["termYearStart", "termYearEnd"]
                     },
                     "imdbLink": {
                         "name": "IMDB Link",
@@ -525,7 +541,12 @@
                     "seasonNumber": {
                         "name": "Season Number",
                         "type": "number",
-                        "path": "episodic.seasonNumber"
+                        "path": "episodic.seasonNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "episodeTitle": {
                         "name": "Episode Title",
@@ -540,7 +561,12 @@
                     "episodeNumber": {
                         "name": "Episode Number",
                         "type": "number",
-                        "path": "episodic.episodeNumber"
+                        "path": "episodic.episodeNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "volumeTitle": {
                         "name": "Volume Title",
@@ -555,7 +581,12 @@
                     "volumeNumber": {
                         "name": "Volume Number",
                         "type": "number",
-                        "path": "episodic.volumeNumber"
+                        "path": "episodic.volumeNumber",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "distributionNumber": {
                         "name": "Distribution Number",
@@ -570,12 +601,22 @@
                     "episodeCount": {
                         "name": "Episode Count",
                         "type": "number",
-                        "path": "episodic.episodeCount"
+                        "path": "episodic.episodeCount",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "seasonCount": {
                         "name": "Season Count",
                         "type": "number",
-                        "path": "episodic.seasonCount"
+                        "path": "episodic.seasonCount",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     }
                 }
             }
@@ -888,7 +929,12 @@
                     "captionExemption": {
                         "name": "Caption Exemption",
                         "type": "number",
-                        "path": "captions.captionExemption"
+                        "path": "captions.captionExemption",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     }
                 }
             }
@@ -1040,12 +1086,22 @@
                     "rentalDuration": {
                         "name": "Rental Duration",
                         "type": "number",
-                        "path": "rentalDuration"
+                        "path": "rentalDuration",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "watchDuration": {
                         "name": "Watch Duration",
                         "type": "number",
-                        "path": "watchDuration"
+                        "path": "watchDuration",
+                        "validation": [
+                            {
+                                "name": "isInteger"
+                            }
+                        ]
                     },
                     "productionYear": {
                         "name": "Production Year",
