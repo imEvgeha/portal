@@ -63,7 +63,7 @@ class RightTerritoryForm extends React.Component {
                             options={this.props.options}
                             isEdit={this.props.isEdit}
                             isFromCreatePage={this.props.isFromCreatePage}
-                            existingTerritoryList={this.props.existingTerritoryList || this.props.data}
+                            existingTerritoryList={this.props.territory}
                             territoryIndex={this.props.territoryIndex}
                             isBonusRight={this.props.isBonusRight}
                         />
