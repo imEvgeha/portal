@@ -43,7 +43,7 @@ export const getSearchPayload = (user, offset, limit) => ({
 });
 export const COLUMN_MAPPINGS = [
     {
-        colId: 'id',
+        colId: 'rightID',
         field: 'rightID',
         headerName: 'Right ID',
         width: 150,
@@ -68,7 +68,7 @@ export const COLUMN_MAPPINGS = [
     },
     {
         colId: 'projectId',
-        field: 'status',
+        field: 'projectId',
         headerName: 'DOP Status',
         width: 180,
         cellRenderer: 'loadingCellRenderer',

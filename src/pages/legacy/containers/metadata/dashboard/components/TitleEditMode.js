@@ -79,6 +79,7 @@ class TitleEditMode extends Component {
             originalLanguage,
             countryOfOrigin,
             totalNumberOfEpisodes,
+            metadataStatus,
             episodic,
         } = this.props.data;
 
@@ -351,6 +352,23 @@ class TitleEditMode extends Component {
                         </Row>
                         <Row style={{marginTop: '10px'}}>
                             <Col>
+                                <Label for="metadataStatus">
+                                    Metadata Status<span style={{color: 'red'}}>*</span>
+                                </Label>
+                                <Input
+                                    type="select"
+                                    name="metadataStatus"
+                                    id="metadataStatus"
+                                    onChange={this.props.handleOnChangeEdit}
+                                    defaultValue={metadataStatus ? metadataStatus : ''}
+                                >
+                                    <option value="pending">Pending</option>
+                                    <option value="complete">Complete</option>
+                                </Input>
+                            </Col>
+                        </Row>
+                        <Row style={{marginTop: '10px'}}>
+                            <Col>
                                 <Label for="eventType">Event Type</Label>
                                 <Input
                                     type="select"
@@ -517,6 +535,7 @@ class TitleEditMode extends Component {
                     addCastCrew={this.props.addCastCrew}
                     editedTitle={this.props.editedTitle}
                     castAndCrewReorder={this.props.castAndCrewReorder}
+                    handleLicensorsOnChange={this.props.handleLicensorsOnChange}
                 />
             </Container>
         );

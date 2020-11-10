@@ -4,6 +4,7 @@ import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
@@ -16,7 +17,12 @@ const SelectedForPlanningTable = compose(
     withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
 )(NexusGrid);
 
-const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
+const SelectedForPlanning = ({
+    activeTab,
+    isPlanningTabRefreshed,
+    setSelectedForPlanningGridApi,
+    setSelectedForPlanningColumnApi,
+}) => {
     const mappings = COLUMN_MAPPINGS.map(col =>
         col.colId === 'projectId'
             ? {
@@ -27,6 +33,18 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
               }
             : col
     );
+
+    const onGridReady = ({type, columnApi, api}) => {
+        switch (type) {
+            case GRID_EVENTS.READY: {
+                setSelectedForPlanningColumnApi(columnApi);
+                setSelectedForPlanningGridApi(api);
+                break;
+            }
+            default:
+            // no-op;
+        }
+    };
 
     const [updatedColDef, setUpdatedColDef] = useState([]);
 
@@ -51,7 +69,8 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
             suppressRowClickSelection
             isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
             key={`planning_table_${isPlanningTabRefreshed}`}
-            dragStopped={dragStoppedHandler} //
+            onGridEvent={onGridReady}
+            dragStopped={dragStoppedHandler}
         />
     );
 };
@@ -59,6 +78,13 @@ const SelectedForPlanning = ({activeTab, isPlanningTabRefreshed}) => {
 SelectedForPlanning.propTypes = {
     activeTab: PropTypes.string.isRequired,
     isPlanningTabRefreshed: PropTypes.bool.isRequired,
+    setSelectedForPlanningGridApi: PropTypes.func,
+    setSelectedForPlanningColumnApi: PropTypes.func,
+};
+
+SelectedForPlanning.defaultProps = {
+    setSelectedForPlanningGridApi: () => null,
+    setSelectedForPlanningColumnApi: () => null,
 };
 
 export default SelectedForPlanning;

@@ -29,6 +29,7 @@ class TitleReadOnlyMode extends Component {
             countryOfOrigin,
             duration,
             eventType,
+            metadataStatus,
             seasonPremiere,
             seasonFinale,
             contentType,
@@ -199,6 +200,16 @@ class TitleReadOnlyMode extends Component {
                                     <Alert color="light" id="titleDuration">
                                         <b>Duration: </b>
                                         {duration}
+                                    </Alert>
+                                </Col>
+                            )}
+                        </Row>
+                        <Row>
+                            {metadataStatus && (
+                                <Col>
+                                    <Alert color="light" id="titleMetadataStatus">
+                                        <b>Metadata Status: </b>
+                                        {metadataStatus}
                                     </Alert>
                                 </Col>
                             )}

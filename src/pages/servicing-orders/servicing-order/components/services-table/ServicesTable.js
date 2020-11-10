@@ -1,6 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
@@ -13,25 +14,29 @@ import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/ele
 import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, ErrorTestRows} from './Constants';
+import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray}) => {
+const errorIcon = `<i class='fas fa-exclamation-triangle' style='color:red' />`;
+
+const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray, deteErrors}) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const [audioComponents, setAudioComponents] = useState([]);
-    const [gridApi, setGridApi] = useState(null);
 
-    const deteComponents = componentsArray.find(item => item && item.barcode === data.barcode);
+    const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
+        data.barcode,
+    ]);
 
     const title =
         get(data, 'title', '') ||
@@ -41,16 +46,10 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             ''
         );
 
-    const onGridReady = params => {
-        setGridApi(params.api);
-        params.api.sizeColumnsToFit();
-    };
-
     useEffect(() => {
         if (!isEmpty(data)) {
-            const recp = data.deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId;
+            const recp = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
             recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
-            setAudioComponents(get(deteComponents, 'components.audioComponents', []));
             setProviderServices(`${data.fs.toLowerCase()}Services`);
             setServices(data);
             setOriginalServices(data);
@@ -65,7 +64,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
                             : SELECT_VALUES.serviceType[1],
-                    assetType: service.externalServices.assetType,
+                    assetType: service.externalServices.assetType || '',
                     components: service.details || [],
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
@@ -107,6 +106,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         setUpdatedServices(newServices);
     };
 
+    const getComponentsForPicker = assetType => {
+        if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
+        else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
+        else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
+        return [];
+    };
+
     // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
@@ -144,22 +150,22 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                                           assetType: tableData[rowIndex].assetType,
                                           barcode: data.barcode,
                                           title,
-                                          audioSummary: tableData[rowIndex].components,
-                                          audioComponentArray: get(deteComponents, 'components.audioComponents', []),
+                                          compSummary: tableData[rowIndex].components,
+                                          componentArray: getComponentsForPicker(tableData[rowIndex].assetType),
                                       }}
                                       closeModal={closeModal}
-                                      save={handleComponentsEdit}
+                                      saveComponentData={handleComponentsEdit}
                                       index={rowIndex}
                                   />,
                                   {
-                                      width: 'large',
+                                      width: tableData[rowIndex].assetType === 'Audio' ? 'x-large' : 'large',
                                   }
                               );
                     }}
                 >
                     {tableData[rowIndex] &&
                         Object.keys(
-                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig])
+                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig || v.format])
                         ).map(item => <Tag key={item} text={item} />)}
                 </div>
             </Tooltip>
@@ -172,18 +178,40 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: services && services[providerServices],
     });
 
-    const componentColumn = {
-        colId: 'components',
-        field: 'components',
-        dataSource: 'components',
-        headerName: 'Components',
-        autoHeight: true,
-        width: 500,
+    const componentCol = {
         cellRendererFramework: componentsCell,
-        cellRendererParams: {audioComponents, tableData},
+        cellRendererParams: {data, tableData},
     };
 
-    const colDef = columnDefinitions.map(item => (item.colId === 'components' ? componentColumn : item));
+    const statusCol = {
+        headerComponentParams: {menuIcon: errorIcon},
+        headerComponentFramework: () => (
+            <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
+                <div
+                    onClick={() =>
+                        deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null
+                    }
+                >
+                    Operational Status <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
+                </div>
+            </Tooltip>
+        ),
+        sortable: false,
+        // eslint-disable-next-line react/prop-types
+        cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
+        cellRendererParams: {tableData},
+    };
+
+    const colDef = columnDefinitions.map(item => {
+        switch (item.colId) {
+            case 'components':
+                return {...item, ...componentCol};
+            case 'operationalStatus':
+                return {...item, ...statusCol};
+            default:
+                return item;
+        }
+    });
 
     // set service type value to save to api based on service type and asset type drop down selected
     const setOrderServiceType = (serviceType, assetType) => {
@@ -196,24 +224,34 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         }
         return service;
     };
-    const handleRowDataChange = ({rowIndex, type, data}) => {
-        if (type === GRID_EVENTS.CELL_VALUE_CHANGED && data) {
-            const updatedServices = cloneDeep(services[providerServices]);
-            const currentService = updatedServices[rowIndex];
-            // TODO: Super inefficient, need to find a better way
-            // Re-mapping the data
-            currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
-            if (data.assetType !== currentService.externalServices.assetType) currentService.details = []; // make components empty when assetType changes
-            currentService.externalServices.assetType = data.assetType;
-            currentService.externalServices.formatType = data.spec;
-            currentService.overrideStartDate = data.doNotStartBefore || '';
-            currentService.externalServices.parameters.find(param => param.name === 'Priority').value = data.priority;
-            currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
-            currentService.status = data.operationalStatus;
+    const handleTableChange = ({rowIndex, type, api, data}) => {
+        switch (type) {
+            case GRID_EVENTS.READY: {
+                api.sizeColumnsToFit();
+                break;
+            }
+            case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                const updatedServices = cloneDeep(services[providerServices]);
+                const currentService = updatedServices[rowIndex];
+                // TODO: Super inefficient, need to find a better way
+                // Re-mapping the data
+                currentService.externalServices.serviceType = setOrderServiceType(data.serviceType, data.assetType);
+                if (data.assetType !== currentService.externalServices.assetType) currentService.details = []; // make components empty when assetType changes
+                currentService.externalServices.assetType = data.assetType;
+                currentService.externalServices.formatType = data.spec;
+                currentService.overrideStartDate = data.doNotStartBefore || '';
+                currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
+                    data.priority;
+                currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                currentService.status = data.operationalStatus;
 
-            const newServices = {...services, [providerServices]: updatedServices};
-            setServices(newServices);
-            setUpdatedServices(newServices);
+                const newServices = {...services, [providerServices]: updatedServices};
+                setServices(newServices);
+                setUpdatedServices(newServices);
+                break;
+            }
+            default:
+                break;
         }
     };
 
@@ -266,13 +304,13 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             </div>
             <ServicesTableGrid
                 defaultColDef={{...valueGetter, sortable: true, resizable: true}}
+                isMenuHidden={false}
                 columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
                 rowData={tableData}
                 domLayout="autoHeight"
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
-                onGridEvent={handleRowDataChange}
-                onGridReady={onGridReady}
+                onGridEvent={handleTableChange}
             />
         </div>
     );
@@ -283,6 +321,7 @@ ServicesTable.propTypes = {
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
+    deteErrors: PropTypes.array,
 };
 
 ServicesTable.defaultProps = {
@@ -290,6 +329,7 @@ ServicesTable.defaultProps = {
     isDisabled: false,
     setUpdatedServices: () => null,
     components: [],
+    deteErrors: [],
 };
 
 export default ServicesTable;

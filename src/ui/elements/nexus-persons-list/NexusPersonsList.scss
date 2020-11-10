@@ -1,6 +1,8 @@
+@import '../../../styles/atlaskit/mixins';
+@import '../../../styles/atlaskit/colors';
+
 .nexus-c-persons-list {
-    width: 575px;
-    min-height: 160px;
+    @include addSpacing('min-height', 40);
 }
 
 .nexus-c-persons-list__group {
@@ -8,17 +10,17 @@
 }
 
 .nexus-c-persons-list__add {
-    margin-top: 5px;
+    @include margin(1.25, 0, 0, 0);
     border: none;
     border-radius: 3px;
     width: 97%;
 
     &.invalid {
-        border: 2px solid red;
+        border: 2px solid map-get($reds, R400);
     }
 }
 
 .nexus-c-persons-list__add-error {
-    color: #e74c3c;
+    color: map-get($reds, R400);
     font-weight: bold;
 }
