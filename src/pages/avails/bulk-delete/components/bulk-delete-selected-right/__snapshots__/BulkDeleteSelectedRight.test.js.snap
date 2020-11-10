@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkDeleteSelectedRight should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete-selected-right"
+>
+  <div
+    className="nexus-c-bulk-delete-selected-right__id-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-selected-right__checkbox"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+        isChecked={true}
+        onChange={[Function]}
+      />
+    </div>
+    <div
+      className="nexus-c-bulk-delete-selected-right__id-label"
+    >
+      Right ID
+    </div>
+    <div
+      className="nexus-c-bulk-delete-selected-right__id"
+    />
+  </div>
+  <div
+    className="nexus-c-bulk-delete-selected-right__title-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-selected-right__checkbox"
+    />
+    <div
+      className="nexus-c-bulk-delete-selected-right__title-label"
+    >
+      Title
+    </div>
+    <div
+      className="nexus-c-bulk-delete-selected-right__title"
+    >
+      Test Title avails 123
+    </div>
+  </div>
+</div>
+`;

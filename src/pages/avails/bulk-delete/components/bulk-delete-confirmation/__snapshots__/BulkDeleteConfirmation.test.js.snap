@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkDeleteConfirmation should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete-confirmation"
+>
+  <div
+    className="nexus-c-bulk-delete-confirmation__container"
+  >
+    <div
+      className="nexus-c-bulk-delete-confirmation__message"
+    >
+      Permanently delete 3 Rights?
+    </div>
+  </div>
+  <BulkDeleteActions
+    isDisabled={false}
+    isLoading={false}
+    onClose={[Function]}
+    onSubmit={[Function]}
+    rightsDeletionCount={3}
+  />
+</div>
+`;

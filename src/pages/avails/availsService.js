@@ -19,3 +19,11 @@ export const getRightsHistory = searchIds => {
 export const getLinkedToOriginalRights = (params, pageSize) => {
     return rightsService.advancedSearchV2({}, 0, pageSize, {}, params);
 };
+
+export const bulkDeleteRights = (selectedRightIds, impactedRightIds = []) => {
+    return rightsService.delete(selectedRightIds, impactedRightIds);
+};
+
+export const getLinkedToOriginalRightsV2 = selectedRightIds => {
+    return rightsService.findBonusAndTPRsToBeDeleted(selectedRightIds);
+};

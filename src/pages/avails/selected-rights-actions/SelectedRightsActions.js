@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {get, uniqBy} from 'lodash';
+import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
@@ -12,7 +12,8 @@ import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {URL} from '../../../util/Common';
 import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
-import BulkDelete from '../bulk-delete/BulkDelete';
+import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
+import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
 import BulkMatching from '../bulk-matching/BulkMatching';
 import {getAffectedRights, setCoreTitleId} from '../bulk-matching/bulkMatchingService';
 import BulkUnmatch from '../bulk-unmatch/BulkUnmatch';
@@ -24,6 +25,8 @@ import {
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
+import {getLinkedRights, clearLinkedRights, bulkDeleteRights} from '../rights-repository/rightsActions';
+import * as selectors from '../rights-repository/rightsSelectors';
 import {
     BULK_MATCH,
     BULK_MATCH_DISABLED_TOOLTIP,
@@ -56,6 +59,11 @@ export const SelectedRightsActions = ({
     activeTab,
     singleRightMatch,
     setSingleRightMatch,
+    rightsWithDeps,
+    getLinkedRights,
+    clearLinkedRights,
+    bulkDeleteRights,
+    deletedRightsCount,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isMatchable, setIsMatchable] = useState(false);
@@ -75,6 +83,7 @@ export const SelectedRightsActions = ({
         window.addEventListener('click', removeMenu);
 
         return () => {
+            clearLinkedRights();
             window.removeEventListener('click', removeMenu);
         };
     }, []);
@@ -206,13 +215,51 @@ export const SelectedRightsActions = ({
         });
     };
 
-    const openBulkDeleteModal = () => {
-        // to do - pass rights for deletion when api is ready
-        openModal(<BulkDelete rights={selectedRights} onClose={closeModal} />, {
-            title: BULK_DELETE_HEADER,
-            width: 'large',
-        });
+    const closeModalAndClearDependentRights = () => {
+        closeModal();
+        clearLinkedRights();
     };
+
+    const bulkDeleteSelectedAffectedRights = rightsWithDeps => {
+        let selectedRightIds = [];
+        let impactedRightIds = [];
+        Object.values(rightsWithDeps)
+            .filter(item => item.isSelected)
+            .forEach(item => {
+                selectedRightIds = [...selectedRightIds, item.original.id];
+                impactedRightIds = [...impactedRightIds, ...item.dependencies.map(right => right.id)];
+            });
+        bulkDeleteRights({selectedRightIds, impactedRightIds, closeModal, toggleRefreshGridData});
+    };
+
+    const openDeleteConfirmationModal = () => {
+        openModal(
+            <BulkDeleteConfirmation
+                onSubmit={() => getLinkedRights({rights: selectedRights, closeModal, toggleRefreshGridData})}
+                onClose={closeModalAndClearDependentRights}
+                rightsCount={selectedRights.length}
+            />,
+            {
+                title: BULK_DELETE_HEADER,
+                width: 'small',
+            }
+        );
+    };
+
+    const openBulkDeleteModal = useCallback((rightsWithDeps, deletedRightsCount) => {
+        openModal(
+            <NexusBulkDelete
+                rightsWithDeps={rightsWithDeps}
+                onClose={closeModalAndClearDependentRights}
+                onSubmit={bulkDeleteSelectedAffectedRights}
+                deletedRightsCount={deletedRightsCount}
+            />,
+            {
+                title: BULK_DELETE_HEADER,
+                width: 'x-large',
+            }
+        );
+    }, []);
 
     const openAuditHistoryModal = () => {
         const title = `Audit History (${selectedRights.length})`;
@@ -295,6 +342,13 @@ export const SelectedRightsActions = ({
             openDrawer();
         }
     }, [singleRightMatch, openDrawer, drawerOpen]);
+
+    // Rights with dependencies found during delete process, opening BulkDelete pop-up
+    useEffect(() => {
+        if (!isEmpty(rightsWithDeps)) {
+            openBulkDeleteModal(rightsWithDeps, deletedRightsCount);
+        }
+    }, [rightsWithDeps, deletedRightsCount, openBulkDeleteModal]);
 
     return (
         <>
@@ -381,7 +435,7 @@ export const SelectedRightsActions = ({
                                         'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
                                     })}
                                     data-test-id="mark-as-deleted"
-                                    onClick={() => (isDeletable ? openBulkDeleteModal() : null)}
+                                    onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
                                 >
                                     <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
                                         <div>{MARK_DELETED}</div>
@@ -423,6 +477,11 @@ SelectedRightsActions.propTypes = {
     gridApi: PropTypes.object,
     singleRightMatch: PropTypes.array,
     setSingleRightMatch: PropTypes.func,
+    rightsWithDeps: PropTypes.object,
+    getLinkedRights: PropTypes.func,
+    clearLinkedRights: PropTypes.func,
+    bulkDeleteRights: PropTypes.func,
+    deletedRightsCount: PropTypes.number,
 };
 
 SelectedRightsActions.defaultProps = {
@@ -433,10 +492,28 @@ SelectedRightsActions.defaultProps = {
     gridApi: {},
     singleRightMatch: [],
     setSingleRightMatch: () => null,
+    rightsWithDeps: {},
+    getLinkedRights: () => null,
+    clearLinkedRights: () => null,
+    bulkDeleteRights: () => null,
+    deletedRightsCount: 0,
+};
+
+const mapStateToProps = () => {
+    const rightsWithDependenciesSelector = selectors.createRightsWithDependenciesSelector();
+    const deletedRightsCountSelector = selectors.createDeletedRightsCountSelector();
+
+    return (state, props) => ({
+        rightsWithDeps: rightsWithDependenciesSelector(state, props),
+        deletedRightsCount: deletedRightsCountSelector(state, props),
+    });
 };
 
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+    getLinkedRights: payload => dispatch(getLinkedRights(payload)),
+    clearLinkedRights: () => dispatch(clearLinkedRights()),
+    bulkDeleteRights: payload => dispatch(bulkDeleteRights(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(withToasts(SelectedRightsActions));
+export default connect(mapStateToProps, mapDispatchToProps)(withToasts(SelectedRightsActions));

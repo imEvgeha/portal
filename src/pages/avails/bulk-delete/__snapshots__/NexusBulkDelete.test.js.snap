@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusBulkDelete should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete"
+>
+  <div
+    className="nexus-c-bulk-delete__container"
+  >
+    <div
+      className="nexus-c-bulk-delete__message"
+    >
+      2 Rights have been deleted. Deleting some of the remaining 1 Rights will also delete their linked TPR/Bonus Rights. Please review.
+    </div>
+    <div
+      className="nexus-c-bulk-delete__heading"
+    >
+      <div
+        className="nexus-c-bulk-delete__selected"
+      >
+        Selected Rights
+      </div>
+      <div
+        className="nexus-c-bulk-delete__affected"
+      >
+        Affected Rights
+      </div>
+    </div>
+    <div
+      className="nexus-c-bulk-delete__results"
+    >
+      <div
+        className="nexus-c-bulk-delete__rights"
+      />
+    </div>
+  </div>
+  <BulkDeleteActions
+    isDisabled={true}
+    isLoading={false}
+    onClose={[Function]}
+    onSubmit={[Function]}
+    rightsDeletionCount={0}
+  />
+</div>
+`;

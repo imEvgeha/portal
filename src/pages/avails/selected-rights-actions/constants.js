@@ -25,5 +25,5 @@ export const HEADER_TITLE_BONUS_RIGHT = 'Title Matching for Creating Bonus Right
 export const ADD_TO_PREPLAN = 'Add to Pre-Plan';
 export const MARK_DELETED = 'Mark Rights as Deleted';
 export const STATUS_CHECK_HEADER = 'Status Check';
-export const BULK_DELETE_HEADER = 'Warning';
+export const BULK_DELETE_HEADER = 'Delete Rights';
 export const STATUS_CHECK_MSG = 'These rights have fields that do not meet the criteria to be added.';

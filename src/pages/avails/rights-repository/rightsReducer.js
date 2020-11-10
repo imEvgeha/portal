@@ -6,6 +6,7 @@ const initialState = {
     selected: {},
     prePlanRights: {},
     rightsWithDependencies: {},
+    deletedRightsCount: 0,
     filter: {
         column: {},
         external: {},
@@ -39,15 +40,22 @@ const rightsReducer = (state = initialState, action = {}) => {
                 prePlanRights: {...prePlanRights, ...payload},
             };
         }
-        case actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS:
+        case actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS: {
+            const {rightsWithDeps = {}, deletedRightsCount = 0} = payload || {};
             return {
                 ...state,
-                rightsWithDependencies: payload,
+                rightsWithDependencies: rightsWithDeps,
+                deletedRightsCount,
             };
+        }
+
         case actionTypes.CLEAR_LINKED_TO_ORIGINAL_RIGHTS:
+        case actionTypes.GET_LINKED_TO_ORIGINAL_RIGHTS_ERROR:
+        case actionTypes.BULK_DELETE_SELECTED_RIGHTS_ERROR:
             return {
                 ...state,
                 rightsWithDependencies: {},
+                deletedRightsCount: 0,
             };
         case actionTypes.ADD_RIGHTS_FILTER_SUCCESS: {
             const {external, column} = state.filter || {};

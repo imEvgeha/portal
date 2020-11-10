@@ -1,0 +1,41 @@
+@import '../../../../../styles/atlaskit/mixins';
+
+.nexus-c-bulk-delete-affected-right__linked-id-row,
+.nexus-c-bulk-delete-affected-right__title-row,
+.nexus-c-bulk-delete-affected-right__tpr-row,
+.nexus-c-bulk-delete-affected-right__bonus-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    align-items: center;
+    @include padding(1, 0, 1, 0);
+}
+
+.nexus-c-bulk-delete-affected-right__linked-tag {
+    @include margin(0, 0, 0, 2);
+}
+
+.nexus-c-bulk-delete-affected-right__bonus-row {
+    @include margin(0, 10, 0, 0);
+    border-bottom: 1px solid map-get($neutrals, N40);
+}
+
+.nexus-c-bulk-delete-affected-right__linked-id-label,
+.nexus-c-bulk-delete-affected-right__title-label,
+.nexus-c-bulk-delete-affected-right__tpr-label,
+.nexus-c-bulk-delete-affected-right__bonus-label {
+    @include addSpacing('min-width', 35);
+    @include heading(h200);
+    @include margin(0);
+    color: map-get($neutrals, N200);
+}
+
+.nexus-c-bulk-delete-affected-right__title {
+    color: map-get($neutrals, N800);
+}
+
+.nexus-c-bulk-delete-affected-right__tpr-label {
+    align-self: flex-start;
+    @include padding(2, 0, 0, 0);
+}
