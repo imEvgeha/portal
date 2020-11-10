@@ -4,7 +4,7 @@ import {get} from 'lodash';
 import {equalOrIncluded, getSortedData} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
-import {VIEWS} from './constants';
+import {VIEWS, FIELD_REQUIRED} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
@@ -72,7 +72,7 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
-    if (isRequired && (value === null || (value && value.length === 0))) return 'THIS FIELD IS REQUIRED';
+    if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
 export const getValidationFunction = (value, validations, {type, isRequired}) => {
@@ -166,12 +166,7 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (
-    fields = {},
-    getValues,
-    view,
-    {selectValues, initialData, setFieldValue, setDisableSubmit}
-) => {
+export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue}) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -185,7 +180,6 @@ export const buildSection = (
                             data={getDefaultValue(fields[key], view, initialData)}
                             getValues={getValues}
                             setFieldValue={setFieldValue}
-                            setDisableSubmit={setDisableSubmit}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
                             {...fields[key]}
                         />
@@ -258,6 +252,6 @@ export const renderLabel = (label, isRequired, tooltip) => {
     );
 };
 
-export const renderError = error => {
+export const renderError = (fieldProps, error) => {
     return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
 };

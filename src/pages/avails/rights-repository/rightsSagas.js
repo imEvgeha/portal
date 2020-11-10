@@ -1,4 +1,13 @@
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import {
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+    ERROR_ICON,
+    UPDATE_RIGHT_FAILED,
+    UPDATE_RIGHT_SUCCESS_MESSAGE,
+    MAX_CHARS,
+} from '../../../ui/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRights} from '../availsService';
 import * as actionTypes from './rightsActionTypes';
@@ -86,10 +95,33 @@ export function* updateRight({payload}) {
             type: actionTypes.UPDATE_RIGHT_SUCCESS,
             payload: response,
         });
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_RIGHT_SUCCESS_MESSAGE,
+            },
+        });
     } catch (error) {
         yield put({
             type: actionTypes.UPDATE_RIGHT_ERROR,
             payload: error,
+        });
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: UPDATE_RIGHT_FAILED,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: `${error.message.message.slice(0, MAX_CHARS)}...`,
+            },
+        });
+    } finally {
+        yield put({
+            type: actionTypes.GET_RIGHT,
+            payload,
         });
     }
 }

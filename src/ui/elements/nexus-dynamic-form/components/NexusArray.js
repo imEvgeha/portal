@@ -26,7 +26,6 @@ const NexusArray = ({
     fields,
     getValues,
     setFieldValue,
-    setDisableSubmit,
     confirmationContent,
     isRequired,
     tooltip,
@@ -56,7 +55,6 @@ const NexusArray = ({
         const editedData = allData.filter((obj, i) => i !== index);
         setAllData(editedData);
         setFieldValue(path, editedData);
-        setDisableSubmit(false);
         closeModal && closeModal();
     };
 
@@ -151,7 +149,6 @@ const NexusArray = ({
         const editedArray = [...arrayData, values];
         setAllData(editedArray);
         setFieldValue(path, editedArray);
-        setDisableSubmit(false);
         closeModal();
     };
 
@@ -210,7 +207,6 @@ NexusArray.propTypes = {
     fields: PropTypes.object,
     getValues: PropTypes.func,
     setFieldValue: PropTypes.func,
-    setDisableSubmit: PropTypes.func,
     confirmationContent: PropTypes.string,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
@@ -226,7 +222,6 @@ NexusArray.defaultProps = {
     fields: {},
     getValues: undefined,
     setFieldValue: undefined,
-    setDisableSubmit: undefined,
     confirmationContent: null,
     isRequired: false,
     validationError: null,

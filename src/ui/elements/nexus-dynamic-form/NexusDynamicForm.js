@@ -2,14 +2,14 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
+import moment from 'moment';
 import SectionTab from './components/SectionTab/SectionTab';
-import {buildSection, getProperValues} from './utils';
+import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
     const tabs = schema.map(({title = ''}) => title);
-    const [disableSubmit, setDisableSubmit] = useState(true);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
@@ -26,7 +26,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     type="submit"
                     className="nexus-c-dynamic-form__submit-button"
                     appearance="primary"
-                    isDisabled={(!dirty || submitting) && disableSubmit}
+                    isDisabled={!dirty || submitting}
                 >
                     Save changes
                 </Button>
@@ -51,10 +51,26 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         );
     };
 
+    const validDateRange = values => {
+        let areValid = true;
+        const allFields = getAllFields(schema);
+        Object.keys(allFields)
+            .filter(key => allFields[key].type === 'dateRange')
+            .forEach(key => {
+                const {startDate, endDate} = values[key];
+                if (moment(startDate).isAfter(endDate) || moment(endDate).isBefore(startDate)) {
+                    areValid = false;
+                }
+            });
+        return areValid;
+    };
+
     const handleOnSubmit = values => {
-        setView(VIEWS.VIEW);
-        const properValues =  getProperValues(schema, values);
-        onSubmit(properValues);
+        if (validDateRange(values)) {
+            setView(VIEWS.VIEW);
+            const properValues = getProperValues(schema, values);
+            onSubmit(properValues);
+        }
     };
 
     return (
@@ -78,7 +94,6 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 selectValues,
                                                 initialData,
                                                 setFieldValue,
-                                                setDisableSubmit,
                                             })}
                                         </Fragment>
                                     ))}
