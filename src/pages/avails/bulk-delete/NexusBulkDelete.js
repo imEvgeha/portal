@@ -7,7 +7,7 @@ import RightsURL from '../../legacy/containers/avail/util/RightsURL';
 import BulkDeleteActions from './components/bulk-delete-actions/BulkDeleteActions';
 import BulkDeleteAffectedRight from './components/bulk-delete-affected-right/BulkDeleteAffectedRight';
 import BulkDeleteSelectedRight from './components/bulk-delete-selected-right/BulkDeleteSelectedRight';
-import {BULK_DELETE_REMAINING_MSG} from './constants';
+import {SELECTED_RIGHTS, AFFECTED_RIGHTS, BULK_DELETE_REMAINING_MSG} from './constants';
 import './NexusBulkDelete.scss';
 
 export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRightsCount}) => {
@@ -57,8 +57,8 @@ export const NexusBulkDelete = ({rightsWithDeps, onClose, onSubmit, deletedRight
                     {BULK_DELETE_REMAINING_MSG(deletedRightsCount, Object.keys(rightsWithDeps).length)}
                 </div>
                 <div className="nexus-c-bulk-delete__heading">
-                    <div className="nexus-c-bulk-delete__selected">Selected Rights</div>
-                    <div className="nexus-c-bulk-delete__affected">Affected Rights</div>
+                    <div className="nexus-c-bulk-delete__selected">{SELECTED_RIGHTS}</div>
+                    <div className="nexus-c-bulk-delete__affected">{AFFECTED_RIGHTS}</div>
                 </div>
                 <div className="nexus-c-bulk-delete__results">
                     <div className="nexus-c-bulk-delete__rights">

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
+import {RIGHT_ID, TITLE} from '../../constants';
 import './BulkDeleteSelectedRight.scss';
 
 const BulkDeleteSelectedRight = ({rightId, title, isSelected, renderLinkableRightId, onCheckedChanged}) => {
@@ -10,12 +11,12 @@ const BulkDeleteSelectedRight = ({rightId, title, isSelected, renderLinkableRigh
                 <div className="nexus-c-bulk-delete-selected-right__checkbox">
                     <Checkbox isChecked={isSelected} onChange={() => onCheckedChanged(rightId)} />
                 </div>
-                <div className="nexus-c-bulk-delete-selected-right__id-label">Right ID</div>
+                <div className="nexus-c-bulk-delete-selected-right__id-label">{RIGHT_ID}</div>
                 <div className="nexus-c-bulk-delete-selected-right__id">{renderLinkableRightId(rightId)}</div>
             </div>
             <div className="nexus-c-bulk-delete-selected-right__title-row">
                 <div className="nexus-c-bulk-delete-selected-right__checkbox" />
-                <div className="nexus-c-bulk-delete-selected-right__title-label">Title</div>
+                <div className="nexus-c-bulk-delete-selected-right__title-label">{TITLE}</div>
                 <div className="nexus-c-bulk-delete-selected-right__title">{title}</div>
             </div>
         </div>

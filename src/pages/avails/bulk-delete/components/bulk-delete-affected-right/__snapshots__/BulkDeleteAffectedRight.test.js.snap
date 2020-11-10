@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BulkDeleteAffectedRight should match snapshot 1`] = `
+<div
+  className="nexus-c-bulk-delete-affected-right"
+>
+  <div
+    className="nexus-c-bulk-delete-affected-right__linked-id-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-affected-right__linked-id-label"
+    >
+      Linked Right ID
+    </div>
+    <div
+      className="nexus-c-bulk-delete-affected-right__linked-id"
+    />
+    <div
+      className="nexus-c-bulk-delete-affected-right__linked-tag"
+    />
+  </div>
+  <div
+    className="nexus-c-bulk-delete-affected-right__title-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-affected-right__title-label"
+    >
+      Title
+    </div>
+    <div
+      className="nexus-c-bulk-delete-affected-right__title"
+    >
+      TestTitle
+    </div>
+  </div>
+  <div
+    className="nexus-c-bulk-delete-affected-right__tpr-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-affected-right__tpr-label"
+    >
+      TPR Original Rights
+    </div>
+    <div
+      className="nexus-c-bulk-delete-affected-right__tpr-ids"
+    >
+      <div
+        className="nexus-c-bulk-delete-affected-right__tpr-id"
+        key="testOriginalId2"
+      />
+      <div
+        className="nexus-c-bulk-delete-affected-right__tpr-id"
+        key="testOriginalId2"
+      />
+    </div>
+  </div>
+  <div
+    className="nexus-c-bulk-delete-affected-right__bonus-row"
+  >
+    <div
+      className="nexus-c-bulk-delete-affected-right__bonus-label"
+    >
+      Bonus Source Right
+    </div>
+    <div
+      className="nexus-c-bulk-delete-affected-right__bonus-id"
+    />
+  </div>
+</div>
+`;
