@@ -4,5 +4,5 @@
 FROM docker-core.vubiquity.com/vu-nginx-alpine:vu-nginx-1.19.1-alpine.1.4
 WORKDIR /usr/share/nginx/html
 COPY dist .
-EXPOSE 80
+EXPOSE 80 8082 8083
 CMD ["nginx", "-g", "daemon off;"]
