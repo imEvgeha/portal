@@ -178,7 +178,7 @@ class CoreMetadataReadOnlyMode extends Component {
                                             ) : null}
                                         </Row>
                                     )}
-                                    {(externalIds.maId || externalIds.licensorTitleId) && (
+                                    {externalIds.maId && (
                                         <Row style={{marginTop: '10px'}}>
                                             {externalIds.maId ? (
                                                 <Col>
@@ -188,16 +188,25 @@ class CoreMetadataReadOnlyMode extends Component {
                                                     </Alert>
                                                 </Col>
                                             ) : null}
-                                            {externalIds.licensorTitleId ? (
-                                                <Col>
-                                                    <Alert color="light">
-                                                        <b style={{color: '#000'}}>Licensor Title ID:</b>{' '}
-                                                        {externalIds ? externalIds.licensorTitleId : null}
-                                                    </Alert>
-                                                </Col>
-                                            ) : null}
                                         </Row>
                                     )}
+                                    {get(this.props, 'data.licensors.length', 0) > 0 ? (
+                                        <Row>
+                                            <Col>
+                                                <Alert color="light">
+                                                    <b style={{color: '#000'}}>Licensors:</b>
+                                                    {this.props.data.licensors.map(item => (
+                                                        <span
+                                                            key={item.licensor}
+                                                            title={`${item.licensor} : ${item.licensorTitleId}`}
+                                                        >
+                                                            <Tag text={`${item.licensor} : ${item.licensorTitleId}`} />
+                                                        </span>
+                                                    ))}
+                                                </Alert>
+                                            </Col>
+                                        </Row>
+                                    ) : null}
                                     {externalIds.isan && (
                                         <Row style={{marginTop: '10px'}}>
                                             {externalIds.isan ? (

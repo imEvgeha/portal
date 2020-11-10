@@ -100,7 +100,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             >
               <NexusDatePicker
                 error=""
-                id="dueDate"
+                id="ff_startDate"
                 isClearable={false}
                 isDisabled={true}
                 isLabelHidden={false}
@@ -162,7 +162,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             >
               <NexusDatePicker
                 error=""
-                id="dueDate"
+                id="ff_dueDate"
                 isClearable={false}
                 isDisabled={true}
                 isLabelHidden={false}

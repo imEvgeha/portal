@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Error list test should match snapshot 1`] = `
+<div
+  className="error-list"
+>
+  <div
+    className="error-list__header"
+  >
+    <h1>
+      Operational status errors
+    </h1>
+  </div>
+  <hr
+    className="solid"
+  />
+  <div>
+    <ErrorItem
+      error={
+        Object {
+          "error": "This is test error 1",
+          "severity": "ERROR",
+        }
+      }
+      key="0"
+    />
+    <ErrorItem
+      error={
+        Object {
+          "error": "This is test error 2.. and longer text... 1234567 longer text bla bla bla bla bla bla dhudhuiadwqjwhidwjid wdhuihduiwhduiqwdhuidh duw",
+          "severity": "ERROR",
+        }
+      }
+      key="1"
+    />
+    <ErrorItem
+      error={
+        Object {
+          "error": "This is test error 3",
+          "severity": "ERROR",
+        }
+      }
+      key="2"
+    />
+    <ErrorItem
+      error={
+        Object {
+          "error": "error 4",
+          "severity": "ERROR",
+        }
+      }
+      key="3"
+    />
+  </div>
+  <hr
+    className="solid"
+  />
+  <div
+    className="error-list__footer"
+  >
+    <p>
+      4 errors found
+    </p>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      onClick={[Function]}
+    >
+      OK
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </div>
+</div>
+`;
+
 exports[`ServicesTable should match snapshot 1`] = `
 <div
   className="nexus-c-services-table"
@@ -65,48 +136,70 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "serviceType",
           "field": "serviceType",
           "headerName": "Service Type",
-          "width": 250,
+          "width": 150,
         },
         Object {
           "colId": "assetType",
           "dataSource": "assetType",
           "field": "assetType",
           "headerName": "Asset Type",
-          "width": 250,
+          "width": 150,
         },
         Object {
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
           "headerName": "Spec",
-          "width": 200,
+          "width": 150,
         },
         Object {
           "autoHeight": true,
           "cellRendererFramework": [Function],
           "cellRendererParams": Object {
-            "audioComponents": Array [],
+            "data": Object {
+              "amsAssetId": "DA16129",
+              "assetFormat": "VIDEO_CONFORMANCEGROUP",
+              "assetType": "DETE_FILE",
+              "barcode": "DA16129",
+              "deteServices": Array [
+                Object {
+                  "addRecipient": "MGM",
+                  "componentId": "LOL-123",
+                  "operationalStatus": "In Progress",
+                  "sourceStandard": "_1080_23_976",
+                  "spec": "M-DBS-2398 SCC",
+                  "standard": "Forced",
+                  "type": "Subtitles",
+                  "version": "French",
+                },
+              ],
+              "externalId": "DA16129",
+              "externalSystem": "VSOM",
+              "fs": "DETE",
+              "startDate": "2020-05-19T15:13:13.731-03:00",
+              "title": "test title",
+            },
             "tableData": Array [],
           },
           "colId": "components",
           "dataSource": "components",
           "field": "components",
           "headerName": "Components",
-          "width": 500,
+          "width": 250,
         },
         Object {
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
           "valueFormatter": [Function],
-          "width": 300,
+          "width": 220,
         },
         Object {
           "colId": "priority",
           "dataSource": "priority",
           "field": "priority",
           "headerName": "Priority",
-          "width": 160,
+          "width": 90,
         },
         Object {
           "colId": "recipient",
@@ -115,10 +208,19 @@ exports[`ServicesTable should match snapshot 1`] = `
           "width": 160,
         },
         Object {
+          "cellRendererFramework": [Function],
+          "cellRendererParams": Object {
+            "tableData": Array [],
+          },
           "colId": "operationalStatus",
           "field": "operationalStatus",
+          "headerComponentFramework": [Function],
+          "headerComponentParams": Object {
+            "menuIcon": "<i class='fas fa-exclamation-triangle' style='color:red' />",
+          },
           "headerName": "Operational Status",
-          "width": 250,
+          "sortable": false,
+          "width": 200,
         },
       ]
     }
@@ -129,6 +231,7 @@ exports[`ServicesTable should match snapshot 1`] = `
       }
     }
     domLayout="autoHeight"
+    isMenuHidden={false}
     mapping={
       Array [
         Object {
@@ -191,9 +294,9 @@ exports[`ServicesTable should match snapshot 1`] = `
           "required": true,
         },
         Object {
-          "dataType": "select",
+          "dataType": "string",
           "displayName": "Operational Status",
-          "enableEdit": true,
+          "enableEdit": false,
           "enableSearch": true,
           "javaVariableName": "operationalStatus",
           "queryParamName": "operationalStatus",
@@ -203,7 +306,6 @@ exports[`ServicesTable should match snapshot 1`] = `
       ]
     }
     onGridEvent={[Function]}
-    onGridReady={[Function]}
     rowData={Array []}
     selectValues={
       Object {

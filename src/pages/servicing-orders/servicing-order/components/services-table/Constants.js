@@ -80,3 +80,15 @@ export const SERVICE_SCHEMA = {
 
 export const NO_SELECTION = 'Selection not available for this Asset type';
 export const CLICK_FOR_SELECTION = 'Click to add / edit components';
+export const OPERATIONAL_ERRORS = 'Operational status errors';
+
+export const ErrorTestRows = [
+    {error: 'This is test error 1', severity: 'ERROR'},
+    {
+        error:
+            'This is test error 2.. and longer text... 1234567 longer text bla bla bla bla bla bla dhudhuiadwqjwhidwjid wdhuihduiwhduiqwdhuidh duw',
+        severity: 'ERROR',
+    },
+    {error: 'This is test error 3', severity: 'ERROR'},
+    {error: 'error 4', severity: 'ERROR'},
+];
