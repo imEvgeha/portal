@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {get} from 'lodash';
 import {AvField} from 'availity-reactstrap-validation';
 import {connect} from 'react-redux';
-import {configFields, searchPerson} from '../../../service/ConfigService';
+import {configFields} from '../../../service/ConfigService';
 import {titleService} from '../../../service/TitleService';
 import {
     CAST,
@@ -31,7 +31,6 @@ import PersonList from './PersonList';
 import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
-import {URL} from '../../../../../../../util/Common';
 import {loadOptionsPerson} from '../utils/utils';
 
 const {MOVIDA, VZ} = TitleSystems;
@@ -50,13 +49,20 @@ const defaultMsvAssociationState = {
     msvLicensee: '',
 };
 
+const defaultAddLicensorsState = {
+    licensorSelected: '',
+    licensorTitleId: '',
+};
+
 class CoreMetadataEditMode extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ratings: [],
             msvAssociationIds: get(props, 'data.externalIds.msvAssociationId') || [],
+            licensors: get(props, 'data.licensors') || [],
             ...defaultMsvAssociationState,
+            ...defaultAddLicensorsState,
         };
     }
 
@@ -94,6 +100,36 @@ class CoreMetadataEditMode extends Component {
         });
     }
 
+    handleOnLicensorSelected = e => {
+        this.setState({
+            licensorSelected: e.target.value,
+        });
+    };
+
+    handleOnLicensorTitleIdChange = e => {
+        this.setState({
+            licensorTitleId: e.target.value,
+        });
+    };
+
+    handleOnSaveLicensors = () => {
+        const licensoreObj = this.props.configLicensors.value.find(item => item.value === this.state.licensorSelected);
+        const newLicensors = [
+            ...this.state.licensors,
+            {id: licensoreObj.id, licensor: this.state.licensorSelected, licensorTitleId: this.state.licensorTitleId},
+        ];
+        this.setState(prevState => ({...prevState, licensors: newLicensors, ...defaultAddLicensorsState}));
+        this.props.handleLicensorsOnChange(newLicensors);
+    };
+
+    handleRemoveLicensor = licensorName => {
+        const newLicensors = this.state.licensors.filter(
+            item => `${item.licensor} : ${item.licensorTitleId}` !== licensorName
+        );
+        this.setState(prevState => ({...prevState, licensors: newLicensors}));
+        this.props.handleLicensorsOnChange(newLicensors);
+    };
+
     handleOnGenerateMsv = () => {
         this.setState({
             msvIsLoading: true,
@@ -125,6 +161,10 @@ class CoreMetadataEditMode extends Component {
 
     isGenerateMsvBtnDisabled = () => {
         return !(this.state.msvLicensor && this.state.msvLicensee);
+    };
+
+    isAddLicensorBtnDisabled = () => {
+        return !(this.state.licensorSelected && this.state.licensorTitleId);
     };
 
     render() {
@@ -333,24 +373,6 @@ class CoreMetadataEditMode extends Component {
                             />
                         </Col>
                         <Col md={1}>
-                            <Label for="licensorTitleId">Licensor Title ID</Label>
-                        </Col>
-                        <Col>
-                            <AvField
-                                type="text"
-                                onChange={e => this.props.handleOnExternalIds(e)}
-                                name="licensorTitleId"
-                                id="licensorTitleId"
-                                value={this.props.data.externalIds ? this.props.data.externalIds.licensorTitleId : ''}
-                                placeholder="Licensor Title ID"
-                                validate={{
-                                    maxLength: {value: 200},
-                                }}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{marginTop: '10px'}}>
-                        <Col md={1}>
                             <Label for="isan">ISAN</Label>
                         </Col>
                         <Col>
@@ -364,6 +386,62 @@ class CoreMetadataEditMode extends Component {
                                 validate={{
                                     maxLength: {value: 200},
                                 }}
+                            />
+                        </Col>
+                    </Row>
+                    <Row style={{borderTop: '1px solid lightgray', marginTop: '10px', paddingTop: '15px'}}>
+                        <Col md={1}>
+                            <Label for="licensorTitleId"> Add Licensor</Label>
+                        </Col>
+                        <Col md={3}>
+                            <AvField
+                                type="select"
+                                name="Licensors"
+                                id="Licensors"
+                                value={this.state.licensorSelected}
+                                onChange={this.handleOnLicensorSelected}
+                            >
+                                <option value="">Select Licensor</option>
+                                {this.props.configLicensors &&
+                                    this.props.configLicensors.value.map(e => {
+                                        return (
+                                            <option key={e.value} value={e.value} id={e.id}>
+                                                {e.value}
+                                            </option>
+                                        );
+                                    })}
+                            </AvField>
+                        </Col>
+                        <Col md={3}>
+                            <AvField
+                                type="text"
+                                onChange={this.handleOnLicensorTitleIdChange}
+                                name="licensorTitleId"
+                                id="licensorTitleId"
+                                value={this.state.licensorTitleId}
+                                placeholder="Licensor Title ID"
+                                validate={{
+                                    maxLength: {value: 200},
+                                }}
+                            />
+                        </Col>
+                        <Col md={2}>
+                            <Button
+                                id="btnAddLicensor"
+                                onClick={this.handleOnSaveLicensors}
+                                appearance="primary"
+                                isDisabled={this.isAddLicensorBtnDisabled()}
+                            >
+                                Add Licensor
+                            </Button>
+                        </Col>
+                    </Row>
+                    <Row style={{borderBottom: '1px solid lightgray', paddingBottom: '15px'}}>
+                        <Col md={1}>Licensors</Col>
+                        <Col md={8}>
+                            <NexusTagsContainer
+                                data={this.state.licensors.map(item => `${item.licensor} : ${item.licensorTitleId}`)}
+                                removeItems={this.handleRemoveLicensor}
                             />
                         </Col>
                     </Row>
@@ -535,15 +613,17 @@ class CoreMetadataEditMode extends Component {
                                         : MSV_ASSOCIATION_BTN.readyHover
                                 }
                             >
-                                <Button
-                                    id="btnGenerateMsv"
-                                    isLoading={this.state.msvIsLoading}
-                                    isDisabled={this.isGenerateMsvBtnDisabled()}
-                                    onClick={this.handleOnGenerateMsv}
-                                    appearance="primary"
-                                >
-                                    {MSV_ASSOCIATION_BTN.title}
-                                </Button>
+                                <div>
+                                    <Button
+                                        id="btnGenerateMsv"
+                                        isLoading={this.state.msvIsLoading}
+                                        isDisabled={this.isGenerateMsvBtnDisabled()}
+                                        onClick={this.handleOnGenerateMsv}
+                                        appearance="primary"
+                                    >
+                                        {MSV_ASSOCIATION_BTN.title}
+                                    </Button>
+                                </div>
                             </Tooltip>
                         </Col>
                     </Row>

@@ -535,6 +535,7 @@ class TitleEditMode extends Component {
                     addCastCrew={this.props.addCastCrew}
                     editedTitle={this.props.editedTitle}
                     castAndCrewReorder={this.props.castAndCrewReorder}
+                    handleLicensorsOnChange={this.props.handleLicensorsOnChange}
                 />
             </Container>
         );
