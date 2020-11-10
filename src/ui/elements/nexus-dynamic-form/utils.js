@@ -72,7 +72,7 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
-    if (isRequired && value === null) return FIELD_REQUIRED;
+    if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
 export const getValidationFunction = (value, validations, {type, isRequired}) => {

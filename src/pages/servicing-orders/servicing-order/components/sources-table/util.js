@@ -35,9 +35,7 @@ export const prepareRowData = data => {
     return Object.entries(preparedSources).map(([key, value]) => value);
 };
 
-// extract relevant info from componentAssociations array and return for display in UI
-const getComponentsInfo = componentArray => {
-    const componentsObject = {audioComponents: [], subtitleComponents: [], captionComponents: []};
+const getAudioComponents = (componentsObject, componentArray) => {
     componentArray
         .filter(item => item.component.componentType === 'AudioConfigurationComponent')
         .forEach((item, index) => {
@@ -80,6 +78,47 @@ const getComponentsInfo = componentArray => {
                 );
             });
         });
+};
+
+const getSubtitleComponents = (componentsObject, componentArray) => {
+    componentArray
+        .filter(item => item.component.componentType === 'SubtitleComponent')
+        .forEach((item, index) => {
+            set(
+                componentsObject,
+                `subtitleComponents[${index}].language`,
+                item.component.language || item.component.content
+            );
+            set(componentsObject, `subtitleComponents[${index}].format`, item.component.textType);
+            set(componentsObject, `subtitleComponents[${index}].componentID`, item.component.deteId);
+        });
+};
+
+const getCaptionComponents = (componentsObject, componentArray) => {
+    componentArray
+        .filter(item => item.component.componentType === 'ClosedCaptionComponent')
+        .forEach((item, index) => {
+            set(
+                componentsObject,
+                `captionComponents[${index}].language`,
+                item.component.language || item.component.content
+            );
+            set(componentsObject, `captionComponents[${index}].format`, item.component.textType);
+            set(componentsObject, `captionComponents[${index}].componentID`, item.component.deteId);
+        });
+};
+
+// extract relevant info from componentAssociations array and return for display in UI
+const getComponentsInfo = componentArray => {
+    const componentsObject = {
+        audioComponents: [],
+        subtitleComponents: [],
+        captionComponents: [],
+    };
+
+    getAudioComponents(componentsObject, componentArray);
+    getSubtitleComponents(componentsObject, componentArray);
+    getCaptionComponents(componentsObject, componentArray);
 
     return componentsObject;
 };

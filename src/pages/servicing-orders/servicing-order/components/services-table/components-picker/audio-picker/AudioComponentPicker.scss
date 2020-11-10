@@ -1,0 +1,48 @@
+@import '../../../../../../../styles/atlaskit/mixins';
+
+.audio-picker {
+    &__outer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        @include addSpacing('width', 150);
+    }
+    &__audio-panel {
+        @include margin(3, 0, 0, 0);
+        @include padding(5, 3, 0, 0);
+        &-table {
+            font-size: 0.8rem;
+            @include margin(5, 0, 0, 0);
+            @include addSpacing('height', 75);
+        }
+    }
+    &__summary-panel {
+        display: flex;
+        flex-direction: column;
+        @include addSpacing('padding-left', 2);
+        @include addSpacing('width', 80);
+        border-left: 1px solid lightgray;
+    }
+    &__list-item {
+        @include addSpacing('padding-top', 1);
+        @include addSpacing('padding-right', 2);
+        display: flex;
+        justify-content: space-between;
+        span {
+            font-size: 0.9rem;
+        }
+    }
+    &__selection-panel {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        @include padding(3, 5, 3, 0);
+    }
+    &__select {
+        @include addSpacing('width', 70);
+    }
+}

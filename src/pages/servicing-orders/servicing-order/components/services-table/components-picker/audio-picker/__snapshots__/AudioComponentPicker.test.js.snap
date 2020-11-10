@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AudioChannelsTable should match snapshot 1`] = `
+<div
+  className="audio-picker__audio-panel"
+>
+  <b>
+    Step 2: Select Audio Channels
+  </b>
+  <div
+    className="audio-picker__audio-panel-table"
+  >
+    <DynamicTable
+      defaultPage={1}
+      head={
+        Object {
+          "cells": Array [
+            Object {
+              "content": <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+                id="header-check"
+                isChecked={false}
+                name="header-check"
+                onChange={[Function]}
+              />,
+              "key": "check",
+              "width": 5,
+            },
+            Object {
+              "content": "Source Channel",
+              "key": 1,
+              "width": 10,
+            },
+            Object {
+              "content": "Track Config",
+              "key": 2,
+              "width": 10,
+            },
+            Object {
+              "content": "Channel Position",
+              "key": 3,
+              "width": 15,
+            },
+            Object {
+              "content": "Content Type",
+              "key": 4,
+              "width": 15,
+            },
+            Object {
+              "content": "Language",
+              "key": 5,
+              "width": 15,
+            },
+            Object {
+              "content": "Component ID",
+              "key": 6,
+              "width": 15,
+            },
+          ],
+        }
+      }
+      isFixedSize={false}
+      isLoading={false}
+      isRankable={false}
+      onSetPage={[Function]}
+      onSort={[Function]}
+      rows={
+        Array [
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "1",
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "2",
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "3",
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "4",
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "5",
+          },
+          Object {
+            "cells": Array [
+              Object {
+                "content": 1,
+                "key": "11-Channel",
+              },
+              Object {
+                "content": 5.1,
+                "key": "12-track",
+              },
+              Object {
+                "content": "Left",
+                "key": "13-pos",
+              },
+              Object {
+                "content": "Composite",
+                "key": "14-type",
+              },
+              Object {
+                "content": "French",
+                "key": "15-lang",
+              },
+              Object {
+                "content": "429474-1",
+                "key": "15-id",
+              },
+            ],
+            "key": "6",
+          },
+        ]
+      }
+      rowsPerPage={5}
+    />
+  </div>
+</div>
+`;

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField} from '@atlaskit/form';
@@ -38,6 +38,10 @@ const NexusArray = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
+
+    useEffect(() => {
+        setAllData(data);
+    }, [data]);
 
     const renderAddButton = () => {
         return (
