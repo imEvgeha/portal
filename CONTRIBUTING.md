@@ -14,3 +14,26 @@
 
 -   Ensure that the tests pass **before** creating the PR
 -   Each PR needs at least two approvals before it can be merged to master
+
+# Styling components
+
+- For styling we use sass and custom theming which is based on Atlaskit design sistem.
+- Please refer to the following 3 files for better understanding how do we style components:
+    `src/styles/atlaskit/theme.scss`\
+    `src/styles/atlaskit/mixins.scss`\
+    `src/styles/atlaskit/colors/scss`
+    
+- Mixins use relative units instead of absolute
+- The most common mixins used in code are
+
+    `heading`\
+    `margin`\
+    `padding`\
+    `addSpacing`
+    
+ - Some examples:
+ 
+    `@include heading(h200)`\
+    `@include margin(0, 2, 2, 0)`\
+    `@include padding(10, 20, 20, 10)`\
+    `@include addSpacing('height', 150)`
