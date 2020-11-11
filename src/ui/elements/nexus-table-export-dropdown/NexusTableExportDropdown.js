@@ -188,6 +188,7 @@ const NexusTableExportDropdown = ({
             fileName: `${fileName}_${username.split('.').join('_')}_${currentTime.getFullYear()}-${
                 currentTime.getMonth() + 1
             }-${currentTime.getDate()}`,
+            allColumns,
         });
     };
 
