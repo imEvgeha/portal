@@ -23,7 +23,7 @@ export const createColumnDefs = payload => {
                 cellRenderer: hasLink ? 'loadingCellRenderer' : null,
                 cellRendererParams: hasLink
                     ? {
-                          link: '/avails/rights/',
+                          link: '/metadata/detail/',
                       }
                     : {},
                 valueFormatter: createValueFormatter(column),
