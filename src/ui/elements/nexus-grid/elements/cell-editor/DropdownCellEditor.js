@@ -75,7 +75,7 @@ class DropdownCellEditor extends Component {
                                 isSelected={option.selected}
                                 key={option.country}
                                 id={option.country}
-                                isDisabled={option.isDisabled}
+                                isDisabled={option.isDisabled || option.withdrawn}
                                 onClick={() => this.handleChange(index)}
                             >
                                 {option.country}
