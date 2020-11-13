@@ -45,7 +45,9 @@ export const getValidationError = (validationErrors, field) => {
 const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     let retValue = false;
     formData[field].map(obj => {
-        if (obj[subfield] === value) {
+        if (subfield === 'dateWithdrawn' && !obj[subfield]) {
+            retValue = '';
+        } else if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
         return null;
@@ -75,7 +77,12 @@ const isEmptyMultiselect = (value, isRequired) => {
     if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
-export const getValidationFunction = (value, validations, {type, isRequired}) => {
+const getArgs = (validation, areAllWithdrawn) => {
+    if (validation.name === 'areAllWithdrawn') return !!areAllWithdrawn;
+    return validation.args;
+};
+
+export const getValidationFunction = (value, validations, {type, isRequired, areAllWithdrawn}) => {
     if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     const isRequiredFunction = {
         name: 'fieldRequired',
@@ -85,7 +92,7 @@ export const getValidationFunction = (value, validations, {type, isRequired}) =>
     if (updatedValidations && updatedValidations.length > 0) {
         const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, v.args);
+                return f[`${v.name}`](value, getArgs(v, areAllWithdrawn));
             })
         );
         return Promise.all(promises).then(responses => {
@@ -213,6 +220,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}
             setFieldValue={setFieldValue}
+            getCurrentValues={getValues}
         />
     );
 };

@@ -43,10 +43,12 @@ const NexusField = ({
     isOptional,
     setFieldValue,
     useCurrentDate,
+    getCurrentValues,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, formData);
+        const data = type === 'allWithdrawn' ? getCurrentValues() : formData;
+        return checkFieldDependencies(type, view, dependencies, data);
     };
 
     const addedProps = {
@@ -196,7 +198,13 @@ const NexusField = ({
                 <AKField
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
-                    validate={value => getValidationFunction(value, validation, {type, isRequired: required})}
+                    validate={value =>
+                        getValidationFunction(value, validation, {
+                            type,
+                            isRequired: required,
+                            areAllWithdrawn: path === 'rightStatus' ? !checkDependencies('allWithdrawn') : false,
+                        })
+                    }
                     {...props}
                 >
                     {({fieldProps, error}) => (
@@ -241,6 +249,7 @@ NexusField.propTypes = {
     // eslint-disable-next-line react/boolean-prop-naming
     useCurrentDate: PropTypes.bool,
     isHighlighted: PropTypes.bool,
+    getCurrentValues: PropTypes.func.isRequired,
 };
 
 NexusField.defaultProps = {
