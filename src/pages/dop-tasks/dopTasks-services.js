@@ -55,6 +55,24 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
                 });
             }
         }
+        if (key === 'actualOwner') {
+            const actualOwnerAsSearchParamIndex = payload.filterCriterion.findIndex(
+                item => item.fieldName === key && item.operator === 'contain'
+            );
+            if (actualOwnerAsSearchParamIndex > -1) {
+                payload.filterCriterion[actualOwnerAsSearchParamIndex].value = val;
+                payload.filterCriterion[actualOwnerAsSearchParamIndex].fieldName = key;
+                payload.filterCriterion[actualOwnerAsSearchParamIndex].operator = 'contain';
+            } else {
+                payload.filterCriterion.push({
+                    value: val,
+                    fieldName: key,
+                    operator: 'contain',
+                    valueDataType: 'String',
+                    logicalAnd: true,
+                });
+            }
+        }
         if (key === 'taskStatus') {
             const taskStatusIndex = payload.filterCriterion.findIndex(item => item.fieldName === 'taskStatus');
             if (taskStatusIndex > -1) {
@@ -144,7 +162,9 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
         return null;
     });
     payload.filterCriterion = payload.filterCriterion.filter(
-        entry => activeFilters.includes(entry.fieldName) || [ACTUAL_OWNER, POTENTIAL_OWNERS].includes(entry.fieldName)
+        entry =>
+            activeFilters.includes(entry.fieldName) ||
+            ([ACTUAL_OWNER, POTENTIAL_OWNERS].includes(entry.fieldName) && entry.operator === 'equal')
     );
     return payload;
 };

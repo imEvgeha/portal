@@ -1,0 +1,27 @@
+@import '../../../../styles/atlaskit/mixins';
+@import '../../../../styles/atlaskit/colors';
+
+.nexus-c-title-metadata-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @include margin(6);
+
+    .nexus-c-title-metadata__sync-btn {
+        @include margin(0, 0, 0, 3);
+        background-color: map-get($neutrals, N40);
+
+        &:hover {
+            background-color: map-get($neutrals, N50);
+        }
+    }
+}
+
+.nexus-c-title-metadata-header__label {
+    font-size: 29px;
+    color: map-get($neutrals, N800);
+}
+
+.nexus-c-title-metadata-header__buttons-wrapper {
+    margin-left: auto;
+}
