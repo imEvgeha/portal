@@ -1476,6 +1476,7 @@ class RightDetails extends React.Component {
                     .map(mapping => mapping.javaVariableName.split('.')[1])
                     .concat('errors'); // Remove the `errors` field that was used for custom error handling
 
+                originalFieldNames.push('dateWithdrawn');
                 const formattedList = [];
                 list.forEach(el => {
                     const territory = Object.assign({}, el);
