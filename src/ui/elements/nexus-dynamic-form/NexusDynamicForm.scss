@@ -20,6 +20,10 @@
     z-index: 1;
 }
 
+.nexus-c-dynamic-form__tab-container--title {
+    top: 180px;
+}
+
 .nexus-c-dynamic-form__tab-content {
     @include padding(32, 0, 0, 0);
 }

@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './TitleInfo.scss';
 
-const TitleInfo = ({title, releaseYear, contentType, titleImageSrc}) => {
+const IMAGE_PLACEHOLDER = 'https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png';
+
+const TitleInfo = ({title, releaseYear, contentType, titleImages}) => {
+    const image = titleImages && titleImages.length ? titleImages[0] : IMAGE_PLACEHOLDER;
     return (
         <div className="nexus-c-title-info-container">
             <div className="nexus-c-title-info-container__image">
-                <img src={titleImageSrc} alt="some_img" />
+                <img src={image} alt="Title_Image" />
             </div>
             <div className="nexus-c-title-info-container__info">
                 <div>{title}</div>
@@ -27,14 +30,14 @@ TitleInfo.propTypes = {
     title: PropTypes.string,
     releaseYear: PropTypes.string,
     contentType: PropTypes.string,
-    titleImageSrc: PropTypes.string,
+    titleImages: PropTypes.array,
 };
 
 TitleInfo.defaultProps = {
     title: null,
     releaseYear: null,
     contentType: null,
-    titleImageSrc: null,
+    titleImages: [],
 };
 
 export default TitleInfo;

@@ -2,5 +2,6 @@
 
 .nexus-c-title-details {
     width: 100%;
+    height: 100%; //TODO: remove height rule
     background-color: map-get($neutrals, N0);
 }

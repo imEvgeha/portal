@@ -8,7 +8,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({goBack}) => {
+const TitleDetailsHeader = ({goBack, title}) => {
     return (
         <div className="nexus-c-title-details-header">
             <span onClick={goBack}>
@@ -17,10 +17,10 @@ const TitleDetailsHeader = ({goBack}) => {
             <div className="nexus-c-title-details-header__content">
                 <div className="nexus-c-title-details-header__title-info-container">
                     <TitleInfo
-                        title="Avengers: Endgame"
-                        releaseYear="2018"
-                        contentType="Movie"
-                        titleImageSrc="https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png"
+                        title={title.title}
+                        releaseYear={title.releaseYear}
+                        contentType={title.contentType}
+                        titleImages={title.images}
                     />
                     <div className="nexus-c-title-details-header__edit-button">
                         <Button appearance="primary">Edit</Button>
@@ -37,10 +37,12 @@ const TitleDetailsHeader = ({goBack}) => {
 
 TitleDetailsHeader.propTypes = {
     goBack: PropTypes.func,
+    title: PropTypes.object,
 };
 
 TitleDetailsHeader.defaultProps = {
     goBack: () => null,
+    title: {},
 };
 
 export default TitleDetailsHeader;

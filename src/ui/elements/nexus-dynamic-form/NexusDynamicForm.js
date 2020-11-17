@@ -2,13 +2,14 @@ import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
+import classnames from 'classnames';
 import moment from 'moment';
 import SectionTab from './components/SectionTab/SectionTab';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
+const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
@@ -79,7 +80,12 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                 {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
-                        <div ref={containerRef} className="nexus-c-dynamic-form__tab-container">
+                        <div
+                            ref={containerRef}
+                            className={classnames('nexus-c-dynamic-form__tab-container', {
+                                'nexus-c-dynamic-form__tab-container--title': isTitlePage,
+                            })}
+                        >
                             {buildTabs()}
                         </div>
                         <div className="nexus-c-dynamic-form__tab-content">
@@ -114,6 +120,7 @@ NexusDynamicForm.propTypes = {
     isEdit: PropTypes.bool,
     selectValues: PropTypes.object,
     containerRef: PropTypes.any,
+    isTitlePage: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -122,6 +129,7 @@ NexusDynamicForm.defaultProps = {
     isEdit: false,
     selectValues: {},
     containerRef: null,
+    isTitlePage: false,
 };
 
 export default NexusDynamicForm;
