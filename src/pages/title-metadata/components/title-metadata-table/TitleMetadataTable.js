@@ -8,6 +8,8 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
+import {COLUMN_MAPPINGS} from '../../constants';
+import {fetchTitleMetadata} from '../../utils';
 import './TitleMetadataTable.scss';
 
 const TitleMetadataTableGrid = compose(
@@ -15,7 +17,7 @@ const TitleMetadataTableGrid = compose(
     withFilterableColumns(),
     withColumnsResizing(),
     withSorting(),
-    withInfiniteScrolling({fetchData: () => []})
+    withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
 const TitleMetadataTable = () => {
@@ -58,8 +60,8 @@ const TitleMetadataTable = () => {
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
                 id="TitleMetadataTable"
-                columnDefs={[]}
-                mapping={[]}
+                columnDefs={COLUMN_MAPPINGS}
+                mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
