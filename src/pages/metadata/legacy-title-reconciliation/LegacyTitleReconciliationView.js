@@ -2,6 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
+import {set} from 'lodash';
 import {connect} from 'react-redux';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../../ui/elements';
@@ -61,10 +62,16 @@ const LegacyTitleReconciliationView = ({
         }
     };
 
+    const colDefsWithTitleLink = () => {
+        const [title] = columnDefs.filter(col => col.cellRendererParams.link);
+        set(title, 'cellRendererParams.link', '/metadata/detail/');
+        return columnDefs;
+    };
+
     const episodeAndSeasonNumberColumnDef = defineEpisodeAndSeasonNumberColumn();
     const updatedColumnDefs = [
         getRepositoryCell({headerName: 'Repository'}),
-        ...columnDefs,
+        ...colDefsWithTitleLink(),
         episodeAndSeasonNumberColumnDef,
     ];
 

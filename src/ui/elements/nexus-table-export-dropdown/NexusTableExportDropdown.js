@@ -177,7 +177,7 @@ const NexusTableExportDropdown = ({
                     return IN_PROGRESS;
                 }
 
-                if (!['HFR', 'Temporary Price Reduction'].includes(headerName)) {
+                if (!['HFR', 'Temporary Price Reduction', 'Exclusive'].includes(headerName)) {
                     if (value === true) return 'Yes';
                     else if (value === false) return 'No';
                 }
