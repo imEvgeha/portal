@@ -9,7 +9,6 @@ const TitleDetails = props => {
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader />
-            <NexusDynamicForm schema={schema} />
         </div>
     );
 };

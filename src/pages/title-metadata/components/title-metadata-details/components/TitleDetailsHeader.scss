@@ -2,7 +2,7 @@
 @import '../../../../../styles/atlaskit/colors';
 
 .nexus-c-title-details-header {
-    width: 100%;
+    width: calc((100% - 64px) * 1);
     position: fixed;
     top: 0;
     @include padding(6, 0);
@@ -15,4 +15,30 @@
         left: 24px;
         cursor: pointer;
     }
+}
+
+.nexus-c-title-details-header__content {
+    width: 80%;
+    display: flex;
+    @include margin(0, auto);
+}
+
+.nexus-c-title-details-header__title-info-container {
+    width: 75%;
+    border-right: 2px solid map-get($neutrals, N40);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.nexus-c-title-details-header__publish-info-container {
+    width: 25%;
+    @include margin(0, 0, 0, 6);
+    > div:first-child {
+        @include margin(0, 0, 4.2, 0);
+    }
+}
+
+.nexus-c-title-details-header__edit-button {
+    @include margin(0, 6);
 }
