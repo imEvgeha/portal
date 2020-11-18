@@ -21,6 +21,7 @@
         "lib/"
     ],
     "scripts": {
-        "build": "babel src -d lib"
+        "prepublish": "babel src -d lib",
+        "postpublish": "rm -r lib"
     }
 }

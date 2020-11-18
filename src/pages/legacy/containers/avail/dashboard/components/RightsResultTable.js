@@ -23,10 +23,10 @@ import {
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
 import {rightServiceManager} from '../../service/RightServiceManager';
-import {getDeepValue, equalOrIncluded} from '../../../../../../util/Common';
+import {getDeepValue, equalOrIncluded} from '@vubiquity-nexus/portal-utils/lib/Common';
 import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {ISODateToView} from '../../../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const colDef = [];
 let registeredOnSelect = false;

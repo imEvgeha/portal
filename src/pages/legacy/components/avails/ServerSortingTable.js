@@ -1,5 +1,5 @@
 import React from 'react';
-import {nextFrame} from '../../../../util/Common';
+import {nextFrame} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export default function withServerSorting(WrappedComponent) {
     return class extends React.Component {

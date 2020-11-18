@@ -10,7 +10,7 @@ import PersonListReadOnly from './PersonListReadOnly';
 import {isNexusTitle} from '../utils/utils';
 import {CHARACTER_NAME} from '../../../../../constants/metadata/constant-variables';
 import './CoreMetadata.scss';
-import {URL} from '../../../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 const {MOVIDA, VZ} = TitleSystems;
 

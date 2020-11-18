@@ -11,7 +11,7 @@ import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
-import {URL} from '../../../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {NexusDrawer} from '../../../../../../../ui/elements';
 import StatusLink from '../../../../../../../assets/status-linked.svg';
 

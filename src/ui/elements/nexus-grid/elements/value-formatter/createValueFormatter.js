@@ -1,6 +1,6 @@
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, startCase} from 'lodash';
 import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
     switch (dataType) {

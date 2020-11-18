@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {connect} from 'react-redux';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 // import Button from '@atlaskit/button';
-import DOP from '../../../../../util/DOP';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';

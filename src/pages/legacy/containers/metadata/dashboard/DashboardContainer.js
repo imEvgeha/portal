@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import {URL} from '../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {
     resultPageLoading,
     resultPageSort,

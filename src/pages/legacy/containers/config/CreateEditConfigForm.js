@@ -11,7 +11,7 @@ import RepeatingFormField from './custom-types/Repeats';
 
 import RepeatingField from './custom-types/RepeatsPrimitives';
 import NexusDateTimePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
-import {isObject, isObjectEmpty} from '../../../../util/Common';
+import {isObject, isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import {cache} from './EndpointContainer';
 import PropTypes from 'prop-types';

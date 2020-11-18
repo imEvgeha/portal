@@ -6,7 +6,7 @@ import {errorModal} from '../../components/modal/ErrorModal';
 import {processOptions} from './util/ProcessSelectOptions';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '../../../../ui/elements/nexus-grid/constants';
 import RightsURL from './util/RightsURL';
-import {URL} from '../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {
     EDIT_RIGHT_ERROR_TITLE,
     CREATE_NEW_RIGHT_ERROR_TITLE,

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {useDateTimeContext} from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeProvider';
@@ -14,7 +15,6 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {toggleRefreshGridData} from '../../../../ui/grid/gridActions';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnDefs from '../../columnMappings.json';
 import {NOT_FILTERABLE_FIELDS, REFRESH_BTN, CLEAR_FILTERS_BTN} from '../../eventManagementConstants';
 import {getEventSearch} from '../../eventManagementService';

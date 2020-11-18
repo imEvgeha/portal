@@ -1,6 +1,6 @@
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
-import {URL} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
 const HEADERS_ONLY = URL.isLocalOrDevOrQA();

@@ -2,7 +2,12 @@ import config from 'react-global-configuration';
 import moment from 'moment';
 import {nexusFetch} from '../../../../../util/http-client/index';
 import {store} from '../../../../../index';
-import {momentToISO, prepareSortMatrixParam, safeTrim, encodedSerialize} from '../../../../../util/Common';
+import {
+    momentToISO,
+    prepareSortMatrixParam,
+    safeTrim,
+    encodedSerialize,
+} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {
     STRING_TO_ARRAY_OF_STRINGS_HACKED_FIELDS,
     MULTI_INSTANCE_OBJECTS_IN_ARRAY_HACKED_FIELDS,

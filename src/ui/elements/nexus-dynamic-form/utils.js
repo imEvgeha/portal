@@ -1,7 +1,7 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
+import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
-import {equalOrIncluded, getSortedData} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
 import {VIEWS, FIELD_REQUIRED} from './constants';
