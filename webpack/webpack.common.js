@@ -44,7 +44,6 @@ module.exports = envKeys => ({
                 'src/store-persist-config/packages/redux-persist-transform-filter/index.js'
             ),
             'react-dom': '@hot-loader/react-dom',
-            '@vubiquity-nexus/portal-auth': path.resolve(appPaths.appSrc, '../packages/auth'),
         },
     },
     plugins: [
