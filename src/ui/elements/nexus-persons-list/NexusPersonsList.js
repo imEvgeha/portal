@@ -2,11 +2,9 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
-import {Label} from '@atlaskit/field-base';
 import UserPicker from '@atlaskit/user-picker';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
-import {ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
 import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
 import DroppableContent from './elements/DroppableContent';
 import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
@@ -18,7 +16,6 @@ import './NexusPersonsList.scss';
 
 const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew}) => {
     const [persons, setPersons] = useState(personsList || []);
-    const [isLastEntryValid, setLastIsEntryValid] = useState(true);
     const [searchText, setSearchText] = useState('');
     const [modalData, setModalData] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -169,7 +166,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         <>
             <div className="nexus-c-persons-list__heading">{uiConfig.title}</div>
             {isEdit && (
-                <div className={`nexus-c-persons-list__add ${isLastEntryValid ? '' : 'invalid'}`}>
+                <div className={`nexus-c-persons-list__add`}>
                     <UserPicker
                         fieldId={uiConfig.htmlFor}
                         width="100%"
@@ -180,9 +177,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
                         placeholder={uiConfig.newLabel}
                     />
                 </div>
-            )}
-            {isEdit && !isLastEntryValid && (
-                <span className="nexus-c-persons-list__add-error">Person already exists!</span>
             )}
             {isEdit
                 ? makeDraggableContainer(
