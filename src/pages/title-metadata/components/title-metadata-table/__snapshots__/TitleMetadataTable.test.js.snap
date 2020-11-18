@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMetadataTable should match snapshot 1`] = `
+<div
+  className="nexus-c-title-metadata-table"
+>
+  <Component
+    columnDefs={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "title",
+          "enableSearch": true,
+          "field": "title",
+          "headerName": "Title",
+          "javaVariableName": "title",
+          "searchDataType": "string",
+          "width": 200,
+        },
+        Object {
+          "colId": "repository",
+          "enableSearch": false,
+          "field": "repository",
+          "headerName": "Repository",
+          "javaVariableName": "repository",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "contentType",
+          "enableSearch": true,
+          "field": "contentType",
+          "headerName": "Content Type",
+          "javaVariableName": "contentType",
+          "options": Array [
+            "MOVIE",
+            "EPISODE",
+            "EVENT",
+            "SERIES",
+            "SEASON",
+            "SPORTS",
+            "AD",
+            "SPECIAL",
+          ],
+          "searchDataType": "multiselect",
+          "width": 120,
+        },
+        Object {
+          "colId": "releaseYear",
+          "enableSearch": true,
+          "field": "releaseYear",
+          "headerName": "Release Year",
+          "javaVariableName": "releaseYear",
+          "searchDataType": "string",
+          "width": 120,
+        },
+      ]
+    }
+    id="TitleMetadataTable"
+    mapping={
+      Array [
+        Object {
+          "cellRenderer": "loadingCellRenderer",
+          "colId": "title",
+          "enableSearch": true,
+          "field": "title",
+          "headerName": "Title",
+          "javaVariableName": "title",
+          "searchDataType": "string",
+          "width": 200,
+        },
+        Object {
+          "colId": "repository",
+          "enableSearch": false,
+          "field": "repository",
+          "headerName": "Repository",
+          "javaVariableName": "repository",
+          "searchDataType": "string",
+          "width": 120,
+        },
+        Object {
+          "colId": "contentType",
+          "enableSearch": true,
+          "field": "contentType",
+          "headerName": "Content Type",
+          "javaVariableName": "contentType",
+          "options": Array [
+            "MOVIE",
+            "EPISODE",
+            "EVENT",
+            "SERIES",
+            "SEASON",
+            "SPORTS",
+            "AD",
+            "SPECIAL",
+          ],
+          "searchDataType": "multiselect",
+          "width": 120,
+        },
+        Object {
+          "colId": "releaseYear",
+          "enableSearch": true,
+          "field": "releaseYear",
+          "headerName": "Release Year",
+          "javaVariableName": "releaseYear",
+          "searchDataType": "string",
+          "width": 120,
+        },
+      ]
+    }
+    onGridEvent={[Function]}
+    setDisplayedRows={[Function]}
+    setTotalCount={[Function]}
+    suppressRowClickSelection={true}
+  />
+</div>
+`;
