@@ -210,7 +210,6 @@ export const STRING_FIELDS = [
     'Customer',
     'servicingRegion',
     'potentialOwners',
-    'actualOwner',
 ];
 export const DATE_FIELDS = [
     'activityEstimatedEndDate',

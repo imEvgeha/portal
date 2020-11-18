@@ -97,11 +97,11 @@ const NexusTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                dowloadTableReport(true, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                downloadTableReport(true, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
                 break;
             }
             case SELECTED_FOR_PLANNING_TAB: {
-                dowloadTableReport(
+                downloadTableReport(
                     true,
                     selectedForPlanningGridApi,
                     selectedForPlanningColumnApi,
@@ -132,11 +132,11 @@ const NexusTableExportDropdown = ({
                 break;
             }
             case PRE_PLAN_TAB: {
-                dowloadTableReport(false, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
+                downloadTableReport(false, prePlanGridApi, prePlanColumnApi, PREPLAN_REPORT);
                 break;
             }
             case SELECTED_FOR_PLANNING_TAB: {
-                dowloadTableReport(
+                downloadTableReport(
                     false,
                     selectedForPlanningGridApi,
                     selectedForPlanningColumnApi,
@@ -160,7 +160,7 @@ const NexusTableExportDropdown = ({
         return allDisplayedColumns;
     };
 
-    const dowloadTableReport = (allColumns, gridApi, columnApi, fileName) => {
+    const downloadTableReport = (allColumns, gridApi, columnApi, fileName) => {
         const currentTime = new Date();
         gridApi.exportDataAsExcel({
             processCellCallback: params => {
@@ -168,21 +168,26 @@ const NexusTableExportDropdown = ({
                 const {colDef} = column || {};
                 const {headerName} = colDef || {};
                 const {value = []} = params || {};
+
                 if (['Plan Territories', 'Selected'].includes(headerName)) {
                     return value.filter(item => item.selected).map(item => item.country);
-                }
-                if (headerName === 'Withdrawn') {
+                } else if (headerName === 'Withdrawn') {
                     return value.filter(item => item.withdrawn).map(item => item.country);
-                }
-                if (headerName === 'DOP Status') {
+                } else if (headerName === 'DOP Status') {
                     return IN_PROGRESS;
                 }
+
+                if (!['HFR', 'Temporary Price Reduction', 'Exclusive'].includes(headerName)) {
+                    if (value === true) return 'Yes';
+                    else if (value === false) return 'No';
+                }
+
                 return value;
             },
-            fileName: `${fileName}_${username}_${currentTime.getFullYear()}-${
+            columnKeys: preparePrePlanExportColumns(columnApi),
+            fileName: `${fileName}_${username.split('.').join('_')}_${currentTime.getFullYear()}-${
                 currentTime.getMonth() + 1
             }-${currentTime.getDate()}`,
-            columnKeys: preparePrePlanExportColumns(columnApi),
             allColumns,
         });
     };
@@ -199,11 +204,10 @@ const NexusTableExportDropdown = ({
     };
 
     const preparePrePlanExportColumns = api => {
-        const columns = api
+        return api
             .getAllDisplayedColumns()
-            .map(({colDef: {field} = {}}) => field)
+            .map(({colDef: {colId} = {}}) => colId)
             .filter(col => !['action', 'buttons'].includes(col));
-        return columns;
     };
 
     const renderDropdown = () => {

@@ -2,12 +2,14 @@ import React from 'react';
 import DetailViewIcon from '@atlaskit/icon/glyph/detail-view';
 import EditorBulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import EditorMediaWrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import EditorMediaWrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import {can} from '../../../../ability';
 import NexusNavIcon from '../../../../assets/nexus-nav-icon.svg';
-import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS} from '../constants';
+import {URL} from '../../../../util/Common';
+import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
     const canReadEventManager = can('read', 'EventManagement');
@@ -69,6 +71,13 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             tooltip: 'DOP Tasks',
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
+        },
+        URL.isLocalOrDevOrQA() && {
+            icon: EditorMediaWrapRightIcon,
+            id: TITLE_METADATA,
+            tooltip: 'Title Metadata',
+            isSelected: selectedItem === TITLE_METADATA,
+            onClick: () => handleClick('metadata/v2'),
         },
     ];
 };
