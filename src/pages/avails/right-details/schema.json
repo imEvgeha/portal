@@ -208,15 +208,6 @@
                                 { "label": "Withdrawn", "value": "Withdrawn" }
                             ]
                         },
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "allWithdrawn",
-                                "field": "territory",
-                                "subfield": "dateWithdrawn",
-                                "value": ""
-                            }
-                        ],
                         "validation": [
                             {
                                 "name": "areAllWithdrawn"

@@ -45,9 +45,7 @@ export const getValidationError = (validationErrors, field) => {
 const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     let retValue = false;
     formData[field].map(obj => {
-        if (subfield === 'dateWithdrawn' && !obj[subfield]) {
-            retValue = '';
-        } else if (obj[subfield] === value) {
+        if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
         return null;
@@ -77,12 +75,12 @@ const isEmptyMultiselect = (value, isRequired) => {
     if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
-const getArgs = (validation, areAllWithdrawn) => {
-    if (validation.name === 'areAllWithdrawn') return !!areAllWithdrawn;
+const getArgs = (validation, getCurrentValues) => {
+    if (validation.name === 'areAllWithdrawn') return getCurrentValues;
     return validation.args;
 };
 
-export const getValidationFunction = (value, validations, {type, isRequired, areAllWithdrawn}) => {
+export const getValidationFunction = (value, validations, {type, isRequired, getCurrentValues}) => {
     if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     const isRequiredFunction = {
         name: 'fieldRequired',
@@ -92,7 +90,7 @@ export const getValidationFunction = (value, validations, {type, isRequired, are
     if (updatedValidations && updatedValidations.length > 0) {
         const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, getArgs(v, areAllWithdrawn));
+                return f[`${v.name}`](value, getArgs(v, getCurrentValues));
             })
         );
         return Promise.all(promises).then(responses => {

@@ -47,8 +47,7 @@ const NexusField = ({
     ...props
 }) => {
     const checkDependencies = type => {
-        const data = type === 'allWithdrawn' ? getCurrentValues() : formData;
-        return checkFieldDependencies(type, view, dependencies, data);
+        return checkFieldDependencies(type, view, dependencies, formData);
     };
 
     const addedProps = {
@@ -199,11 +198,7 @@ const NexusField = ({
                     isDisabled={isReadOnly || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
                     validate={value =>
-                        getValidationFunction(value, validation, {
-                            type,
-                            isRequired: required,
-                            areAllWithdrawn: path === 'rightStatus' ? !checkDependencies('allWithdrawn') : false,
-                        })
+                        getValidationFunction(value, validation, {type, isRequired: required, getCurrentValues})
                     }
                     {...props}
                 >
