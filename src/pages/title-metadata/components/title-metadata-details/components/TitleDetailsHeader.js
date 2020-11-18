@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Button from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
 import ShrinkedHeader from './ShrinkedHeader';
