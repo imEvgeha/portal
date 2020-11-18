@@ -23,7 +23,7 @@ export const COLUMN_MAPPINGS = [
         headerName: 'Repository',
         javaVariableName: 'repository',
         enableSearch: false,
-        searchDataType: 'string',
+        readOnly: true,
         width: 120,
     },
     {

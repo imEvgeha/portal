@@ -10,6 +10,7 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {COLUMN_MAPPINGS} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
+import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
 
 const TitleMetadataTableGrid = compose(
@@ -67,6 +68,7 @@ const TitleMetadataTable = () => {
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
             />
+            <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
     );
 };
