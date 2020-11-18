@@ -5,6 +5,12 @@
     @include addSpacing('min-height', 40);
 }
 
+.nexus-c-persons-list__heading {
+    font-size: 20px;
+    border-bottom: 2px solid map-get($neutrals, N40);
+    @include margin(0, 0, 6, 0);
+}
+
 .nexus-c-persons-list__group {
     overflow-x: hidden;
 }

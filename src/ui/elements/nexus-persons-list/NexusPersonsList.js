@@ -167,55 +167,43 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     return (
         <>
-            <Card className="nexus-c-persons-list">
-                <CardHeader className="clearfix">
-                    <h4 className="float-left">{uiConfig.title}</h4>
-                </CardHeader>
-                <CardBody>
-                    <ListGroup className="nexus-c-persons-list__group">
-                        <Label label={isEdit && uiConfig.newLabel} isFirstChild htmlFor={uiConfig.htmlFor}>
-                            {isEdit && (
-                                <div className={`nexus-c-persons-list__add ${isLastEntryValid ? '' : 'invalid'}`}>
-                                    <UserPicker
-                                        fieldId={uiConfig.htmlFor}
-                                        width="100%"
-                                        loadOptions={loadOptions}
-                                        value={searchText}
-                                        onInputChange={searchInputChanged}
-                                        onSelection={validateAndAddPerson}
-                                        placeholder={uiConfig.newLabel}
-                                    />
-                                </div>
-                            )}
-                            {isEdit && !isLastEntryValid && (
-                                <span className="nexus-c-persons-list__add-error">Person already exists!</span>
-                            )}
-                            <Label label={isEdit && uiConfig.listLabel} isFirstChild>
-                                {isEdit
-                                    ? makeDraggableContainer(
-                                          persons &&
-                                              persons.map((person, i) => {
-                                                  return (
-                                                      <NexusPerson
-                                                          key={uid(person.id, i)}
-                                                          person={person}
-                                                          index={i}
-                                                          hasCharacter={hasCharacter}
-                                                          onRemove={() => removePerson(person)}
-                                                          onEditCharacter={index => openModal(index)}
-                                                      />
-                                                  );
-                                              })
-                                      )
-                                    : persons &&
-                                      persons.map((person, i) => {
-                                          return <NexusPersonRO key={uid(person.id, i)} person={person} />;
-                                      })}
-                            </Label>
-                        </Label>
-                    </ListGroup>
-                </CardBody>
-            </Card>
+            <div className="nexus-c-persons-list__heading">{uiConfig.title}</div>
+            {isEdit && (
+                <div className={`nexus-c-persons-list__add ${isLastEntryValid ? '' : 'invalid'}`}>
+                    <UserPicker
+                        fieldId={uiConfig.htmlFor}
+                        width="100%"
+                        loadOptions={loadOptions}
+                        value={searchText}
+                        onInputChange={searchInputChanged}
+                        onSelection={validateAndAddPerson}
+                        placeholder={uiConfig.newLabel}
+                    />
+                </div>
+            )}
+            {isEdit && !isLastEntryValid && (
+                <span className="nexus-c-persons-list__add-error">Person already exists!</span>
+            )}
+            {isEdit
+                ? makeDraggableContainer(
+                      persons &&
+                          persons.map((person, i) => {
+                              return (
+                                  <NexusPerson
+                                      key={uid(person.id, i)}
+                                      person={person}
+                                      index={i}
+                                      hasCharacter={hasCharacter}
+                                      onRemove={() => removePerson(person)}
+                                      onEditCharacter={index => openModal(index)}
+                                  />
+                              );
+                          })
+                  )
+                : persons &&
+                  persons.map((person, i) => {
+                      return <NexusPersonRO key={uid(person.id, i)} person={person} />;
+                  })}
             <NexusCharacterNameModal
                 onSubmit={onCharacterSubmit}
                 displayName={modalData.displayName}
