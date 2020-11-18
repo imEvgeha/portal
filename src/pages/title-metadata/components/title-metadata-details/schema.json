@@ -1,34 +1,131 @@
 [
     {
         "title": "Title",
-        "sections": []
+        "sections": [
+            {
+                "title": "Core Title",
+                "fields": {
+                    "title": {
+                        "name": "Title",
+                        "type": "string",
+                        "path": "title",
+                        "isRequired": true
+                    },
+                    "contentType": {
+                        "name": "Type",
+                        "type": "string",
+                        "path": "contentType",
+                        "isReadOnly": true
+                    },
+                    "releaseYear": {
+                        "name": "Year",
+                        "type": "string",
+                        "path": "releaseYear",
+                        "isRequired": true,
+                        "validation": [
+                            {
+                                "name": "isYear"
+                            }
+                        ]
+                    },
+                    "animated": {
+                        "name": "Animated",
+                        "type": "boolean",
+                        "path": "animated"
+                    },
+                    "countryOfOrigin": {
+                        "name": "Country Of Origin",
+                        "type": "select",
+                        "path": "countryOfOrigin",
+                        "optionsConfig": {
+                            "defaultValuePath": "countryCode",
+                            "defaultLabelPath": "countryName"
+                        }
+                    },
+                    "originalLanguage": {
+                        "name": "Original Language",
+                        "type": "select",
+                        "path": "originalLanguage",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
+                    },
+                    "duration": {
+                        "name": "Duration",
+                        "type": "string",
+                        "path": "duration",
+                        "validation": [
+                            {
+                                "name": "isTime"
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
     },
     {
         "title": "Cast & Crew",
-        "sections": []
+        "sections": [
+            {
+                "title": "Cast & Crew",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "Ratings",
-        "sections": []
+        "sections": [
+            {
+                "title": "Ratings",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "External ID's",
-        "sections": []
+        "sections": [
+            {
+                "title": "External IDs",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "Editorial",
-        "sections": []
+        "sections": [
+            {
+                "title": "Editorial",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "Territorial",
-        "sections": []
+        "sections": [
+            {
+                "title": "Territorial",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "Rights",
-        "sections": []
+        "sections": [
+            {
+                "title": "Rights",
+                "fields": {}
+            }
+        ]
     },
     {
         "title": "Sync Log",
-        "sections": []
+        "sections": [
+            {
+                "title": "Sync Log",
+                "fields": {}
+            }
+        ]
     }
 ]

@@ -28,6 +28,10 @@
     @include padding(32, 0, 0, 0);
 }
 
+.nexus-c-dynamic-form__tab-content--title {
+    @include padding(46, 0, 0, 0);
+}
+
 .nexus-c-dynamic-form__tab {
     display: flex;
     justify-content: center;
@@ -71,12 +75,12 @@
 .nexus-c-dynamic-form__edit-button--title {
     position: absolute;
     top: 24px;
-    right: 440px;
+    right: 31.5%;
     z-index: 1;
 }
 
 .nexus-c-dynamic-form__submit-button--title {
-    right: 520px;
+    right: calc(31.5% + 80px);
 }
 
 .nexus-c-dynamic-form__field {

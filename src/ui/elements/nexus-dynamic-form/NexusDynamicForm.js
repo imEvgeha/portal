@@ -94,7 +94,11 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                         >
                             {buildTabs()}
                         </div>
-                        <div className="nexus-c-dynamic-form__tab-content">
+                        <div
+                            className={classnames('nexus-c-dynamic-form__tab-content', {
+                                'nexus-c-dynamic-form__tab-content--title': isTitlePage,
+                            })}
+                        >
                             {schema.map(({title = '', sections = []}) => (
                                 <Fragment key={`tab-${title}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (

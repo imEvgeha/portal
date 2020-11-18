@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
+import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {getTitle, getExternalIds, getTerritoryMetadata, getEditorialMetadata} from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -19,6 +20,7 @@ const TitleDetails = ({
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
+    selectValues,
 }) => {
     const containerRef = useRef();
 
@@ -41,6 +43,7 @@ const TitleDetails = ({
                 isEdit
                 isTitlePage={true}
                 containerRef={containerRef}
+                selectValues={selectValues}
             />
         </div>
     );
@@ -57,6 +60,7 @@ TitleDetails.propTypes = {
     getExternalIds: PropTypes.func,
     getTerritoryMetadata: PropTypes.func,
     getEditorialMetadata: PropTypes.func,
+    selectValues: PropTypes.object,
 };
 
 TitleDetails.defaultProps = {
@@ -70,6 +74,7 @@ TitleDetails.defaultProps = {
     getExternalIds: () => null,
     getTerritoryMetadata: () => null,
     getEditorialMetadata: () => null,
+    selectValues: {},
 };
 
 const mapStateToProps = () => {
@@ -83,6 +88,7 @@ const mapStateToProps = () => {
         externalIds: externalIdsSelector(state, props),
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
+        selectValues: detailsSelectors.selectValuesSelector(state, props),
     });
 };
 
