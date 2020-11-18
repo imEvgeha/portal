@@ -23,6 +23,10 @@
     @include margin(0, auto);
 }
 
+.nexus-c-title-details-header__content--hidden {
+    display: none;
+}
+
 .nexus-c-title-details-header__title-info-container {
     width: 75%;
     border-right: 2px solid map-get($neutrals, N40);
@@ -37,8 +41,4 @@
     > div:first-child {
         @include margin(0, 0, 4.2, 0);
     }
-}
-
-.nexus-c-title-details-header__edit-button {
-    @include margin(0, 6);
 }

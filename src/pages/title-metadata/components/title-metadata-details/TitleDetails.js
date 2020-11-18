@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
@@ -9,6 +9,7 @@ import './TitleDetails.scss';
 import schema from './schema.json';
 
 const TitleDetails = ({
+    history,
     match,
     title,
     externalIds,
@@ -19,6 +20,8 @@ const TitleDetails = ({
     getTerritoryMetadata,
     getEditorialMetadata,
 }) => {
+    const containerRef = useRef();
+
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
@@ -31,13 +34,20 @@ const TitleDetails = ({
 
     return (
         <div className="nexus-c-title-details">
-            <TitleDetailsHeader title={title} />
-            <NexusDynamicForm schema={schema} initialData={title} isEdit isTitlePage={true} />
+            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} />
+            <NexusDynamicForm
+                schema={schema}
+                initialData={title}
+                isEdit
+                isTitlePage={true}
+                containerRef={containerRef}
+            />
         </div>
     );
 };
 
 TitleDetails.propTypes = {
+    history: PropTypes.object,
     match: PropTypes.object,
     title: PropTypes.object,
     externalIds: PropTypes.object,
@@ -50,6 +60,7 @@ TitleDetails.propTypes = {
 };
 
 TitleDetails.defaultProps = {
+    history: {},
     match: {},
     title: {},
     externalIds: {},

@@ -25,14 +25,18 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
             <>
                 <Button
                     type="submit"
-                    className="nexus-c-dynamic-form__submit-button"
+                    className={classnames('nexus-c-dynamic-form__submit-button', {
+                        'nexus-c-dynamic-form__submit-button--title': isTitlePage,
+                    })}
                     appearance="primary"
                     isDisabled={!dirty || submitting}
                 >
                     Save changes
                 </Button>
                 <Button
-                    className="nexus-c-dynamic-form__cancel-button"
+                    className={classnames('nexus-c-dynamic-form__cancel-button', {
+                        'nexus-c-dynamic-form__cancel-button--title': isTitlePage,
+                    })}
                     onClick={() => {
                         reset();
                         setView(VIEWS.VIEW);
@@ -43,7 +47,9 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
             </>
         ) : (
             <Button
-                className="nexus-c-dynamic-form__edit-button"
+                className={classnames('nexus-c-dynamic-form__edit-button', {
+                    'nexus-c-dynamic-form__edit-button--title': isTitlePage,
+                })}
                 appearance="primary"
                 onClick={() => setView(VIEWS.EDIT)}
             >

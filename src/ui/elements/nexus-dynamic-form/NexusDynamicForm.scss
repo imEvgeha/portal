@@ -21,7 +21,7 @@
 }
 
 .nexus-c-dynamic-form__tab-container--title {
-    top: 180px;
+    top: 175px;
 }
 
 .nexus-c-dynamic-form__tab-content {
@@ -64,6 +64,19 @@
 
 .nexus-c-dynamic-form__submit-button {
     right: 100px;
+}
+
+.nexus-c-dynamic-form__cancel-button--title,
+.nexus-c-dynamic-form__submit-button--title,
+.nexus-c-dynamic-form__edit-button--title {
+    position: absolute;
+    top: 24px;
+    right: 440px;
+    z-index: 1;
+}
+
+.nexus-c-dynamic-form__submit-button--title {
+    right: 520px;
 }
 
 .nexus-c-dynamic-form__field {
