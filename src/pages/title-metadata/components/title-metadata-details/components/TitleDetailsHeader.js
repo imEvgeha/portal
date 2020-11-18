@@ -9,7 +9,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef}) => {
+const TitleDetailsHeader = ({history, title, containerRef, externalIds}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -57,8 +57,8 @@ const TitleDetailsHeader = ({history, title, containerRef}) => {
                     />
                 </div>
                 <div className="nexus-c-title-details-header__publish-info-container">
-                    <SyncPublish message="Updated...">Publish to VZ</SyncPublish>
-                    <SyncPublish message="Updated...">Publish to Movida</SyncPublish>
+                    <SyncPublish externalSystem="vz" externalIds={externalIds} />
+                    <SyncPublish externalSystem="movida" externalIds={externalIds} />
                 </div>
             </div>
             <ShrinkedHeader isShrinked={isShrinked} title={title.title} />
@@ -70,12 +70,14 @@ TitleDetailsHeader.propTypes = {
     history: PropTypes.object,
     title: PropTypes.object,
     containerRef: PropTypes.any,
+    externalIds: PropTypes.array,
 };
 
 TitleDetailsHeader.defaultProps = {
     history: {},
     title: {},
     containerRef: null,
+    externalIds: [],
 };
 
 export default TitleDetailsHeader;

@@ -47,7 +47,7 @@ const TitleDetails = ({
 
     return (
         <div className="nexus-c-title-details">
-            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} />
+            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} externalIds={externalIds} />
             <NexusDynamicForm
                 schema={schema}
                 initialData={title}
