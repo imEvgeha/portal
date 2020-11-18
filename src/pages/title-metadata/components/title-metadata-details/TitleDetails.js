@@ -42,7 +42,7 @@ const TitleDetails = ({
     }, []);
 
     const onSubmit = values => {
-        updateTitle(values);
+        updateTitle({...values, id: title.id});
     };
 
     return (
