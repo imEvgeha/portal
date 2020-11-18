@@ -19,3 +19,8 @@ export const getEditorialMetadata = payload => ({
     type: actionTypes.GET_EDITORIAL_METADATA,
     payload,
 });
+
+export const updateTitle = payload => ({
+    type: actionTypes.UPDATE_TITLE,
+    payload,
+});

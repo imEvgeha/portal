@@ -5,6 +5,7 @@ import {
     getExternalIds,
     getTerritoryMetadataById,
     getEditorialMetadataByTitleId,
+    updateTitle as updateTitleService,
 } from './titleMetadataServices';
 
 export function* loadParentTitle(title) {
@@ -107,11 +108,37 @@ export function* loadEditorialMetadata({payload}) {
     }
 }
 
+export function* updateTitle({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const response = yield call(updateTitleService, payload);
+        const updatedResponse = yield call(loadParentTitle, response);
+        yield put({
+            type: actionTypes.UPDATE_TITLE_SUCCESS,
+            payload: updatedResponse,
+        });
+    } catch (error) {
+        yield put({
+            type: actionTypes.UPDATE_TITLE_ERROR,
+            payload: error,
+        });
+    } finally {
+        yield put({
+            type: actionTypes.GET_TITLE,
+            payload,
+        });
+    }
+}
+
 export function* titleMetadataWatcher() {
     yield all([
         takeEvery(actionTypes.GET_TITLE, loadTitle),
         takeEvery(actionTypes.GET_EXTERNAL_IDS, loadExternalIds),
         takeEvery(actionTypes.GET_TERRITORY_METADATA, loadTerritoryMetadata),
         takeEvery(actionTypes.GET_EDITORIAL_METADATA, loadEditorialMetadata),
+        takeEvery(actionTypes.UPDATE_TITLE, updateTitle),
     ]);
 }

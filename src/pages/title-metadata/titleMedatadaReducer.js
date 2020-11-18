@@ -2,7 +2,7 @@ import * as actionTypes from './titleMetadataActionTypes';
 
 const initialState = {
     title: {},
-    externalIds: {},
+    externalIds: [],
     territoryMetadata: [],
     editorialMetadata: [],
 };
@@ -43,6 +43,15 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
                 editorialMetadata: payload,
             };
         case actionTypes.GET_EDITORIAL_METADATA_ERROR:
+            return {
+                ...state,
+            };
+        case actionTypes.UPDATE_TITLE_SUCCESS:
+            return {
+                ...state,
+                title: payload,
+            };
+        case actionTypes.UPDATE_TITLE_ERROR:
             return {
                 ...state,
             };

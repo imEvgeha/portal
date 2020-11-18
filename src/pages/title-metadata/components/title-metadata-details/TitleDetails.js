@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
-import {getTitle, getExternalIds, getTerritoryMetadata, getEditorialMetadata} from '../../titleMetadataActions';
+import {
+    getTitle,
+    getExternalIds,
+    getTerritoryMetadata,
+    getEditorialMetadata,
+    updateTitle,
+} from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
@@ -20,6 +26,7 @@ const TitleDetails = ({
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
+    updateTitle,
     selectValues,
 }) => {
     const containerRef = useRef();
@@ -34,6 +41,10 @@ const TitleDetails = ({
         }
     }, []);
 
+    const onSubmit = values => {
+        updateTitle(values);
+    };
+
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} />
@@ -44,6 +55,7 @@ const TitleDetails = ({
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
+                onSubmit={values => onSubmit(values)}
             />
         </div>
     );
@@ -53,13 +65,14 @@ TitleDetails.propTypes = {
     history: PropTypes.object,
     match: PropTypes.object,
     title: PropTypes.object,
-    externalIds: PropTypes.object,
+    externalIds: PropTypes.array,
     territoryMetadata: PropTypes.array,
     editorialMetadata: PropTypes.array,
     getTitle: PropTypes.func,
     getExternalIds: PropTypes.func,
     getTerritoryMetadata: PropTypes.func,
     getEditorialMetadata: PropTypes.func,
+    updateTitle: PropTypes.func,
     selectValues: PropTypes.object,
 };
 
@@ -67,13 +80,14 @@ TitleDetails.defaultProps = {
     history: {},
     match: {},
     title: {},
-    externalIds: {},
+    externalIds: [],
     territoryMetadata: [],
     editorialMetadata: [],
     getTitle: () => null,
     getExternalIds: () => null,
     getTerritoryMetadata: () => null,
     getEditorialMetadata: () => null,
+    updateTitle: () => null,
     selectValues: {},
 };
 
@@ -97,6 +111,7 @@ const mapDispatchToProps = dispatch => ({
     getExternalIds: payload => dispatch(getExternalIds(payload)),
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),
+    updateTitle: payload => dispatch(updateTitle(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);
