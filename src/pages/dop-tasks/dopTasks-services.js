@@ -1,5 +1,5 @@
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import config from 'react-global-configuration';
-import {getUsername} from '../../auth/authSelectors';
 import {store} from '../../index';
 import {nexusFetch} from '../../util/http-client/index';
 import {

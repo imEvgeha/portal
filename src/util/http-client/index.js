@@ -1,4 +1,4 @@
-import {keycloak} from '../../auth/keycloak';
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import handleError from './handleError';
 import handleResponse from './handleResponse';
 
