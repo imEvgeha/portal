@@ -4,7 +4,6 @@ import {NEXUS, VZ, MOVIDA} from './constants';
 export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams) => {
     try {
         const response = await titleService.advancedSearch(searchCriteria, offset, limit, sortedParams);
-        console.log(response);
         const {data = [], page, size, total} = response || {};
         const tableData = data.reduce((acc, obj) => {
             const {
@@ -20,8 +19,21 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 originalLanguage = '',
                 usBoxOffice = '',
                 category = '',
+                externalIds = {},
             } = obj || {};
             const repository = id.includes('vztitl_') ? VZ : id.includes('movtitl_') ? MOVIDA : NEXUS;
+            const {
+                assetName = '',
+                eidrTitleId = '',
+                tmsId = '',
+                eidrEditId = '',
+                xfinityMovieId = '',
+                maId = '',
+                isan = '',
+                alid = '',
+                cid = '',
+                isrc = '',
+            } = externalIds || {};
             return [
                 ...acc,
                 {
@@ -37,6 +49,16 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                     originalLanguage,
                     usBoxOffice,
                     category,
+                    assetName,
+                    eidrTitleId,
+                    tmsId,
+                    eidrEditId,
+                    xfinityMovieId,
+                    maId,
+                    isan,
+                    alid,
+                    cid,
+                    isrc,
                 },
             ];
         }, []);

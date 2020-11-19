@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
+import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
@@ -22,6 +23,13 @@ const TitleMetadataTableGrid = compose(
 )(NexusGrid);
 
 const TitleMetadataTable = () => {
+    const columnDefs = COLUMN_MAPPINGS.map(mapping => {
+        return {
+            ...mapping,
+            valueFormatter: createValueFormatter(mapping),
+        };
+    });
+
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -61,7 +69,7 @@ const TitleMetadataTable = () => {
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
                 id="TitleMetadataTable"
-                columnDefs={COLUMN_MAPPINGS}
+                columnDefs={columnDefs}
                 mapping={COLUMN_MAPPINGS}
                 suppressRowClickSelection
                 onGridEvent={onGridReady}
