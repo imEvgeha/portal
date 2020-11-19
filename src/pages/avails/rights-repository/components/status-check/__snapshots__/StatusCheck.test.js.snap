@@ -42,6 +42,16 @@ exports[`StatusCheck should match snapshot 1`] = `
               "key": 5,
               "width": 25,
             },
+            Object {
+              "content": "Removed From Catalog",
+              "key": 6,
+              "width": 25,
+            },
+            Object {
+              "content": "Temporary Price Reduction",
+              "key": 7,
+              "width": 25,
+            },
           ],
         }
       }
@@ -79,6 +89,14 @@ exports[`StatusCheck should match snapshot 1`] = `
                 />,
                 "key": "1-territory",
               },
+              Object {
+                "content": "NO",
+                "key": "1-updatedCatalogReceived",
+              },
+              Object {
+                "content": "NO",
+                "key": "1-temporaryPriceReduction",
+              },
             ],
             "key": 1,
           },
@@ -105,6 +123,14 @@ exports[`StatusCheck should match snapshot 1`] = `
               Object {
                 "content": "",
                 "key": "2-territory",
+              },
+              Object {
+                "content": "NO",
+                "key": "2-updatedCatalogReceived",
+              },
+              Object {
+                "content": "NO",
+                "key": "2-temporaryPriceReduction",
               },
             ],
             "key": 2,
