@@ -37,6 +37,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
             return [
                 ...acc,
                 {
+                    id,
                     title,
                     repository,
                     contentType,

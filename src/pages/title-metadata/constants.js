@@ -5,8 +5,19 @@ export const NEXUS = 'NEXUS';
 export const MOVIDA = 'MOVIDA';
 export const VZ = 'VZ';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
+export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
 export const COLUMN_MAPPINGS = [
+    {
+        colId: 'id',
+        field: 'id',
+        headerName: 'ID',
+        javaVariableName: 'id',
+        enableSearch: false,
+        dataType: 'string',
+        hide: true,
+        width: 150,
+    },
     {
         colId: 'title',
         field: 'title',
@@ -27,6 +38,7 @@ export const COLUMN_MAPPINGS = [
         enableSearch: false,
         readOnly: true,
         width: 120,
+        minWidth: 100,
     },
     {
         colId: 'contentType',
