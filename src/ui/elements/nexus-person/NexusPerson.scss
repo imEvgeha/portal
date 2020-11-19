@@ -1,23 +1,49 @@
 @import '../../../styles/atlaskit/mixins';
+@import '../../../styles/atlaskit/colors';
 
 .nexus-c-nexus-person {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 42.5% 42.5% 15%;
-}
-
-.nexus-c-nexus-person__character {
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
 }
 
-.nexus-c-nexus-person__character-buttons {
+.nexus-c-nexus-person__info {
+    width: 65%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > div:first-child {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.nexus-c-nexus-person__buttons {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     > button {
         @include margin(0);
         @include padding(0);
+    }
+}
+
+.nexus-c-nexus-person__img {
+    height: 35px;
+    width: 35px;
+    @include margin(0, 2);
+}
+
+.nexus-c-nexus-person__add-character {
+    background-color: map-get($neutrals, N40);
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 3px;
+    @include padding(0, 0.75);
+
+    &:hover {
+        cursor: pointer;
     }
 }
