@@ -1,6 +1,15 @@
 @import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
+.nexus-c-droppable-content {
+    width: 100%;
+}
+
+.nexus-c-droppable-content--dragging {
+    background-color: map-get($neutrals, N50);
+    border: 2px dotted map-get($darkModeNeutrals, DN20);
+}
+
 .nexus-c-persons-list__heading {
     font-size: 20px;
     border-bottom: 2px solid map-get($neutrals, N40);

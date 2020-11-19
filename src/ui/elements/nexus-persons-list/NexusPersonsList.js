@@ -3,10 +3,10 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
 import UserPicker from '@atlaskit/user-picker';
+import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
-import DroppableContent from './elements/DroppableContent';
 import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
 import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
 import NexusPerson from '../nexus-person/NexusPerson';
@@ -150,11 +150,15 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
-                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                            <DroppableContent isDragging={snapshot.isDraggingOver}>
-                                {content}
-                                {provided.placeholder}
-                            </DroppableContent>
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={classnames('nexus-c-droppable-content', {
+                                'nexus-c-droppable-content--dragging': snapshot.isDraggingOver,
+                            })}
+                        >
+                            {content}
+                            {provided.placeholder}
                         </div>
                     )}
                 </Droppable>

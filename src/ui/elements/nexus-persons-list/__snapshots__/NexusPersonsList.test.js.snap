@@ -2,86 +2,53 @@
 
 exports[`NexusPersonsList should match snapshot 1`] = `
 <Fragment>
-  <Card
-    className="nexus-c-persons-list"
-    tag="div"
+  <div
+    className="nexus-c-persons-list__heading"
   >
-    <CardHeader
-      className="clearfix"
-      tag="div"
-    >
-      <h4
-        className="float-left"
-      >
-        Cast
-      </h4>
-    </CardHeader>
-    <CardBody
-      tag="div"
-    >
-      <ListGroup
-        className="nexus-c-persons-list__group"
-        horizontal={false}
-        tag="ul"
-      >
-        <Label
-          appearance="default"
-          htmlFor="new-person-cast"
-          isFirstChild={true}
-          label={false}
-        >
-          <Label
-            appearance="default"
-            isFirstChild={true}
-            label={false}
-          >
-            <NexusPersonRO
-              key="val-prs_Ac9oyaREip"
-              person={
-                Object {
-                  "characterName": null,
-                  "displayName": "Amaka Obi",
-                  "firstName": null,
-                  "id": "prs_Ac9oyaREip",
-                  "lastName": null,
-                  "middleName": null,
-                  "personType": "Actor",
-                }
-              }
-            />
-            <NexusPersonRO
-              key="idx-1"
-              person={
-                Object {
-                  "characterName": null,
-                  "displayName": "Ebube Nwagbo",
-                  "firstName": null,
-                  "id": "prs_airo586ETR",
-                  "lastName": null,
-                  "middleName": null,
-                  "personType": "Actor",
-                }
-              }
-            />
-            <NexusPersonRO
-              key="idx-2"
-              person={
-                Object {
-                  "characterName": null,
-                  "displayName": "Solomon Akiyesi",
-                  "firstName": null,
-                  "id": "prs_x9TX5AkETo",
-                  "lastName": null,
-                  "middleName": null,
-                  "personType": "Actor",
-                }
-              }
-            />
-          </Label>
-        </Label>
-      </ListGroup>
-    </CardBody>
-  </Card>
+    Cast
+  </div>
+  <NexusPersonRO
+    key="val-prs_Ac9oyaREip"
+    person={
+      Object {
+        "characterName": null,
+        "displayName": "Amaka Obi",
+        "firstName": null,
+        "id": "prs_Ac9oyaREip",
+        "lastName": null,
+        "middleName": null,
+        "personType": "Actor",
+      }
+    }
+  />
+  <NexusPersonRO
+    key="idx-1"
+    person={
+      Object {
+        "characterName": null,
+        "displayName": "Ebube Nwagbo",
+        "firstName": null,
+        "id": "prs_airo586ETR",
+        "lastName": null,
+        "middleName": null,
+        "personType": "Actor",
+      }
+    }
+  />
+  <NexusPersonRO
+    key="idx-2"
+    person={
+      Object {
+        "characterName": null,
+        "displayName": "Solomon Akiyesi",
+        "firstName": null,
+        "id": "prs_x9TX5AkETo",
+        "lastName": null,
+        "middleName": null,
+        "personType": "Actor",
+      }
+    }
+  />
   <NexusCharacterNameModal
     characterName=""
     closeModal={[Function]}
