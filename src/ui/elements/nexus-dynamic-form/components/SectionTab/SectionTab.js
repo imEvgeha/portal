@@ -8,7 +8,7 @@ const SectionTab = ({section = '', isActive = false, onClick = null}) => {
     const [anchorTarget, setAnchorTarget] = useState(null);
 
     useEffect(() => {
-        setAnchorTarget(document.getElementById(mapSectionTabToTitle(section)));
+        setAnchorTarget(document.getElementById(mapSectionTabToTitle(section).split(' ')[0]));
     }, [section]);
 
     const handleClick = event => {
@@ -23,7 +23,8 @@ const SectionTab = ({section = '', isActive = false, onClick = null}) => {
 
     return (
         <a
-            href={`#${mapSectionTabToTitle(section)}`}
+            href={`#${mapSectionTabToTitle(section).split(' ')[0]}`}
+            id={`nav-${mapSectionTabToTitle(section).split(' ')[0]}`}
             onClick={handleClick}
             className={classnames('nexus-c-section-tab', {
                 'nexus-c-section-tab--is-active': isActive,

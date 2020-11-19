@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -12,6 +12,30 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+
+    useEffect(() => {
+        const tabIDs = tabs.map(item => item.split(' ')[0]);
+        const navItems = tabIDs.map(item => document.getElementById(`tab-${item.split(' ')[0]}`));
+        const sections = tabIDs.map(item => document.getElementById(item.split(' ')[0]));
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.7,
+        };
+
+        function observerCallback(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setSelectedTab(entry);
+                }
+            });
+        }
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        sections.forEach(sec => observer.observe(sec));
+    }, []);
 
     const buildTabs = () => {
         return tabs.map(tab => (
@@ -87,7 +111,10 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                 <Fragment key={`tab-${title}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
-                                            <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
+                                            <h3
+                                                id={sectionTitle.split(' ')[0]}
+                                                className="nexus-c-dynamic-form__section-title"
+                                            >
                                                 {sectionTitle}
                                             </h3>
                                             {buildSection(fields, getValues, view, {
