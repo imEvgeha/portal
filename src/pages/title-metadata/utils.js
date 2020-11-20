@@ -17,8 +17,34 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
         const response = await titleService.advancedSearch(searchCriteria, offset, limit, sortedParams);
         const {data = [], page, size, total} = response || {};
         const tableData = data.reduce((acc, obj) => {
-            const {id, title = '', contentType = '', releaseYear = ''} = obj || {};
+            const {
+                id,
+                title = '',
+                contentType = '',
+                releaseYear = '',
+                contentSubType = '',
+                duration = '',
+                countryOfOrigin = '',
+                animated = '',
+                eventType = '',
+                originalLanguage = '',
+                usBoxOffice = '',
+                category = '',
+                externalIds = {},
+            } = obj || {};
             const repository = id.includes('vztitl_') ? VZ : id.includes('movtitl_') ? MOVIDA : NEXUS;
+            const {
+                assetName = '',
+                eidrTitleId = '',
+                tmsId = '',
+                eidrEditId = '',
+                xfinityMovieId = '',
+                maId = '',
+                isan = '',
+                alid = '',
+                cid = '',
+                isrc = '',
+            } = externalIds || {};
             return [
                 ...acc,
                 {
@@ -26,6 +52,24 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                     repository,
                     contentType,
                     releaseYear,
+                    contentSubType,
+                    duration,
+                    countryOfOrigin,
+                    animated,
+                    eventType,
+                    originalLanguage,
+                    usBoxOffice,
+                    category,
+                    assetName,
+                    eidrTitleId,
+                    tmsId,
+                    eidrEditId,
+                    xfinityMovieId,
+                    maId,
+                    isan,
+                    alid,
+                    cid,
+                    isrc,
                 },
             ];
         }, []);
