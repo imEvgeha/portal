@@ -20,9 +20,9 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds}) => {
     useEffect(() => {
         if (containerRef.current) {
             if (isShrinked) {
-                containerRef.current.style.top = '82px';
+                containerRef.current.classList.add('nexus-c-dynamic-form__tab-container--shrinked-title');
             } else {
-                containerRef.current.style.top = '175px';
+                containerRef.current.classList.remove('nexus-c-dynamic-form__tab-container--shrinked-title');
             }
         }
     }, [isShrinked]);
