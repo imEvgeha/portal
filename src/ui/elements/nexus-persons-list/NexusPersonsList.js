@@ -1,20 +1,17 @@
 /* eslint-disable */
 import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import UserPicker from '@atlaskit/user-picker';
 import Button from '@atlaskit/button';
-import {Field, FormFooter} from '@atlaskit/form';
-import TextField from '@atlaskit/textfield';
-import {default as AKForm} from '@atlaskit/form/Form';
+import UserPicker from '@atlaskit/user-picker';
 import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
-import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
-import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
-import {CAST, CAST_CONFIG, PERSONS_PER_REQUEST} from './constants';
+import CharacterModal from './components/CharacterModal';
+import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
+import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 
 const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew}) => {
@@ -22,7 +19,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
-    const [isLastEntryValid, setIsLastEntryValid] = useState(true);
 
     useEffect(() => {
         const updatedPersons = [...personsList];
@@ -31,34 +27,6 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     const searchInputChanged = val => {
         setSearchText(val);
-    };
-
-    const loadOptions = () => {
-        const {type} = uiConfig;
-        if (searchText.length < 2) return [];
-        if (type === CAST) {
-            return searchPerson(searchText, PERSONS_PER_REQUEST, type, true).then(res =>
-                getFilteredCastList(res.data, true, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        } else {
-            return searchPerson(searchText, PERSONS_PER_REQUEST, type).then(res =>
-                getFilteredCrewList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        }
     };
 
     const isPersonValid = entry => {
@@ -78,8 +46,17 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         if (isValid) {
             addPerson(person);
             setSearchText('');
+        } else {
+            openModal(
+                <Button appearance="primary" onClick={closeModal}>
+                    OK
+                </Button>,
+                {
+                    title: <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>,
+                    width: 'small',
+                }
+            );
         }
-        setIsLastEntryValid(isValid);
     };
 
     const addPerson = person => {
@@ -108,11 +85,17 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             personName: selectedPerson.displayName,
             characterName: selectedPerson.characterName,
         };
-        const message = data.characterName ? 'Edit Character' : 'Add New Character';
-        openModal(modalContent(data, id), {
-            title: <div className="nexus-c-array__modal-title">{message}</div>,
+        const message = data.characterName ? EDIT_CHARACTER_NAME : ADD_CHARACTER_NAME;
+        openModal(characterModalContent(data, id), {
+            title: <div>{message}</div>,
             width: 'medium',
         });
+    };
+
+    const characterModalContent = (data, id) => {
+        return (
+            <CharacterModal personId={id} closeModal={closeCharacterModal} onModalSubmit={onModalSubmit} data={data} />
+        );
     };
 
     const onModalSubmit = (values, id) => {
@@ -129,45 +112,10 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         closeCharacterModal();
     };
 
-    const modalContent = ({personName, characterName}, id) => {
-        return (
-            <div>
-                <AKForm onSubmit={values => onModalSubmit(values, id)}>
-                    {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
-                        <form {...formProps}>
-                            <Field name="personName" defaultValue={personName} label="Person Name" isDisabled>
-                                {({fieldProps}) => <TextField {...fieldProps} />}
-                            </Field>
-                            <Field name="characterName" defaultValue={characterName} label="Character Name" isRequired>
-                                {({fieldProps}) => <TextField {...fieldProps} />}
-                            </Field>
-                            <FormFooter>
-                                <Button type="submit" appearance="primary">
-                                    Submit
-                                </Button>
-                                <Button
-                                    className="cancel-button"
-                                    appearance="danger"
-                                    onClick={() => {
-                                        reset();
-                                        closeModal();
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </FormFooter>
-                        </form>
-                    )}
-                </AKForm>
-            </div>
-        );
-    };
-
     const reorder = (list, startIndex, endIndex) => {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
-
         return result;
     };
 
@@ -199,49 +147,48 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         );
     };
 
+    const renderPersons = () => {
+        return persons.map((person, i) => {
+            return (
+                <NexusPerson
+                    key={uid(person.id, i)}
+                    person={person}
+                    index={i}
+                    hasCharacter={hasCharacter}
+                    onRemove={() => removePerson(person)}
+                    onEditCharacter={index => openCharacterModal(index)}
+                />
+            );
+        });
+    };
+
+    const renderPersonsRO = () => {
+        return persons.map((person, i) => {
+            return <NexusPersonRO key={uid(person.id, i)} person={person} />;
+        });
+    };
+
     return (
         <>
             <div className="nexus-c-persons-list__heading">{uiConfig.title}</div>
-            {isEdit && (
-                <div
-                    className={classnames('nexus-c-persons-list__add', {
-                        'nexus-c-persons-list__add--invalid': !isLastEntryValid,
-                    })}
-                >
-                    <UserPicker
-                        fieldId={uiConfig.htmlFor}
-                        width="100%"
-                        loadOptions={loadOptions}
-                        value={searchText}
-                        onInputChange={searchInputChanged}
-                        onSelection={validateAndAddPerson}
-                        placeholder={uiConfig.newLabel}
-                    />
-                </div>
+            {isEdit ? (
+                <>
+                    <div className="nexus-c-persons-list__add">
+                        <UserPicker
+                            fieldId={uiConfig.htmlFor}
+                            width="100%"
+                            loadOptions={() => loadOptions(uiConfig, searchText)}
+                            value={searchText}
+                            onInputChange={searchInputChanged}
+                            onSelection={validateAndAddPerson}
+                            placeholder={uiConfig.newLabel}
+                        />
+                    </div>
+                    {makeDraggableContainer(persons && renderPersons())}
+                </>
+            ) : (
+                <>{persons && renderPersonsRO()}</>
             )}
-            {isEdit && !isLastEntryValid && (
-                <span className="nexus-c-persons-list__add--error">Person already exists!</span>
-            )}
-            {isEdit
-                ? makeDraggableContainer(
-                      persons &&
-                          persons.map((person, i) => {
-                              return (
-                                  <NexusPerson
-                                      key={uid(person.id, i)}
-                                      person={person}
-                                      index={i}
-                                      hasCharacter={hasCharacter}
-                                      onRemove={() => removePerson(person)}
-                                      onEditCharacter={index => openCharacterModal(index)}
-                                  />
-                              );
-                          })
-                  )
-                : persons &&
-                  persons.map((person, i) => {
-                      return <NexusPersonRO key={uid(person.id, i)} person={person} />;
-                  })}
         </>
     );
 };
