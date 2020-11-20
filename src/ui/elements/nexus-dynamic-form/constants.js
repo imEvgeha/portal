@@ -23,6 +23,14 @@ export const TABS_MAPPINGS = [
     {tabName: 'Localization and captions', id: 'Localization'},
     {tabName: 'Other', id: 'Other'},
     {tabName: 'Music', id: 'Music'},
+    {tabName: 'Title', id: 'Core Title'},
+    {tabName: 'Cast & Crew', id: 'Cast & Crew'},
+    {tabName: 'Ratings', id: 'Ratings'},
+    {tabName: "External ID's", id: 'External IDs'},
+    {tabName: 'Editorial', id: 'Editorial'},
+    {tabName: 'Territorial', id: 'Territorial'},
+    {tabName: 'Rights', id: 'Rights'},
+    {tabName: 'Sync Log', id: 'Sync Log'},
 ];
 
 export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
