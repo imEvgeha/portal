@@ -70,7 +70,12 @@
         "sections": [
             {
                 "title": "Cast & Crew",
-                "fields": {}
+                "fields": {
+                    "castCrew": {
+                        "type": "castCrew",
+                        "path": "castCrew"
+                    }
+                }
             }
         ]
     },
