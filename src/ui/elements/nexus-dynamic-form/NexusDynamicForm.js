@@ -14,9 +14,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
     useEffect(() => {
-        const tabIDs = tabs.map(item => item.split(' ')[0]);
-        const navItems = tabIDs.map(item => document.getElementById(`tab-${item.split(' ')[0]}`));
-        const sections = tabIDs.map(item => document.getElementById(item.split(' ')[0]));
+        const sectionIDs = tabs.map(item => document.getElementById(item.split(' ')[0]));
 
         const observerOptions = {
             root: null,
@@ -24,17 +22,17 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
             threshold: 0.7,
         };
 
-        function observerCallback(entries, observer) {
+        const observerCallback = entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    setSelectedTab(entry);
+                    const index = tabs.findIndex(item => item.split(' ')[0] === entry.target.id);
+                    index !== -1 && setSelectedTab(tabs[index]);
                 }
             });
-        }
+        };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-        sections.forEach(sec => observer.observe(sec));
+        sectionIDs.forEach(sec => observer.observe(sec));
     }, []);
 
     const buildTabs = () => {
