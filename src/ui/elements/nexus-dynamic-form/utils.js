@@ -75,7 +75,7 @@ const isEmptyMultiselect = (value, isRequired) => {
     if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
-export const getValidationFunction = (value, validations, {type, isRequired}) => {
+export const getValidationFunction = (value, validations, {type, isRequired, getCurrentValues}) => {
     if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     const isRequiredFunction = {
         name: 'fieldRequired',
@@ -85,7 +85,7 @@ export const getValidationFunction = (value, validations, {type, isRequired}) =>
     if (updatedValidations && updatedValidations.length > 0) {
         const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, v.args);
+                return f[`${v.name}`](value, v.args, getCurrentValues);
             })
         );
         return Promise.all(promises).then(responses => {
@@ -213,6 +213,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}
             setFieldValue={setFieldValue}
+            getCurrentValues={getValues}
         />
     );
 };
