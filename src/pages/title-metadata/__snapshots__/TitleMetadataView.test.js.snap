@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMetadataView should match snapshot 1`] = `
+<div
+  className="nexus-c-title-metadata"
+>
+  <TitleMetadataHeader
+    label="Title Metadata"
+  >
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="primary"
+      className="nexus-c-title-metadata__create-btn"
+      onClick={[Function]}
+    >
+      Create New Title
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+    <WithAnalyticsContext(WithAnalyticsEvents(Button))
+      appearance="subtle"
+      className="nexus-c-title-metadata__sync-btn"
+      onClick={[Function]}
+    >
+      Sync Log
+    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </TitleMetadataHeader>
+  <TitleMetadataTable />
+</div>
+`;

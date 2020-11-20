@@ -1,5 +1,5 @@
 import config from 'react-global-configuration';
-import {encodedSerialize} from '../../util/Common';
+import {prepareSortMatrixParamTitles, encodedSerialize} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 
@@ -36,4 +36,21 @@ export const updateTitle = (title, syncToVZ, syncToMovida) => {
         body: JSON.stringify(title),
         params: encodedSerialize(params),
     });
+};
+
+export const titleService = {
+    advancedSearch: (searchCriteria, page, size, sortedParams) => {
+        const queryParams = {};
+        const filterIsActive = !!Object.keys(searchCriteria).length;
+        for (const key in searchCriteria) {
+            if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
+                queryParams[key] = searchCriteria[key];
+            }
+        }
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${
+            filterIsActive ? 'search' : ''
+        }${prepareSortMatrixParamTitles(sortedParams)}`;
+        const params = encodedSerialize({...queryParams, page, size});
+        return nexusFetch(url, {params});
+    },
 };

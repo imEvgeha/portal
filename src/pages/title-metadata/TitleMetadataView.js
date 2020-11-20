@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
+import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import {CREATE_NEW_TITLE, SYNC_LOG} from './constants';
 import './TitleMetadataView.scss';
 
@@ -15,6 +16,7 @@ const TitleMetadataView = () => {
                     {SYNC_LOG}
                 </Button>
             </TitleMetadataHeader>
+            <TitleMetadataTable />
         </div>
     );
 };
