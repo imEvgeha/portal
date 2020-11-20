@@ -3,7 +3,7 @@
 exports[`NexusPersonsList should match snapshot 1`] = `
 <Fragment>
   <div
-    className="nexus-c-persons-list__heading"
+    className="nexus-c-nexus-persons-list__heading"
   >
     Cast
   </div>
