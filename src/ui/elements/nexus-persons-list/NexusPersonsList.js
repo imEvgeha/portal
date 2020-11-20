@@ -137,8 +137,8 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
                         <div
                             ref={provided.innerRef}
                             {...provided.droppableProps}
-                            className={classnames('nexus-c-droppable-content', {
-                                'nexus-c-droppable-content--dragging': snapshot.isDraggingOver,
+                            className={classnames('nexus-c-nexus-persons-list__droppable-content', {
+                                'nexus-c-nexus-persons-list__droppable-content--dragging': snapshot.isDraggingOver,
                             })}
                         >
                             {content}
@@ -173,10 +173,10 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     return (
         <>
-            <div className="nexus-c-persons-list__heading">{uiConfig.title}</div>
+            <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
             {isEdit ? (
                 <>
-                    <div className="nexus-c-persons-list__add">
+                    <div className="nexus-c-nexus-persons-list__add">
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
                             width="100%"
