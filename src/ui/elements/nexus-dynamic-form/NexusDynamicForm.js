@@ -19,7 +19,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.7,
+            threshold: 1,
         };
 
         const observerCallback = entries => {
