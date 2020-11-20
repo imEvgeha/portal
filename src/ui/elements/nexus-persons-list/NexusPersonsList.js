@@ -113,17 +113,20 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
     };
 
     const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-        return result;
+        const updatedPersons = [...list];
+        const [removed] = updatedPersons.splice(startIndex, 1);
+        updatedPersons.splice(endIndex, 0, removed);
+        return updatedPersons;
     };
 
     const onDragEnd = result => {
         if (!result.destination) {
             return;
         }
-        setPersons(reorder(persons, result.source.index, result.destination.index));
+        const updatedPersons = reorder(persons, result.source.index, result.destination.index);
+        setPersons(updatedPersons);
+        const isCast = uiConfig.type === CAST;
+        updateCastCrew(updatedPersons, isCast);
     };
 
     const makeDraggableContainer = content => {
