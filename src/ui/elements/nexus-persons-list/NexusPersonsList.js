@@ -22,6 +22,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     const [persons, setPersons] = useState(personsList || []);
     const [searchText, setSearchText] = useState('');
+    const [isLastEntryValid, setIsLastEntryValid] = useState(true);
 
     useEffect(() => {
         const updatedPersons = [...personsList];
@@ -65,7 +66,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             persons === null ||
             persons.findIndex(
                 person =>
-                    person.id === entry.id &&
+                    person.displayName.toString().toLowerCase() === entry.displayName.toString().toLowerCase() &&
                     person.personType.toString().toLowerCase() === entry.personType.toString().toLowerCase()
             ) < 0
         );
@@ -78,7 +79,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             addPerson(person);
             setSearchText('');
         }
-        setLastIsEntryValid(isValid);
+        setIsLastEntryValid(isValid);
     };
 
     const addPerson = person => {
@@ -202,7 +203,11 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         <>
             <div className="nexus-c-persons-list__heading">{uiConfig.title}</div>
             {isEdit && (
-                <div className={`nexus-c-persons-list__add`}>
+                <div
+                    className={classnames('nexus-c-persons-list__add', {
+                        'nexus-c-persons-list__add--invalid': !isLastEntryValid,
+                    })}
+                >
                     <UserPicker
                         fieldId={uiConfig.htmlFor}
                         width="100%"
@@ -213,6 +218,9 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
                         placeholder={uiConfig.newLabel}
                     />
                 </div>
+            )}
+            {isEdit && !isLastEntryValid && (
+                <span className="nexus-c-persons-list__add--error">Person already exists!</span>
             )}
             {isEdit
                 ? makeDraggableContainer(

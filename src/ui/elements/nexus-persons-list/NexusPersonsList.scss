@@ -22,6 +22,14 @@
     @include margin(0, 0, 3, 0);
 }
 
+.nexus-c-persons-list__add--invalid {
+    border: 2px solid map-get($reds, R400);
+}
+
+.nexus-c-persons-list__add--error {
+    color: map-get($reds, R400);
+}
+
 .cancel-button {
     margin-left: 24px;
 }
