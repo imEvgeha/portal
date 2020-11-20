@@ -1,6 +1,17 @@
 import {titleService} from './titleMetadataServices';
 import {NEXUS, VZ, MOVIDA} from './constants';
 
+export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
+    if (syncToVZ && syncToMovida) {
+        return `${VZ},${MOVIDA}`;
+    } else if (syncToVZ) {
+        return VZ;
+    } else if (syncToMovida) {
+        return MOVIDA;
+    }
+    return null;
+};
+
 export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedParams) => {
     try {
         const response = await titleService.advancedSearch(searchCriteria, offset, limit, sortedParams);

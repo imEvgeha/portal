@@ -7,6 +7,7 @@ import {availWatcher} from './pages/legacy/containers/avail/availSagas';
 import {settingsWatcher} from './pages/legacy/containers/settings/settingsSagas';
 import {metadataWatcher} from './pages/metadata/metadataSagas';
 import {servicingOrdersWatcher} from './pages/servicing-orders/servicingOrdersSaga';
+import {titleMetadataWatcher} from './pages/title-metadata/TitleMetadataSagas';
 
 export default function* rootSaga() {
     yield all([
@@ -18,5 +19,6 @@ export default function* rootSaga() {
         fork(metadataWatcher),
         fork(eventManagementWatcher),
         fork(servicingOrdersWatcher),
+        fork(titleMetadataWatcher),
     ]);
 }
