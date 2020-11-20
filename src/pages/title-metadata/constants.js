@@ -37,8 +37,8 @@ export const COLUMN_MAPPINGS = [
         javaVariableName: 'repository',
         enableSearch: false,
         readOnly: true,
-        width: 120,
-        minWidth: 100,
+        minWidth: 120,
+        maxWidth: 120,
     },
     {
         colId: 'contentType',

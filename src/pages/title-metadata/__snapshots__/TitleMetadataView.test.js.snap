@@ -22,6 +22,12 @@ exports[`TitleMetadataView should match snapshot 1`] = `
       Sync Log
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </TitleMetadataHeader>
-  <TitleMetadataTable />
+  <TitleMetadataTable
+    history={Object {}}
+  />
+  <Connect(ComposedComponent)
+    display={false}
+    toggle={[Function]}
+  />
 </div>
 `;

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -10,7 +11,7 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '../../../../ui/elements/nexus-tooltip/NexusTooltip';
-import {getDomainName} from '../../../../util/Common';
+import {URL} from '../../../../util/Common';
 import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
@@ -24,7 +25,7 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = () => {
+const TitleMetadataTable = ({history}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -32,7 +33,9 @@ const TitleMetadataTable = () => {
                 cellRendererParams: ({data = {}}) => {
                     const {id} = data;
                     return {
-                        link: `${getDomainName()}/metadata/v2/detail/${id}`,
+                        link: `/metadata/v2/detail/`,
+                        linkId: id,
+                        newTab: false,
                     };
                 },
             };
@@ -51,9 +54,8 @@ const TitleMetadataTable = () => {
                                     <div
                                         className="nexus-c-title-metadata-table__repository-icon"
                                         onClick={() =>
-                                            window.open(
-                                                `${getDomainName()}/metadata/detail/${id}/legacy-title-reconciliation`,
-                                                '_blank'
+                                            history.push(
+                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
                                             )
                                         }
                                     >
@@ -121,6 +123,14 @@ const TitleMetadataTable = () => {
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
     );
+};
+
+TitleMetadataTable.propTypes = {
+    history: PropTypes.object,
+};
+
+TitleMetadataTable.defaultProps = {
+    history: {},
 };
 
 export default TitleMetadataTable;

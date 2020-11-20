@@ -28,7 +28,7 @@ const TitleMetadataView = ({history}) => {
                     {SYNC_LOG}
                 </Button>
             </TitleMetadataHeader>
-            <TitleMetadataTable />
+            <TitleMetadataTable history={history} />
             <TitleCreate display={showModal} toggle={() => setShowModal(false)} />
         </div>
     );
