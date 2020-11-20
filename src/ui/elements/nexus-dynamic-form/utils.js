@@ -75,11 +75,6 @@ const isEmptyMultiselect = (value, isRequired) => {
     if (isRequired && (value === null || (value && value.length === 0))) return FIELD_REQUIRED;
 };
 
-const getArgs = (validation, getCurrentValues) => {
-    if (validation.name === 'areAllWithdrawn') return getCurrentValues;
-    return validation.args;
-};
-
 export const getValidationFunction = (value, validations, {type, isRequired, getCurrentValues}) => {
     if (type === 'multiselect') return isEmptyMultiselect(value, isRequired);
     const isRequiredFunction = {
@@ -90,7 +85,7 @@ export const getValidationFunction = (value, validations, {type, isRequired, get
     if (updatedValidations && updatedValidations.length > 0) {
         const promises = updatedValidations.map(v =>
             import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, getArgs(v, getCurrentValues));
+                return f[`${v.name}`](value, v.args, getCurrentValues);
             })
         );
         return Promise.all(promises).then(responses => {
