@@ -22,6 +22,8 @@ export const AWARD = 'Award';
 export const RECORDING_ARTIST = 'Recording Artist';
 export const VOICE_TALENT = 'Voice Talent';
 
+export const CREW_LIST = [DIRECTOR, WRITER, PRODUCER];
+
 export const CAST = 'CAST';
 export const PERSONS_PER_REQUEST = 1000;
 export const MIN_CHARS_FOR_SEARCHING = 2;
