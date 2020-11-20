@@ -1,10 +1,10 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import moment from 'moment';
 import SectionTab from './components/SectionTab/SectionTab';
-import {buildSection, getProperValues, getAllFields} from './utils';
+import {buildSection, getAllFields, getProperValues} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
@@ -12,26 +12,29 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
     const tabs = schema.map(({title = ''}, index) => {
         return {
             title,
-            id: title.split(' ')[0] + index.toString(),
+            id: `tab-${index}`,
         };
     });
     const [selectedTab, setSelectedTab] = useState(tabs[0].title);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
     useEffect(() => {
-        const sectionIDs = tabs.map(item => document.getElementById(item.id));
+        const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
+        console.log('sectionIDs: ', sectionIDs);
 
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 1,
+            threshold: 1.0,
         };
 
         const observerCallback = entries => {
+            console.log(entries);
             entries.forEach((entry, idx) => {
                 if (entry.isIntersecting) {
-                    const index = tabs.findIndex(item => item.id === entry.target.id);
-                    index !== -1 && setSelectedTab(tabs[index].title);
+                    console.log(entry);
+                    const focusedTab = tabs.find(item => item.id === entry.target.id);
+                    focusedTab.title && setSelectedTab(focusedTab.title);
                 }
             });
         };
@@ -40,13 +43,16 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
     }, []);
 
+    console.log('tabs ', tabs);
+
     const buildTabs = () => {
-        return tabs.map(tab => (
+        return tabs.map((tab, index) => (
             <SectionTab
                 key={tab.title}
                 section={tab.title}
                 onClick={() => setSelectedTab(tab.title)}
                 isActive={selectedTab === tab.title}
+                sectionId={`tab-${index}`}
             />
         ));
     };
@@ -116,7 +122,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                         </div>
                         <div className="nexus-c-dynamic-form__tab-content">
                             {schema.map(({title = '', sections = []}, index) => (
-                                <Fragment key={`tab-${title}`}>
+                                <div key={`tab-${title}`} id={`tab-${index}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
                                             <h3
@@ -132,7 +138,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                             })}
                                         </Fragment>
                                     ))}
-                                </Fragment>
+                                </div>
                             ))}
                         </div>
                     </form>

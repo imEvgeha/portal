@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import {TABS_MAPPINGS} from '../../constants';
 import './SectionTab.scss';
 
-const SectionTab = ({section = '', isActive = false, onClick = null}) => {
+const SectionTab = ({section = '', isActive = false, onClick = null, sectionId}) => {
     const [anchorTarget, setAnchorTarget] = useState(null);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const SectionTab = ({section = '', isActive = false, onClick = null}) => {
 
     return (
         <a
-            href={`#${mapSectionTabToTitle(section)}`}
+            href={`#${sectionId}`}
             id={`nav-${mapSectionTabToTitle(section)}`}
             onClick={handleClick}
             className={classnames('nexus-c-section-tab', {
@@ -46,6 +46,7 @@ SectionTab.propTypes = {
     section: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,
     onClick: PropTypes.func,
+    sectionId: PropTypes.string.isRequired,
 };
 
 SectionTab.defaultProps = {
