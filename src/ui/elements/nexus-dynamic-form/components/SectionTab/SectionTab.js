@@ -18,8 +18,14 @@ const SectionTab = ({section = '', isActive = false, onClick = null}) => {
     };
 
     const mapSectionTabToTitle = tabName => {
-        const sectionID = TABS_MAPPINGS.find(e => e.tabName === tabName).id;
-        return sectionID ? sectionID.split(' ')[0] : '';
+        const tabMappingsWithId = TABS_MAPPINGS.map((item, index) => {
+            return {
+                ...item,
+                id: item.tabName.split(' ')[0] + index.toString(),
+            };
+        });
+        const sectionID = tabMappingsWithId.find(e => e.tabName === tabName).id;
+        return sectionID || '';
     };
 
     return (

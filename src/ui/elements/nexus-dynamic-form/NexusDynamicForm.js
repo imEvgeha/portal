@@ -9,12 +9,17 @@ import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef}) => {
-    const tabs = schema.map(({title = ''}) => title);
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const tabs = schema.map(({title = ''}, index) => {
+        return {
+            title,
+            id: title.split(' ')[0] + index.toString(),
+        };
+    });
+    const [selectedTab, setSelectedTab] = useState(tabs[0].title);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
 
     useEffect(() => {
-        const sectionIDs = tabs.map(item => document.getElementById(item.split(' ')[0]));
+        const sectionIDs = tabs.map(item => document.getElementById(item.id));
 
         const observerOptions = {
             root: null,
@@ -23,21 +28,26 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         };
 
         const observerCallback = entries => {
-            entries.forEach(entry => {
+            entries.forEach((entry, idx) => {
                 if (entry.isIntersecting) {
-                    const index = tabs.findIndex(item => item.split(' ')[0] === entry.target.id);
-                    index !== -1 && setSelectedTab(tabs[index]);
+                    const index = tabs.findIndex(item => item.id === entry.target.id);
+                    index !== -1 && setSelectedTab(tabs[index].title);
                 }
             });
         };
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
-        sectionIDs.forEach(sec => observer.observe(sec));
+        sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
     }, []);
 
     const buildTabs = () => {
         return tabs.map(tab => (
-            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
+            <SectionTab
+                key={tab.title}
+                section={tab.title}
+                onClick={() => setSelectedTab(tab.title)}
+                isActive={selectedTab === tab.title}
+            />
         ));
     };
 
@@ -105,12 +115,12 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                             {buildTabs()}
                         </div>
                         <div className="nexus-c-dynamic-form__tab-content">
-                            {schema.map(({title = '', sections = []}) => (
+                            {schema.map(({title = '', sections = []}, index) => (
                                 <Fragment key={`tab-${title}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
                                             <h3
-                                                id={sectionTitle.split(' ')[0]}
+                                                id={sectionTitle.split(' ')[0] + index.toString()}
                                                 className="nexus-c-dynamic-form__section-title"
                                             >
                                                 {sectionTitle}

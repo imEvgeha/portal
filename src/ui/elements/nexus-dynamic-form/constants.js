@@ -17,12 +17,12 @@ export const FIELD_REQUIRED = 'CANNOT BE EMPTY';
 export const INCORRECT_INTEGER = 'INCORRECT VALUE: MUST BE AN INTEGER';
 
 export const TABS_MAPPINGS = [
-    {tabName: 'Basic Info and Territory', id: 'Basic Info'},
-    {tabName: 'Title and Episodic', id: 'Title'},
-    {tabName: 'IDs', id: 'IDs'},
-    {tabName: 'Localization and captions', id: 'Localization'},
-    {tabName: 'Other', id: 'Other'},
-    {tabName: 'Music', id: 'Music'},
+    {tabName: 'Basic Info and Territory'},
+    {tabName: 'Title and Episodic'},
+    {tabName: 'IDs'},
+    {tabName: 'Localization and captions'},
+    {tabName: 'Other'},
+    {tabName: 'Music'},
 ];
 
 export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
