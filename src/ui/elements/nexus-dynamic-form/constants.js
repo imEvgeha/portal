@@ -15,5 +15,23 @@ export const DATETIME_FIELDS = {
 export const INCORRECT_VALUE = 'INCORRECT_VALUE';
 export const FIELD_REQUIRED = 'CANNOT BE EMPTY';
 export const INCORRECT_INTEGER = 'INCORRECT VALUE: MUST BE AN INTEGER';
+
+export const TABS_MAPPINGS = [
+    {tabName: 'Basic Info and Territory', id: 'Basic Info'},
+    {tabName: 'Title and Episodic', id: 'Title'},
+    {tabName: 'IDs', id: 'IDs'},
+    {tabName: 'Localization and captions', id: 'Localization'},
+    {tabName: 'Other', id: 'Other'},
+    {tabName: 'Music', id: 'Music'},
+    {tabName: 'Title', id: 'Core Title'},
+    {tabName: 'Cast & Crew', id: 'Cast & Crew'},
+    {tabName: 'Ratings', id: 'Ratings'},
+    {tabName: "External ID's", id: 'External IDs'},
+    {tabName: 'Editorial', id: 'Editorial'},
+    {tabName: 'Territorial', id: 'Territorial'},
+    {tabName: 'Rights', id: 'Rights'},
+    {tabName: 'Sync Log', id: 'Sync Log'},
+];
+
 export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
 export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';

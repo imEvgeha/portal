@@ -207,7 +207,12 @@
                                 { "label": "Canceled", "value": "Canceled" },
                                 { "label": "Withdrawn", "value": "Withdrawn" }
                             ]
-                        }
+                        },
+                        "validation": [
+                            {
+                                "name": "areAllWithdrawn"
+                            }
+                        ]
                     },
                     "affiliate": {
                         "name": "Affiliate",

@@ -1,0 +1,32 @@
+@import '../../../../../styles/atlaskit/mixins';
+@import '../../../../../styles/atlaskit/colors';
+
+.nexus-c-title-info-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.nexus-c-title-info-container__info {
+    font-size: 14px;
+    color: map-get($neutrals, N300);
+    @include padding(0, 6);
+    > div {
+        @include margin(2, 0);
+    }
+    > div:first-child {
+        font-size: 24px;
+        color: map-get($neutrals, N900);
+        @include margin(0);
+    }
+    > div > span {
+        @include margin(0, 6, 0, 0);
+    }
+}
+
+.nexus-c-title-info-container__image {
+    > img {
+        width: 80px;
+        height: 120px;
+    }
+}
