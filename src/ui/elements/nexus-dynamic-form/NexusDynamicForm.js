@@ -133,7 +133,11 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                             })}
                         >
                             {schema.map(({title = '', sections = []}, index) => (
-                                <div key={`tab-${title}`} id={`tab-${index}`}>
+                                <div
+                                    key={`tab-${title}`}
+                                    id={`tab-${index}`}
+                                    className="nexus-c-dynamic-form__section-start"
+                                >
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
                                             <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
