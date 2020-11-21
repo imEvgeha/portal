@@ -20,19 +20,16 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     useEffect(() => {
         const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
-        console.log('sectionIDs: ', sectionIDs);
 
         const observerOptions = {
             root: null,
             rootMargin: '0px',
-            threshold: 1.0,
+            threshold: 0.2,
         };
 
         const observerCallback = entries => {
-            console.log(entries);
-            entries.forEach((entry, idx) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    console.log(entry);
                     const focusedTab = tabs.find(item => item.id === entry.target.id);
                     focusedTab.title && setSelectedTab(focusedTab.title);
                 }
@@ -42,8 +39,6 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         const observer = new IntersectionObserver(observerCallback, observerOptions);
         sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
     }, []);
-
-    console.log('tabs ', tabs);
 
     const buildTabs = () => {
         return tabs.map((tab, index) => (
@@ -125,12 +120,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                 <div key={`tab-${title}`} id={`tab-${index}`}>
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
-                                            <h3
-                                                id={sectionTitle.split(' ')[0] + index.toString()}
-                                                className="nexus-c-dynamic-form__section-title"
-                                            >
-                                                {sectionTitle}
-                                            </h3>
+                                            <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
                                             {buildSection(fields, getValues, view, {
                                                 selectValues,
                                                 initialData,
