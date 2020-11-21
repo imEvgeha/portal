@@ -62,6 +62,9 @@
             font-weight: bold;
             border-bottom: 2px solid map-get($neutrals, N40);
         }
+        &-start {
+            scroll-margin-top: 5rem;
+        }
     }
 
     &__cancel-button,
