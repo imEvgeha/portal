@@ -6,30 +6,6 @@
     margin: auto;
 
     &__tab {
-        &-container {
-            width: calc((100% - 64px) * 0.8);
-            margin: auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            border-bottom: 1px solid map-get($neutrals, N40);
-            position: fixed;
-            top: 131px;
-            transition: top linear 0.5s;
-            background-color: map-get($neutrals, N0);
-            z-index: 1;
-        }
-
-        &-title {
-            top: 175px;
-        }
-
-        &--shrinked-title {
-            top: 82px;
-        }
-    }
-
-    &__tab {
         display: flex;
         justify-content: center;
         @include padding(1, 6);
@@ -54,6 +30,27 @@
                 scroll-margin-top: 2rem;
             }
         }
+        &-container {
+            width: calc((100% - 64px) * 0.8);
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            border-bottom: 1px solid map-get($neutrals, N40);
+            position: fixed;
+            top: 131px;
+            transition: top linear 0.5s;
+            background-color: map-get($neutrals, N0);
+            z-index: 1;
+        }
+
+        &-title {
+            top: 175px;
+        }
+
+        &--shrinked-title {
+            top: 82px;
+        }
     }
 
     &__section {
@@ -67,17 +64,19 @@
         }
     }
 
-    &__cancel-button,
-    &__submit-button &__edit-button--title {
-        position: absolute;
-        top: 24px;
-        right: 31.5%;
-        z-index: 1;
+    &__edit-button,
+    &__submit-button,
+    &__cancel-button {
+        &--title {
+            position: absolute;
+            top: 24px;
+            right: 1.2%;
+            z-index: 1;
+        }
     }
     &__submit-button {
-        right: 100px;
         &--title {
-            right: calc(31.5% + 80px);
+            right: calc(1.2% + 80px);
         }
     }
 
