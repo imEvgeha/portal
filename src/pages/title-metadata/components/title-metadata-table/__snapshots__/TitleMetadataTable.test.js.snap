@@ -8,7 +8,19 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
+          "colId": "id",
+          "dataType": "string",
+          "enableSearch": false,
+          "field": "id",
+          "headerName": "ID",
+          "hide": true,
+          "javaVariableName": "id",
+          "valueFormatter": undefined,
+          "width": 150,
+        },
+        Object {
           "cellRenderer": "loadingCellRenderer",
+          "cellRendererParams": [Function],
           "colId": "title",
           "dataType": "string",
           "enableSearch": true,
@@ -16,19 +28,19 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "headerName": "Title",
           "javaVariableName": "title",
           "searchDataType": "string",
-          "valueFormatter": undefined,
           "width": 200,
         },
         Object {
+          "cellRendererFramework": [Function],
           "colId": "repository",
           "dataType": "string",
           "enableSearch": false,
           "field": "repository",
           "headerName": "Repository",
           "javaVariableName": "repository",
+          "maxWidth": 120,
+          "minWidth": 120,
           "readOnly": true,
-          "valueFormatter": undefined,
-          "width": 120,
         },
         Object {
           "colId": "contentType",
@@ -283,6 +295,16 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
     mapping={
       Array [
         Object {
+          "colId": "id",
+          "dataType": "string",
+          "enableSearch": false,
+          "field": "id",
+          "headerName": "ID",
+          "hide": true,
+          "javaVariableName": "id",
+          "width": 150,
+        },
+        Object {
           "cellRenderer": "loadingCellRenderer",
           "colId": "title",
           "dataType": "string",
@@ -300,8 +322,9 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "field": "repository",
           "headerName": "Repository",
           "javaVariableName": "repository",
+          "maxWidth": 120,
+          "minWidth": 120,
           "readOnly": true,
-          "width": 120,
         },
         Object {
           "colId": "contentType",

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -9,7 +10,9 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
-import {COLUMN_MAPPINGS} from '../../constants';
+import NexusTooltip from '../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {URL} from '../../../../util/Common';
+import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -22,8 +25,49 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = () => {
+const TitleMetadataTable = ({history}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
+        if (mapping.colId === 'title') {
+            return {
+                ...mapping,
+                cellRendererParams: ({data = {}}) => {
+                    const {id} = data;
+                    return {
+                        link: `/metadata/v2/detail/`,
+                        linkId: id,
+                        newTab: false,
+                    };
+                },
+            };
+        }
+        if (mapping.colId === 'repository') {
+            return {
+                ...mapping,
+                cellRendererFramework: params => {
+                    const {value, data = {}} = params || {};
+                    const {id} = data;
+                    return (
+                        <div className="nexus-c-title-metadata-table__repository">
+                            <div>{value}</div>
+                            {value !== NEXUS && (
+                                <NexusTooltip content={LEGACY_TOOLTIP_TEXT}>
+                                    <div
+                                        className="nexus-c-title-metadata-table__repository-icon"
+                                        onClick={() =>
+                                            history.push(
+                                                URL.keepEmbedded(`/metadata/detail/${id}/legacy-title-reconciliation`)
+                                            )
+                                        }
+                                    >
+                                        <EditorWarningIcon primaryColor="#0052CC" />
+                                    </div>
+                                </NexusTooltip>
+                            )}
+                        </div>
+                    );
+                },
+            };
+        }
         return {
             ...mapping,
             valueFormatter: createValueFormatter(mapping),
@@ -82,11 +126,11 @@ const TitleMetadataTable = () => {
 };
 
 TitleMetadataTable.propTypes = {
-    //
+    history: PropTypes.object,
 };
 
 TitleMetadataTable.defaultProps = {
-    //
+    history: {},
 };
 
 export default TitleMetadataTable;
