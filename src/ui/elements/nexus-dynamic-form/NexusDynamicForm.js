@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -10,18 +10,51 @@ import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
-    const tabs = schema.map(({title = ''}) => title);
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const tabs = schema.map(({title = ''}, index) => {
+        return {
+            title,
+            id: `tab-${index}`,
+        };
+    });
     const [update, setUpdate] = useState(false);
+    const [selectedTab, setSelectedTab] = useState(tabs[0].title);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+
+    useEffect(() => {
+        const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2,
+        };
+
+        const observerCallback = entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const focusedTab = tabs.find(item => item.id === entry.target.id);
+                    focusedTab.title && setSelectedTab(focusedTab.title);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
+    }, []);
 
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
 
     const buildTabs = () => {
-        return tabs.map(tab => (
-            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
+        return tabs.map((tab, index) => (
+            <SectionTab
+                key={tab.title}
+                section={tab.title}
+                onClick={() => setSelectedTab(tab.title)}
+                isActive={selectedTab === tab.title}
+                sectionId={`tab-${index}`}
+            />
         ));
     };
 
@@ -105,13 +138,15 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                 'nexus-c-dynamic-form__tab-content--title': isTitlePage,
                             })}
                         >
-                            {schema.map(({title = '', sections = []}) => (
-                                <Fragment key={`tab-${title}`}>
+                            {schema.map(({title = '', sections = []}, index) => (
+                                <div
+                                    key={`tab-${title}`}
+                                    id={`tab-${index}`}
+                                    className="nexus-c-dynamic-form__section-start"
+                                >
                                     {sections.map(({title: sectionTitle = '', fields = {}}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
-                                            <h3 id={sectionTitle} className="nexus-c-dynamic-form__section-title">
-                                                {sectionTitle}
-                                            </h3>
+                                            <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
                                             {buildSection(fields, getValues, view, {
                                                 selectValues,
                                                 initialData,
@@ -120,7 +155,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                             })}
                                         </Fragment>
                                     ))}
-                                </Fragment>
+                                </div>
                             ))}
                         </div>
                     </form>

@@ -15,7 +15,10 @@ export const DATETIME_FIELDS = {
 export const INCORRECT_VALUE = 'INCORRECT_VALUE';
 export const FIELD_REQUIRED = 'CANNOT BE EMPTY';
 export const INCORRECT_INTEGER = 'INCORRECT VALUE: MUST BE AN INTEGER';
+export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
+export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';
 
+// todo: remove below
 export const TABS_MAPPINGS = [
     {tabName: 'Basic Info and Territory', id: 'Basic Info'},
     {tabName: 'Title and Episodic', id: 'Title'},
@@ -32,6 +35,3 @@ export const TABS_MAPPINGS = [
     {tabName: 'Rights', id: 'Rights'},
     {tabName: 'Sync Log', id: 'Sync Log'},
 ];
-
-export const INCORRECT_YEAR = 'INCORRECT YEAR: MUST BE IN FORMAT YYYY';
-export const INCORRECT_TIME = 'INCORRECT TIME: MUST BE IN FORMAT HH:MM:SS';

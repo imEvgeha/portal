@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList';
-import {ACTOR, CAST_CONFIG, CREW_CONFIG} from '../../../../../nexus-persons-list/constants';
+import {CAST_CONFIG, CREW_CONFIG, CREW_LIST} from '../../../../../nexus-persons-list/constants';
 import './CastCrew.scss';
 
 const CastCrew = ({persons, isEdit, onChange}) => {
     const [cast, setCast] = useState(
         persons
-            .filter(person => person.personType === ACTOR)
+            .filter(person => !CREW_LIST.includes(person.personType))
             .map((e, index) => {
                 return {...e, id: index};
             })
@@ -15,7 +15,7 @@ const CastCrew = ({persons, isEdit, onChange}) => {
 
     const [crew, setCrew] = useState(
         persons
-            .filter(person => person.personType !== ACTOR)
+            .filter(person => CREW_LIST.includes(person.personType))
             .map((e, index) => {
                 return {...e, id: index};
             })
@@ -28,14 +28,14 @@ const CastCrew = ({persons, isEdit, onChange}) => {
     const resetPersons = () => {
         setCast(
             persons
-                .filter(person => person.personType === ACTOR)
+                .filter(person => !CREW_LIST.includes(person.personType))
                 .map((e, index) => {
                     return {...e, id: index};
                 })
         );
         setCrew(
             persons
-                .filter(person => person.personType !== ACTOR)
+                .filter(person => CREW_LIST.includes(person.personType))
                 .map((e, index) => {
                     return {...e, id: index};
                 })

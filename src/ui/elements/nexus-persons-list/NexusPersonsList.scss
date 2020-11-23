@@ -1,26 +1,27 @@
 @import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
-.nexus-c-persons-list {
-    @include addSpacing('min-height', 40);
+.nexus-c-nexus-persons-list__droppable-content {
+    width: 100%;
 }
 
-.nexus-c-persons-list__group {
-    overflow-x: hidden;
+.nexus-c-nexus-persons-list__droppable-content--dragging {
+    background-color: map-get($neutrals, N50);
+    border: 2px dotted map-get($darkModeNeutrals, DN20);
 }
 
-.nexus-c-persons-list__add {
-    @include margin(1.25, 0, 0, 0);
-    border: none;
+.nexus-c-nexus-persons-list__heading {
+    font-size: 20px;
+    border-bottom: 2px solid map-get($neutrals, N40);
+    @include margin(0, 0, 6, 0);
+}
+
+.nexus-c-nexus-persons-list__add {
+    width: 100%;
     border-radius: 3px;
-    width: 97%;
-
-    &.invalid {
-        border: 2px solid map-get($reds, R400);
-    }
+    @include margin(0, 0, 3, 0);
 }
 
-.nexus-c-persons-list__add-error {
+.nexus-c-nexus-persons-list__error-modal-title {
     color: map-get($reds, R400);
-    font-weight: bold;
 }
