@@ -2,19 +2,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
-import PersonTypeContainer from '../nexus-person/elements/PersonTypeContainer';
+import DefaultUserIcon from '../../../assets/img/default-user.png';
 import './NexusPersonRO.scss';
 
 const NexusPersonRO = ({person}) => {
     return (
         <div className="nexus-c-nexus-person-ro">
-            <PersonTypeContainer personName={person.displayName} personType={person.personType} />
-            {person.characterName && (
-                <div className="nexus-c-nexus-person-ro__character">
-                    <Lozenge appearance="default">CHARACTER</Lozenge>
-                    <span>{person.characterName}</span>
-                </div>
-            )}
+            <div>
+                <img src={DefaultUserIcon} alt="Person" className="nexus-c-nexus-person-ro__img" />
+                {person.displayName}
+            </div>
+            <div className="nexus-c-nexus-person-ro__tag">
+                <Lozenge appearance="default">{person.personType}</Lozenge>
+            </div>
         </div>
     );
 };

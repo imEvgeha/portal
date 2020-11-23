@@ -1,29 +1,24 @@
 /* eslint-disable */
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import {cloneDeep} from 'lodash';
-import {Label} from '@atlaskit/field-base';
+import Button from '@atlaskit/button';
 import UserPicker from '@atlaskit/user-picker';
+import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
-import {ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
-import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
-import DroppableContent from './elements/DroppableContent';
-import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
-import NexusCharacterNameModal from './elements/NexusCharacterNameModal';
+import {NexusModalContext} from '../nexus-modal/NexusModal';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
-import {CAST, CAST_CONFIG, PERSONS_PER_REQUEST} from './constants';
+import CharacterModal from './components/CharacterModal';
+import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './constants';
+import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 
 const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew}) => {
+    const {openModal, closeModal} = useContext(NexusModalContext);
+
     const [persons, setPersons] = useState(personsList || []);
-    const [isLastEntryValid, setLastIsEntryValid] = useState(true);
     const [searchText, setSearchText] = useState('');
-    const [modalData, setModalData] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedPersonIndex, setSelectedPersonIndex] = useState(null);
-    const [modalInputValue, setModalInputValue] = useState('');
 
     useEffect(() => {
         const updatedPersons = [...personsList];
@@ -34,40 +29,12 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         setSearchText(val);
     };
 
-    const loadOptions = () => {
-        const {type} = uiConfig;
-        if (searchText.length < 2) return [];
-        if (type === CAST) {
-            return searchPerson(searchText, PERSONS_PER_REQUEST, type, true).then(res =>
-                getFilteredCastList(res.data, true, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        } else {
-            return searchPerson(searchText, PERSONS_PER_REQUEST, type).then(res =>
-                getFilteredCrewList(res.data, true).map(e => {
-                    return {
-                        id: e.id,
-                        name: e.displayName,
-                        byline: e.personType.toString().toUpperCase(),
-                        original: JSON.stringify(e),
-                    };
-                })
-            );
-        }
-    };
-
     const isPersonValid = entry => {
         return (
             persons === null ||
             persons.findIndex(
                 person =>
-                    person.id === entry.id &&
+                    person.displayName.toString().toLowerCase() === entry.displayName.toString().toLowerCase() &&
                     person.personType.toString().toLowerCase() === entry.personType.toString().toLowerCase()
             ) < 0
         );
@@ -79,8 +46,17 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         if (isValid) {
             addPerson(person);
             setSearchText('');
+        } else {
+            openModal(
+                <Button appearance="primary" onClick={closeModal}>
+                    OK
+                </Button>,
+                {
+                    title: <div className="nexus-c-nexus-persons-list__error-modal-title">Person already exists!</div>,
+                    width: 'small',
+                }
+            );
         }
-        setLastIsEntryValid(isValid);
     };
 
     const addPerson = person => {
@@ -99,53 +75,58 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         updateCastCrew(updatedPersons, isCast);
     };
 
-    const onCharacterSubmit = () => {
-        const updatedPersons = cloneDeep(persons);
-        const isCast = uiConfig.type === CAST;
-        updatedPersons[selectedPersonIndex].characterName = modalInputValue;
-        setPersons(updatedPersons);
-        setSelectedPersonIndex(null);
-        setModalInputValue('');
-        updateCastCrew(updatedPersons, isCast);
+    const closeCharacterModal = () => {
         closeModal();
     };
 
-    const closeModal = () => {
-        setModalData({});
-        setIsModalOpen(false);
-        setSelectedPersonIndex(null);
-        setModalInputValue('');
-    };
-
-    const openModal = id => {
-        setSelectedPersonIndex(id);
+    const openCharacterModal = id => {
         const selectedPerson = persons && persons[id];
-        setModalInputValue(selectedPerson.characterName);
-        setModalData({
+        const data = {
+            personName: selectedPerson.displayName,
             characterName: selectedPerson.characterName,
-            displayName: selectedPerson.displayName,
+        };
+        const message = data.characterName ? EDIT_CHARACTER_NAME : ADD_CHARACTER_NAME;
+        openModal(characterModalContent(data, id), {
+            title: <div>{message}</div>,
+            width: 'medium',
         });
-        setIsModalOpen(true);
     };
 
-    const onModalInputChanged = event => {
-        const {value} = event.target;
-        setModalInputValue(value);
+    const characterModalContent = (data, id) => {
+        return (
+            <CharacterModal personId={id} closeModal={closeCharacterModal} onModalSubmit={onModalSubmit} data={data} />
+        );
+    };
+
+    const onModalSubmit = (values, id) => {
+        const updatedPersons = [...persons];
+        const [person] = updatedPersons.filter(entry => {
+            return entry.id === id;
+        });
+        if (person) {
+            person.characterName = values.characterName;
+            const isCast = uiConfig.type === CAST;
+            setPersons(updatedPersons);
+            updateCastCrew(updatedPersons, isCast);
+        }
+        closeCharacterModal();
     };
 
     const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list);
-        const [removed] = result.splice(startIndex, 1);
-        result.splice(endIndex, 0, removed);
-
-        return result;
+        const updatedPersons = [...list];
+        const [removed] = updatedPersons.splice(startIndex, 1);
+        updatedPersons.splice(endIndex, 0, removed);
+        return updatedPersons;
     };
 
     const onDragEnd = result => {
         if (!result.destination) {
             return;
         }
-        setPersons(reorder(persons, result.source.index, result.destination.index));
+        const updatedPersons = reorder(persons, result.source.index, result.destination.index);
+        setPersons(updatedPersons);
+        const isCast = uiConfig.type === CAST;
+        updateCastCrew(updatedPersons, isCast);
     };
 
     const makeDraggableContainer = content => {
@@ -153,11 +134,15 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided, snapshot) => (
-                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                            <DroppableContent isDragging={snapshot.isDraggingOver}>
-                                {content}
-                                {provided.placeholder}
-                            </DroppableContent>
+                        <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={classnames('nexus-c-nexus-persons-list__droppable-content', {
+                                'nexus-c-nexus-persons-list__droppable-content--dragging': snapshot.isDraggingOver,
+                            })}
+                        >
+                            {content}
+                            {provided.placeholder}
                         </div>
                     )}
                 </Droppable>
@@ -165,66 +150,48 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
         );
     };
 
+    const renderPersons = () => {
+        return persons.map((person, i) => {
+            return (
+                <NexusPerson
+                    key={uid(person.id, i)}
+                    person={person}
+                    index={i}
+                    hasCharacter={hasCharacter}
+                    onRemove={() => removePerson(person)}
+                    onEditCharacter={index => openCharacterModal(index)}
+                />
+            );
+        });
+    };
+
+    const renderPersonsRO = () => {
+        return persons.map((person, i) => {
+            return <NexusPersonRO key={uid(person.id, i)} person={person} />;
+        });
+    };
+
     return (
         <>
-            <Card className="nexus-c-persons-list">
-                <CardHeader className="clearfix">
-                    <h4 className="float-left">{uiConfig.title}</h4>
-                </CardHeader>
-                <CardBody>
-                    <ListGroup className="nexus-c-persons-list__group">
-                        <Label label={isEdit && uiConfig.newLabel} isFirstChild htmlFor={uiConfig.htmlFor}>
-                            {isEdit && (
-                                <div className={`nexus-c-persons-list__add ${isLastEntryValid ? '' : 'invalid'}`}>
-                                    <UserPicker
-                                        fieldId={uiConfig.htmlFor}
-                                        width="100%"
-                                        loadOptions={loadOptions}
-                                        value={searchText}
-                                        onInputChange={searchInputChanged}
-                                        onSelection={validateAndAddPerson}
-                                        placeholder={uiConfig.newLabel}
-                                    />
-                                </div>
-                            )}
-                            {isEdit && !isLastEntryValid && (
-                                <span className="nexus-c-persons-list__add-error">Person already exists!</span>
-                            )}
-                            <Label label={isEdit && uiConfig.listLabel} isFirstChild>
-                                {isEdit
-                                    ? makeDraggableContainer(
-                                          persons &&
-                                              persons.map((person, i) => {
-                                                  return (
-                                                      <NexusPerson
-                                                          key={uid(person.id, i)}
-                                                          person={person}
-                                                          index={i}
-                                                          hasCharacter={hasCharacter}
-                                                          onRemove={() => removePerson(person)}
-                                                          onEditCharacter={index => openModal(index)}
-                                                      />
-                                                  );
-                                              })
-                                      )
-                                    : persons &&
-                                      persons.map((person, i) => {
-                                          return <NexusPersonRO key={uid(person.id, i)} person={person} />;
-                                      })}
-                            </Label>
-                        </Label>
-                    </ListGroup>
-                </CardBody>
-            </Card>
-            <NexusCharacterNameModal
-                onSubmit={onCharacterSubmit}
-                displayName={modalData.displayName}
-                characterName={modalData.characterName}
-                value={modalInputValue}
-                onChange={onModalInputChanged}
-                isModalOpen={isModalOpen}
-                closeModal={closeModal}
-            />
+            <div className="nexus-c-nexus-persons-list__heading">{uiConfig.title}</div>
+            {isEdit ? (
+                <>
+                    <div className="nexus-c-nexus-persons-list__add">
+                        <UserPicker
+                            fieldId={uiConfig.htmlFor}
+                            width="100%"
+                            loadOptions={() => loadOptions(uiConfig, searchText)}
+                            value={searchText}
+                            onInputChange={searchInputChanged}
+                            onSelection={validateAndAddPerson}
+                            placeholder={uiConfig.newLabel}
+                        />
+                    </div>
+                    {makeDraggableContainer(persons && renderPersons())}
+                </>
+            ) : (
+                <>{persons && renderPersonsRO()}</>
+            )}
         </>
     );
 };
