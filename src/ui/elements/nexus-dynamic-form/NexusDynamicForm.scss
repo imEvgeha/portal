@@ -72,13 +72,16 @@
         right: 24px;
         z-index: 1;
         &--title {
-            top: 24px;
+            right: 31%;
         }
     }
     &__submit-button {
         right: 100px;
         &--title {
-            right: calc(1.2% + 80px);
+            right: 36%;
+        }
+        &--shrinked-title {
+            top: 82px;
         }
     }
 
