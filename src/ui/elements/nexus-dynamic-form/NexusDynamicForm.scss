@@ -67,14 +67,16 @@
     &__edit-button,
     &__submit-button,
     &__cancel-button {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        z-index: 1;
         &--title {
-            position: absolute;
             top: 24px;
-            right: 1.2%;
-            z-index: 1;
         }
     }
     &__submit-button {
+        right: 100px;
         &--title {
             right: calc(1.2% + 80px);
         }
