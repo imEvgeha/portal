@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
+import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
@@ -9,7 +11,16 @@ import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
+    const tabs = schema.map(({title = ''}) => title);
+
     const [isShrinked, setIsShrinked] = useState(false);
+    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+
+    const buildTabs = () => {
+        return tabs.map(tab => (
+            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
+        ));
+    };
 
     useEffect(() => {
         window.addEventListener('scroll', onScroll, true);
@@ -67,6 +78,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
                     return <RightDetailsShrinkedBottom key={idx} name={field.title} value={right[field.field]} />;
                 })}
             </div>
+            <div className="nexus-c-right-details-header__tabs">{buildTabs()}</div>
         </div>
     );
 };

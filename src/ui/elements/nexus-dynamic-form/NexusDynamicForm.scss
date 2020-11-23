@@ -12,7 +12,6 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    border-bottom: 1px solid map-get($neutrals, N40);
     position: fixed;
     top: 131px;
     transition: top linear 0.5s;

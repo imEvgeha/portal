@@ -10,15 +10,7 @@ import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
-    const tabs = schema.map(({title = ''}) => title);
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
-
-    const buildTabs = () => {
-        return tabs.map(tab => (
-            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
-        ));
-    };
 
     const buildButtons = (dirty, submitting, reset) => {
         return view !== VIEWS.VIEW ? (
@@ -91,9 +83,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                             className={classnames('nexus-c-dynamic-form__tab-container', {
                                 'nexus-c-dynamic-form__tab-container--title': isTitlePage,
                             })}
-                        >
-                            {buildTabs()}
-                        </div>
+                        />
                         <div
                             className={classnames('nexus-c-dynamic-form__tab-content', {
                                 'nexus-c-dynamic-form__tab-content--title': isTitlePage,
