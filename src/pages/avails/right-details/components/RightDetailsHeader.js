@@ -11,14 +11,47 @@ import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
-    const tabs = schema.map(({title = ''}) => title);
+    const tabs = schema.map(({title = ''}, index) => {
+        return {
+            title,
+            id: `tab-${index}`,
+        };
+    });
 
     const [isShrinked, setIsShrinked] = useState(false);
-    const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const [selectedTab, setSelectedTab] = useState(tabs[0].title);
+
+    useEffect(() => {
+        const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2,
+        };
+
+        const observerCallback = entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const focusedTab = tabs.find(item => item.id === entry.target.id);
+                    focusedTab.title && setSelectedTab(focusedTab.title);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
+    }, []);
 
     const buildTabs = () => {
-        return tabs.map(tab => (
-            <SectionTab key={tab} section={tab} onClick={() => setSelectedTab(tab)} isActive={selectedTab === tab} />
+        return tabs.map((tab, index) => (
+            <SectionTab
+                key={tab.title}
+                section={tab.title}
+                onClick={() => setSelectedTab(tab.title)}
+                isActive={selectedTab === tab.title}
+                sectionId={`tab-${index}`}
+            />
         ));
     };
 
