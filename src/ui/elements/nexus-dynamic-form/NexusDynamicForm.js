@@ -45,7 +45,6 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     onClick={() => {
                         reset();
                         setUpdate(true);
-                        setFieldValue('territory', initialData['territory']);
                         setView(VIEWS.VIEW);
                     }}
                 >

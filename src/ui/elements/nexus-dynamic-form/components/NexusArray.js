@@ -15,6 +15,7 @@ import {
     renderNexusField,
     renderError,
     renderLabel,
+    getDefaultValue,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
@@ -41,6 +42,7 @@ const NexusArray = ({
     const [allData, setAllData] = useState(data);
 
     useEffect(() => {
+        update && setFieldValue(path, data);
         setAllData(data);
     }, [data, update]);
 
