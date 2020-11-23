@@ -15,6 +15,7 @@ export const DATETIME_FIELDS = {
 export const INCORRECT_VALUE = 'INCORRECT_VALUE';
 export const FIELD_REQUIRED = 'CANNOT BE EMPTY';
 export const INCORRECT_INTEGER = 'INCORRECT VALUE: MUST BE AN INTEGER';
+export const INCORRECT_DURATION = 'INCORRECT DURATION FORMAT: SEE TOOLTIP';
 
 export const TABS_MAPPINGS = [
     {tabName: 'Basic Info and Territory', id: 'Basic Info'},
