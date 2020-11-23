@@ -34,6 +34,7 @@ const NexusArray = ({
     validationError,
     validation,
     selectValues,
+    update,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -41,7 +42,7 @@ const NexusArray = ({
 
     useEffect(() => {
         setAllData(data);
-    }, [data]);
+    }, [data, update]);
 
     const renderAddButton = () => {
         return (
@@ -213,6 +214,7 @@ NexusArray.propTypes = {
     validation: PropTypes.array,
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
+    update: PropTypes.bool,
 };
 
 NexusArray.defaultProps = {
@@ -228,6 +230,7 @@ NexusArray.defaultProps = {
     validation: [],
     dependencies: [],
     selectValues: {},
+    update: false,
 };
 
 export default NexusArray;

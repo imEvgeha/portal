@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -12,7 +12,12 @@ import './NexusDynamicForm.scss';
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
     const tabs = schema.map(({title = ''}) => title);
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
+    const [update, setUpdate] = useState(false);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+
+    useEffect(() => {
+        update && setUpdate(false);
+    }, [update]);
 
     const buildTabs = () => {
         return tabs.map(tab => (
@@ -20,7 +25,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         ));
     };
 
-    const buildButtons = (dirty, submitting, reset) => {
+    const buildButtons = (dirty, submitting, reset, setFieldValue) => {
         return view !== VIEWS.VIEW ? (
             <>
                 <Button
@@ -39,6 +44,8 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     })}
                     onClick={() => {
                         reset();
+                        setUpdate(true);
+                        setFieldValue('territory', initialData['territory']);
                         setView(VIEWS.VIEW);
                     }}
                 >
@@ -85,7 +92,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
             <AKForm onSubmit={values => handleOnSubmit(values)}>
                 {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {buildButtons(dirty, submitting, reset)}
+                        {buildButtons(dirty, submitting, reset, setFieldValue)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
@@ -110,6 +117,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 selectValues,
                                                 initialData,
                                                 setFieldValue,
+                                                update,
                                             })}
                                         </Fragment>
                                     ))}
