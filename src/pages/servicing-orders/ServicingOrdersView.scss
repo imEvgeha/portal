@@ -19,5 +19,6 @@
     &__customer-filter {
         @include margin(0, 1);
         @include addSpacing('width', 50);
+        z-index: 2;
     }
 }
