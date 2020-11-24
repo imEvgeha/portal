@@ -1,6 +1,7 @@
 @import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
+// only nest modifier within block, not elements
 .nexus-c-dynamic-form {
     width: 80%;
     margin: auto;
