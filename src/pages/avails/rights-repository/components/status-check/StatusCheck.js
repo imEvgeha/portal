@@ -13,7 +13,16 @@ const StatusCheck = ({nonEligibleTitles, onClose}) => {
     const dataRows =
         nonEligibleTitles &&
         nonEligibleTitles.map(content => {
-            const {id, title, status, rightStatus, licensed, territory} = content;
+            const {
+                id,
+                title,
+                status,
+                rightStatus,
+                licensed,
+                territory,
+                updatedCatalogReceived,
+                temporaryPriceReduction,
+            } = content;
             const hasUnplannedTerritory = territory.filter(ter => !ter.selected).length;
             return {
                 key: id,
@@ -41,6 +50,14 @@ const StatusCheck = ({nonEligibleTitles, onClose}) => {
                     {
                         key: `${id}-territory`,
                         content: hasUnplannedTerritory ? '' : <InValidData data="NONE" />,
+                    },
+                    {
+                        key: `${id}-updatedCatalogReceived`,
+                        content: updatedCatalogReceived ? <InValidData data="YES" /> : 'NO',
+                    },
+                    {
+                        key: `${id}-temporaryPriceReduction`,
+                        content: temporaryPriceReduction ? <InValidData data="YES" /> : 'NO',
                     },
                 ],
             };

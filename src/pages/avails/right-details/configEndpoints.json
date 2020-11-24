@@ -98,5 +98,13 @@
     {
         "field": "ngAudio",
         "configEndpoint": "/ng-audios"
+    },
+    {
+        "field": "countryOfOrigin",
+        "configEndpoint": "/countries"
+    },
+    {
+        "field": "originalLanguage",
+        "configEndpoint": "/languages"
     }
 ]

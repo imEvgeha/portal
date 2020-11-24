@@ -1,0 +1,5 @@
+@import '../../../../styles/atlaskit/mixins';
+
+.nexus-c-character-modal__cancel-button {
+    @include margin(0, 0, 0, 6);
+}

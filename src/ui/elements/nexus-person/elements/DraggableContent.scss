@@ -5,7 +5,7 @@
     border: 1px solid map-get($neutrals, N40);
     @include padding(1.25);
     background-color: map-get($neutrals, N10);
-    width: 97%;
+    width: 100%;
     margin: auto;
     opacity: 1;
     &:hover {
