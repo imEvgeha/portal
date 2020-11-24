@@ -37,7 +37,7 @@ const UploadIngestButton = ({ingestData}) => {
                 closeModalCallback={closeModalCallback}
             />
         );
-    }, [browseClick, closeUploadModal, file, ingestData]);
+    }, [browseClick, closeUploadModal, file]);
 
     useEffect(() => {
         if (file) {
