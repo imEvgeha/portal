@@ -1,0 +1,25 @@
+@import '../../../styles/atlaskit/colors';
+
+.artwork-item {
+    margin: 0 16px 16px 0;
+    &--selected {
+        outline: 3px solid map-get($blues, B300);
+    }
+    &__image {
+        width: 280px;
+        height: 158px;
+        border: 1px solid black;
+        cursor: pointer;
+    }
+    &__details {
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        color: map-get($neutrals, N200);
+    }
+    &__id {
+        font-size: 14px;
+        color: map-get($neutrals, N800);
+        margin: 5px 0;
+    }
+}
