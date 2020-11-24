@@ -56,9 +56,17 @@
     @include padding(3, 0, 0, 0);
 }
 
-.nexus-c-right-details-header__tabs {
+.nexus-c-right-details-header__tabs-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    width: 100%;
     background-color: map-get($neutrals, N0);
+}
+.nexus-c-right-details-header__tabs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+    border-bottom: 2px solid map-get($neutrals, N40);
 }

@@ -116,7 +116,9 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
                     return <RightDetailsShrinkedBottom key={idx} name={field.title} value={right[field.field]} />;
                 })}
             </div>
-            <div className="nexus-c-right-details-header__tabs">{buildTabs()}</div>
+            <div className="nexus-c-right-details-header__tabs-wrapper">
+                <div className="nexus-c-right-details-header__tabs">{buildTabs()}</div>
+            </div>
         </div>
     );
 };
