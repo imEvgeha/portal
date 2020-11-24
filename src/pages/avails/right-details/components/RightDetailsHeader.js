@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import {throttle} from 'lodash';
 import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
 import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
 import RightDetailsTitle from './RightDetailsTitle';
-import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS} from '../constants';
+import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, THROTTLE_TRAILING_MS} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
@@ -56,8 +57,8 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
     };
 
     useEffect(() => {
-        window.addEventListener('scroll', onScroll, true);
-        return () => window.removeEventListener('scroll', onScroll, true);
+        window.addEventListener('scroll', onScrollThrottled, true);
+        return () => window.removeEventListener('scroll', onScrollThrottled, true);
     }, []);
 
     useEffect(() => {
@@ -76,10 +77,14 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 
     const onScroll = event => {
         let toShrink = false;
-        const SHRINK_BOUNDARY = 25;
-        if (event.target.scrollTop > SHRINK_BOUNDARY) toShrink = true;
+        const SHRINK_BOUNDARY = 20;
+        if (event.target.scrollTop > SHRINK_BOUNDARY) {
+            toShrink = true;
+        }
         setIsShrinked(toShrink);
     };
+
+    const onScrollThrottled = throttle(onScroll, THROTTLE_TRAILING_MS, {traling: true});
 
     return (
         <div
