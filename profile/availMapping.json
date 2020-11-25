@@ -96,28 +96,6 @@
             "required": false
         },
         {
-            "javaVariableName": "territory",
-            "displayName": "Selected",
-            "dataType": "territory.selected",
-            "searchDataType": "territory.selected",
-            "queryParamName": "selected",
-            "readOnly": false,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": true
-        },
-        {
-            "javaVariableName": "territory",
-            "displayName": "Withdrawn",
-            "dataType": "territory.withdrawn",
-            "searchDataType": "territory.withdrawn",
-            "queryParamName": "withdrawn",
-            "readOnly": false,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
             "javaVariableName": "licensee",
             "displayName": "Licensee",
             "dataType": "select",
@@ -165,6 +143,17 @@
             "enableEdit": true,
             "required": true,
             "sortParamName": "territoryCountry"
+        },
+        {
+            "javaVariableName": "territory",
+            "displayName": "Withdrawn",
+            "dataType": "territory.withdrawn",
+            "searchDataType": "territory.withdrawn",
+            "queryParamName": "withdrawn",
+            "readOnly": true,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
         },
         {
             "javaVariableName": "territory.country",
