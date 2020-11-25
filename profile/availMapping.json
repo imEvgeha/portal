@@ -146,6 +146,17 @@
         },
         {
             "javaVariableName": "territory",
+            "displayName": "Selected",
+            "dataType": "territory.selected",
+            "searchDataType": "territory.selected",
+            "queryParamName": "selected",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": true
+        },
+        {
+            "javaVariableName": "territory",
             "displayName": "Withdrawn",
             "dataType": "territory.withdrawn",
             "searchDataType": "territory.withdrawn",
@@ -161,16 +172,6 @@
             "searchDataType": "multiselect",
             "configEndpoint": "/countries",
             "queryParamName": "territoryCountry",
-            "readOnly": true,
-            "enableSearch": true,
-            "enableEdit": false,
-            "required": false
-        },
-        {
-            "javaVariableName": "territory.selected",
-            "displayName": "Territory Selected",
-            "searchDataType": "boolean",
-            "queryParamName": "territorySelected",
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": false,
