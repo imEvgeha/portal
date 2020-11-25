@@ -438,7 +438,8 @@
                         "type": "dateRange",
                         "dateType": "regionalMidnight",
                         "labels": ["Term Year Start", "Term Year End"],
-                        "path": ["termYearStart", "termYearEnd"]
+                        "path": ["termYearStart", "termYearEnd"],
+                        "isReturningTime": false
                     },
                     "imdbLink": {
                         "name": "IMDB Link",

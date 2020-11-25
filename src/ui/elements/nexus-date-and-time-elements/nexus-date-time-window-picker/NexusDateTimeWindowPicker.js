@@ -98,8 +98,7 @@ const NexusDateTimeWindowPicker = ({
         }
         let endDateWithFilledTime = moment(date).valueOf() + (isUsingTime ? FILL_DATE_TIME : FILL_DATE);
 
-        let RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
-        if (endDateTimePickerProps.id === 'termDates-end') RELATIVE_FORMAT = RELATIVE_DATE_FORMAT_WITHOUT_TIME;
+        const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
         if (isTimestamp) {
             endDateWithFilledTime = moment(endDateWithFilledTime).toISOString();
