@@ -93,6 +93,7 @@ export const PrePlanActions = ({
                         />,
                         {title: STATUS_CHECK_HEADER, width: '100%'}
                     );
+                    setIsFetchDOP(false);
                 }
                 if (eligibleRights && eligibleRights.length) {
                     const mergedWithSelectedRights = eligibleRights.map(right => {
