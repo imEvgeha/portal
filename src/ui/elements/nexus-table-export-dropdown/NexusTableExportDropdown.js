@@ -214,7 +214,9 @@ const NexusTableExportDropdown = ({
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger={[PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export'}
+                trigger={
+                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export All'
+                }
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >
