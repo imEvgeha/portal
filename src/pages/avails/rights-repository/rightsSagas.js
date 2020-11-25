@@ -26,6 +26,12 @@ export function* storeRightsFilter({payload}) {
     }
 }
 
+const isDependencyAlreadyMarkedForDeletion = (rightIdsWithoutDeps, dependency) => {
+    return rightIdsWithoutDeps.some(
+        val => dependency.sourceRightId === val || dependency.originalRightIds.includes(val)
+    );
+};
+
 export function* fetchLinkedToOriginalRights({payload}) {
     const {rights, closeModal, toggleRefreshGridData} = payload || {};
 
@@ -37,7 +43,9 @@ export function* fetchLinkedToOriginalRights({payload}) {
         const rightIdsWithoutDeps = [];
         rights.forEach(right => {
             const foundDependencies = response.filter(
-                dep => dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id)
+                dep =>
+                    !isDependencyAlreadyMarkedForDeletion(rightIdsWithoutDeps, dep) &&
+                    (dep.sourceRightId === right.id || dep.originalRightIds.includes(right.id))
             );
             if (foundDependencies.length) {
                 rightsWithDeps[right.id] = {
