@@ -32,6 +32,13 @@ const NexusSelect = ({
         }
     }, [selectValues]);
 
+    const customStyles = {
+        menuList: provided => ({
+            ...provided,
+            maxHeight: '200px',
+        }),
+    };
+
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
             const deselectOption = {label: 'Select...', value: ''};
@@ -53,6 +60,7 @@ const NexusSelect = ({
             options={optionsConfig.options !== undefined ? optionsConfig.options : fetchedOptions}
             defaultValue={defaultValue}
             {...addedProps}
+            styles={customStyles}
         />
     );
 };

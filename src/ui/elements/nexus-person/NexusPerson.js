@@ -29,7 +29,7 @@ const NexusPerson = ({person, index, onRemove, onEditCharacter}) => {
                                     className="nexus-c-nexus-person__add-character"
                                     onClick={() => onEditCharacter(index)}
                                 >
-                                    Add Character
+                                    {person.characterName ? 'Edit Character' : 'Add Character'}
                                 </div>
                                 <RemovePerson onClick={onRemove} />
                                 <DragButton {...provided.dragHandleProps} />
