@@ -12,3 +12,13 @@ export function isDuration(value) {
     }
     return undefined;
 }
+
+/*
+DETAILS ABOUT THIS COMPLEX REGEX:
+windowDuration field has a tooltip:
+"format: PnYnMnDTnHnMnS. eg. P3Y6M4DT12H30M5S
+(three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
+
+Some VALID values are: pt20H, p1Yt6s, p, p06Mt05M, ...
+Some INVALID values are: PT, P45d, PT26h, ...
+*/
