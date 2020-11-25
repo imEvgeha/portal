@@ -7,7 +7,7 @@ import {get, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 // image import
 import './TitleResultTable.scss';
-import LoadingGif from '../../../../../../../assets/img/loading.gif';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {
     resultPageSelect,
     resultPageSort,

@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';

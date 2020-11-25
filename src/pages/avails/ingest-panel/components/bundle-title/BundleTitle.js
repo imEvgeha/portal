@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
-import Folder from '../../../../../assets/folder.svg';
+import Folder from '@vubiquity-nexus/portal-assets/folder.svg';
 import './BundleTitle.scss';
 
 const BundleTitle = ({licensor, totalAttachments}) => (

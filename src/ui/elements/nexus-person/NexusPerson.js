@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Draggable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
 import Lozenge from '@atlaskit/lozenge';
-import DefaultUserIcon from '../../../assets/img/default-user.png';
+import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import DragButton from './elements/DragButton';
 import DraggableContent from './elements/DraggableContent';
 import RemovePerson from './elements/RemovePerson';

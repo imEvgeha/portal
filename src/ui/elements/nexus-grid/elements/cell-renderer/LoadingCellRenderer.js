@@ -1,7 +1,7 @@
 import React from 'react';
+import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {getDeepValue, isObject, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
-import loadingGif from '../../../../../assets/img/loading.gif';
 import './LoadingCellRenderer.scss';
 
 const LoadingCellRenderer = params => {

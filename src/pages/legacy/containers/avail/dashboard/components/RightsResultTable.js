@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 import config from 'react-global-configuration';
 
 // image import
-import LoadingGif from '../../../../../../assets/img/loading.gif';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 
 import RightsURL from '../../util/RightsURL';
 import {CheckBoxHeader} from './CheckBoxHeaderInternal';

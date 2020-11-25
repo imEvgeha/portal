@@ -1,6 +1,6 @@
 import React from 'react';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import SecuritySvg from '../../assets/security-access.svg';
+import SecuritySvg from '@vubiquity-nexus/portal-assets/security-access.svg';
 import './Unauthorized.scss';
 
 const Unauthorized = () => {
