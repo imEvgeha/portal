@@ -207,7 +207,12 @@
                                 { "label": "Canceled", "value": "Canceled" },
                                 { "label": "Withdrawn", "value": "Withdrawn" }
                             ]
-                        }
+                        },
+                        "validation": [
+                            {
+                                "name": "areAllWithdrawn"
+                            }
+                        ]
                     },
                     "affiliate": {
                         "name": "Affiliate",
@@ -218,6 +223,34 @@
                         "name": "Affiliate Exclude",
                         "type": "multiselect",
                         "path": "affiliateExclude"
+                    },
+                    "createdAt": {
+                        "name": "Created At",
+                        "type": "datetime",
+                        "dateType": "timestamp",
+                        "path": "createdAt",
+                        "isReadOnly": true,
+                        "isRequired": true
+                    },
+                    "updatedAt": {
+                        "name": "Updated At",
+                        "type": "datetime",
+                        "dateType": "timestamp",
+                        "path": "updatedAt",
+                        "isReadOnly": true,
+                        "isRequired": true
+                    },
+                    "createdBy": {
+                        "name": "Created By",
+                        "type": "string",
+                        "path": "createdBy",
+                        "isReadOnly": true
+                    },
+                    "updatedBy": {
+                        "name": "Updated By",
+                        "type": "string",
+                        "path": "updatedBy",
+                        "isReadOnly": true
                     }
                 }
             },
@@ -1082,7 +1115,12 @@
                         "name": "Window Duration",
                         "type": "string",
                         "path": "windowDuration",
-                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
+                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)",
+                        "validation": [
+                            {
+                                "name": "isDuration"
+                            }
+                        ]
                     },
                     "rentalDuration": {
                         "name": "Rental Duration",

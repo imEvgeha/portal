@@ -17,12 +17,14 @@ import titleReducer from './pages/legacy/stores/reducers/metadata/titleReducer';
 import metadataReducer from './pages/metadata/metadataReducer';
 import servicingOrdersReducer from './pages/servicing-orders/servicingOrdersReducer';
 import syncLogReducer from './pages/sync-log/syncLogReducer';
+import titleMetadataReducer from './pages/title-metadata/titleMedatadaReducer';
 import {
     authPersistConfig,
     availsPersistConfig,
     createPersistReducer,
     rootPersistConfig,
     dopTasksPersistConfig,
+    titleMetadataPersistConfig,
 } from './store-persist-config';
 import uiReducer from './ui/uiReducer';
 
@@ -51,6 +53,7 @@ const createRootReducer = routerHistory =>
         dopTasks: createPersistReducer(dopTasksPersistConfig, dopTasksReducer),
         ui: uiReducer,
         auth: createPersistReducer(authPersistConfig, authReducer),
+        titleMetadata: createPersistReducer(titleMetadataPersistConfig, titleMetadataReducer),
     });
 
 export default createRootReducer;

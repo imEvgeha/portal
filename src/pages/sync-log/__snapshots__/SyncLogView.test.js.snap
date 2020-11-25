@@ -10,14 +10,14 @@ exports[`SyncLogView HTML content should match snapshot 1`] = `
     isSubTitle={false}
     title={null}
   >
-    <Link
-      replace={false}
-      to="/metadata"
+    <button
+      className="nexus-c-sync-log-view__back-btn"
+      onClick={[Function]}
     >
       <ArrowLeftIcon
         size="large"
       />
-    </Link>
+    </button>
     <span
       className="nexus-c-sync-log-view__title"
     >

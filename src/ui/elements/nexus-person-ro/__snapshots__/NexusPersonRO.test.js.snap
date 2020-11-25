@@ -4,23 +4,28 @@ exports[`NexusPersonRO should match snapshot 1`] = `
 <div
   className="nexus-c-nexus-person-ro"
 >
-  <PersonTypeContainer
-    personName="Amaka Obi"
-    personType="Actor"
-  />
+  <div>
+    <img
+      alt="Person"
+      className="nexus-c-nexus-person-ro__img"
+      src={
+        Object {
+          "process": [Function],
+        }
+      }
+    />
+    Amaka Obi
+  </div>
   <div
-    className="nexus-c-nexus-person-ro__character"
+    className="nexus-c-nexus-person-ro__tag"
   >
     <Lozenge
       appearance="default"
       isBold={false}
       maxWidth={200}
     >
-      CHARACTER
+      Actor
     </Lozenge>
-    <span>
-      test2
-    </span>
   </div>
 </div>
 `;

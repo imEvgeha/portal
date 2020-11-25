@@ -1,19 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Link} from 'react-router-dom';
 import './SyncLogView.scss';
 import {NexusTitle} from '../../ui/elements';
 import SyncLogTable from './components/sync-log-table/SyncLogTable';
 import {TITLE} from './syncLogConstants';
 
-const SyncLogView = () => {
+const SyncLogView = ({history}) => {
     return (
         <div className="nexus-c-sync-log-view">
             <NexusTitle>
-                <Link to={URL.keepEmbedded('/metadata')}>
+                <button className="nexus-c-sync-log-view__back-btn" onClick={() => history.goBack()}>
                     <ArrowLeftIcon size="large" />
-                </Link>
+                </button>
                 <span className="nexus-c-sync-log-view__title">{TITLE}</span>
             </NexusTitle>
             <div className="nexus-c-sync-log-view__table">
@@ -21,6 +20,14 @@ const SyncLogView = () => {
             </div>
         </div>
     );
+};
+
+SyncLogView.propTypes = {
+    history: PropTypes.object,
+};
+
+SyncLogView.defaultProps = {
+    history: {},
 };
 
 export default SyncLogView;

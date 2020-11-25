@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TitleMetadataHeader should match snapshot 1`] = `
+<div
+  className="nexus-c-title-metadata-header"
+>
+  <div
+    className="nexus-c-title-metadata-header__label"
+  >
+    Title Metadata
+  </div>
+  <div
+    className="nexus-c-title-metadata-header__buttons-wrapper"
+  />
+</div>
+`;

@@ -3,7 +3,6 @@ import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';
 
-const HEADERS_ONLY = URL.isLocalOrDevOrQA();
 const FETCH_PAGE_SIZE = 100;
 
 export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sortedParams) => {
@@ -18,9 +17,7 @@ export const getEventSearch = (params, page = 0, pageSize = FETCH_PAGE_SIZE, sor
     paramString = `${paramString}?page=${page}&size=${pageSize}`;
 
     // Only fetch headers, not headers + data
-    if (HEADERS_ONLY) {
-        paramString += `&headersOnly=${HEADERS_ONLY}`;
-    }
+    paramString += `&headersOnly=true`;
 
     // Build param string if params are provided
     if (!isEmpty(params)) {

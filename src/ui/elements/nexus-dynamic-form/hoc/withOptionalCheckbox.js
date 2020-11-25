@@ -6,7 +6,7 @@ import {VIEWS} from '../constants';
 
 const withOptionalCheckbox = () => WrappedComponent => {
     const ComposedComponent = props => {
-        const {isOptional, useCurrentDate, setFieldValue, path, view, ...fieldProps} = props;
+        const {isOptional, useCurrentDate, setFieldValue, path, name, view, ...fieldProps} = props;
         const {value, ...restFieldProps} = fieldProps;
         const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
 
@@ -14,7 +14,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
             const newVisible = !visible;
             setVisible(newVisible);
             if (!newVisible) {
-                setFieldValue(path, '');
+                setFieldValue(name, '');
             }
         };
 

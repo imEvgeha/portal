@@ -1,0 +1,22 @@
+@import '../../../../styles/config.scss';
+@import '../../../../styles/atlaskit/mixins';
+
+.nexus-c-title-metadata-table-status-bar {
+    width: 100%;
+    background-color: map-get($colors, nexus-white);
+    border-bottom: 1px solid map-get($colors, nexus-light-grey);
+    border-left: 1px solid map-get($colors, nexus-light-grey);
+    border-right: 1px solid map-get($colors, nexus-light-grey);
+    @include addSpacing(height, 6);
+    @include heading(h200);
+    @include margin(0);
+    @include padding(0, 0, 0, 2);
+}
+
+.nexus-c-title-metadata-table-status-bar__description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}

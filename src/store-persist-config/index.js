@@ -62,6 +62,18 @@ export const dopTasksPersistConfig = {
     ],
 };
 
+export const titleMetadataPersistConfig = {
+    key: 'titleMetadata',
+    keyPrefix: STORE_PERSIST_KEY_PREFIX,
+    version: 0,
+    storage,
+    stateReconciler: autoMergeLevel2,
+    whitelist: ['title'],
+    transforms: [
+        // createWhitelistFilter('rights', ['list']) // second argument = persisted keys
+    ],
+};
+
 export const createPersistReducer = (config, reducer) => persistReducer(config, reducer);
 
 export const configurePersistor = store => persistStore(store);

@@ -23,6 +23,15 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                     }
                 };
             }
+            if (javaVariableName === 'category') {
+                return params => {
+                    const {data = {}} = params || {};
+
+                    if (data && data[javaVariableName]) {
+                        return data[javaVariableName].map(item => item.name).join(', ');
+                    }
+                };
+            }
             return params => {
                 const {data = {}} = params || {};
 
@@ -45,7 +54,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             };
         case 'boolean':
             return ({value}) => {
-                if (javaVariableName === 'updatedCatalogReceived' || javaVariableName === 'bonusRight') {
+                if (['updatedCatalogReceived', 'bonusRight', 'animated'].includes(javaVariableName)) {
                     switch (value) {
                         case true:
                         case 'true':

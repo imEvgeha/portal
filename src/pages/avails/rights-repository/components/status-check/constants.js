@@ -25,5 +25,15 @@ export const header = {
             content: 'Unplanned Territories',
             width: 25,
         },
+        {
+            key: 6,
+            content: 'Removed From Catalog',
+            width: 25,
+        },
+        {
+            key: 7,
+            content: 'Temporary Price Reduction',
+            width: 25,
+        },
     ],
 };

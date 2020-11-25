@@ -429,19 +429,17 @@ export const SelectedRightsActions = ({
                                     <div>{ADD_TO_PREPLAN}</div>
                                 </NexusTooltip>
                             </div>
-                            {URL.isLocalOrDevOrQA() && (
-                                <div
-                                    className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                                        'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
-                                    })}
-                                    data-test-id="mark-as-deleted"
-                                    onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
-                                >
-                                    <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
-                                        <div>{MARK_DELETED}</div>
-                                    </NexusTooltip>
-                                </div>
-                            )}
+                            <div
+                                className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                    'nexus-c-selected-rights-actions__menu-item--is-active': isDeletable,
+                                })}
+                                data-test-id="mark-as-deleted"
+                                onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
+                            >
+                                <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
+                                    <div>{MARK_DELETED}</div>
+                                </NexusTooltip>
+                            </div>
                         </>
                     )}
                 </div>
