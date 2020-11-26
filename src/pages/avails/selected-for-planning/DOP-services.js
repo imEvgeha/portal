@@ -51,12 +51,10 @@ const DOPService = {
         const projectAttribute = [];
         data.forEach((right, index) => {
             projectAttribute.push({code: `selectedRightID[${index}]`, value: right.id});
-            projectAttribute.push(
-                ...right.territory.map((territory, territoryIndex) => ({
-                    code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
-                    value: territory.country,
-                }))
-            );
+            projectAttribute.push({
+                code: `selectedRightTerritory[${right.id}]`,
+                value: right.territory.map(territory => territory.country).toString(),
+            });
         });
 
         const utc = moment().utc();
