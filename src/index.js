@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {ConnectedRouter} from 'connected-react-router';
 import {createBrowserHistory} from 'history';
@@ -10,7 +11,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import AppProviders from './AppProviders';
 import Router from './Router';
-import {createKeycloakInstance} from './auth/keycloak';
 import {setEnvConfiguration, registerSingleSpaApps} from './config';
 import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';

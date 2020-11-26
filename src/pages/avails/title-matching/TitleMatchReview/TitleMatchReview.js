@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import BackNavigationByUrl from '../../../../ui/elements/nexus-navigation/navigate-back-by-url/BackNavigationByUrl';
-import {URL} from '../../../../util/Common';
-import DOP from '../../../../util/DOP';
 import {titleService} from '../../../legacy/containers/metadata/service/TitleService';
 import {getRepositoryCell} from '../../utils';
 import {createColumnDefs} from '../titleMatchingActions';

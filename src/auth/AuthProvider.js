@@ -1,4 +1,7 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {injectUser, logout} from '@vubiquity-nexus/portal-auth/authActions';
+import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keycloak';
+import {getValidToken, getTokenDuration, wait} from '@vubiquity-nexus/portal-auth/utils';
 import jwtDecode from 'jwt-decode';
 import {isEmpty} from 'lodash';
 import config from 'react-global-configuration';
@@ -11,9 +14,6 @@ import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
 import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
 import Loading from '../pages/static/Loading';
-import {injectUser, logout} from './authActions';
-import {keycloak, KEYCLOAK_INIT_OPTIONS} from './keycloak';
-import {getValidToken, getTokenDuration, wait} from './utils';
 
 const MIN_VALIDITY_SEC = 30;
 // eslint-disable-next-line no-magic-numbers

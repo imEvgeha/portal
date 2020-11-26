@@ -1,7 +1,7 @@
 import Constants from './Constants';
 import {get, isEqual} from 'lodash';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {
     dataTypes: {DATE, AUDIO, RATING, METHOD},

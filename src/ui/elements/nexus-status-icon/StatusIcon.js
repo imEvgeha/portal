@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LoadingEllipsis from '../../../assets/img/ajax-loader.gif';
+import LoadingEllipsis from '@vubiquity-nexus/portal-assets/img/ajax-loader.gif';
 import Constants from './StatusConstants';
 import './StatusIcon.scss';
 

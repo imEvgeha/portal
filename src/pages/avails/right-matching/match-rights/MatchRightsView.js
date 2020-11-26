@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
 import {connect} from 'react-redux';
@@ -13,7 +14,6 @@ import {defineColumn, updateColumnDefs} from '../../../../ui/elements/nexus-grid
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
-import {URL} from '../../../../util/Common';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';

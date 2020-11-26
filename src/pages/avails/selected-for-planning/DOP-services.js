@@ -1,6 +1,6 @@
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import moment from 'moment';
 import config from 'react-global-configuration';
-import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
 import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';

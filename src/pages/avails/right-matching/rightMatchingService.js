@@ -1,7 +1,7 @@
+import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {identity, pickBy} from 'lodash';
 import config from 'react-global-configuration'; // config returns error for gateway
 import {CREATE_NEW_RIGHT_ERROR_MESSAGE, SAVE_COMBINED_RIGHT_ERROR_MESSAGE} from '../../../ui/toast/constants';
-import {encodedSerialize, prepareSortMatrixParam} from '../../../util/Common';
 import {nexusFetch} from '../../../util/http-client/index';
 
 export const getRightMatchingList = (searchCriteria = {}, page, size, sortedParams) => {

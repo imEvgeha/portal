@@ -1,5 +1,5 @@
+import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import config from 'react-global-configuration';
-import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {

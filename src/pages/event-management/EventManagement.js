@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventDrawer from './components/event-drawer/EventDrawer';

@@ -1,4 +1,5 @@
 import React from 'react';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import withRedux from '../../../components/avails/SaveStateTable';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
@@ -11,7 +12,6 @@ import {configurationService} from '../service/ConfigurationService';
 import RightsURL from '../util/RightsURL';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import {searchFormSetAdvancedSearchCriteria} from '../../../stores/actions/avail/dashboard';
-import DOP from '../../../../../util/DOP';
 
 const mapStateToProps = state => {
     return {

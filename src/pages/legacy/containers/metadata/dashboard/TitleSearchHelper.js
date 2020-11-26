@@ -2,7 +2,7 @@ import {store} from '../../../../../index';
 import {searchFormSetSearchCriteria, searchFormSetAdvancedSearchCriteria} from '../../../stores/actions/metadata/index';
 
 import {titleServiceManager} from '../service/TitleServiceManager';
-import {momentToISO} from '../../../../../util/Common';
+import {momentToISO} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export const titleSearchHelper = {
     loadAdvancedSearchForm: filter => {

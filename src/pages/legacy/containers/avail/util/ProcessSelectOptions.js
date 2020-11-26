@@ -1,5 +1,5 @@
 import {AUDIO_TYPES, COUNTRIES, GENRES, LANGUAGES, PRODUCTION_STUDIOS, RATINGS, REGION, SORT_TYPE} from '../constants';
-import {getSortedData} from '../../../../../util/Common';
+import {getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export const processOptions = (value, configEndpoint) => {
     let options;

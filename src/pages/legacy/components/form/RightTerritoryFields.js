@@ -9,7 +9,7 @@ import {useIntl} from 'react-intl';
 import Select from '@atlaskit/select/Select';
 import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
-import {getValidDate} from '../../../../util/utils';
+import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import './RightTerritoryFields.scss';
 
 const RightTerritoryFields = ({

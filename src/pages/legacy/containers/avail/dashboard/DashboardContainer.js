@@ -16,7 +16,7 @@ import SearchResultsTab from './SearchResultsTab';
 import {profileService} from '../service/ProfileService';
 import {rightSearchHelper} from './RightSearchHelper';
 import {configurationService} from '../service/ConfigurationService';
-import {isObjectEmpty} from '../../../../../util/Common';
+import {isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import RightsURL from '../util/RightsURL';
 
 const mapStateToProps = state => {

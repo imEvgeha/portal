@@ -1,11 +1,11 @@
-import {isObjectEmpty} from '../../../../../util/Common';
+import {isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {store} from '../../../../../index';
-import {URL} from '../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {rightSearchHelper} from '../dashboard/RightSearchHelper';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '../../../../../ui/elements/nexus-grid/constants';
-import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const PASS_THROUGH = ['availHistoryIds'];
 

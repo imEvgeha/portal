@@ -1,4 +1,4 @@
-import {DATETIME_FIELDS} from '../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const GRID_EVENTS = {
     READY: 'gridReady',
