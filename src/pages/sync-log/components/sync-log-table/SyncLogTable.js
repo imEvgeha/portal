@@ -29,7 +29,6 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
     const [dateFromError, setDateFromError] = useState(false);
-    const [dateToError, setDateToError] = useState(false);
 
     const setErrors = data => {
         setErrorsData(data);
@@ -65,14 +64,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
             setDateFromError(false);
         }
     };
-    const onDateToChange = dateTo => {
-        if (moment().isBefore(dateTo)) {
-            setDateToError(true);
-        } else {
-            setDateTo(dateTo);
-            setDateToError(false);
-        }
-    };
+    const onDateToChange = dateTo => setDateTo(dateTo);
 
     const closeDrawer = () => setShowDrawer(false);
 
@@ -108,11 +100,7 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             onChange={onDateToChange}
                             value={dateTo}
                             isReturningTime={false}
-                            isInvalid={dateToError}
                         />
-                        <div className="nexus-c-sync-log-table__date-field--error">
-                            {dateToError && FUTURE_DATE_ERROR}
-                        </div>
                     </div>
                 </div>
                 <Button onClick={() => exportSyncLog(dateFrom, dateTo)} isDisabled={!gridApi}>
