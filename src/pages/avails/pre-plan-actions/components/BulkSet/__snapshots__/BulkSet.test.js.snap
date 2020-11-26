@@ -15,6 +15,11 @@ exports[`BulkSet should match snapshot 1`] = `
     onChange={[Function]}
     options={Array []}
     placeholder="Select territories..."
+    styles={
+      Object {
+        "menuList": [Function],
+      }
+    }
   />
   <div
     className="bulk-set-territories__label"
