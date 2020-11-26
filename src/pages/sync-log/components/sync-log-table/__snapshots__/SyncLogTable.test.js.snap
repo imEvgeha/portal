@@ -18,6 +18,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           error=""
           id="dateFrom"
           isClearable={false}
+          isInvalid={false}
           isLabelHidden={false}
           isReadOnly={false}
           isRequired={true}
@@ -29,6 +30,9 @@ exports[`SyncLogTable should match snapshot 1`] = `
           onConfirm={[Function]}
           value=""
         />
+        <div
+          className="nexus-c-sync-log-table__date-field--error"
+        />
       </div>
       <div
         className="nexus-c-sync-log-table__date-field"
@@ -37,6 +41,7 @@ exports[`SyncLogTable should match snapshot 1`] = `
           error=""
           id="dateTo"
           isClearable={false}
+          isInvalid={false}
           isLabelHidden={false}
           isReadOnly={false}
           isRequired={false}
@@ -47,6 +52,9 @@ exports[`SyncLogTable should match snapshot 1`] = `
           onChange={[Function]}
           onConfirm={[Function]}
           value=""
+        />
+        <div
+          className="nexus-c-sync-log-table__date-field--error"
         />
       </div>
     </div>
