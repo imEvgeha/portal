@@ -159,7 +159,10 @@ const withInfiniteScrolling = ({
 
                     gridApi.showNoRowsOverlay();
                 })
-                .catch(error => failCallback(error))
+                .catch(error => {
+                    failCallback(error);
+                    gridApi.showNoRowsOverlay();
+                })
                 .finally(() => {
                     hasBeenCalledRef.current = false;
                     if (typeof props.setDataLoading === 'function' && isMounted.current) {

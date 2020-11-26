@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import moment from 'moment';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -21,11 +22,14 @@ import TitleNameCellRenderer from '../TitleNamecCellRenderer/TitleNameCellRender
 import './SyncLogTable.scss';
 
 const SyncLogGrid = compose(withColumnsResizing(), withInfiniteScrolling({fetchData: getSyncLog}))(NexusGrid);
+const FUTURE_DATE_ERROR = 'FUTURE DATES ARE NOT ALLOWED!';
 
 const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
     const [gridApi, setGridApi] = useState(null);
     const [showDrawer, setShowDrawer] = useState(false);
     const [errorsData, setErrorsData] = useState([]);
+    const [dateFromError, setDateFromError] = useState(false);
+    const [dateToError, setDateToError] = useState(false);
 
     const setErrors = data => {
         setErrorsData(data);
@@ -53,8 +57,22 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
         }
     };
 
-    const onDateFromChange = dateFrom => setDateFrom(dateFrom);
-    const onDateToChange = dateTo => setDateTo(dateTo);
+    const onDateFromChange = dateFrom => {
+        if (moment().isBefore(dateFrom)) {
+            setDateFromError(true);
+        } else {
+            setDateFrom(dateFrom);
+            setDateFromError(false);
+        }
+    };
+    const onDateToChange = dateTo => {
+        if (moment().isBefore(dateTo)) {
+            setDateToError(true);
+        } else {
+            setDateTo(dateTo);
+            setDateToError(false);
+        }
+    };
 
     const closeDrawer = () => setShowDrawer(false);
 
@@ -77,7 +95,11 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             value={dateFrom}
                             isReturningTime={false}
                             isRequired
+                            isInvalid={dateFromError}
                         />
+                        <div className="nexus-c-sync-log-table__date-field--error">
+                            {dateFromError && FUTURE_DATE_ERROR}
+                        </div>
                     </div>
                     <div className="nexus-c-sync-log-table__date-field">
                         <NexusDatePicker
@@ -86,7 +108,11 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
                             onChange={onDateToChange}
                             value={dateTo}
                             isReturningTime={false}
+                            isInvalid={dateToError}
                         />
+                        <div className="nexus-c-sync-log-table__date-field--error">
+                            {dateToError && FUTURE_DATE_ERROR}
+                        </div>
                     </div>
                 </div>
                 <Button onClick={() => exportSyncLog(dateFrom, dateTo)} isDisabled={!gridApi}>
