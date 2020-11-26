@@ -34,7 +34,7 @@ export function* fetchLinkedToOriginalRights({payload}) {
         const response = yield call(getLinkedToOriginalRightsV2, rightIds);
         closeModal();
         const rightsWithDeps = {};
-        const rightIdsWithoutDeps = [];
+        const rightsWithoutDeps = [];
         rights.forEach(right => {
             const foundDependencies = response.filter(
                 dep =>
@@ -48,20 +48,34 @@ export function* fetchLinkedToOriginalRights({payload}) {
                     isSelected: true,
                 };
             } else {
-                rightIdsWithoutDeps.push(right.id);
+                rightsWithoutDeps.push(right);
             }
         });
         // rights that have no deps are immediately deleted
-        if (rightIdsWithoutDeps.length) {
-            yield call(bulkDeleteRights, rightIdsWithoutDeps);
+        if (rightsWithoutDeps.length) {
+            // if rights have dependencies which are also marked for deletion in same bulk
+            // separate affected rights and send them as a second param
+            // otherwise send them as first param
+            const selectedRightIds = [];
+            const affectedRightIds = [];
+            rightsWithoutDeps.forEach(right => {
+                if (right.sourceRightId || right.originalRightIds.length) {
+                    affectedRightIds.push(right.id);
+                } else {
+                    selectedRightIds.push(right.id);
+                }
+            });
+            const preparedParam1 = selectedRightIds.length ? selectedRightIds : affectedRightIds;
+            const preparedParam2 = !selectedRightIds.length ? [] : affectedRightIds;
+            yield call(bulkDeleteRights, preparedParam1, preparedParam2);
             yield put({
                 type: ADD_TOAST,
                 payload: {
                     title: SUCCESS_TITLE,
                     icon: SUCCESS_ICON,
                     isAutoDismiss: true,
-                    description: `${rightIdsWithoutDeps.length} ${
-                        rightIdsWithoutDeps.length === 1 ? 'Right' : 'Rights'
+                    description: `${rightsWithoutDeps.length} ${
+                        rightsWithoutDeps.length === 1 ? 'Right' : 'Rights'
                     } deleted`,
                 },
             });
@@ -69,7 +83,7 @@ export function* fetchLinkedToOriginalRights({payload}) {
         if (Object.keys(rightsWithDeps).length) {
             yield put({
                 type: actionTypes.SET_LINKED_TO_ORIGINAL_RIGHTS,
-                payload: {rightsWithDeps, deletedRightsCount: rightIdsWithoutDeps.length},
+                payload: {rightsWithDeps, deletedRightsCount: rightsWithoutDeps.length},
             });
         }
     } catch (error) {
