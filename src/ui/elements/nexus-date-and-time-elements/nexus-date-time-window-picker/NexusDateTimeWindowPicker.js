@@ -181,7 +181,6 @@ const NexusDateTimeWindowPicker = ({
                         onChange={handleChangeEndDate}
                         error={endDateError}
                         isClearable={isClearable}
-                        isReturningTime={isReturningTime}
                         {...endDateTimePickerProps}
                     />
                 )}
