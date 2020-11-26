@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tooltip from '@atlaskit/tooltip';
-import {DATETIME_FIELDS} from '../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {useDateTimeContext} from './NexusDateTimeProvider';
 
 /**

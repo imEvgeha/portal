@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import RangeDatapicker from '../../../../components/form/RangeDatapicker';
 import {advancedHistorySearchHelper} from '../AdvancedHistorySearchHelper';
 import Select from 'react-select';
-import {safeTrim} from '../../../../../../util/Common';
+import {safeTrim} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 
 const mapStateToProps = state => {

@@ -19,10 +19,10 @@ jest.mock('../../servicingOrdersService.js', () => ({
     },
 }));
 
-jest.mock('../../../../util/Common.js', () => ({
-    ...jest.requireActual('../../../../util/Common.js'),
+jest.mock('@vubiquity-nexus/portal-utils/lib/Common.js', () => ({
+    ...jest.requireActual('@vubiquity-nexus/portal-utils/lib/Common.js'),
     URL: {
-        ...jest.requireActual('../../../../util/Common.js').URL,
+        ...jest.requireActual('@vubiquity-nexus/portal-utils/lib/Common.js').URL,
         isLocalOrDevOrQA: jest.fn().mockImplementation(() => true),
     },
 }));

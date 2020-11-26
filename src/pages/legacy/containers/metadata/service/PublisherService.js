@@ -1,6 +1,6 @@
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
-import {encodedSerialize} from '../../../../../util/Common';
+import {encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getSyncQueryParams} from './TitleService';
 
 export const publisherService = {

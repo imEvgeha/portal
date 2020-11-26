@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
@@ -8,7 +9,6 @@ import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/for
 import PriceTypeFormSchema from '../../../../pages/legacy/components/form/PriceTypeSearchFormSchema';
 import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
 import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
-import {isObject} from '../../../../util/Common';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';

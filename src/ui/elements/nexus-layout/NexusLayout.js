@@ -1,7 +1,7 @@
 import React from 'react';
 import './NexusLayout.scss';
-import {IfEmbedded} from '../../../util/Common';
-import DOP from '../../../util/DOP';
+import {IfEmbedded} from '@vubiquity-nexus/portal-utils/lib/Common';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import NexusNavigation from '../nexus-navigation/NexusNavigation';
 
 const NexusLayout = ({children}) => (

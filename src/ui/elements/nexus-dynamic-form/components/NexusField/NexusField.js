@@ -44,6 +44,7 @@ const NexusField = ({
     setFieldValue,
     useCurrentDate,
     getCurrentValues,
+    isReturningTime,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -63,6 +64,7 @@ const NexusField = ({
         dateType,
         isReadOnly,
         useCurrentDate,
+        isReturningTime,
         ...addedProps,
     };
 
@@ -245,6 +247,7 @@ NexusField.propTypes = {
     useCurrentDate: PropTypes.bool,
     isHighlighted: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
+    isReturningTime: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -266,6 +269,7 @@ NexusField.defaultProps = {
     setFieldValue: null,
     useCurrentDate: false,
     isHighlighted: false,
+    isReturningTime: true,
 };
 
 export default NexusField;

@@ -1,8 +1,8 @@
 import React from 'react';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get, isEqual, cloneDeep} from 'lodash';
 import CustomActionsCellRenderer from '../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import createValueFormatter from '../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import {DATETIME_FIELDS} from '../../util/date-time/constants';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import Constants from './title-matching/titleMatchingConstants';
 

@@ -1,11 +1,11 @@
+import {LOGOUT} from '@vubiquity-nexus/portal-auth/authActionTypes';
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import {routerMiddleware} from 'connected-react-router';
 import {createStore, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {createLogger} from 'redux-logger';
 import storage from 'redux-persist/lib/storage';
 import createSagaMiddleware, {END} from 'redux-saga';
-import {LOGOUT} from './auth/authActionTypes';
-import {keycloak} from './auth/keycloak';
 import createRootReducer from './reducer';
 
 // configure store

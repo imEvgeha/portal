@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import LoadingElipsis from '../../../../../../assets/img/ajax-loader.gif';
+import LoadingElipsis from '@vubiquity-nexus/portal-assets/img/ajax-loader.gif';
 import {Link} from 'react-router-dom';
 
 import {historyService} from '../../service/HistoryService';

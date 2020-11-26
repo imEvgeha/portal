@@ -7,7 +7,7 @@ import {Row, Col} from 'reactstrap';
 import {uid} from 'react-uid';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import PersonListContainer from './PersonListContainer';
-import DefaultUserIcon from '../../../../../../../assets/img/default-user.png';
+import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import CharacterModal from './CharacterModal';
 import {
     DraggableContent,

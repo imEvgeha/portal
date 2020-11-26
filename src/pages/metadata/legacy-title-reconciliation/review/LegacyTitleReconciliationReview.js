@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import './LegacyTitleReconciliationReview.scss';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import {URL} from '../../../../util/Common';
 import {createColumnDefs} from '../../../avails/title-matching/titleMatchingActions';
 import {getColumnDefs} from '../../../avails/title-matching/titleMatchingSelectors';
 import {getRepositoryCell} from '../../../avails/utils';

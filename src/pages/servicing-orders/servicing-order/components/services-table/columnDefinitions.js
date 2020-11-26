@@ -1,5 +1,5 @@
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 
 const columnDefinitions = [
     {

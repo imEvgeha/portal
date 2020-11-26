@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import File from '@vubiquity-nexus/portal-assets/file.svg';
 import classnames from 'classnames';
-import File from '../../../../../assets/file.svg';
 import './IngestTitle.scss';
 
 const IngestTitle = ({link, isHeader}) => {

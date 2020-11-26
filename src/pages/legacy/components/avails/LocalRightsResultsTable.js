@@ -2,7 +2,7 @@ import React from 'react';
 import config from 'react-global-configuration';
 
 import RightsResultsTable from './RightsResultsTable';
-import {nextFrame} from '../../../../util/Common';
+import {nextFrame} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export const AVAILS_SELECTION = 'AVAILS_SELECTION';
 export const DOP_SELECTION = 'DOP_SELECTION';

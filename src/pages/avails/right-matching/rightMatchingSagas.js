@@ -1,3 +1,4 @@
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {
@@ -9,7 +10,6 @@ import {
 } from '../../../ui/elements/nexus-toast-notification/constants';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
-import {URL} from '../../../util/Common';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
 import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/service/Constants';

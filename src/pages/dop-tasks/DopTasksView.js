@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
-import {getUsername} from '../../auth/authSelectors';
 import IconButton from '../../ui/atlaskit/icon-button/IconButton';
 import {toggleRefreshGridData} from '../../ui/grid/gridActions';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';

@@ -33,9 +33,9 @@ import constants from '../../MetadataConstants';
 import withToasts from '../../../../../../ui/toast/hoc/withToasts';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-toast-notification/constants';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
-import {getDomainName} from '../../../../../../util/Common';
+import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {publisherService} from '../../service/PublisherService';
-import {URL} from '../../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 const onViewTitleClick = response => {
     const {id} = response || {};

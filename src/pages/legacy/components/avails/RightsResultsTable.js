@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {getDeepValue, isObject} from '../../../../util/Common';
+import {getDeepValue, isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import LoadingGif from '../../../../assets/img/loading.gif';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 export default class RightsResultsTable extends React.Component {
     parseColumnsSchema(mappings, locale = 'en-us') {

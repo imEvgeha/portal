@@ -1,16 +1,16 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import {URL} from '../../../util/Common';
 import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
 import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';

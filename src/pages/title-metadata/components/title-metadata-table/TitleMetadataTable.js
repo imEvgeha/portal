@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
@@ -11,7 +12,6 @@ import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withIn
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '../../../../ui/elements/nexus-tooltip/NexusTooltip';
-import {URL} from '../../../../util/Common';
 import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';

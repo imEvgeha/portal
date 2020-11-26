@@ -14,12 +14,12 @@ import {configurationService} from '../../service/ConfigurationService';
 import {historyService} from '../../service/HistoryService';
 import {alertModal} from '../../../../components/modal/AlertModal';
 import {confirmModal} from '../../../../components/modal/ConfirmModal';
-import {downloadFile} from '../../../../../../util/Common';
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {exportService} from '../../service/ExportService';
 import moment from 'moment';
 import CloseableBtn from '../../../../components/form/CloseableBtn';
 import SelectableInput from '../../../../components/form/SelectableInput';
-import {DATETIME_FIELDS} from '../../../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const mapStateToProps = state => {
     return {
