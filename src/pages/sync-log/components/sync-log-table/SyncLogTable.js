@@ -60,9 +60,9 @@ const SyncLogTable = ({setDateFrom, dateFrom, setDateTo, dateTo}) => {
         if (moment().isBefore(dateFrom)) {
             setDateFromError(true);
         } else {
-            setDateFrom(dateFrom);
             setDateFromError(false);
         }
+        setDateFrom(dateFrom);
     };
     const onDateToChange = dateTo => setDateTo(dateTo);
 
