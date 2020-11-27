@@ -1,4 +1,4 @@
-@import '../../../../../styles/atlaskit/mixins.scss';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins.scss';
 .panel-header {
     &__title {
         @include margin(6, 0);

@@ -3327,6 +3327,26 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@vubiquity-nexus/portal-assets@^1.0.0":
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-assets/-/portal-assets-1.0.0.tgz#3a23c8848852bc87f1dc0cf5403a158d46444a6c"
+  integrity sha512-FWZDuIuGFJWT1fQ+bIMoKBIOvRaSQJrznv+v3R8dQg+DZicFpoNp8by1yC96ZIzbihsiM/G5zdELvK0Shu68/w==
+
+"@vubiquity-nexus/portal-auth@^1.0.0":
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-auth/-/portal-auth-1.0.0.tgz#1e0e10de70b0a5bed3f44f9941ebe3e6814ba7c5"
+  integrity sha512-hAc0mEEUZDaibug97T1+wN00rRGejnuheKiywvLPInjKkbgT9BFtLdiZ2aM+ozZizdciDgb10Ffv/+4VxMwh5A==
+
+"@vubiquity-nexus/portal-styles@^1.0.0":
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-styles/-/portal-styles-1.0.0.tgz#dbc7e348faafcb8fe5da7c4bc28d2ecea8f0e330"
+  integrity sha512-s5h87pi66h+4ILLxrdRxj14XSKkPtc+WBb6gT0VrEY8ZIsM893Lik9p7NsmwrZQApIz7xawPRmXLiFFGFMYKDw==
+
+"@vubiquity-nexus/portal-utils@^1.0.0":
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-utils/-/portal-utils-1.0.0.tgz#f9cd03224d9658c00103573ab979f3d7f6f3528e"
+  integrity sha512-u7xLeTzNcFkPdWjpxiTGTAyzJm88mC9dwQjoAx4OO9kiKsuSsCh21UVAcc4m5PVXFG/ddoFALhVztVmcD3N2Mg==
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
