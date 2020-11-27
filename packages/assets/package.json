@@ -1,0 +1,10 @@
+{
+    "name": "@vubiquity-nexus/portal-assets",
+    "version": "1.0.0",
+    "description": "Nexus Portal Common Assets",
+    "author": "Vubiquity",
+    "license": "UNLICENSED",
+    "publishConfig": {
+        "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
+    }
+}

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AvailsIcon from '@vubiquity-nexus/portal-assets/avails.svg';
+import FilterSolidIcon from '@vubiquity-nexus/portal-assets/filter-solid.svg';
+import FilterIcon from '@vubiquity-nexus/portal-assets/filter.svg';
 import classnames from 'classnames';
-import AvailsIcon from '../../../../../assets/avails.svg';
-import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
-import FilterIcon from '../../../../../assets/filter.svg';
 import IngestFilters from '../ingest-filters/IngestFilters';
 import './PanelHeader.scss';
 

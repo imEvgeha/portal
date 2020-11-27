@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import RightsIcon from '@vubiquity-nexus/portal-assets/rights.svg';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {withRouter} from 'react-router';
-import RightsIcon from '../../../../../assets/rights.svg';
-import {URL} from '../../../../../util/Common';
 import {CREATE_NEW_RIGHT} from '../../constants';
 import './RightsRepositoryHeader.scss';
 

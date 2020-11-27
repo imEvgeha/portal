@@ -8,7 +8,7 @@ import './DateTime.scss';
 
 const {BUSINESS_DATETIME, TIMESTAMP} = DATETIME_FIELDS;
 
-const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChange, id}) => {
+const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChange, id, isReturningTime}) => {
     const isUsingTime = [BUSINESS_DATETIME, TIMESTAMP].includes(dateType);
     const isTimestamp = dateType === TIMESTAMP;
     if (type === 'dateRange') {
@@ -25,6 +25,7 @@ const DateTime = ({dateType, type, labels, isReadOnly, isDisabled, value, onChan
             },
             labels,
             onChange,
+            isReturningTime,
         };
         return <NexusDateTimeWindowPicker isReadOnly={isReadOnly || isDisabled} {...dateProps} />;
     }
@@ -47,6 +48,7 @@ DateTime.propTypes = {
     isReadOnly: PropTypes.bool,
     isDisabled: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+    isReturningTime: PropTypes.bool,
 };
 
 DateTime.defaultProps = {
@@ -57,6 +59,7 @@ DateTime.defaultProps = {
     value: '',
     isReadOnly: false,
     isDisabled: false,
+    isReturningTime: true,
 };
 
 export default DateTime;

@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '@atlaskit/button';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Link} from 'react-router-dom';
-import {URL} from '../../util/Common';
 import './ErrorBoundary.scss';
 
 export default class ErrorBoundary extends React.Component {

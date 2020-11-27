@@ -1,3 +1,4 @@
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty, isObject} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client';

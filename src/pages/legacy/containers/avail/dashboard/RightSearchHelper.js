@@ -5,7 +5,7 @@ import {
 } from '../../../stores/actions/avail/dashboard';
 
 import {rightServiceManager} from '../service/RightServiceManager';
-import {safeTrim} from '../../../../../util/Common';
+import {safeTrim} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import RightsURL from '../util/RightsURL';
 

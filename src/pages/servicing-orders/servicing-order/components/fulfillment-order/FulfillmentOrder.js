@@ -4,6 +4,7 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
+import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
@@ -11,7 +12,6 @@ import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusMod
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';
 import {createSuccessMessageSelector} from '../../../../../ui/success/successSelector';
-import {getValidDate} from '../../../../../util/utils';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
 import Constants from './constants';

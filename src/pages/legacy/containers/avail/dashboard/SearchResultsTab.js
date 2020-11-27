@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {configurationService} from '../service/ConfigurationService';
-import {IfEmbedded} from '../../../../../util/Common';
+import {IfEmbedded} from '@vubiquity-nexus/portal-utils/lib/Common';
 import withColumnsReorder from '../../../components/avails/ColumnsReorderTable';
 import withServerSorting from '../../../components/avails/ServerSortingTable';
 import withSelection from '../../../components/common/SelectionTable';

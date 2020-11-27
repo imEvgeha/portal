@@ -1,19 +1,64 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import {throttle} from 'lodash';
+import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
+import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
 import RightDetailsTitle from './RightDetailsTitle';
-import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS} from '../constants';
+import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, THROTTLE_TRAILING_MS} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
+    const tabs = schema.map(({title = ''}, index) => {
+        return {
+            title,
+            id: `tab-${index}`,
+        };
+    });
+
     const [isShrinked, setIsShrinked] = useState(false);
+    const [selectedTab, setSelectedTab] = useState(tabs[0].title);
 
     useEffect(() => {
-        window.addEventListener('scroll', onScroll, true);
-        return () => window.removeEventListener('scroll', onScroll, true);
+        const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.2,
+        };
+
+        const observerCallback = entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const focusedTab = tabs.find(item => item.id === entry.target.id);
+                    focusedTab.title && setSelectedTab(focusedTab.title);
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+        sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
+    }, []);
+
+    const buildTabs = () => {
+        return tabs.map((tab, index) => (
+            <SectionTab
+                key={tab.title}
+                section={tab.title}
+                onClick={() => setSelectedTab(tab.title)}
+                isActive={selectedTab === tab.title}
+                sectionId={`tab-${index}`}
+            />
+        ));
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', onScrollThrottled, true);
+        return () => window.removeEventListener('scroll', onScrollThrottled, true);
     }, []);
 
     useEffect(() => {
@@ -32,10 +77,14 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 
     const onScroll = event => {
         let toShrink = false;
-        const SHRINK_BOUNDARY = 25;
-        if (event.target.scrollTop > SHRINK_BOUNDARY) toShrink = true;
+        const SHRINK_BOUNDARY = 20;
+        if (event.target.scrollTop > SHRINK_BOUNDARY) {
+            toShrink = true;
+        }
         setIsShrinked(toShrink);
     };
+
+    const onScrollThrottled = throttle(onScroll, THROTTLE_TRAILING_MS, {traling: true});
 
     return (
         <div
@@ -66,6 +115,9 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
                 {SHRINKED_FIELDS.map((field, idx) => {
                     return <RightDetailsShrinkedBottom key={idx} name={field.title} value={right[field.field]} />;
                 })}
+            </div>
+            <div className="nexus-c-right-details-header__tabs-wrapper">
+                <div className="nexus-c-right-details-header__tabs">{buildTabs()}</div>
             </div>
         </div>
     );

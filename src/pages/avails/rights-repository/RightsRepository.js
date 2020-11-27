@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {getUsername} from '../../../auth/authSelectors';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {

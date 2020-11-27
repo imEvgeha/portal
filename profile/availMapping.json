@@ -96,28 +96,6 @@
             "required": false
         },
         {
-            "javaVariableName": "territory",
-            "displayName": "Selected",
-            "dataType": "territory.selected",
-            "searchDataType": "territory.selected",
-            "queryParamName": "selected",
-            "readOnly": false,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": true
-        },
-        {
-            "javaVariableName": "territory",
-            "displayName": "Withdrawn",
-            "dataType": "territory.withdrawn",
-            "searchDataType": "territory.withdrawn",
-            "queryParamName": "withdrawn",
-            "readOnly": false,
-            "enableSearch": true,
-            "enableEdit": true,
-            "required": false
-        },
-        {
             "javaVariableName": "licensee",
             "displayName": "Licensee",
             "dataType": "select",
@@ -167,21 +145,33 @@
             "sortParamName": "territoryCountry"
         },
         {
+            "javaVariableName": "territory",
+            "displayName": "Selected",
+            "dataType": "territory.selected",
+            "searchDataType": "territory.selected",
+            "queryParamName": "selected",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": true
+        },
+        {
+            "javaVariableName": "territory",
+            "displayName": "Withdrawn",
+            "dataType": "territory.withdrawn",
+            "searchDataType": "territory.withdrawn",
+            "queryParamName": "withdrawn",
+            "readOnly": true,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
+        },
+        {
             "javaVariableName": "territory.country",
             "displayName": "Territory Country",
             "searchDataType": "multiselect",
             "configEndpoint": "/countries",
             "queryParamName": "territoryCountry",
-            "readOnly": true,
-            "enableSearch": true,
-            "enableEdit": false,
-            "required": false
-        },
-        {
-            "javaVariableName": "territory.selected",
-            "displayName": "Territory Selected",
-            "searchDataType": "boolean",
-            "queryParamName": "territorySelected",
             "readOnly": true,
             "enableSearch": true,
             "enableEdit": false,

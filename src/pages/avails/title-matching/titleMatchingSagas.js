@@ -1,3 +1,4 @@
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';
 import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
@@ -13,7 +14,6 @@ import {
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,
 } from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
-import {URL} from '../../../util/Common';
 import {
     METADATA_TITLE_SEARCH_FORM__SET_SEARCH_CRITERIA,
     METADATA_TITLE_SEARCH_FORM__UPDATE_TEXT_SEARCH,

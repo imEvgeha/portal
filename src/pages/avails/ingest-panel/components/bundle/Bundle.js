@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import Chevron from '../../../../../assets/chevron-right.svg';
+import Chevron from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import BundleTitle from '../bundle-title/BundleTitle';
 import IngestStatus from '../ingest-status/IngestStatus';
 import Ingest from '../ingest/Ingest';

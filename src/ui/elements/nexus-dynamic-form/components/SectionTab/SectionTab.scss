@@ -8,6 +8,7 @@
     cursor: pointer;
     color: map-get($neutrals, N800);
     transition: color 0.2s ease-in;
+    height: calc(100% + 2px);
 
     &:hover {
         color: map-get($blues, B400);

@@ -17,3 +17,5 @@ export const SHRINKED_FIELDS = [
     {field: 'id', title: 'Right ID'},
     {field: 'title', title: 'Title'},
 ];
+
+export const THROTTLE_TRAILING_MS = 500;

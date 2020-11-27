@@ -1,8 +1,8 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
-import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,

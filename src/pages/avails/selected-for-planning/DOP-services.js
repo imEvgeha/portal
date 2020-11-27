@@ -1,6 +1,6 @@
+import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import moment from 'moment';
 import config from 'react-global-configuration';
-import {getUsername} from '../../../auth/authSelectors';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
 import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';
@@ -51,12 +51,10 @@ const DOPService = {
         const projectAttribute = [];
         data.forEach((right, index) => {
             projectAttribute.push({code: `selectedRightID[${index}]`, value: right.id});
-            projectAttribute.push(
-                ...right.territory.map((territory, territoryIndex) => ({
-                    code: `selectedRightTerritory[${right.id}][${territoryIndex}]`,
-                    value: territory.country,
-                }))
-            );
+            projectAttribute.push({
+                code: `selectedRightTerritory[${right.id}]`,
+                value: right.territory.map(territory => territory.country).toString(),
+            });
         });
 
         const utc = moment().utc();

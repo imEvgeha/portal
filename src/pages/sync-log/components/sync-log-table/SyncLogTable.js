@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -11,7 +12,6 @@ import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnMappings from '../../columnMappings';
 import {createSaveDateFromAction, createSaveDateToAction} from '../../syncLogActions';
 import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';

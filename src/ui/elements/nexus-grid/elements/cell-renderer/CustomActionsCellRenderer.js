@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import './CustomActionsCellRenderer.scss';
-import loadingGif from '../../../../../assets/img/loading.gif';
 
 // eslint-disable-next-line
 const CustomActionsCellRenderer = ({id, children, classname}) => (

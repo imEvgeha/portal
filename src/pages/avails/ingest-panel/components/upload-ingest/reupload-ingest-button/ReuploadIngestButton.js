@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import UploadIcon from '../../../../../../assets/action-upload.svg';
+import UploadIcon from '@vubiquity-nexus/portal-assets/action-upload.svg';
 import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
 import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import InputForm from '../InputForm/InputForm';

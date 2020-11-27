@@ -1,4 +1,4 @@
-import {momentToISO} from '../../../../util/Common';
+import {momentToISO} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {get} from 'lodash';
 
