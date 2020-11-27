@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import NexusDynamicForm from '../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
+import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
 import {
     getTitle,
     getExternalIds,
@@ -34,8 +35,9 @@ const TitleDetails = ({
     useEffect(() => {
         const {params} = match || {};
         if (params.id) {
+            const nexusTitle = isNexusTitle(params.id);
             getTitle({id: params.id});
-            getExternalIds({id: params.id});
+            nexusTitle && getExternalIds({id: params.id});
             getTerritoryMetadata({id: params.id});
             getEditorialMetadata({id: params.id});
         }
