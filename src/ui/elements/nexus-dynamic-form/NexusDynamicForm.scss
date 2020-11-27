@@ -97,8 +97,16 @@
         .nexus-c-field__label {
             width: 25%;
             color: map-get($neutrals, N300);
+            &--grid {
+                width: 50%;
+            }
         }
     }
+}
+
+.nexus-c-dynamic-form__section--grid {
+    display: grid;
+    grid-template-columns: 50% 50%;
 }
 
 .nexus-c-field__value-section {

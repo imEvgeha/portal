@@ -45,6 +45,7 @@ const NexusField = ({
     useCurrentDate,
     getCurrentValues,
     isReturningTime,
+    isGridLayout,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -207,7 +208,12 @@ const NexusField = ({
                     {({fieldProps, error}) => (
                         <>
                             {type !== 'castCrew' &&
-                                renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
+                                renderLabel(
+                                    label,
+                                    !!(checkDependencies('required') || isRequired),
+                                    tooltip,
+                                    isGridLayout
+                                )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {view === VIEWS.EDIT || view === VIEWS.CREATE
@@ -248,6 +254,7 @@ NexusField.propTypes = {
     isHighlighted: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
+    isGridLayout: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
@@ -270,6 +277,7 @@ NexusField.defaultProps = {
     useCurrentDate: false,
     isHighlighted: false,
     isReturningTime: true,
+    isGridLayout: false,
 };
 
 export default NexusField;

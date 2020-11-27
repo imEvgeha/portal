@@ -4,6 +4,7 @@
         "sections": [
             {
                 "title": "Core Title",
+                "isGridLayout": true,
                 "fields": {
                     "title": {
                         "name": "Title",
@@ -11,11 +12,29 @@
                         "path": "title",
                         "isRequired": true
                     },
+                    "countryOfOrigin": {
+                        "name": "Country Of Origin",
+                        "type": "select",
+                        "path": "countryOfOrigin",
+                        "optionsConfig": {
+                            "defaultValuePath": "countryCode",
+                            "defaultLabelPath": "countryName"
+                        }
+                    },
                     "contentType": {
                         "name": "Type",
                         "type": "string",
                         "path": "contentType",
                         "isReadOnly": true
+                    },
+                    "originalLanguage": {
+                        "name": "Original Language",
+                        "type": "select",
+                        "path": "originalLanguage",
+                        "optionsConfig": {
+                            "defaultValuePath": "languageCode",
+                            "defaultLabelPath": "languageName"
+                        }
                     },
                     "releaseYear": {
                         "name": "Year",
@@ -28,29 +47,6 @@
                             }
                         ]
                     },
-                    "animated": {
-                        "name": "Animated",
-                        "type": "boolean",
-                        "path": "animated"
-                    },
-                    "countryOfOrigin": {
-                        "name": "Country Of Origin",
-                        "type": "select",
-                        "path": "countryOfOrigin",
-                        "optionsConfig": {
-                            "defaultValuePath": "countryCode",
-                            "defaultLabelPath": "countryName"
-                        }
-                    },
-                    "originalLanguage": {
-                        "name": "Original Language",
-                        "type": "select",
-                        "path": "originalLanguage",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
                     "duration": {
                         "name": "Duration",
                         "type": "string",
@@ -60,6 +56,11 @@
                                 "name": "isTime"
                             }
                         ]
+                    },
+                    "animated": {
+                        "name": "Animated",
+                        "type": "boolean",
+                        "path": "animated"
                     }
                 }
             }
