@@ -94,6 +94,7 @@
         "sections": [
             {
                 "title": "External IDs",
+                "isGridLayout": true,
                 "fields": {}
             }
         ]
