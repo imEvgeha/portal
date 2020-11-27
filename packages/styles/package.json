@@ -1,0 +1,12 @@
+{
+    "name": "@vubiquity-nexus/portal-styles",
+    "version": "1.0.0",
+    "author": "Vubiquity",
+    "license": "UNLICENSED",
+    "publishConfig": {
+        "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
+    },
+    "files": [
+        "./scss"
+    ]
+}
