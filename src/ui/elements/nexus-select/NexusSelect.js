@@ -5,6 +5,7 @@ import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
 import {formatOptions} from '../nexus-dynamic-form/utils';
+import './NexusSelect.scss';
 
 const SelectWithOptional = compose(withOptionalCheckbox())(Select);
 
@@ -32,13 +33,6 @@ const NexusSelect = ({
         }
     }, [selectValues]);
 
-    const customStyles = {
-        menuList: provided => ({
-            ...provided,
-            maxHeight: '200px',
-        }),
-    };
-
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
             const deselectOption = {label: 'Select...', value: ''};
@@ -60,7 +54,8 @@ const NexusSelect = ({
             options={optionsConfig.options !== undefined ? optionsConfig.options : fetchedOptions}
             defaultValue={defaultValue}
             {...addedProps}
-            styles={customStyles}
+            className="nexus-c-nexus-select-container"
+            classNamePrefix="nexus-c-nexus-select"
         />
     );
 };

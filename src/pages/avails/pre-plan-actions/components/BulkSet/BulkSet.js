@@ -38,6 +38,8 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
                 hideSelectedOptions
                 placeholder="Select territories..."
                 onChange={i => setTerritories(i)}
+                className="bulk-set-territories__select-container"
+                classNamePrefix="bulk-set-territories__select"
             />
             <div className="bulk-set-territories__label">Keywords</div>
             <NexusTextArea notesValue={keywordsLocal} onTextChange={onChange} />
