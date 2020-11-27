@@ -34,12 +34,13 @@ const TitleDetails = ({
 
     useEffect(() => {
         const {params} = match || {};
-        if (params.id) {
-            const nexusTitle = isNexusTitle(params.id);
-            getTitle({id: params.id});
-            nexusTitle && getExternalIds({id: params.id});
-            getTerritoryMetadata({id: params.id});
-            getEditorialMetadata({id: params.id});
+        const {id} = params;
+        if (id) {
+            const nexusTitle = isNexusTitle(id);
+            getTitle({id});
+            nexusTitle && getExternalIds({id});
+            getTerritoryMetadata({id});
+            getEditorialMetadata({id});
         }
     }, []);
 
