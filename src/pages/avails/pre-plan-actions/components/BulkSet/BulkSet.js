@@ -29,13 +29,6 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
         setKeywords(value);
     };
 
-    const customStyles = {
-        menuList: provided => ({
-            ...provided,
-            maxHeight: '180px',
-        }),
-    };
-
     return (
         <div className="bulk-set-territories">
             <div className="bulk-set-territories__label">Territories</div>
@@ -45,7 +38,8 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
                 hideSelectedOptions
                 placeholder="Select territories..."
                 onChange={i => setTerritories(i)}
-                styles={customStyles}
+                className="bulk-set-territories__select-container"
+                classNamePrefix="bulk-set-territories__select"
             />
             <div className="bulk-set-territories__label">Keywords</div>
             <NexusTextArea notesValue={keywordsLocal} onTextChange={onChange} />
