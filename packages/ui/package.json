@@ -1,0 +1,13 @@
+{
+    "name": "@vubiquity-nexus/portal-ui",
+    "version": "1.0.0",
+    "description": "Nexus Portal Common UI",
+    "author": "Vubiquity",
+    "license": "UNLICENSED",
+    "publishConfig": {
+        "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
+    },
+    "peerDependencies": {
+        "@vubiquity-nexus/portal-utils": "1.x"
+    }
+}

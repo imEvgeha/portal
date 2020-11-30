@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import 'ag-grid-enterprise';
+import NexusJsonView from '@vubiquity-nexus/portal-ui/elements/nexus-json-view/NexusJsonView';
 import {NexusGrid} from '../../../../../ui/elements';
-import NexusJsonView from '../../../../../ui/elements/nexus-json-view/NexusJsonView';
 import {parseSimulcast} from '../../../../../util/date-time/DateTimeUtils';
 import {getServiceRequest} from '../../../servicingOrdersService';
 import {

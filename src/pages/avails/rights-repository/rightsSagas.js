@@ -1,4 +1,3 @@
-import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
@@ -6,7 +5,8 @@ import {
     UPDATE_RIGHT_FAILED,
     UPDATE_RIGHT_SUCCESS_MESSAGE,
     MAX_CHARS,
-} from '../../../ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {put, all, call, takeEvery} from 'redux-saga/effects';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getLinkedToOriginalRightsV2, bulkDeleteRights} from '../availsService';

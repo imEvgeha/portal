@@ -1,5 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+    SUCCESS_TITLE,
+    SUCCESS_ICON,
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
 import {Button, Input, Label} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -11,13 +18,7 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
-import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
-import {
-    SUCCESS_TITLE,
-    SUCCESS_ICON,
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-} from '../../../../../ui/elements/nexus-toast-notification/constants';
 import RightsURL from '../util/RightsURL';
 import {can, cannot} from '../../../../../ability';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
@@ -31,7 +32,6 @@ import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue} from '../util/ProcessSelectOptions';

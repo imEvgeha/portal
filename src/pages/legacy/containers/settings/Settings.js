@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {TabContent, TabPane} from 'reactstrap';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/elements/nexus-drawer/NexusDrawer';
 import './Settings.scss';
 import {
     // GroupHeader,
@@ -16,7 +17,6 @@ import {EndpointContainer} from '../config/EndpointContainer';
 import Localization from './Localization';
 import {fetchConfigApiEndpoints} from './settingsActions';
 import * as selectors from './settingsSelectors';
-import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 class Settings extends Component {

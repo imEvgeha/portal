@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/elements/nexus-drawer/NexusDrawer';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
-import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import {dateToISO} from '../../../../util/date-time/DateTimeUtils';

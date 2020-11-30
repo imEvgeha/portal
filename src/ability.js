@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {AbilityBuilder, Ability} from '@casl/ability';
 import {createCanBoundTo} from '@casl/react';
-import {withRouter} from 'react-router-dom';
 import {
     AVAILS,
     MEDIA,
@@ -10,7 +9,8 @@ import {
     SERVICING_ORDERS,
     EVENT_MANAGEMENT,
     DOP_TASKS,
-} from './ui/elements/nexus-navigation/constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-navigation/constants';
+import {withRouter} from 'react-router-dom';
 
 const idToAbilityNameMap = {
     [AVAILS]: 'Avail',

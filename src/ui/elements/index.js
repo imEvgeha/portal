@@ -3,7 +3,6 @@ import NexusDatePicker from './nexus-date-and-time-elements/nexus-date-picker/Ne
 import NexusDateTimePicker from './nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import NexusDateTimeWindowPicker from './nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
 import NexusSimpleDateTimePicker from './nexus-date-and-time-elements/nexus-simple-date-time-picker/NexusSimpleDateTimePicker';
-import NexusDrawer from './nexus-drawer/NexusDrawer';
 import NexusGrid from './nexus-grid/NexusGrid';
 import NexusMultiInstanceField from './nexus-multi-instance-field/NexusMultiInstanceField';
 import NexusTableToolbar from './nexus-table-toolbar/NexusTableToolbar';
@@ -25,5 +24,4 @@ export {
     NexusTooltip,
     NexusTableToolbar,
     NexusToastNotification,
-    NexusDrawer,
 };

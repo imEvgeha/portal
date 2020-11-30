@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import classNames from 'classnames';
 import {NexusGrid} from '../../../ui/elements';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import {
     defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,

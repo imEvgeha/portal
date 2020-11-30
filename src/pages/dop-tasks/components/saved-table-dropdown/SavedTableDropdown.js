@@ -4,7 +4,7 @@ import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-
 import {FieldTextStateless} from '@atlaskit/field-text';
 import CheckIcon from '@atlaskit/icon/glyph/check';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import IconButton from '../../../../ui/atlaskit/icon-button/IconButton';
+import IconButton from '@vubiquity-nexus/portal-ui/atlaskit/icon-button/IconButton';
 import {
     MY_SAVED_VIEWS_LABEL,
     MY_PREDEFINED_VIEWS_LABEL,

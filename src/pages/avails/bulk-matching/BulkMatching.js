@@ -2,15 +2,15 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
-import {get} from 'lodash';
-import {connect} from 'react-redux';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
-} from '../../../ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {get} from 'lodash';
+import {connect} from 'react-redux';
+import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '../../../ui/toast/constants';
 import withToasts from '../../../ui/toast/hoc/withToasts';

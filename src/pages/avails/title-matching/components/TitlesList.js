@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Radio} from '@atlaskit/radio';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import classNames from 'classnames';
 import {compose} from 'redux';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import {GRID_EVENTS} from '../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineEpisodeAndSeasonNumberColumn,

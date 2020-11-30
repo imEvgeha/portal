@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import {cloneDeep} from 'lodash';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';

@@ -1,14 +1,14 @@
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push} from 'connected-react-router';
-import {isEmpty} from 'lodash';
-import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
-import mappings from '../../../../profile/titleMatchingMappings.json';
 import {
     ERROR_ICON,
     ERROR_TITLE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
-} from '../../../ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {push} from 'connected-react-router';
+import {isEmpty} from 'lodash';
+import {call, put, all, takeEvery, select, fork} from 'redux-saga/effects';
+import mappings from '../../../../profile/titleMatchingMappings.json';
 import {
     TITLE_MATCH_AND_CREATE_ERROR_MESSAGE,
     TITLE_MATCH_AND_CREATE_SUCCESS_MESSAGE,

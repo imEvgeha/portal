@@ -1,7 +1,7 @@
 import React from 'react';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
-import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
 import EventManagement from './EventManagement';
 
 describe('EventManagement', () => {

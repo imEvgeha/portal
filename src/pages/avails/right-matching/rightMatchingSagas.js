@@ -1,13 +1,13 @@
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push, goBack} from 'connected-react-router';
-import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {
     CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
-} from '../../../ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {push, goBack} from 'connected-react-router';
+import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
