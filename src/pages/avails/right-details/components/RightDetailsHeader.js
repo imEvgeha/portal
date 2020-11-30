@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {throttle} from 'lodash';
@@ -12,12 +12,16 @@ import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, THROTTLE_TRAILING_MS} from '../cons
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
-    const tabs = schema.map(({title = ''}, index) => {
-        return {
-            title,
-            id: `tab-${index}`,
-        };
-    });
+    const tabs = useMemo(
+        () =>
+            schema.map(({title = ''}, index) => {
+                return {
+                    title,
+                    id: `tab-${index}`,
+                };
+            }),
+        []
+    );
 
     const [isShrinked, setIsShrinked] = useState(false);
     const [selectedTab, setSelectedTab] = useState(tabs[0].title);
