@@ -204,7 +204,6 @@ const ServicingOrdersTable = ({
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
-                customDateFilterParamSuffixes={['Start', 'End']}
                 setTotalCount={setTotalCount}
             />
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
