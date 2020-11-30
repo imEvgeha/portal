@@ -6,7 +6,7 @@ import Error from '@atlaskit/icon/glyph/error';
 import Info from '@atlaskit/icon/glyph/info';
 import Warning from '@atlaskit/icon/glyph/warning';
 import {colors} from '@atlaskit/theme';
-import {switchCase} from '../../../util/Common';
+import {switchCase} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SUCCESS_ICON, WARNING_ICON, INFO_ICON, ERROR_ICON} from './constants';
 
 const icons = {

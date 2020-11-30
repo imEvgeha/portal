@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
+import {getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import NexusTextArea from '../../../../../ui/elements/nexus-textarea/NexusTextArea';
-import {getSortedData} from '../../../../../util/Common';
 import {countryOptionsSelector} from '../../../right-details/rightDetailsSelector';
 import {BULK_SET_NOTE} from '../../constants';
 import './BulkSet.scss';
@@ -38,6 +38,8 @@ const BulkSet = ({countryOptions, setTerritories, setKeywords}) => {
                 hideSelectedOptions
                 placeholder="Select territories..."
                 onChange={i => setTerritories(i)}
+                className="bulk-set-territories__select-container"
+                classNamePrefix="bulk-set-territories__select"
             />
             <div className="bulk-set-territories__label">Keywords</div>
             <NexusTextArea notesValue={keywordsLocal} onTextChange={onChange} />

@@ -1,6 +1,6 @@
+import {keycloak} from '@vubiquity-nexus/portal-auth/keycloak';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
-import {keycloak} from '../../../../../auth/keycloak';
 import {isString} from 'lodash';
 
 // currently FETCH API doesn't support upload progress calculation

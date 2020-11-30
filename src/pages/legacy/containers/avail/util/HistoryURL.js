@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {advancedHistorySearchHelper} from '../ingest-history/AdvancedHistorySearchHelper';
-import {URL} from '../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 class HistoryURL extends React.Component {
     static instance = null;

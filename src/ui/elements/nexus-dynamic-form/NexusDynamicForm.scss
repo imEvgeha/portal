@@ -1,101 +1,110 @@
 @import '../../../styles/atlaskit/mixins';
 @import '../../../styles/atlaskit/colors';
 
+// only nest modifier within block, not elements
 .nexus-c-dynamic-form {
     width: 80%;
     margin: auto;
+}
 
-    &__tab {
-        display: flex;
-        justify-content: center;
-        @include padding(1, 6);
-        border-bottom: 1px solid map-get($neutrals, N40);
-        cursor: pointer;
-        transition: color 0.2s ease-in;
+.nexus-c-dynamic-form__tab-container {
+    width: calc((100% - 64px) * 0.8);
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    position: fixed;
+    top: 131px;
+    transition: top linear 0.5s;
+    background-color: map-get($neutrals, N0);
+    z-index: 1;
+}
 
-        &:hover {
-            color: map-get($blues, B400);
-        }
+.nexus-c-dynamic-form__tab-container--title {
+    top: 175px;
+}
 
-        &--is-active {
-            color: map-get($blues, B400);
-            border-bottom: 2px solid map-get($blues, B400);
-            cursor: default;
-        }
-        &-content {
-            @include padding(32, 0, 0, 0);
+.nexus-c-dynamic-form__tab-container--shrinked-title {
+    top: 82px;
+}
 
-            &--title {
-                @include padding(46, 0, 0, 0);
-                scroll-margin-top: 2rem;
-            }
-        }
-        &-container {
-            width: calc((100% - 64px) * 0.8);
-            margin: auto;
+.nexus-c-dynamic-form__tab-content {
+    @include padding(3, 0, 0, 0);
+}
+
+.nexus-c-dynamic-form__tab-content--title {
+    @include padding(46, 0, 0, 0);
+}
+
+.nexus-c-dynamic-form__tab {
+    display: flex;
+    justify-content: center;
+    @include padding(1, 6);
+    border-bottom: 1px solid map-get($neutrals, N40);
+    cursor: pointer;
+    transition: color 0.2s ease-in;
+
+    &:hover {
+        color: map-get($blues, B400);
+    }
+
+    &--is-active {
+        color: map-get($blues, B400);
+        border-bottom: 2px solid map-get($blues, B400);
+        cursor: default;
+    }
+}
+
+.nexus-c-dynamic-form__section-title {
+    @include padding(13, 0, 2);
+    font-weight: bold;
+    border-bottom: 2px solid map-get($neutrals, N40);
+}
+
+.nexus-c-dynamic-form__cancel-button,
+.nexus-c-dynamic-form__submit-button,
+.nexus-c-dynamic-form__edit-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 1;
+}
+
+.nexus-c-dynamic-form__submit-button {
+    right: 100px;
+}
+
+.nexus-c-dynamic-form__cancel-button--title,
+.nexus-c-dynamic-form__submit-button--title,
+.nexus-c-dynamic-form__edit-button--title {
+    position: absolute;
+    top: 24px;
+    right: 31.5%;
+    z-index: 1;
+}
+
+.nexus-c-dynamic-form__submit-button--title {
+    right: calc(31.5% + 80px);
+}
+
+.nexus-c-dynamic-form__field {
+    .nexus-c-field {
+        > div {
             display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            border-bottom: 1px solid map-get($neutrals, N40);
-            position: fixed;
-            top: 131px;
-            transition: top linear 0.5s;
-            background-color: map-get($neutrals, N0);
-            z-index: 1;
+            align-items: center;
         }
 
-        &-title {
-            top: 175px;
-        }
-
-        &--shrinked-title {
-            top: 82px;
+        .nexus-c-field__label {
+            width: 25%;
+            color: map-get($neutrals, N300);
         }
     }
+}
 
-    &__section {
-        &-title {
-            @include padding(13, 0, 2);
-            font-weight: bold;
-            border-bottom: 2px solid map-get($neutrals, N40);
-        }
-        &-start {
-            scroll-margin-top: 5rem;
-        }
-    }
+.nexus-c-field__value-section {
+    width: 100%;
+}
 
-    &__edit-button,
-    &__submit-button,
-    &__cancel-button {
-        &--title {
-            position: absolute;
-            top: 24px;
-            right: 1.2%;
-            z-index: 1;
-        }
-    }
-    &__submit-button {
-        &--title {
-            right: calc(1.2% + 80px);
-        }
-    }
-
-    &__field {
-        .nexus-c-field {
-            > div {
-                display: flex;
-                align-items: center;
-            }
-
-            .nexus-c-field__label {
-                width: 25%;
-                color: map-get($neutrals, N300);
-            }
-            &__value {
-                &-section {
-                    width: 100%;
-                }
-            }
-        }
-    }
+.nexus-c-dynamic-form__section-start {
+    scroll-margin: 80px;
 }

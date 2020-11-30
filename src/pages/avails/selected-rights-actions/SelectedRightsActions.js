@@ -1,16 +1,16 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import MoreIcon from '../../../assets/more-icon.svg';
 import NexusDrawer from '../../../ui/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '../../../ui/elements/nexus-toast-notification/constants';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';
-import {URL} from '../../../util/Common';
 import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
 import BulkDeleteConfirmation from '../bulk-delete/components/bulk-delete-confirmation/BulkDeleteConfirmation';
@@ -41,6 +41,7 @@ import {
     STATUS_CHECK_HEADER,
     VIEW_AUDIT_HISTORY,
     BULK_DELETE_TOOLTIP,
+    BULK_DELETE_TOOLTIP_SFP,
     MARK_DELETED,
     BULK_DELETE_HEADER,
     BULK_UNMATCH_SUCCESS_TOAST,
@@ -75,6 +76,7 @@ export const SelectedRightsActions = ({
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isBonusRight, setIsBonusRight] = useState(false);
     const [headerText, setHeaderText] = useState('');
+    const [isSelectedForPlanning, setIsSelectedForPlanning] = useState(false);
     const node = useRef();
 
     const {openModal, closeModal} = useContext(NexusModalContext);
@@ -106,6 +108,9 @@ export const SelectedRightsActions = ({
     // At least one of the selected rights has status 'Deleted' or 'Merged'
     const checkStatusDeleteMerged = () =>
         selectedRights.some(({status}) => status === 'Deleted' || status === 'Merged');
+
+    const checkIsSelectedForPlanning = () =>
+        selectedRights.some(({territory = []}) => territory.filter(item => item.selected).length > 0);
 
     // All the rights have Same CoreTitleIds And Empty SourceRightId And Licensed And Ready Or ReadyNew Status
     const checkBonusRightCreateCriteria = () => {
@@ -325,6 +330,8 @@ export const SelectedRightsActions = ({
 
             // Set status deleted/merged criteria
             setStatusDeleteMerged(checkStatusDeleteMerged());
+
+            setIsSelectedForPlanning(checkIsSelectedForPlanning());
         } else {
             setIsMatchable(false);
             setIsUnmatchable(false);
@@ -332,6 +339,7 @@ export const SelectedRightsActions = ({
             setIsPreplanEligible(false);
             setIsDeletable(false);
             setStatusDeleteMerged(false);
+            setIsSelectedForPlanning(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedRights]);
@@ -436,7 +444,10 @@ export const SelectedRightsActions = ({
                                 data-test-id="mark-as-deleted"
                                 onClick={() => (isDeletable ? openDeleteConfirmationModal() : null)}
                             >
-                                <NexusTooltip content={BULK_DELETE_TOOLTIP} isDisabled={isDeletable}>
+                                <NexusTooltip
+                                    content={isSelectedForPlanning ? BULK_DELETE_TOOLTIP_SFP : BULK_DELETE_TOOLTIP}
+                                    isDisabled={isDeletable}
+                                >
                                     <div>{MARK_DELETED}</div>
                                 </NexusTooltip>
                             </div>

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import './NexusTableExportDropdown.scss';
 import * as selectors from '../../../pages/avails/right-matching/rightMatchingSelectors';
@@ -14,7 +15,6 @@ import {
     IN_PROGRESS,
 } from '../../../pages/avails/rights-repository/constants';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
-import {downloadFile} from '../../../util/Common';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 
@@ -214,7 +214,9 @@ const NexusTableExportDropdown = ({
         return (
             <DropdownMenu
                 className="nexus-c-button"
-                trigger={[PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export'}
+                trigger={
+                    [PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB].includes(activeTab) ? 'Download Report' : 'Export All'
+                }
                 triggerType="button"
                 triggerButtonProps={{isDisabled}}
             >

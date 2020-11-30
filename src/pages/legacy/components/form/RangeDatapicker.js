@@ -3,7 +3,7 @@ import React from 'react';
 import NexusDatePicker from './NexusDatePicker';
 import {INVALID_DATE} from '../../constants/messages';
 import moment from 'moment';
-import {momentToISO} from '../../../../util/Common';
+import {momentToISO} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 export default class RangeDatapicker extends React.Component {
     constructor(props) {

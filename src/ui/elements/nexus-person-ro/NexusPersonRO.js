@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Lozenge from '@atlaskit/lozenge';
-import DefaultUserIcon from '../../../assets/img/default-user.png';
+import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import './NexusPersonRO.scss';
 
 const NexusPersonRO = ({person}) => {

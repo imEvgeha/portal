@@ -1,4 +1,4 @@
-import {URL} from '../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import Constants from './constants';
 
 const {

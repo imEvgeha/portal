@@ -1,3 +1,4 @@
+import {DATETIME_FIELDS, SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get} from 'lodash';
 import moment from 'moment';
 import {store} from '../../index';
@@ -6,7 +7,6 @@ import {
     SIMULCAST_TIME_FORMAT,
     TIMESTAMP_TIME_FORMAT,
 } from '../../ui/elements/nexus-date-and-time-elements/constants';
-import {DATETIME_FIELDS, SORT_DIRECTION} from './constants';
 
 // Create date format based on locale
 const getDateFormatBasedOnLocale = locale => moment().locale(locale).localeData().longDateFormat('L');

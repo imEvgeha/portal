@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
 import {historyService} from '../../service/HistoryService';
-import {URL} from '../../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {Can} from '../../../../../../ability';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';

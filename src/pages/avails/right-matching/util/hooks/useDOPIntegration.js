@@ -1,6 +1,6 @@
 import {useEffect, useContext, useCallback} from 'react';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
-import DOP from '../../../../../util/DOP';
 import useLocalStorage from '../../../../../util/hooks/useLocalStorage';
 
 const DOP_POP_UP_TITLE = 'Right Matching';

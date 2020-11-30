@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {isObject, isObjectEmpty} from '../../../../../util/Common';
+import {isObject, isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import './CustomReadOnlyFilter.scss';
 
 class CustomReadOnlyFloatingFilter extends React.Component {

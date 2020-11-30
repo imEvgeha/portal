@@ -1,7 +1,7 @@
 import {store} from '../../../../../index';
 import {searchFormUpdateAdvancedHistorySearchCriteria} from '../../../stores/actions/avail/history';
 import {historyServiceManager} from './HistoryServiceManager';
-import {safeTrim} from '../../../../../util/Common';
+import {safeTrim} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import HistoryURL from '../util/HistoryURL';
 

@@ -1,5 +1,5 @@
+import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import config from 'react-global-configuration';
-import {prepareSortMatrixParamTitles, encodedSerialize} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 

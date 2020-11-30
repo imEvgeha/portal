@@ -1,8 +1,8 @@
+import {URL, normalizeDataForStore} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {call, put, all, takeLatest, select, delay} from 'redux-saga/effects';
 import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../ui/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
-import {URL, normalizeDataForStore} from '../../../util/Common';
 import {historyService} from '../../legacy/containers/avail/service/HistoryService';
 import {uploadService} from '../../legacy/containers/avail/service/UploadService';
 import {ADD_RIGHTS_FILTER, REMOVE_RIGHTS_FILTER, SET_RIGHTS_FILTER} from '../rights-repository/rightsActionTypes';

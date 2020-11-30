@@ -1,9 +1,9 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';
-import {cleanObject} from '../../../../util/Common';
 import usePrevious from '../../../../util/hooks/usePrevious';
 import {toggleRefreshGridData} from '../../../grid/gridActions';
 import {getShouldGridRefresh} from '../../../grid/gridSelectors';
@@ -159,7 +159,10 @@ const withInfiniteScrolling = ({
 
                     gridApi.showNoRowsOverlay();
                 })
-                .catch(error => failCallback(error))
+                .catch(error => {
+                    failCallback(error);
+                    gridApi.showNoRowsOverlay();
+                })
                 .finally(() => {
                     hasBeenCalledRef.current = false;
                     if (typeof props.setDataLoading === 'function' && isMounted.current) {

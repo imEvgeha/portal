@@ -11,7 +11,7 @@ import './AvailsIngestHistoryTable.scss';
 import HistoryURL from '../../util/HistoryURL';
 
 // image import
-import LoadingGif from '../../../../../../assets/img/loading.gif';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 
 import {connect} from 'react-redux';
 import {

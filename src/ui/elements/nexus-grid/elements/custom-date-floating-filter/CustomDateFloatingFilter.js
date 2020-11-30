@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import './CustomDateFloatingFilter.scss';
-import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
 import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 
 class CustomDateFloatingFilter extends React.Component {
