@@ -165,6 +165,14 @@
                         "path": "externalIds.assetName"
                     }
                 }
+            },
+            {
+                "title": "Licensors",
+                "fields": {}
+            },
+            {
+                "title": "MSV Association IDs",
+                "fields": {}
             }
         ]
     },
