@@ -10,16 +10,11 @@ const RightDashboardContainer = React.lazy(() =>
         /* webpackPrefetch: true, webpackChunkName: "DashboardContainer" */ '../legacy/containers/avail/dashboard/DashboardContainer'
     )
 );
-const RightDetails = React.lazy(() =>
-    import(
-        /* webpackPrefetch: true, webpackChunkName: "RightDetails" */ '../legacy/containers/avail/details/RightDetails'
-    )
-);
 const RightCreate = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "RightCreate" */ '../legacy/containers/avail/create/RightCreate')
 );
-const RightDetailsV2 = React.lazy(() => RightDetailsV2Import);
-const RightDetailsV2Import = import(/* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails');
+const RightDetails = React.lazy(() => RightDetailsImport);
+const RightDetailsImport = import(/* webpackChunkName: "RightCreateV2" */ './right-details/RightDetails');
 const SelectRightsPlanning = React.lazy(() =>
     import(
         /* webpackPrefetch: true, webpackChunkName: "SelectRightPlanning" */ '../legacy/containers/avail/DOP/SelectRightsPlanning'
@@ -88,11 +83,7 @@ const routes = [
     },
     {
         path: `${BASE_PATH}/rights/:id`,
-        component: canRender(RightDetails, 'read', 'Avail'),
-    },
-    {
-        path: `${BASE_PATH}/rights/:id/v2`,
-        component: canRender(RightDetailsV2, 'update', 'Avail'),
+        component: canRender(RightDetails, 'update', 'Avail'),
     },
     {
         path: `${BASE_PATH}/rights/:rightId/title-matching`,
