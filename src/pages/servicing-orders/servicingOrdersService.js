@@ -14,6 +14,13 @@ const deteTitleURL = config => {
     return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteTitle')}`;
 };
 
+export const getSpecOptions = (recipientId, tenant) => {
+    const url = `${config.get(
+        'gateway.deteBaseUrl'
+    )}/outputFormats?recipientId=${recipientId}&tenant=${tenant}&sort=OUTPUTTEMPLATEID`;
+    return nexusFetch(url);
+};
+
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
     let queryParams = {};

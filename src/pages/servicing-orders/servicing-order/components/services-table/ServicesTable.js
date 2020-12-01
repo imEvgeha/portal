@@ -15,8 +15,9 @@ import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {getSpecOptions} from '../../../servicingOrdersService';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, ErrorTestRows} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
@@ -33,6 +34,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
+
+    console.log('data: ', data);
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
         data.barcode,
