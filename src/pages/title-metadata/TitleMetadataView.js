@@ -2,14 +2,22 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {connect} from 'react-redux';
+import {toggleRefreshGridData} from '../../ui/grid/gridActions';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
 import {CREATE_NEW_TITLE, SYNC_LOG} from './constants';
 import './TitleMetadataView.scss';
 
-const TitleMetadataView = ({history}) => {
+export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
     const [showModal, setShowModal] = useState(false);
+
+    const closeModalAndRefreshTable = () => {
+        setShowModal(false);
+        toggleRefreshGridData(true);
+    };
+
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
@@ -29,17 +37,23 @@ const TitleMetadataView = ({history}) => {
                 </Button>
             </TitleMetadataHeader>
             <TitleMetadataTable history={history} />
-            <TitleCreate display={showModal} toggle={() => setShowModal(false)} />
+            <TitleCreate display={showModal} toggle={closeModalAndRefreshTable} />
         </div>
     );
 };
 
+const mapDispatchToProps = dispatch => ({
+    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
+});
+
 TitleMetadataView.propTypes = {
     history: PropTypes.object,
+    toggleRefreshGridData: PropTypes.func,
 };
 
 TitleMetadataView.defaultProps = {
     history: {},
+    toggleRefreshGridData: () => null,
 };
 
-export default TitleMetadataView;
+export default connect(null, mapDispatchToProps)(TitleMetadataView);

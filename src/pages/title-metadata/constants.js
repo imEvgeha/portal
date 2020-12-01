@@ -46,9 +46,8 @@ export const COLUMN_MAPPINGS = [
         headerName: 'Content Type',
         javaVariableName: 'contentType',
         enableSearch: true,
-        dataType: 'select',
-        searchDataType: 'multiselect',
-        options: CONTENT_TYPE,
+        dataType: 'string',
+        searchDataType: 'string',
         width: 120,
     },
     {
