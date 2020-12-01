@@ -19,9 +19,13 @@
     &:active,
     &:focus {
         outline: none;
+        color: map-get($neutrals, N800);
     }
 
     &--is-active {
+        &:focus {
+            color: map-get($blues, B400);
+        }
         color: map-get($blues, B400);
         border-bottom: 2px solid map-get($blues, B400);
         cursor: default;
