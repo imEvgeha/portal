@@ -5,7 +5,6 @@ import {Field as AKField} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import {get} from 'lodash';
-import {generateMsvIds} from '../../../../pages/title-metadata/titleMetadataServices';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {CANCEL, DELETE, REMOVE_TITLE} from '../../nexus-tag/constants';
 import {
@@ -35,8 +34,6 @@ const NexusArray = ({
     validationError,
     validation,
     selectValues,
-    isCallingAPI,
-    id,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -130,7 +127,7 @@ const NexusArray = ({
                     appearance="primary"
                     isDisabled={!dirty || submitting}
                 >
-                    {isCallingAPI ? 'Generate' : 'Confirm'}
+                    Confirm
                 </Button>
                 <Button
                     className="nexus-c-array__cancel-button"
@@ -146,12 +143,6 @@ const NexusArray = ({
     };
 
     const handleOnSubmit = async values => {
-        if (isCallingAPI) {
-            // TODO: call generateMsvIds...
-            // const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value);
-            // console.log(generatedIds);
-            // values.generatedIds = generatedIds;
-        }
         const formData = getValues();
         const arrayData = get(formData, path) ? get(formData, path) : [];
         // including the new row
@@ -222,8 +213,6 @@ NexusArray.propTypes = {
     validation: PropTypes.array,
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
-    isCallingAPI: PropTypes.bool,
-    id: PropTypes.string,
 };
 
 NexusArray.defaultProps = {
@@ -239,8 +228,6 @@ NexusArray.defaultProps = {
     validation: [],
     dependencies: [],
     selectValues: {},
-    isCallingAPI: false,
-    id: null,
 };
 
 export default NexusArray;

@@ -1,0 +1,39 @@
+@import '../../../../../../../styles/atlaskit/colors';
+@import '../../../../../../../styles/atlaskit/mixins';
+
+.nexus-c-licensors {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 47.5% 47.5% 5%;
+    @include margin(0, 0, 4, 0);
+}
+
+.nexus-c-licensors__licensor {
+    > span:first-child {
+        color: map-get($neutrals, N300);
+        @include margin(0, 4, 0, 0);
+    }
+}
+
+.nexus-c-licensors__id {
+    > span:first-child {
+        color: map-get($neutrals, N300);
+        @include margin(0, 4, 0, 0);
+    }
+}
+
+.nexus-c-licensors__buttons {
+    cursor: pointer;
+    &:hover {
+        color: map-get($reds, R400);
+    }
+}
+
+.nexus-c-modal__cancel-button {
+    @include margin(0, 0, 0, 6);
+}
+
+.nexus-c-modal__select-container > .nexus-c-modal__select__menu > .nexus-c-modal__select__menu-list {
+    max-height: 120px;
+}

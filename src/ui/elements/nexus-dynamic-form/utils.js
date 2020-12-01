@@ -110,7 +110,7 @@ export const formatOptions = (options, optionsConfig) => {
     return sortOptions(formattedOptions);
 };
 
-const sortOptions = options => {
+export const sortOptions = options => {
     const SORT_TYPE = 'label';
     return getSortedData(options, SORT_TYPE, true);
 };

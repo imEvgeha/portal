@@ -168,7 +168,13 @@
             },
             {
                 "title": "Licensors",
-                "fields": {}
+                "fields": {
+                    "licensors": {
+                        "name": "Licensors",
+                        "type": "licensors",
+                        "path": "licensors"
+                    }
+                }
             },
             {
                 "title": "MSV Association IDs",

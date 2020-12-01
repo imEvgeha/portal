@@ -13,6 +13,7 @@ import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
+import Licensors from './components/Licensors/Licensors';
 import './NexusField.scss';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
@@ -150,6 +151,15 @@ const NexusField = ({
                 return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
             case 'castCrew':
                 return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
+            case 'licensors':
+                return (
+                    <Licensors
+                        {...fieldProps}
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={true}
+                    />
+                );
             default:
                 return;
         }
@@ -180,6 +190,14 @@ const NexusField = ({
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             case 'castCrew':
                 return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={false} />;
+            case 'licensors':
+                return (
+                    <Licensors
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={false}
+                    />
+                );
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
@@ -208,6 +226,7 @@ const NexusField = ({
                     {({fieldProps, error}) => (
                         <>
                             {type !== 'castCrew' &&
+                                type !== 'licensors' &&
                                 renderLabel(
                                     label,
                                     !!(checkDependencies('required') || isRequired),
