@@ -20,7 +20,7 @@ import {configurePersistor} from './store-persist-config';
 import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
 import Toast from './ui/toast/Toast';
 import {initializeTracker} from './util/hoc/withTracker';
-import './styles/index.scss';
+import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
