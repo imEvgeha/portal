@@ -1,13 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useRef, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {omit, isEqual, debounce} from 'lodash';
-import {connect} from 'react-redux';
-import usePrevious from '../../../../util/hooks/usePrevious';
-import {toggleRefreshGridData} from '../../../grid/gridActions';
-import {getShouldGridRefresh} from '../../../grid/gridSelectors';
-import {filterBy, sortBy} from '../utils';
 import {
     DEFAULT_HOC_PROPS,
     ROW_BUFFER,
@@ -17,7 +10,14 @@ import {
     MAX_BLOCKS_IN_CACHE,
     ROW_MODEL_TYPE,
     GRID_EVENTS,
-} from '../constants';
+} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {omit, isEqual, debounce} from 'lodash';
+import {connect} from 'react-redux';
+import usePrevious from '../../../../util/hooks/usePrevious';
+import {toggleRefreshGridData} from '../../../grid/gridActions';
+import {getShouldGridRefresh} from '../../../grid/gridSelectors';
+import {filterBy, sortBy} from '../utils';
 
 const withInfiniteScrolling = ({
     hocProps = DEFAULT_HOC_PROPS,

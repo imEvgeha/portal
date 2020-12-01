@@ -1,6 +1,16 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {
+    AG_GRID_COLUMN_FILTER,
+    DEFAULT_FILTER_PARAMS,
+    DEFAULT_HOC_PROPS,
+    EXCLUDED_INITIAL_FILTER_VALUES,
+    FILTER_TYPE,
+    FILTERABLE_DATA_TYPES,
+    GRID_EVENTS,
+    NOT_FILTERABLE_COLUMNS,
+} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
@@ -15,16 +25,6 @@ import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
-import {
-    AG_GRID_COLUMN_FILTER,
-    DEFAULT_FILTER_PARAMS,
-    DEFAULT_HOC_PROPS,
-    EXCLUDED_INITIAL_FILTER_VALUES,
-    FILTER_TYPE,
-    FILTERABLE_DATA_TYPES,
-    GRID_EVENTS,
-    NOT_FILTERABLE_COLUMNS,
-} from '../constants';
 
 const withFilterableColumns = ({
     hocProps = [],

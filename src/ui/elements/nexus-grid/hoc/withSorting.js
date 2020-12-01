@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
+import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
 
 const withSorting = (initialSort = null) => WrappedComponent => {
     const ComposedComponent = props => {
