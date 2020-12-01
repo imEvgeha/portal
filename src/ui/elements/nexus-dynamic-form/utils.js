@@ -187,6 +187,7 @@ export const buildSection = (
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
+                            id={initialData.id}
                             {...fields[key]}
                         />
                     ) : (

@@ -38,6 +38,17 @@ export const updateTitle = (title, syncToVZ, syncToMovida) => {
     });
 };
 
+export const generateMsvIds = (id, licensor, licensee) => {
+    return titleService
+        .addMsvAssociationIds(id, licensor, licensee)
+        .then(response => {
+            return response;
+        })
+        .catch(err => {
+            // add toast
+        });
+};
+
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
@@ -52,5 +63,13 @@ export const titleService = {
         }${prepareSortMatrixParamTitles(sortedParams)}`;
         const params = encodedSerialize({...queryParams, page, size});
         return nexusFetch(url, {params});
+    },
+    addMsvAssociationIds: (id, licensor, licensee) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get(
+            'gateway.service.title'
+        )}/titles/${id}/msvIds?licensor=${licensor}&licensee=${licensee}`;
+        return nexusFetch(url, {
+            method: 'post',
+        });
     },
 };
