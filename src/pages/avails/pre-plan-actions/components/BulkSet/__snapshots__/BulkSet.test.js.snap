@@ -10,6 +10,8 @@ exports[`BulkSet should match snapshot 1`] = `
     Territories
   </div>
   <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+    className="bulk-set-territories__select-container"
+    classNamePrefix="bulk-set-territories__select"
     hideSelectedOptions={true}
     isMulti={true}
     onChange={[Function]}

@@ -145,7 +145,7 @@ NexusDatePicker.defaultProps = {
     isReadOnly: false,
     isTimestamp: false,
     isLabelHidden: false,
-    isReturningTime: true,
+    isReturningTime: false,
     onConfirm: () => null,
     isClearable: false,
     isRequired: false,

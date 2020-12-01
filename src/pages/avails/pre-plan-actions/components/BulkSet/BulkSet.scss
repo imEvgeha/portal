@@ -1,4 +1,4 @@
-@import '../../../../../styles/config';
+@import '~@vubiquity-nexus/portal-styles/scss/config';
 
 .bulk-set-territories {
     &__label {
@@ -7,4 +7,10 @@
     &__note {
         color: map-get($colors, nexus-light-grey);
     }
+}
+
+.bulk-set-territories__select-container
+    > .bulk-set-territories__select__menu
+    > .bulk-set-territories__select__menu-list {
+    max-height: 180px;
 }
