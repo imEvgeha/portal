@@ -8,7 +8,7 @@ import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS} from '../../constants';
+import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
@@ -243,8 +243,7 @@ const NexusField = ({
                 >
                     {({fieldProps, error}) => (
                         <>
-                            {type !== 'castCrew' &&
-                                type !== 'licensors' &&
+                            {!FIELDS_WITHOUT_LABEL.includes(type) &&
                                 renderLabel(
                                     label,
                                     !!(checkDependencies('required') || isRequired),
