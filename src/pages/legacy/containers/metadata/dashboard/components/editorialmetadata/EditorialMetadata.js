@@ -54,6 +54,7 @@ const EditorialMetadata = ({
     handleDeleteEditorialMetaData,
     handleRegenerateDecoratedMetadata,
     setValidationError,
+    handleMetadataStatusChange,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -245,6 +246,7 @@ const EditorialMetadata = ({
                                         cleanField={cleanField}
                                         titleHasMaster={titleHasMaster}
                                         setValidationError={setValidationError}
+                                        handleMetadataStatusChange={handleMetadataStatusChange}
                                     />
                                 </Col>
                             </Row>
@@ -313,6 +315,7 @@ EditorialMetadata.propTypes = {
     editorialTitleData: PropTypes.array,
     handleCategoryChange: PropTypes.func.isRequired,
     handleCategoryEditChange: PropTypes.func.isRequired,
+    handleMetadataStatusChange: PropTypes.func.isRequired,
 };
 
 EditorialMetadata.defaultProps = {

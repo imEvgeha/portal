@@ -67,6 +67,7 @@ const emptyEditorial = {
     copyright: null,
     awards: null,
     episodic: null,
+    metadataStatus: null,
 };
 
 const {MOVIDA, VZ} = TitleSystems;
@@ -974,6 +975,16 @@ class TitleEdit extends Component {
         });
     };
 
+    handleEditorialMetadataStatusChange = value => {
+        const newEditorialMetadataForCreate = {
+            ...this.state.editorialMetadataForCreate,
+            metadataStatus: value.value,
+        };
+        this.setState({
+            editorialMetadataForCreate: newEditorialMetadataForCreate,
+        });
+    };
+
     cleanEditorialMetadata = () => {
         this.setState({
             editorialMetadataForCreate: emptyEditorial,
@@ -1123,7 +1134,11 @@ class TitleEdit extends Component {
             updatedEditorialMetadata: [],
         });
 
-        if (this.state.editorialMetadataForCreate.locale && this.state.editorialMetadataForCreate.language) {
+        if (
+            this.state.editorialMetadataForCreate.locale &&
+            this.state.editorialMetadataForCreate.language &&
+            this.state.editorialMetadataForCreate.metadataStatus
+        ) {
             const newEditorialMetadata = this.getEditorialMetadataWithoutEmptyField();
             newEditorialMetadata.parentId = this.props.match.params.id;
             promises.push(
@@ -1467,6 +1482,7 @@ class TitleEdit extends Component {
                                 handleRegenerateDecoratedMetadata={this.handleRegenerateDecoratedMetadata}
                                 handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
                                 setValidationError={this.setValidationError}
+                                handleMetadataStatusChange={this.handleEditorialMetadataStatusChange}
                             />
 
                             <TerritoryMetadata
