@@ -1,16 +1,18 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
 .nexus-c-msv-ids-tag {
-    background-color: #f4f5f7; //n20
+    background-color: map-get($neutrals, N20);
     border-radius: 9px;
     display: inline-flex;
     align-items: center;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    padding: 2px;
+    @include margin(0, 4, 4, 0);
+    @include padding(0.5);
 }
 
 .nexus-c-msv-ids-tag__button {
     cursor: pointer;
     &:hover {
-        color: red; //r400
+        color: map-get($reds, R400);
     }
 }
