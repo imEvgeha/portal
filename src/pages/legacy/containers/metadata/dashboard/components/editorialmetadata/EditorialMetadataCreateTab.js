@@ -418,22 +418,19 @@ class EditorialMetadataCreateTab extends Component {
                             value={
                                 this.props.editorialMetadataForCreate.metadataStatus
                                     ? {
-                                          label:
-                                              this.props.editorialMetadataForCreate.metadataStatus === 'CONFIRMED'
-                                                  ? 'Confirmed'
-                                                  : 'Pending',
+                                          label: this.props.editorialMetadataForCreate.metadataStatus,
                                           value: this.props.editorialMetadataForCreate.metadataStatus,
                                       }
                                     : {
-                                          label: 'Pending',
-                                          value: 'PENDING',
+                                          label: 'pending',
+                                          value: 'pending',
                                       }
                             }
                             onChange={value => this.props.handleMetadataStatusChange(value)}
                             placeholder="Select Metadata Status"
                             options={[
-                                {label: 'Pending', value: 'PENDING'},
-                                {label: 'Confirmed', value: 'CONFIRMED'},
+                                {label: 'pending', value: 'pending'},
+                                {label: 'complete', value: 'complete'},
                             ]}
                         />
                     </Col>

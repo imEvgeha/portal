@@ -64,22 +64,19 @@ class TerritoryMetadataCreateTab extends Component {
                                 value={
                                     this.props.territories.metadataStatus
                                         ? {
-                                              label:
-                                                  this.props.territories.metadataStatus === 'CONFIRMED'
-                                                      ? 'Confirmed'
-                                                      : 'Pending',
+                                              label: this.props.territories.metadataStatus,
                                               value: this.props.territories.metadataStatus,
                                           }
                                         : {
-                                              label: 'Pending',
-                                              value: 'PENDING',
+                                              label: 'pending',
+                                              value: 'pending',
                                           }
                                 }
                                 onChange={value => this.props.handleMetadataStatusChange(value)}
                                 placeholder="Select Metadata Status"
                                 options={[
-                                    {label: 'Pending', value: 'PENDING'},
-                                    {label: 'Confirmed', value: 'CONFIRMED'},
+                                    {label: 'pending', value: 'pending'},
+                                    {label: 'complete', value: 'complete'},
                                 ]}
                             />
                         </Col>
