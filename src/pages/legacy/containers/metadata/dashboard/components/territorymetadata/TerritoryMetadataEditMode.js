@@ -41,6 +41,16 @@ class TerritoryMetadataEditMode extends Component {
                         </Can>
                         <Row style={{padding: '15px'}}>
                             <Col>
+                                <b>Metadata Status: </b>
+                                {this.props.data.metadataStatus ? (
+                                    this.props.data.metadataStatus
+                                ) : (
+                                    <span style={{color: '#999'}}>Empty</span>
+                                )}
+                            </Col>
+                        </Row>
+                        <Row style={{padding: '15px'}}>
+                            <Col>
                                 <span>Locale</span> <br />
                                 {this.props.data.locale ? (
                                     <b>{this.props.getLanguageByCode(this.props.data.locale, COUNTRY)}</b>
