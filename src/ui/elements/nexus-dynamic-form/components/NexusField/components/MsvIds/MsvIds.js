@@ -89,8 +89,8 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match}) => {
                                     <Select
                                         options={licenseeOptions}
                                         {...fieldProps}
-                                        className="nexus-c-modal__select-container"
-                                        classNamePrefix="nexus-c-modal__select"
+                                        className="nexus-c-modal__select-container-bottom"
+                                        classNamePrefix="nexus-c-modal__select-bottom"
                                     />
                                 )}
                             </Field>

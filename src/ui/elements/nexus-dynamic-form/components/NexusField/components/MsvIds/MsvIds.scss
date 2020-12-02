@@ -16,3 +16,13 @@
         color: map-get($reds, R400);
     }
 }
+
+.nexus-c-modal__select-container > .nexus-c-modal__select__menu > .nexus-c-modal__select__menu-list {
+    max-height: 120px;
+}
+
+.nexus-c-modal__select-container-bottom
+    > .nexus-c-modal__select-bottom__menu
+    > .nexus-c-modal__select-bottom__menu-list {
+    max-height: 60px;
+}
