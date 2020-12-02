@@ -7,6 +7,8 @@
     align-items: center;
     grid-template-columns: 47.5% 47.5% 5%;
     @include margin(0, 0, 4, 0);
+    @include padding(4);
+    box-shadow: 0.3em 0.3em 1em map-get($light-neutral-colors, light-neutral-1);
 }
 
 .nexus-c-licensors__licensor {
