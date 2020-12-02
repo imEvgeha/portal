@@ -145,7 +145,7 @@ const NexusArray = ({
         );
     };
 
-    const handleOnSubmit = async values => {
+    const handleOnSubmit = values => {
         const formData = getValues();
         const arrayData = get(formData, path) ? get(formData, path) : [];
         // including the new row
