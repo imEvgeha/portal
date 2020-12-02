@@ -54,6 +54,7 @@ const emptyTerritory = {
     releaseYear: null,
     estReleaseDate: null,
     originalAirDate: null,
+    metadataStatus: null,
 };
 
 const emptyEditorial = {
@@ -686,6 +687,16 @@ class TitleEdit extends Component {
                 ...this.state.territories,
                 [e.target.name]: e.target.value,
             },
+        });
+    };
+
+    handleTerritoryMetadataStatusChange = value => {
+        const newTerritories = {
+            ...this.state.territories,
+            metadataStatus: value.value,
+        };
+        this.setState({
+            territories: newTerritories,
         });
     };
 
@@ -1501,6 +1512,7 @@ class TitleEdit extends Component {
                                 handleEditChangeDate={this.handleTerritoryMetadataEditDateChange}
                                 isEditMode={this.state.isEditMode}
                                 handleDeleteTerritoryMetaData={this.handleTerritoryMetaDataDelete}
+                                handleMetadataStatusChange={this.handleTerritoryMetadataStatusChange}
                             />
                         </AvForm>
                         <FlagGroup onDismissed={this.handleToastDismiss}>{this.state.flags}</FlagGroup>

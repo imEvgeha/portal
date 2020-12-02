@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Row, Col, Container} from 'reactstrap'; // ?
+import Select from 'react-select';
 import {AvField} from 'availity-reactstrap-validation'; // ?
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
@@ -51,6 +52,38 @@ class TerritoryMetadataCreateTab extends Component {
         return (
             <div id="territoryMetadataCreate">
                 <Container>
+                    <Row style={{padding: '15px'}}>
+                        <Col md={2}>
+                            <b>
+                                Metadata Status<span style={{color: 'red'}}>*</span>:
+                            </b>
+                        </Col>
+                        <Col>
+                            <Select
+                                name="metadataStatus"
+                                value={
+                                    this.props.territories.metadataStatus
+                                        ? {
+                                              label:
+                                                  this.props.territories.metadataStatus === 'CONFIRMED'
+                                                      ? 'Confirmed'
+                                                      : 'Pending',
+                                              value: this.props.territories.metadataStatus,
+                                          }
+                                        : {
+                                              label: 'Pending',
+                                              value: 'PENDING',
+                                          }
+                                }
+                                onChange={value => this.props.handleMetadataStatusChange(value)}
+                                placeholder="Select Metadata Status"
+                                options={[
+                                    {label: 'Pending', value: 'PENDING'},
+                                    {label: 'Confirmed', value: 'CONFIRMED'},
+                                ]}
+                            />
+                        </Col>
+                    </Row>
                     <Row style={{padding: '15px'}}>
                         <Col>{this.renderLocale()}</Col>
                         <Col>
@@ -141,6 +174,7 @@ TerritoryMetadataCreateTab.propTypes = {
     isRequired: PropTypes.bool.isRequired,
     configLocale: PropTypes.array,
     territories: PropTypes.object,
+    handleMetadataStatusChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
