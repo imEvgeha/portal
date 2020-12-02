@@ -40,14 +40,22 @@ class TerritoryMetadataEditMode extends Component {
                             </Row>
                         </Can>
                         <Row style={{padding: '15px'}}>
-                            <Col>
-                                <b>Metadata Status: </b>
-                                {this.props.data.metadataStatus ? (
-                                    this.props.data.metadataStatus
-                                ) : (
-                                    <span style={{color: '#999'}}>Empty</span>
-                                )}
-                            </Col>
+                            <AvField
+                                label={
+                                    <span>
+                                        Metadata Status<span style={{color: 'red'}}>*</span>
+                                    </span>
+                                }
+                                id="metadataStatus"
+                                name="metadataStatus"
+                                type="select"
+                                placeholder="Select metadata status"
+                                value={this.props.data.metadataStatus}
+                                onChange={e => this.props.handleChange(e, this.props.data)}
+                            >
+                                <option>pending</option>
+                                <option>complete</option>
+                            </AvField>
                         </Row>
                         <Row style={{padding: '15px'}}>
                             <Col>
