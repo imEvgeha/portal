@@ -14,6 +14,7 @@ import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabe
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
+import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
@@ -160,6 +161,15 @@ const NexusField = ({
                         isEdit={true}
                     />
                 );
+            case 'msvIds':
+                return (
+                    <MsvIds
+                        {...fieldProps}
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={true}
+                    />
+                );
             default:
                 return;
         }
@@ -193,6 +203,14 @@ const NexusField = ({
             case 'licensors':
                 return (
                     <Licensors
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={false}
+                    />
+                );
+            case 'msvIds':
+                return (
+                    <MsvIds
                         selectValues={selectValues}
                         data={fieldProps.value ? fieldProps.value : []}
                         isEdit={false}

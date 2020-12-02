@@ -178,7 +178,13 @@
             },
             {
                 "title": "MSV Association IDs",
-                "fields": {}
+                "fields": {
+                    "msvAssociationId": {
+                        "name": "MSV Association ID",
+                        "type": "msvIds",
+                        "path": "externalIds.msvAssociationId"
+                    }
+                }
             }
         ]
     },
