@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
@@ -10,6 +10,11 @@ import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+    const [update, setUpdate] = useState(false);
+
+    useEffect(() => {
+        update && setUpdate(false);
+    }, [update]);
 
     const buildButtons = (dirty, submitting, reset) => {
         return view !== VIEWS.VIEW ? (
@@ -30,6 +35,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     })}
                     onClick={() => {
                         reset();
+                        setUpdate(true);
                         setView(VIEWS.VIEW);
                     }}
                 >
@@ -101,6 +107,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 selectValues,
                                                 initialData,
                                                 setFieldValue,
+                                                update,
                                                 isGridLayout,
                                             })}
                                         </Fragment>

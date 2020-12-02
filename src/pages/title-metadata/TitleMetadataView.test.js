@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import TitleMetadataView from './TitleMetadataView';
+import {TitleMetadataView} from './TitleMetadataView';
 
 describe('TitleMetadataView', () => {
     let wrapper = null;

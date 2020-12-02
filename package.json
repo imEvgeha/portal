@@ -60,6 +60,7 @@
         "@material-ui/icons": "^3.0.2",
         "@vubiquity-nexus/portal-assets": "^1.0.0",
         "@vubiquity-nexus/portal-auth": "^1.0.0",
+        "@vubiquity-nexus/portal-styles": "^1.0.0",
         "@vubiquity-nexus/portal-utils": "^1.0.0",
         "abortcontroller-polyfill": "^1.4.0",
         "ag-grid-community": "^23.0.2",

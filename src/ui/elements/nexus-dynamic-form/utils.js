@@ -171,7 +171,7 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    {selectValues, initialData, setFieldValue, isGridLayout}
+    {selectValues, initialData, setFieldValue, isGridLayout, update}
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
@@ -187,7 +187,7 @@ export const buildSection = (
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            id={initialData.id}
+                            update={update}
                             {...fields[key]}
                         />
                     ) : (

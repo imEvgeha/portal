@@ -2,6 +2,7 @@ import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/p
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
+import {CONTENT_TYPE} from './constants';
 
 export const getTitleById = id => {
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}`;
@@ -53,14 +54,23 @@ export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
         const filterIsActive = !!Object.keys(searchCriteria).length;
+        const partialContentTypeSearch = searchCriteria.contentType
+            ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
+            : '';
+
+        // api only supports searching by single contentType value, and it has to be exact match otherwise it throws error
+        if (!partialContentTypeSearch) {
+            delete searchCriteria.contentType;
+        }
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                queryParams[key] = searchCriteria[key];
+                queryParams[key] = key === 'contentType' ? partialContentTypeSearch : searchCriteria[key];
             }
         }
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${
             filterIsActive ? 'search' : ''
         }${prepareSortMatrixParamTitles(sortedParams)}`;
+
         const params = encodedSerialize({...queryParams, page, size});
         return nexusFetch(url, {params});
     },
