@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
-import {servicingOrdersService} from '../servicingOrdersService';
+import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
 import ServicesTable from './components/services-table/ServicesTable';
@@ -25,6 +25,7 @@ const ServicingOrder = ({match}) => {
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
     const [deteErrors, setDeteErrors] = useState([]);
+    const [recipients, setRecipients] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -45,6 +46,7 @@ const ServicingOrder = ({match}) => {
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
+                    console.log('FF', fulfillmentOrders, servicingOrderItems);
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
                     setDeteErrors(fulfillmentOrders.errors || []);
 
@@ -110,8 +112,21 @@ const ServicingOrder = ({match}) => {
     }, [match]);
 
     const handleSelectedSourceChange = source => {
-        // CURRENT SELECTED SOURCE
-        setSelectedSource(source);
+        // upon source change, call format sheets api if not already called for recipient
+        source &&
+            source.deteServices.map(item => {
+                const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
+                if (recipient && Object.keys(recipients).findIndex(item => item === recipient) === -1) {
+                    getSpecOptions(recipient, source.tenant).then(res => {
+                        // setSelectedSource({...source, [recipient] : res.outputFormats.map(item => item.outputTemplateName)});
+                        setRecipients(oldVal => {
+                            return {...oldVal, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
+                        });
+                    });
+                }
+                return null;
+            });
+        source && setSelectedSource({...source, recipients});
     };
 
     const handleFulfillmentOrderChange = id => {
@@ -124,6 +139,11 @@ const ServicingOrder = ({match}) => {
     const isFormDisabled = selectedOrder => {
         const {readiness, tenant} = selectedOrder;
         return readiness === 'READY' || tenant === 'WB';
+    };
+
+    const cancelEdit = () => {
+        setSelectedSource({...selectedSource});
+        setSelectedOrder({...selectedOrder});
     };
 
     return (
@@ -145,10 +165,7 @@ const ServicingOrder = ({match}) => {
                     fetchFulfillmentOrders={fetchFulfillmentOrders}
                     serviceOrder={serviceOrder}
                     updatedServices={updatedServices}
-                    cancelEditing={() => {
-                        setSelectedSource({...selectedSource});
-                        setSelectedOrder({...selectedOrder});
-                    }}
+                    cancelEditing={cancelEdit}
                     lastOrder={lastOrder}
                 >
                     <SourcesTable

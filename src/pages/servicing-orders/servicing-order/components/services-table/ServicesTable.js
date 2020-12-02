@@ -5,7 +5,7 @@ import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
-import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, groupBy, difference} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -33,9 +33,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const [recipients, setRecipients] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
-
-    console.log('data: ', data);
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
         data.barcode,
@@ -49,6 +48,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             ''
         );
 
+    const {tenant} = data;
+
     useEffect(() => {
         if (!isEmpty(data)) {
             const recp = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
@@ -58,6 +59,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             setOriginalServices(data);
         }
     }, [data]);
+
+    console.log('data: ', data);
 
     useEffect(
         () => {
@@ -78,12 +81,22 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                     rowHeight: 50,
                 }));
                 setTableData(flattenedObject);
+                setRecipients(flattenedObject.map(row => row.recipient));
             }
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [services]
     );
+
+    /*
+    useEffect(() => {
+        console.log('effect 3: ', recipients);
+        const formatSheets = {};
+        tableData.forEach(row => {
+            getSpecOptions(row.recipient, tenant).then( res => console.log('formatsheets w', res));
+        })
+    },[recipients]); */
 
     const handleComponentsEdit = (index, components) => {
         const newRow = cloneDeep(tableData[index]);
