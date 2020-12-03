@@ -996,6 +996,16 @@ class TitleEdit extends Component {
         });
     };
 
+    handleUpdatingEditorialMetadataStatus = value => {
+        const updatedEditorialMetadata = {
+            ...this.state.updatedEditorialMetadata,
+            metadataStatus: value.value,
+        };
+        this.setState({
+            updatedEditorialMetadata: updatedEditorialMetadata,
+        });
+    };
+
     cleanEditorialMetadata = () => {
         this.setState({
             editorialMetadataForCreate: emptyEditorial,
@@ -1494,6 +1504,7 @@ class TitleEdit extends Component {
                                 handleDeleteEditorialMetaData={this.handleEditorialMetaDataDelete}
                                 setValidationError={this.setValidationError}
                                 handleMetadataStatusChange={this.handleEditorialMetadataStatusChange}
+                                handleUpdatingMetadataStatus={this.handleUpdatingEditorialMetadataStatus}
                             />
 
                             <TerritoryMetadata
