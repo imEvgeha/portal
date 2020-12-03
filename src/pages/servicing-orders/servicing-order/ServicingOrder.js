@@ -25,7 +25,7 @@ const ServicingOrder = ({match}) => {
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
     const [deteErrors, setDeteErrors] = useState([]);
-    const [recipients, setRecipients] = useState({});
+    const [recipientsSpecs, setRecipientsSpecs] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -46,7 +46,6 @@ const ServicingOrder = ({match}) => {
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    console.log('FF', fulfillmentOrders, servicingOrderItems);
                     fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
                     setDeteErrors(fulfillmentOrders.errors || []);
 
@@ -112,21 +111,28 @@ const ServicingOrder = ({match}) => {
     }, [match]);
 
     const handleSelectedSourceChange = source => {
+        let isSourceSet = false;
         // upon source change, call format sheets api if not already called for recipient
-        source &&
-            source.deteServices.map(item => {
-                const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
-                if (recipient && Object.keys(recipients).findIndex(item => item === recipient) === -1) {
-                    getSpecOptions(recipient, source.tenant).then(res => {
-                        // setSelectedSource({...source, [recipient] : res.outputFormats.map(item => item.outputTemplateName)});
-                        setRecipients(oldVal => {
-                            return {...oldVal, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
+        if (source) {
+            if (Array.isArray(source.deteServices) && source.deteServices.length > 0) {
+                let recp = {};
+                source.deteServices.map(item => {
+                    const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
+                    if (recipient && Object.keys(recipientsSpecs).findIndex(item => item === recipient) === -1) {
+                        getSpecOptions(recipient, source.tenant).then(res => {
+                            recp = {...recp, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
+                            isSourceSet = true;
+                            setSelectedSource({...source, recipientsSpecs: recp});
+                            setRecipientsSpecs(recp);
                         });
-                    });
-                }
-                return null;
-            });
-        source && setSelectedSource({...source, recipients});
+                    }
+                    return null;
+                });
+            } else {
+                setSelectedSource(source);
+            }
+        }
+        isSourceSet === false && source && setSelectedSource({...source, recipientsSpecs});
     };
 
     const handleFulfillmentOrderChange = id => {

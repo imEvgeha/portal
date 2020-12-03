@@ -15,6 +15,7 @@ import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import ErrorsList from './ErrorsList';
@@ -32,6 +33,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const [specOptions, setSpecOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
@@ -202,12 +204,29 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: {tableData},
     };
 
+    // get spec col selection values dynamically when user clicks on the cell
+    const getSpecOptions = e => {
+        if (data.recipientsSpecs[e.data.recipient] && data.recipientsSpecs[e.data.recipient].length > 0)
+            setSpecOptions(data.recipientsSpecs[e.data.recipient]);
+        else {
+            showToastForErrors(null, {
+                errorToast: {
+                    title: 'Formats Not Found',
+                    description: `Formats Not Found for recipient "${e.data.recipient}"`,
+                },
+            });
+            setSpecOptions([]);
+        }
+    };
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
                 return {...item, ...componentCol};
             case 'operationalStatus':
                 return {...item, ...statusCol};
+            case 'spec':
+                return {...item, onCellClicked: e => !isDisabled && getSpecOptions(e)};
             default:
                 return item;
         }
@@ -309,7 +328,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 rowData={tableData}
                 domLayout="autoHeight"
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
-                selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
+                selectValues={{...SELECT_VALUES, recipient: recipientsOptions, spec: specOptions}}
                 onGridEvent={handleTableChange}
             />
         </div>
