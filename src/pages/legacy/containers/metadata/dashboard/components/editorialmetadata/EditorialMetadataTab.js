@@ -40,7 +40,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
             <Row>
                 <Col>
                     <b>Metadata Status: </b>
-                    {metadataStatus ? metadataStatus : <span style={{color: '#999'}}>Empty</span>}
+                    {metadataStatus ? metadataStatus : emptySpan()}
                 </Col>
             </Row>
             <Row>

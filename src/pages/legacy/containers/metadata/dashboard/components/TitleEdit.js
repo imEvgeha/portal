@@ -691,13 +691,12 @@ class TitleEdit extends Component {
     };
 
     handleTerritoryMetadataStatusChange = value => {
-        const newTerritories = {
-            ...this.state.territories,
-            metadataStatus: value.value,
-        };
-        this.setState({
-            territories: newTerritories,
-        });
+        this.setState(prevState => ({
+            territories: {
+                ...prevState.territories,
+                metadataStatus: value.value,
+            },
+        }));
     };
 
     handleTerritoryMetadataDateChange = (name, date) => {
