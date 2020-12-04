@@ -206,8 +206,8 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
 
     // get spec col selection values dynamically when user clicks on the cell
     const getSpecOptions = e => {
-        if (data.recipientsSpecs[e.data.recipient] && data.recipientsSpecs[e.data.recipient].length > 0)
-            setSpecOptions(data.recipientsSpecs[e.data.recipient]);
+        const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
+        if (options.length > 0) setSpecOptions(options);
         else {
             showToastForErrors(null, {
                 errorToast: {
