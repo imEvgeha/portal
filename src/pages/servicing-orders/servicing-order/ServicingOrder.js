@@ -111,19 +111,21 @@ const ServicingOrder = ({match}) => {
     }, [match]);
 
     const handleSelectedSourceChange = source => {
-        let isSourceSet = false;
         // upon source change, call format sheets api if not already called for recipient
         if (source) {
             if (Array.isArray(source.deteServices) && source.deteServices.length > 0) {
                 let recp = {};
-                source.deteServices.map(item => {
+                source.deteServices.forEach(item => {
                     const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
-                    if (recipient && Object.keys(recipientsSpecs).findIndex(item => item === recipient) === -1) {
+                    if (recipient && !recipientsSpecs.hasOwnProperty(recipient)) {
                         getSpecOptions(recipient, source.tenant).then(res => {
                             recp = {...recp, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
-                            isSourceSet = true;
-                            setSelectedSource({...source, recipientsSpecs: recp});
-                            setRecipientsSpecs(recp);
+                            setSelectedSource(prevState => {
+                                return {...prevState, ...source, recipientsSpecs: recp};
+                            });
+                            setRecipientsSpecs(prevState => {
+                                return {...prevState, ...recp};
+                            });
                         });
                     }
                     return null;
@@ -132,7 +134,6 @@ const ServicingOrder = ({match}) => {
                 setSelectedSource(source);
             }
         }
-        !isSourceSet && source && setSelectedSource({...source, recipientsSpecs});
     };
 
     const handleFulfillmentOrderChange = id => {
