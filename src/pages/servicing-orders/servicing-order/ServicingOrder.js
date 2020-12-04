@@ -132,7 +132,7 @@ const ServicingOrder = ({match}) => {
                 setSelectedSource(source);
             }
         }
-        isSourceSet === false && source && setSelectedSource({...source, recipientsSpecs});
+        !isSourceSet && source && setSelectedSource({...source, recipientsSpecs});
     };
 
     const handleFulfillmentOrderChange = id => {
