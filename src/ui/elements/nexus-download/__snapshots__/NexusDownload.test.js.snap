@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusDownload should match snapshot 1`] = `
+<WithAnalyticsContext(WithAnalyticsEvents(Button))
+  className="nexus-c-download"
+  onClick={[Function]}
+>
+  Download
+</WithAnalyticsContext(WithAnalyticsEvents(Button))>
+`;

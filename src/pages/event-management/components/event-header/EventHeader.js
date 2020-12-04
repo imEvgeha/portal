@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import DateTimeRenderer from '@vubiquity-nexus/portal-ui/elements/nexus-date-time-context/NexusDateTimeRenderer';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get, startCase} from 'lodash';
 import {uid} from 'react-uid';
-import DateTimeRenderer from '../../../../ui/elements/nexus-date-time-context/NexusDateTimeRenderer';
 import {EVENT_HEADER_MAIN_FIELDS, EVENT_HEADER_SECONDARY_FIELDS} from '../../eventManagementConstants';
 import './EventHeader.scss';
 
@@ -39,7 +39,7 @@ const EventHeader = ({event}) => {
             {generateEventFields(event, EVENT_HEADER_MAIN_FIELDS)}
             <div
                 className={`
-                    nexus-c-event-header__secondary-fields 
+                    nexus-c-event-header__secondary-fields
                     ${isSecondaryHidden ? 'nexus-c-event-header__secondary-fields--is-hidden' : ''}
                 `}
             >

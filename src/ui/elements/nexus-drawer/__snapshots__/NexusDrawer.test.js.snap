@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NexusDrawer should match snapshot 1`] = `
+<Fragment>
+  <WithAnalyticsContext(WithAnalyticsEvents(Blanket))
+    canClickThrough={false}
+    isTinted={true}
+    onBlanketClicked={[Function]}
+  />
+  <div
+    className="nexus-c-drawer nexus-c-drawer--from-right nexus-c-drawer--is-narrow-open"
+  >
+    <AkPage
+      bannerHeight={52}
+      isBannerOpen={false}
+    >
+      <WithTheme(AkGrid)
+        layout="fluid"
+      >
+        <WithTheme(AkGridColumn)>
+          <div
+            className="nexus-c-drawer__header nexus-c-drawer__header--from-right nexus-c-drawer__header--is-open"
+          >
+            <div
+              className="nexus-c-drawer__title-container"
+            >
+              <h1
+                className="nexus-c-drawer__title"
+              />
+            </div>
+            <IconButton
+              icon={[Function]}
+              isDisabled={false}
+              label="Close Drawer"
+              onClick={[Function]}
+            />
+          </div>
+        </WithTheme(AkGridColumn)>
+      </WithTheme(AkGrid)>
+    </AkPage>
+  </div>
+</Fragment>
+`;

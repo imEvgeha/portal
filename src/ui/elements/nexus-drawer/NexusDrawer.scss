@@ -1,0 +1,78 @@
+$widths: (
+    'extended': 95vw,
+    'full': 100vw,
+    'medium': 480px,
+    'narrow': 360px,
+    'wide': 800px,
+    'wider': 60vw,
+);
+
+.nexus-c-drawer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: auto;
+    width: 0;
+    background-color: white;
+    z-index: 500;
+    transition: width 220ms cubic-bezier(0.2, 0, 0, 1);
+
+    &--from-left {
+        left: 0;
+    }
+
+    &--from-right {
+        right: 0;
+    }
+
+    @each $width, $size in $widths {
+        &--is-#{$width}-open {
+            width: map-get($map: $widths, $key: $width);
+        }
+    }
+
+    &--is-loading {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__title {
+        margin-left: 0 !important;
+    }
+
+    &__title-container {
+        margin-left: 0;
+
+        &--from-left {
+            margin-left: 1rem;
+        }
+    }
+
+    &__title-content {
+        margin-top: 0.5rem;
+    }
+
+    &__header {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        display: none;
+
+        &--is-open {
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        &--from-left {
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        &--from-right {
+            justify-content: space-between;
+        }
+    }
+}
