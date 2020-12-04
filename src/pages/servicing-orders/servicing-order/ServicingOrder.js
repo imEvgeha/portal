@@ -120,25 +120,15 @@ const ServicingOrder = ({match}) => {
                     if (recipient && !recipientsSpecs.hasOwnProperty(recipient)) {
                         getSpecOptions(recipient, source.tenant).then(res => {
                             recp = {...recp, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
-                            setSelectedSource(prevState => {
-                                return {...prevState, ...source, recipientsSpecs: recp};
-                            });
                             setRecipientsSpecs(prevState => {
                                 return {...prevState, ...recp};
                             });
                         });
-                    } else {
-                        setSelectedSource(prevState => {
-                            return {...prevState, ...source, recipientsSpecs};
-                        });
                     }
-                });
-            } else {
-                setSelectedSource(prevState => {
-                    return {...prevState, ...source};
                 });
             }
         }
+        setSelectedSource(source);
     };
 
     const handleFulfillmentOrderChange = id => {
@@ -188,7 +178,7 @@ const ServicingOrder = ({match}) => {
                     />
                     {selectedSource && (
                         <ServicesTable
-                            data={selectedSource}
+                            data={{...selectedSource, recipientsSpecs}}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
                             components={components}
