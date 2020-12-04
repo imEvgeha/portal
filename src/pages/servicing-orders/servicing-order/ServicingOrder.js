@@ -119,7 +119,10 @@ const ServicingOrder = ({match}) => {
                     const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
                     if (recipient && !recipientsSpecs.hasOwnProperty(recipient)) {
                         getSpecOptions(recipient, source.tenant).then(res => {
-                            recp = {...recp, [recipient]: res.outputFormats.map(item => item.outputTemplateName)};
+                            recp = {
+                                ...recp,
+                                [recipient]: get(res, 'outputFormats', []).map(item => item.outputTemplateName),
+                            };
                             setRecipientsSpecs(prevState => {
                                 return {...prevState, ...recp};
                             });
