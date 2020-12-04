@@ -204,11 +204,17 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: {tableData},
     };
 
-    // get spec col selection values dynamically when user clicks on the cell
+    // get spec col selection values dynamically when user hovers the row
     const getSpecOptions = e => {
+        if (!isDisabled) {
+            const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
+            if (options.length > 0) setSpecOptions(options);
+        }
+    };
+    // if not specs available, show toast error on click
+    const checkSpecOptions = e => {
         const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
-        if (options.length > 0) setSpecOptions(options);
-        else {
+        if (options.length === 0) {
             showToastForErrors(null, {
                 errorToast: {
                     title: 'Formats Not Found',
@@ -226,7 +232,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
             case 'operationalStatus':
                 return {...item, ...statusCol};
             case 'spec':
-                return {...item, onCellClicked: e => !isDisabled && getSpecOptions(e)};
+                return {...item, onCellClicked: e => !isDisabled && checkSpecOptions(e)};
             default:
                 return item;
         }
@@ -330,6 +336,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
                 selectValues={{...SELECT_VALUES, recipient: recipientsOptions, spec: specOptions}}
                 onGridEvent={handleTableChange}
+                onCellMouseOver={getSpecOptions}
             />
         </div>
     );
