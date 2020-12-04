@@ -209,19 +209,18 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         if (!isDisabled) {
             const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
             if (options.length > 0) setSpecOptions(options);
+            else setSpecOptions([]);
         }
     };
     // if not specs available, show toast error on click
     const checkSpecOptions = e => {
-        const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
-        if (options.length === 0) {
+        if (specOptions.length === 0) {
             showToastForErrors(null, {
                 errorToast: {
                     title: 'Formats Not Found',
                     description: `Formats Not Found for recipient "${e.data.recipient}"`,
                 },
             });
-            setSpecOptions([]);
         }
     };
 
