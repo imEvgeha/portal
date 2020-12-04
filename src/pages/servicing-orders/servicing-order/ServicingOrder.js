@@ -127,11 +127,16 @@ const ServicingOrder = ({match}) => {
                                 return {...prevState, ...recp};
                             });
                         });
+                    } else {
+                        setSelectedSource(prevState => {
+                            return {...prevState, ...source, recipientsSpecs};
+                        });
                     }
-                    return null;
                 });
             } else {
-                setSelectedSource(source);
+                setSelectedSource(prevState => {
+                    return {...prevState, ...source};
+                });
             }
         }
     };
