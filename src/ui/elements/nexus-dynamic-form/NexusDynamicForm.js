@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import classnames from 'classnames';
+import {merge} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
@@ -69,17 +70,17 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         return areValid;
     };
 
-    const handleOnSubmit = values => {
+    const handleOnSubmit = (values, initialData) => {
         if (validDateRange(values)) {
             setView(VIEWS.VIEW);
             const properValues = getProperValues(schema, values);
-            onSubmit(properValues);
+            onSubmit(merge({}, initialData, properValues));
         }
     };
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm onSubmit={values => handleOnSubmit(values)}>
+            <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
