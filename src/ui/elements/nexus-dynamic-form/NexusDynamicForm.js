@@ -110,6 +110,7 @@ const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectVal
                                                 initialData,
                                                 setFieldValue,
                                                 update,
+                                                config: schema.config || [],
                                             })}
                                         </Fragment>
                                     ))}

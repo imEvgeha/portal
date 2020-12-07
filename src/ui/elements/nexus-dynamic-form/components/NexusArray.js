@@ -15,7 +15,6 @@ import {
     renderNexusField,
     renderError,
     renderLabel,
-    getDefaultValue,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';

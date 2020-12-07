@@ -53,14 +53,10 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFieldDependencies = (type, view, dependencies, formData) => {
-    // View mode has the same dependencies as Edit mode
-    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
-    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
-
+export const checkFoundDependencies = (dependencies, formData) => {
     return !!(
-        foundDependencies &&
-        foundDependencies.some(({field, value, subfield}) => {
+        dependencies &&
+        dependencies.some(({field, value, subfield}) => {
             let dependencyValue = get(formData, field);
             if (Array.isArray(dependencyValue)) {
                 dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
@@ -69,6 +65,17 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
             return dependencyValue === value || (!!dependencyValue && value === 'any');
         })
     );
+};
+
+export const checkFieldDependencies = (type, view, dependencies, formData, config) => {
+    // View mode has the same dependencies as Edit mode
+    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
+    const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
+    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
+
+    const globalConfigResult = checkFoundDependencies(globalConfig, formData);
+    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+    return globalConfigResult || localConfigResult;
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
@@ -166,7 +173,12 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue, update}) => {
+export const buildSection = (
+    fields = {},
+    getValues,
+    view,
+    {selectValues, initialData, setFieldValue, update, config}
+) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -182,6 +194,7 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
                             update={update}
+                            config={config}
                             {...fields[key]}
                         />
                     ) : (
@@ -191,6 +204,7 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                                 field: fields[key],
                                 selectValues,
                                 setFieldValue,
+                                config,
                             })}
                         </div>
                     ))
@@ -200,7 +214,12 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues, setFieldValue}) => {
+export const renderNexusField = (
+    key,
+    view,
+    getValues,
+    {initialData = {}, field, selectValues, setFieldValue, config}
+) => {
     return (
         <NexusField
             {...field}
@@ -215,6 +234,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             selectValues={selectValues}
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
+            config={config}
         />
     );
 };

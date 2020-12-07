@@ -1,4 +1,12 @@
 {
+    "config": [
+        {
+            "view": "EDIT",
+            "type": "readOnly",
+            "field": "sourceRightId",
+            "value": "any"
+        }
+    ],
     "fields": [
         {
             "title": "Basic Info and Territory",
