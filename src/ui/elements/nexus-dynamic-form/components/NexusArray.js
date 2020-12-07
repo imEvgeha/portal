@@ -35,7 +35,7 @@ const NexusArray = ({
     validationError,
     validation,
     selectValues,
-    update,
+    isUpdate,
     config,
     isEditable,
 }) => {
@@ -44,9 +44,9 @@ const NexusArray = ({
     const [allData, setAllData] = useState(data);
 
     useEffect(() => {
-        update && setFieldValue(path, data);
+        isUpdate && setFieldValue(path, data);
         setAllData(data);
-    }, [data, update]);
+    }, [data, isUpdate]);
 
     const renderAddButton = () => {
         return (
@@ -181,10 +181,12 @@ const NexusArray = ({
     };
 
     const required = !!(
-        checkFieldDependencies('required', view, dependencies, getValues(), config, isEditable) || isRequired
+        checkFieldDependencies('required', view, dependencies, {formData: getValues(), config, isEditable}) ||
+        isRequired
     );
     const readOnly = !!(
-        checkFieldDependencies('readOnly', view, dependencies, getValues(), config, isEditable) || isReadOnly
+        checkFieldDependencies('readOnly', view, dependencies, {formData: getValues(), config, isEditable}) ||
+        isReadOnly
     );
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
@@ -223,7 +225,7 @@ NexusArray.propTypes = {
     validation: PropTypes.array,
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
-    update: PropTypes.bool,
+    isUpdate: PropTypes.bool,
     config: PropTypes.array,
     isEditable: PropTypes.bool,
 };
@@ -242,7 +244,7 @@ NexusArray.defaultProps = {
     validation: [],
     dependencies: [],
     selectValues: {},
-    update: false,
+    isUpdate: false,
     config: [],
     isEditable: false,
 };

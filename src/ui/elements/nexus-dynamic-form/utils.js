@@ -67,7 +67,7 @@ export const checkFoundDependencies = (dependencies, formData) => {
     );
 };
 
-export const checkFieldDependencies = (type, view, dependencies, formData, config, isEditable) => {
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
@@ -193,7 +193,7 @@ export const buildSection = (
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            update={update}
+                            isUpdate={update}
                             config={config}
                             {...fields[key]}
                         />
