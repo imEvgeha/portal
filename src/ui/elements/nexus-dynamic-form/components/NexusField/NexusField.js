@@ -61,6 +61,7 @@ const NexusField = ({
     };
 
     const dateProps = {
+        isDisabled: checkDependencies('readOnly'),
         labels,
         type,
         dateType,
@@ -154,7 +155,7 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
-                return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
+                return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'castCrew':
                 return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
             default:
