@@ -28,6 +28,7 @@ const NexusArray = ({
     setFieldValue,
     confirmationContent,
     isRequired,
+    isReadOnly,
     tooltip,
     dependencies,
     path,
@@ -179,12 +180,12 @@ const NexusArray = ({
         });
     };
 
-    const required = !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired,
-    config,
-    editable);
-    const readOnly = !!(checkFieldDependencies('readOnly', view, dependencies, getValues()) || isRequired,
-    config,
-    editable);
+    const required = !!(
+        checkFieldDependencies('required', view, dependencies, getValues(), config, editable) || isRequired
+    );
+    const readOnly = !!(
+        checkFieldDependencies('readOnly', view, dependencies, getValues(), config, editable) || isReadOnly
+    );
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
             <AKField
@@ -217,6 +218,7 @@ NexusArray.propTypes = {
     setFieldValue: PropTypes.func,
     confirmationContent: PropTypes.string,
     isRequired: PropTypes.bool,
+    isReadOnly: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
     dependencies: PropTypes.array,
@@ -235,6 +237,7 @@ NexusArray.defaultProps = {
     setFieldValue: undefined,
     confirmationContent: null,
     isRequired: false,
+    isReadOnly: false,
     validationError: null,
     validation: [],
     dependencies: [],

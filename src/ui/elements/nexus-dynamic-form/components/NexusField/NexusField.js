@@ -65,7 +65,7 @@ const NexusField = ({
         labels,
         type,
         dateType,
-        isReadOnly,
+        isReadOnly: isReadOnly || checkDependencies('readOnly'),
         useCurrentDate,
         isReturningTime,
         ...addedProps,
@@ -183,7 +183,7 @@ const NexusField = ({
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
-                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                    return <DateTime {...dateProps} {...fieldProps} />;
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             case 'castCrew':
