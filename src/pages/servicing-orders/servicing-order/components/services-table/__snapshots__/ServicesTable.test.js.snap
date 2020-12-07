@@ -306,6 +306,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
       ]
     }
+    onCellMouseOver={[Function]}
     onGridEvent={[Function]}
     rowData={Array []}
     selectValues={
