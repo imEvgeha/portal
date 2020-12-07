@@ -22,6 +22,7 @@ export const prepareRowData = data => {
             if (barcode) {
                 const source = get(preparedSources, barcode, {});
                 preparedSources[barcode] = source;
+                source.tenant = data.tenant || '';
                 source.fs = fs;
                 source.barcode = barcode;
                 const preparedServices = get(source, servicesKey, []);
