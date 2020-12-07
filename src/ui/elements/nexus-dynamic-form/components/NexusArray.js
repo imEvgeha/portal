@@ -35,6 +35,7 @@ const NexusArray = ({
     validation,
     selectValues,
     update,
+    config,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -111,6 +112,7 @@ const NexusArray = ({
                                     field: fields[key],
                                     selectValues,
                                     setFieldValue,
+                                    config,
                                 })}
                             </div>
                         )
@@ -145,8 +147,8 @@ const NexusArray = ({
     };
 
     const handleOnSubmit = values => {
-        const formData = getValues();
-        const arrayData = get(formData, path) ? get(formData, path) : [];
+        const createFormData = getValues();
+        const arrayData = get(createFormData, path) ? get(createFormData, path) : [];
         // including the new row
         const editedArray = [...arrayData, values];
         setAllData(editedArray);
@@ -176,8 +178,8 @@ const NexusArray = ({
         });
     };
 
-    const required = !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired);
-
+    const required = !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired, config);
+    const readOnly = !!(checkFieldDependencies('readOnly', view, dependencies, getValues()) || isRequired, config);
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
             <AKField
@@ -193,8 +195,7 @@ const NexusArray = ({
                     </>
                 )}
             </AKField>
-
-            <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>
+            {!readOnly && <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>}
             <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>
     );
@@ -216,6 +217,7 @@ NexusArray.propTypes = {
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
     update: PropTypes.bool,
+    config: PropTypes.array,
 };
 
 NexusArray.defaultProps = {
@@ -232,6 +234,7 @@ NexusArray.defaultProps = {
     dependencies: [],
     selectValues: {},
     update: false,
+    config: [],
 };
 
 export default NexusArray;
