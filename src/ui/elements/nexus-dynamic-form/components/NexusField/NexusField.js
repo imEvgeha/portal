@@ -46,11 +46,11 @@ const NexusField = ({
     getCurrentValues,
     isReturningTime,
     config,
-    editable,
+    isEditable,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, formData, config, editable);
+        return checkFieldDependencies(type, view, dependencies, formData, config, isEditable);
     };
 
     const addedProps = {
@@ -258,11 +258,11 @@ NexusField.propTypes = {
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
     config: PropTypes.array,
-    editable: PropTypes.bool,
+    isEditable: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
-    editable: false,
+    isEditable: false,
     view: VIEWS.VIEW,
     tooltip: null,
     formData: {},

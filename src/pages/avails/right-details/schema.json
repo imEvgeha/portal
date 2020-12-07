@@ -339,7 +339,7 @@
                                     "path": "rightContractStatus",
                                     "isRequired": true,
                                     "className": "area-four",
-                                    "editable": true,
+                                    "isEditable": true,
                                     "optionsConfig": {
                                         "options": [
                                             {
@@ -362,7 +362,7 @@
                                     "type": "stringInArray",
                                     "path": "vuContractId",
                                     "className": "area-five",
-                                    "editable": true
+                                    "isEditable": true
                                 },
                                 "dateWithdrawn": {
                                     "isOptional": true,

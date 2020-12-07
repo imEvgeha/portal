@@ -67,7 +67,7 @@ export const checkFoundDependencies = (dependencies, formData) => {
     );
 };
 
-export const checkFieldDependencies = (type, view, dependencies, formData, config, editable) => {
+export const checkFieldDependencies = (type, view, dependencies, formData, config, isEditable) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
@@ -75,7 +75,7 @@ export const checkFieldDependencies = (type, view, dependencies, formData, confi
 
     const globalConfigResult = checkFoundDependencies(globalConfig, formData);
     const localConfigResult = checkFoundDependencies(foundDependencies, formData);
-    return editable ? localConfigResult : globalConfigResult || localConfigResult;
+    return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
 const isEmptyMultiselect = (value, isRequired) => {

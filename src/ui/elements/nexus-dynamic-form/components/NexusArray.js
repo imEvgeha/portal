@@ -37,7 +37,7 @@ const NexusArray = ({
     selectValues,
     update,
     config,
-    editable,
+    isEditable,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -181,10 +181,10 @@ const NexusArray = ({
     };
 
     const required = !!(
-        checkFieldDependencies('required', view, dependencies, getValues(), config, editable) || isRequired
+        checkFieldDependencies('required', view, dependencies, getValues(), config, isEditable) || isRequired
     );
     const readOnly = !!(
-        checkFieldDependencies('readOnly', view, dependencies, getValues(), config, editable) || isReadOnly
+        checkFieldDependencies('readOnly', view, dependencies, getValues(), config, isEditable) || isReadOnly
     );
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
@@ -225,7 +225,7 @@ NexusArray.propTypes = {
     selectValues: PropTypes.object,
     update: PropTypes.bool,
     config: PropTypes.array,
-    editable: PropTypes.bool,
+    isEditable: PropTypes.bool,
 };
 
 NexusArray.defaultProps = {
@@ -244,7 +244,7 @@ NexusArray.defaultProps = {
     selectValues: {},
     update: false,
     config: [],
-    editable: false,
+    isEditable: false,
 };
 
 export default NexusArray;
