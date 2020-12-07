@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Select from '@atlaskit/select';
+import classnames from 'classnames';
 import {cloneDeep} from 'lodash';
 import {compose} from 'redux';
 import withOptionalCheckbox from '../nexus-dynamic-form/hoc/withOptionalCheckbox';
@@ -19,6 +20,8 @@ const NexusSelect = ({
     isRequired,
     isMultiselect,
     addedProps,
+    isInModal,
+    isLastInModal,
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
 
@@ -54,7 +57,10 @@ const NexusSelect = ({
             options={optionsConfig.options !== undefined ? optionsConfig.options : fetchedOptions}
             defaultValue={defaultValue}
             {...addedProps}
-            className="nexus-c-nexus-select-container"
+            className={classnames('nexus-c-nexus-select-container', {
+                'nexus-c-nexus-select-container--modal': isInModal && !isLastInModal,
+                'nexus-c-nexus-select-container--lastInModal': isInModal && isLastInModal,
+            })}
             classNamePrefix="nexus-c-nexus-select"
         />
     );
@@ -70,6 +76,8 @@ NexusSelect.propTypes = {
     isRequired: PropTypes.bool,
     isMultiselect: PropTypes.bool,
     addedProps: PropTypes.object.isRequired,
+    isInModal: PropTypes.bool,
+    isLastInModal: PropTypes.bool,
 };
 
 NexusSelect.defaultProps = {
@@ -79,6 +87,8 @@ NexusSelect.defaultProps = {
     path: null,
     isRequired: false,
     isMultiselect: false,
+    isInModal: false,
+    isLastInModal: false,
 };
 
 export default NexusSelect;

@@ -100,6 +100,7 @@
         }
     }
     .nexus-c-array__modal-buttons {
+        @include margin(4, 0, 0, 0);
         text-align: right;
         .nexus-c-array__submit-button {
             margin-right: 6px;

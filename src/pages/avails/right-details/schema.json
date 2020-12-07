@@ -393,7 +393,8 @@
                                 "name": "Price Currency",
                                 "type": "select",
                                 "path": "priceCurrency",
-                                "className": "area-three"
+                                "className": "area-three",
+                                "isLastInModal": true
                             }
                         }
                     },
@@ -913,7 +914,8 @@
                             "audioType": {
                                 "name": "Audio Type",
                                 "type": "select",
-                                "path": "audioType"
+                                "path": "audioType",
+                                "isLastInModal": true
                             }
                         }
                     },

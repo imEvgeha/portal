@@ -161,7 +161,11 @@ const NexusArray = ({
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues, setFieldValue})}
+                            {buildSection(fields, getValues, VIEWS.CREATE, {
+                                selectValues,
+                                setFieldValue,
+                                isInModal: true,
+                            })}
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}

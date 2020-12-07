@@ -166,7 +166,12 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue, update}) => {
+export const buildSection = (
+    fields = {},
+    getValues,
+    view,
+    {selectValues, initialData, setFieldValue, update, isInModal}
+) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -191,6 +196,7 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                                 field: fields[key],
                                 selectValues,
                                 setFieldValue,
+                                isInModal,
                             })}
                         </div>
                     ))
@@ -200,7 +206,12 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues, setFieldValue}) => {
+export const renderNexusField = (
+    key,
+    view,
+    getValues,
+    {initialData = {}, field, selectValues, setFieldValue, isInModal}
+) => {
     return (
         <NexusField
             {...field}
@@ -215,6 +226,7 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             selectValues={selectValues}
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
+            isInModal={isInModal}
         />
     );
 };
