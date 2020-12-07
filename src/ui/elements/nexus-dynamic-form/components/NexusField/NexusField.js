@@ -46,10 +46,11 @@ const NexusField = ({
     getCurrentValues,
     isReturningTime,
     config,
+    editable,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, formData, config);
+        return checkFieldDependencies(type, view, dependencies, formData, config, editable);
     };
 
     const addedProps = {
@@ -95,7 +96,13 @@ const NexusField = ({
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
-                        {({fieldProps}) => <CheckboxWithOptional {...addedProps} {...fieldProps} />}
+                        {({fieldProps}) => (
+                            <CheckboxWithOptional
+                                isDisabled={isReadOnly || checkDependencies('readOnly')}
+                                {...addedProps}
+                                {...fieldProps}
+                            />
+                        )}
                     </CheckboxField>
                 );
             case 'select':
@@ -250,9 +257,11 @@ NexusField.propTypes = {
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
     config: PropTypes.array,
+    editable: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
+    editable: false,
     view: VIEWS.VIEW,
     tooltip: null,
     formData: {},

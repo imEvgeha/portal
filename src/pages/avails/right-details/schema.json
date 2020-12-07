@@ -339,6 +339,7 @@
                                     "path": "rightContractStatus",
                                     "isRequired": true,
                                     "className": "area-four",
+                                    "editable": true,
                                     "optionsConfig": {
                                         "options": [
                                             {
@@ -360,7 +361,8 @@
                                     "name": "VU Contract ID",
                                     "type": "stringInArray",
                                     "path": "vuContractId",
-                                    "className": "area-five"
+                                    "className": "area-five",
+                                    "editable": true
                                 },
                                 "dateWithdrawn": {
                                     "isOptional": true,
