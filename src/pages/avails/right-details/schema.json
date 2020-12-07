@@ -29,6 +29,13 @@
                                 "type": "readOnly",
                                 "field": "coreTitleId",
                                 "value": "any"
+                            },
+                            {
+                                "view": "EDIT",
+                                "type": "readOnly",
+                                "field": "territory",
+                                "subfield": "selected",
+                                "value": true
                             }
                         ]
                     },
