@@ -405,6 +405,37 @@ class EditorialMetadataCreateTab extends Component {
                             </Col>
                         </Row>
                     )}
+
+                <Row style={{padding: '15px'}}>
+                    <Col md={2}>
+                        <b>
+                            Metadata Status<span style={{color: 'red'}}>*</span>:
+                        </b>
+                    </Col>
+                    <Col>
+                        <Select
+                            name="metadataStatus"
+                            value={
+                                this.props.editorialMetadataForCreate.metadataStatus
+                                    ? {
+                                          label: this.props.editorialMetadataForCreate.metadataStatus,
+                                          value: this.props.editorialMetadataForCreate.metadataStatus,
+                                      }
+                                    : {
+                                          label: 'pending',
+                                          value: 'pending',
+                                      }
+                            }
+                            onChange={value => this.props.handleMetadataStatusChange(value)}
+                            placeholder="Select Metadata Status"
+                            options={[
+                                {label: 'pending', value: 'pending'},
+                                {label: 'complete', value: 'complete'},
+                            ]}
+                        />
+                    </Col>
+                </Row>
+
                 <Row style={{padding: '15px'}}>
                     <Col md={2}>
                         <b>Genres:</b>
@@ -947,6 +978,7 @@ EditorialMetadataCreateTab.propTypes = {
     handleEditorialCastCrewCreate: PropTypes.func,
     handleAddEditorialCharacterName: PropTypes.func,
     handleCategoryChange: PropTypes.func.isRequired,
+    handleMetadataStatusChange: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(EditorialMetadataCreateTab);
