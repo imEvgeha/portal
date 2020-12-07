@@ -6,12 +6,14 @@ import {compose} from 'redux';
 import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
 import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 
 const SelectedForPlanningTable = compose(
+    withFilterableColumns(),
     withColumnsResizing(),
     withSideBar(),
     withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
@@ -65,6 +67,7 @@ const SelectedForPlanning = ({
         <SelectedForPlanningTable
             id="selectedForPlanningRepo"
             columnDefs={updatedColDef.length ? updatedColDef : mappings}
+            mapping={COLUMN_MAPPINGS}
             rowSelection="multiple"
             suppressRowClickSelection
             isGridHidden={activeTab !== SELECTED_FOR_PLANNING_TAB}
