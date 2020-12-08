@@ -54,14 +54,10 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFieldDependencies = (type, view, dependencies, formData) => {
-    // View mode has the same dependencies as Edit mode
-    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
-    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
-
+export const checkFoundDependencies = (dependencies, formData) => {
     return !!(
-        foundDependencies &&
-        foundDependencies.some(({field, value, subfield}) => {
+        dependencies &&
+        dependencies.some(({field, value, subfield}) => {
             let dependencyValue = get(formData, field);
             if (Array.isArray(dependencyValue)) {
                 dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
@@ -70,6 +66,17 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
             return dependencyValue === value || (!!dependencyValue && value === 'any');
         })
     );
+};
+
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+    // View mode has the same dependencies as Edit mode
+    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
+    const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
+    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
+
+    const globalConfigResult = checkFoundDependencies(globalConfig, formData);
+    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+    return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
@@ -171,7 +178,7 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    {selectValues, initialData, setFieldValue, isGridLayout, update}
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout}
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
@@ -187,7 +194,8 @@ export const buildSection = (
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            update={update}
+                            isUpdate={update}
+                            config={config}
                             {...fields[key]}
                         />
                     ) : (
@@ -197,6 +205,7 @@ export const buildSection = (
                                 field: fields[key],
                                 selectValues,
                                 setFieldValue,
+                                config,
                                 isGridLayout,
                             })}
                         </div>
@@ -211,7 +220,7 @@ export const renderNexusField = (
     key,
     view,
     getValues,
-    {initialData = {}, field, selectValues, setFieldValue, isGridLayout}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout}
 ) => {
     return (
         <NexusField
@@ -227,6 +236,7 @@ export const renderNexusField = (
             selectValues={selectValues}
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
+            config={config}
             isGridLayout={isGridLayout}
         />
     );

@@ -41,11 +41,13 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
           id="undefined[0].selected"
+          isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -73,11 +75,13 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
           id="undefined[0].country"
+          isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -118,11 +122,13 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field selected"
       >
         <NexusField
+          config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
           id="undefined[1].selected"
+          isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}
@@ -150,11 +156,13 @@ exports[`NexusArray should match snapshot 1`] = `
         key="nexus-c-array__field country"
       >
         <NexusField
+          config={Array []}
           dateType=""
           dependencies={Array []}
           formData={Object {}}
           getCurrentValues={[Function]}
           id="undefined[1].country"
+          isEditable={false}
           isGridLayout={false}
           isHighlighted={false}
           isOptional={false}

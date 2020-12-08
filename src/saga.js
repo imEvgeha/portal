@@ -1,4 +1,5 @@
 import {all, fork} from 'redux-saga/effects';
+import {assetManagementWatcher} from './pages/asset-management/assetManagementSagas';
 import availsWatcher from './pages/avails/availsSagas';
 import {rightMatchingWatcher} from './pages/avails/right-matching/rightMatchingSagas';
 import {titleMatchingWatcher} from './pages/avails/title-matching/titleMatchingSagas';
@@ -20,5 +21,6 @@ export default function* rootSaga() {
         fork(eventManagementWatcher),
         fork(servicingOrdersWatcher),
         fork(titleMetadataWatcher),
+        fork(assetManagementWatcher),
     ]);
 }

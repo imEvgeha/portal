@@ -428,6 +428,36 @@ class EditorialMetadataEditMode extends Component {
 
                 <Row style={{padding: '15px'}}>
                     <Col md={2}>
+                        <b>
+                            Metadata Status<span style={{color: 'red'}}>*</span>:
+                        </b>
+                    </Col>
+                    <Col>
+                        <Select
+                            name="metadataStatus"
+                            value={
+                                this.props.data.metadataStatus
+                                    ? {
+                                          label: this.props.data.metadataStatus,
+                                          value: this.props.data.metadataStatus,
+                                      }
+                                    : {
+                                          label: 'pending',
+                                          value: 'pending',
+                                      }
+                            }
+                            onChange={value => this.props.handleUpdatingMetadataStatus(value)}
+                            placeholder="Select Metadata Status"
+                            options={[
+                                {label: 'pending', value: 'pending'},
+                                {label: 'complete', value: 'complete'},
+                            ]}
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{padding: '15px'}}>
+                    <Col md={2}>
                         <b>Genres:</b>
                     </Col>
                     <Col>
@@ -975,6 +1005,7 @@ EditorialMetadataEditMode.propTypes = {
     handleEditorialCastCrew: PropTypes.func,
     handleAddEditorialCharacterNameEdit: PropTypes.func,
     handleCategoryEditChange: PropTypes.func.isRequired,
+    handleUpdatingMetadataStatus: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(EditorialMetadataEditMode);

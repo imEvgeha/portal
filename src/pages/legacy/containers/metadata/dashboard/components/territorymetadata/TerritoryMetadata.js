@@ -126,6 +126,7 @@ class TerritoryMetadata extends Component {
                                             isRequired={this.props.isLocalRequired}
                                             handleChange={this.props.handleChange}
                                             handleChangeDate={this.props.handleChangeDate}
+                                            handleMetadataStatusChange={this.props.handleMetadataStatusChange}
                                         />
                                     </Col>
                                 </Row>
@@ -175,6 +176,7 @@ TerritoryMetadata.propTypes = {
     handleEditChangeDate: PropTypes.func,
     territories: PropTypes.object,
     configCountry: PropTypes.object,
+    handleMetadataStatusChange: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(TerritoryMetadata);

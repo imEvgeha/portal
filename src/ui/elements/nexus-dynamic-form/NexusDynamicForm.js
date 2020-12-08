@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import classnames from 'classnames';
+import {merge} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
+const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
 
+    const {fields} = schema;
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
@@ -57,7 +59,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     const validDateRange = values => {
         let areValid = true;
-        const allFields = getAllFields(schema);
+        const allFields = getAllFields(fields);
         Object.keys(allFields)
             .filter(key => allFields[key].type === 'dateRange')
             .forEach(key => {
@@ -69,17 +71,17 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         return areValid;
     };
 
-    const handleOnSubmit = values => {
+    const handleOnSubmit = (values, initialData) => {
         if (validDateRange(values)) {
             setView(VIEWS.VIEW);
-            const properValues = getProperValues(schema, values);
-            onSubmit(properValues);
+            const properValues = getProperValues(fields, values);
+            onSubmit(merge({}, initialData, properValues));
         }
     };
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm onSubmit={values => handleOnSubmit(values)}>
+            <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
@@ -94,7 +96,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                 'nexus-c-dynamic-form__tab-content--title': isTitlePage,
                             })}
                         >
-                            {schema.map(({title = '', sections = []}, index) => (
+                            {fields.map(({title = '', sections = []}, index) => (
                                 <div
                                     key={`tab-${title}`}
                                     id={`tab-${index}`}
@@ -108,6 +110,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 initialData,
                                                 setFieldValue,
                                                 update,
+                                                config: schema.config || [],
                                                 isGridLayout,
                                             })}
                                         </Fragment>
@@ -123,7 +126,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 };
 
 NexusDynamicForm.propTypes = {
-    schema: PropTypes.array.isRequired,
+    schema: PropTypes.object.isRequired,
     initialData: PropTypes.object,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,

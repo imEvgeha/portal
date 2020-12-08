@@ -47,11 +47,13 @@ const NexusField = ({
     useCurrentDate,
     getCurrentValues,
     isReturningTime,
+    config,
+    isEditable,
     isGridLayout,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, formData);
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
     };
 
     const addedProps = {
@@ -62,10 +64,11 @@ const NexusField = ({
     };
 
     const dateProps = {
+        isDisabled: checkDependencies('readOnly'),
         labels,
         type,
         dateType,
-        isReadOnly,
+        isReadOnly: isReadOnly || checkDependencies('readOnly'),
         useCurrentDate,
         isReturningTime,
         ...addedProps,
@@ -97,7 +100,13 @@ const NexusField = ({
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
-                        {({fieldProps}) => <CheckboxWithOptional {...addedProps} {...fieldProps} />}
+                        {({fieldProps}) => (
+                            <CheckboxWithOptional
+                                isDisabled={isReadOnly || checkDependencies('readOnly')}
+                                {...addedProps}
+                                {...fieldProps}
+                            />
+                        )}
                     </CheckboxField>
                 );
             case 'select':
@@ -149,7 +158,7 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
-                return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
+                return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'castCrew':
                 return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
             case 'licensors':
@@ -195,7 +204,7 @@ const NexusField = ({
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
-                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                    return <DateTime {...dateProps} {...fieldProps} />;
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             case 'castCrew':
@@ -290,10 +299,13 @@ NexusField.propTypes = {
     isHighlighted: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
+    config: PropTypes.array,
+    isEditable: PropTypes.bool,
     isGridLayout: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
+    isEditable: false,
     view: VIEWS.VIEW,
     tooltip: null,
     formData: {},
@@ -313,6 +325,7 @@ NexusField.defaultProps = {
     useCurrentDate: false,
     isHighlighted: false,
     isReturningTime: true,
+    config: [],
     isGridLayout: false,
 };
 

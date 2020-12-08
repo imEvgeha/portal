@@ -16,6 +16,7 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
         availAnnounceDate,
         theatricalReleaseDate,
         estReleaseDate,
+        metadataStatus,
     } = data || {};
 
     // Get locale provided by intl
@@ -27,6 +28,12 @@ const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     return (
         <div id="territoryMetadataTabs">
             <Container>
+                <Row style={{padding: '15px'}}>
+                    <Col>
+                        <b>Metadata Status: </b>
+                        {metadataStatus ? metadataStatus : <span style={{color: '#999'}}>Empty</span>}
+                    </Col>
+                </Row>
                 <Row style={{padding: '15px'}}>
                     <Col>
                         <b>Locale: </b>
