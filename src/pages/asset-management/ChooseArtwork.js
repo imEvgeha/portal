@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
-import {URL} from '../../util/Common';
 import ArtworkActions from './artwork-actions/ArtworkActions';
 import ArtworkItem from './artwork-item/ArtworkItem';
 import './ChooseArtwork.scss';
