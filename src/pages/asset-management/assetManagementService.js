@@ -7,7 +7,6 @@ export const fetchPosters = url => {
     return fetch(url, {
         method: 'GET',
         credentials: 'include',
-        mode: 'no-cors',
         headers,
     }).then(response => response.body);
 };
