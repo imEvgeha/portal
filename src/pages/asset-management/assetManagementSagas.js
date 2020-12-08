@@ -5,7 +5,7 @@ import {fetchPosters} from './assetManagementService';
 
 function* resourcePosters({payload}) {
     try {
-        const url = `http://vidispine.dev.vubiquity.com/API/item/${payload}/posterresource`;
+        const url = `http://vidispine-stg.misc.odg.ondemand.co.uk/API/item/${payload}/posterresource`;
         const resource = yield call(fetchPosters, url);
         /* const resource = {
             "uri": [
