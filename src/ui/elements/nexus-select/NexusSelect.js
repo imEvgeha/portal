@@ -20,7 +20,6 @@ const NexusSelect = ({
     isRequired,
     isMultiselect,
     addedProps,
-    isInModal,
     isLastInModal,
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
@@ -58,10 +57,11 @@ const NexusSelect = ({
             defaultValue={defaultValue}
             {...addedProps}
             className={classnames('nexus-c-nexus-select-container', {
-                'nexus-c-nexus-select-container--modal': isInModal && !isLastInModal,
-                'nexus-c-nexus-select-container--lastInModal': isInModal && isLastInModal,
+                'nexus-c-nexus-select-container--lastInModal': isLastInModal,
             })}
-            classNamePrefix="nexus-c-nexus-select"
+            classNamePrefix={classnames('nexus-c-nexus-select', {
+                'nexus-c-nexus-select-last': isLastInModal,
+            })}
         />
     );
 };
@@ -76,7 +76,6 @@ NexusSelect.propTypes = {
     isRequired: PropTypes.bool,
     isMultiselect: PropTypes.bool,
     addedProps: PropTypes.object.isRequired,
-    isInModal: PropTypes.bool,
     isLastInModal: PropTypes.bool,
 };
 
@@ -87,7 +86,6 @@ NexusSelect.defaultProps = {
     path: null,
     isRequired: false,
     isMultiselect: false,
-    isInModal: false,
     isLastInModal: false,
 };
 

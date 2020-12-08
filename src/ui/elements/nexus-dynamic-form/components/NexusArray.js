@@ -164,7 +164,6 @@ const NexusArray = ({
                             {buildSection(fields, getValues, VIEWS.CREATE, {
                                 selectValues,
                                 setFieldValue,
-                                isInModal: true,
                             })}
                             {buildButtons(dirty, submitting, reset)}
                         </form>

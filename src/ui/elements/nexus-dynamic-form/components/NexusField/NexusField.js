@@ -45,7 +45,6 @@ const NexusField = ({
     useCurrentDate,
     getCurrentValues,
     isReturningTime,
-    isInModal,
     isLastInModal,
     ...props
 }) => {
@@ -117,7 +116,6 @@ const NexusField = ({
                         isMultiselect={false}
                         addedProps={addedProps}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
-                        isInModal={isInModal}
                         isLastInModal={isLastInModal}
                     />
                 );
@@ -139,7 +137,6 @@ const NexusField = ({
                         isRequired={isRequired}
                         isMultiselect={true}
                         addedProps={addedProps}
-                        isInModal={isInModal}
                         isLastInModal={isLastInModal}
                         defaultValue={
                             fieldProps.value
@@ -254,7 +251,6 @@ NexusField.propTypes = {
     isHighlighted: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
-    isInModal: PropTypes.bool,
     isLastInModal: PropTypes.bool,
 };
 
@@ -278,7 +274,6 @@ NexusField.defaultProps = {
     useCurrentDate: false,
     isHighlighted: false,
     isReturningTime: true,
-    isInModal: false,
     isLastInModal: false,
 };
 
