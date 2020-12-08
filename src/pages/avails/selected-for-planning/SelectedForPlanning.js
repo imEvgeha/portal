@@ -9,6 +9,7 @@ import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumns
 import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
+import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
 import {prepareSelectForPlanningData} from './utils';
 import {COLUMN_MAPPINGS, DOP_PROJECT_URL, SELECTED_FOR_PLANNING_TAB} from './constants';
 
@@ -16,6 +17,7 @@ const SelectedForPlanningTable = compose(
     withFilterableColumns(),
     withColumnsResizing(),
     withSideBar(),
+    withSorting(),
     withInfiniteScrolling({fetchData: prepareSelectForPlanningData})
 )(NexusGrid);
 
@@ -25,6 +27,9 @@ const SelectedForPlanning = ({
     setSelectedForPlanningGridApi,
     setSelectedForPlanningColumnApi,
 }) => {
+    const [updatedColDef, setUpdatedColDef] = useState([]);
+    const [externalSort, setExternalSort] = useState({});
+
     const mappings = COLUMN_MAPPINGS.map(col =>
         col.colId === 'projectId'
             ? {
@@ -48,7 +53,24 @@ const SelectedForPlanning = ({
         }
     };
 
-    const [updatedColDef, setUpdatedColDef] = useState([]);
+    const onSortChanged = ({api}) => {
+        // prepare sorting as a payload
+        const sortModel = api.getSortModel();
+        if (sortModel.length) {
+            const sortCriterion = [
+                {
+                    fieldName: sortModel[0].colId,
+                    ascending: sortModel[0].sort === 'asc',
+                },
+            ];
+            setExternalSort(prevData => {
+                return {
+                    ...prevData,
+                    sortCriterion,
+                };
+            });
+        }
+    };
 
     const dragStoppedHandler = event => {
         const updatedMappings = updatedColDef.length ? cloneDeep(updatedColDef) : cloneDeep(mappings);
@@ -74,6 +96,8 @@ const SelectedForPlanning = ({
             key={`planning_table_${isPlanningTabRefreshed}`}
             onGridEvent={onGridReady}
             dragStopped={dragStoppedHandler}
+            onSortChanged={onSortChanged}
+            externalFilter={externalSort}
         />
     );
 };

@@ -7,7 +7,7 @@ export const SELECTED_FOR_PLANNING_TAB = 'Selected for Planning';
 export const PAGE_SIZE = 100;
 export const PROJECT_ID = '5bbe8921-ab75-469b-b410-30955a0589d3';
 export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';
-export const getSearchPayload = (user, offset, limit) => ({
+export const getInitialSearchPayload = (user, offset, limit) => ({
     filterCriterion: [
         {
             fieldName: 'MANAGER',
@@ -38,6 +38,7 @@ export const getSearchPayload = (user, offset, limit) => ({
         },
     ],
     field: ['!projectAttribute'],
+    embed: ['plan'],
     offset,
     limit,
 });

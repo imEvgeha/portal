@@ -3,7 +3,7 @@ import moment from 'moment';
 import config from 'react-global-configuration';
 import {store} from '../../../index';
 import {nexusFetch} from '../../../util/http-client/index';
-import {PAGE_SIZE, getSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';
+import {PAGE_SIZE, getInitialSearchPayload, PROJECT_ID, TABLE_FIELDS} from './constants';
 
 const DEFAULT_TIMEOUT = 60000;
 
@@ -17,11 +17,12 @@ const DOPService = {
             true
         );
     },
-    getUsersProjectsList: (offset = 1, limit = PAGE_SIZE) => {
+    getUsersProjectsList: (externalFilter, offset = 1, limit = PAGE_SIZE) => {
         const url = `${config.get('gateway.DOPUrl')}${config.get(
             'gateway.service.DOPProjectManagementProject'
         )}/search`;
-        const body = getSearchPayload(getUsername(store.getState()), offset, limit);
+        const payload = getInitialSearchPayload(getUsername(store.getState()), offset, limit);
+        const body = prepareFilters(payload, externalFilter);
         return nexusFetch(url, {method: 'post', body: JSON.stringify(body)}, DEFAULT_TIMEOUT, true);
     },
     getProjectAttributes: (projectIds = []) => {
@@ -89,3 +90,20 @@ const DOPService = {
 };
 
 export default DOPService;
+
+const prepareFilters = (payload, externalFilter) => {
+    Object.entries(externalFilter).map(([key, value]) => {
+        payload.filterCriterion = [
+            ...payload.filterCriterion,
+            {
+                fieldName: `projectAttribute.${key}`,
+                valueDataType: 'String',
+                operator: 'contain',
+                logicalAnd: true,
+                value,
+            },
+        ];
+        return null;
+    });
+    return payload;
+};
