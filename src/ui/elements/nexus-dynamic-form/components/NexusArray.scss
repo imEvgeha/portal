@@ -93,6 +93,16 @@
     }
 }
 
+.nexus-c-array__modal-fields {
+    > div:last-child {
+        .nexus-c-field__value {
+            .nexus-c-nexus-select-container > .nexus-c-nexus-select__menu > .nexus-c-nexus-select__menu-list {
+                max-height: 60px;
+            }
+        }
+    }
+}
+
 .nexus-c-array__modal {
     .nexus-c-field__value {
         > div {
