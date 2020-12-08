@@ -14,7 +14,7 @@ import './RightDetailsHeader.scss';
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
     const tabs = useMemo(
         () =>
-            schema.map(({title = ''}, index) => {
+            schema.fields.map(({title = ''}, index) => {
                 return {
                     title,
                     id: `tab-${index}`,

@@ -9,10 +9,11 @@ import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
+const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
 
+    const {fields} = schema;
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
@@ -58,7 +59,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 
     const validDateRange = values => {
         let areValid = true;
-        const allFields = getAllFields(schema);
+        const allFields = getAllFields(fields);
         Object.keys(allFields)
             .filter(key => allFields[key].type === 'dateRange')
             .forEach(key => {
@@ -73,7 +74,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
     const handleOnSubmit = (values, initialData) => {
         if (validDateRange(values)) {
             setView(VIEWS.VIEW);
-            const properValues = getProperValues(schema, values);
+            const properValues = getProperValues(fields, values);
             onSubmit(merge({}, initialData, properValues));
         }
     };
@@ -95,7 +96,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                 'nexus-c-dynamic-form__tab-content--title': isTitlePage,
                             })}
                         >
-                            {schema.map(({title = '', sections = []}, index) => (
+                            {fields.map(({title = '', sections = []}, index) => (
                                 <div
                                     key={`tab-${title}`}
                                     id={`tab-${index}`}
@@ -109,6 +110,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 initialData,
                                                 setFieldValue,
                                                 update,
+                                                config: schema.config || [],
                                             })}
                                         </Fragment>
                                     ))}
@@ -123,7 +125,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
 };
 
 NexusDynamicForm.propTypes = {
-    schema: PropTypes.array.isRequired,
+    schema: PropTypes.object.isRequired,
     initialData: PropTypes.object,
     onSubmit: PropTypes.func,
     isEdit: PropTypes.bool,

@@ -15,7 +15,6 @@ import {
     renderNexusField,
     renderError,
     renderLabel,
-    getDefaultValue,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
@@ -29,22 +28,25 @@ const NexusArray = ({
     setFieldValue,
     confirmationContent,
     isRequired,
+    isReadOnly,
     tooltip,
     dependencies,
     path,
     validationError,
     validation,
     selectValues,
-    update,
+    isUpdate,
+    config,
+    isEditable,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
 
     useEffect(() => {
-        update && setFieldValue(path, data);
+        isUpdate && setFieldValue(path, data);
         setAllData(data);
-    }, [data, update]);
+    }, [data, isUpdate]);
 
     const renderAddButton = () => {
         return (
@@ -112,6 +114,7 @@ const NexusArray = ({
                                     field: fields[key],
                                     selectValues,
                                     setFieldValue,
+                                    config,
                                 })}
                             </div>
                         )
@@ -146,8 +149,8 @@ const NexusArray = ({
     };
 
     const handleOnSubmit = values => {
-        const formData = getValues();
-        const arrayData = get(formData, path) ? get(formData, path) : [];
+        const createFormData = getValues();
+        const arrayData = get(createFormData, path) ? get(createFormData, path) : [];
         // including the new row
         const editedArray = [...arrayData, values];
         setAllData(editedArray);
@@ -177,8 +180,14 @@ const NexusArray = ({
         });
     };
 
-    const required = !!(checkFieldDependencies('required', view, dependencies, getValues()) || isRequired);
-
+    const required = !!(
+        checkFieldDependencies('required', view, dependencies, {formData: getValues(), config, isEditable}) ||
+        isRequired
+    );
+    const readOnly = !!(
+        checkFieldDependencies('readOnly', view, dependencies, {formData: getValues(), config, isEditable}) ||
+        isReadOnly
+    );
     return (
         <div className={`nexus-c-array ${validationError ? 'nexus-c-array--error' : ''}`}>
             <AKField
@@ -194,8 +203,7 @@ const NexusArray = ({
                     </>
                 )}
             </AKField>
-
-            <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>
+            {!readOnly && <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>}
             <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
         </div>
     );
@@ -212,11 +220,14 @@ NexusArray.propTypes = {
     setFieldValue: PropTypes.func,
     confirmationContent: PropTypes.string,
     isRequired: PropTypes.bool,
+    isReadOnly: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
-    update: PropTypes.bool,
+    isUpdate: PropTypes.bool,
+    config: PropTypes.array,
+    isEditable: PropTypes.bool,
 };
 
 NexusArray.defaultProps = {
@@ -228,11 +239,14 @@ NexusArray.defaultProps = {
     setFieldValue: undefined,
     confirmationContent: null,
     isRequired: false,
+    isReadOnly: false,
     validationError: null,
     validation: [],
     dependencies: [],
     selectValues: {},
-    update: false,
+    isUpdate: false,
+    config: [],
+    isEditable: false,
 };
 
 export default NexusArray;

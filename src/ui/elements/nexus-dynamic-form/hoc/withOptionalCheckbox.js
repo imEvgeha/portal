@@ -7,7 +7,7 @@ import {VIEWS} from '../constants';
 const withOptionalCheckbox = () => WrappedComponent => {
     const ComposedComponent = props => {
         const {isOptional, useCurrentDate, setFieldValue, path, name, view, ...fieldProps} = props;
-        const {value, ...restFieldProps} = fieldProps;
+        const {value, isDisabled, ...restFieldProps} = fieldProps;
         const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
 
         const changeCheckboxValue = () => {
@@ -25,7 +25,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
 
         return isOptional ? (
             <div className="nexuc-c-with-optional">
-                <Checkbox onChange={changeCheckboxValue} defaultChecked={visible} />
+                <Checkbox isDisabled={isDisabled} onChange={changeCheckboxValue} defaultChecked={visible} />
                 {visible && <WrappedComponent {...restFieldProps} value={getDateValue(value)} />}
             </div>
         ) : (
