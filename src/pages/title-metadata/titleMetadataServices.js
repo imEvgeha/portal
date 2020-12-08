@@ -42,9 +42,7 @@ export const updateTitle = (title, syncToVZ, syncToMovida) => {
 export const generateMsvIds = (id, licensor, licensee) => {
     return titleService
         .addMsvAssociationIds(id, licensor, licensee)
-        .then(response => {
-            return response;
-        })
+        .then(response => response)
         .catch(err => {
             // add toast
         });
