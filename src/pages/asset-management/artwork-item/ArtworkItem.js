@@ -1,28 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {POSTER_RESOLUTION} from '../constants';
 import './AtrworkItem.scss';
 
-const ArtworkItem = ({item, onClick, isSelected}) => {
+const ArtworkItem = ({poster, timing, onClick, isSelected}) => {
     return (
         <div className={`artwork-item ${isSelected ? 'artwork-item--selected' : ''}`}>
-            <img className="artwork-item__image" onClick={onClick} />
-            <div className="artwork-item__id">{item.id}</div>
+            <img src={poster} alt={timing} className="artwork-item__image" onClick={() => onClick(timing)} />
             <div className="artwork-item__details">
-                <div>{item.resolution}</div>
-                <div>{item.timeFrame}</div>
+                <div>{POSTER_RESOLUTION}</div>
+                <div>{timing}</div>
             </div>
         </div>
     );
 };
 
 ArtworkItem.propTypes = {
-    item: PropTypes.object,
+    poster: PropTypes.string,
+    timing: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     isSelected: PropTypes.bool,
 };
 
 ArtworkItem.defaultProps = {
-    item: {},
+    poster: '',
+    timing: '',
     isSelected: false,
 };
 

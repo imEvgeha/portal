@@ -7,8 +7,8 @@ import './ArtworkActions.scss';
 const ArtworkActions = ({selectedItems, totalItems, setItems}) => {
     const [isChecked, setIsChecked] = useState(false);
     useEffect(() => {
-        setIsChecked(!!selectedItems.length);
-    }, [selectedItems.length]);
+        setIsChecked(!!selectedItems);
+    }, [selectedItems]);
 
     const handleSelectAll = () => {
         setIsChecked(!isChecked);
@@ -20,25 +20,25 @@ const ArtworkActions = ({selectedItems, totalItems, setItems}) => {
             <Checkbox
                 onChange={handleSelectAll}
                 isChecked={isChecked}
-                isIndeterminate={selectedItems.length && selectedItems.length !== totalItems.length}
+                isIndeterminate={selectedItems && selectedItems !== totalItems}
             />
             <span className="artwork-actions__selected-count">
-                {`${selectedItems.length} ${selectedItems.length === 1 ? 'image' : 'images'} selected`}
+                {`${selectedItems} ${selectedItems === 1 ? 'image' : 'images'} selected`}
             </span>
-            {!!selectedItems.length && <Button appearance="danger">Reject Selected</Button>}
+            {!!selectedItems && <Button appearance="danger">Reject Selected</Button>}
         </div>
     );
 };
 
 ArtworkActions.propTypes = {
-    selectedItems: PropTypes.array,
-    totalItems: PropTypes.array,
+    selectedItems: PropTypes.number,
+    totalItems: PropTypes.number,
     setItems: PropTypes.func.isRequired,
 };
 
 ArtworkActions.defaultProps = {
-    selectedItems: [],
-    totalItems: [],
+    selectedItems: 0,
+    totalItems: 0,
 };
 
 export default ArtworkActions;

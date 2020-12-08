@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArtworkItem should match snapshot 1`] = `
+<div
+  className="artwork-item "
+>
+  <img
+    alt="122323"
+    className="artwork-item__image"
+    onClick={[Function]}
+    src="some-image"
+  />
+  <div
+    className="artwork-item__details"
+  >
+    <div>
+      1920x1080
+    </div>
+    <div>
+      122323
+    </div>
+  </div>
+</div>
+`;

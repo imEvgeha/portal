@@ -1,12 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {URL} from '../../util/Common';
 import ArtworkActions from './artwork-actions/ArtworkActions';
 import ArtworkItem from './artwork-item/ArtworkItem';
-import {LIST} from './constants';
 import './ChooseArtwork.scss';
+import {fetchPosters} from './assetManagementActions';
+import {getPosterList} from './assetManagementSelectors';
 
-const ChooseArtwork = () => {
+const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
     const [selectedItems, setSelectedItems] = useState([]);
-    const [totalItems, setTotalItems] = useState(LIST);
+
+    useEffect(() => {
+        fetchResourcePosters(decodeURIComponent(URL.getParamIfExists('itemId', '')));
+    }, []);
 
     const itemClick = id => {
         if (selectedItems.includes(id)) {
@@ -14,35 +21,63 @@ const ChooseArtwork = () => {
         } else {
             setSelectedItems([...selectedItems, id]);
         }
+        if (selectedItems.length === 1) {
+            DOP.setErrorsCount(0);
+            DOP.setData({
+                selected: 1,
+            });
+        } else {
+            DOP.setErrorsCount(1);
+        }
     };
 
     const setItems = () => {
-        selectedItems.length ? setSelectedItems([]) : setSelectedItems(totalItems.map(item => item.id));
+        selectedItems.length ? setSelectedItems([]) : setSelectedItems(posterList.map(item => item.id));
     };
+
+    let timing = '';
 
     return (
         <div className="choose-artwork">
             <div className="choose-artwork__header">
                 <span>Title: </span>
-                <span>Star Wars (1977)</span>
+                <span>{decodeURIComponent(URL.getParamIfExists('title', ''))}</span>
             </div>
-            <ArtworkActions selectedItems={selectedItems} totalItems={totalItems} setItems={setItems} />
+            <ArtworkActions selectedItems={selectedItems.length} totalItems={posterList.length} setItems={setItems} />
             <div className="choose-artwork__list">
-                {LIST.map(item => (
-                    <ArtworkItem
-                        key={item.id}
-                        item={item}
-                        onClick={() => itemClick(item.id)}
-                        isSelected={selectedItems.includes(item.id)}
-                    />
-                ))}
+                {posterList.map(poster => {
+                    timing = poster.split('/');
+                    timing = timing[timing.length - 1];
+                    return (
+                        <ArtworkItem
+                            key={timing}
+                            poster={poster}
+                            timing={timing}
+                            onClick={itemClick}
+                            isSelected={selectedItems.includes(timing)}
+                        />
+                    );
+                })}
             </div>
         </div>
     );
 };
 
-ChooseArtwork.propTypes = {};
+ChooseArtwork.propTypes = {
+    fetchResourcePosters: PropTypes.func.isRequired,
+    posterList: PropTypes.array,
+};
 
-ChooseArtwork.defaultProps = {};
+ChooseArtwork.defaultProps = {
+    posterList: [],
+};
 
-export default ChooseArtwork;
+const mapStateToProps = state => ({
+    posterList: getPosterList(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+    fetchResourcePosters: itemId => dispatch(fetchPosters(itemId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseArtwork);

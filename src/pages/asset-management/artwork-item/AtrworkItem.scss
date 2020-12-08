@@ -8,7 +8,6 @@
     &__image {
         width: 280px;
         height: 158px;
-        border: 1px solid black;
         cursor: pointer;
     }
     &__details {
@@ -16,10 +15,5 @@
         display: flex;
         justify-content: space-between;
         color: map-get($neutrals, N200);
-    }
-    &__id {
-        font-size: 14px;
-        color: map-get($neutrals, N800);
-        margin: 5px 0;
     }
 }
