@@ -1,20 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import {GRID_EVENTS} from '../../ui/elements/nexus-grid/constants';
-import {URL} from '../../util/Common';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
 import {INITIAL_SORT, TITLE} from './eventManagementConstants';
 import './EventManagement.scss';
 
 const EventManagement = props => {
-    const [selectedEvent, setSelectedEvent] = useState(null);
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
 
     const closeEventDrawer = () => {
-        setSelectedEvent(null);
         setSelectedEventId(null);
         setSearchParams('selectedEventId', null);
         gridApi && gridApi.deselectAll();
@@ -57,11 +55,7 @@ const EventManagement = props => {
     const onSelectionChanged = selectedRow => {
         if (selectedRow) {
             const {id} = selectedRow;
-            if (URL.isLocalOrDevOrQA()) {
-                setSelectedEventId(id);
-            } else {
-                setSelectedEvent(selectedRow);
-            }
+            setSelectedEventId(id);
             setSearchParams('selectedEventId', id);
         }
     };
@@ -137,9 +131,7 @@ const EventManagement = props => {
                     onSortChanged={onSortChanged}
                 />
             </div>
-            {(selectedEventId || selectedEvent) && (
-                <EventDrawer id={selectedEventId} selectedEvent={selectedEvent} onDrawerClose={closeEventDrawer} />
-            )}
+            {selectedEventId && <EventDrawer id={selectedEventId} onDrawerClose={closeEventDrawer} />}
         </div>
     );
 };

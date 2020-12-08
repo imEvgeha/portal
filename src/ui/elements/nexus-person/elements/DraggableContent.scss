@@ -1,5 +1,5 @@
-@import '../../../../styles/atlaskit/mixins';
-@import '../../../../styles/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-draggable-content {
     border: 1px solid map-get($neutrals, N40);

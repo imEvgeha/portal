@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import RightsURL from '../../containers/avail/util/RightsURL';
-import {getDeepValue} from '../../../../util/Common';
+import {getDeepValue} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
-import LoadingGif from '../../../../assets/img/loading.gif';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 // TODO - add better name for the component
 const withRightsResultsTable = BaseComponent => {

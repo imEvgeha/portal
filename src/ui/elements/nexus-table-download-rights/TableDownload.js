@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import './TableDownload.scss';
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
 import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
 import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
 import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
-import {downloadFile} from '../../../util/Common';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
     const [filteredColumns, setFilteredColumns] = useState([]);

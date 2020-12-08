@@ -9,8 +9,8 @@ describe('RightDetailsHeader', () => {
         wrapper = shallow(<RightDetailsHeader title="RightDetails" />);
     });
 
-    it('should have three divs', () => {
-        expect(wrapper.props().children).toHaveLength(3);
+    it('should have four divs', () => {
+        expect(wrapper.props().children).toHaveLength(4);
     });
 
     it('should not have adjust-padding class if not shrinked', () => {

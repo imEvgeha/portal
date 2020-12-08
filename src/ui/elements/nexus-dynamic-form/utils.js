@@ -1,7 +1,7 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
+import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
-import {equalOrIncluded, getSortedData} from '../../../util/Common';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
 import {VIEWS, FIELD_REQUIRED} from './constants';
@@ -166,7 +166,7 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue}) => {
+export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue, update}) => {
     return (
         <>
             {Object.keys(fields).map(key => {
@@ -181,6 +181,7 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
+                            update={update}
                             {...fields[key]}
                         />
                     ) : (

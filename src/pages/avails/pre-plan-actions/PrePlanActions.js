@@ -1,8 +1,8 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
-import MoreIcon from '../../../assets/more-icon.svg';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,
@@ -91,8 +91,9 @@ export const PrePlanActions = ({
                             nonEligibleTitles={nonEligibleRights}
                             onClose={closeModal}
                         />,
-                        {title: STATUS_CHECK_HEADER}
+                        {title: STATUS_CHECK_HEADER, width: '100%'}
                     );
+                    setIsFetchDOP(false);
                 }
                 if (eligibleRights && eligibleRights.length) {
                     const mergedWithSelectedRights = eligibleRights.map(right => {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Container} from 'reactstrap';
 import Lozenge from '@atlaskit/lozenge';
-import DefaultUserIcon from '../../../../../../../assets/img/default-user.png';
+import DefaultUserIcon from '@vubiquity-nexus/portal-assets/img/default-user.png';
 import {PersonListFlag, ListText, CustomRow, CustomColumn, CustomEllipsis, ListItemText} from './CustomComponents';
 
 const PersonListReadOnly = ({showPersonType, getFormatTypeName, person, columnName}) => {

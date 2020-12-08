@@ -5,7 +5,7 @@ import {capitalize} from 'lodash';
 import {default as AtlaskitButton} from '@atlaskit/button';
 import TitleSystems from '../../../../../constants/metadata/systems';
 import {ISODateToView} from '../../../../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {Can} from '../../../../../../../ability';
 import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
 

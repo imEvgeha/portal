@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 // import Button from '@atlaskit/button';
 
-import DOP from '../../../../../../../util/DOP';
+import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 
 class ManualRightsEntryDOPConnector extends Component {
     constructor(props) {

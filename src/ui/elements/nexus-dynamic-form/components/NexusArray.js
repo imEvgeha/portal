@@ -15,6 +15,7 @@ import {
     renderNexusField,
     renderError,
     renderLabel,
+    getDefaultValue,
 } from '../utils';
 import {VIEWS, DELETE_POPUP} from '../constants';
 import './NexusArray.scss';
@@ -34,14 +35,16 @@ const NexusArray = ({
     validationError,
     validation,
     selectValues,
+    update,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
     const [allData, setAllData] = useState(data);
 
     useEffect(() => {
+        update && setFieldValue(path, data);
         setAllData(data);
-    }, [data]);
+    }, [data, update]);
 
     const renderAddButton = () => {
         return (
@@ -213,6 +216,7 @@ NexusArray.propTypes = {
     validation: PropTypes.array,
     dependencies: PropTypes.array,
     selectValues: PropTypes.object,
+    update: PropTypes.bool,
 };
 
 NexusArray.defaultProps = {
@@ -228,6 +232,7 @@ NexusArray.defaultProps = {
     validation: [],
     dependencies: [],
     selectValues: {},
+    update: false,
 };
 
 export default NexusArray;

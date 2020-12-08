@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import FilterSolidIcon from '@vubiquity-nexus/portal-assets/filter-solid.svg';
+import FilterIcon from '@vubiquity-nexus/portal-assets/filter.svg';
 import classnames from 'classnames';
 import {Link} from 'react-router-dom';
-import FilterSolidIcon from '../../../../../assets/filter-solid.svg';
-import FilterIcon from '../../../../../assets/filter.svg';
 import IconButton from '../../../../../ui/atlaskit/icon-button/IconButton';
 import {SERVICING_ORDERS} from '../../../../../ui/elements/nexus-navigation/constants';
 import {backArrowColor} from '../../../../legacy/constants/avails/constants';

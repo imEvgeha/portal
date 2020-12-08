@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
@@ -8,7 +9,6 @@ import CustomActionsCellRenderer from '../../../ui/elements/nexus-grid/elements/
 import {defineActionButtonColumn} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
-import {URL} from '../../../util/Common';
 import {
     cleanStoredRightMatchDataWithIds,
     createRightMatchingColumnDefs,

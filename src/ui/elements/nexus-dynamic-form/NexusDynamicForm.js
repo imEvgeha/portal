@@ -3,55 +3,19 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import classnames from 'classnames';
+import {merge} from 'lodash';
 import moment from 'moment';
-import SectionTab from './components/SectionTab/SectionTab';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
-    const tabs = schema.map(({title = ''}, index) => {
-        return {
-            title,
-            id: `tab-${index}`,
-        };
-    });
-    const [selectedTab, setSelectedTab] = useState(tabs[0].title);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+    const [update, setUpdate] = useState(false);
 
     useEffect(() => {
-        const sectionIDs = tabs.map((_, index) => document.getElementById(`tab-${index}`));
-
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.2,
-        };
-
-        const observerCallback = entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const focusedTab = tabs.find(item => item.id === entry.target.id);
-                    focusedTab.title && setSelectedTab(focusedTab.title);
-                }
-            });
-        };
-
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
-        sectionIDs.forEach(sec => sec instanceof HTMLElement && observer.observe(sec));
-    }, []);
-
-    const buildTabs = () => {
-        return tabs.map((tab, index) => (
-            <SectionTab
-                key={tab.title}
-                section={tab.title}
-                onClick={() => setSelectedTab(tab.title)}
-                isActive={selectedTab === tab.title}
-                sectionId={`tab-${index}`}
-            />
-        ));
-    };
+        update && setUpdate(false);
+    }, [update]);
 
     const buildButtons = (dirty, submitting, reset) => {
         return view !== VIEWS.VIEW ? (
@@ -72,6 +36,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                     })}
                     onClick={() => {
                         reset();
+                        setUpdate(true);
                         setView(VIEWS.VIEW);
                     }}
                 >
@@ -105,17 +70,17 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
         return areValid;
     };
 
-    const handleOnSubmit = values => {
+    const handleOnSubmit = (values, initialData) => {
         if (validDateRange(values)) {
             setView(VIEWS.VIEW);
             const properValues = getProperValues(schema, values);
-            onSubmit(properValues);
+            onSubmit(merge({}, initialData, properValues));
         }
     };
 
     return (
         <div className="nexus-c-dynamic-form">
-            <AKForm onSubmit={values => handleOnSubmit(values)}>
+            <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
                         {buildButtons(dirty, submitting, reset)}
@@ -124,9 +89,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                             className={classnames('nexus-c-dynamic-form__tab-container', {
                                 'nexus-c-dynamic-form__tab-container--title': isTitlePage,
                             })}
-                        >
-                            {buildTabs()}
-                        </div>
+                        />
                         <div
                             className={classnames('nexus-c-dynamic-form__tab-content', {
                                 'nexus-c-dynamic-form__tab-content--title': isTitlePage,
@@ -145,6 +108,7 @@ const NexusDynamicForm = ({schema = [], initialData, onSubmit, isEdit, selectVal
                                                 selectValues,
                                                 initialData,
                                                 setFieldValue,
+                                                update,
                                             })}
                                         </Fragment>
                                     ))}

@@ -17,7 +17,7 @@ import Localization from './Localization';
 import {fetchConfigApiEndpoints} from './settingsActions';
 import * as selectors from './settingsSelectors';
 import NexusDrawer from '../../../../ui/elements/nexus-drawer/NexusDrawer';
-import {URL} from '../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
 class Settings extends Component {
     static getDerivedStateFromProps(props, state) {

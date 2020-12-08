@@ -4,10 +4,10 @@ import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
+import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
-import Add from '../../../../../assets/action-add.svg';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
@@ -15,8 +15,9 @@ import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, ErrorTestRows} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
@@ -32,6 +33,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
     const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const [specOptions, setSpecOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
@@ -202,12 +204,34 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: {tableData},
     };
 
+    // get spec col selection values dynamically when user hovers the row
+    const getSpecOptions = e => {
+        if (!isDisabled) {
+            const options = get(data, `recipientsSpecs[${e.data.recipient}]`, []);
+            if (options.length > 0) setSpecOptions(options);
+            else setSpecOptions([]);
+        }
+    };
+    // if not specs available, show toast error on click
+    const checkSpecOptions = e => {
+        if (specOptions.length === 0) {
+            showToastForErrors(null, {
+                errorToast: {
+                    title: 'Formats Not Found',
+                    description: `Formats Not Found for recipient "${e.data.recipient}"`,
+                },
+            });
+        }
+    };
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
                 return {...item, ...componentCol};
             case 'operationalStatus':
                 return {...item, ...statusCol};
+            case 'spec':
+                return {...item, onCellClicked: e => !isDisabled && checkSpecOptions(e)};
             default:
                 return item;
         }
@@ -309,8 +333,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 rowData={tableData}
                 domLayout="autoHeight"
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
-                selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
+                selectValues={{...SELECT_VALUES, recipient: recipientsOptions, spec: specOptions}}
                 onGridEvent={handleTableChange}
+                onCellMouseOver={getSpecOptions}
             />
         </div>
     );

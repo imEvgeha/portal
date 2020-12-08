@@ -1,5 +1,5 @@
+import {encodedSerialize, prepareSortMatrixParam} from '@vubiquity-nexus/portal-utils/lib/Common';
 import config from 'react-global-configuration';
-import {encodedSerialize, prepareSortMatrixParam} from '../../util/Common';
 import {nexusFetch} from '../../util/http-client';
 
 const baseServicingOrdersURL = config => {
@@ -12,6 +12,13 @@ const deteAssetURL = config => {
 
 const deteTitleURL = config => {
     return `${config.get('gateway.deteBaseUrl')}${config.get('gateway.service.deteTitle')}`;
+};
+
+export const getSpecOptions = (recipientId, tenant) => {
+    const url = `${config.get(
+        'gateway.deteBaseUrl'
+    )}/outputFormats?recipientId=${recipientId}&tenant=${tenant}&sort=OUTPUTTEMPLATEID`;
+    return nexusFetch(url);
 };
 
 // TODO: Use an actual API when ready

@@ -24,7 +24,7 @@ import EventSectionCollapsible from '../event-section-collapsible/EventSectionCo
 import EventDrawerHeader from './components/EventDrawerHeader';
 import './EventDrawer.scss';
 
-const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
+const EventDrawer = ({id, onDrawerClose}) => {
     const [event, setEvent] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -74,24 +74,18 @@ const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
             });
         };
 
-        if (!selectedEvent && id) {
+        if (id) {
             getEvent(id);
         }
     }, []);
 
-    const {message, headers, attachments} =
-        event || {
-            message: get(selectedEvent, 'message', {}),
-            headers: selectedEvent || {},
-            attachments: get(selectedEvent, 'message.attachments', {}),
-        } ||
-        {};
+    const {message, headers, attachments} = event || {};
 
     return (
         <div className="nexus-c-event-drawer">
             <NexusDrawer
                 onClose={onDrawerClose}
-                isOpen={!!(id || selectedEvent)}
+                isOpen={!!id}
                 isLoading={isLoading}
                 title={DRAWER_TITLE}
                 width="wide"
@@ -166,14 +160,11 @@ const EventDrawer = ({id, selectedEvent, onDrawerClose}) => {
 };
 
 EventDrawer.propTypes = {
-    id: PropTypes.string,
-    selectedEvent: PropTypes.object,
+    id: PropTypes.string.isRequired,
     onDrawerClose: PropTypes.func,
 };
 
 EventDrawer.defaultProps = {
-    id: null,
-    selectedEvent: null,
     onDrawerClose: () => null,
 };
 

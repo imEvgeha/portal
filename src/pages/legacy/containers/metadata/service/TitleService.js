@@ -1,7 +1,7 @@
 import {uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../../../../util/http-client/index';
-import {getDomainName, prepareSortMatrixParamTitles, encodedSerialize} from '../../../../../util/Common';
+import {getDomainName, prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
 import TitleSystems from '../../../constants/metadata/systems';
 import constants from '../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 

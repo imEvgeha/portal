@@ -1,4 +1,5 @@
-@import '../../../../styles/config';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+@import '~@vubiquity-nexus/portal-styles/scss/config';
 
 $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
 
@@ -64,6 +65,10 @@ $border: 1px solid rgba(map-get($colors, nexus-title-color), 0.7);
 }
 
 .nexus-c-sync-log-table__date-field {
-    width: 150px;
+    width: 220px;
     margin: 0 5px;
+    &--error {
+        color: map-get($reds, R400);
+        font-size: 12px;
+    }
 }

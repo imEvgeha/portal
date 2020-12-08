@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, get, startCase} from 'lodash';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
@@ -10,7 +11,6 @@ import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFi
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
-import {DATETIME_FIELDS} from '../../../../util/date-time/constants';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
@@ -204,7 +204,6 @@ const ServicingOrdersTable = ({
                 fixedFilter={fixedFilter}
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
-                customDateFilterParamSuffixes={['Start', 'End']}
                 setTotalCount={setTotalCount}
             />
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />

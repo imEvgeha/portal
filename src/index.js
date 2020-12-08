@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {ConnectedRouter} from 'connected-react-router';
 import {createBrowserHistory} from 'history';
@@ -10,7 +11,6 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import AppProviders from './AppProviders';
 import Router from './Router';
-import {createKeycloakInstance} from './auth/keycloak';
 import {setEnvConfiguration, registerSingleSpaApps} from './config';
 import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';
@@ -20,7 +20,7 @@ import {configurePersistor} from './store-persist-config';
 import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
 import Toast from './ui/toast/Toast';
 import {initializeTracker} from './util/hoc/withTracker';
-import './styles/index.scss';
+import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor

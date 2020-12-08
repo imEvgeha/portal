@@ -11,7 +11,7 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
-import {safeTrim, URL} from '../../../../../util/Common';
+import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import withToasts from '../../../../../ui/toast/hoc/withToasts';
 import {
     SUCCESS_TITLE,
@@ -31,7 +31,7 @@ import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-import {DATETIME_FIELDS} from '../../../../../util/date-time/constants';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue} from '../util/ProcessSelectOptions';

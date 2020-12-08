@@ -11,9 +11,9 @@ import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
-import {URL} from '../../../../../../../util/Common';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {NexusDrawer} from '../../../../../../../ui/elements';
-import StatusLink from '../../../../../../../assets/status-linked.svg';
+import StatusLink from '@vubiquity-nexus/portal-assets/status-linked.svg';
 
 const mapStateToProps = state => {
     return {
@@ -54,6 +54,8 @@ const EditorialMetadata = ({
     handleDeleteEditorialMetaData,
     handleRegenerateDecoratedMetadata,
     setValidationError,
+    handleMetadataStatusChange,
+    handleUpdatingMetadataStatus,
 }) => {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -245,6 +247,7 @@ const EditorialMetadata = ({
                                         cleanField={cleanField}
                                         titleHasMaster={titleHasMaster}
                                         setValidationError={setValidationError}
+                                        handleMetadataStatusChange={handleMetadataStatusChange}
                                     />
                                 </Col>
                             </Row>
@@ -270,6 +273,7 @@ const EditorialMetadata = ({
                                                     key={i}
                                                     data={item}
                                                     setValidationError={setValidationError}
+                                                    handleUpdatingMetadataStatus={handleUpdatingMetadataStatus}
                                                 />
                                             </Col>
                                         </Row>
@@ -313,6 +317,8 @@ EditorialMetadata.propTypes = {
     editorialTitleData: PropTypes.array,
     handleCategoryChange: PropTypes.func.isRequired,
     handleCategoryEditChange: PropTypes.func.isRequired,
+    handleMetadataStatusChange: PropTypes.func.isRequired,
+    handleUpdatingMetadataStatus: PropTypes.func.isRequired,
 };
 
 EditorialMetadata.defaultProps = {

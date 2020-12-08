@@ -7,7 +7,7 @@ import {get, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 // image import
 import './TitleResultTable.scss';
-import LoadingGif from '../../../../../../../assets/img/loading.gif';
+import LoadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {
     resultPageSelect,
     resultPageSort,
@@ -20,7 +20,7 @@ import {titleMapping} from '../../../service/Profile';
 import {titleSearchHelper} from '../../TitleSearchHelper';
 import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
 import {titleService} from '../../../service/TitleService';
-import {formatNumberTwoDigits} from '../../../../../../../util/Common';
+import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {defineColumn} from '../../../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import {getRepositoryCell} from '../../../../../../avails/utils';

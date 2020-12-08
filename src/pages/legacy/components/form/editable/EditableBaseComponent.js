@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 import {cloneDeep} from 'lodash';
-import {isObject} from '../../../../../util/Common';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {NexusTag} from '../../../../../ui/elements/';
 
 class EditableBaseComponent extends Component {

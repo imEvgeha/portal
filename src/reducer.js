@@ -1,6 +1,6 @@
+import authReducer from '@vubiquity-nexus/portal-auth/authReducer';
 import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
-import authReducer from './auth/authReducer';
 import assetManagementReducer from './pages/asset-management/assetManagementReducer';
 import availsReducer from './pages/avails/availsReducer';
 import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
