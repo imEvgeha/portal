@@ -102,7 +102,7 @@ const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectVal
                                     id={`tab-${index}`}
                                     className="nexus-c-dynamic-form__section-start"
                                 >
-                                    {sections.map(({title: sectionTitle = '', fields = {}}) => (
+                                    {sections.map(({title: sectionTitle = '', fields = {}, isGridLayout = false}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
                                             <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
                                             {buildSection(fields, getValues, view, {
@@ -111,6 +111,7 @@ const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectVal
                                                 setFieldValue,
                                                 update,
                                                 config: schema.config || [],
+                                                isGridLayout,
                                             })}
                                         </Fragment>
                                     ))}
