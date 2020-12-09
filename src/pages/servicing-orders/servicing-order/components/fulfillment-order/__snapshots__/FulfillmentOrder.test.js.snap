@@ -140,12 +140,12 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                       "value": "NEW",
                     },
                     Object {
-                      "label": "Ready",
-                      "value": "READY",
-                    },
-                    Object {
                       "label": "On Hold",
                       "value": "ON_HOLD",
+                    },
+                    Object {
+                      "label": "Ready",
+                      "value": "READY",
                     },
                   ]
                 }
