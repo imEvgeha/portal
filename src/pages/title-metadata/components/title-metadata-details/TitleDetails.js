@@ -48,12 +48,22 @@ const TitleDetails = ({
         updateTitle({...values, id: title.id});
     };
 
+    const extendTitleWithExternalIds = () => {
+        const [vzExternalIds] = externalIds.filter(ids => ids.externalSystem === 'vz');
+        const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
+        return {
+            ...title,
+            vzExternalIds,
+            movidaExternalIds,
+        };
+    };
+
     return (
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} externalIds={externalIds} />
             <NexusDynamicForm
                 schema={schema}
-                initialData={title}
+                initialData={extendTitleWithExternalIds()}
                 isEdit
                 isTitlePage={true}
                 containerRef={containerRef}

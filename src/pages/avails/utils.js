@@ -24,6 +24,7 @@ export const createColumnDefs = payload => {
                 cellRendererParams: hasLink
                     ? {
                           link: '/avails/rights/',
+                          newTab: false,
                       }
                     : {},
                 valueFormatter: createValueFormatter(column),

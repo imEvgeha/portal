@@ -1,6 +1,7 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
+import classnames from 'classnames';
 import {get} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
@@ -116,7 +117,7 @@ export const formatOptions = (options, optionsConfig) => {
     return sortOptions(formattedOptions);
 };
 
-const sortOptions = options => {
+export const sortOptions = options => {
     const SORT_TYPE = 'label';
     return getSortedData(options, SORT_TYPE, true);
 };
@@ -177,10 +178,10 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    {selectValues, initialData, setFieldValue, update, config}
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout}
 ) => {
     return (
-        <>
+        <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
@@ -205,12 +206,13 @@ export const buildSection = (
                                 selectValues,
                                 setFieldValue,
                                 config,
+                                isGridLayout,
                             })}
                         </div>
                     ))
                 );
             })}
-        </>
+        </div>
     );
 };
 
@@ -218,7 +220,7 @@ export const renderNexusField = (
     key,
     view,
     getValues,
-    {initialData = {}, field, selectValues, setFieldValue, config}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout}
 ) => {
     return (
         <NexusField
@@ -235,6 +237,7 @@ export const renderNexusField = (
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
             config={config}
+            isGridLayout={isGridLayout}
         />
     );
 };
@@ -261,9 +264,13 @@ export const getProperValues = (schema, values) => {
     return properValues;
 };
 
-export const renderLabel = (label, isRequired, tooltip) => {
+export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
     return (
-        <div className="nexus-c-field__label">
+        <div
+            className={classnames('nexus-c-field__label', {
+                'nexus-c-field__label--grid': isGridLayout,
+            })}
+        >
             {`${label}${isRequired ? '*' : ''}: `}
             {tooltip && (
                 <span title={tooltip} style={{color: 'grey'}}>

@@ -164,7 +164,12 @@ const NexusArray = ({
                 <AKForm onSubmit={values => handleOnSubmit(values)}>
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
-                            {buildSection(fields, getValues, VIEWS.CREATE, {selectValues, setFieldValue})}
+                            <div className="nexus-c-array__modal-fields">
+                                {buildSection(fields, getValues, VIEWS.CREATE, {
+                                    selectValues,
+                                    setFieldValue,
+                                })}
+                            </div>
                             {buildButtons(dirty, submitting, reset)}
                         </form>
                     )}
