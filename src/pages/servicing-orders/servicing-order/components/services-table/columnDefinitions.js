@@ -20,7 +20,7 @@ const columnDefinitions = [
         colId: 'spec',
         field: 'spec',
         dataSource: 'spec',
-        headerName: 'Spec',
+        headerName: 'Format Sheet',
         width: 260,
     },
     {
