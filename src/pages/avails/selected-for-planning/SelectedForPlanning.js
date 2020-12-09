@@ -69,6 +69,8 @@ const SelectedForPlanning = ({
                     sortCriterion,
                 };
             });
+        } else {
+            setExternalSort({});
         }
     };
 

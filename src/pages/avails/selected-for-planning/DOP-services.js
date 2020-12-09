@@ -93,16 +93,25 @@ export default DOPService;
 
 const prepareFilters = (payload, externalFilter) => {
     Object.entries(externalFilter).map(([key, value]) => {
-        payload.filterCriterion = [
-            ...payload.filterCriterion,
-            {
-                fieldName: `projectAttribute.${key}`,
-                valueDataType: 'String',
-                operator: 'contain',
-                logicalAnd: true,
-                value,
-            },
-        ];
+        if (key === 'sortCriterion') {
+            payload.sortCriterion = [
+                {
+                    fieldName: `projectAttribute.${value[0].fieldName}`,
+                    ascending: value[0].ascending,
+                },
+            ];
+        } else {
+            payload.filterCriterion = [
+                ...payload.filterCriterion,
+                {
+                    fieldName: `projectAttribute.${key}`,
+                    valueDataType: 'String',
+                    operator: 'contain',
+                    logicalAnd: true,
+                    value,
+                },
+            ];
+        }
         return null;
     });
     return payload;
