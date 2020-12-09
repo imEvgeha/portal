@@ -32,6 +32,7 @@ const NexusField = ({
     tooltip,
     formData,
     isReadOnly,
+    isReadOnlyInEdit,
     isRequired,
     dependencies,
     validationError,
@@ -60,12 +61,16 @@ const NexusField = ({
         view,
     };
 
+    const getIsReadOnly = () => {
+        return (isReadOnlyInEdit && view === VIEWS.EDIT) || isReadOnly;
+    };
+
     const dateProps = {
         isDisabled: checkDependencies('readOnly'),
         labels,
         type,
         dateType,
-        isReadOnly: isReadOnly || checkDependencies('readOnly'),
+        isReadOnly: getIsReadOnly() || checkDependencies('readOnly'),
         useCurrentDate,
         isReturningTime,
         ...addedProps,
@@ -92,14 +97,14 @@ const NexusField = ({
             case 'boolean':
                 return (
                     <CheckboxField
-                        isDisabled={isReadOnly || checkDependencies('readOnly')}
+                        isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                         name={fieldProps.name}
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                isDisabled={isReadOnly || checkDependencies('readOnly')}
+                                isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
                             />
@@ -206,7 +211,7 @@ const NexusField = ({
                 }`}
             >
                 <AKField
-                    isDisabled={isReadOnly || checkDependencies('readOnly')}
+                    isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                     isRequired={checkDependencies('required') || isRequired}
                     validate={value =>
                         getValidationFunction(value, validation, {type, isRequired: required, getCurrentValues})
@@ -241,6 +246,7 @@ NexusField.propTypes = {
     formData: PropTypes.object,
     dependencies: PropTypes.array,
     isReadOnly: PropTypes.bool,
+    isReadOnlyInEdit: PropTypes.bool,
     isRequired: PropTypes.bool,
     validationError: PropTypes.string,
     validation: PropTypes.array,
@@ -268,6 +274,7 @@ NexusField.defaultProps = {
     formData: {},
     dependencies: [],
     isReadOnly: false,
+    isReadOnlyInEdit: false,
     isRequired: false,
     validationError: null,
     validation: [],
