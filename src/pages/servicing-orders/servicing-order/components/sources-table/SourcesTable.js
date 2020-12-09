@@ -5,7 +5,7 @@ import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/nexus-grid/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {isEqual, cloneDeep} from 'lodash';
 import {compose} from 'redux';

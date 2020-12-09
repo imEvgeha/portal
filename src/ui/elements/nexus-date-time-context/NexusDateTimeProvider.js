@@ -1,5 +1,5 @@
 import React, {createContext, useCallback, useContext, useState} from 'react';
-import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
+import {ISODateToView} from '../../../util/date-time/DateTimeUtils';
 
 export const NexusDateTimeContext = createContext({});
 
