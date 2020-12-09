@@ -1,0 +1,29 @@
+.nexus-c-nexus-array-with-tabs {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.nexus-c-nexus-array-with-tabs__tabs {
+    width: 20%;
+}
+
+.nexus-c-nexus-array-with-tabs__fields {
+    width: 80%;
+}
+
+.nexus-c-nexus-array-with-tabs__field {
+    width: 100%;
+
+    .nexus-c-field > div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .nexus-c-field__label {
+            width: 25%;
+        }
+    }
+}

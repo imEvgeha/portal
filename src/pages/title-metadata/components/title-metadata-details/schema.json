@@ -194,8 +194,81 @@
             "title": "Editorial",
             "sections": [
                 {
-                    "title": "Editorial",
-                    "fields": {}
+                    "title": "Editorial Metadata",
+                    "fields": {
+                        "editorialMetadata": {
+                            "name": "Editorial Metadata",
+                            "type": "arrayWithTabs",
+                            "path": "editorialMetadata",
+                            "fields": {
+                                "format": {
+                                    "name": "Format",
+                                    "path": "format",
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "name": "Display Title",
+                                    "path": "title.title",
+                                    "type": "string"
+                                },
+                                "sortTitle": {
+                                    "name": "Sort Title",
+                                    "path": "title.sortTitle",
+                                    "type": "string"
+                                },
+                                "mediumTitle": {
+                                    "name": "Medium Title",
+                                    "path": "title.mediumTitle",
+                                    "type": "string"
+                                },
+                                "longTitle": {
+                                    "name": "Long Title",
+                                    "path": "title.longTitle",
+                                    "type": "string"
+                                },
+                                "shortTitle": {
+                                    "name": "Short Title",
+                                    "path": "title.shortTitle",
+                                    "type": "string"
+                                },
+                                "shortDescription": {
+                                    "name": "Short Synopsis",
+                                    "path": "synopsis.shortDescription",
+                                    "type": "string"
+                                },
+                                "mediumDescription": {
+                                    "name": "Medium Synopsis",
+                                    "path": "synopsis.mediumDescription",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "name": "Long Synopsis",
+                                    "path": "synopsis.description",
+                                    "type": "string"
+                                },
+                                "copyright": {
+                                    "name": "Copyright",
+                                    "path": "copyright",
+                                    "type": "string"
+                                },
+                                "awards": {
+                                    "name": "Awards",
+                                    "path": "awards",
+                                    "type": "string"
+                                },
+                                "sakstelInventoryId": {
+                                    "name": "Sakstel Inventory ID",
+                                    "path": "sakstelInventoryId",
+                                    "type": "string"
+                                },
+                                "sakstelLineupId": {
+                                    "name": "Sakstel Lineup ID",
+                                    "path": "sakstelLineupId",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },

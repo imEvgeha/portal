@@ -4,6 +4,7 @@ import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/
 import classnames from 'classnames';
 import {get} from 'lodash';
 import NexusArray from './components/NexusArray';
+import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
 import {VIEWS, FIELD_REQUIRED} from './constants';
 
@@ -194,6 +195,18 @@ export const buildSection = (
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
+                            isUpdate={update}
+                            config={config}
+                            {...fields[key]}
+                        />
+                    ) : get(fields[key], 'type') === 'arrayWithTabs' ? (
+                        <NexusArrayWithTabs
+                            key={key}
+                            view={view}
+                            selectValues={selectValues}
+                            data={getDefaultValue(fields[key], view, initialData)}
+                            getValues={getValues}
+                            setFieldValue={setFieldValue}
                             isUpdate={update}
                             config={config}
                             {...fields[key]}
