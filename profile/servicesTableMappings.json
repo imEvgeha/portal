@@ -21,7 +21,7 @@
     },
     {
         "javaVariableName": "spec",
-        "displayName": "Spec",
+        "displayName": "Format Sheet",
         "dataType": "select",
         "queryParamName": "spec",
         "readOnly": false,

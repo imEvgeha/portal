@@ -149,7 +149,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
-          "headerName": "Spec",
+          "headerName": "Format Sheet",
           "onCellClicked": [Function],
           "width": 260,
         },
@@ -257,7 +257,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
         Object {
           "dataType": "select",
-          "displayName": "Spec",
+          "displayName": "Format Sheet",
           "enableEdit": true,
           "enableSearch": true,
           "javaVariableName": "spec",
