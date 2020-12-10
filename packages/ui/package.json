@@ -1,6 +1,6 @@
 {
     "name": "@vubiquity-nexus/portal-ui",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Nexus Portal Common UI",
     "author": "Vubiquity",
     "license": "UNLICENSED",
@@ -9,8 +9,5 @@
     },
     "dependencies": {
         "@vubiquity-nexus/portal-utils": "1.0.1"
-    },
-    "files": [
-        "./scss"
-    ]
+    }
 }
