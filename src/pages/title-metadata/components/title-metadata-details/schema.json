@@ -352,7 +352,8 @@
                                 },
                                 "editorialCastCrew": {
                                     "type": "castCrew",
-                                    "path": "castCrew"
+                                    "path": "castCrew",
+                                    "isVerticalLayout": true
                                 }
                             }
                         }
