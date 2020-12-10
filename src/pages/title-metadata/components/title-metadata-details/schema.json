@@ -201,10 +201,94 @@
                             "type": "arrayWithTabs",
                             "path": "editorialMetadata",
                             "fields": {
+                                "locale": {
+                                    "name": "Locale",
+                                    "path": "locale",
+                                    "type": "select",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "countryCode",
+                                        "defaultLabelPath": "countryName"
+                                    }
+                                },
+                                "language": {
+                                    "name": "Language",
+                                    "path": "language",
+                                    "type": "select",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "languageCode",
+                                        "defaultLabelPath": "languageName"
+                                    }
+                                },
                                 "format": {
                                     "name": "Format",
                                     "path": "format",
-                                    "type": "string"
+                                    "type": "select"
+                                },
+                                "metadataStatus": {
+                                    "name": "Metadata Status",
+                                    "type": "select",
+                                    "path": "metadataStatus",
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "Pending",
+                                                "value": "Pending"
+                                            },
+                                            {
+                                                "label": "Complete",
+                                                "value": "Complete"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "service": {
+                                    "name": "Service",
+                                    "type": "select",
+                                    "path": "service",
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "Just In",
+                                                "value": "Just In"
+                                            },
+                                            {
+                                                "label": "OTT",
+                                                "value": "OTT"
+                                            },
+                                            {
+                                                "label": "DFM",
+                                                "value": "DFM"
+                                            },
+                                            {
+                                                "label": "DVS",
+                                                "value": "DVS"
+                                            },
+                                            {
+                                                "label": "AT&T",
+                                                "value": "AT&T"
+                                            },
+                                            {
+                                                "label": "Bell Fiber",
+                                                "value": "Bell Fiber"
+                                            },
+                                            {
+                                                "label": "Telus",
+                                                "value": "Telus"
+                                            },
+                                            {
+                                                "label": "Cogeco",
+                                                "value": "Cogeco"
+                                            },
+                                            {
+                                                "label": "Sakstel",
+                                                "value": "Sakstel"
+                                            },
+                                            {
+                                                "label": "Videotron",
+                                                "value": "Videotron"
+                                            }
+                                        ]
+                                    }
                                 },
                                 "title": {
                                     "name": "Display Title",
@@ -265,6 +349,10 @@
                                     "name": "Sakstel Lineup ID",
                                     "path": "sakstelLineupId",
                                     "type": "string"
+                                },
+                                "editorialCastCrew": {
+                                    "type": "castCrew",
+                                    "path": "castCrew"
                                 }
                             }
                         }
