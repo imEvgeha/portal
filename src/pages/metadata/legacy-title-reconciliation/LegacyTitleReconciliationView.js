@@ -2,7 +2,7 @@ import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {set} from 'lodash';
 import {connect} from 'react-redux';
 import './LegacyTitleReconciliationView.scss';

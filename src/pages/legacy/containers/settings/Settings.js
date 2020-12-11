@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {TabContent, TabPane} from 'reactstrap';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import NexusDrawer from '@vubiquity-nexus/portal-ui/elements/nexus-drawer/NexusDrawer';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import './Settings.scss';
 import {
     // GroupHeader,

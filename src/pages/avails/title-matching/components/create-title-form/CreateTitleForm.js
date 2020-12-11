@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {ErrorMessage} from '@atlaskit/form';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {URL, getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {Form, FormFragment} from 'react-forms-processor';

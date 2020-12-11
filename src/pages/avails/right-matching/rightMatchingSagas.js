@@ -4,7 +4,7 @@ import {
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push, goBack} from 'connected-react-router';
 import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';

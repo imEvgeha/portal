@@ -3342,6 +3342,11 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-styles/-/portal-styles-1.0.0.tgz#dbc7e348faafcb8fe5da7c4bc28d2ecea8f0e330"
   integrity sha512-s5h87pi66h+4ILLxrdRxj14XSKkPtc+WBb6gT0VrEY8ZIsM893Lik9p7NsmwrZQApIz7xawPRmXLiFFGFMYKDw==
 
+"@vubiquity-nexus/portal-ui@^1.0.0":
+  version "1.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-ui/-/portal-ui-1.0.0.tgz#7489915dc06cd29a03677cb3688b19299ac38a94"
+  integrity sha512-875/daXhgKFjT6phfOQyyc00tsibY91dVe3FrZGYUZDXten4ym3x3h6oFvp6RnzGvs540Tb7Ocq8yXprmd4sBw==
+
 "@vubiquity-nexus/portal-utils@^1.0.0":
   version "1.0.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-utils/-/portal-utils-1.0.0.tgz#f9cd03224d9658c00103573ab979f3d7f6f3528e"

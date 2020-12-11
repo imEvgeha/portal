@@ -1,12 +1,18 @@
 import {DATETIME_FIELDS, SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get} from 'lodash';
 import moment from 'moment';
-import {store} from '../../index';
-import {
-    RELATIVE_TIME_FORMAT,
-    SIMULCAST_TIME_FORMAT,
-    TIMESTAMP_TIME_FORMAT,
-} from '../../ui/elements/nexus-date-and-time-elements/constants';
+import {RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT, TIMESTAMP_TIME_FORMAT} from './constants';
+
+const localStorageLanguage = localStorage.getItem('localization');
+const browserLocale = navigator.language.toString().toLowerCase();
+const allowedLocale = ['en-us', 'en-gb'];
+
+const locale =
+    localStorageLanguage && localStorageLanguage !== ''
+        ? localStorageLanguage
+        : allowedLocale.includes(browserLocale)
+        ? browserLocale
+        : allowedLocale[0];
 
 // Create date format based on locale
 const getDateFormatBasedOnLocale = locale => moment().locale(locale).localeData().longDateFormat('L');
@@ -30,9 +36,9 @@ const isUtc = (date = '') => typeof date === 'string' && date.endsWith('Z');
  * @param {boolean} [isLocal=false] set `true` if you want to return the local datetime for the given date, default false
  * @param {boolean} [shouldDisplayTime=true] set `false` if you don't want to display the time, default true
  */
+// eslint-disable-next-line max-params
 const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) => {
     if (date) {
-        const {locale} = store.getState().locale;
         const dateFormat = getDateFormatBasedOnLocale(locale);
         const momentDate = moment(date);
 

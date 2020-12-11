@@ -9,7 +9,7 @@ import {
     SERVICING_ORDERS,
     EVENT_MANAGEMENT,
     DOP_TASKS,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-navigation/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-navigation/constants';
 import {withRouter} from 'react-router-dom';
 
 const idToAbilityNameMap = {

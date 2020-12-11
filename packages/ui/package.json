@@ -1,13 +1,24 @@
 {
     "name": "@vubiquity-nexus/portal-ui",
-    "version": "1.0.6",
+    "version": "1.0.2",
     "description": "Nexus Portal Common UI",
     "author": "Vubiquity",
     "license": "UNLICENSED",
     "publishConfig": {
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
-    "dependencies": {
+    "peerDependencies": {
         "@vubiquity-nexus/portal-utils": "1.0.1"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.1.0"
+    },
+    "files": [
+        "lib/"
+    ],
+    "scripts": {
+        "prepublish": "babel src -d lib",
+        "postpublish": "rm -r lib"
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import {SYNC_LOG} from '@vubiquity-nexus/portal-ui/elements/nexus-navigation/constants';
+import {SYNC_LOG} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-navigation/constants';
 import {canRender} from '../../ability';
 
 const SyncLogViewImport = import(/* webpackChunkName: "SyncLog" */ './SyncLogView');

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
-import NexusDownload from '@vubiquity-nexus/portal-ui/elements/nexus-download/NexusDownload';
+import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
 import {connect} from 'react-redux';
 import {can} from '../../../../../ability';
 import {createLoadingSelector} from '../../../../../ui/loading/loadingSelectors';

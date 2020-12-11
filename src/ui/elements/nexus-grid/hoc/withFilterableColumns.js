@@ -10,7 +10,7 @@ import {
     FILTERABLE_DATA_TYPES,
     GRID_EVENTS,
     NOT_FILTERABLE_COLUMNS,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';

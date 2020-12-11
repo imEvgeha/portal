@@ -1,4 +1,4 @@
-import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui../../../../../ui@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {store} from '../../../../../index';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';

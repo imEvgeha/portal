@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef, useContext, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
-import NexusDrawer from '@vubiquity-nexus/portal-ui/elements/nexus-drawer/NexusDrawer';
-import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
+import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';

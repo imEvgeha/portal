@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import NexusDownload from '@vubiquity-nexus/portal-ui/elements/nexus-download/NexusDownload';
-import NexusDrawer from '@vubiquity-nexus/portal-ui/elements/nexus-drawer/NexusDrawer';
-import NexusJsonView from '@vubiquity-nexus/portal-ui/elements/nexus-json-view/NexusJsonView';
-import NexusXMLView from '@vubiquity-nexus/portal-ui/elements/nexus-xml-view/NexusXMLView';
+import NexusDownload from '@vubiquity-nexus/portal-ui/lib/elements/nexus-download/NexusDownload';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
+import NexusJsonView from '@vubiquity-nexus/portal-ui/lib/elements/nexus-json-view/NexusJsonView';
+import NexusXMLView from '@vubiquity-nexus/portal-ui/lib/elements/nexus-xml-view/NexusXMLView';
 import {get, isObject} from 'lodash';
 import {uid} from 'react-uid';
 import {

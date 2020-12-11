@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import IconButton from '@vubiquity-nexus/portal-ui/atlaskit/icon-button/IconButton';
+import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import {toggleRefreshGridData} from '../../ui/grid/gridActions';

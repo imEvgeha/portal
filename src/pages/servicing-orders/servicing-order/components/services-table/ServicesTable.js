@@ -5,7 +5,7 @@ import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';

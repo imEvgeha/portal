@@ -1,4 +1,4 @@
-import {EXCLUDED_INITIAL_FILTER_VALUES} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {EXCLUDED_INITIAL_FILTER_VALUES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {isEmpty} from 'lodash';
 import {store} from '../../../../../index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/metadata/index';

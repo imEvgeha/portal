@@ -1,5 +1,5 @@
 import React from 'react';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {
     ModalFooter,
     ModalHeader,

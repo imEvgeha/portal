@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';

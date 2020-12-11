@@ -12,7 +12,7 @@ import {
     SUCCESS_ICON,
     WARNING_ICON,
     ERROR_ICON,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';

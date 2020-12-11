@@ -1,5 +1,5 @@
 import React from 'react';
-import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {shallow} from 'enzyme';
 import {withHooks} from 'jest-react-hooks-shallow';
 import EventManagement from './EventManagement';

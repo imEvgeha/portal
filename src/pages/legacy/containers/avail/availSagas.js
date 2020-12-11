@@ -1,10 +1,10 @@
-import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     EDIT_RIGHT_ERROR_TITLE,
     CREATE_NEW_RIGHT_ERROR_TITLE,
     ERROR_ICON,
     RIGHT_ERROR_MSG_MERGED,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';

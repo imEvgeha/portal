@@ -12,7 +12,7 @@ import EditorialMetadataEditMode from './EditorialMetadataEditMode';
 import {configFields} from '../../../service/ConfigService';
 import Title from '../../../../../../metadata/title/Title';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {NexusDrawer} from '../../../../../../../ui/elements';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import StatusLink from '@vubiquity-nexus/portal-assets/status-linked.svg';
 
 const mapStateToProps = state => {

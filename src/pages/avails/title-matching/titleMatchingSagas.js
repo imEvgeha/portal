@@ -3,7 +3,7 @@ import {
     ERROR_TITLE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {isEmpty} from 'lodash';

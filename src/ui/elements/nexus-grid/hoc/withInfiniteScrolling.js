@@ -10,7 +10,7 @@ import {
     MAX_BLOCKS_IN_CACHE,
     ROW_MODEL_TYPE,
     GRID_EVENTS,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {cleanObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {omit, isEqual, debounce} from 'lodash';
 import {connect} from 'react-redux';

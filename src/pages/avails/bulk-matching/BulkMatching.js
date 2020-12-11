@@ -7,7 +7,7 @@ import {
     SUCCESS_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
 import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';

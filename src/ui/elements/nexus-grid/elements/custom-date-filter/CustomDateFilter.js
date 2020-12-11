@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {DATEPICKER_LABELS} from '@vubiquity-nexus/portal-ui/elements/nexus-grid/constants';
+import {DATEPICKER_LABELS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {get} from 'lodash';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';

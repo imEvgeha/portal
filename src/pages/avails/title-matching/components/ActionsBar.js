@@ -6,7 +6,7 @@ import {
     SUCCESS_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
-} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, TITLE_MATCH_SUCCESS_MESSAGE} from '../../../../ui/toast/constants';

@@ -1,4 +1,4 @@
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/elements/nexus-toast-notification/constants';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {normalizeDataForStore, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {get} from 'lodash';
