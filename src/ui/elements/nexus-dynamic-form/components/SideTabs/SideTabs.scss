@@ -1,0 +1,48 @@
+.nexus-c-side-tabs {
+    padding-top: 0.75rem;
+}
+
+.nexus-c-side-tabs__tab-container {
+    width: 100%;
+    > button {
+        width: 100%;
+        background-color: #fff;
+        &:hover {
+            background-color: rgba(9, 30, 66, 0.08);
+        }
+    }
+}
+
+.nexus-c-side-tabs__tab-container--active {
+    width: 100%;
+    > button {
+        width: 100%;
+        background-color: rgba(9, 30, 66, 0.08);
+        &:hover {
+            background-color: rgba(9, 30, 66, 0.08);
+        }
+    }
+}
+
+.nexus-c-side-tabs__subtab-container {
+    width: 100%;
+    display: none;
+    justify-content: flex-end;
+    > button {
+        width: 80%;
+        background-color: #fff;
+        &:hover {
+            background-color: rgba(9, 30, 66, 0.08);
+        }
+    }
+}
+
+.nexus-c-side-tabs__subtab-container--active {
+    > button {
+        background-color: rgba(9, 30, 66, 0.08);
+    }
+}
+
+.nexus-c-side-tabs__subtab-container--open {
+    display: flex;
+}

@@ -200,6 +200,8 @@
                             "name": "Editorial Metadata",
                             "type": "arrayWithTabs",
                             "path": "editorialMetadata",
+                            "tabs": ["locale", "language"],
+                            "subTabs": ["format", "service"],
                             "fields": {
                                 "locale": {
                                     "name": "Locale",
