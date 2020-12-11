@@ -13,6 +13,22 @@
     width: 80%;
 }
 
+.nexus-c-nexus-array-with-tabs__heading {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 0 32px 1.25rem;
+    > div:first-child {
+        > span {
+            font-size: 20px;
+            font-weight: bold;
+            color: #172b4d;
+            margin-right: 16px;
+        }
+    }
+}
+
 .nexus-c-nexus-array-with-tabs__field {
     width: 100%;
 

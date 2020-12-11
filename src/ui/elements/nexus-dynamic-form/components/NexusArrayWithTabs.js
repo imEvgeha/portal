@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS} from '../constants';
+import {VIEWS, NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -16,6 +17,7 @@ const NexusArrayWithTabs = ({
     isUpdate,
     tabs,
     subTabs,
+    path,
 }) => {
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
@@ -47,6 +49,13 @@ const NexusArrayWithTabs = ({
                 <SideTabs onChange={changeTabData} data={groupedData} subTabs={subTabs} />
             </div>
             <div className="nexus-c-nexus-array-with-tabs__fields">
+                <div className="nexus-c-nexus-array-with-tabs__heading">
+                    <div>
+                        <span>Some label</span>
+                        <Button appearance="danger">Delete</Button>
+                    </div>
+                    <Button>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
+                </div>
                 {Object.keys(fields).map((key, index) => {
                     return (
                         <div key={index} className="nexus-c-nexus-array-with-tabs__field">
@@ -76,6 +85,7 @@ NexusArrayWithTabs.propTypes = {
     isUpdate: PropTypes.bool,
     tabs: PropTypes.array,
     subTabs: PropTypes.array,
+    path: PropTypes.string.isRequired,
 };
 
 NexusArrayWithTabs.defaultProps = {

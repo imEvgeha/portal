@@ -21,6 +21,12 @@ export const INCORRECT_DURATION = 'INCORRECT DURATION FORMAT: SEE TOOLTIP';
 
 export const FIELDS_WITHOUT_LABEL = ['castCrew', 'licensors'];
 
+export const NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS = {
+    editorialMetadata: '+ Add EMET Record',
+    territoryMetadata: '+ Add TMET Record',
+    ratings: '+ Add Ratings',
+};
+
 // todo: remove below
 export const TABS_MAPPINGS = [
     {tabName: 'Basic Info and Territory', id: 'Basic Info'},
