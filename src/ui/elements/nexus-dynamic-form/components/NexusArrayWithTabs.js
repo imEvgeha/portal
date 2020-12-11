@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {FormFooter} from '@atlaskit/form';
+import {default as AKForm} from '@atlaskit/form/Form';
+import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
 import {VIEWS, NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS} from '../constants';
@@ -18,7 +21,9 @@ const NexusArrayWithTabs = ({
     tabs,
     subTabs,
     path,
+    name,
 }) => {
+    const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
 
@@ -43,6 +48,56 @@ const NexusArrayWithTabs = ({
         setCurrentData(newCurrentData);
     };
 
+    const openEditModal = () => {
+        openModal(modalContent(), {
+            title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
+            width: 'medium',
+        });
+    };
+
+    const handleModalSubmit = values => {};
+
+    const modalContent = () => {
+        return (
+            <div className="nexus-c-array__modal">
+                <AKForm onSubmit={values => handleModalSubmit(values)}>
+                    {({formProps, dirty, submitting, reset, getValues}) => (
+                        <form {...formProps}>
+                            <div className="nexus-c-array__modal-fields">
+                                {Object.keys(fields).map((key, index) => {
+                                    return (
+                                        <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                                            {renderNexusField(key, VIEWS.CREATE, getValues, {
+                                                field: fields[key],
+                                                selectValues,
+                                                setFieldValue,
+                                            })}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            <FormFooter>
+                                <Button type="submit" appearance="primary">
+                                    Submit
+                                </Button>
+                                <Button
+                                    className="nexus-c-modal__cancel-button"
+                                    appearance="danger"
+                                    onClick={() => {
+                                        reset();
+                                        closeModal();
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </FormFooter>
+                        </form>
+                    )}
+                </AKForm>
+            </div>
+        );
+    };
+
     return (
         <div className="nexus-c-nexus-array-with-tabs">
             <div className="nexus-c-nexus-array-with-tabs__tabs">
@@ -54,7 +109,7 @@ const NexusArrayWithTabs = ({
                         <span>Some label</span>
                         <Button appearance="danger">Delete</Button>
                     </div>
-                    <Button>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
+                    <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
                 </div>
                 {Object.keys(fields).map((key, index) => {
                     return (
@@ -86,6 +141,7 @@ NexusArrayWithTabs.propTypes = {
     tabs: PropTypes.array,
     subTabs: PropTypes.array,
     path: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
 };
 
 NexusArrayWithTabs.defaultProps = {
