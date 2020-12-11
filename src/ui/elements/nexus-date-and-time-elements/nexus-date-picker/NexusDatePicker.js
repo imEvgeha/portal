@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
 import InlineEdit from '@atlaskit/inline-edit';
+import {
+    getDateFormatBasedOnLocale,
+    parseSimulcast,
+    isUtc,
+} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import classnames from 'classnames';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
-import {getDateFormatBasedOnLocale, parseSimulcast, isUtc} from '../../../../util/date-time/DateTimeUtils';
 import ClearButton from '../clear-button/ClearButton';
 import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT_WITHOUT_TIME} from '../constants';
 import './NexusDatePicker.scss';

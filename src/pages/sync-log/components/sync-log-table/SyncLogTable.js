@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import moment from 'moment';
 import {connect} from 'react-redux';
@@ -11,7 +12,6 @@ import NexusDatePicker from '../../../../ui/elements/nexus-date-and-time-element
 import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
 import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
 import columnMappings from '../../columnMappings';
 import {createSaveDateFromAction, createSaveDateToAction} from '../../syncLogActions';
 import {DOWNLOAD_BTN, ERROR_TABLE_COLUMNS, ERROR_TABLE_TITLE} from '../../syncLogConstants';

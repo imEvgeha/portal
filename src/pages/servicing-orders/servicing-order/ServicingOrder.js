@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get} from 'lodash';
-import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';

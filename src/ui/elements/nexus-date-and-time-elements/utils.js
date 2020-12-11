@@ -1,5 +1,5 @@
+import {getDateFormatBasedOnLocale, isUtc} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
-import {getDateFormatBasedOnLocale, isUtc} from '../../../util/date-time/DateTimeUtils';
 import {RELATIVE_TIME_FORMAT, SIMULCAST_TIME_FORMAT, TIMESTAMP_TIME_FORMAT} from './constants';
 
 export const getDateFormat = (locale, isTimestamp, isSimulcast) => {

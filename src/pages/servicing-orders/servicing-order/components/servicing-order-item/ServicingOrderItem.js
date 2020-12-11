@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import ChevronIcon from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import FolderIcon from '@vubiquity-nexus/portal-assets/folder.svg';
+import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import classnames from 'classnames';
 import {get} from 'lodash';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
-import {ISODateToView, sortByDateFn} from '../../../../../util/date-time/DateTimeUtils';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
 

@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DateTimePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form';
+import {getDateFormatBasedOnLocale} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import styled from 'styled-components';
-import {getDateFormatBasedOnLocale} from '../../../../util/date-time/DateTimeUtils';
 import ClearButton from '../clear-button/ClearButton';
 import {TIME_PLACEHOLDER, ATLASKIT_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT, TIMES} from '../constants';
 

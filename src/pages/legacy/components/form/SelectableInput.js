@@ -8,7 +8,7 @@ import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
-import {dateToISO} from '../../../../util/date-time/DateTimeUtils';
+import {dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const mapStateToProps = state => {
