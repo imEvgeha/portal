@@ -5,18 +5,20 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import classnames from 'classnames';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, subTabs, isRemoved}) => {
+const SideTabs = ({data, onChange, subTabs, isRemoved, clearIsRemoved}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
     });
 
     useEffect(() => {
-        isRemoved &&
+        if (isRemoved) {
             setCurrentTab({
                 tabIndex: 0,
                 subTabIndex: 0,
             });
+            clearIsRemoved();
+        }
     }, [isRemoved]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
@@ -125,6 +127,7 @@ SideTabs.propTypes = {
     onChange: PropTypes.func.isRequired,
     subTabs: PropTypes.array,
     isRemoved: PropTypes.bool,
+    clearIsRemoved: PropTypes.func.isRequired,
 };
 
 SideTabs.defaultProps = {

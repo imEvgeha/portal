@@ -33,6 +33,10 @@ const NexusArrayWithTabs = ({
         setGroupedData(groupedObj);
     }, [data]);
 
+    const clearIsRemoved = () => {
+        setIsRemoved(false);
+    };
+
     const groupBy = values => {
         const keys = tabs;
         if (keys.length === 0) return {};
@@ -72,7 +76,9 @@ const NexusArrayWithTabs = ({
             delete updatedGroupedData[key];
         }
         setGroupedData(updatedGroupedData);
-        setCurrentData(updatedGroupedData[Object.keys(updatedGroupedData)[0]][0]);
+        const keys = Object.keys(updatedGroupedData);
+        const newCurrentData = keys.length ? updatedGroupedData[keys[0]][0] : null;
+        setCurrentData(newCurrentData);
         setIsRemoved(true);
     };
 
@@ -108,7 +114,7 @@ const NexusArrayWithTabs = ({
         const groupedValues = groupBy([values]);
         const [key] = Object.keys(groupedValues);
         const updatedGroupedData = {...groupedData};
-        updatedGroupedData[key] = [];
+        updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
         setGroupedData(updatedGroupedData);
         closeModal();
@@ -158,15 +164,24 @@ const NexusArrayWithTabs = ({
     return (
         <div className="nexus-c-nexus-array-with-tabs">
             <div className="nexus-c-nexus-array-with-tabs__tabs">
-                <SideTabs onChange={changeTabData} data={groupedData} subTabs={subTabs} isRemoved={isRemoved} />
+                <SideTabs
+                    onChange={changeTabData}
+                    data={groupedData}
+                    subTabs={subTabs}
+                    isRemoved={isRemoved}
+                    clearIsRemoved={clearIsRemoved}
+                />
             </div>
             <div className="nexus-c-nexus-array-with-tabs__fields">
                 <div className="nexus-c-nexus-array-with-tabs__heading">
                     <div>
-                        <span>Some label</span>
                         {view === VIEWS.EDIT && (
-                            <Button appearance="danger" onClick={handleDeleteRecord}>
-                                Delete
+                            <Button
+                                appearance="danger"
+                                onClick={handleDeleteRecord}
+                                isDisabled={!Object.keys(groupedData).length}
+                            >
+                                Delete Record
                             </Button>
                         )}
                     </div>
