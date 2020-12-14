@@ -25,8 +25,6 @@ import './ServicesTable.scss';
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const errorIcon = `<i class='fas fa-exclamation-triangle' style='color:red' />`;
-
 const ServicesTable = ({
     data,
     recipientsOptions,
@@ -72,7 +70,7 @@ const ServicesTable = ({
                     serviceType:
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
-                            : SELECT_VALUES.serviceType[1],
+                            : service.externalServices.serviceType,
                     assetType: service.externalServices.assetType || '',
                     components: service.details || [],
                     spec: service.externalServices.formatType,
@@ -193,7 +191,6 @@ const ServicesTable = ({
     };
 
     const statusCol = {
-        headerComponentParams: {menuIcon: errorIcon},
         headerComponentFramework: () => (
             <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
                 <div
@@ -238,7 +235,17 @@ const ServicesTable = ({
             case 'operationalStatus':
                 return {...item, ...statusCol};
             case 'spec':
-                return {...item, onCellClicked: e => !isDisabled && checkSpecOptions(e)};
+                return {
+                    ...item,
+                    // eslint-disable-next-line react/prop-types
+                    cellRendererFramework: ({rowIndex}) => {
+                        const value = get(tableData[rowIndex], 'spec', '');
+                        // show tooltip as the value is too long to fit in column width
+                        return <span title={value}>{value}</span>;
+                    },
+                    onCellClicked: e => !isDisabled && checkSpecOptions(e),
+                };
+
             default:
                 return item;
         }
@@ -355,7 +362,7 @@ ServicesTable.propTypes = {
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
     deteErrors: PropTypes.array,
-    recipientsOptions: PropTypes.array,
+    recipientsOptions: PropTypes.object,
 };
 
 ServicesTable.defaultProps = {
@@ -364,7 +371,7 @@ ServicesTable.defaultProps = {
     setUpdatedServices: () => null,
     components: [],
     deteErrors: [],
-    recipientsOptions: [],
+    recipientsOptions: {},
 };
 
 export default ServicesTable;

@@ -20,6 +20,7 @@ import {NON_EDITABLE_COLS, SELECT_VALUES, INIT_SOURCE_ROW, TEMP_SOURCE_ROW} from
 import columnDefinitions from './columnDefinitions';
 import './SourcesTable.scss';
 import {fetchAssetFields} from './util';
+import {RESTRICTED_TENANTS} from '../constants';
 
 const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
@@ -31,6 +32,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const previousData = usePrevious(dataArray);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
+
+    const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
     useEffect(
         () => {
@@ -97,8 +100,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     });
 
     // eslint-disable-next-line react/prop-types
-    const closeButtonCell = ({rowIndex, data}) => {
-        return (
+    const deleteButtonCell = ({rowIndex, data}) => {
+        return isRestrictedTenant && dataArray.length === 1 ? (
+            ''
+        ) : (
             <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
                 {!isDisabled && (
                     <span onClick={() => removeSourceRow(data.barcode)}>
@@ -109,9 +114,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         );
     };
 
-    const closeButtonColumn = defineButtonColumn({
+    const deleteButtonColumn = defineButtonColumn({
         width: 35,
-        cellRendererFramework: closeButtonCell,
+        cellRendererFramework: deleteButtonCell,
         cellRendererParams: '',
     });
 
@@ -235,12 +240,12 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 <div>{SOURCE_SUBTITLE}</div>
                 {sources.length > 0 && (
                     <div className="nexus-c-source-table__add-icon">
-                        {!isDisabled && <Add onClick={addEmptySourceRow} />}
+                        {!isDisabled && !isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
                     </div>
                 )}
             </div>
             <SourceTableGrid
-                columnDefs={[radioButtonColumn, closeButtonColumn, servicesColumn, ...newColDef]}
+                columnDefs={[radioButtonColumn, deleteButtonColumn, servicesColumn, ...newColDef]}
                 defaultColDef={{
                     flex: 1,
                     sortable: true,
