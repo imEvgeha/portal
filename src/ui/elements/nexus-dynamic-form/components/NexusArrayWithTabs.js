@@ -26,16 +26,17 @@ const NexusArrayWithTabs = ({
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
     const [currentData, setCurrentData] = useState(null);
+    const [isRemoved, setIsRemoved] = useState(false);
 
     useEffect(() => {
-        const groupedObj = groupBy();
+        const groupedObj = groupBy(data);
         setGroupedData(groupedObj);
     }, [data]);
 
-    const groupBy = () => {
+    const groupBy = values => {
         const keys = tabs;
         if (keys.length === 0) return {};
-        return data.reduce((acc, obj) => {
+        return values.reduce((acc, obj) => {
             const prop = keys.length === 1 ? obj[keys[0]] : `${obj[keys[0]]} ${obj[keys[1]]}`;
             acc[prop] = acc[prop] || [];
             acc[prop].push(obj);
@@ -48,6 +49,33 @@ const NexusArrayWithTabs = ({
         setCurrentData(newCurrentData);
     };
 
+    const removeCurrentRecord = (dataArr, current) => {
+        if (subTabs.length) {
+            return dataArr.filter(obj => {
+                let isEqual = false;
+                subTabs.forEach(field => {
+                    if (obj[field] !== current[field]) isEqual = true;
+                });
+                return isEqual;
+            });
+        }
+        return [];
+    };
+
+    const handleDeleteRecord = () => {
+        const current = currentData || data[0];
+        const groupedCurrent = groupBy([current]);
+        const [key] = Object.keys(groupedCurrent);
+        const updatedGroupedData = {...groupedData};
+        updatedGroupedData[key] = removeCurrentRecord(updatedGroupedData[key], current);
+        if (updatedGroupedData[key].length === 0) {
+            delete updatedGroupedData[key];
+        }
+        setGroupedData(updatedGroupedData);
+        setCurrentData(updatedGroupedData[Object.keys(updatedGroupedData)[0]][0]);
+        setIsRemoved(true);
+    };
+
     const openEditModal = () => {
         openModal(modalContent(), {
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
@@ -55,15 +83,44 @@ const NexusArrayWithTabs = ({
         });
     };
 
-    const handleModalSubmit = values => {};
+    const handleValuesFormat = values => {
+        Object.keys(values).forEach(key => {
+            const obj = values[key];
+            if (
+                obj &&
+                typeof obj === 'object' &&
+                !Array.isArray(obj) &&
+                obj.hasOwnProperty('label') &&
+                obj.hasOwnProperty('value')
+            ) {
+                values[key] = obj.value;
+            }
+            if (key === 'editorialCastCrew') {
+                values['castCrew'] = obj;
+                delete values[key];
+            }
+        });
+        return values;
+    };
+
+    const handleModalSubmit = values => {
+        const properValues = handleValuesFormat(values);
+        const groupedValues = groupBy([values]);
+        const [key] = Object.keys(groupedValues);
+        const updatedGroupedData = {...groupedData};
+        updatedGroupedData[key] = [];
+        updatedGroupedData[key].push(properValues);
+        setGroupedData(updatedGroupedData);
+        closeModal();
+    };
 
     const modalContent = () => {
         return (
-            <div className="nexus-c-array__modal">
+            <div>
                 <AKForm onSubmit={values => handleModalSubmit(values)}>
-                    {({formProps, dirty, submitting, reset, getValues}) => (
+                    {({formProps, reset, getValues}) => (
                         <form {...formProps}>
-                            <div className="nexus-c-array__modal-fields">
+                            <div>
                                 {Object.keys(fields).map((key, index) => {
                                     return (
                                         <div key={index} className="nexus-c-nexus-array-with-tabs__field">
@@ -101,15 +158,21 @@ const NexusArrayWithTabs = ({
     return (
         <div className="nexus-c-nexus-array-with-tabs">
             <div className="nexus-c-nexus-array-with-tabs__tabs">
-                <SideTabs onChange={changeTabData} data={groupedData} subTabs={subTabs} />
+                <SideTabs onChange={changeTabData} data={groupedData} subTabs={subTabs} isRemoved={isRemoved} />
             </div>
             <div className="nexus-c-nexus-array-with-tabs__fields">
                 <div className="nexus-c-nexus-array-with-tabs__heading">
                     <div>
                         <span>Some label</span>
-                        <Button appearance="danger">Delete</Button>
+                        {view === VIEWS.EDIT && (
+                            <Button appearance="danger" onClick={handleDeleteRecord}>
+                                Delete
+                            </Button>
+                        )}
                     </div>
-                    <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
+                    {view === VIEWS.EDIT && (
+                        <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
+                    )}
                 </div>
                 {Object.keys(fields).map((key, index) => {
                     return (

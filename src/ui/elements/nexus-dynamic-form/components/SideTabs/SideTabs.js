@@ -1,15 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import classnames from 'classnames';
 import './SideTabs.scss';
 
-const SideTabs = ({data, onChange, subTabs}) => {
+const SideTabs = ({data, onChange, subTabs, isRemoved}) => {
     const [currentTab, setCurrentTab] = useState({
         tabIndex: 0,
         subTabIndex: 0,
     });
+
+    useEffect(() => {
+        isRemoved &&
+            setCurrentTab({
+                tabIndex: 0,
+                subTabIndex: 0,
+            });
+    }, [isRemoved]);
 
     const handleTabChanged = (key, tabIndex, subTabIndex = 0) => {
         setCurrentTab({
@@ -116,11 +124,13 @@ SideTabs.propTypes = {
     data: PropTypes.object,
     onChange: PropTypes.func.isRequired,
     subTabs: PropTypes.array,
+    isRemoved: PropTypes.bool,
 };
 
 SideTabs.defaultProps = {
     data: {},
     subTabs: [],
+    isRemoved: false,
 };
 
 export default SideTabs;
