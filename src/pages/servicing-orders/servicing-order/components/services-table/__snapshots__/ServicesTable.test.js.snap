@@ -287,9 +287,9 @@ exports[`ServicesTable should match snapshot 1`] = `
           "required": true,
         },
         Object {
-          "dataType": "select",
+          "dataType": "string",
           "displayName": "Recipient",
-          "enableEdit": true,
+          "enableEdit": false,
           "javaVariableName": "recipient",
           "queryParamName": "recipient",
           "required": true,
@@ -339,7 +339,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "60",
           "50",
         ],
-        "recipient": Array [],
         "serviceType": Array [
           "Process & Deliver",
           "DETE Ingest",

@@ -25,7 +25,7 @@ const ServicingOrder = ({match}) => {
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
     const [deteErrors, setDeteErrors] = useState([]);
-    const [recipientsSpecs, setRecipientsSpecs] = useState({});
+    const [recipientsOptions, setRecipientsOptions] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
@@ -117,13 +117,13 @@ const ServicingOrder = ({match}) => {
                 let recp = {};
                 source.deteServices.forEach(item => {
                     const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
-                    if (recipient && !recipientsSpecs.hasOwnProperty(recipient)) {
+                    if (recipient && !recipientsOptions.hasOwnProperty(recipient)) {
                         getSpecOptions(recipient, source.tenant).then(res => {
                             recp = {
                                 ...recp,
                                 [recipient]: get(res, 'outputFormats', []).map(item => item.outputTemplateName),
                             };
-                            setRecipientsSpecs(prevState => {
+                            setRecipientsOptions(prevState => {
                                 return {...prevState, ...recp};
                             });
                         });
@@ -181,7 +181,8 @@ const ServicingOrder = ({match}) => {
                     />
                     {selectedSource && (
                         <ServicesTable
-                            data={{...selectedSource, recipientsSpecs}}
+                            data={selectedSource}
+                            recipientsOptions={recipientsOptions}
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
                             components={components}

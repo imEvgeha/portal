@@ -53,9 +53,9 @@
     {
         "javaVariableName": "recipient",
         "displayName": "Recipient",
-        "dataType": "select",
+        "dataType": "string",
         "queryParamName": "recipient",
-        "enableEdit": true,
+        "enableEdit": false,
         "required": true
     },
     {
