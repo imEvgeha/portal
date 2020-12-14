@@ -8,11 +8,13 @@ import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
-import {VIEWS} from '../../constants';
+import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
+import Licensors from './components/Licensors/Licensors';
+import MsvIds from './components/MsvIds/MsvIds';
 import './NexusField.scss';
 
 const DateTimeWithOptional = compose(withOptionalCheckbox())(DateTime);
@@ -45,10 +47,13 @@ const NexusField = ({
     useCurrentDate,
     getCurrentValues,
     isReturningTime,
+    config,
+    isEditable,
+    isGridLayout,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, formData);
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
     };
 
     const addedProps = {
@@ -59,10 +64,11 @@ const NexusField = ({
     };
 
     const dateProps = {
+        isDisabled: checkDependencies('readOnly'),
         labels,
         type,
         dateType,
-        isReadOnly,
+        isReadOnly: isReadOnly || checkDependencies('readOnly'),
         useCurrentDate,
         isReturningTime,
         ...addedProps,
@@ -94,7 +100,13 @@ const NexusField = ({
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
-                        {({fieldProps}) => <CheckboxWithOptional {...addedProps} {...fieldProps} />}
+                        {({fieldProps}) => (
+                            <CheckboxWithOptional
+                                isDisabled={isReadOnly || checkDependencies('readOnly')}
+                                {...addedProps}
+                                {...fieldProps}
+                            />
+                        )}
                     </CheckboxField>
                 );
             case 'select':
@@ -146,9 +158,27 @@ const NexusField = ({
                 );
             case 'dateRange':
             case 'datetime':
-                return <DateTimeWithOptional {...dateProps} {...fieldProps} />;
+                return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'castCrew':
                 return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
+            case 'licensors':
+                return (
+                    <Licensors
+                        {...fieldProps}
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={true}
+                    />
+                );
+            case 'msvIds':
+                return (
+                    <MsvIds
+                        {...fieldProps}
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={true}
+                    />
+                );
             default:
                 return;
         }
@@ -174,11 +204,27 @@ const NexusField = ({
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
-                    return <DateTime {...dateProps} {...fieldProps} isReadOnly />;
+                    return <DateTime {...dateProps} {...fieldProps} />;
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             case 'castCrew':
                 return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={false} />;
+            case 'licensors':
+                return (
+                    <Licensors
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={false}
+                    />
+                );
+            case 'msvIds':
+                return (
+                    <MsvIds
+                        selectValues={selectValues}
+                        data={fieldProps.value ? fieldProps.value : []}
+                        isEdit={false}
+                    />
+                );
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
@@ -206,8 +252,13 @@ const NexusField = ({
                 >
                     {({fieldProps, error}) => (
                         <>
-                            {type !== 'castCrew' &&
-                                renderLabel(label, !!(checkDependencies('required') || isRequired), tooltip)}
+                            {!FIELDS_WITHOUT_LABEL.includes(type) &&
+                                renderLabel(
+                                    label,
+                                    !!(checkDependencies('required') || isRequired),
+                                    tooltip,
+                                    isGridLayout
+                                )}
                             <div className="nexus-c-field__value-section">
                                 <div className="nexus-c-field__value">
                                     {view === VIEWS.EDIT || view === VIEWS.CREATE
@@ -248,9 +299,13 @@ NexusField.propTypes = {
     isHighlighted: PropTypes.bool,
     getCurrentValues: PropTypes.func.isRequired,
     isReturningTime: PropTypes.bool,
+    config: PropTypes.array,
+    isEditable: PropTypes.bool,
+    isGridLayout: PropTypes.bool,
 };
 
 NexusField.defaultProps = {
+    isEditable: false,
     view: VIEWS.VIEW,
     tooltip: null,
     formData: {},
@@ -270,6 +325,8 @@ NexusField.defaultProps = {
     useCurrentDate: false,
     isHighlighted: false,
     isReturningTime: true,
+    config: [],
+    isGridLayout: false,
 };
 
 export default NexusField;

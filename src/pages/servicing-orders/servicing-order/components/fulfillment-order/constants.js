@@ -25,8 +25,8 @@ export default {
     },
     READINESS_STATUS: [
         {value: 'NEW', label: 'New'},
-        {value: 'READY', label: 'Ready'},
         {value: 'ON_HOLD', label: 'On Hold'},
+        {value: 'READY', label: 'Ready'},
     ],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',

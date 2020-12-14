@@ -154,7 +154,7 @@ export function* updateRight({payload}) {
     }
 
     try {
-        const response = yield rightsService.updateRightWithFullData(payload, payload.id);
+        const response = yield rightsService.updateRightWithFullData(payload, payload.id, true);
         yield put({
             type: actionTypes.UPDATE_RIGHT_SUCCESS,
             payload: response,

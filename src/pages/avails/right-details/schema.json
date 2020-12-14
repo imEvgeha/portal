@@ -1,1279 +1,1360 @@
-[
-    {
-        "title": "Basic Info and Territory",
-        "sections": [
-            {
-                "title": "Basic Info",
-                "fields": {
-                    "rightId": {
-                        "name": "Right ID",
-                        "type": "string",
-                        "path": "id",
-                        "isReadOnly": true,
-                        "viewConfig": [
-                            {
-                                "view": "CREATE",
-                                "hidden": true
-                            }
-                        ]
-                    },
-                    "title": {
-                        "name": "Title",
-                        "type": "string",
-                        "isRequired": true,
-                        "path": "title",
-                        "tooltip": "Read Only when coreTitleId exists",
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "coreTitleId",
-                                "value": "any"
-                            }
-                        ]
-                    },
-                    "format": {
-                        "name": "Format",
-                        "type": "multiselect",
-                        "path": "format",
-                        "isRequired": true
-                    },
-                    "dates": {
-                        "name": "License Date Range",
-                        "type": "dateRange",
-                        "dateType": "businessDateTime",
-                        "labels": ["License Start", "License End"],
-                        "path": ["start", "end"],
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "licensed",
-                                "value": false
-                            },
-                            {
-                                "view": "EDIT",
-                                "type": "required",
-                                "field": "licensed",
-                                "value": true
-                            }
-                        ]
-                    },
-                    "startLag": {
-                        "name": "Start Lag",
-                        "type": "string",
-                        "path": "startLag",
-                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
-                    },
-                    "licensed": {
-                        "name": "Licensed",
-                        "type": "boolean",
-                        "path": "licensed",
-                        "viewConfig": [
-                            {
-                                "view": "CREATE",
-                                "defaultValue": true
-                            }
-                        ],
-                        "isReadOnly": true
-                    },
-                    "licensor": {
-                        "name": "Licensor",
-                        "type": "select",
-                        "path": "licensor",
-                        "isRequired": true,
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "territory",
-                                "subfield": "selected",
-                                "value": true
-                            }
-                        ]
-                    },
-                    "licensee": {
-                        "name": "Licensee",
-                        "type": "select",
-                        "path": "licensee",
-                        "isRequired": true,
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "territory",
-                                "subfield": "selected",
-                                "value": true
-                            }
-                        ]
-                    },
-                    "licenseType": {
-                        "name": "License Type",
-                        "type": "select",
-                        "path": "licenseType",
-                        "isRequired": true,
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "territory",
-                                "subfield": "selected",
-                                "value": true
-                            }
-                        ]
-                    },
-                    "contentType": {
-                        "name": "Content Type",
-                        "type": "select",
-                        "path": "contentType",
-                        "isRequired": true,
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "coreTitleId",
-                                "value": "any"
-                            },
-                            {
-                                "view": "EDIT",
-                                "type": "readOnly",
-                                "field": "territory",
-                                "subfield": "selected",
-                                "value": true
-                            }
-                        ]
-                    },
-                    "releaseYear": {
-                        "name": "Release Year",
-                        "type": "string",
-                        "path": "releaseYear",
-                        "validation": [
-                            {
-                                "name": "isYear"
-                            }
-                        ]
-                    },
-                    "allowedLanguages": {
-                        "name": "Allowed Languages",
-                        "type": "multiselect",
-                        "path": "allowedLanguages",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
-                    "licenseRightsDescription": {
-                        "name": "License Rights Description",
-                        "type": "select",
-                        "path": "licenseRightsDescription",
-                        "isRequired": true
-                    },
-                    "platformCategory": {
-                        "name": "Platform Category",
-                        "type": "multiselect",
-                        "path": "platformCategory",
-                        "tooltip": "Required for US Licensee",
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "Residential", "value": "Residential" },
-                                { "label": "Hotel", "value": "Hotel" }
-                            ]
-                        },
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "required",
-                                "field": "territory",
-                                "subfield": "country",
-                                "value": "US"
-                            }
-                        ]
-                    },
-                    "keywords": {
-                        "name": "Keywords",
-                        "type": "string",
-                        "path": "keywords"
-                    },
-                    "rightStatus": {
-                        "name": "Right Status",
-                        "type": "select",
-                        "path": "rightStatus",
-                        "isRequired": true,
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "Pending", "value": "Pending" },
-                                { "label": "Confirmed", "value": "Confirmed" },
-                                { "label": "Tentative", "value": "Tentative" },
-                                { "label": "Canceled", "value": "Canceled" },
-                                { "label": "Withdrawn", "value": "Withdrawn" }
-                            ]
-                        },
-                        "validation": [
-                            {
-                                "name": "areAllWithdrawn"
-                            }
-                        ]
-                    },
-                    "affiliate": {
-                        "name": "Affiliate",
-                        "type": "multiselect",
-                        "path": "affiliate"
-                    },
-                    "affiliateExclude": {
-                        "name": "Affiliate Exclude",
-                        "type": "multiselect",
-                        "path": "affiliateExclude"
-                    },
-                    "createdAt": {
-                        "name": "Created At",
-                        "type": "datetime",
-                        "dateType": "timestamp",
-                        "path": "createdAt",
-                        "isReadOnly": true,
-                        "isRequired": true
-                    },
-                    "updatedAt": {
-                        "name": "Updated At",
-                        "type": "datetime",
-                        "dateType": "timestamp",
-                        "path": "updatedAt",
-                        "isReadOnly": true,
-                        "isRequired": true
-                    },
-                    "createdBy": {
-                        "name": "Created By",
-                        "type": "string",
-                        "path": "createdBy",
-                        "isReadOnly": true
-                    },
-                    "updatedBy": {
-                        "name": "Updated By",
-                        "type": "string",
-                        "path": "updatedBy",
-                        "isReadOnly": true
-                    }
-                }
-            },
-            {
-                "title": "Territory",
-                "fields": {
-                    "territory": {
-                        "name": "Territory",
-                        "type": "array",
-                        "path": "territory",
-                        "isRequired": true,
-                        "confirmationContent": "Alternatively, you can withdraw the territory.",
-                        "fields": {
-                            "country": {
-                                "name": "Country",
-                                "path": "country",
-                                "isRequired": true,
-                                "className": "nexus-c-array__field-bold area-one",
-                                "type": "select",
-                                "optionsConfig": {
-                                    "defaultValuePath": "countryCode",
-                                    "defaultLabelPath": "countryName"
+{
+    "config": [
+        {
+            "view": "EDIT",
+            "type": "readOnly",
+            "field": "sourceRightId",
+            "value": "any"
+        }
+    ],
+    "fields": [
+        {
+            "title": "Basic Info and Territory",
+            "sections": [
+                {
+                    "title": "Basic Info",
+                    "fields": {
+                        "rightId": {
+                            "name": "Right ID",
+                            "type": "string",
+                            "path": "id",
+                            "isReadOnly": true,
+                            "viewConfig": [
+                                {
+                                    "view": "CREATE",
+                                    "hidden": true
                                 }
-                            },
-                            "selected": {
-                                "name": "Selected",
-                                "type": "boolean",
-                                "path": "selected",
-                                "isReadOnly": true,
-                                "className": "nexus-c-array__field-inline area-two",
-                                "viewConfig": [
+                            ]
+                        },
+                        "title": {
+                            "name": "Title",
+                            "type": "string",
+                            "isRequired": true,
+                            "path": "title",
+                            "tooltip": "Read Only when coreTitleId exists",
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "coreTitleId",
+                                    "value": "any"
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "territory",
+                                    "subfield": "selected",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "format": {
+                            "name": "Format",
+                            "type": "multiselect",
+                            "path": "format",
+                            "isRequired": true
+                        },
+                        "dates": {
+                            "name": "License Date Range",
+                            "type": "dateRange",
+                            "dateType": "businessDateTime",
+                            "labels": ["License Start", "License End"],
+                            "path": ["start", "end"],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "licensed",
+                                    "value": false
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "field": "licensed",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "startLag": {
+                            "name": "Start Lag",
+                            "type": "string",
+                            "path": "startLag",
+                            "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)"
+                        },
+                        "licensed": {
+                            "name": "Licensed",
+                            "type": "boolean",
+                            "path": "licensed",
+                            "viewConfig": [
+                                {
+                                    "view": "CREATE",
+                                    "defaultValue": true
+                                }
+                            ],
+                            "isReadOnly": true
+                        },
+                        "licensor": {
+                            "name": "Licensor",
+                            "type": "select",
+                            "path": "licensor",
+                            "isRequired": true,
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "territory",
+                                    "subfield": "selected",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "licensee": {
+                            "name": "Licensee",
+                            "type": "select",
+                            "path": "licensee",
+                            "isRequired": true,
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "territory",
+                                    "subfield": "selected",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "licenseType": {
+                            "name": "License Type",
+                            "type": "select",
+                            "path": "licenseType",
+                            "isRequired": true,
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "territory",
+                                    "subfield": "selected",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "contentType": {
+                            "name": "Content Type",
+                            "type": "select",
+                            "path": "contentType",
+                            "isRequired": true,
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "coreTitleId",
+                                    "value": "any"
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "territory",
+                                    "subfield": "selected",
+                                    "value": true
+                                }
+                            ]
+                        },
+                        "releaseYear": {
+                            "name": "Release Year",
+                            "type": "string",
+                            "path": "releaseYear",
+                            "validation": [
+                                {
+                                    "name": "isYear"
+                                }
+                            ]
+                        },
+                        "allowedLanguages": {
+                            "name": "Allowed Languages",
+                            "type": "multiselect",
+                            "path": "allowedLanguages",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "licenseRightsDescription": {
+                            "name": "License Rights Description",
+                            "type": "select",
+                            "path": "licenseRightsDescription",
+                            "isRequired": true
+                        },
+                        "platformCategory": {
+                            "name": "Platform Category",
+                            "type": "multiselect",
+                            "path": "platformCategory",
+                            "tooltip": "Required for US Licensee",
+                            "optionsConfig": {
+                                "options": [
                                     {
-                                        "view": "CREATE",
-                                        "defaultValue": false
+                                        "label": "Residential",
+                                        "value": "Residential"
+                                    },
+                                    {
+                                        "label": "Hotel",
+                                        "value": "Hotel"
                                     }
                                 ]
                             },
-                            "dateSelected": {
-                                "name": "Date Selected",
-                                "type": "datetime",
-                                "dateType": "regionalMidnight",
-                                "path": "dateSelected",
-                                "isReadOnly": true,
-                                "className": "area-three"
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "field": "territory",
+                                    "subfield": "country",
+                                    "value": "US"
+                                }
+                            ]
+                        },
+                        "keywords": {
+                            "name": "Keywords",
+                            "type": "string",
+                            "path": "keywords"
+                        },
+                        "rightStatus": {
+                            "name": "Right Status",
+                            "type": "select",
+                            "path": "rightStatus",
+                            "isRequired": true,
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Pending",
+                                        "value": "Pending"
+                                    },
+                                    {
+                                        "label": "Confirmed",
+                                        "value": "Confirmed"
+                                    },
+                                    {
+                                        "label": "Tentative",
+                                        "value": "Tentative"
+                                    },
+                                    {
+                                        "label": "Canceled",
+                                        "value": "Canceled"
+                                    },
+                                    {
+                                        "label": "Withdrawn",
+                                        "value": "Withdrawn"
+                                    }
+                                ]
                             },
-                            "rightContractStatus": {
-                                "name": "Right Contract Status",
-                                "type": "select",
-                                "path": "rightContractStatus",
-                                "isRequired": true,
-                                "className": "area-four",
-                                "optionsConfig": {
-                                    "options": [
-                                        { "label": "Pending", "value": "Pending" },
-                                        { "label": "Pending Manual", "value": "PendingManual" },
-                                        { "label": "Matched Once", "value": "MatchedOnce" }
+                            "validation": [
+                                {
+                                    "name": "areAllWithdrawn"
+                                }
+                            ]
+                        },
+                        "affiliate": {
+                            "name": "Affiliate",
+                            "type": "multiselect",
+                            "path": "affiliate"
+                        },
+                        "affiliateExclude": {
+                            "name": "Affiliate Exclude",
+                            "type": "multiselect",
+                            "path": "affiliateExclude"
+                        },
+                        "createdAt": {
+                            "name": "Created At",
+                            "type": "datetime",
+                            "dateType": "timestamp",
+                            "path": "createdAt",
+                            "isReadOnly": true,
+                            "isRequired": true
+                        },
+                        "updatedAt": {
+                            "name": "Updated At",
+                            "type": "datetime",
+                            "dateType": "timestamp",
+                            "path": "updatedAt",
+                            "isReadOnly": true,
+                            "isRequired": true
+                        },
+                        "createdBy": {
+                            "name": "Created By",
+                            "type": "string",
+                            "path": "createdBy",
+                            "isReadOnly": true
+                        },
+                        "updatedBy": {
+                            "name": "Updated By",
+                            "type": "string",
+                            "path": "updatedBy",
+                            "isReadOnly": true
+                        }
+                    }
+                },
+                {
+                    "title": "Territory",
+                    "fields": {
+                        "territory": {
+                            "name": "Territory",
+                            "type": "array",
+                            "path": "territory",
+                            "isRequired": true,
+                            "confirmationContent": "Alternatively, you can withdraw the territory.",
+                            "fields": {
+                                "country": {
+                                    "name": "Country",
+                                    "path": "country",
+                                    "isRequired": true,
+                                    "className": "nexus-c-array__field-bold area-one",
+                                    "type": "select",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "countryCode",
+                                        "defaultLabelPath": "countryName"
+                                    }
+                                },
+                                "selected": {
+                                    "name": "Selected",
+                                    "type": "boolean",
+                                    "path": "selected",
+                                    "isReadOnly": true,
+                                    "className": "nexus-c-array__field-inline area-two",
+                                    "viewConfig": [
+                                        {
+                                            "view": "CREATE",
+                                            "defaultValue": false
+                                        }
                                     ]
+                                },
+                                "dateSelected": {
+                                    "name": "Date Selected",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "dateSelected",
+                                    "isReadOnly": true,
+                                    "className": "area-three"
+                                },
+                                "rightContractStatus": {
+                                    "name": "Right Contract Status",
+                                    "type": "select",
+                                    "path": "rightContractStatus",
+                                    "isRequired": true,
+                                    "className": "area-four",
+                                    "isEditable": true,
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "Pending",
+                                                "value": "Pending"
+                                            },
+                                            {
+                                                "label": "Pending Manual",
+                                                "value": "PendingManual"
+                                            },
+                                            {
+                                                "label": "Matched Once",
+                                                "value": "MatchedOnce"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "vuContractId": {
+                                    "name": "VU Contract ID",
+                                    "type": "stringInArray",
+                                    "path": "vuContractId",
+                                    "className": "area-five",
+                                    "isEditable": true
+                                },
+                                "dateWithdrawn": {
+                                    "isOptional": true,
+                                    "name": "Date Withdrawn",
+                                    "type": "datetime",
+                                    "dateType": "timestamp",
+                                    "path": "dateWithdrawn",
+                                    "className": "area-seven",
+                                    "isHighlighted": true,
+                                    "isReadOnly": true,
+                                    "useCurrentDate": true
+                                },
+                                "comment": {
+                                    "name": "Comments",
+                                    "type": "string",
+                                    "path": "comment",
+                                    "className": "area-six"
                                 }
-                            },
-                            "vuContractId": {
-                                "name": "VU Contract ID",
-                                "type": "stringInArray",
-                                "path": "vuContractId",
-                                "className": "area-five"
-                            },
-                            "dateWithdrawn": {
-                                "isOptional": true,
-                                "name": "Date Withdrawn",
-                                "type": "datetime",
-                                "dateType": "timestamp",
-                                "path": "dateWithdrawn",
-                                "className": "area-seven",
-                                "isHighlighted": true,
-                                "isReadOnly": true,
-                                "useCurrentDate": true
-                            },
-                            "comment": {
-                                "name": "Comments",
-                                "type": "string",
-                                "path": "comment",
-                                "className": "area-six"
                             }
+                        },
+                        "territoryExcluded": {
+                            "name": "Territory Excluded",
+                            "type": "multiselect",
+                            "path": "territoryExcluded",
+                            "optionsConfig": {
+                                "defaultValuePath": "countryCode",
+                                "defaultLabelPath": "countryName"
+                            }
+                        },
+                        "region": {
+                            "name": "Region",
+                            "type": "multiselect",
+                            "path": "region",
+                            "optionsConfig": {
+                                "defaultValuePath": "regionCode",
+                                "defaultLabelPath": "regionName"
+                            }
+                        },
+                        "regionExcluded": {
+                            "name": "Region Excluded",
+                            "type": "string",
+                            "path": "regionExcluded"
                         }
-                    },
-                    "territoryExcluded": {
-                        "name": "Territory Excluded",
-                        "type": "multiselect",
-                        "path": "territoryExcluded",
-                        "optionsConfig": {
-                            "defaultValuePath": "countryCode",
-                            "defaultLabelPath": "countryName"
-                        }
-                    },
-                    "region": {
-                        "name": "Region",
-                        "type": "multiselect",
-                        "path": "region",
-                        "optionsConfig": {
-                            "defaultValuePath": "regionCode",
-                            "defaultLabelPath": "regionName"
-                        }
-                    },
-                    "regionExcluded": {
-                        "name": "Region Excluded",
-                        "type": "string",
-                        "path": "regionExcluded"
                     }
-                }
-            },
-            {
-                "title": "Pricing",
-                "fields": {
-                    "pricing": {
-                        "name": "Pricing",
-                        "type": "array",
-                        "path": "pricing",
-                        "fields": {
-                            "priceType": {
-                                "name": "Price Type",
-                                "type": "select",
-                                "path": "priceType",
-                                "isRequired": true,
-                                "className": "area-one"
-                            },
-                            "priceValue": {
-                                "name": "Price Value",
-                                "type": "string",
-                                "path": "priceValue",
-                                "isRequired": true,
-                                "className": "area-two"
-                            },
-                            "priceCurrency": {
-                                "name": "Price Currency",
-                                "type": "select",
-                                "path": "priceCurrency",
-                                "className": "area-three"
-                            }
-                        }
-                    },
-                    "srp": {
-                        "name": "SRP",
-                        "type": "number",
-                        "path": "srp"
-                    },
-                    "boxOffice": {
-                        "name": "Box Office",
-                        "type": "number",
-                        "path": "boxOffice"
-                    },
-                    "usBoxOffice": {
-                        "name": "US Box Office",
-                        "type": "number",
-                        "path": "usBoxOffice"
-                    },
-                    "boxOfficeComment": {
-                        "name": "Box Office Comment",
-                        "type": "string",
-                        "path": "boxOfficeComment"
-                    },
-                    "releaseHistoryOriginal": {
-                        "name": "Release History Original",
-                        "type": "datetime",
-                        "dateType": "businessDateTime",
-                        "path": "releaseHistoryOriginal"
-                    },
-                    "releaseHistoryPhysicalHV": {
-                        "name": "Release History Physical HV",
-                        "type": "datetime",
-                        "dateType": "businessDateTime",
-                        "path": "releaseHistoryPhysicalHV"
-                    },
-                    "daysFromLVR": {
-                        "name": "Days From LVR",
-                        "type": "number",
-                        "path": "daysFromLVR",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "suppressionLiftDate": {
-                        "name": "Suppression Lift Date",
-                        "type": "datetime",
-                        "dateType": "businessDateTime",
-                        "path": "suppressionLiftDate"
-                    },
-                    "specialPreOrderFulfillDate": {
-                        "name": "Special Pre Order Fulfill Date",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "specialPreOrderFulfillDate"
-                    },
-                    "announceDate": {
-                        "name": "Announce Date",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "announceDate"
-                    },
-
-                    "termYear": {
-                        "name": "Term Year",
-                        "type": "number",
-                        "path": "termYear",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "termDates": {
-                        "name": "Term Year Range",
-                        "type": "dateRange",
-                        "dateType": "regionalMidnight",
-                        "labels": ["Term Year Start", "Term Year End"],
-                        "path": ["termYearStart", "termYearEnd"],
-                        "isReturningTime": false
-                    },
-                    "imdbLink": {
-                        "name": "IMDB Link",
-                        "type": "string",
-                        "path": "imdbLink"
-                    },
-                    "entryType": {
-                        "name": "Entry Type",
-                        "type": "select",
-                        "path": "entryType",
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "Full Extract", "value": "Full Extract" },
-                                { "label": "Full Delete", "value": "Full Delete" }
-                            ]
-                        }
-                    },
-                    "originalRightIds": {
-                        "name": "Original Right IDs",
-                        "type": "string",
-                        "path": "originalRightIds",
-                        "isReadOnly": true,
-                        "isHighlighted": true
-                    },
-                    "sourceRightId": {
-                        "name": "Source Right ID",
-                        "type": "string",
-                        "path": "sourceRightId",
-                        "isReadOnly": true,
-                        "isHighlighted": true
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "title": "Title and Episodic",
-        "sections": [
-            {
-                "title": "Title",
-                "fields": {
-                    "coreTitleId": {
-                        "name": "Core TitleId",
-                        "type": "string",
-                        "path": "coreTitleId",
-                        "isReadOnly": true,
-                        "viewConfig": [
-                            {
-                                "view": "CREATE",
-                                "hidden": true
-                            }
-                        ]
-                    },
-                    "displayTitle": {
-                        "name": "Display Title",
-                        "type": "string",
-                        "path": "displayTitle"
-                    },
-                    "titleLocal": {
-                        "name": "Title Local",
-                        "type": "string",
-                        "path": "titleLocal"
-                    },
-                    "titleStatus": {
-                        "name": "Title Status",
-                        "type": "select",
-                        "path": "titleStatus",
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "Pending", "value": "Pending" },
-                                { "label": "Approved", "value": "Approved" }
-                            ]
-                        }
-                    },
-                    "companyDisplayCredit": {
-                        "name": "Company Display Credit",
-                        "type": "string",
-                        "path": "companyDisplayCredit"
-                    }
-                }
-            },
-            {
-                "title": "Episodic",
-                "fields": {
-                    "seriesTitle": {
-                        "name": "Series Title",
-                        "type": "string",
-                        "path": "episodic.seriesTitle"
-                    },
-                    "seriesDisplayTitle": {
-                        "name": "Series Display Title",
-                        "type": "string",
-                        "path": "episodic.seriesDisplayTitle"
-                    },
-                    "seasonTitle": {
-                        "name": "Season Title",
-                        "type": "string",
-                        "path": "episodic.seasonTitle"
-                    },
-                    "seasonDisplayTitle": {
-                        "name": "Season Display Title",
-                        "type": "string",
-                        "path": "episodic.seasonDisplayTitle"
-                    },
-                    "seasonNumber": {
-                        "name": "Season Number",
-                        "type": "number",
-                        "path": "episodic.seasonNumber",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "episodeTitle": {
-                        "name": "Episode Title",
-                        "type": "string",
-                        "path": "episodic.episodeTitle"
-                    },
-                    "episodeDisplayTitle": {
-                        "name": "Episode Display Title",
-                        "type": "string",
-                        "path": "episodic.episodeDisplayTitle"
-                    },
-                    "episodeNumber": {
-                        "name": "Episode Number",
-                        "type": "number",
-                        "path": "episodic.episodeNumber",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "volumeTitle": {
-                        "name": "Volume Title",
-                        "type": "string",
-                        "path": "episodic.volumeTitle"
-                    },
-                    "volumeDisplayTitle": {
-                        "name": "Volume Display Title",
-                        "type": "string",
-                        "path": "episodic.volumeDisplayTitle"
-                    },
-                    "volumeNumber": {
-                        "name": "Volume Number",
-                        "type": "number",
-                        "path": "episodic.volumeNumber",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "distributionNumber": {
-                        "name": "Distribution Number",
-                        "type": "string",
-                        "path": "episodic.distributionNumber"
-                    },
-                    "volumeDistributionNumber": {
-                        "name": "Volume Distribution Number",
-                        "type": "string",
-                        "path": "episodic.volumeDistributionNumber"
-                    },
-                    "episodeCount": {
-                        "name": "Episode Count",
-                        "type": "number",
-                        "path": "episodic.episodeCount",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "seasonCount": {
-                        "name": "Season Count",
-                        "type": "number",
-                        "path": "episodic.seasonCount",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "title": "IDs",
-        "sections": [
-            {
-                "title": "IDs",
-                "fields": {
-                    "ALID": {
-                        "name": "ALID",
-                        "type": "string",
-                        "path": "ALID"
-                    },
-                    "CID": {
-                        "name": "CID",
-                        "type": "string",
-                        "path": "CID"
-                    }
-                }
-            },
-            {
-                "title": "CM Content IDs",
-                "fields": {
-                    "contentId": {
-                        "name": "Content ID",
-                        "type": "string",
-                        "path": "cmContentIds.contentId"
-                    },
-                    "seriesContentId": {
-                        "name": "Series Content ID",
-                        "type": "string",
-                        "path": "cmContentIds.seriesContentId"
-                    },
-                    "seasonContentId": {
-                        "name": "Season Content ID",
-                        "type": "string",
-                        "path": "cmContentIds.seasonContentId"
-                    },
-                    "volumeContentId": {
-                        "name": "Volume Content ID",
-                        "type": "string",
-                        "path": "cmContentIds.volumeContentId"
-                    },
-                    "episodeContentId": {
-                        "name": "Episode Content ID",
-                        "type": "string",
-                        "path": "cmContentIds.episodeContentId"
-                    }
-                }
-            },
-            {
-                "title": "EIDR",
-                "fields": {
-                    "titleId": {
-                        "name": "Title ID",
-                        "type": "string",
-                        "path": "eidr.titleId"
-                    },
-                    "seriesId": {
-                        "name": "Series ID",
-                        "type": "string",
-                        "path": "eidr.seriesId"
-                    },
-                    "seasonId": {
-                        "name": "Season ID",
-                        "type": "string",
-                        "path": "eidr.seasonId"
-                    },
-                    "episodeTitleId": {
-                        "name": "Episode Title ID",
-                        "type": "string",
-                        "path": "eidr.episodeTitleId"
-                    },
-                    "volumeId": {
-                        "name": "Volume ID",
-                        "type": "string",
-                        "path": "eidr.volumeId"
-                    },
-                    "episodeId": {
-                        "name": "Episode ID",
-                        "type": "string",
-                        "path": "eidr.episodeId"
-                    },
-                    "editId": {
-                        "name": "Edit ID",
-                        "type": "string",
-                        "path": "eidr.editId"
-                    },
-                    "encodeId": {
-                        "name": "Encode ID",
-                        "type": "string",
-                        "path": "eidr.encodeId"
-                    }
-                }
-            },
-            {
-                "title": "Alt ID",
-                "fields": {
-                    "altId": {
-                        "name": "Alt ID",
-                        "type": "string",
-                        "path": "altId"
-                    },
-                    "seriesAltId": {
-                        "name": "Series Alt ID",
-                        "type": "string",
-                        "path": "seriesAltId"
-                    },
-                    "seasonAltId": {
-                        "name": "Season Alt ID",
-                        "type": "string",
-                        "path": "seasonAltId"
-                    },
-                    "volumeAltId": {
-                        "name": "Volume Alt ID",
-                        "type": "string",
-                        "path": "volumeAltId"
-                    },
-                    "episodeAltId": {
-                        "name": "Episode Alt ID",
-                        "type": "string",
-                        "path": "episodeAltId"
-                    },
-                    "availId": {
-                        "name": "Avail ID",
-                        "type": "string",
-                        "path": "availId"
-                    },
-                    "uvId": {
-                        "name": "UV ID",
-                        "type": "string",
-                        "path": "uvId"
-                    },
-                    "maId": {
-                        "name": "MA ID",
-                        "type": "string",
-                        "path": "maId"
-                    },
-                    "reportingId": {
-                        "name": "Reporting ID",
-                        "type": "string",
-                        "path": "reportingId"
-                    },
-                    "bundledALIds": {
-                        "name": "Bundled AL ID",
-                        "type": "string",
-                        "path": "bundledALIds"
-                    }
-                }
-            },
-            {
-                "title": "Retailer",
-                "fields": {
-                    "retailerId1": {
-                        "name": "Retailer ID",
-                        "type": "string",
-                        "path": "retailer.retailerId1"
-                    },
-                    "retailerSeriesId": {
-                        "name": "Retailer Series ID",
-                        "type": "string",
-                        "path": "retailer.retailerSeriesId"
-                    },
-                    "retailerSeasonId": {
-                        "name": "Retailer Season ID",
-                        "type": "string",
-                        "path": "retailer.retailerSeasonId"
-                    },
-                    "retailerVolumeId": {
-                        "name": "Retailer Volume ID",
-                        "type": "string",
-                        "path": "retailer.retailerVolumeId"
-                    },
-                    "retailerEpisodeId1": {
-                        "name": "Retailer Episode ID",
-                        "type": "string",
-                        "path": "retailer.retailerEpisodeId1"
-                    },
-                    "retailerSpare1": {
-                        "name": "Retailer Spare ID",
-                        "type": "string",
-                        "path": "retailer.retailerSpare1"
-                    },
-                    "canconNumber": {
-                        "name": "Cancon Number",
-                        "type": "string",
-                        "path": "canconNumber"
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "title": "Localization and captions",
-        "sections": [
-            {
-                "title": "Localization",
-                "fields": {
-                    "holdbackLanguage": {
-                        "name": "Holdback Language",
-                        "type": "multiselect",
-                        "path": "holdbackLanguage",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
-                    "storeLanguage": {
-                        "name": "Store Language",
-                        "type": "select",
-                        "path": "storeLanguage",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
-                    "assetLanguage": {
-                        "name": "Asset Language",
-                        "type": "select",
-                        "path": "assetLanguage",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
-                    "language": {
-                        "name": "Language",
-                        "type": "string",
-                        "path": "language",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
-                        }
-                    },
-                    "languageAudioTypes": {
-                        "name": "Language Audio Types",
-                        "type": "array",
-                        "path": "languageAudioTypes",
-                        "fields": {
-                            "language": {
-                                "name": "Language",
-                                "type": "select",
-                                "path": "language",
-                                "isRequired": true,
-                                "optionsConfig": {
-                                    "defaultValuePath": "languageCode",
-                                    "defaultLabelPath": "languageName"
+                },
+                {
+                    "title": "Pricing",
+                    "fields": {
+                        "pricing": {
+                            "name": "Pricing",
+                            "type": "array",
+                            "path": "pricing",
+                            "fields": {
+                                "priceType": {
+                                    "name": "Price Type",
+                                    "type": "select",
+                                    "path": "priceType",
+                                    "isRequired": true,
+                                    "className": "area-one"
+                                },
+                                "priceValue": {
+                                    "name": "Price Value",
+                                    "type": "string",
+                                    "path": "priceValue",
+                                    "isRequired": true,
+                                    "className": "area-two"
+                                },
+                                "priceCurrency": {
+                                    "name": "Price Currency",
+                                    "type": "select",
+                                    "path": "priceCurrency",
+                                    "className": "area-three"
                                 }
-                            },
-                            "audioType": {
-                                "name": "Audio Type",
-                                "type": "select",
-                                "path": "audioType"
                             }
+                        },
+                        "srp": {
+                            "name": "SRP",
+                            "type": "number",
+                            "path": "srp"
+                        },
+                        "boxOffice": {
+                            "name": "Box Office",
+                            "type": "number",
+                            "path": "boxOffice"
+                        },
+                        "usBoxOffice": {
+                            "name": "US Box Office",
+                            "type": "number",
+                            "path": "usBoxOffice"
+                        },
+                        "boxOfficeComment": {
+                            "name": "Box Office Comment",
+                            "type": "string",
+                            "path": "boxOfficeComment"
+                        },
+                        "releaseHistoryOriginal": {
+                            "name": "Release History Original",
+                            "type": "datetime",
+                            "dateType": "timestamp",
+                            "path": "releaseHistoryOriginal"
+                        },
+                        "releaseHistoryPhysicalHV": {
+                            "name": "Release History Physical HV",
+                            "type": "datetime",
+                            "dateType": "businessDateTime",
+                            "path": "releaseHistoryPhysicalHV"
+                        },
+                        "daysFromLVR": {
+                            "name": "Days From LVR",
+                            "type": "number",
+                            "path": "daysFromLVR",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "suppressionLiftDate": {
+                            "name": "Suppression Lift Date",
+                            "type": "datetime",
+                            "dateType": "businessDateTime",
+                            "path": "suppressionLiftDate"
+                        },
+                        "specialPreOrderFulfillDate": {
+                            "name": "Special Pre Order Fulfill Date",
+                            "type": "datetime",
+                            "dateType": "regionalMidnight",
+                            "path": "specialPreOrderFulfillDate"
+                        },
+                        "announceDate": {
+                            "name": "Announce Date",
+                            "type": "datetime",
+                            "dateType": "regionalMidnight",
+                            "path": "announceDate"
+                        },
+                        "termYear": {
+                            "name": "Term Year",
+                            "type": "number",
+                            "path": "termYear",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "termDates": {
+                            "name": "Term Year Range",
+                            "type": "dateRange",
+                            "dateType": "regionalMidnight",
+                            "labels": ["Term Year Start", "Term Year End"],
+                            "path": ["termYearStart", "termYearEnd"],
+                            "isReturningTime": false
+                        },
+                        "imdbLink": {
+                            "name": "IMDB Link",
+                            "type": "string",
+                            "path": "imdbLink"
+                        },
+                        "entryType": {
+                            "name": "Entry Type",
+                            "type": "select",
+                            "path": "entryType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Full Extract",
+                                        "value": "Full Extract"
+                                    },
+                                    {
+                                        "label": "Full Delete",
+                                        "value": "Full Delete"
+                                    }
+                                ]
+                            }
+                        },
+                        "originalRightIds": {
+                            "name": "Original Right IDs",
+                            "type": "string",
+                            "path": "originalRightIds",
+                            "isReadOnly": true,
+                            "isHighlighted": true
+                        },
+                        "sourceRightId": {
+                            "name": "Source Right ID",
+                            "type": "string",
+                            "path": "sourceRightId",
+                            "isReadOnly": true,
+                            "isHighlighted": true
                         }
-                    },
-                    "localizationType": {
-                        "name": "Localization Type",
-                        "type": "select",
-                        "path": "localizationType",
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "Sub", "value": "Sub" },
-                                { "label": "Dub", "value": "Dub" },
-                                { "label": "Subdub", "value": "Subdub" },
-                                { "label": "Any", "value": "Any" }
+                    }
+                }
+            ]
+        },
+        {
+            "title": "Title and Episodic",
+            "sections": [
+                {
+                    "title": "Title",
+                    "fields": {
+                        "coreTitleId": {
+                            "name": "Core TitleId",
+                            "type": "string",
+                            "path": "coreTitleId",
+                            "isReadOnly": true,
+                            "viewConfig": [
+                                {
+                                    "view": "CREATE",
+                                    "hidden": true
+                                }
+                            ]
+                        },
+                        "displayTitle": {
+                            "name": "Display Title",
+                            "type": "string",
+                            "path": "displayTitle"
+                        },
+                        "titleLocal": {
+                            "name": "Title Local",
+                            "type": "string",
+                            "path": "titleLocal"
+                        },
+                        "titleStatus": {
+                            "name": "Title Status",
+                            "type": "select",
+                            "path": "titleStatus",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Pending",
+                                        "value": "Pending"
+                                    },
+                                    {
+                                        "label": "Approved",
+                                        "value": "Approved"
+                                    }
+                                ]
+                            }
+                        },
+                        "companyDisplayCredit": {
+                            "name": "Company Display Credit",
+                            "type": "string",
+                            "path": "companyDisplayCredit"
+                        }
+                    }
+                },
+                {
+                    "title": "Episodic",
+                    "fields": {
+                        "seriesTitle": {
+                            "name": "Series Title",
+                            "type": "string",
+                            "path": "episodic.seriesTitle"
+                        },
+                        "seriesDisplayTitle": {
+                            "name": "Series Display Title",
+                            "type": "string",
+                            "path": "episodic.seriesDisplayTitle"
+                        },
+                        "seasonTitle": {
+                            "name": "Season Title",
+                            "type": "string",
+                            "path": "episodic.seasonTitle"
+                        },
+                        "seasonDisplayTitle": {
+                            "name": "Season Display Title",
+                            "type": "string",
+                            "path": "episodic.seasonDisplayTitle"
+                        },
+                        "seasonNumber": {
+                            "name": "Season Number",
+                            "type": "number",
+                            "path": "episodic.seasonNumber",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "episodeTitle": {
+                            "name": "Episode Title",
+                            "type": "string",
+                            "path": "episodic.episodeTitle"
+                        },
+                        "episodeDisplayTitle": {
+                            "name": "Episode Display Title",
+                            "type": "string",
+                            "path": "episodic.episodeDisplayTitle"
+                        },
+                        "episodeNumber": {
+                            "name": "Episode Number",
+                            "type": "number",
+                            "path": "episodic.episodeNumber",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "volumeTitle": {
+                            "name": "Volume Title",
+                            "type": "string",
+                            "path": "episodic.volumeTitle"
+                        },
+                        "volumeDisplayTitle": {
+                            "name": "Volume Display Title",
+                            "type": "string",
+                            "path": "episodic.volumeDisplayTitle"
+                        },
+                        "volumeNumber": {
+                            "name": "Volume Number",
+                            "type": "number",
+                            "path": "episodic.volumeNumber",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "distributionNumber": {
+                            "name": "Distribution Number",
+                            "type": "string",
+                            "path": "episodic.distributionNumber"
+                        },
+                        "volumeDistributionNumber": {
+                            "name": "Volume Distribution Number",
+                            "type": "string",
+                            "path": "episodic.volumeDistributionNumber"
+                        },
+                        "episodeCount": {
+                            "name": "Episode Count",
+                            "type": "number",
+                            "path": "episodic.episodeCount",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "seasonCount": {
+                            "name": "Season Count",
+                            "type": "number",
+                            "path": "episodic.seasonCount",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
                             ]
                         }
-                    },
-                    "requiredFulfillmentLanguages": {
-                        "name": "Required Fulfillment Languages",
-                        "type": "multiselect",
-                        "path": "requiredFulfillmentLanguages",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
+                    }
+                }
+            ]
+        },
+        {
+            "title": "IDs",
+            "sections": [
+                {
+                    "title": "IDs",
+                    "fields": {
+                        "ALID": {
+                            "name": "ALID",
+                            "type": "string",
+                            "path": "ALID"
+                        },
+                        "CID": {
+                            "name": "CID",
+                            "type": "string",
+                            "path": "CID"
                         }
-                    },
-                    "audioDescription": {
-                        "name": "Audio Description",
-                        "type": "multiselect",
-                        "path": "audioDescription",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
+                    }
+                },
+                {
+                    "title": "CM Content IDs",
+                    "fields": {
+                        "contentId": {
+                            "name": "Content ID",
+                            "type": "string",
+                            "path": "cmContentIds.contentId"
+                        },
+                        "seriesContentId": {
+                            "name": "Series Content ID",
+                            "type": "string",
+                            "path": "cmContentIds.seriesContentId"
+                        },
+                        "seasonContentId": {
+                            "name": "Season Content ID",
+                            "type": "string",
+                            "path": "cmContentIds.seasonContentId"
+                        },
+                        "volumeContentId": {
+                            "name": "Volume Content ID",
+                            "type": "string",
+                            "path": "cmContentIds.volumeContentId"
+                        },
+                        "episodeContentId": {
+                            "name": "Episode Content ID",
+                            "type": "string",
+                            "path": "cmContentIds.episodeContentId"
                         }
-                    },
-                    "subtitles": {
-                        "name": "Subtitles",
-                        "type": "multiselect",
-                        "path": "subtitles",
-                        "optionsConfig": {
-                            "defaultValuePath": "languageCode",
-                            "defaultLabelPath": "languageName"
+                    }
+                },
+                {
+                    "title": "EIDR",
+                    "fields": {
+                        "titleId": {
+                            "name": "Title ID",
+                            "type": "string",
+                            "path": "eidr.titleId"
+                        },
+                        "seriesId": {
+                            "name": "Series ID",
+                            "type": "string",
+                            "path": "eidr.seriesId"
+                        },
+                        "seasonId": {
+                            "name": "Season ID",
+                            "type": "string",
+                            "path": "eidr.seasonId"
+                        },
+                        "episodeTitleId": {
+                            "name": "Episode Title ID",
+                            "type": "string",
+                            "path": "eidr.episodeTitleId"
+                        },
+                        "volumeId": {
+                            "name": "Volume ID",
+                            "type": "string",
+                            "path": "eidr.volumeId"
+                        },
+                        "episodeId": {
+                            "name": "Episode ID",
+                            "type": "string",
+                            "path": "eidr.episodeId"
+                        },
+                        "editId": {
+                            "name": "Edit ID",
+                            "type": "string",
+                            "path": "eidr.editId"
+                        },
+                        "encodeId": {
+                            "name": "Encode ID",
+                            "type": "string",
+                            "path": "eidr.encodeId"
+                        }
+                    }
+                },
+                {
+                    "title": "Alt ID",
+                    "fields": {
+                        "altId": {
+                            "name": "Alt ID",
+                            "type": "string",
+                            "path": "altId"
+                        },
+                        "seriesAltId": {
+                            "name": "Series Alt ID",
+                            "type": "string",
+                            "path": "seriesAltId"
+                        },
+                        "seasonAltId": {
+                            "name": "Season Alt ID",
+                            "type": "string",
+                            "path": "seasonAltId"
+                        },
+                        "volumeAltId": {
+                            "name": "Volume Alt ID",
+                            "type": "string",
+                            "path": "volumeAltId"
+                        },
+                        "episodeAltId": {
+                            "name": "Episode Alt ID",
+                            "type": "string",
+                            "path": "episodeAltId"
+                        },
+                        "availId": {
+                            "name": "Avail ID",
+                            "type": "string",
+                            "path": "availId"
+                        },
+                        "uvId": {
+                            "name": "UV ID",
+                            "type": "string",
+                            "path": "uvId"
+                        },
+                        "maId": {
+                            "name": "MA ID",
+                            "type": "string",
+                            "path": "maId"
+                        },
+                        "reportingId": {
+                            "name": "Reporting ID",
+                            "type": "string",
+                            "path": "reportingId"
+                        },
+                        "bundledALIds": {
+                            "name": "Bundled AL ID",
+                            "type": "string",
+                            "path": "bundledALIds"
+                        }
+                    }
+                },
+                {
+                    "title": "Retailer",
+                    "fields": {
+                        "retailerId1": {
+                            "name": "Retailer ID",
+                            "type": "string",
+                            "path": "retailer.retailerId1"
+                        },
+                        "retailerSeriesId": {
+                            "name": "Retailer Series ID",
+                            "type": "string",
+                            "path": "retailer.retailerSeriesId"
+                        },
+                        "retailerSeasonId": {
+                            "name": "Retailer Season ID",
+                            "type": "string",
+                            "path": "retailer.retailerSeasonId"
+                        },
+                        "retailerVolumeId": {
+                            "name": "Retailer Volume ID",
+                            "type": "string",
+                            "path": "retailer.retailerVolumeId"
+                        },
+                        "retailerEpisodeId1": {
+                            "name": "Retailer Episode ID",
+                            "type": "string",
+                            "path": "retailer.retailerEpisodeId1"
+                        },
+                        "retailerSpare1": {
+                            "name": "Retailer Spare ID",
+                            "type": "string",
+                            "path": "retailer.retailerSpare1"
+                        },
+                        "canconNumber": {
+                            "name": "Cancon Number",
+                            "type": "string",
+                            "path": "canconNumber"
                         }
                     }
                 }
-            },
-            {
-                "title": "Captions",
-                "fields": {
-                    "captionIncluded": {
-                        "name": "Caption Included",
-                        "type": "boolean",
-                        "path": "captions.captionIncluded"
-                    },
-                    "captionExemption": {
-                        "name": "Caption Exemption",
-                        "type": "number",
-                        "path": "captions.captionExemption",
-                        "validation": [
-                            {
-                                "name": "isInteger"
+            ]
+        },
+        {
+            "title": "Localization and captions",
+            "sections": [
+                {
+                    "title": "Localization",
+                    "fields": {
+                        "holdbackLanguage": {
+                            "name": "Holdback Language",
+                            "type": "multiselect",
+                            "path": "holdbackLanguage",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
                             }
-                        ]
+                        },
+                        "storeLanguage": {
+                            "name": "Store Language",
+                            "type": "select",
+                            "path": "storeLanguage",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "assetLanguage": {
+                            "name": "Asset Language",
+                            "type": "select",
+                            "path": "assetLanguage",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "language": {
+                            "name": "Language",
+                            "type": "string",
+                            "path": "language",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "languageAudioTypes": {
+                            "name": "Language Audio Types",
+                            "type": "array",
+                            "path": "languageAudioTypes",
+                            "fields": {
+                                "language": {
+                                    "name": "Language",
+                                    "type": "select",
+                                    "path": "language",
+                                    "isRequired": true,
+                                    "optionsConfig": {
+                                        "defaultValuePath": "languageCode",
+                                        "defaultLabelPath": "languageName"
+                                    }
+                                },
+                                "audioType": {
+                                    "name": "Audio Type",
+                                    "type": "select",
+                                    "path": "audioType"
+                                }
+                            }
+                        },
+                        "localizationType": {
+                            "name": "Localization Type",
+                            "type": "select",
+                            "path": "localizationType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Sub",
+                                        "value": "Sub"
+                                    },
+                                    {
+                                        "label": "Dub",
+                                        "value": "Dub"
+                                    },
+                                    {
+                                        "label": "Subdub",
+                                        "value": "Subdub"
+                                    },
+                                    {
+                                        "label": "Any",
+                                        "value": "Any"
+                                    }
+                                ]
+                            }
+                        },
+                        "requiredFulfillmentLanguages": {
+                            "name": "Required Fulfillment Languages",
+                            "type": "multiselect",
+                            "path": "requiredFulfillmentLanguages",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "audioDescription": {
+                            "name": "Audio Description",
+                            "type": "multiselect",
+                            "path": "audioDescription",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        },
+                        "subtitles": {
+                            "name": "Subtitles",
+                            "type": "multiselect",
+                            "path": "subtitles",
+                            "optionsConfig": {
+                                "defaultValuePath": "languageCode",
+                                "defaultLabelPath": "languageName"
+                            }
+                        }
                     }
-                }
-            }
-        ]
-    },
-    {
-        "title": "Other",
-        "sections": [
-            {
-                "title": "Other",
-                "fields": {
-                    "originallyReceivedAt": {
-                        "name": "Originally Received At",
-                        "type": "datetime",
-                        "dateType": "timestamp",
-                        "path": "originallyReceivedAt",
-                        "isReadOnly": true,
-                        "viewConfig": [
-                            {
-                                "view": "CREATE",
-                                "hidden": true
-                            }
-                        ]
-                    },
-                    "availDates": {
-                        "name": "Avail Date Range",
-                        "type": "dateRange",
-                        "dateType": "businessDateTime",
-                        "labels": ["Avail Start", "Avail End"],
-                        "path": ["availStart", "availEnd"],
-                        "dependencies": [
-                            {
-                                "view": "EDIT",
-                                "type": "required",
-                                "field": "licensed",
-                                "value": false
-                            }
-                        ]
-                    },
-                    "productionStudio": {
-                        "name": "Production Studio",
-                        "type": "select",
-                        "path": "productionStudio",
-                        "optionsConfig": {
-                            "defaultValuePath": "name",
-                            "defaultLabelPath": "name"
-                        }
-                    },
-                    "otherTerms": {
-                        "name": "Other Terms",
-                        "type": "string",
-                        "path": "otherTerms"
-                    },
-                    "otherInstructions": {
-                        "name": "Other Instructions",
-                        "type": "string",
-                        "path": "otherInstructions"
-                    },
-                    "description": {
-                        "name": "Description",
-                        "type": "string",
-                        "path": "description"
-                    },
-                    "any": {
-                        "name": "Any",
-                        "type": "string",
-                        "path": "any"
-                    },
-                    "serviceProvider": {
-                        "name": "Service Provider",
-                        "type": "string",
-                        "path": "serviceProvider"
-                    },
-                    "contractualCategory": {
-                        "name": "Contractual Category",
-                        "type": "string",
-                        "path": "contractualCategory"
-                    },
-                    "exceptionFlag": {
-                        "name": "Exception Flag",
-                        "type": "boolean",
-                        "path": "exceptionFlag"
-                    },
-                    "materialDeliveryDate": {
-                        "name": "Material Delivery Date",
-                        "type": "datetime",
-                        "dateType": "regionalMidnight",
-                        "path": "materialDeliveryDate"
-                    },
-                    "metadata": {
-                        "name": "Metadata",
-                        "type": "string",
-                        "path": "metadata"
-                    },
-                    "packageLabel": {
-                        "name": "Package Label",
-                        "type": "string",
-                        "path": "packageLabel"
-                    },
-                    "exclusive": {
-                        "name": "Exclusive",
-                        "type": "boolean",
-                        "path": "exclusive"
-                    },
-                    "exclusiveAttributes": {
-                        "name": "Exclusive Attributes",
-                        "type": "string",
-                        "path": "exclusiveAttributes"
-                    },
-                    "genres": {
-                        "name": "Genres",
-                        "type": "multiselect",
-                        "path": "genres",
-                        "optionsConfig": {
-                            "defaultValuePath": "name",
-                            "defaultLabelPath": "name"
-                        }
-                    },
-                    "reLicence": {
-                        "name": "Re-License",
-                        "type": "boolean",
-                        "path": "reLicence"
-                    },
-                    "reWork": {
-                        "name": "Re-Work",
-                        "type": "string",
-                        "path": "reWork"
-                    },
-                    "totalRuntime": {
-                        "name": "Total Runtime",
-                        "type": "string",
-                        "path": "totalRuntime"
-                    },
-                    "startTime": {
-                        "name": "Start Time",
-                        "type": "string",
-                        "path": "startTime",
-                        "validation": [
-                            {
-                                "name": "isTime"
-                            }
-                        ]
-                    },
-                    "windowDuration": {
-                        "name": "Window Duration",
-                        "type": "string",
-                        "path": "windowDuration",
-                        "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)",
-                        "validation": [
-                            {
-                                "name": "isDuration"
-                            }
-                        ]
-                    },
-                    "rentalDuration": {
-                        "name": "Rental Duration",
-                        "type": "number",
-                        "path": "rentalDuration",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "watchDuration": {
-                        "name": "Watch Duration",
-                        "type": "number",
-                        "path": "watchDuration",
-                        "validation": [
-                            {
-                                "name": "isInteger"
-                            }
-                        ]
-                    },
-                    "productionYear": {
-                        "name": "Production Year",
-                        "type": "string",
-                        "path": "productionYear",
-                        "validation": [
-                            {
-                                "name": "isYear"
-                            }
-                        ]
-                    },
-                    "hdr": {
-                        "name": "HDR",
-                        "type": "select",
-                        "path": "hdr",
-                        "optionsConfig": {
-                            "options": [
-                                { "label": "DV", "value": "DV" },
-                                { "label": "DolbyVision", "value": "DolbyVision" },
-                                { "label": "HDR10", "value": "HDR10" }
+                },
+                {
+                    "title": "Captions",
+                    "fields": {
+                        "captionIncluded": {
+                            "name": "Caption Included",
+                            "type": "boolean",
+                            "path": "captions.captionIncluded"
+                        },
+                        "captionExemption": {
+                            "name": "Caption Exemption",
+                            "type": "number",
+                            "path": "captions.captionExemption",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
                             ]
                         }
-                    },
-                    "wcg": {
-                        "name": "WCG",
-                        "type": "boolean",
-                        "path": "wcg"
-                    },
-                    "hfr": {
-                        "name": "HFR",
-                        "type": "boolean",
-                        "path": "hfr"
-                    },
-                    "ngAudio": {
-                        "name": "NG Audio",
-                        "type": "select",
-                        "path": "ngAudio"
-                    },
-                    "bonus": {
-                        "name": "Bonus",
-                        "type": "string",
-                        "path": "bonus"
-                    },
-                    "download": {
-                        "name": "Download",
-                        "type": "string",
-                        "path": "download"
-                    },
-                    "brandingRights": {
-                        "name": "Branding Rights",
-                        "type": "boolean",
-                        "path": "brandingRights"
-                    },
-                    "brandingRightsAttributes": {
-                        "name": "Branding Rights Attributes",
-                        "type": "string",
-                        "path": "brandingRightsAttributes"
-                    },
-                    "copyright": {
-                        "name": "Copyright",
-                        "type": "string",
-                        "path": "copyright"
-                    },
-                    "groupIdentity": {
-                        "name": "Group Identity",
-                        "type": "string",
-                        "path": "groupIdentity"
-                    },
-                    "updatedCatalogReceivedAt": {
-                        "name": "Updated Catalog Received At",
-                        "type": "datetime",
-                        "dateType": "timestamp",
-                        "path": "updatedCatalogReceivedAt",
-                        "isReadOnly": true
-                    },
-                    "updatedCatalogReceived": {
-                        "name": "Updated Catalog Received",
-                        "type": "boolean",
-                        "path": "updatedCatalogReceived",
-                        "isReadOnly": true
                     }
                 }
-            },
-            {
-                "title": "Cast & Crew",
-                "fields": {
-                    "castCrew": {
-                        "type": "castCrew",
-                        "path": "castCrew"
+            ]
+        },
+        {
+            "title": "Other",
+            "sections": [
+                {
+                    "title": "Other",
+                    "fields": {
+                        "originallyReceivedAt": {
+                            "name": "Originally Received At",
+                            "type": "datetime",
+                            "dateType": "timestamp",
+                            "path": "originallyReceivedAt",
+                            "isReadOnly": true,
+                            "viewConfig": [
+                                {
+                                    "view": "CREATE",
+                                    "hidden": true
+                                }
+                            ]
+                        },
+                        "availDates": {
+                            "name": "Avail Date Range",
+                            "type": "dateRange",
+                            "dateType": "businessDateTime",
+                            "labels": ["Avail Start", "Avail End"],
+                            "path": ["availStart", "availEnd"],
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "required",
+                                    "field": "licensed",
+                                    "value": false
+                                }
+                            ]
+                        },
+                        "productionStudio": {
+                            "name": "Production Studio",
+                            "type": "select",
+                            "path": "productionStudio",
+                            "optionsConfig": {
+                                "defaultValuePath": "name",
+                                "defaultLabelPath": "name"
+                            }
+                        },
+                        "otherTerms": {
+                            "name": "Other Terms",
+                            "type": "string",
+                            "path": "otherTerms"
+                        },
+                        "otherInstructions": {
+                            "name": "Other Instructions",
+                            "type": "string",
+                            "path": "otherInstructions"
+                        },
+                        "description": {
+                            "name": "Description",
+                            "type": "string",
+                            "path": "description"
+                        },
+                        "any": {
+                            "name": "Any",
+                            "type": "string",
+                            "path": "any"
+                        },
+                        "serviceProvider": {
+                            "name": "Service Provider",
+                            "type": "string",
+                            "path": "serviceProvider"
+                        },
+                        "contractualCategory": {
+                            "name": "Contractual Category",
+                            "type": "string",
+                            "path": "contractualCategory"
+                        },
+                        "exceptionFlag": {
+                            "name": "Exception Flag",
+                            "type": "boolean",
+                            "path": "exceptionFlag"
+                        },
+                        "materialDeliveryDate": {
+                            "name": "Material Delivery Date",
+                            "type": "datetime",
+                            "dateType": "regionalMidnight",
+                            "path": "materialDeliveryDate"
+                        },
+                        "metadata": {
+                            "name": "Metadata",
+                            "type": "string",
+                            "path": "metadata"
+                        },
+                        "packageLabel": {
+                            "name": "Package Label",
+                            "type": "string",
+                            "path": "packageLabel"
+                        },
+                        "exclusive": {
+                            "name": "Exclusive",
+                            "type": "boolean",
+                            "path": "exclusive"
+                        },
+                        "exclusiveAttributes": {
+                            "name": "Exclusive Attributes",
+                            "type": "string",
+                            "path": "exclusiveAttributes"
+                        },
+                        "genres": {
+                            "name": "Genres",
+                            "type": "multiselect",
+                            "path": "genres",
+                            "optionsConfig": {
+                                "defaultValuePath": "name",
+                                "defaultLabelPath": "name"
+                            }
+                        },
+                        "reLicence": {
+                            "name": "Re-License",
+                            "type": "boolean",
+                            "path": "reLicence"
+                        },
+                        "reWork": {
+                            "name": "Re-Work",
+                            "type": "string",
+                            "path": "reWork"
+                        },
+                        "totalRuntime": {
+                            "name": "Total Runtime",
+                            "type": "string",
+                            "path": "totalRuntime"
+                        },
+                        "startTime": {
+                            "name": "Start Time",
+                            "type": "string",
+                            "path": "startTime",
+                            "validation": [
+                                {
+                                    "name": "isTime"
+                                }
+                            ]
+                        },
+                        "windowDuration": {
+                            "name": "Window Duration",
+                            "type": "string",
+                            "path": "windowDuration",
+                            "tooltip": "format: PnYnMnDTnHnMnS. \neg. P3Y6M4DT12H30M5S (three years, six months, four days, twelve hours, thirty minutes, and five seconds)",
+                            "validation": [
+                                {
+                                    "name": "isDuration"
+                                }
+                            ]
+                        },
+                        "rentalDuration": {
+                            "name": "Rental Duration",
+                            "type": "number",
+                            "path": "rentalDuration",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "watchDuration": {
+                            "name": "Watch Duration",
+                            "type": "number",
+                            "path": "watchDuration",
+                            "validation": [
+                                {
+                                    "name": "isInteger"
+                                }
+                            ]
+                        },
+                        "productionYear": {
+                            "name": "Production Year",
+                            "type": "string",
+                            "path": "productionYear",
+                            "validation": [
+                                {
+                                    "name": "isYear"
+                                }
+                            ]
+                        },
+                        "hdr": {
+                            "name": "HDR",
+                            "type": "select",
+                            "path": "hdr",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "DV",
+                                        "value": "DV"
+                                    },
+                                    {
+                                        "label": "DolbyVision",
+                                        "value": "DolbyVision"
+                                    },
+                                    {
+                                        "label": "HDR10",
+                                        "value": "HDR10"
+                                    }
+                                ]
+                            }
+                        },
+                        "wcg": {
+                            "name": "WCG",
+                            "type": "boolean",
+                            "path": "wcg"
+                        },
+                        "hfr": {
+                            "name": "HFR",
+                            "type": "boolean",
+                            "path": "hfr"
+                        },
+                        "ngAudio": {
+                            "name": "NG Audio",
+                            "type": "select",
+                            "path": "ngAudio"
+                        },
+                        "bonus": {
+                            "name": "Bonus",
+                            "type": "string",
+                            "path": "bonus"
+                        },
+                        "download": {
+                            "name": "Download",
+                            "type": "string",
+                            "path": "download"
+                        },
+                        "brandingRights": {
+                            "name": "Branding Rights",
+                            "type": "boolean",
+                            "path": "brandingRights"
+                        },
+                        "brandingRightsAttributes": {
+                            "name": "Branding Rights Attributes",
+                            "type": "string",
+                            "path": "brandingRightsAttributes"
+                        },
+                        "copyright": {
+                            "name": "Copyright",
+                            "type": "string",
+                            "path": "copyright"
+                        },
+                        "groupIdentity": {
+                            "name": "Group Identity",
+                            "type": "string",
+                            "path": "groupIdentity"
+                        },
+                        "updatedCatalogReceivedAt": {
+                            "name": "Updated Catalog Received At",
+                            "type": "datetime",
+                            "dateType": "timestamp",
+                            "path": "updatedCatalogReceivedAt",
+                            "isReadOnly": true
+                        },
+                        "updatedCatalogReceived": {
+                            "name": "Updated Catalog Received",
+                            "type": "boolean",
+                            "path": "updatedCatalogReceived",
+                            "isReadOnly": true
+                        }
+                    }
+                },
+                {
+                    "title": "Cast & Crew",
+                    "fields": {
+                        "castCrew": {
+                            "type": "castCrew",
+                            "path": "castCrew"
+                        }
                     }
                 }
-            }
-        ]
-    },
-    {
-        "title": "Music",
-        "sections": [
-            {
-                "title": "Music",
-                "fields": {
-                    "isrc": {
-                        "name": "ISRC",
-                        "type": "string",
-                        "path": "isrc"
-                    },
-                    "videoFileName": {
-                        "name": "Video File Name",
-                        "type": "string",
-                        "path": "videoFileName"
-                    },
-                    "screenGrabFileName": {
-                        "name": "Screen Grab FileName",
-                        "type": "string",
-                        "path": "screenGrabFileName"
-                    },
-                    "materialNotes": {
-                        "name": "Material Notes",
-                        "type": "string",
-                        "path": "materialNotes"
-                    },
-                    "supplierSynopsis": {
-                        "name": "Supplier Synopsis",
-                        "type": "string",
-                        "path": "supplierSynopsis"
-                    },
-                    "recordingLabel": {
-                        "name": "Recording Label",
-                        "type": "string",
-                        "path": "recordingLabel"
+            ]
+        },
+        {
+            "title": "Music",
+            "sections": [
+                {
+                    "title": "Music",
+                    "fields": {
+                        "isrc": {
+                            "name": "ISRC",
+                            "type": "string",
+                            "path": "isrc"
+                        },
+                        "videoFileName": {
+                            "name": "Video File Name",
+                            "type": "string",
+                            "path": "videoFileName"
+                        },
+                        "screenGrabFileName": {
+                            "name": "Screen Grab FileName",
+                            "type": "string",
+                            "path": "screenGrabFileName"
+                        },
+                        "materialNotes": {
+                            "name": "Material Notes",
+                            "type": "string",
+                            "path": "materialNotes"
+                        },
+                        "supplierSynopsis": {
+                            "name": "Supplier Synopsis",
+                            "type": "string",
+                            "path": "supplierSynopsis"
+                        },
+                        "recordingLabel": {
+                            "name": "Recording Label",
+                            "type": "string",
+                            "path": "recordingLabel"
+                        }
                     }
                 }
-            }
-        ]
-    }
-]
+            ]
+        }
+    ]
+}

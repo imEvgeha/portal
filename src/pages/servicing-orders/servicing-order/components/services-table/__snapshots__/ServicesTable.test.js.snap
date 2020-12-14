@@ -143,14 +143,15 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "assetType",
           "field": "assetType",
           "headerName": "Asset Type",
-          "width": 150,
+          "width": 120,
         },
         Object {
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
-          "headerName": "Spec",
-          "width": 150,
+          "headerName": "Format Sheet",
+          "onCellClicked": [Function],
+          "width": 260,
         },
         Object {
           "autoHeight": true,
@@ -192,7 +193,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
           "valueFormatter": [Function],
-          "width": 220,
+          "width": 200,
         },
         Object {
           "colId": "priority",
@@ -205,7 +206,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "colId": "recipient",
           "field": "recipient",
           "headerName": "Recipient",
-          "width": 160,
+          "width": 140,
         },
         Object {
           "cellRendererFramework": [Function],
@@ -220,7 +221,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           },
           "headerName": "Operational Status",
           "sortable": false,
-          "width": 200,
+          "width": 170,
         },
       ]
     }
@@ -256,7 +257,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
         Object {
           "dataType": "select",
-          "displayName": "Spec",
+          "displayName": "Format Sheet",
           "enableEdit": true,
           "enableSearch": true,
           "javaVariableName": "spec",
@@ -286,9 +287,9 @@ exports[`ServicesTable should match snapshot 1`] = `
           "required": true,
         },
         Object {
-          "dataType": "select",
+          "dataType": "string",
           "displayName": "Recipient",
-          "enableEdit": true,
+          "enableEdit": false,
           "javaVariableName": "recipient",
           "queryParamName": "recipient",
           "required": true,
@@ -305,6 +306,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
       ]
     }
+    onCellMouseOver={[Function]}
     onGridEvent={[Function]}
     rowData={Array []}
     selectValues={
@@ -337,7 +339,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "60",
           "50",
         ],
-        "recipient": Array [],
         "serviceType": Array [
           "Process & Deliver",
           "DETE Ingest",
@@ -345,10 +346,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         "sourceStandard": Array [
           "_1080_23_976",
         ],
-        "spec": Array [
-          "M-DBS-2396 SCC",
-          "TBD",
-        ],
+        "spec": Array [],
         "standard": Array [
           Object {
             "subtitles": Array [

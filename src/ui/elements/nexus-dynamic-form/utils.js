@@ -1,6 +1,7 @@
 import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
+import classnames from 'classnames';
 import {get} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusField from './components/NexusField/NexusField';
@@ -53,14 +54,10 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFieldDependencies = (type, view, dependencies, formData) => {
-    // View mode has the same dependencies as Edit mode
-    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
-    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
-
+export const checkFoundDependencies = (dependencies, formData) => {
     return !!(
-        foundDependencies &&
-        foundDependencies.some(({field, value, subfield}) => {
+        dependencies &&
+        dependencies.some(({field, value, subfield}) => {
             let dependencyValue = get(formData, field);
             if (Array.isArray(dependencyValue)) {
                 dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
@@ -69,6 +66,17 @@ export const checkFieldDependencies = (type, view, dependencies, formData) => {
             return dependencyValue === value || (!!dependencyValue && value === 'any');
         })
     );
+};
+
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+    // View mode has the same dependencies as Edit mode
+    const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
+    const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
+    const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
+
+    const globalConfigResult = checkFoundDependencies(globalConfig, formData);
+    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+    return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
 const isEmptyMultiselect = (value, isRequired) => {
@@ -109,7 +117,7 @@ export const formatOptions = (options, optionsConfig) => {
     return sortOptions(formattedOptions);
 };
 
-const sortOptions = options => {
+export const sortOptions = options => {
     const SORT_TYPE = 'label';
     return getSortedData(options, SORT_TYPE, true);
 };
@@ -166,9 +174,14 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
-export const buildSection = (fields = {}, getValues, view, {selectValues, initialData, setFieldValue, update}) => {
+export const buildSection = (
+    fields = {},
+    getValues,
+    view,
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout}
+) => {
     return (
-        <>
+        <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
@@ -181,7 +194,8 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                             getValues={getValues}
                             setFieldValue={setFieldValue}
                             validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            update={update}
+                            isUpdate={update}
+                            config={config}
                             {...fields[key]}
                         />
                     ) : (
@@ -191,16 +205,23 @@ export const buildSection = (fields = {}, getValues, view, {selectValues, initia
                                 field: fields[key],
                                 selectValues,
                                 setFieldValue,
+                                config,
+                                isGridLayout,
                             })}
                         </div>
                     ))
                 );
             })}
-        </>
+        </div>
     );
 };
 
-export const renderNexusField = (key, view, getValues, {initialData = {}, field, selectValues, setFieldValue}) => {
+export const renderNexusField = (
+    key,
+    view,
+    getValues,
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout}
+) => {
     return (
         <NexusField
             {...field}
@@ -215,6 +236,8 @@ export const renderNexusField = (key, view, getValues, {initialData = {}, field,
             selectValues={selectValues}
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
+            config={config}
+            isGridLayout={isGridLayout}
         />
     );
 };
@@ -241,9 +264,13 @@ export const getProperValues = (schema, values) => {
     return properValues;
 };
 
-export const renderLabel = (label, isRequired, tooltip) => {
+export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
     return (
-        <div className="nexus-c-field__label">
+        <div
+            className={classnames('nexus-c-field__label', {
+                'nexus-c-field__label--grid': isGridLayout,
+            })}
+        >
             {`${label}${isRequired ? '*' : ''}: `}
             {tooltip && (
                 <span title={tooltip} style={{color: 'grey'}}>

@@ -63,7 +63,7 @@ describe('Utils', () => {
             },
         ];
         it('should return true when the dependencies include a field that has value', () => {
-            expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, formData)).toEqual(true);
+            expect(checkFieldDependencies('required', VIEWS.EDIT, dependencies, {formData})).toEqual(true);
         });
 
         it('should return false when the dependencies include a field that does not have value', () => {
