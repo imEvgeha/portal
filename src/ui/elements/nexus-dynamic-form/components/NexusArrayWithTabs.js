@@ -174,19 +174,23 @@ const NexusArrayWithTabs = ({
                         <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
                     )}
                 </div>
-                {Object.keys(fields).map((key, index) => {
-                    return (
-                        <div key={index} className="nexus-c-nexus-array-with-tabs__field">
-                            {renderNexusField(key, view, getValues, {
-                                initialData: currentData || data[0],
-                                field: fields[key],
-                                selectValues,
-                                setFieldValue,
-                                config,
-                            })}
-                        </div>
-                    );
-                })}
+                {Object.keys(groupedData).length ? (
+                    Object.keys(fields).map((key, index) => {
+                        return (
+                            <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                                {renderNexusField(key, view, getValues, {
+                                    initialData: currentData || data[0],
+                                    field: fields[key],
+                                    selectValues,
+                                    setFieldValue,
+                                    config,
+                                })}
+                            </div>
+                        );
+                    })
+                ) : (
+                    <div>No Editorial Metadata Exists</div>
+                )}
             </div>
         </div>
     );
