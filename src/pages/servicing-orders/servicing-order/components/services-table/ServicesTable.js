@@ -15,8 +15,9 @@ import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus
 import withEditableColumns from '../../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
 import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
+import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, ErrorTestRows} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
 import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
@@ -26,13 +27,23 @@ const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
 const errorIcon = `<i class='fas fa-exclamation-triangle' style='color:red' />`;
 
-const ServicesTable = ({data, isDisabled, setUpdatedServices, components: componentsArray, deteErrors}) => {
+const ServicesTable = ({
+    data,
+    recipientsOptions,
+    isDisabled,
+    setUpdatedServices,
+    components: componentsArray,
+    deteErrors,
+}) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
     const [tableData, setTableData] = useState([]);
     const [providerServices, setProviderServices] = useState('');
-    const [recipientsOptions, setRecipientsOptions] = useState([]);
+    const [specOptions, setSpecOptions] = useState([]);
     const {openModal, closeModal} = useContext(NexusModalContext);
+
+    // recipient is fixed for a fullfillment order. should be same for all service rows, take from first row
+    const recipient = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
 
     const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
         data.barcode,
@@ -48,9 +59,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
 
     useEffect(() => {
         if (!isEmpty(data)) {
-            const recp = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
-            recp !== 'VU' ? setRecipientsOptions([recp, 'VU']) : setRecipientsOptions(['VU']);
-            setProviderServices(`${data.fs.toLowerCase()}Services`);
+            data.fs && setProviderServices(`${data.fs.toLowerCase()}Services`);
             setServices(data);
             setOriginalServices(data);
         }
@@ -69,7 +78,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    recipient: service.deteTasks.deteDeliveries[0].externalDelivery.deliverToId || '',
+                    recipient,
                     operationalStatus: service.status,
                     rowIndex: index,
                     rowHeight: 50,
@@ -202,12 +211,34 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         cellRendererParams: {tableData},
     };
 
+    // get spec col selection values dynamically when user hovers the row
+    const getSpecOptions = e => {
+        if (!isDisabled) {
+            const options = get(recipientsOptions, `[${e.data.recipient}]`, []);
+            if (options.length > 0) setSpecOptions(options);
+            else setSpecOptions([]);
+        }
+    };
+    // if not specs available, show toast error on click
+    const checkSpecOptions = e => {
+        if (specOptions.length === 0) {
+            showToastForErrors(null, {
+                errorToast: {
+                    title: 'Formats Not Found',
+                    description: `Formats Not Found for recipient "${e.data.recipient}"`,
+                },
+            });
+        }
+    };
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
                 return {...item, ...componentCol};
             case 'operationalStatus':
                 return {...item, ...statusCol};
+            case 'spec':
+                return {...item, onCellClicked: e => !isDisabled && checkSpecOptions(e)};
             default:
                 return item;
         }
@@ -260,6 +291,7 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
         const blankService = cloneDeep(SERVICE_SCHEMA);
         blankService.deteSources[0].barcode = data.barcode;
         blankService.externalServices.externalId = get(data, 'deteServices[0].externalServices.externalId', '');
+        blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
@@ -309,8 +341,9 @@ const ServicesTable = ({data, isDisabled, setUpdatedServices, components: compon
                 rowData={tableData}
                 domLayout="autoHeight"
                 mapping={isDisabled ? disableMappings(mappings) : mappings}
-                selectValues={{...SELECT_VALUES, recipient: recipientsOptions}}
+                selectValues={{...SELECT_VALUES, spec: specOptions}}
                 onGridEvent={handleTableChange}
+                onCellMouseOver={getSpecOptions}
             />
         </div>
     );
@@ -322,6 +355,7 @@ ServicesTable.propTypes = {
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
     deteErrors: PropTypes.array,
+    recipientsOptions: PropTypes.array,
 };
 
 ServicesTable.defaultProps = {
@@ -330,6 +364,7 @@ ServicesTable.defaultProps = {
     setUpdatedServices: () => null,
     components: [],
     deteErrors: [],
+    recipientsOptions: [],
 };
 
 export default ServicesTable;

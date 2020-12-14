@@ -428,7 +428,7 @@ const RightsRepository = ({
             )}
             <NexusTableToolbar
                 totalRows={totalCount}
-                selectedRightsCount={selectedRepoRights.length}
+                selectedRightsCount={currentUserSelectedRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}

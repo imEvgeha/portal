@@ -7,8 +7,8 @@
     "publishConfig": {
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
-    "dependencies": {
-        "@vubiquity-nexus/portal-utils": "1.0.1"
+    "peerDependencies": {
+        "@vubiquity-nexus/portal-utils": "1.x"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",

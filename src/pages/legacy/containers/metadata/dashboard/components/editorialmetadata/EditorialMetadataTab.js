@@ -24,6 +24,7 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
         sasktelInventoryId,
         sasktelLineupId,
         shortTitleTemplate,
+        metadataStatus,
     } = data;
     const {title, shortTitle, mediumTitle, longTitle, sortTitle} = data.title || {};
     const {seriesName, seasonNumber, episodeNumber} = episodic || {};
@@ -36,6 +37,12 @@ const EditorialMetadataTab = ({data, titleContentType, getLanguageByCode}) => {
 
     return (
         <div id="editorialMetadataTabs">
+            <Row>
+                <Col>
+                    <b>Metadata Status: </b>
+                    {metadataStatus ? metadataStatus : emptySpan()}
+                </Col>
+            </Row>
             <Row>
                 <Col md={3}>
                     <b>Locale: </b> {locale || emptySpan()}
