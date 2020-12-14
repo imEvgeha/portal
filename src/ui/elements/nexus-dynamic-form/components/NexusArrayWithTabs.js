@@ -6,7 +6,7 @@ import {default as AKForm} from '@atlaskit/form/Form';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS} from '../constants';
+import {VIEWS, NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS, NEXUS_ARRAY_WITH_TABS_NO_RECORDS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -204,7 +204,7 @@ const NexusArrayWithTabs = ({
                         );
                     })
                 ) : (
-                    <div>No Editorial Metadata Exists</div>
+                    <div>{NEXUS_ARRAY_WITH_TABS_NO_RECORDS[path]}</div>
                 )}
             </div>
         </div>

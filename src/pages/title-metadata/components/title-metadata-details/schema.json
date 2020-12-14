@@ -368,7 +368,30 @@
             "sections": [
                 {
                     "title": "Territorial",
-                    "fields": {}
+                    "fields": {
+                        "territorialMetadata": {
+                            "name": "Territorial Metadata",
+                            "type": "arrayWithTabs",
+                            "path": "territorialMetadata",
+                            "tabs": ["locale"],
+                            "fields": {
+                                "territorialLocale": {
+                                    "name": "Locale",
+                                    "path": "locale",
+                                    "type": "select",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "countryCode",
+                                        "defaultLabelPath": "countryName"
+                                    }
+                                },
+                                "boxOffice": {
+                                    "name": "Box Office",
+                                    "path": "boxOffice",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },
