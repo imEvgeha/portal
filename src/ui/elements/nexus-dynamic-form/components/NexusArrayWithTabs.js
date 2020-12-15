@@ -108,29 +108,31 @@ const NexusArrayWithTabs = ({
         const newData = [...data];
         if (subTabs.length) {
             const keys = [...tabs, ...subTabs];
-            newData.forEach((obj, index) => {
+            const index = newData.findIndex(obj => {
                 let isEqual = true;
                 keys.forEach(key => {
                     if (obj[key] !== current[key]) isEqual = false;
                 });
-                if (isEqual) {
-                    newData[index] = {
-                        ...newData[index],
-                        ...currentFormData,
-                    };
-                }
+                return isEqual;
             });
+            if (index >= 0) {
+                newData[index] = {
+                    ...newData[index],
+                    ...currentFormData,
+                };
+            }
         } else {
             const [key] = tabs;
             const value = current[key];
-            newData.forEach((obj, index) => {
-                if (obj[key] === value) {
-                    newData[index] = {
-                        ...newData[index],
-                        ...currentFormData,
-                    };
-                }
+            const index = newData.findIndex(obj => {
+                return obj[key] === value;
             });
+            if (index >= 0) {
+                newData[index] = {
+                    ...newData[index],
+                    ...currentFormData,
+                };
+            }
         }
         return newData;
     };
