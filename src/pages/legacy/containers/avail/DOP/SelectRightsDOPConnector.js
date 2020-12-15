@@ -6,7 +6,7 @@ import Modal, {ModalTransition} from '@atlaskit/modal-dialog';
 // import Button from '@atlaskit/button';
 import {rightsService} from '../service/RightsService';
 import {updatePromotedRights, updatePromotedRightsFullData} from '../../../stores/actions/DOP';
-import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {isEqual} from 'lodash';
 
 const DOP_POP_UP_TITLE = 'Select rights planning';

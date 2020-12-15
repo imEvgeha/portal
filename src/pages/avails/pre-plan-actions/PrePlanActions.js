@@ -1,6 +1,7 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
@@ -9,7 +10,6 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import withToasts from '../../../ui/toast/hoc/withToasts';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';

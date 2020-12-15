@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {cloneDeep} from 'lodash';
 import './RightsClashingModal.scss';
 import NexusSpinner from '../../../../../ui/elements/nexus-spinner/NexusSpinner';
-import {NexusModalContext} from '../../../../../ui/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {NexusGrid, NexusTitle} from '../../../../../ui/elements';
 import {createRightMatchingColumnDefsSelector} from '../../../../avails/right-matching/rightMatchingSelectors';
 import {createRightMatchingColumnDefs} from '../../../../avails/right-matching/rightMatchingActions';

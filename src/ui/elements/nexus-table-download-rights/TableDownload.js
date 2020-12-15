@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import './TableDownload.scss';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
+import './TableDownload.scss';
 import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
 import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
 import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';

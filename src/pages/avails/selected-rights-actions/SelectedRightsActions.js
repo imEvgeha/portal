@@ -2,11 +2,11 @@ import React, {useState, useEffect, useRef, useContext, useCallback} from 'react
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
 import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
 import NexusTooltip from '../../../ui/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import withToasts from '../../../ui/toast/hoc/withToasts';

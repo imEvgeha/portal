@@ -1,6 +1,6 @@
 {
     "name": "@vubiquity-nexus/portal-ui",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Nexus Portal Common UI",
     "author": "Vubiquity",
     "license": "UNLICENSED",
@@ -16,6 +16,7 @@
         "@atlaskit/blanket": "^10.0.14",
         "@atlaskit/button": "^13.1.1",
         "@atlaskit/icon": "^19.0.1",
+        "@atlaskit/modal-dialog": "^10.1.1",
         "@atlaskit/page": "^11.0.5",
         "@atlaskit/spinner": "^12.1.6",
         "@atlaskit/theme": "^9.1.6",

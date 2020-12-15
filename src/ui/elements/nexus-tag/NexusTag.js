@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
-import {NexusModalContext} from '../nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import {CANCEL, DELETE, REMOVE_TITLE} from './constants';
 import './NexusTag.scss';
