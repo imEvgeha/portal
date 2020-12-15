@@ -25,6 +25,9 @@ pipeline {
              }
          }
          stage('kubernetes') {
+           when{
+             branch 'master'
+           }
            steps {
              dir('kubernetes') {
                git url: 'git@github-us.production.tvn.com:Nexus/kubernetes.git'
