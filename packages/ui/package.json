@@ -1,6 +1,6 @@
 {
     "name": "@vubiquity-nexus/portal-ui",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Nexus Portal Common UI",
     "author": "Vubiquity",
     "license": "UNLICENSED",
@@ -8,8 +8,8 @@
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
     "dependencies": {
-        "react-json-view": "^1.19.1",
         "re-resizable": "^6.4.0",
+        "react-json-view": "^1.19.1",
         "react-xml-viewer": "^1.0.3"
     },
     "peerDependencies": {
