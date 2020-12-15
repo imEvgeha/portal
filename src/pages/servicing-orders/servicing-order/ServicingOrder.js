@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
@@ -29,6 +30,10 @@ const ServicingOrder = ({match}) => {
 
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
+
+    // WIP : use sagas to get/put data
+    // const dispatch = useDispatch();
+    // const serviceOrder2 = useSelector(state => state.servicingOrders);
 
     useEffect(() => {
         const order =
@@ -104,6 +109,19 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
+                // WIP: redux sagas
+                /*
+            if (servicingOrder.so_number) {
+                dispatch({
+                    type: 'FETCH_FO',
+                    payload: { id: servicingOrder.so_number },
+                });
+                const { fulfillmentOrders, servicingOrderItems, components } = serviceOrder2;
+
+                setServiceOrder({...servicingOrder, fulfillmentOrders, servicingOrderItems});
+                setComponents(components);
+                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
+                */
             } else {
                 setServiceOrder({});
             }
