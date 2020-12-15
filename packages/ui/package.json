@@ -30,13 +30,16 @@
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",
-        "@babel/core": "^7.1.0"
+        "@babel/core": "^7.1.0",
+        "gulp": "^4.0.2",
+        "gulp-rename": "^2.0.0"
     },
     "files": [
         "lib/"
     ],
     "scripts": {
-        "prepublish": "babel src -d lib",
-        "postpublish": "rm -r lib"
+        "prepublish": "babel src -d lib & gulp pipe-scss",
+        "postpublish": "rm -r lib",
+        "build": "babel src -d lib & gulp pipe-scss"
     }
 }
