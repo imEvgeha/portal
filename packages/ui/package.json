@@ -15,19 +15,25 @@
     "peerDependencies": {
         "@atlaskit/blanket": "^10.0.14",
         "@atlaskit/button": "^13.1.1",
+        "@atlaskit/form": "8.1.4",
         "@atlaskit/icon": "^19.0.1",
+        "@atlaskit/lozenge": "^9.0.3",
         "@atlaskit/modal-dialog": "^10.1.1",
         "@atlaskit/page": "^11.0.5",
         "@atlaskit/spinner": "^12.1.6",
         "@atlaskit/theme": "^9.1.6",
         "@atlaskit/tooltip": "^15.0.14",
+        "@vubiquity-nexus/portal-assets": "^1.0.0",
+        "@vubiquity-nexus/portal-styles": "^1.0.0",
         "@vubiquity-nexus/portal-utils": "1.x",
         "classnames": "^2.2.6",
         "file-saver": "^2.0.2",
         "lodash": "4.x",
         "moment": "2.x",
         "prop-types": "15.x",
-        "react": "16.x"
+        "react": "16.x",
+        "react-beautiful-dnd": "^11.0.5",
+        "react-uid": "^2.2.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",
