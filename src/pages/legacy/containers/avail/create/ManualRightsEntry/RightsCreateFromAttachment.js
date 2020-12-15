@@ -23,7 +23,7 @@ import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIc
 import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
 import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
 import IngestReport from '../../../../../avails/ingest-panel/components/ingest-report/IngestReport';
-import TableColumnCustomization from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import TableColumnCustomization from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';
