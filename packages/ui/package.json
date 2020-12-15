@@ -7,8 +7,26 @@
     "publishConfig": {
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
+    "dependencies": {
+        "react-json-view": "^1.19.1",
+        "re-resizable": "^6.4.0",
+        "react-xml-viewer": "^1.0.3"
+    },
     "peerDependencies": {
-        "@vubiquity-nexus/portal-utils": "1.x"
+        "@atlaskit/blanket": "^10.0.14",
+        "@atlaskit/button": "^13.1.1",
+        "@atlaskit/icon": "^19.0.1",
+        "@atlaskit/page": "^11.0.5",
+        "@atlaskit/spinner": "^12.1.6",
+        "@atlaskit/theme": "^9.1.6",
+        "@atlaskit/tooltip": "^15.0.14",
+        "@vubiquity-nexus/portal-utils": "1.x",
+        "classnames": "^2.2.6",
+        "file-saver": "^2.0.2",
+        "lodash": "4.x",
+        "moment": "2.x",
+        "prop-types": "15.x",
+        "react": "16.x"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",
