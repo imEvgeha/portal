@@ -1,14 +1,17 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
 .nexus-c-side-tabs {
-    padding-top: 32px;
+    @include padding(8, 0, 0, 0);
 }
 
 .nexus-c-side-tabs__tab-container {
     width: 100%;
     > button {
         width: 100%;
-        background-color: #fff;
+        background-color: map-get($neutrals, N0);
         &:hover {
-            background-color: rgba(9, 30, 66, 0.08);
+            background-color: map-get($neutrals, N30A);
         }
     }
 }
@@ -17,9 +20,9 @@
     width: 100%;
     > button {
         width: 100%;
-        background-color: rgba(9, 30, 66, 0.08);
+        background-color: map-get($neutrals, N30A);
         &:hover {
-            background-color: rgba(9, 30, 66, 0.08);
+            background-color: map-get($neutrals, N30A);
         }
     }
 }
@@ -30,16 +33,16 @@
     justify-content: flex-end;
     > button {
         width: 80%;
-        background-color: #fff;
+        background-color: map-get($neutrals, N0);
         &:hover {
-            background-color: rgba(9, 30, 66, 0.08);
+            background-color: map-get($neutrals, N30A);
         }
     }
 }
 
 .nexus-c-side-tabs__subtab-container--active {
     > button {
-        background-color: rgba(9, 30, 66, 0.08);
+        background-color: map-get($neutrals, N30A);
     }
 }
 

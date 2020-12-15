@@ -1,12 +1,17 @@
 import React, {useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {FormFooter} from '@atlaskit/form';
+import {Field as AKField, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS, NEXUS_ARRAY_WITH_TABS_NO_RECORDS} from '../constants';
+import {
+    VIEWS,
+    NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS,
+    NEXUS_ARRAY_WITH_TABS_NO_RECORDS,
+    NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS,
+} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -48,9 +53,86 @@ const NexusArrayWithTabs = ({
         }, {});
     };
 
-    const changeTabData = (key, index) => {
+    const getCurrentFormData = () => {
+        const formData = getValues();
+        return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
+    };
+
+    const changeTabData = (oldSubTab, key, index) => {
+        if (view === VIEWS.EDIT) {
+            const currentFormData = getCurrentFormData();
+            const current = currentData || data[0];
+            replaceRecordInGroupedData(currentFormData, current, oldSubTab);
+            const newData = replaceRecordInData(currentFormData, current);
+            setFieldValue(path, newData);
+        }
         const newCurrentData = groupedData[key][index];
         setCurrentData(newCurrentData);
+    };
+
+    const replaceRecordInGroupedData = (currentFormData, current, subTabIndex) => {
+        if (subTabs.length) {
+            let key = '';
+            tabs.forEach(property => {
+                key += key.length > 1 ? ` ${current[property]}` : current[property];
+            });
+            const updatedArray = [...groupedData[key]];
+            updatedArray[subTabIndex] = {
+                ...updatedArray[subTabIndex],
+                ...currentFormData,
+            };
+            setGroupedData(prevState => {
+                return {
+                    ...prevState,
+                    [key]: updatedArray,
+                };
+            });
+        } else {
+            const [property] = tabs;
+            const key = current[property];
+            setGroupedData(prevGroupedData => {
+                return {
+                    ...prevGroupedData,
+                    [key]: [
+                        {
+                            ...prevGroupedData[key][0],
+                            ...currentFormData,
+                        },
+                    ],
+                };
+            });
+        }
+    };
+
+    const replaceRecordInData = (currentFormData, current) => {
+        const newData = [...data];
+        if (subTabs.length) {
+            const keys = [...tabs, ...subTabs];
+            newData.forEach((obj, index) => {
+                let isEqual = true;
+                keys.forEach(key => {
+                    if (obj[key] !== current[key]) isEqual = false;
+                });
+                if (isEqual) {
+                    newData[index] = {
+                        ...newData[index],
+                        ...currentFormData,
+                    };
+                }
+            });
+        } else {
+            const [key] = tabs;
+            const value = current[key];
+            newData.forEach((obj, index) => {
+                if (obj[key] === value) {
+                    newData[index] = {
+                        ...newData[index],
+                        ...currentFormData,
+                    };
+                }
+            });
+        }
+        return newData;
     };
 
     const removeCurrentRecord = (dataArr, current) => {
@@ -100,10 +182,6 @@ const NexusArrayWithTabs = ({
                 obj.hasOwnProperty('value')
             ) {
                 values[key] = obj.value;
-            }
-            if (key === 'editorialCastCrew') {
-                values['castCrew'] = obj;
-                delete values[key];
             }
         });
         return values;
@@ -189,6 +267,9 @@ const NexusArrayWithTabs = ({
                         <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
                     )}
                 </div>
+                <AKField name={path} defaultValue={data}>
+                    {({fieldProps, error}) => <></>}
+                </AKField>
                 {Object.keys(groupedData).length ? (
                     Object.keys(fields).map((key, index) => {
                         return (

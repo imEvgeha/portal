@@ -33,6 +33,12 @@ export const NEXUS_ARRAY_WITH_TABS_NO_RECORDS = {
     ratings: 'No Ratings Exists',
 };
 
+export const NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS = {
+    editorialMetadata: 'editorial',
+    territorialMetadata: 'territorial',
+    ratings: 'ratings',
+};
+
 // todo: remove below
 export const TABS_MAPPINGS = [
     {tabName: 'Basic Info and Territory', id: 'Basic Info'},

@@ -203,7 +203,7 @@
                             "tabs": ["locale", "language"],
                             "subTabs": ["format", "service"],
                             "fields": {
-                                "locale": {
+                                "editorial.locale": {
                                     "name": "Locale",
                                     "path": "locale",
                                     "type": "select",
@@ -212,7 +212,7 @@
                                         "defaultLabelPath": "countryName"
                                     }
                                 },
-                                "language": {
+                                "editorial.language": {
                                     "name": "Language",
                                     "path": "language",
                                     "type": "select",
@@ -221,12 +221,12 @@
                                         "defaultLabelPath": "languageName"
                                     }
                                 },
-                                "format": {
+                                "editorial.format": {
                                     "name": "Format",
                                     "path": "format",
                                     "type": "select"
                                 },
-                                "metadataStatus": {
+                                "editorial.metadataStatus": {
                                     "name": "Metadata Status",
                                     "type": "select",
                                     "path": "metadataStatus",
@@ -243,7 +243,7 @@
                                         ]
                                     }
                                 },
-                                "service": {
+                                "editorial.service": {
                                     "name": "Service",
                                     "type": "select",
                                     "path": "service",
@@ -292,67 +292,67 @@
                                         ]
                                     }
                                 },
-                                "title": {
+                                "editorial.title.title": {
                                     "name": "Display Title",
                                     "path": "title.title",
                                     "type": "string"
                                 },
-                                "sortTitle": {
+                                "editorial.title.sortTitle": {
                                     "name": "Sort Title",
                                     "path": "title.sortTitle",
                                     "type": "string"
                                 },
-                                "mediumTitle": {
+                                "editorial.title.mediumTitle": {
                                     "name": "Medium Title",
                                     "path": "title.mediumTitle",
                                     "type": "string"
                                 },
-                                "longTitle": {
+                                "editorial.title.longTitle": {
                                     "name": "Long Title",
                                     "path": "title.longTitle",
                                     "type": "string"
                                 },
-                                "shortTitle": {
+                                "editorial.title.shortTitle": {
                                     "name": "Short Title",
                                     "path": "title.shortTitle",
                                     "type": "string"
                                 },
-                                "shortDescription": {
+                                "editorial.synopsis.shortDescription": {
                                     "name": "Short Synopsis",
                                     "path": "synopsis.shortDescription",
                                     "type": "string"
                                 },
-                                "mediumDescription": {
+                                "editorial.synopsis.mediumDescription": {
                                     "name": "Medium Synopsis",
                                     "path": "synopsis.mediumDescription",
                                     "type": "string"
                                 },
-                                "description": {
+                                "editorial.synopsis.description": {
                                     "name": "Long Synopsis",
                                     "path": "synopsis.description",
                                     "type": "string"
                                 },
-                                "copyright": {
+                                "editorial.copyright": {
                                     "name": "Copyright",
                                     "path": "copyright",
                                     "type": "string"
                                 },
-                                "awards": {
+                                "editorial.awards": {
                                     "name": "Awards",
                                     "path": "awards",
                                     "type": "string"
                                 },
-                                "sakstelInventoryId": {
+                                "editorial.sakstelInventoryId": {
                                     "name": "Sakstel Inventory ID",
                                     "path": "sakstelInventoryId",
                                     "type": "string"
                                 },
-                                "sakstelLineupId": {
+                                "editorial.sakstelLineupId": {
                                     "name": "Sakstel Lineup ID",
                                     "path": "sakstelLineupId",
                                     "type": "string"
                                 },
-                                "editorialCastCrew": {
+                                "editorial.castCrew": {
                                     "type": "castCrew",
                                     "path": "castCrew",
                                     "isVerticalLayout": true

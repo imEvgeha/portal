@@ -1,3 +1,6 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
 .nexus-c-nexus-array-with-tabs {
     width: 100%;
     display: flex;
@@ -18,13 +21,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 32px 0 32px 1.25rem;
+    @include padding(8, 0, 8, 4.35);
     > div:first-child {
         > span {
             font-size: 20px;
             font-weight: bold;
-            color: #172b4d;
-            margin-right: 16px;
+            color: map-get($neutrals, N800);
+            @include margin(0, 4, 0, 0);
         }
     }
 }
