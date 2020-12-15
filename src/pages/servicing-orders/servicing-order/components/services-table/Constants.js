@@ -68,7 +68,7 @@ export const SERVICE_SCHEMA = {
             },
         ],
         requiresPropagation: '',
-        serviceType: '',
+        serviceType: SELECT_VALUES.serviceType[0],
         subordinateFlag: '',
     },
     mediaFormat: '',
