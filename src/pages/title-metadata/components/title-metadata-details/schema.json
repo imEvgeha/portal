@@ -375,7 +375,7 @@
                             "path": "territorialMetadata",
                             "tabs": ["locale"],
                             "fields": {
-                                "territorialLocale": {
+                                "territorial.locale": {
                                     "name": "Locale",
                                     "path": "locale",
                                     "type": "select",
@@ -384,7 +384,7 @@
                                         "defaultLabelPath": "countryName"
                                     }
                                 },
-                                "boxOffice": {
+                                "territorial.boxOffice": {
                                     "name": "Box Office",
                                     "path": "boxOffice",
                                     "type": "string"

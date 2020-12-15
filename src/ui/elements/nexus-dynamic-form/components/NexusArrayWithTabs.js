@@ -188,8 +188,8 @@ const NexusArrayWithTabs = ({
     };
 
     const handleModalSubmit = values => {
-        const properValues = handleValuesFormat(values);
-        const groupedValues = groupBy([values]);
+        const properValues = handleValuesFormat(values[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]);
+        const groupedValues = groupBy([properValues]);
         const [key] = Object.keys(groupedValues);
         const updatedGroupedData = {...groupedData};
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
