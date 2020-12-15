@@ -14,6 +14,7 @@ import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
 import ServicingOrdersTableStatusBar from '../servicing-orders-table-status-bar/ServicingOrdersTableStatusBar';
+import TooltipCellRenderer from '../tooltip-cell-renderer/TooltipCellRenderer';
 import './ServicingOrdersTable.scss';
 
 const ServicingOrderGrid = compose(
@@ -205,6 +206,7 @@ const ServicingOrdersTable = ({
                 externalFilter={externalFilter}
                 onFirstDataRendered={onFirstDataRendered}
                 setTotalCount={setTotalCount}
+                frameworkComponents={{tooltipCellRenderer: TooltipCellRenderer}}
             />
             <ServicingOrdersTableStatusBar statusBarInfo={statusBarInfo} />
         </div>

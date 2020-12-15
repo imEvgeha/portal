@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {uid} from 'react-uid';
-import './DateTimeCellEditor.scss';
 import NexusDateTimePicker from '../../../nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import CustomIntlProvider from '../../../nexus-layout/CustomIntlProvider';
+import './DateTimeCellEditor.scss';
 
 class DateTimeCellEditor extends Component {
     constructor(props) {

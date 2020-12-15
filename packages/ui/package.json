@@ -13,21 +13,32 @@
         "react-xml-viewer": "^1.0.3"
     },
     "peerDependencies": {
+        "ag-grid-react": "^23.0.3",
+        "ag-grid-enterprise": "^23.0.2",
         "@atlaskit/blanket": "^10.0.14",
         "@atlaskit/button": "^13.1.1",
+        "@atlaskit/dropdown-menu": "^8.1.1",
         "@atlaskit/icon": "^19.0.1",
         "@atlaskit/modal-dialog": "^10.1.1",
         "@atlaskit/page": "^11.0.5",
+        "@atlaskit/select": "^10.0.0",
         "@atlaskit/spinner": "^12.1.6",
         "@atlaskit/theme": "^9.1.6",
         "@atlaskit/tooltip": "^15.0.14",
+        "@atlaskit/popup": "^1.0.0",
+        "@vubiquity-nexus/portal-assets": "^1.x",
         "@vubiquity-nexus/portal-utils": "1.x",
+        "@vubiquity-nexus/portal-styles": "^1.x",
         "classnames": "^2.2.6",
         "file-saver": "^2.0.2",
         "lodash": "4.x",
         "moment": "2.x",
         "prop-types": "15.x",
-        "react": "16.x"
+        "react": "16.x",
+        "react-forms-processor": "0.0.43",
+        "react-forms-processor-atlaskit": "0.0.43",
+        "react-router-dom": "^4.3.1",
+        "react-uid": "^2.2.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import PriceTypeFormSchema from '../../../../../pages/legacy/components/form/PriceTypeFormSchema';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
+import {RightTerritoryFormSchema} from '../utils';
 import './MultiInstanceCellEditor.scss';
 
-class PriceTypeCellEditor extends Component {
+class TerritoryCellEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,15 +19,20 @@ class PriceTypeCellEditor extends Component {
     getValue = () => this.state.value;
 
     handleChange = value => {
-        const addedPriceTypes = value.map(price => price.pricing || price).filter(Boolean);
-        this.setState({value: addedPriceTypes});
+        this.setState({value});
     };
 
     getOptions = () => {
-        const {options = {}} = this.props;
-        const {priceTypes, currencies} = options || {};
-
-        return {priceTypes, currencies};
+        let {options} = this.props;
+        options = options
+            .filter(rec => rec.countryCode)
+            .map(rec => {
+                return {
+                    label: rec.countryName,
+                    value: rec.countryCode,
+                };
+            });
+        return options;
     };
 
     render() {
@@ -38,8 +43,8 @@ class PriceTypeCellEditor extends Component {
                 <NexusMultiInstanceField
                     existingItems={value}
                     onSubmit={this.handleChange}
-                    schema={PriceTypeFormSchema(this.getOptions())}
-                    keyForTagLabel="priceType"
+                    schema={RightTerritoryFormSchema(this.getOptions())}
+                    keyForTagLabel="country"
                     isUsingModal={false}
                     isSpecialCreate={true}
                 />
@@ -48,22 +53,16 @@ class PriceTypeCellEditor extends Component {
     }
 }
 
-PriceTypeCellEditor.propTypes = {
-    options: PropTypes.shape({
-        priceTypes: PropTypes.array,
-        currencies: PropTypes.array,
-    }),
+TerritoryCellEditor.propTypes = {
+    options: PropTypes.array,
     value: PropTypes.array,
 };
 
-PriceTypeCellEditor.defaultProps = {
-    options: {
-        priceTypes: [],
-        currencies: [],
-    },
+TerritoryCellEditor.defaultProps = {
+    options: [],
     value: null,
 };
 
-PriceTypeCellEditor.contextType = NexusModalContext;
+TerritoryCellEditor.contextType = NexusModalContext;
 
-export default PriceTypeCellEditor;
+export default TerritoryCellEditor;

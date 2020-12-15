@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './MultiInstanceCellEditor.scss';
-import AudioLanguageTypeFormSchema from '../../../../../pages/legacy/components/form/AudioLanguageTypeFormSchema';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
+import {AudioLanguageTypeFormSchema} from '../utils';
+import './MultiInstanceCellEditor.scss';
 
 class AudioLanguageTypeCellEditor extends Component {
     constructor(props) {

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './MultiInstanceCellEditor.scss';
-import RightTerritoryFormSchema from '../../../../../pages/legacy/components/form/RightTerritoryFormSchema';
 import {NexusModalContext} from '../../../nexus-modal/NexusModal';
 import NexusMultiInstanceField from '../../../nexus-multi-instance-field/NexusMultiInstanceField';
+import {PriceTypeFormSchema} from '../utils';
+import './MultiInstanceCellEditor.scss';
 
-class TerritoryCellEditor extends Component {
+class PriceTypeCellEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,20 +19,15 @@ class TerritoryCellEditor extends Component {
     getValue = () => this.state.value;
 
     handleChange = value => {
-        this.setState({value});
+        const addedPriceTypes = value.map(price => price.pricing || price).filter(Boolean);
+        this.setState({value: addedPriceTypes});
     };
 
     getOptions = () => {
-        let {options} = this.props;
-        options = options
-            .filter(rec => rec.countryCode)
-            .map(rec => {
-                return {
-                    label: rec.countryName,
-                    value: rec.countryCode,
-                };
-            });
-        return options;
+        const {options = {}} = this.props;
+        const {priceTypes, currencies} = options || {};
+
+        return {priceTypes, currencies};
     };
 
     render() {
@@ -43,8 +38,8 @@ class TerritoryCellEditor extends Component {
                 <NexusMultiInstanceField
                     existingItems={value}
                     onSubmit={this.handleChange}
-                    schema={RightTerritoryFormSchema(this.getOptions())}
-                    keyForTagLabel="country"
+                    schema={PriceTypeFormSchema(this.getOptions())}
+                    keyForTagLabel="priceType"
                     isUsingModal={false}
                     isSpecialCreate={true}
                 />
@@ -53,16 +48,22 @@ class TerritoryCellEditor extends Component {
     }
 }
 
-TerritoryCellEditor.propTypes = {
-    options: PropTypes.array,
+PriceTypeCellEditor.propTypes = {
+    options: PropTypes.shape({
+        priceTypes: PropTypes.array,
+        currencies: PropTypes.array,
+    }),
     value: PropTypes.array,
 };
 
-TerritoryCellEditor.defaultProps = {
-    options: [],
+PriceTypeCellEditor.defaultProps = {
+    options: {
+        priceTypes: [],
+        currencies: [],
+    },
     value: null,
 };
 
-TerritoryCellEditor.contextType = NexusModalContext;
+PriceTypeCellEditor.contextType = NexusModalContext;
 
-export default TerritoryCellEditor;
+export default PriceTypeCellEditor;

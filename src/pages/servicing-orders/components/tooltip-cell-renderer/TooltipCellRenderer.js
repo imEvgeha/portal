@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Popup from '@atlaskit/popup';
-import ServicingOrdersTableStatusTooltip from '../../../../../../pages/servicing-orders/components/servicing-orders-table-status-tooltip/ServicingOrdersTableStatusTooltip';
-import StatusTag from '../../../../nexus-status-tag/StatusTag';
+import StatusTag from '../../../../ui/elements/nexus-status-tag/StatusTag';
+import ServicingOrdersTableStatusTooltip from '../servicing-orders-table-status-tooltip/ServicingOrdersTableStatusTooltip';
 
 const TooltipCellRenderer = props => {
     const {value, soNumber} = props;
