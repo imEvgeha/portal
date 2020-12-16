@@ -29,7 +29,7 @@ import {
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
 import {Can} from '../../../../../../ability';
-import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
+import {CAST, getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';

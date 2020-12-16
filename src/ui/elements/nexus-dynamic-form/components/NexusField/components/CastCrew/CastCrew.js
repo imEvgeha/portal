@@ -1,7 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import NexusPersonsList from '../../../../../nexus-persons-list/NexusPersonsList';
-import {CAST_CONFIG, CREW_CONFIG, CREW_LIST} from '../../../../../nexus-persons-list/constants';
+import NexusPersonsList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/NexusPersonsList';
+import {
+    CAST_CONFIG,
+    CREW_CONFIG,
+    CREW_LIST,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
+import {searchPerson} from '../../../../../../../pages/avails/right-details/rightDetailsServices';
 import './CastCrew.scss';
 
 const CastCrew = ({persons, isEdit, onChange}) => {
@@ -56,6 +61,7 @@ const CastCrew = ({persons, isEdit, onChange}) => {
         <div className="nexus-c-cast-crew">
             <div className="nexus-c-cast-crew__card">
                 <NexusPersonsList
+                    searchPerson={searchPerson}
                     personsList={cast}
                     uiConfig={CAST_CONFIG}
                     hasCharacter={isEdit}
@@ -65,6 +71,7 @@ const CastCrew = ({persons, isEdit, onChange}) => {
             </div>
             <div className="nexus-c-cast-crew__card">
                 <NexusPersonsList
+                    searchPerson={searchPerson}
                     personsList={crew}
                     uiConfig={CREW_CONFIG}
                     hasCharacter={false}

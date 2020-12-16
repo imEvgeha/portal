@@ -29,7 +29,7 @@ import {
     getFormatTypeName,
     CREW,
     getFilteredCastList,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import constants from '../../../MetadataConstants';
 import {loadOptionsPerson} from '../utils/utils';
 

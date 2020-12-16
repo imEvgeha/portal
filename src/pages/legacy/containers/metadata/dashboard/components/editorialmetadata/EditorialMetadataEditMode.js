@@ -34,7 +34,7 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
 import constants from '../../../MetadataConstants';
 import {Can} from '../../../../../../../ability';

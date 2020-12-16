@@ -6,7 +6,7 @@ import UserPicker from '@atlaskit/user-picker';
 import classnames from 'classnames';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 import {uid} from 'react-uid';
-import {NexusModalContext} from '../nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusPerson from '../nexus-person/NexusPerson';
 import NexusPersonRO from '../nexus-person-ro/NexusPersonRO';
 import CharacterModal from './components/CharacterModal';
@@ -14,7 +14,7 @@ import {CAST, CAST_CONFIG, ADD_CHARACTER_NAME, EDIT_CHARACTER_NAME} from './cons
 import {loadOptions} from './utils';
 import './NexusPersonsList.scss';
 
-const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew}) => {
+const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCastCrew, searchPerson}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const [persons, setPersons] = useState(personsList || []);
@@ -180,7 +180,7 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
                         <UserPicker
                             fieldId={uiConfig.htmlFor}
                             width="100%"
-                            loadOptions={() => loadOptions(uiConfig, searchText)}
+                            loadOptions={() => loadOptions(uiConfig, searchText, searchPerson)}
                             value={searchText}
                             onInputChange={searchInputChanged}
                             onSelection={validateAndAddPerson}
@@ -203,6 +203,7 @@ NexusPersonsList.propTypes = {
     hasCharacter: PropTypes.bool,
     isEdit: PropTypes.bool,
     updateCastCrew: PropTypes.func,
+    searchPerson: PropTypes.func,
 };
 
 NexusPersonsList.defaultProps = {
@@ -211,6 +212,7 @@ NexusPersonsList.defaultProps = {
     hasCharacter: false,
     isEdit: false,
     updateCastCrew: () => null,
+    searchPerson: () => null,
 };
 
 export default NexusPersonsList;

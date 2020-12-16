@@ -1,8 +1,7 @@
-import {searchPerson} from '../../../pages/avails/right-details/rightDetailsServices';
-import {getFilteredCastList, getFilteredCrewList} from '../../../pages/legacy/constants/metadata/configAPI';
+import {getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {CAST, PERSONS_PER_REQUEST, MIN_CHARS_FOR_SEARCHING} from './constants';
 
-export const loadOptions = (uiConfig, searchText) => {
+export const loadOptions = (uiConfig, searchText, searchPerson) => {
     const {type} = uiConfig;
     if (searchText.length < MIN_CHARS_FOR_SEARCHING) return [];
     if (type === CAST) {

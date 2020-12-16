@@ -37,11 +37,9 @@ export const getFilteredCastList = (originalConfigCastList, isConfig, isMultiCas
                                 createNewEditorialCast(cast, personType, configCastList);
                             }
                         });
-                    } else {
-                        if (isCastTypeEditorial(cast[param])) {
+                    } else if (isCastTypeEditorial(cast[param])) {
                             createNewEditorialCast(cast, cast[param], configCastList);
                         }
-                    }
                 });
     } else {
         originalConfigCastList &&
@@ -61,22 +59,22 @@ export const isCastPersonType = (item, isConfig) => {
     const param = isConfig ? 'personTypes' : 'personType';
     if (isConfig) {
         return item[param] && item[param].filter(t => t.toLowerCase() === ACTOR.toLowerCase()).length > 0;
-    } else {
+    } 
         return (
             item[param] &&
             (item[param].toLowerCase() === ACTOR.toLowerCase() ||
                 item[param].toLowerCase() === ANIMATED_CHARACTER.toLowerCase() ||
                 item[param].toLowerCase() === VOICE_TALENT.toLowerCase())
         );
-    }
+    
 };
 
 const isCastEditorialPersonType = (item, param, isConfig) => {
     if (isConfig) {
         return item[param].some(t => isCastTypeEditorial(t));
-    } else {
+    } 
         return isCastTypeEditorial(item[param]);
-    }
+    
 };
 
 const isCastTypeEditorial = personType => {
@@ -86,9 +84,9 @@ const isCastTypeEditorial = personType => {
 const isCrewPersonType = (item, param, isConfig) => {
     if (isConfig) {
         return item[param].some(t => isCrewType(t));
-    } else {
+    } 
         return isCrewType(item[param]);
-    }
+    
 };
 
 const isCrewType = personType => {
@@ -132,11 +130,9 @@ export const getFilteredCrewList = (originalConfigCrewList, isConfig) => {
                             createNewCrew(crew, paramValue, configCrewList);
                         }
                     });
-                } else {
-                    if (isCrewType(crew[param])) {
+                } else if (isCrewType(crew[param])) {
                         createNewCrew(crew, crew[param], configCrewList);
                     }
-                }
             });
 
     return configCrewList;

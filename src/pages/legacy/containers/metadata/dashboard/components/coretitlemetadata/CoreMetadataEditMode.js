@@ -13,7 +13,7 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {
     CREW_LIST_LABEL,
     CAST_LIST_LABEL,
