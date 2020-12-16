@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
+import {useDispatch, useSelector} from 'react-redux';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
@@ -30,6 +31,10 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
+    // WIP : use sagas to get/put data
+    // const dispatch = useDispatch();
+    // const serviceOrder2 = useSelector(state => state.servicingOrders);
+
     useEffect(() => {
         const order =
             get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
@@ -41,22 +46,24 @@ const ServicingOrder = ({match}) => {
         if (servicingOrder.so_number) {
             try {
                 if (URL.isLocalOrDevOrQA()) {
-                    let {
+                    const {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-                    setDeteErrors(fulfillmentOrders.errors || []);
+                    let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
+
+                    fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
+                    setDeteErrors(fulfillmentOrdersClone.errors || []);
 
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: showLoading(fulfillmentOrders),
+                        fulfillmentOrders: showLoading(fulfillmentOrdersClone),
                         servicingOrderItems,
                     });
-                    const barcodes = getBarCodes(fulfillmentOrders);
+                    const barcodes = getBarCodes(fulfillmentOrdersClone);
                     fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo[0]);
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
                         setServiceOrder({
                             ...servicingOrder,
                             fulfillmentOrders: newFulfillmentOrders,
@@ -68,7 +75,7 @@ const ServicingOrder = ({match}) => {
                         setComponents(assetInfo[1]);
                     });
 
-                    setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrdersClone, '[0].id', ''));
                 } else {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number
@@ -104,6 +111,19 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
+                // WIP: redux sagas
+                /*
+            if (servicingOrder.so_number) {
+                dispatch({
+                    type: 'FETCH_FO',
+                    payload: { id: servicingOrder.so_number },
+                });
+                const { fulfillmentOrders, servicingOrderItems, components } = serviceOrder2;
+
+                setServiceOrder({...servicingOrder, fulfillmentOrders, servicingOrderItems});
+                setComponents(components);
+                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
+                */
             } else {
                 setServiceOrder({});
             }

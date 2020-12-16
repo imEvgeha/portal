@@ -6,7 +6,7 @@ import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {isEqual, cloneDeep} from 'lodash';
+import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
@@ -40,8 +40,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             if (!isEqual(dataArray, previousData)) {
                 setSelectedSource(null);
                 populateRowData();
-            }
-            populateRowData();
+            } else populateRowData();
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,15 +62,18 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     );
 
     // eslint-disable-next-line
-    const serviceButtonCell = ({data, selectedItem = {}}) => {
+    const serviceButtonCell = ({data, rowIndex, selectedItem = {}}) => {
         const {barcode} = data || {};
+        const servicesName = `${data['fs'].toLowerCase()}Services`;
 
         return (
             <div id={barcode}>
                 <Radio
                     name={barcode}
                     isChecked={selectedItem && selectedItem.barcode === barcode}
-                    onChange={() => barcode && setSelectedSource(data)}
+                    onChange={() =>
+                        barcode && setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
+                    }
                 />
             </div>
         );
@@ -90,13 +92,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         width: 35,
         colId: 'services',
         field: 'services',
-        cellRendererFramework: ({data}) => {
-            // TODO: fix this
-            const name = data && `${data['fs'].toLowerCase()}Services`;
-            const serviceLength = name && data[name] ? data[name].length : 0;
-
-            return <Badge>{serviceLength}</Badge>;
-        },
+        cellRendererFramework: ({data}) => <Badge>{data.serviceCount}</Badge>,
     });
 
     // eslint-disable-next-line react/prop-types
@@ -145,6 +141,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                /*
+                    only barcode is editable
+                    when barcode change detected, call dete title/asset api to get data
+                    update row data and call setUpdatedService to update data in parent component
+                 */
                 const prevSources = sources.slice();
                 prevSources[rowIndex] = {
                     ...prevSources[rowIndex],
@@ -177,18 +178,27 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                             status,
                             componentAssociations = [],
                         } = await fetchAssetFields(data.barcode);
-                        const newSources = cloneDeep(sources[0]);
-                        newSources.deteServices[0].deteSources[rowIndex] = {
-                            ...newSources.deteServices[0].deteSources[rowIndex],
+                        /*
+                         dataArray[0] is a full order object.
+                         sources rows are in dataArray[0].deteServices[0].deteSources[...]
+                         todo: data props to be optimised. kbora
+                         */
+                        const updatedOrder = cloneDeep(dataArray[0]);
+                        updatedOrder.deteServices[0].deteSources[rowIndex] = {
+                            ...updatedOrder.deteServices[0].deteSources[rowIndex],
                             amsAssetId: data.barcode,
                             barcode: data.barcode,
-                            assetFormat,
-                            title: title[0].name,
-                            version: spec,
-                            status,
-                            standard: componentAssociations[0].component.standard,
+                            assetInfo: {
+                                amsAssetId: data.barcode,
+                                assetFormat,
+                                barcode: data.barcode,
+                                title: title[0].name,
+                                version: spec,
+                                status,
+                                standard: componentAssociations[0].component.standard,
+                            },
                         };
-                        setUpdatedServices(newSources);
+                        setUpdatedServices({...updatedOrder});
                     } catch (e) {
                         setSources(prevSources);
                     }
@@ -214,7 +224,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const removeSourceRow = barcode => {
-        const newSources = cloneDeep(sources[0]);
+        const newSources = cloneDeep(dataArray[0]);
         newSources.deteServices[0].deteSources = newSources.deteServices[0].deteSources.filter(
             item => item.barcode !== barcode
         );
@@ -222,14 +232,18 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const populateRowData = () => {
-        const dataClone = cloneDeep(dataArray);
+        // extract only relevant assetInfo property from dataArray as table row
+        // todo: check if we can optimise data props to one object instead of array of copy objects
         const sourcesArray = [];
-        const newDataArray = [];
+        dataArray.forEach(
+            (item, index) =>
+                (sourcesArray[index] = {
+                    fs: dataArray[index].fs,
+                    serviceCount: get(dataArray[index], 'deteServices.length', 0),
+                    ...get(dataArray[index], `deteServices[0].deteSources[${index}].assetInfo`, {}),
+                })
+        );
 
-        // eslint-disable-next-line no-return-assign
-        dataClone.length &&
-            dataClone.forEach((item, index) => (newDataArray[index] = item.deteServices[0].deteSources[index]));
-        newDataArray.forEach((item, index) => (sourcesArray[index] = {...item, ...dataClone[index]}));
         setSources(sourcesArray);
     };
 
