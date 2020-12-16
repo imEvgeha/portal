@@ -24,7 +24,7 @@
             "DOPLoginWithKeycloak": "/AmdocsOSS/Portal/services/LoginWithKeycloak",
             "publisher": "/publisher/v1"
         },
-        "servicingOrdersUrl": "https://servicing-order-manager.qa.vubiquity.com",
+        "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
         "titleUrl": "https://titlesapi.dev.vubiquity.com",
         "url": "https://availsapi.dev.vubiquity.com"
     },

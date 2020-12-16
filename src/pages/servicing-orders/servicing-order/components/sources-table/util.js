@@ -130,6 +130,11 @@ export const fetchAssetFields = async barcode => {
     return {title, ...rest};
 };
 
+/*
+    function: fetchAssetInfo
+    Arguments: [barcodes]: array of barcodes from getBarCodes()
+    objective: fetch all relevant info from dete apis for each barcode
+ */
 export const fetchAssetInfo = async barcodes => {
     const components = [];
     const titleRequests = barcodes.map(item => {
@@ -182,7 +187,11 @@ export const fetchAssetInfo = async barcodes => {
     return [await Promise.all([...titleRequests, ...assetRequests]), components]; // Waiting for all the requests to get resolved.
 };
 
-// get unique barcodes in fulfillment order for optimum api use
+/*
+    function: getBarCodes
+    Arguments: {fulfillmentOrders}: fo object
+    objective: extract unique barcodes across all fo orders in a SO
+ */
 export const getBarCodes = fulfillmentOrders => {
     if (!Array.isArray(fulfillmentOrders)) return [];
     const barcodes = new Set();
@@ -201,8 +210,9 @@ export const getBarCodes = fulfillmentOrders => {
 };
 
 /*
-Arguments: fulfillment: fo object, arr: title and asset info obtained from DETE apis
-objective: insert asset info in fulfillment order for source table rows
+    function: populateAssetInfo
+    Arguments: {fulfillment}: fo object, [arr]: title and asset info obtained from DETE apis
+    objective: insert asset info in fulfillment order for source table rows
  */
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
     const merged = [];
@@ -220,7 +230,7 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
         if (length > 0) {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 const m = merged.findIndex(ee => ee.barcode === item.barcode);
-                // put source table row info in assetInfo temporary property
+                // put source table row info in [assetInfo] temporary property
                 return m !== -1 ? {...item, assetInfo: merged[m]} : item;
             });
         }
@@ -242,9 +252,7 @@ export const removeNulls = fulfillmentOrders => {
 
 // make the fields empty in asset fields initially for loading indicator
 export const showLoading = fulfillmentOrders => {
-    const foClone = cloneDeep(fulfillmentOrders);
-
-    foClone.forEach(item => {
+    fulfillmentOrders.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
@@ -264,5 +272,5 @@ export const showLoading = fulfillmentOrders => {
             });
         }
     });
-    return foClone;
+    return fulfillmentOrders;
 };

@@ -6,7 +6,7 @@ import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {isEqual, cloneDeep} from 'lodash';
+import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
 import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
@@ -62,15 +62,18 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     );
 
     // eslint-disable-next-line
-    const serviceButtonCell = ({data, selectedItem = {}}) => {
+    const serviceButtonCell = ({data, rowIndex, selectedItem = {}}) => {
         const {barcode} = data || {};
+        const servicesName = `${data['fs'].toLowerCase()}Services`;
 
         return (
             <div id={barcode}>
                 <Radio
                     name={barcode}
                     isChecked={selectedItem && selectedItem.barcode === barcode}
-                    onChange={() => barcode && setSelectedSource(data)}
+                    onChange={() =>
+                        barcode && setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
+                    }
                 />
             </div>
         );
@@ -89,13 +92,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         width: 35,
         colId: 'services',
         field: 'services',
-        cellRendererFramework: ({data}) => {
-            // TODO: fix this
-            const name = data && `${data['fs'].toLowerCase()}Services`;
-            const serviceLength = name && data[name] ? data[name].length : 0;
-
-            return <Badge>{serviceLength}</Badge>;
-        },
+        cellRendererFramework: ({data}) => <Badge>{data.serviceCount}</Badge>,
     });
 
     // eslint-disable-next-line react/prop-types
@@ -144,6 +141,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                /*
+                    only barcode is editable
+                    when barcode change detected, call dete title/asset api to get data
+                    update row data and call setUpdatedService to update data in parent component
+                 */
                 const prevSources = sources.slice();
                 prevSources[rowIndex] = {
                     ...prevSources[rowIndex],
@@ -231,15 +233,17 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const populateRowData = () => {
         // extract only relevant assetInfo property from dataArray as table row
-        // todo: optimise data props to one object instead of array of copy objects
+        // todo: check if we can optimise data props to one object instead of array of copy objects
         const sourcesArray = [];
         dataArray.forEach(
             (item, index) =>
                 (sourcesArray[index] = {
                     fs: dataArray[index].fs,
-                    ...dataArray[index].deteServices[0].deteSources[index].assetInfo,
+                    serviceCount: get(dataArray[index], 'deteServices.length', 0),
+                    ...get(dataArray[index], `deteServices[0].deteSources[${index}].assetInfo`, {}),
                 })
         );
+
         setSources(sourcesArray);
     };
 
@@ -250,7 +254,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 <div>{SOURCE_SUBTITLE}</div>
                 {sources.length > 0 && (
                     <div className="nexus-c-source-table__add-icon">
-                        {!isDisabled && isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
+                        {!isDisabled && !isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
                     </div>
                 )}
             </div>
