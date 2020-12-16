@@ -1,6 +1,19 @@
 /* eslint-disable react/destructuring-assignment */
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {SetFilter} from 'ag-grid-enterprise';
+import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
+import {connect} from 'react-redux';
+import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
+import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
+import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
+import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
+import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+import {PriceTypeFormSchema, AudioLanguageTypeFormSchema} from '../elements/utils';
+import {fetchAvailMapping} from '../nexusGridActions';
+import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
 import {
     AG_GRID_COLUMN_FILTER,
     DEFAULT_FILTER_PARAMS,
@@ -10,21 +23,7 @@ import {
     FILTERABLE_DATA_TYPES,
     GRID_EVENTS,
     NOT_FILTERABLE_COLUMNS,
-} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {SetFilter} from 'ag-grid-enterprise';
-import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
-import {connect} from 'react-redux';
-import AudioLanguageTypeFormSchema from '../../../../pages/legacy/components/form/AudioLanguageTypeSearchFormSchema';
-import PriceTypeFormSchema from '../../../../pages/legacy/components/form/PriceTypeSearchFormSchema';
-import {fetchAvailMapping} from '../../../../pages/legacy/containers/avail/availActions';
-import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
-import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
-import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
-import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
-import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
-import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
-import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+} from '../constants';
 
 const withFilterableColumns = ({
     hocProps = [],

@@ -35,6 +35,8 @@
         "moment": "2.x",
         "prop-types": "15.x",
         "react": "16.x",
+        "react-redux": "^7.2.0",
+        "reselect": "^4.0.0",
         "react-forms-processor": "0.0.43",
         "react-forms-processor-atlaskit": "0.0.43",
         "react-router-dom": "^4.3.1",

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {setGridColumnsSize} from '../../../../pages/legacy/stores/actions';
-import {createColumnsSizeSelector} from '../../../../pages/legacy/stores/selectors/columnsSize/columnsSizelSelectors';
+import {setGridColumnsSize} from '../nexusGridActions';
+import {createColumnsSizeSelector} from '../nexusGridSelectors';
 
 const AG_GRID_DEF_COL_DEF = {
     resizable: true,

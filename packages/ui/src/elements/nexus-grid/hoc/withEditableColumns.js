@@ -5,8 +5,6 @@ import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {cloneDeep, isEqual, omit} from 'lodash';
 import {connect} from 'react-redux';
-import {createAvailSelectValuesSelector} from '../../../../pages/legacy/containers/avail/availSelectors';
-import usePrevious from '../../../../util/hooks/usePrevious';
 import AudioLanguageTypeCellEditor from '../elements/cell-editor/AudioLanguageTypeCellEditor';
 import DateCellEditor from '../elements/cell-editor/DateCellEditor';
 import DateTimeCellEditor from '../elements/cell-editor/DateTimeCellEditor';
@@ -15,6 +13,8 @@ import MultiSelectCellEditor from '../elements/cell-editor/MultiSelectCellEditor
 import PriceTypeCellEditor from '../elements/cell-editor/PriceTypeCellEditor';
 import SelectCellEditor from '../elements/cell-editor/SelectCellEditor';
 import TerritoryCellEditor from '../elements/cell-editor/TerritoryCellEditor';
+import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
+import usePrevious from './hooks/usePrevious';
 
 const DEFAULT_HOC_PROPS = ['notEditableColumns', 'mapping', 'selectValues'];
 const DEFAULT_EDITABLE_DATA_TYPES = [
