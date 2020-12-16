@@ -7,8 +7,8 @@ import {isEmpty} from 'lodash';
 import {Form} from 'react-forms-processor';
 import {renderer, FormButton} from 'react-forms-processor-atlaskit';
 import {uid} from 'react-uid';
-import NexusTag from '../../../../../src/ui/elements/nexus-tag/NexusTag';
 import {NexusModalContext} from '../nexus-modal/NexusModal';
+import NexusTag from '../nexus-tag/NexusTag';
 import './NexusMultiInstanceField.scss';
 
 const PLACEHOLDER = 'Add...';

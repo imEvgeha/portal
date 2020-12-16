@@ -1,8 +1,8 @@
 import React from 'react';
-import './NexusLayout.scss';
 import {IfEmbedded} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import NexusNavigation from '../../../../../src/ui/elements/nexus-navigation/NexusNavigation';
+import NexusNavigation from '../nexus-navigation/NexusNavigation';
+import './NexusLayout.scss';
 
 const NexusLayout = ({children}) => (
     <div className="nexus-c-app-layout">

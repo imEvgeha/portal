@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import TextArea from '@atlaskit/textarea';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import withToasts from '../../toast/hoc/withToasts';
-import './NexusFeedback.scss';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '../nexus-toast-notification/constants';
 import {options, THANKYOU_NOTE} from './constants';
+import './NexusFeedback.scss';
 
 const NexusFeedback = ({addToast, currentPage, closeModal}) => {
     const [feedback, setFeedback] = useState('');
