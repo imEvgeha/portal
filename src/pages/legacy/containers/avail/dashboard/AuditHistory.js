@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import NexusSpinner from '../../../../../ui/elements/nexus-spinner/NexusSpinner';
+import NexusSpinner from '@vubiquity-nexus/portal-ui/lib/elements/nexus-spinner/NexusSpinner';
 import {getRightsHistory} from '../../../../avails/availsService';
 import AuditHistoryTable from '../../../components/AuditHistoryTable/AuditHistoryTable';
 

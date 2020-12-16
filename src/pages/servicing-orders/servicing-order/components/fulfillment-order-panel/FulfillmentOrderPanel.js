@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import classnames from 'classnames';
-import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import {SERVICERS} from '../../../constants';
 import './FulfillmentOrderPanel.scss';
 

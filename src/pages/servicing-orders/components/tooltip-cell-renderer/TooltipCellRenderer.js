@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Popup from '@atlaskit/popup';
-import StatusTag from '../../../../ui/elements/nexus-status-tag/StatusTag';
+import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import ServicingOrdersTableStatusTooltip from '../servicing-orders-table-status-tooltip/ServicingOrdersTableStatusTooltip';
 
 const TooltipCellRenderer = props => {

@@ -5,7 +5,7 @@ import {AgGridReact} from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
+import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import IngestReport from './components/IngestReport';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
