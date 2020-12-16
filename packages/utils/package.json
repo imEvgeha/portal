@@ -1,6 +1,6 @@
 {
     "name": "@vubiquity-nexus/portal-utils",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Nexus Portal Common Utils",
     "author": "Vubiquity",
     "license": "UNLICENSED",
@@ -8,13 +8,13 @@
         "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
     },
     "peerDependencies": {
+        "@casl/ability": "^2.5.1",
+        "@casl/react": "^0.8.1",
         "lodash": "4.x",
         "moment": "2.x",
         "prop-types": "15.x",
         "react": "16.x",
-        "react-router-dom": "^4.3.1",
-        "@casl/ability": "^2.5.1",
-        "@casl/react": "^0.8.1"
+        "react-router-dom": "^4.3.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.0.0",
