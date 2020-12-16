@@ -144,6 +144,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED: {
+                console.log('changed row: ', sources[rowIndex], data);
                 const prevSources = sources.slice();
                 prevSources[rowIndex] = {
                     ...prevSources[rowIndex],
@@ -176,20 +177,33 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                             status,
                             componentAssociations = [],
                         } = await fetchAssetFields(data.barcode);
-                        const newSources = cloneDeep(sources[0]);
-                        console.log('newSources for update 1: ', newSources);
-                        newSources.deteServices[0].deteSources[rowIndex] = {
-                            ...newSources.deteServices[0].deteSources[rowIndex],
+                        const updatedOrder = cloneDeep(dataArray);
+                        console.log('newSources for update 1: ', updatedOrder);
+                        // updatedOrder[rowIndex].barcode = data.barcode;
+                        updatedOrder[rowIndex].deteServices[0].deteSources[rowIndex] = {
+                            ...updatedOrder[rowIndex].deteServices[0].deteSources[rowIndex],
                             amsAssetId: data.barcode,
                             barcode: data.barcode,
+                            assetInfo: {
+                                amsAssetId: data.barcode,
+                                assetFormat,
+                                barcode: data.barcode,
+                                title: title[0].name,
+                                version: spec,
+                                status,
+                                standard: componentAssociations[0].component.standard,
+                            },
+                            /*
                             assetFormat,
                             title: title[0].name,
                             version: spec,
                             status,
                             standard: componentAssociations[0].component.standard,
+
+                             */
                         };
-                        console.log('newSources for update: ', newSources);
-                        setUpdatedServices(newSources);
+                        console.log('newSources for update: ', updatedOrder[rowIndex]);
+                        setUpdatedServices({...updatedOrder[rowIndex]});
                     } catch (e) {
                         console.log('error: ', e);
                         setSources(prevSources);
@@ -211,7 +225,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 },
             });
         else {
-            setSources([...sources, cloneDeep(INIT_SOURCE_ROW)]);
+            setSources([...sources, INIT_SOURCE_ROW]);
         }
     };
 
@@ -256,7 +270,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 <div>{SOURCE_SUBTITLE}</div>
                 {sources.length > 0 && (
                     <div className="nexus-c-source-table__add-icon">
-                        {!isDisabled && !isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
+                        {!isDisabled && isRestrictedTenant && <Add onClick={addEmptySourceRow} />}
                     </div>
                 )}
             </div>
