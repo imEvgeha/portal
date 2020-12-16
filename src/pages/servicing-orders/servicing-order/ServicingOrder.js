@@ -42,8 +42,6 @@ const ServicingOrder = ({match}) => {
         setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
-    useEffect(() => console.log('updated services: ', updatedServices), [updatedServices]);
-
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
@@ -53,21 +51,19 @@ const ServicingOrder = ({match}) => {
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    console.log('fulfillmentOrders : ', fulfillmentOrders);
-
                     let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
 
-                    fulfillmentOrdersClone = sortByDateFn(cloneDeep(fulfillmentOrders), 'definition.dueDate');
+                    fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
                     setDeteErrors(fulfillmentOrdersClone.errors || []);
 
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: showLoading(cloneDeep(fulfillmentOrders)),
+                        fulfillmentOrders: showLoading(fulfillmentOrdersClone),
                         servicingOrderItems,
                     });
-                    const barcodes = getBarCodes(cloneDeep(fulfillmentOrders));
+                    const barcodes = getBarCodes(fulfillmentOrdersClone);
                     fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(cloneDeep(fulfillmentOrders), assetInfo[0]);
+                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
                         setServiceOrder({
                             ...servicingOrder,
                             fulfillmentOrders: newFulfillmentOrders,

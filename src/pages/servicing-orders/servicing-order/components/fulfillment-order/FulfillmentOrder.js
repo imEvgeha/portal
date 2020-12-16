@@ -171,6 +171,7 @@ export const FulfillmentOrder = ({
                     version: item.assetInfo.version,
                     status: item.assetInfo.status,
                     externalId: item.assetInfo.barcode,
+                    externalSystem: get(item, 'assetInfo.externalSystem', 'VSOM'),
                 };
                 // remove assetInfo property (used for simplifying source table row data)
                 delete item.assetInfo;
@@ -182,7 +183,6 @@ export const FulfillmentOrder = ({
     const onSaveHandler = () => {
         const dataToSave = prepareOrderPutData(fulfillmentOrder);
         const payload = {data: dataToSave};
-        console.log('payload to api:: ', payload);
         dispatch(saveFulfillmentOrder(payload));
         setIsSaveDisabled(true);
     };

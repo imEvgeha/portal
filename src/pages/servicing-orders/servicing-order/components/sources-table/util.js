@@ -200,12 +200,13 @@ export const getBarCodes = fulfillmentOrders => {
     return [...barcodes];
 };
 
-// populate asset info in nested fulfillmentorders object
-// fulfillment data is mutated here. check
+/*
+Arguments: fulfillment: fo object, arr: title and asset info obtained from DETE apis
+objective: insert asset info in fulfillment order for source table rows
+ */
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
     const merged = [];
 
-    console.log('populateAsset fulfillmentOrders:', fulfillmentOrders);
     // take data from title and asset api calls in arr and merge them in single array entry
     arr.forEach(item => {
         const inx = merged.findIndex(ee => ee.barcode === item.barcode);
@@ -219,11 +220,11 @@ export const populateAssetInfo = (fulfillmentOrders, arr) => {
         if (length > 0) {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 const m = merged.findIndex(ee => ee.barcode === item.barcode);
+                // put source table row info in assetInfo temporary property
                 return m !== -1 ? {...item, assetInfo: merged[m]} : item;
             });
         }
     });
-    console.log('populateAsset ffClone:', ffClone);
     return ffClone || {};
 };
 
@@ -239,7 +240,7 @@ export const removeNulls = fulfillmentOrders => {
     });
 };
 
-// make the fields empty in asset fields temporarily...
+// make the fields empty in asset fields initially for loading indicator
 export const showLoading = fulfillmentOrders => {
     const foClone = cloneDeep(fulfillmentOrders);
 

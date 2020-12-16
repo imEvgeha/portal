@@ -144,7 +144,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 break;
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED: {
-                console.log('changed row: ', sources[rowIndex], data);
                 const prevSources = sources.slice();
                 prevSources[rowIndex] = {
                     ...prevSources[rowIndex],
@@ -177,11 +176,14 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                             status,
                             componentAssociations = [],
                         } = await fetchAssetFields(data.barcode);
-                        const updatedOrder = cloneDeep(dataArray);
-                        console.log('newSources for update 1: ', updatedOrder);
-                        // updatedOrder[rowIndex].barcode = data.barcode;
-                        updatedOrder[rowIndex].deteServices[0].deteSources[rowIndex] = {
-                            ...updatedOrder[rowIndex].deteServices[0].deteSources[rowIndex],
+                        /*
+                         dataArray[0] is a full order object.
+                         sources rows are in dataArray[0].deteServices[0].deteSources[...]
+                         todo: data props to be optimised. kbora
+                         */
+                        const updatedOrder = cloneDeep(dataArray[0]);
+                        updatedOrder.deteServices[0].deteSources[rowIndex] = {
+                            ...updatedOrder.deteServices[0].deteSources[rowIndex],
                             amsAssetId: data.barcode,
                             barcode: data.barcode,
                             assetInfo: {
@@ -193,19 +195,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                                 status,
                                 standard: componentAssociations[0].component.standard,
                             },
-                            /*
-                            assetFormat,
-                            title: title[0].name,
-                            version: spec,
-                            status,
-                            standard: componentAssociations[0].component.standard,
-
-                             */
                         };
-                        console.log('newSources for update: ', updatedOrder[rowIndex]);
-                        setUpdatedServices({...updatedOrder[rowIndex]});
+                        setUpdatedServices({...updatedOrder});
                     } catch (e) {
-                        console.log('error: ', e);
                         setSources(prevSources);
                     }
                 }
@@ -225,12 +217,12 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 },
             });
         else {
-            setSources([...sources, INIT_SOURCE_ROW]);
+            setSources([...sources, cloneDeep(INIT_SOURCE_ROW)]);
         }
     };
 
     const removeSourceRow = barcode => {
-        const newSources = cloneDeep(sources[0]);
+        const newSources = cloneDeep(dataArray[0]);
         newSources.deteServices[0].deteSources = newSources.deteServices[0].deteSources.filter(
             item => item.barcode !== barcode
         );
@@ -238,16 +230,9 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const populateRowData = () => {
-        /* two arrays are needed to:
-           1. extract sources data from nested objects - newDataArray
-           2. add top level fields in above array into sourcesArray
-           Todo: Optimise this logic
-         */
+        // extract only relevant assetInfo property from dataArray as table row
+        // todo: optimise data props to one object instead of array of copy objects
         const sourcesArray = [];
-        const newDataArray = [];
-
-        dataArray.length &&
-            dataArray.forEach((item, index) => (newDataArray[index] = item.deteServices[0].deteSources[index]));
         dataArray.forEach(
             (item, index) =>
                 (sourcesArray[index] = {
@@ -255,13 +240,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                     ...dataArray[index].deteServices[0].deteSources[index].assetInfo,
                 })
         );
-        console.log('sourcesArray, newDataArray, dataArray: ', sourcesArray, newDataArray, dataArray);
         setSources(sourcesArray);
     };
-    // console.log('sourcetable dataArray: ', dataArray)
-    // todo: take row data from assetInfo field in dataArray items
-    // todo: when sending post api to save data, remve assetInfo field
-    // todo: include all original fields in externalSource field including assetType
 
     return (
         <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
