@@ -202,7 +202,6 @@ export const getBarCodes = fulfillmentOrders => {
 
 // populate asset info in nested fulfillmentorders object
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
-    console.log('popolate asset info');
     const merged = [];
 
     arr.forEach(item => {
