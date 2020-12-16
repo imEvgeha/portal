@@ -201,26 +201,30 @@ export const getBarCodes = fulfillmentOrders => {
 };
 
 // populate asset info in nested fulfillmentorders object
+// fulfillment data is mutated here. check
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
     const merged = [];
 
+    console.log('populateAsset fulfillmentOrders:', fulfillmentOrders);
+    // take data from title and asset api calls in arr and merge them in single array entry
     arr.forEach(item => {
         const inx = merged.findIndex(ee => ee.barcode === item.barcode);
         inx !== -1 ? (merged[inx] = {...merged[inx], ...item}) : merged.push(item);
     });
-
-    fulfillmentOrders.forEach(item => {
+    const ffClone = cloneDeep(fulfillmentOrders);
+    ffClone.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
         if (length > 0) {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 const m = merged.findIndex(ee => ee.barcode === item.barcode);
-                return m !== -1 ? {...merged[m]} : item;
+                return m !== -1 ? {...item, assetInfo: merged[m]} : item;
             });
         }
     });
-    return fulfillmentOrders;
+    console.log('populateAsset ffClone:', ffClone);
+    return ffClone || {};
 };
 
 // remove null or empty deteSources from deteSources array
@@ -247,11 +251,14 @@ export const showLoading = fulfillmentOrders => {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 return {
                     ...item,
-                    title: ' ',
-                    version: ' ',
-                    assetFormat: ' ',
-                    standard: ' ',
-                    status: ' ',
+                    assetInfo: {
+                        barcode: item.barcode,
+                        title: ' ',
+                        version: ' ',
+                        assetFormat: ' ',
+                        standard: ' ',
+                        status: ' ',
+                    },
                 };
             });
         }

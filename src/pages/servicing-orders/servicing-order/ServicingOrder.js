@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {get} from 'lodash';
+import {get, cloneDeep} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
@@ -42,26 +42,32 @@ const ServicingOrder = ({match}) => {
         setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
+    useEffect(() => console.log('updated services: ', updatedServices), [updatedServices]);
+
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
                 if (URL.isLocalOrDevOrQA()) {
-                    let {
+                    const {
                         fulfillmentOrders,
                         servicingOrderItems,
                     } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    fulfillmentOrders = sortByDateFn(fulfillmentOrders, 'definition.dueDate');
-                    setDeteErrors(fulfillmentOrders.errors || []);
+                    console.log('fulfillmentOrders : ', fulfillmentOrders);
+
+                    let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
+
+                    fulfillmentOrdersClone = sortByDateFn(cloneDeep(fulfillmentOrders), 'definition.dueDate');
+                    setDeteErrors(fulfillmentOrdersClone.errors || []);
 
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: showLoading(fulfillmentOrders),
+                        fulfillmentOrders: showLoading(cloneDeep(fulfillmentOrders)),
                         servicingOrderItems,
                     });
-                    const barcodes = getBarCodes(fulfillmentOrders);
+                    const barcodes = getBarCodes(cloneDeep(fulfillmentOrders));
                     fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo[0]);
+                        const newFulfillmentOrders = populateAssetInfo(cloneDeep(fulfillmentOrders), assetInfo[0]);
                         setServiceOrder({
                             ...servicingOrder,
                             fulfillmentOrders: newFulfillmentOrders,
@@ -73,7 +79,7 @@ const ServicingOrder = ({match}) => {
                         setComponents(assetInfo[1]);
                     });
 
-                    setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
+                    setSelectedFulfillmentOrderID(get(fulfillmentOrdersClone, '[0].id', ''));
                 } else {
                     const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
                         servicingOrder.so_number

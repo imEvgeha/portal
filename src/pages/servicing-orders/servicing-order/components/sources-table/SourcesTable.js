@@ -40,8 +40,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             if (!isEqual(dataArray, previousData)) {
                 setSelectedSource(null);
                 populateRowData();
-            }
-            populateRowData();
+            } else populateRowData();
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -178,6 +177,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                             componentAssociations = [],
                         } = await fetchAssetFields(data.barcode);
                         const newSources = cloneDeep(sources[0]);
+                        console.log('newSources for update 1: ', newSources);
                         newSources.deteServices[0].deteSources[rowIndex] = {
                             ...newSources.deteServices[0].deteSources[rowIndex],
                             amsAssetId: data.barcode,
@@ -188,8 +188,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                             status,
                             standard: componentAssociations[0].component.standard,
                         };
+                        console.log('newSources for update: ', newSources);
                         setUpdatedServices(newSources);
                     } catch (e) {
+                        console.log('error: ', e);
                         setSources(prevSources);
                     }
                 }
@@ -222,16 +224,30 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const populateRowData = () => {
-        const dataClone = cloneDeep(dataArray);
+        /* two arrays are needed to:
+           1. extract sources data from nested objects - newDataArray
+           2. add top level fields in above array into sourcesArray
+           Todo: Optimise this logic
+         */
         const sourcesArray = [];
         const newDataArray = [];
 
-        // eslint-disable-next-line no-return-assign
-        dataClone.length &&
-            dataClone.forEach((item, index) => (newDataArray[index] = item.deteServices[0].deteSources[index]));
-        newDataArray.forEach((item, index) => (sourcesArray[index] = {...item, ...dataClone[index]}));
+        dataArray.length &&
+            dataArray.forEach((item, index) => (newDataArray[index] = item.deteServices[0].deteSources[index]));
+        dataArray.forEach(
+            (item, index) =>
+                (sourcesArray[index] = {
+                    fs: dataArray[index].fs,
+                    ...dataArray[index].deteServices[0].deteSources[index].assetInfo,
+                })
+        );
+        console.log('sourcesArray, newDataArray, dataArray: ', sourcesArray, newDataArray, dataArray);
         setSources(sourcesArray);
     };
+    // console.log('sourcetable dataArray: ', dataArray)
+    // todo: take row data from assetInfo field in dataArray items
+    // todo: when sending post api to save data, remve assetInfo field
+    // todo: include all original fields in externalSource field including assetType
 
     return (
         <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
