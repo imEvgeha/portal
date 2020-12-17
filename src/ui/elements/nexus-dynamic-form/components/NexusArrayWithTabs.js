@@ -241,6 +241,36 @@ const NexusArrayWithTabs = ({
         );
     };
 
+    const setValueForEachField = () => {
+        const current = currentData || data[0];
+        Object.keys(fields).forEach(key => {
+            const fieldPath = fields[key].path;
+            let value = current[fieldPath];
+            if (value === null) value = '';
+            setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
+        });
+    };
+
+    const renderFields = () => {
+        const renderedFields = Object.keys(fields).map((key, index) => {
+            return (
+                <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                    {renderNexusField(key, view, getValues, {
+                        initialData: currentData || data[0],
+                        field: fields[key],
+                        selectValues,
+                        setFieldValue,
+                        config,
+                        inTabs: true,
+                        path,
+                    })}
+                </div>
+            );
+        });
+        view === VIEWS.EDIT && setValueForEachField();
+        return renderedFields;
+    };
+
     return (
         <div className="nexus-c-nexus-array-with-tabs">
             <div className="nexus-c-nexus-array-with-tabs__tabs">
@@ -272,23 +302,7 @@ const NexusArrayWithTabs = ({
                 <AKField name={path} defaultValue={data}>
                     {({fieldProps, error}) => <></>}
                 </AKField>
-                {Object.keys(groupedData).length ? (
-                    Object.keys(fields).map((key, index) => {
-                        return (
-                            <div key={index} className="nexus-c-nexus-array-with-tabs__field">
-                                {renderNexusField(key, view, getValues, {
-                                    initialData: currentData || data[0],
-                                    field: fields[key],
-                                    selectValues,
-                                    setFieldValue,
-                                    config,
-                                })}
-                            </div>
-                        );
-                    })
-                ) : (
-                    <div>{NEXUS_ARRAY_WITH_TABS_NO_RECORDS[path]}</div>
-                )}
+                {Object.keys(groupedData).length ? renderFields() : <div>{NEXUS_ARRAY_WITH_TABS_NO_RECORDS[path]}</div>}
             </div>
         </div>
     );

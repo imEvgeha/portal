@@ -6,7 +6,7 @@ import {get} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
-import {VIEWS, FIELD_REQUIRED} from './constants';
+import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
     const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
@@ -235,7 +235,7 @@ export const renderNexusField = (
     key,
     view,
     getValues,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, inTabs, path}
 ) => {
     return (
         <NexusField
@@ -245,7 +245,7 @@ export const renderNexusField = (
             name={key}
             label={field.name}
             view={view}
-            formData={getValues()}
+            formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
             validationError={getValidationError(initialData.validationErrors, field)}
             defaultValue={getDefaultValue(field, view, initialData)}
             selectValues={selectValues}
