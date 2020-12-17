@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag/dist/cjs/Tag';
+import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
+import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import config from 'react-global-configuration';
 import {compose} from 'redux';
-import NexusGrid from '../../../../ui/elements/nexus-grid/NexusGrid';
-import createValueFormatter from '../../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
-import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withFilterableColumns from '../../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSideBar from '../../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../../ui/elements/nexus-grid/hoc/withSorting';
 import {
     COLUMN_MAPPINGS,
     USER,

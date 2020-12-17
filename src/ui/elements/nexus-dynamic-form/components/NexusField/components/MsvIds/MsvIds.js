@@ -5,10 +5,10 @@ import {Field, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import Select from '@atlaskit/select';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
 import {withRouter} from 'react-router-dom';
 import {generateMsvIds} from '../../../../../../../pages/title-metadata/titleMetadataServices';
-import {NexusModalContext} from '../../../../../nexus-modal/NexusModal';
 import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
 

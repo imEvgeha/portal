@@ -37,7 +37,7 @@ import {
 } from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
 import constants from '../../../MetadataConstants';
-import {Can} from '../../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {loadOptionsPerson} from '../utils/utils';
 
 const mapStateToProps = state => {

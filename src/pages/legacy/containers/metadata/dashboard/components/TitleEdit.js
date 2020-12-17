@@ -28,12 +28,12 @@ import {
 } from '../../../../constants/metadata/metadataComponent';
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
-import {Can} from '../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {CAST, getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
-import withToasts from '../../../../../../ui/toast/hoc/withToasts';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
 import {SYNC} from './publish/PublishConstants';

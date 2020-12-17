@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import PropTypes from 'prop-types';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import classNames from 'classnames';
-import NexusTooltip from '../../nexus-tooltip/NexusTooltip';
 import './NexusTab.scss';
 
 const NexusTab = ({title, tooltip, totalRows, activeTab, setActiveTab, onClick}) => {

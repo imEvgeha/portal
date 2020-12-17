@@ -9,7 +9,7 @@ import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-ico
 import IngestReport from './components/IngestReport';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
-import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 

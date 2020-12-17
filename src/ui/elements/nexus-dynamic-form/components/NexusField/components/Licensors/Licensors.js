@@ -6,8 +6,8 @@ import {default as AKForm} from '@atlaskit/form/Form';
 import EditorCloseIcon from '@atlaskit/icon/glyph/editor/close';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/textfield';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
-import {NexusModalContext} from '../../../../../nexus-modal/NexusModal';
 import {sortOptions} from '../../../../utils';
 import './Licensors.scss';
 

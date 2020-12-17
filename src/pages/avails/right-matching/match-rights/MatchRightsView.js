@@ -3,6 +3,12 @@ import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {
+    defineColumn,
+    updateColumnDefs,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
@@ -10,9 +16,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
-import {defineColumn, updateColumnDefs} from '../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withColumnsResizing from '../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withEditableColumns from '../../../../ui/elements/nexus-grid/hoc/withEditableColumns';
 import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
