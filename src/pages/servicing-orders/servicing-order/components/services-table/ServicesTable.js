@@ -32,6 +32,7 @@ const ServicesTable = ({
     setUpdatedServices,
     components: componentsArray,
     deteErrors,
+    externalId,
 }) => {
     const [services, setServices] = useState({});
     const [originalServices, setOriginalServices] = useState({});
@@ -296,9 +297,12 @@ const ServicesTable = ({
     const addEmptyServicesRow = () => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
         const blankService = cloneDeep(SERVICE_SCHEMA);
+        const newExternalId = `${externalId}-${updatedService.length + 1}`;
         blankService.deteSources[0].barcode = data.barcode;
-        blankService.externalServices.externalId = get(data, 'deteServices[0].externalServices.externalId', '');
+        blankService.deteTasks = cloneDeep(updatedService[0].deteTasks);
+        blankService.externalServices.externalId = newExternalId;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
+        blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
@@ -363,6 +367,7 @@ ServicesTable.propTypes = {
     components: PropTypes.array,
     deteErrors: PropTypes.array,
     recipientsOptions: PropTypes.object,
+    externalId: PropTypes.string.isRequired,
 };
 
 ServicesTable.defaultProps = {

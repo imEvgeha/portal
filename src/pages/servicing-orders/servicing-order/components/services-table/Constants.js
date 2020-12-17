@@ -75,7 +75,7 @@ export const SERVICE_SCHEMA = {
     overrideStartDate: '',
     quantity: '',
     sequence: '',
-    status: '',
+    status: 'Ready',
 };
 
 export const NO_SELECTION = 'Selection not available for this Asset type';

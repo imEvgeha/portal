@@ -207,6 +207,7 @@ const ServicingOrder = ({match}) => {
                             setUpdatedServices={setUpdatedServices}
                             components={components}
                             deteErrors={deteErrors}
+                            externalId={selectedOrder.external_id}
                         />
                     )}
                 </FulfillmentOrder>
