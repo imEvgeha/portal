@@ -56,7 +56,7 @@ const getAudioComponents = (componentsObject, componentArray) => {
                     `audioComponents[${index}].components[${inx}].channelPosition`,
                     comp.channelPosition
                 );
-                set(componentsObject, `audioComponents[${index}].components[${inx}].componentID`, comp.deteId);
+                set(componentsObject, `audioComponents[${index}].components[${inx}].amsComponentID`, comp.deteId);
                 set(
                     componentsObject,
                     `audioComponents[${index}].components[${inx}].sourceChannelNumber`,
