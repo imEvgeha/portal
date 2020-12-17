@@ -6,6 +6,7 @@ import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
+import {searchPerson} from "./rightDetailsServices";
 import schema from './schema.json';
 
 import './RightDetails.scss';
@@ -34,6 +35,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
                 onSubmit={values => onSubmit(values)}
                 selectValues={selectValues}
                 containerRef={containerRef}
+                searchPerson={searchPerson}
             />
         </div>
     );

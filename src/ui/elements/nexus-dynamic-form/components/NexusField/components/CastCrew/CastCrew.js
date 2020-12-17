@@ -6,10 +6,9 @@ import {
     CREW_CONFIG,
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
-import {searchPerson} from '../../../../../../../pages/avails/right-details/rightDetailsServices';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange}) => {
+const CastCrew = ({persons, isEdit, onChange, searchPerson}) => {
     const [cast, setCast] = useState(
         persons
             .filter(person => !CREW_LIST.includes(person.personType))
@@ -87,12 +86,14 @@ CastCrew.propTypes = {
     isEdit: PropTypes.bool,
     persons: PropTypes.array,
     onChange: PropTypes.func,
+    searchPerson: PropTypes.func,
 };
 
 CastCrew.defaultProps = {
     isEdit: false,
     persons: [],
     onChange: () => null,
+    searchPerson: undefined,
 };
 
 export default CastCrew;

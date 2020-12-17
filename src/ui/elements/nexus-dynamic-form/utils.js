@@ -178,7 +178,7 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
-    {selectValues, initialData, setFieldValue, update, config, isGridLayout}
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson}
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
@@ -207,6 +207,7 @@ export const buildSection = (
                                 setFieldValue,
                                 config,
                                 isGridLayout,
+                                searchPerson,
                             })}
                         </div>
                     ))
@@ -220,7 +221,7 @@ export const renderNexusField = (
     key,
     view,
     getValues,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson}
 ) => {
     return (
         <NexusField
@@ -238,6 +239,7 @@ export const renderNexusField = (
             getCurrentValues={getValues}
             config={config}
             isGridLayout={isGridLayout}
+            searchPerson={searchPerson}
         />
     );
 };

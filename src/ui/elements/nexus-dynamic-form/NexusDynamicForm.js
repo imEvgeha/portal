@@ -9,7 +9,16 @@ import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
 import './NexusDynamicForm.scss';
 
-const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectValues, containerRef, isTitlePage}) => {
+const NexusDynamicForm = ({
+    schema = {},
+    initialData,
+    onSubmit,
+    isEdit,
+    selectValues,
+    containerRef,
+    isTitlePage,
+    searchPerson,
+}) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
 
@@ -112,6 +121,7 @@ const NexusDynamicForm = ({schema = {}, initialData, onSubmit, isEdit, selectVal
                                                 update,
                                                 config: schema.config || [],
                                                 isGridLayout,
+                                                searchPerson,
                                             })}
                                         </Fragment>
                                     ))}
@@ -133,6 +143,7 @@ NexusDynamicForm.propTypes = {
     selectValues: PropTypes.object,
     containerRef: PropTypes.any,
     isTitlePage: PropTypes.bool,
+    searchPerson: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -142,6 +153,7 @@ NexusDynamicForm.defaultProps = {
     selectValues: {},
     containerRef: null,
     isTitlePage: false,
+    searchPerson: undefined,
 };
 
 export default NexusDynamicForm;

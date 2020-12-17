@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {Checkbox} from '@atlaskit/checkbox';
 import {Field as AKField, CheckboxField} from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
+import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {get} from 'lodash';
 import {compose} from 'redux';
 import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
-import NexusTextArea from '../../../nexus-textarea/NexusTextArea';
 import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
 import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
@@ -50,6 +50,7 @@ const NexusField = ({
     config,
     isEditable,
     isGridLayout,
+    searchPerson,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -160,7 +161,14 @@ const NexusField = ({
             case 'datetime':
                 return <DateTimeWithOptional {...fieldProps} {...dateProps} />;
             case 'castCrew':
-                return <CastCrew {...fieldProps} persons={fieldProps.value ? fieldProps.value : []} isEdit={true} />;
+                return (
+                    <CastCrew
+                        searchPerson={searchPerson}
+                        {...fieldProps}
+                        persons={fieldProps.value ? fieldProps.value : []}
+                        isEdit={true}
+                    />
+                );
             case 'licensors':
                 return (
                     <Licensors
@@ -208,7 +216,13 @@ const NexusField = ({
                 }
                 return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
             case 'castCrew':
-                return <CastCrew persons={fieldProps.value ? fieldProps.value : []} isEdit={false} />;
+                return (
+                    <CastCrew
+                        searchPerson={searchPerson}
+                        persons={fieldProps.value ? fieldProps.value : []}
+                        isEdit={false}
+                    />
+                );
             case 'licensors':
                 return (
                     <Licensors
@@ -302,6 +316,7 @@ NexusField.propTypes = {
     config: PropTypes.array,
     isEditable: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    searchPerson: PropTypes.func,
 };
 
 NexusField.defaultProps = {
@@ -327,6 +342,7 @@ NexusField.defaultProps = {
     isReturningTime: true,
     config: [],
     isGridLayout: false,
+    searchPerson: undefined,
 };
 
 export default NexusField;
