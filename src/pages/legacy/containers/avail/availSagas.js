@@ -15,7 +15,7 @@ import RightsURL from './util/RightsURL';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import React from 'react';
 import {BLOCK_UI} from '../../constants/action-types';
-import {ADD_TOAST} from '../../../../ui/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 
 export function* fetchAvailMapping(requestMethod) {

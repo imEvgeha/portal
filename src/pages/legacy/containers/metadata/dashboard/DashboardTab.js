@@ -2,7 +2,7 @@ import './DashboardContainer.scss';
 
 import React from 'react';
 import DashboardCard from '../../metadata/dashboard/components/DashboardCard';
-import {Can} from '../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 class DashboardTab extends React.Component {
     constructor(props) {

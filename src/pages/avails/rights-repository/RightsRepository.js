@@ -2,21 +2,21 @@ import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {
+    defineButtonColumn,
+    defineCheckboxSelectionColumn,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
+import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
+import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
-import {
-    defineButtonColumn,
-    defineCheckboxSelectionColumn,
-} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withFilterableColumns from '../../../ui/elements/nexus-grid/hoc/withFilterableColumns';
-import withInfiniteScrolling from '../../../ui/elements/nexus-grid/hoc/withInfiniteScrolling';
-import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '../../../ui/elements/nexus-grid/hoc/withSorting';
-import {filterBy} from '../../../ui/elements/nexus-grid/utils';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {

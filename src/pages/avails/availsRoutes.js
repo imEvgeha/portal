@@ -1,5 +1,5 @@
 import React from 'react';
-import {canRender} from '../../ability';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 // TODO: change it to dynamic imports when we remove legacy override style for ag grid
 // from RightsResultTable.scss to global.scss file
 // currently, scss for particular component (RightsResultTable) is using for global ag grid style override

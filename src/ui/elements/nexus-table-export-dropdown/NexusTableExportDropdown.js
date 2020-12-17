@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-menu';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import './NexusTableExportDropdown.scss';
@@ -15,7 +16,6 @@ import {
     IN_PROGRESS,
 } from '../../../pages/avails/rights-repository/constants';
 import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
-import NexusTooltip from '../nexus-tooltip/NexusTooltip';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 
 const MAX_ROWS = 50000;

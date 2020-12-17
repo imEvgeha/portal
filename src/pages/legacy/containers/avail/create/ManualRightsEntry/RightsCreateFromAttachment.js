@@ -8,7 +8,7 @@ import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
 import {historyService} from '../../service/HistoryService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Can} from '../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import * as selectors from './manualRightEntrySelector';
@@ -18,7 +18,7 @@ import {
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
 import UploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
-import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';

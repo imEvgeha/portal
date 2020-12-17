@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import NexusDateTimeProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
+import CustomIntlProvider from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/CustomIntlProvider';
 import {NexusModalProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {NexusOverlayProvider} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-overlay/NexusOverlay';
 import {PersistGate} from 'redux-persist/integration/react';
 import AuthProvider from './auth/AuthProvider';
-import CustomIntlProvider from './ui/elements/nexus-layout/CustomIntlProvider';
-import {NexusOverlayProvider} from './ui/elements/nexus-overlay/NexusOverlay';
 
 const AppProviders = ({children, persistor}) => (
     <CustomIntlProvider>

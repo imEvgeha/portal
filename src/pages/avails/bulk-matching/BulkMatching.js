@@ -9,11 +9,11 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '../../../ui/toast/constants';
-import withToasts from '../../../ui/toast/hoc/withToasts';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';

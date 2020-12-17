@@ -8,9 +8,9 @@ import {
     WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
-import withToasts from '../../../ui/toast/hoc/withToasts';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';

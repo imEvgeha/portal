@@ -3,7 +3,7 @@ import DashboardLatestAvailsCard from './card/DashboardLatestAvailsCard';
 import DashboardCard from './card/components/DashboardCard';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {Can} from '../../../../../../src/ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './DashboardContainer.scss';
 
 const mapStateToProps = state => {

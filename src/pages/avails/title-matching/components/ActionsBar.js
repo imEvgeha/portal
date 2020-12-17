@@ -7,10 +7,13 @@ import {
     WARNING_ICON,
     SUCCESS_ICON,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {
+    TITLE_MATCH_AND_CREATE_WARNING_MESSAGE,
+    TITLE_MATCH_SUCCESS_MESSAGE,
+} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {getDomainName, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
-import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE, TITLE_MATCH_SUCCESS_MESSAGE} from '../../../../ui/toast/constants';
-import withToasts from '../../../../ui/toast/hoc/withToasts';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {rightsService} from '../../../legacy/containers/avail/service/RightsService';
 

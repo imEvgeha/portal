@@ -1,8 +1,8 @@
 import React from 'react';
 import * as DateTimeContext from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-time-context/NexusDateTimeProvider';
+import {TOGGLE_REFRESH_GRID_DATA} from '@vubiquity-nexus/portal-ui/lib/grid/gridActionTypes';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import {TOGGLE_REFRESH_GRID_DATA} from '../../../../ui/grid/gridActionTypes';
 import EventManagementTable from './EventManagementTable';
 
 describe('EventManagementTable', () => {
