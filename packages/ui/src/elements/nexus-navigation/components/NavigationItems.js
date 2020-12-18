@@ -7,8 +7,8 @@ import EditorSearchIcon from '@atlaskit/icon/glyph/editor/search';
 import RecentIcon from '@atlaskit/icon/glyph/recent';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 import NexusNavIcon from '@vubiquity-nexus/portal-assets/nexus-nav-icon.svg';
-import {can} from '@vubiquity-nexus/portal-utils/lib/Ability';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {AVAILS, METADATA, MEDIA, SERVICING_ORDERS, EVENT_MANAGEMENT, DOP_TASKS, TITLE_METADATA} from '../constants';
 
 export const navigationPrimaryItems = (selectedItem, handleClick) => {
