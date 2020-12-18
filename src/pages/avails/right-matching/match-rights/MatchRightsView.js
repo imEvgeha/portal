@@ -9,6 +9,7 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
+import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import moment from 'moment';
@@ -16,7 +17,6 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {compose} from 'redux';
 import {NexusGrid, NexusTitle} from '../../../../ui/elements';
-import {createLoadingSelector} from '../../../../ui/loading/loadingSelectors';
 import {backArrowColor} from '../../../legacy/constants/avails/constants';
 import {prepareRight} from '../../../legacy/containers/avail/service/RightsService';
 import {AVAILS_PATH} from '../../availsRoutes';
