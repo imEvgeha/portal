@@ -26,10 +26,13 @@ const TextSummaryPanel = ({list = [], remove}) => {
             <HelperMessage>Text Service Summary</HelperMessage>
             {list.map(item => (
                 <Tooltip
-                    key={item.componentID}
-                    content={`${item.language}, ${item.format}, Component ID ${item.componentID}`}
+                    key={item.amsComponentId}
+                    content={`${item.language}, ${item.format}, Component ID ${item.amsComponentId}`}
                 >
-                    <ListItem item={`${item.language}  ${item.format}`} onDelete={() => onDelete(item.componentID)} />
+                    <ListItem
+                        item={`${item.language}  ${item.format}`}
+                        onDelete={() => onDelete(item.amsComponentId)}
+                    />
                 </Tooltip>
             ))}
         </div>
