@@ -380,7 +380,7 @@
                                     "path": "locale",
                                     "type": "select",
                                     "isRequired": true,
-                                    "isReadOnly": true,
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "countryCode",
                                         "defaultLabelPath": "countryName"
