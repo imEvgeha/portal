@@ -454,24 +454,6 @@
                     }
                 }
             ]
-        },
-        {
-            "title": "Rights",
-            "sections": [
-                {
-                    "title": "Rights",
-                    "fields": {}
-                }
-            ]
-        },
-        {
-            "title": "Sync Log",
-            "sections": [
-                {
-                    "title": "Sync Log",
-                    "fields": {}
-                }
-            ]
         }
     ]
 }
