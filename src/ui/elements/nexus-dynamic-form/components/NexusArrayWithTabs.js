@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
+import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
@@ -105,7 +106,7 @@ const NexusArrayWithTabs = ({
     };
 
     const replaceRecordInData = (currentFormData, current) => {
-        const newData = [...data];
+        const newData = [...getValues()[path]];
         if (subTabs.length) {
             const keys = [...tabs, ...subTabs];
             const index = newData.findIndex(obj => {
@@ -245,7 +246,7 @@ const NexusArrayWithTabs = ({
         const current = currentData || data[0];
         Object.keys(fields).forEach(key => {
             const fieldPath = fields[key].path;
-            let value = current[fieldPath];
+            let value = get(current, fieldPath);
             if (value === null) value = '';
             setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
         });
