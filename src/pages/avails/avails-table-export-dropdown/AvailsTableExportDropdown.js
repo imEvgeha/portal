@@ -4,8 +4,8 @@ import DropdownMenu, {DropdownItem, DropdownItemGroup} from '@atlaskit/dropdown-
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
-import './NexusTableExportDropdown.scss';
-import * as selectors from '../../../pages/avails/right-matching/rightMatchingSelectors';
+import {exportService} from '../../legacy/containers/avail/service/ExportService';
+import * as selectors from '../right-matching/rightMatchingSelectors';
 import {
     RIGHTS_SELECTED_TAB,
     RIGHTS_TAB,
@@ -13,14 +13,13 @@ import {
     SELECTED_FOR_PLANNING_TAB,
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
-    IN_PROGRESS,
-} from '../../../pages/avails/rights-repository/constants';
-import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
+} from '../rights-repository/constants';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
+import './AvailsTableExportDropdown.scss';
 
 const MAX_ROWS = 50000;
 
-const NexusTableExportDropdown = ({
+const AvailsTableExportDropdown = ({
     activeTab,
     selectedRows,
     totalRows,
@@ -235,7 +234,7 @@ const NexusTableExportDropdown = ({
     );
 };
 
-NexusTableExportDropdown.propTypes = {
+AvailsTableExportDropdown.propTypes = {
     activeTab: PropTypes.string,
     selectedRows: PropTypes.array.isRequired,
     totalRows: PropTypes.number.isRequired,
@@ -253,7 +252,7 @@ NexusTableExportDropdown.propTypes = {
     username: PropTypes.string,
 };
 
-NexusTableExportDropdown.defaultProps = {
+AvailsTableExportDropdown.defaultProps = {
     activeTab: RIGHTS_TAB,
     rightsFilter: {},
     rightColumnApi: {},
@@ -276,4 +275,4 @@ const mapStateToProps = () => {
     });
 };
 
-export default connect(mapStateToProps)(NexusTableExportDropdown);
+export default connect(mapStateToProps)(AvailsTableExportDropdown);

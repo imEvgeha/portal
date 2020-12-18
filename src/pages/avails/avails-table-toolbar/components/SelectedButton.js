@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Tooltip from '@atlaskit/tooltip';
-import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../../../pages/avails/rights-repository/constants';
+import {RIGHTS_SELECTED_TAB, RIGHTS_TAB} from '../../rights-repository/constants';
 
 const TOOLTIP_BUTTON_UNSELECTED_MSG = 'Click to view selected items';
 const TOOLTIP_BUTTON_SELECTED_MSG = 'Click to view all items';

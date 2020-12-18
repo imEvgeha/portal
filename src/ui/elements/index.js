@@ -9,7 +9,6 @@ import NexusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tag/NexusTag
 import NexusTitle from '@vubiquity-nexus/portal-ui/lib/elements/nexus-title/NexusTitle';
 import NexusToastNotification from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/NexusToastNotification';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
-import NexusTableToolbar from './nexus-table-toolbar/NexusTableToolbar';
 
 export {
     NexusCheckboxSelect,
@@ -22,6 +21,5 @@ export {
     NexusTag,
     NexusTitle,
     NexusTooltip,
-    NexusTableToolbar,
     NexusToastNotification,
 };

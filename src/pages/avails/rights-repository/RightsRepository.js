@@ -16,9 +16,10 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {NexusGrid, NexusTableToolbar} from '../../../ui/elements';
+import {NexusGrid} from '../../../ui/elements';
 import usePrevious from '../../../util/hooks/usePrevious';
 import {parseAdvancedFilterV2, rightsService} from '../../legacy/containers/avail/service/RightsService';
+import AvailsTableToolbar from '../avails-table-toolbar/AvailsTableToolbar';
 import {
     deselectIngest,
     downloadEmailAttachment,
@@ -426,7 +427,7 @@ const RightsRepository = ({
                     filterByStatus={filterByStatus}
                 />
             )}
-            <NexusTableToolbar
+            <AvailsTableToolbar
                 totalRows={totalCount}
                 selectedRightsCount={currentUserSelectedRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}

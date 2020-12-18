@@ -1,19 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './NexusTableToolbar.scss';
-import PrePlanActions from '../../../pages/avails/pre-plan-actions/PrePlanActions';
-import {
-    RIGHTS_TAB,
-    RIGHTS_SELECTED_TAB,
-    PRE_PLAN_TAB,
-    SELECTED_FOR_PLANNING_TAB,
-} from '../../../pages/avails/rights-repository/constants';
-import SelectedRightsActions from '../../../pages/avails/selected-rights-actions/SelectedRightsActions';
-import NexusTableExportDropdown from '../nexus-table-export-dropdown/NexusTableExportDropdown';
+import './AvailsTableToolbar.scss';
+import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
+import PrePlanActions from '../pre-plan-actions/PrePlanActions';
+import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB} from '../rights-repository/constants';
+import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
 import NexusTab from './components/NexusTab';
 import SelectedButton from './components/SelectedButton';
 
-const NexusTableToolbar = ({
+const AvailsTableToolbar = ({
     totalRows,
     selectedRightsCount,
     prePlanRightsCount,
@@ -115,7 +110,7 @@ const NexusTableToolbar = ({
     );
 };
 
-NexusTableToolbar.propTypes = {
+AvailsTableToolbar.propTypes = {
     totalRows: PropTypes.number,
     hasDownloadButton: PropTypes.bool,
     selectedRightGridApi: PropTypes.object,
@@ -147,7 +142,7 @@ NexusTableToolbar.propTypes = {
     selectedForPlanningGridApi: PropTypes.object,
 };
 
-NexusTableToolbar.defaultProps = {
+AvailsTableToolbar.defaultProps = {
     totalRows: 0,
     hasDownloadButton: true,
     selectedRepoRights: [],
@@ -168,4 +163,4 @@ NexusTableToolbar.defaultProps = {
     selectedForPlanningGridApi: {},
 };
 
-export default NexusTableToolbar;
+export default AvailsTableToolbar;
