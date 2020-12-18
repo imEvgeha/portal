@@ -1,8 +1,11 @@
-import {UPLOAD_INGEST} from '../../pages/avails/ingest-panel/ingestActionTypes';
-import {SAVE_COMBINED_RIGHT} from '../../pages/avails/right-matching/rightMatchingActionTypes';
-import {REPLAY_EVENT, REPLICATE_EVENT} from '../../pages/event-management/eventManagementActionTypes';
-import {TITLES_RECONCILE} from '../../pages/metadata/metadataActionTypes';
-import {SAVE_FULFILLMENT_ORDER} from '../../pages/servicing-orders/servicing-order/servicingOrderActionTypes';
+import {
+    UPLOAD_INGEST,
+    SAVE_COMBINED_RIGHT,
+    REPLAY_EVENT,
+    REPLICATE_EVENT,
+    TITLES_RECONCILE,
+    SAVE_FULFILLMENT_ORDER,
+} from './loadingActionTypes';
 
 const WHITELIST = [
     TITLES_RECONCILE,

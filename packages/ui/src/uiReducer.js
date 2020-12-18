@@ -1,9 +1,9 @@
-import gridReducer from '@vubiquity-nexus/portal-ui/lib/grid/gridReducer';
-import toastReducer from '@vubiquity-nexus/portal-ui/lib/toast/toastReducer';
 import {combineReducers} from 'redux';
 import errorReducer from './error/errorReducer';
+import gridReducer from './grid/gridReducer';
 import loadingReducer from './loading/loadingReducer';
 import successReducer from './success/successReducer';
+import toastReducer from './toast/toastReducer';
 
 const uiReducer = combineReducers({
     loading: loadingReducer,
