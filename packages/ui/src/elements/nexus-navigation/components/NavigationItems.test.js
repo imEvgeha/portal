@@ -1,8 +1,8 @@
-import {can} from '../../../../ability';
+import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {navigationPrimaryItems} from './NavigationItems';
 import {EVENT_MANAGEMENT} from '../constants';
 
-jest.mock('../../../../ability');
+jest.mock('@vubiquity-nexus/portal-utils/lib/ability');
 
 const isEventManagement = item => item.id === EVENT_MANAGEMENT;
 
