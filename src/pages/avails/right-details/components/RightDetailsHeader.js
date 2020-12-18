@@ -6,13 +6,19 @@ import classnames from 'classnames';
 import {throttle} from 'lodash';
 import {Link} from 'react-router-dom';
 import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
-import {NoteError, NoteMerged, NotePending} from '../../../legacy/containers/avail/details/RightConstants';
 import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
 import RightDetailsTitle from './RightDetailsTitle';
-import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, THROTTLE_TRAILING_MS} from '../constants';
+import {
+    HIGHLIGHTED_FIELDS,
+    SHRINKED_FIELDS,
+    THROTTLE_TRAILING_MS,
+    NoteError,
+    NoteMerged,
+    NotePending,
+} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {

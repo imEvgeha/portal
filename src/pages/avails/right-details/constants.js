@@ -19,3 +19,18 @@ export const SHRINKED_FIELDS = [
 ];
 
 export const THROTTLE_TRAILING_MS = 500;
+
+export const NoteError = {
+    note: "License Rights Description and/or Platform Category are missing for Licensee Service Region 'US'",
+    noteStyle: 'error',
+};
+
+export const NotePending = {
+    note: 'Click here for Right Matching',
+    noteStyle: 'info',
+};
+
+export const NoteMerged = {
+    note: "Right Editing disabled for rights with status 'Merged'",
+    noteStyle: 'info',
+};
