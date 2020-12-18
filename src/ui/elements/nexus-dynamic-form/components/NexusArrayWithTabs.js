@@ -165,6 +165,18 @@ const NexusArrayWithTabs = ({
         const newCurrentData = keys.length ? updatedGroupedData[keys[0]][0] : null;
         setCurrentData(newCurrentData);
         setIsRemoved(true);
+
+        const newData = [...getValues()[path]];
+        const keyProps = [...tabs, ...subTabs];
+        const index = newData.findIndex(obj => {
+            let isEqual = true;
+            keyProps.forEach(keyProp => {
+                if (obj[keyProp] !== current[keyProp]) isEqual = false;
+            });
+            return isEqual;
+        });
+        newData.splice(index, 1);
+        setFieldValue(path, newData);
     };
 
     const openEditModal = () => {
@@ -198,6 +210,10 @@ const NexusArrayWithTabs = ({
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
         setGroupedData(updatedGroupedData);
+
+        const newData = [...getValues()[path]];
+        newData.push(properValues);
+        setFieldValue(path, newData);
         closeModal();
     };
 
