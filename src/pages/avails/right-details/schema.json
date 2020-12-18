@@ -305,6 +305,7 @@
                                     "name": "Country",
                                     "path": "country",
                                     "isRequired": true,
+                                    "isReadOnlyInEdit": true,
                                     "className": "nexus-c-array__field-bold area-one",
                                     "type": "select",
                                     "optionsConfig": {
@@ -461,7 +462,7 @@
                         "releaseHistoryOriginal": {
                             "name": "Release History Original",
                             "type": "datetime",
-                            "dateType": "businessDateTime",
+                            "dateType": "timestamp",
                             "path": "releaseHistoryOriginal"
                         },
                         "releaseHistoryPhysicalHV": {

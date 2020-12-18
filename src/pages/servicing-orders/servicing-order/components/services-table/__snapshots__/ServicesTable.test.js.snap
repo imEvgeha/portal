@@ -146,10 +146,11 @@ exports[`ServicesTable should match snapshot 1`] = `
           "width": 120,
         },
         Object {
+          "cellRendererFramework": [Function],
           "colId": "spec",
           "dataSource": "spec",
           "field": "spec",
-          "headerName": "Spec",
+          "headerName": "Format Sheet",
           "onCellClicked": [Function],
           "width": 260,
         },
@@ -216,9 +217,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "colId": "operationalStatus",
           "field": "operationalStatus",
           "headerComponentFramework": [Function],
-          "headerComponentParams": Object {
-            "menuIcon": "<i class='fas fa-exclamation-triangle' style='color:red' />",
-          },
           "headerName": "Operational Status",
           "sortable": false,
           "width": 170,
@@ -257,7 +255,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
         Object {
           "dataType": "select",
-          "displayName": "Spec",
+          "displayName": "Format Sheet",
           "enableEdit": true,
           "enableSearch": true,
           "javaVariableName": "spec",
@@ -287,9 +285,9 @@ exports[`ServicesTable should match snapshot 1`] = `
           "required": true,
         },
         Object {
-          "dataType": "select",
+          "dataType": "string",
           "displayName": "Recipient",
-          "enableEdit": true,
+          "enableEdit": false,
           "javaVariableName": "recipient",
           "queryParamName": "recipient",
           "required": true,
@@ -339,7 +337,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           "60",
           "50",
         ],
-        "recipient": Array [],
         "serviceType": Array [
           "Process & Deliver",
           "DETE Ingest",

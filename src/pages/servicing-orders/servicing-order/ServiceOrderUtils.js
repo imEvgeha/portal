@@ -1,5 +1,5 @@
 import {cloneDeep, get, set} from 'lodash';
-import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../../../servicingOrdersService';
+import {getDeteAssetByBarcode, getDeteTitleByBarcode} from '../servicingOrdersService';
 
 export const prepareRowData = data => {
     const {fs, definition = {}} = data || {};
@@ -56,7 +56,7 @@ const getAudioComponents = (componentsObject, componentArray) => {
                     `audioComponents[${index}].components[${inx}].channelPosition`,
                     comp.channelPosition
                 );
-                set(componentsObject, `audioComponents[${index}].components[${inx}].amsComponentID`, comp.deteId);
+                set(componentsObject, `audioComponents[${index}].components[${inx}].componentID`, comp.deteId);
                 set(
                     componentsObject,
                     `audioComponents[${index}].components[${inx}].sourceChannelNumber`,
@@ -130,11 +130,6 @@ export const fetchAssetFields = async barcode => {
     return {title, ...rest};
 };
 
-/*
-    function: fetchAssetInfo
-    Arguments: [barcodes]: array of barcodes from getBarCodes()
-    objective: fetch all relevant info from dete apis for each barcode
- */
 export const fetchAssetInfo = async barcodes => {
     const components = [];
     const titleRequests = barcodes.map(item => {
@@ -187,11 +182,7 @@ export const fetchAssetInfo = async barcodes => {
     return [await Promise.all([...titleRequests, ...assetRequests]), components]; // Waiting for all the requests to get resolved.
 };
 
-/*
-    function: getBarCodes
-    Arguments: {fulfillmentOrders}: fo object
-    objective: extract unique barcodes across all fo orders in a SO
- */
+// get unique barcodes in fulfillment order for optimum api use
 export const getBarCodes = fulfillmentOrders => {
     if (!Array.isArray(fulfillmentOrders)) return [];
     const barcodes = new Set();
@@ -209,33 +200,27 @@ export const getBarCodes = fulfillmentOrders => {
     return [...barcodes];
 };
 
-/*
-    function: populateAssetInfo
-    Arguments: {fulfillment}: fo object, [arr]: title and asset info obtained from DETE apis
-    objective: insert asset info in fulfillment order for source table rows
- */
+// populate asset info in nested fulfillmentorders object
 export const populateAssetInfo = (fulfillmentOrders, arr) => {
     const merged = [];
 
-    // take data from title and asset api calls in arr and merge them in single array entry
     arr.forEach(item => {
         const inx = merged.findIndex(ee => ee.barcode === item.barcode);
         inx !== -1 ? (merged[inx] = {...merged[inx], ...item}) : merged.push(item);
     });
-    const ffClone = cloneDeep(fulfillmentOrders);
-    ffClone.forEach(item => {
+
+    fulfillmentOrders.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
         if (length > 0) {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 const m = merged.findIndex(ee => ee.barcode === item.barcode);
-                // put source table row info in [assetInfo] temporary property
-                return m !== -1 ? {...item, assetInfo: merged[m]} : item;
+                return m !== -1 ? {...merged[m], test: 'bora'} : item;
             });
         }
     });
-    return ffClone || {};
+    return fulfillmentOrders;
 };
 
 // remove null or empty deteSources from deteSources array
@@ -250,9 +235,11 @@ export const removeNulls = fulfillmentOrders => {
     });
 };
 
-// make the fields empty in asset fields initially for loading indicator
+// make the fields empty in asset fields temporarily...
 export const showLoading = fulfillmentOrders => {
-    fulfillmentOrders.forEach(item => {
+    const foClone = cloneDeep(fulfillmentOrders);
+
+    foClone.forEach(item => {
         const length = Array.isArray(item.definition.deteServices)
             ? item.definition.deteServices[0].deteSources.length
             : 0;
@@ -260,17 +247,14 @@ export const showLoading = fulfillmentOrders => {
             item.definition.deteServices[0].deteSources = item.definition.deteServices[0].deteSources.map(item => {
                 return {
                     ...item,
-                    assetInfo: {
-                        barcode: item.barcode,
-                        title: ' ',
-                        version: ' ',
-                        assetFormat: ' ',
-                        standard: ' ',
-                        status: ' ',
-                    },
+                    title: ' ',
+                    version: ' ',
+                    assetFormat: ' ',
+                    standard: ' ',
+                    status: ' ',
                 };
             });
         }
     });
-    return fulfillmentOrders;
+    return foClone;
 };

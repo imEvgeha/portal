@@ -68,14 +68,14 @@ export const SERVICE_SCHEMA = {
             },
         ],
         requiresPropagation: '',
-        serviceType: '',
+        serviceType: SELECT_VALUES.serviceType[0],
         subordinateFlag: '',
     },
     mediaFormat: '',
     overrideStartDate: '',
     quantity: '',
     sequence: '',
-    status: '',
+    status: 'Ready',
 };
 
 export const NO_SELECTION = 'Selection not available for this Asset type';
