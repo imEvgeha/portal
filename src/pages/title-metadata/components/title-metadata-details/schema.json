@@ -87,7 +87,42 @@
             "sections": [
                 {
                     "title": "Ratings",
-                    "fields": {}
+                    "fields": {
+                        "ratings": {
+                            "name": "Ratings",
+                            "type": "arrayWithTabs",
+                            "path": "ratings",
+                            "tabs": ["ratingSystem"],
+                            "fields": {
+                                "ratingSystem": {
+                                    "name": "Rating System",
+                                    "path": "ratingSystem",
+                                    "type": "select",
+                                    "isRequired": true
+                                },
+                                "rating": {
+                                    "name": "Rating",
+                                    "path": "rating",
+                                    "type": "select",
+                                    "isRequired": true
+                                },
+                                "advisoryCodes": {
+                                    "name": "Advisory Codes",
+                                    "path": "advisoriesCode",
+                                    "type": "multiselect",
+                                    "optionsConfig": {
+                                        "defaultValuePath": "code",
+                                        "defaultLabelPath": "name"
+                                    }
+                                },
+                                "advisoriesFreeText": {
+                                    "name": "Advisories",
+                                    "path": "advisoriesFreeText",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         },

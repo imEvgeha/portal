@@ -203,7 +203,10 @@ const NexusArrayWithTabs = ({
     };
 
     const handleModalSubmit = values => {
-        const properValues = handleValuesFormat(values[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]);
+        const properValues =
+            path === 'ratings'
+                ? handleValuesFormat(values)
+                : handleValuesFormat(values[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]);
         const groupedValues = groupBy([properValues]);
         const [key] = Object.keys(groupedValues);
         const updatedGroupedData = {...groupedData};
@@ -264,7 +267,8 @@ const NexusArrayWithTabs = ({
             const fieldPath = fields[key].path;
             let value = get(current, fieldPath);
             if (value === null) value = '';
-            setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
+            if (path === 'ratings') setFieldValue(fieldPath, value);
+            else setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
         });
     };
 
