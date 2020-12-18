@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import './TableDownload.scss';
-import {alertModal} from '../../../pages/legacy/components/modal/AlertModal';
-import {confirmModal} from '../../../pages/legacy/components/modal/ConfirmModal';
-import {FATAL} from '../../../pages/legacy/constants/avails/manualRightsEntryTabs';
-import {CUSTOM_HEADER_LIST} from '../../../pages/legacy/constants/customColumnHeaders';
-import {exportService} from '../../../pages/legacy/containers/avail/service/ExportService';
+import {alertModal} from '../../../components/modal/AlertModal';
+import {confirmModal} from '../../../components/modal/ConfirmModal';
+import {FATAL} from '../../../constants/avails/manualRightsEntryTabs';
+import {CUSTOM_HEADER_LIST} from '../../../constants/customColumnHeaders';
+import {exportService} from '../service/ExportService';
 
 const TableDownloadRights = ({getColumns, getSelected, allowDownloadFullTab, selectedTab, exportCriteria}) => {
     const [filteredColumns, setFilteredColumns] = useState([]);

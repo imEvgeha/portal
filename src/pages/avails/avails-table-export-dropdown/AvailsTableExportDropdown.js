@@ -13,6 +13,7 @@ import {
     SELECTED_FOR_PLANNING_TAB,
     PREPLAN_REPORT,
     SELECTED_FOR_PLANNING_REPORT,
+    IN_PROGRESS,
 } from '../rights-repository/constants';
 import {TOOLTIP_MSG_NO_RIGHTS, TOOLTIP_MSG_NO_RESULT, TOOLTIP_MSG_MAX_ROWS} from './constants';
 import './AvailsTableExportDropdown.scss';

@@ -21,7 +21,7 @@ import UploadIngestButton from '../../../../../avails/ingest-panel/components/up
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
-import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
+import TableDownloadRights from '../../../../containers/avail/nexus-table-download-rights/TableDownload';
 import IngestReport from '../../../../../avails/ingest-panel/components/ingest-report/IngestReport';
 import TableColumnCustomization from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';

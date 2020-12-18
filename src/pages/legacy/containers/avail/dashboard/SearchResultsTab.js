@@ -20,7 +20,7 @@ import {
     resultPageUpdate,
 } from '../../../stores/actions/avail/dashboard';
 import TableColumnCustomization from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-column-customization/TableColumnCustomization';
-import TableDownloadRights from '../../../../../ui/elements/nexus-table-download-rights/TableDownload';
+import TableDownloadRights from '../nexus-table-download-rights/TableDownload';
 import {Clear} from './ClearInternal';
 import {Selected} from './SelectedInternal';
 import {Total} from './TotalInternal';
