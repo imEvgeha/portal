@@ -148,8 +148,41 @@ export const FulfillmentOrder = ({
         setSelectedOrder(lastOrder);
     };
 
+    // format put data as per DETE specifications before sending to FO api
+    const prepareOrderPutData = data => {
+        const clonedData = cloneDeep(data);
+        const sources = get(clonedData, 'definition.deteServices[0].deteSources', []);
+        sources.forEach(item => {
+            // remove old properties if exists. DETE validation
+            item.assetFormat && delete item.assetFormat;
+            item.standard && delete item.standard;
+            item.status && delete item.status;
+            item.title && delete item.title;
+            item.version && delete item.version;
+
+            // add properties on externalSources. DETE validation
+            if (item.assetInfo) {
+                item.externalSources = {
+                    ...item.externalSources,
+                    assetFormat: item.assetInfo.assetFormat,
+                    assetType: get(item, 'externalSources.assetType', 'DETE_FILE'),
+                    standard: item.assetInfo.standard,
+                    title: item.assetInfo.title,
+                    version: item.assetInfo.version,
+                    status: item.assetInfo.status,
+                    externalId: item.assetInfo.barcode,
+                    externalSystem: get(item, 'assetInfo.externalSystem', 'VSOM'),
+                };
+                // remove assetInfo property (used for simplifying source table row data)
+                delete item.assetInfo;
+            }
+        });
+        return clonedData;
+    };
+
     const onSaveHandler = () => {
-        const payload = {data: fulfillmentOrder};
+        const dataToSave = prepareOrderPutData(fulfillmentOrder);
+        const payload = {data: dataToSave};
         dispatch(saveFulfillmentOrder(payload));
         setIsSaveDisabled(true);
     };

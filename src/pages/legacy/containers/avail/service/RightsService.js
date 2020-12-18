@@ -146,7 +146,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 params[updatedKey] = value;
                 continue;
             }
-            if (value instanceof Object) {
+            if (value instanceof Object && !Array.isArray(value)) {
                 continue;
             }
             const map = mappings.find(
@@ -157,7 +157,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array
-                value = value.split(', ');
+                if (typeof value === 'string') value = value.split(', ');
             }
 
             if (map && map.searchDataType === 'boolean') {

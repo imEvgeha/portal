@@ -28,8 +28,6 @@ import './ServicesTable.scss';
 
 const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
-const errorIcon = `<i class='fas fa-exclamation-triangle' style='color:red' />`;
-
 const ServicesTable = ({
     data,
     recipientsOptions,
@@ -37,6 +35,7 @@ const ServicesTable = ({
     setUpdatedServices,
     components: componentsArray,
     deteErrors,
+    externalId,
 }) => {
     const [services, setServices] = useState({});
     const [tableData, setTableData] = useState([]);
@@ -73,7 +72,7 @@ const ServicesTable = ({
                     serviceType:
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
-                            : SELECT_VALUES.serviceType[1],
+                            : service.externalServices.serviceType,
                     assetType: service.externalServices.assetType || '',
                     components: service.details || [],
                     spec: service.externalServices.formatType,
@@ -194,7 +193,6 @@ const ServicesTable = ({
     };
 
     const statusCol = {
-        headerComponentParams: {menuIcon: errorIcon},
         headerComponentFramework: () => (
             <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
                 <div
@@ -239,7 +237,17 @@ const ServicesTable = ({
             case 'operationalStatus':
                 return {...item, ...statusCol};
             case 'spec':
-                return {...item, onCellClicked: e => !isDisabled && checkSpecOptions(e)};
+                return {
+                    ...item,
+                    // eslint-disable-next-line react/prop-types
+                    cellRendererFramework: ({rowIndex}) => {
+                        const value = get(tableData[rowIndex], 'spec', '');
+                        // show tooltip as the value is too long to fit in column width
+                        return <span title={value}>{value}</span>;
+                    },
+                    onCellClicked: e => !isDisabled && checkSpecOptions(e),
+                };
+
             default:
                 return item;
         }
@@ -290,9 +298,12 @@ const ServicesTable = ({
     const addEmptyServicesRow = () => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
         const blankService = cloneDeep(SERVICE_SCHEMA);
+        const newExternalId = `${externalId}-${updatedService.length + 1}`;
         blankService.deteSources[0].barcode = data.barcode;
-        blankService.externalServices.externalId = get(data, 'deteServices[0].externalServices.externalId', '');
+        blankService.deteTasks = cloneDeep(updatedService[0].deteTasks);
+        blankService.externalServices.externalId = newExternalId;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
+        blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
         updatedService.push(blankService);
         const newServices = {...services, [`${providerServices}`]: updatedService};
         setServices(newServices);
@@ -356,7 +367,8 @@ ServicesTable.propTypes = {
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
     deteErrors: PropTypes.array,
-    recipientsOptions: PropTypes.array,
+    recipientsOptions: PropTypes.object,
+    externalId: PropTypes.string.isRequired,
 };
 
 ServicesTable.defaultProps = {
@@ -365,7 +377,7 @@ ServicesTable.defaultProps = {
     setUpdatedServices: () => null,
     components: [],
     deteErrors: [],
-    recipientsOptions: [],
+    recipientsOptions: {},
 };
 
 export default ServicesTable;
