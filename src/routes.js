@@ -30,7 +30,9 @@ const Settings = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
 );
 const Unauthorized = React.lazy(() =>
-    import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/fallback/Unauthorized')
+    import(
+        /* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/Unauthorized'
+    )
 );
 
 // TODO: on relevant page refactoring remove in to corresponding page folder

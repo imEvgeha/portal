@@ -1,12 +1,12 @@
 import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {connect} from 'react-redux';
-import NexusDynamicForm from '../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getRight, updateRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
-import {searchPerson} from "./rightDetailsServices";
+import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
 
 import './RightDetails.scss';

@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
+import SectionTab from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {throttle} from 'lodash';
 import {Link} from 'react-router-dom';
-import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
 import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';

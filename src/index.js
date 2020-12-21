@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
+import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
 import Toast from '@vubiquity-nexus/portal-ui/lib/toast/Toast';
 import {LicenseManager} from 'ag-grid-enterprise';
@@ -15,7 +16,6 @@ import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import {setEnvConfiguration, registerSingleSpaApps} from './config';
-import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore from './store';
