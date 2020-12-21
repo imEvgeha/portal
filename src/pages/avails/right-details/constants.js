@@ -34,3 +34,5 @@ export const NoteMerged = {
     note: "Right Editing disabled for rights with status 'Merged'",
     noteStyle: 'info',
 };
+
+export const RIGHT_STATUS = [ "Error", "Merged", "Pending"];
