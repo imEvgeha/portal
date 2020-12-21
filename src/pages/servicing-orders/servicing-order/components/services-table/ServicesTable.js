@@ -303,6 +303,7 @@ const ServicesTable = ({
         blankService.deteTasks = cloneDeep(updatedService[0].deteTasks);
         blankService.externalServices.externalId = newExternalId;
         blankService.externalServices.externalSystem = updatedService[0].externalServices.externalSystem;
+        blankService.overrideStartDate = blankService.deteTasks.dueDate;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
         updatedService.push(blankService);
