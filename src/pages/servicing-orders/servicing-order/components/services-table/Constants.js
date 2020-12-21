@@ -69,12 +69,12 @@ export const SERVICE_SCHEMA = {
         ],
         requiresPropagation: '',
         serviceType: SELECT_VALUES.serviceType[0],
-        subordinateFlag: '',
+        subordinateFlag: false,
     },
-    mediaFormat: '',
+    mediaFormat: 'HD EDUB',
     overrideStartDate: '',
-    quantity: '',
-    sequence: '',
+    quantity: '1',
+    sequence: '1',
     status: 'Ready',
 };
 
