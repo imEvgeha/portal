@@ -70,6 +70,13 @@ class EditorialMetadataCreateTab extends Component {
         );
     }
 
+    componentDidMount() {
+        this.props.handleMetadataStatusChange({
+            label: 'pending',
+            value: 'pending',
+        });
+    }
+
     handleFieldLength = name => {
         return name ? name.length : 0;
     };

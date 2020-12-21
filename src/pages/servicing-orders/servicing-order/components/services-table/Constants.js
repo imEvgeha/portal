@@ -68,14 +68,15 @@ export const SERVICE_SCHEMA = {
             },
         ],
         requiresPropagation: '',
-        serviceType: '',
-        subordinateFlag: '',
+        serviceType: SELECT_VALUES.serviceType[0],
+        subordinateFlag: false,
     },
-    mediaFormat: '',
+    mediaFormat: 'HD EDUB',
+    overrideDueDate: '',
     overrideStartDate: '',
-    quantity: '',
-    sequence: '',
-    status: '',
+    quantity: '1',
+    sequence: '1',
+    status: 'Ready',
 };
 
 export const NO_SELECTION = 'Selection not available for this Asset type';

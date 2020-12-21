@@ -17,7 +17,8 @@ export const filterBy = (filterObject, prepareFilter = params => params, filters
             }, {});
         const filterParams = Object.keys(filteredEqualsType).reduce((object, name) => {
             const {filter, values, filterType} = filteredEqualsType[name] || {};
-            object[name] = FILTER_TYPES.includes(filterType) ? Array.isArray(values) && values.join(', ') : filter;
+            if (name === 'licensor') object[name] = FILTER_TYPES.includes(filterType) ? values : filter;
+            else object[name] = FILTER_TYPES.includes(filterType) ? Array.isArray(values) && values.join(', ') : filter;
             return object;
         }, {});
 

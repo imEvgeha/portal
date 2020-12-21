@@ -10,7 +10,7 @@ describe('RightDetailsHeader', () => {
     });
 
     it('should have four divs', () => {
-        expect(wrapper.props().children).toHaveLength(4);
+        expect(wrapper.props().children).toHaveLength(5);
     });
 
     it('should not have adjust-padding class if not shrinked', () => {
