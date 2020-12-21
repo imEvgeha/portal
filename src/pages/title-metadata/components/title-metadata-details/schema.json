@@ -98,7 +98,8 @@
                                     "name": "Rating System",
                                     "path": "ratingSystem",
                                     "type": "select",
-                                    "isRequired": true
+                                    "isRequired": true,
+                                    "isReadOnlyInEdit": true
                                 },
                                 "rating": {
                                     "name": "Rating",

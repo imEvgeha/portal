@@ -35,7 +35,7 @@ const NexusArrayWithTabs = ({
     const [isRemoved, setIsRemoved] = useState(false);
 
     useEffect(() => {
-        const groupedObj = groupBy(data);
+        const groupedObj = data ? groupBy(data) : {};
         setGroupedData(groupedObj);
     }, [data]);
 
@@ -69,7 +69,7 @@ const NexusArrayWithTabs = ({
     const changeTabData = (oldSubTab, key, index) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
-            const current = currentData || data[0];
+            const current = currentData || currentFormData;
             replaceRecordInGroupedData(currentFormData, current, oldSubTab);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
@@ -227,6 +227,10 @@ const NexusArrayWithTabs = ({
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
         setGroupedData(updatedGroupedData);
+
+        if (!currentData) {
+            setCurrentData(properValues);
+        }
 
         const newData = [...getValues()[path]];
         newData.push(properValues);
