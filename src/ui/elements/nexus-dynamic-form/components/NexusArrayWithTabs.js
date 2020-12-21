@@ -56,6 +56,13 @@ const NexusArrayWithTabs = ({
 
     const getCurrentFormData = () => {
         const formData = getValues();
+        if (path === 'ratings') {
+            const currentRating = {};
+            Object.keys(fields).forEach(key => {
+                currentRating[key] = formData[key];
+            });
+            return handleValuesFormat(currentRating);
+        }
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
@@ -92,11 +99,12 @@ const NexusArrayWithTabs = ({
             const [property] = tabs;
             const key = current[property];
             setGroupedData(prevGroupedData => {
+                const [oldData] = prevGroupedData[key];
                 return {
                     ...prevGroupedData,
                     [key]: [
                         {
-                            ...prevGroupedData[key][0],
+                            ...oldData,
                             ...currentFormData,
                         },
                     ],
@@ -197,6 +205,12 @@ const NexusArrayWithTabs = ({
                 obj.hasOwnProperty('value')
             ) {
                 values[key] = obj.value;
+            } else if (obj && typeof obj === 'object' && Array.isArray(obj)) {
+                obj.forEach((val, index) => {
+                    if (val.hasOwnProperty('label') && val.hasOwnProperty('value')) {
+                        obj[index] = val.value;
+                    }
+                });
             }
         });
         return values;

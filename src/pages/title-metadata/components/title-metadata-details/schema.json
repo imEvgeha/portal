@@ -106,7 +106,7 @@
                                     "type": "select",
                                     "isRequired": true
                                 },
-                                "advisoryCodes": {
+                                "advisoriesCode": {
                                     "name": "Advisory Codes",
                                     "path": "advisoriesCode",
                                     "type": "multiselect",
