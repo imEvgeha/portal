@@ -109,7 +109,7 @@ const NexusArray = ({
                                 key={`nexus-c-array__field ${key}`}
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
-                                {renderNexusField(`${path}[${index}].${key}`, view, getValues, {
+                                {renderNexusField(`${path}[${index}].${key}`, view, getValues, null, {
                                     initialData,
                                     field: fields[key],
                                     selectValues,
