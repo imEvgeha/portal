@@ -72,6 +72,7 @@ export const SERVICE_SCHEMA = {
         subordinateFlag: false,
     },
     mediaFormat: 'HD EDUB',
+    overrideDueDate: '',
     overrideStartDate: '',
     quantity: '1',
     sequence: '1',
