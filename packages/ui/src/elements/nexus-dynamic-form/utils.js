@@ -178,71 +178,78 @@ export const buildSection = (
     fields = {},
     getValues,
     view,
+    generateMsvIds,
     {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson}
-) => {
-    return (
-        <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
-            {Object.keys(fields).map(key => {
-                return (
-                    !getFieldConfig(fields[key], 'hidden', view) &&
-                    (get(fields[key], 'type') === 'array' ? (
-                        <NexusArray
-                            key={key}
-                            view={view}
-                            selectValues={selectValues}
-                            data={getDefaultValue(fields[key], view, initialData)}
-                            getValues={getValues}
-                            setFieldValue={setFieldValue}
-                            validationError={getValidationError(initialData.validationErrors, fields[key])}
-                            isUpdate={update}
-                            config={config}
-                            {...fields[key]}
-                        />
-                    ) : (
-                        <div key={key} className="nexus-c-dynamic-form__field">
-                            {renderNexusField(key, view, getValues, {
-                                initialData,
-                                field: fields[key],
-                                selectValues,
-                                setFieldValue,
-                                config,
-                                isGridLayout,
-                                searchPerson,
-                            })}
-                        </div>
-                    ))
-                );
-            })}
-        </div>
-    );
-};
+) =>
+    // eslint-disable-next-line max-params
+    {
+        return (
+            <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
+                {Object.keys(fields).map(key => {
+                    return (
+                        !getFieldConfig(fields[key], 'hidden', view) &&
+                        (get(fields[key], 'type') === 'array' ? (
+                            <NexusArray
+                                key={key}
+                                view={view}
+                                selectValues={selectValues}
+                                data={getDefaultValue(fields[key], view, initialData)}
+                                getValues={getValues}
+                                setFieldValue={setFieldValue}
+                                validationError={getValidationError(initialData.validationErrors, fields[key])}
+                                isUpdate={update}
+                                config={config}
+                                {...fields[key]}
+                            />
+                        ) : (
+                            <div key={key} className="nexus-c-dynamic-form__field">
+                                {renderNexusField(key, view, getValues, generateMsvIds, {
+                                    initialData,
+                                    field: fields[key],
+                                    selectValues,
+                                    setFieldValue,
+                                    config,
+                                    isGridLayout,
+                                    searchPerson,
+                                })}
+                            </div>
+                        ))
+                    );
+                })}
+            </div>
+        );
+    };
 
 export const renderNexusField = (
     key,
     view,
     getValues,
+    generateMsvIds,
     {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson}
-) => {
-    return (
-        <NexusField
-            {...field}
-            id={key}
-            key={key}
-            name={key}
-            label={field.name}
-            view={view}
-            formData={getValues()}
-            validationError={getValidationError(initialData.validationErrors, field)}
-            defaultValue={getDefaultValue(field, view, initialData)}
-            selectValues={selectValues}
-            setFieldValue={setFieldValue}
-            getCurrentValues={getValues}
-            config={config}
-            isGridLayout={isGridLayout}
-            searchPerson={searchPerson}
-        />
-    );
-};
+) =>
+    // eslint-disable-next-line max-params
+    {
+        return (
+            <NexusField
+                {...field}
+                id={key}
+                key={key}
+                name={key}
+                label={field.name}
+                view={view}
+                formData={getValues()}
+                validationError={getValidationError(initialData.validationErrors, field)}
+                defaultValue={getDefaultValue(field, view, initialData)}
+                selectValues={selectValues}
+                setFieldValue={setFieldValue}
+                getCurrentValues={getValues}
+                config={config}
+                isGridLayout={isGridLayout}
+                searchPerson={searchPerson}
+                generateMsvIds={generateMsvIds}
+            />
+        );
+    };
 
 export const getProperValues = (schema, values) => {
     // handle values before submit

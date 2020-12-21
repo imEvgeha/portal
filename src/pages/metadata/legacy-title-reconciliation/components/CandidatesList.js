@@ -15,7 +15,7 @@ import {compose} from 'redux';
 import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
 import {NexusTitle, NexusGrid} from '../../../../ui/elements';
-import SelectedButton from '../../../../ui/elements/nexus-table-toolbar/components/SelectedButton';
+import SelectedButton from '../../../avails/avails-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import constants from '../../../avails/title-matching/titleMatchingConstants';

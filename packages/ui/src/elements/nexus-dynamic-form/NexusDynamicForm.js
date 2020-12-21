@@ -18,6 +18,7 @@ const NexusDynamicForm = ({
     containerRef,
     isTitlePage,
     searchPerson,
+    generateMsvIds,
 }) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
@@ -114,7 +115,7 @@ const NexusDynamicForm = ({
                                     {sections.map(({title: sectionTitle = '', fields = {}, isGridLayout = false}) => (
                                         <Fragment key={`section-${sectionTitle}`}>
                                             <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                            {buildSection(fields, getValues, view, {
+                                            {buildSection(fields, getValues, view, generateMsvIds, {
                                                 selectValues,
                                                 initialData,
                                                 setFieldValue,
@@ -144,6 +145,7 @@ NexusDynamicForm.propTypes = {
     containerRef: PropTypes.any,
     isTitlePage: PropTypes.bool,
     searchPerson: PropTypes.func,
+    generateMsvIds: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -154,6 +156,7 @@ NexusDynamicForm.defaultProps = {
     containerRef: null,
     isTitlePage: false,
     searchPerson: undefined,
+    generateMsvIds: undefined,
 };
 
 export default NexusDynamicForm;

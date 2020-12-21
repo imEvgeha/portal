@@ -8,11 +8,10 @@ import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {cloneDeep} from 'lodash';
 import {withRouter} from 'react-router-dom';
-import {generateMsvIds} from '../../../../../../../pages/title-metadata/titleMetadataServices';
 import {sortOptions} from '../../../../utils';
 import './MsvIds.scss';
 
-const MsvIds = ({selectValues, data, isEdit, onChange, match}) => {
+const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [msvIds, setMsvIds] = useState([]);
     const [licensorOptions, setLicensorOptions] = useState([]);
@@ -59,7 +58,7 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match}) => {
     const handleAddMsvId = async values => {
         const {params} = match || {};
         const {id} = params;
-        if (id) {
+        if (id && typeof generateMsvIds === 'function') {
             const generatedIds = await generateMsvIds(id, values.licensor.value, values.licensee.value);
             const updatedMsvIds = [...msvIds, ...generatedIds];
             setMsvIds(updatedMsvIds);
@@ -145,6 +144,7 @@ MsvIds.propTypes = {
     selectValues: PropTypes.object,
     onChange: PropTypes.func,
     match: PropTypes.object,
+    generateMsvIds: PropTypes.func,
 };
 
 MsvIds.defaultProps = {
@@ -153,6 +153,7 @@ MsvIds.defaultProps = {
     selectValues: {},
     onChange: () => null,
     match: {},
+    generateMsvIds: undefined,
 };
 
 export default withRouter(MsvIds);

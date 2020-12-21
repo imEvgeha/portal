@@ -6,7 +6,7 @@ import TextField from '@atlaskit/textfield';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {get} from 'lodash';
 import {compose} from 'redux';
-import ErrorBoundary from '../../../../../pages/fallback/ErrorBoundary';
+import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
@@ -52,6 +52,7 @@ const NexusField = ({
     isEditable,
     isGridLayout,
     searchPerson,
+    generateMsvIds,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -190,6 +191,7 @@ const NexusField = ({
                         selectValues={selectValues}
                         data={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
+                        generateMsvIds={generateMsvIds}
                     />
                 );
             default:
@@ -323,6 +325,7 @@ NexusField.propTypes = {
     isEditable: PropTypes.bool,
     isGridLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
+    generateMsvIds: PropTypes.func,
 };
 
 NexusField.defaultProps = {
@@ -350,6 +353,7 @@ NexusField.defaultProps = {
     config: [],
     isGridLayout: false,
     searchPerson: undefined,
+    generateMsvIds: undefined,
 };
 
 export default NexusField;
