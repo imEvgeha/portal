@@ -299,9 +299,10 @@ const ServicesTable = ({
         const updatedService = cloneDeep(services[`${providerServices}`]);
         const blankService = cloneDeep(SERVICE_SCHEMA);
         const newExternalId = `${externalId}-${updatedService.length + 1}`;
-        blankService.deteSources[0].barcode = data.barcode;
+        blankService.deteSources = cloneDeep(updatedService[0].deteSources);
         blankService.deteTasks = cloneDeep(updatedService[0].deteTasks);
         blankService.externalServices.externalId = newExternalId;
+        blankService.externalServices.externalSystem = updatedService[0].externalServices.externalSystem;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = recipient;
         blankService.deteTasks.deteDeliveries[0].externalDelivery.externalId = newExternalId;
         updatedService.push(blankService);

@@ -45,7 +45,7 @@ export const createDynamicTableRows = (rowsArray, toggleRows) => {
                 {key: `${index}-pos`, content: item.channelPosition},
                 {key: `${index}-type`, content: item.contentType},
                 {key: `${index}-lang`, content: item.language},
-                {key: `${index}-compId`, content: item.componentID},
+                {key: `${index}-compId`, content: item.amsComponentId},
             ],
         };
     });
