@@ -18,7 +18,7 @@ import {
     NoteError,
     NoteMerged,
     NotePending,
-    RIGHT_STATUS,
+    STATUS,
 } from '../constants';
 import './RightDetailsHeader.scss';
 
@@ -105,7 +105,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
         if (right) {
             let note = {};
             const {status} = right;
-            const [ERROR, MERGED, PENDING] = RIGHT_STATUS;
+            const [ERROR, MERGED, PENDING] = STATUS;
             if (status === ERROR) {
                 note = NoteError;
             } else if (status === MERGED) {

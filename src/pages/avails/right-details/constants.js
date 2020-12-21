@@ -35,4 +35,4 @@ export const NoteMerged = {
     noteStyle: 'info',
 };
 
-export const RIGHT_STATUS = [ "Error", "Merged", "Pending"];
+export const STATUS = ['Error', 'Merged', 'Pending'];
