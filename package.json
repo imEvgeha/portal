@@ -61,7 +61,7 @@
         "@vubiquity-nexus/portal-assets": "^1.0.0",
         "@vubiquity-nexus/portal-auth": "^1.0.0",
         "@vubiquity-nexus/portal-styles": "^1.0.0",
-        "@vubiquity-nexus/portal-ui": "1.0.12",
+        "@vubiquity-nexus/portal-ui": "1.0.14",
         "@vubiquity-nexus/portal-utils": "^1.0.3",
         "abortcontroller-polyfill": "^1.4.0",
         "ag-grid-community": "^23.0.2",

@@ -38,6 +38,7 @@ const NexusArray = ({
     isUpdate,
     config,
     isEditable,
+    generateMsvIds,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     // allData includes initialData and rows added/removed
@@ -109,7 +110,7 @@ const NexusArray = ({
                                 key={`nexus-c-array__field ${key}`}
                                 className={`nexus-c-array__field ${fields[key].className ? fields[key].className : ''}`}
                             >
-                                {renderNexusField(`${path}[${index}].${key}`, view, getValues, null, {
+                                {renderNexusField(`${path}[${index}].${key}`, view, getValues, generateMsvIds, {
                                     initialData,
                                     field: fields[key],
                                     selectValues,
@@ -233,6 +234,7 @@ NexusArray.propTypes = {
     isUpdate: PropTypes.bool,
     config: PropTypes.array,
     isEditable: PropTypes.bool,
+    generateMsvIds: PropTypes.func,
 };
 
 NexusArray.defaultProps = {
@@ -252,6 +254,7 @@ NexusArray.defaultProps = {
     isUpdate: false,
     config: [],
     isEditable: false,
+    generateMsvIds: undefined,
 };
 
 export default NexusArray;

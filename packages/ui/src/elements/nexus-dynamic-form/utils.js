@@ -199,6 +199,7 @@ export const buildSection = (
                                 validationError={getValidationError(initialData.validationErrors, fields[key])}
                                 isUpdate={update}
                                 config={config}
+                                generateMsvIds={generateMsvIds}
                                 {...fields[key]}
                             />
                         ) : (
