@@ -70,15 +70,16 @@ const NexusArrayWithTabs = ({
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
-            replaceRecordInGroupedData(currentFormData, current, oldSubTab);
+            replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
+        } else {
+            const newCurrentData = groupedData[key][index];
+            setCurrentData(newCurrentData);
         }
-        const newCurrentData = groupedData[key][index];
-        setCurrentData(newCurrentData);
     };
 
-    const replaceRecordInGroupedData = (currentFormData, current, subTabIndex) => {
+    const replaceRecordInGroupedData = (currentFormData, current, subTabIndex, indexTo, keyTo) => {
         if (subTabs.length) {
             let key = '';
             tabs.forEach(property => {
@@ -89,6 +90,15 @@ const NexusArrayWithTabs = ({
                 ...updatedArray[subTabIndex],
                 ...currentFormData,
             };
+
+            const updatedGroupedData = {...groupedData};
+            updatedGroupedData[key][subTabIndex] = {
+                ...updatedGroupedData[key][subTabIndex],
+                ...currentFormData,
+            };
+            const newCurrentData = updatedGroupedData[keyTo][indexTo];
+            setCurrentData(newCurrentData);
+
             setGroupedData(prevState => {
                 return {
                     ...prevState,
@@ -98,6 +108,15 @@ const NexusArrayWithTabs = ({
         } else {
             const [property] = tabs;
             const key = current[property];
+
+            const updatedGroupedData = {...groupedData};
+            updatedGroupedData[key][0] = {
+                ...updatedGroupedData[key][0],
+                ...currentFormData,
+            };
+            const newCurrentData = updatedGroupedData[keyTo][indexTo];
+            setCurrentData(newCurrentData);
+
             setGroupedData(prevGroupedData => {
                 const [oldData] = prevGroupedData[key];
                 return {
