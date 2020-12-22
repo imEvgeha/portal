@@ -207,6 +207,7 @@
                                     "name": "Locale",
                                     "path": "locale",
                                     "type": "select",
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "countryCode",
                                         "defaultLabelPath": "countryName"
@@ -216,6 +217,7 @@
                                     "name": "Language",
                                     "path": "language",
                                     "type": "select",
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "languageCode",
                                         "defaultLabelPath": "languageName"
@@ -224,7 +226,8 @@
                                 "editorial.format": {
                                     "name": "Format",
                                     "path": "format",
-                                    "type": "select"
+                                    "type": "select",
+                                    "isReadOnlyInEdit": true
                                 },
                                 "editorial.metadataStatus": {
                                     "name": "Metadata Status",
@@ -247,6 +250,7 @@
                                     "name": "Service",
                                     "type": "select",
                                     "path": "service",
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "options": [
                                             {
