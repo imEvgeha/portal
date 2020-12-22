@@ -999,13 +999,14 @@ class TitleEdit extends Component {
         });
     };
 
-    handleUpdatingEditorialMetadataStatus = value => {
-        const updatedEditorialMetadata = {
-            ...this.state.updatedEditorialMetadata,
+    handleUpdatingEditorialMetadataStatus = (value, data) => {
+        const newOne = this.state.updatedEditorialMetadata.filter(el => el.id !== data.id);
+        newOne.push({
+            ...data,
             metadataStatus: value.value,
-        };
+        });
         this.setState({
-            updatedEditorialMetadata: updatedEditorialMetadata,
+            updatedEditorialMetadata: newOne || [],
         });
     };
 
