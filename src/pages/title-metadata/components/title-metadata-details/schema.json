@@ -208,6 +208,7 @@
                                     "path": "locale",
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
+                                    "isRequired": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "countryCode",
                                         "defaultLabelPath": "countryName"
@@ -218,6 +219,7 @@
                                     "path": "language",
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
+                                    "isRequired": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "languageCode",
                                         "defaultLabelPath": "languageName"
@@ -233,6 +235,7 @@
                                     "name": "Metadata Status",
                                     "type": "select",
                                     "path": "metadataStatus",
+                                    "isRequired": true,
                                     "optionsConfig": {
                                         "options": [
                                             {
@@ -296,10 +299,67 @@
                                         ]
                                     }
                                 },
+                                "editorial.hasGeneratedChildren": {
+                                    "name": "Auto - Decorate",
+                                    "path": "hasGeneratedChildren",
+                                    "type": "boolean",
+                                    "isReadOnlyInEdit": true,
+                                    "viewConfig": [
+                                        {
+                                            "view": "CREATE",
+                                            "defaultValue": false
+                                        }
+                                    ]
+                                },
+                                "editorial.shortTitleTemplate": {
+                                    "name": "Auto - Decorate Title",
+                                    "path": "shortTitleTemplate",
+                                    "type": "string",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "readOnly",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": false
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "readOnly",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": false
+                                        },
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ]
+                                },
                                 "editorial.title.title": {
                                     "name": "Display Title",
                                     "path": "title.title",
-                                    "type": "string"
+                                    "type": "string",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ]
                                 },
                                 "editorial.title.sortTitle": {
                                     "name": "Sort Title",
@@ -324,12 +384,40 @@
                                 "editorial.synopsis.shortDescription": {
                                     "name": "Short Synopsis",
                                     "path": "synopsis.shortDescription",
-                                    "type": "string"
+                                    "type": "string",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ]
                                 },
                                 "editorial.synopsis.mediumDescription": {
                                     "name": "Medium Synopsis",
                                     "path": "synopsis.mediumDescription",
-                                    "type": "string"
+                                    "type": "string",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ]
                                 },
                                 "editorial.synopsis.description": {
                                     "name": "Long Synopsis",

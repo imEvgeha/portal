@@ -9,7 +9,10 @@ import NexusField from './components/NexusField/NexusField';
 import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
-    const viewConfig = field && field.viewConfig && field.viewConfig.find(c => view === c.view && get(c, config));
+    const viewConfig =
+        field &&
+        field.viewConfig &&
+        field.viewConfig.find(c => view === c.view && (get(c, config) || get(c, config) === false));
     return viewConfig && viewConfig[config];
 };
 
