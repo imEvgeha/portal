@@ -7,12 +7,7 @@ import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {
-    VIEWS,
-    NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS,
-    NEXUS_ARRAY_WITH_TABS_NO_RECORDS,
-    NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS,
-} from '../constants';
+import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -353,14 +348,12 @@ const NexusArrayWithTabs = ({
                             </Button>
                         )}
                     </div>
-                    {view === VIEWS.EDIT && (
-                        <Button onClick={openEditModal}>{NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS[path]}</Button>
-                    )}
+                    {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                 </div>
                 <AKField name={path} defaultValue={data}>
                     {({fieldProps, error}) => <></>}
                 </AKField>
-                {Object.keys(groupedData).length ? renderFields() : <div>{NEXUS_ARRAY_WITH_TABS_NO_RECORDS[path]}</div>}
+                {Object.keys(groupedData).length ? renderFields() : <div>{`No ${name} Exists`}</div>}
             </div>
         </div>
     );
