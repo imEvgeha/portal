@@ -5,12 +5,12 @@ import {AgGridReact} from 'ag-grid-react';
 import {Link} from 'react-router-dom';
 import {historyService} from '../../service/HistoryService';
 import {advancedHistorySearchHelper} from '../../ingest-history/AdvancedHistorySearchHelper';
-import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
+import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
 import IngestReport from './components/IngestReport';
 import Constants from './Constants';
 import './DashboardLatestAvailsCard.scss';
-import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
-import {ISODateToView} from '../../../../../../util/date-time/DateTimeUtils';
+import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {REFRESH_INTERVAL, PAGE_SIZE} = Constants;

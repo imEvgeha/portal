@@ -5,14 +5,17 @@ import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
+import {
+    defineButtonColumn,
+    defineColumn,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
-import {GRID_EVENTS} from '../../../../../ui/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '../../../../../ui/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
-import {defineButtonColumn, defineColumn} from '../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import withColumnsResizing from '../../../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
 import usePrevious from '../../../../../util/hooks/usePrevious';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';

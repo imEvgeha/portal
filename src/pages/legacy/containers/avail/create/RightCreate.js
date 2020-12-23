@@ -1,5 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+    SUCCESS_TITLE,
+    SUCCESS_ICON,
+    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {connect} from 'react-redux';
 import {Button, Input, Label} from 'reactstrap';
 import {AvField, AvForm} from 'availity-reactstrap-validation';
@@ -11,27 +18,20 @@ import {blockUI} from '../../../stores/actions/index';
 import {profileService} from '../service/ProfileService';
 import {INVALID_DATE} from '../../../constants/messages';
 import {rightsService} from '../service/RightsService';
-import {safeTrim, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import withToasts from '../../../../../ui/toast/hoc/withToasts';
-import {
-    SUCCESS_TITLE,
-    SUCCESS_ICON,
-    CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
-} from '../../../../../ui/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import RightsURL from '../util/RightsURL';
-import {can, cannot} from '../../../../../ability';
+import {can, cannot} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {oneOfValidation, rangeValidation} from '../../../../../util/Validation';
 import RightPriceForm from '../../../components/form/RightPriceForm';
 import RightTerritoryForm from '../../../components/form/RightTerritoryForm';
 import RightAudioLanguageForm from '../../../components/form/RightAudioLanguageForm';
-import NexusDateTimePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
-import NexusDatePicker from '../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDateTimePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import PriceField from '../components/PriceField';
 import TerritoryField from '../components/TerritoryField';
 import AudioLanguageField from '../components/AudioLanguageField';
 import {AddButton} from '../custom-form-components/CustomFormComponents';
 import RightsClashingModal from '../clashing-modal/RightsClashingModal';
-import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {PLATFORM_INFORM_MSG} from '../details/RightConstants';
 import {handleMatchingRightsAction} from '../availActions';
 import {createAliasValue} from '../util/ProcessSelectOptions';

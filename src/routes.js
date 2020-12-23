@@ -1,7 +1,7 @@
 import React from 'react';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {get} from 'lodash';
 import {start} from 'single-spa';
-import {canRender} from './ability';
 import assetManagementRoutes from './pages/asset-management/routes';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
@@ -30,7 +30,9 @@ const Settings = React.lazy(() =>
     import(/* webpackPrefetch: true, webpackChunkName: "Settings" */ './pages/legacy/containers/settings/Settings')
 );
 const Unauthorized = React.lazy(() =>
-    import(/* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ './pages/fallback/Unauthorized')
+    import(
+        /* webpackPrefetch: true, webpackChunkName: "ContactProfile" */ '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/Unauthorized'
+    )
 );
 
 // TODO: on relevant page refactoring remove in to corresponding page folder

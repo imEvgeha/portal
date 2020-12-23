@@ -1,4 +1,4 @@
-import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
 
 export const planTerritoriesColumn = {
     headerName: 'Plan Territories',

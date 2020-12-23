@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
-import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
-import withColumnsResizing from '../../../ui/elements/nexus-grid/hoc/withColumnsResizing';
-import withEditableColumns from '../../../ui/elements/nexus-grid/hoc/withEditableColumns';
-import withSideBar from '../../../ui/elements/nexus-grid/hoc/withSideBar';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
     planTerritoriesColumn,

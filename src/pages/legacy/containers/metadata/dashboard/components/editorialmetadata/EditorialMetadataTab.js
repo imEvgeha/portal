@@ -3,7 +3,11 @@ import {Col, Row, ListGroup, Card, CardHeader, CardBody} from 'reactstrap';
 import PropTypes from 'prop-types';
 import '../territorymetadata/MetadataTerritoryTab.scss';
 import {EPISODE, SEASON} from '../../../../../constants/metadata/contentType';
-import {getFilteredCastList, getFilteredCrewList, getFormatTypeName} from '../../../../../constants/metadata/configAPI';
+import {
+    getFilteredCastList,
+    getFilteredCrewList,
+    getFormatTypeName,
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {CHARACTER_NAME} from '../../../../../constants/metadata/constant-variables';
 import PersonListReadOnly from '../coretitlemetadata/PersonListReadOnly';
 import './EditorialMetadata.scss';

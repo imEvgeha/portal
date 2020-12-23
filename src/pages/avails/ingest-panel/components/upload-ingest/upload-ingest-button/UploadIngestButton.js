@@ -1,9 +1,9 @@
 import React, {useCallback, useContext, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
+import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import config from 'react-global-configuration';
-import IconButton from '../../../../../../ui/atlaskit/icon-button/IconButton';
-import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
 import InputForm from '../InputForm/InputForm';
 import './UploadIngestButton.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {canRender} from '../../ability';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 const MetadataDashboardContainer = React.lazy(() =>
     import(

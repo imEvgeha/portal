@@ -4,7 +4,7 @@ import {Row, Col, Container} from 'reactstrap';
 import moment from 'moment';
 import {useIntl} from 'react-intl';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
-import {getDateFormatBasedOnLocale, parseSimulcast} from '../../../../../../../util/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, parseSimulcast} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 
 const TerritoryMetadataTab = ({data, getLanguageByCode}) => {
     const {

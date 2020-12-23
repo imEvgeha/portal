@@ -3342,10 +3342,19 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-styles/-/portal-styles-1.0.0.tgz#dbc7e348faafcb8fe5da7c4bc28d2ecea8f0e330"
   integrity sha512-s5h87pi66h+4ILLxrdRxj14XSKkPtc+WBb6gT0VrEY8ZIsM893Lik9p7NsmwrZQApIz7xawPRmXLiFFGFMYKDw==
 
-"@vubiquity-nexus/portal-utils@^1.0.0":
-  version "1.0.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-utils/-/portal-utils-1.0.0.tgz#f9cd03224d9658c00103573ab979f3d7f6f3528e"
-  integrity sha512-u7xLeTzNcFkPdWjpxiTGTAyzJm88mC9dwQjoAx4OO9kiKsuSsCh21UVAcc4m5PVXFG/ddoFALhVztVmcD3N2Mg==
+"@vubiquity-nexus/portal-ui@1.0.14":
+  version "1.0.14"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-ui/-/portal-ui-1.0.14.tgz#97aa1386e8f40dd48531e208f2dbc2aca366a3b0"
+  integrity sha512-dbj8rkGmpEsO81BD0YHncrsM3fwFbOgFGYNXqJzFOxrFyrXcavTILQBwq1M7vrjVSoe8mBiI1rzaej2BJ31yOA==
+  dependencies:
+    re-resizable "^6.4.0"
+    react-json-view "^1.19.1"
+    react-xml-viewer "^1.0.3"
+
+"@vubiquity-nexus/portal-utils@^1.0.3":
+  version "1.0.3"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-utils/-/portal-utils-1.0.3.tgz#48a0d5cf5c51ac8abb807c7174a4480137f44953"
+  integrity sha512-nzPY36OLsPZfj/KeGQPkbQbZxMN+MI3UNghEnpGiIFjLJEGfVLve5AiRJDx27nFN30gkCIZYwVmpLQPJn1krcw==
 
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
@@ -19726,9 +19735,9 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
     strip-json-comments "~2.0.1"
 
 re-resizable@^6.4.0:
-  version "6.4.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/re-resizable/-/re-resizable-6.4.0.tgz#4c862f021a913ec519bb053c34af45559e8c1b26"
-  integrity sha512-E8WOtM8RfcGv4kOdasdR10jw8IU45j5jVift/rSA6AZMnaBRxJdt6YAkPHFv/04vsMNNvNu3G8vlyNOsVwqPpA==
+  version "6.9.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/re-resizable/-/re-resizable-6.9.0.tgz#9c3059b389ced6ade602234cc5bb1e12d231cd47"
+  integrity sha512-3cUDG81ylyqI0Pdgle/RHwwRYq0ORZzsUaySOCO8IbEtNyaRtrIHYm/jMQ5pjcNiKCxR3vsSymIQZHwJq4gg2Q==
   dependencies:
     fast-memoize "^2.5.1"
 
@@ -20676,9 +20685,9 @@ react-x-editable@0.0.10-beta:
     react-css-modules "^4.3.0"
 
 react-xml-viewer@^1.0.3:
-  version "1.0.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-xml-viewer/-/react-xml-viewer-1.0.3.tgz#435b8c8f8431d0be358352565dd7c9156814d729"
-  integrity sha512-5wRkmG7ad5Vl7NuDXKxg2EiBl60LcabWxLrPUM/1GU8oFEvA1fyDe47A4tz6Hjgxut3G1CrRvAhMLVXd5VDF5w==
+  version "1.1.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-xml-viewer/-/react-xml-viewer-1.1.0.tgz#7c33380ae028e3a5125ea546a7f00f00a76965e1"
+  integrity sha512-L8kcNv1y0j1XD7muqcqMAIXJfFrFaMsfNzjymAeLb9GQjkwp0eM+xqQviCP8Vn+PqMzl3l4kIu+JvgX7GOVbjQ==
   dependencies:
     xml-js "^1.6.11"
 

@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
+import {ERROR_ICON, ERROR_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast, removeToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {store} from '../../index';
 import {errorModal} from '../../pages/legacy/components/modal/ErrorModal';
-import {ERROR_ICON, ERROR_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
-import {addToast, removeToast} from '../../ui/toast/toastActions';
 
 /*
     Passing errorToasts in param:
