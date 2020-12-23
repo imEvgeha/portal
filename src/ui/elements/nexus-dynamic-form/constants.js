@@ -39,6 +39,9 @@ export const NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS = {
     ratings: 'ratings',
 };
 
+export const MASTER_EMET_MESSAGE =
+    'You are about to edit Master Editorial Record. All linked records will be updated accordingly.';
+
 // todo: remove below
 export const TABS_MAPPINGS = [
     {tabName: 'Basic Info and Territory', id: 'Basic Info'},
