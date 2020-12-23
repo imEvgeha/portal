@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm} from '@atlaskit/form';
 import classnames from 'classnames';
-import {merge} from 'lodash';
+import {merge, isObject, isEmpty, isArray} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
@@ -81,11 +81,27 @@ const NexusDynamicForm = ({
         return areValid;
     };
 
+    const flattendObj = {};
+    const flattenObject = (obj, keyName) => {
+        obj &&
+            Object.keys(obj).forEach(key => {
+                const newKeyName = `${keyName}.`;
+                const newKey = `${keyName ? newKeyName : ''}${key}`;
+                if (isObject(obj[key]) && !isEmpty(obj[key]) && !isArray(obj[key])) {
+                    // calling the function again
+                    flattenObject(obj[key], newKey);
+                } else {
+                    flattendObj[newKey] = obj[key];
+                }
+            });
+    };
+
     const handleOnSubmit = (values, initialData) => {
         if (validDateRange(values)) {
             setView(VIEWS.VIEW);
             const properValues = getProperValues(fields, values);
-            onSubmit(merge({}, initialData, properValues));
+            flattenObject(initialData);
+            onSubmit(merge({}, flattendObj, properValues));
         }
     };
 

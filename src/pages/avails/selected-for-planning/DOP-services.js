@@ -108,7 +108,7 @@ const prepareFilters = (payload, externalFilter) => {
                     valueDataType: 'String',
                     operator: 'contain',
                     logicalAnd: true,
-                    value,
+                    value: key === 'licenseType' ? value.toLowerCase() : value,
                 },
             ];
         }
