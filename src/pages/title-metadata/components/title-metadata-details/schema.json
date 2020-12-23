@@ -229,7 +229,15 @@
                                     "name": "Format",
                                     "path": "format",
                                     "type": "select",
-                                    "isReadOnlyInEdit": true
+                                    "isReadOnlyInEdit": true,
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "readOnly",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ]
                                 },
                                 "editorial.metadataStatus": {
                                     "name": "Metadata Status",
@@ -254,6 +262,14 @@
                                     "type": "select",
                                     "path": "service",
                                     "isReadOnlyInEdit": true,
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "readOnly",
+                                            "field": "editorial.hasGeneratedChildren",
+                                            "value": true
+                                        }
+                                    ],
                                     "optionsConfig": {
                                         "options": [
                                             {
