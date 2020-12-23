@@ -21,18 +21,6 @@ export const INCORRECT_DURATION = 'INCORRECT DURATION FORMAT: SEE TOOLTIP';
 
 export const FIELDS_WITHOUT_LABEL = ['castCrew', 'licensors'];
 
-export const NEXUS_ARRAY_WITH_TABS_ADD_BTN_LABELS = {
-    editorialMetadata: '+ Add EMET Record',
-    territorialMetadata: '+ Add TMET Record',
-    ratings: '+ Add Ratings',
-};
-
-export const NEXUS_ARRAY_WITH_TABS_NO_RECORDS = {
-    editorialMetadata: 'No Editorial Metadata Exists',
-    territorialMetadata: 'No Territorial Metadata Exists',
-    ratings: 'No Ratings Exists',
-};
-
 export const NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS = {
     editorialMetadata: 'editorial',
     territorialMetadata: 'territorial',
