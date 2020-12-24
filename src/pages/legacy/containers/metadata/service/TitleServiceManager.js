@@ -1,8 +1,8 @@
+import {EXCLUDED_INITIAL_FILTER_VALUES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {isEmpty} from 'lodash';
 import {store} from '../../../../../index';
 import {resultPageLoading, resultPageUpdate, searchFormSetSearchCriteria} from '../../../stores/actions/metadata/index';
 import {titleService} from './TitleService';
-import {EXCLUDED_INITIAL_FILTER_VALUES} from '../../../../../ui/elements/nexus-grid/constants';
 
 export const titleServiceManager = {
     //called by other systems, saves search criteria and updates data in redux which acts as a trigger for other elements

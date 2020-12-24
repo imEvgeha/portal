@@ -4,7 +4,7 @@ import {updateSelectedTerritoriesTab} from '../../../../stores/actions/DOP';
 import {connect} from 'react-redux';
 import {ALL_RIGHTS, INCOMING, PENDING_SELECTION, SELECTED} from '../../../../constants/DOP/selectedTab';
 import {rightServiceManager} from '../../../../containers/avail/service/RightServiceManager';
-import {SelectRightsTab, TabContainer} from '../../../../../../ui/elements/nexus-table-tab/TableTab';
+import {SelectRightsTab, TabContainer} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-tab/TableTab';
 
 const Tabs = ({selectedTerritoriesTab, updateFilterSelectedTerritories, promotedRightsCount, tabFilter}) => {
     const [allRightCount, setAllRightCount] = useState();

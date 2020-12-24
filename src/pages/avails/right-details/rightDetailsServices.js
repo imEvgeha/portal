@@ -1,4 +1,3 @@
-import config from 'react-global-configuration';
 import {
     ACTOR,
     CAST,
@@ -9,7 +8,8 @@ import {
     AWARD,
     RECORDING_ARTIST,
     VOICE_TALENT,
-} from '../../../ui/elements/nexus-persons-list/constants';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
+import config from 'react-global-configuration';
 import {nexusFetch} from '../../../util/http-client/index';
 
 const createMultiCastPersonTypePath = () => {

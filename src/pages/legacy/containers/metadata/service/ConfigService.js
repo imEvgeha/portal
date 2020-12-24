@@ -11,7 +11,7 @@ import {
     AWARD,
     RECORDING_ARTIST,
     VOICE_TALENT,
-} from '../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getConfigApiValues} from '../../../common/CommonConfigService';
 import {nexusFetch} from '../../../../../util/http-client';
 

@@ -6,7 +6,7 @@ import {AvField} from 'availity-reactstrap-validation';
 import Select from 'react-select';
 import {configFields} from '../../../../service/ConfigService';
 import {BBFC_UK, MIDDLE_EAST} from '../../../../../../constants/metadata/ratings';
-import {Can} from '../../../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 const mapStateToProps = state => {
     return {

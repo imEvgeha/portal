@@ -1,14 +1,25 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import PropTypes from 'prop-types';
+import SectionMessage from '@atlaskit/section-message';
+import SectionTab from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
 import {throttle} from 'lodash';
-import SectionTab from '../../../../ui/elements/nexus-dynamic-form/components/SectionTab/SectionTab';
+import {Link} from 'react-router-dom';
 import schema from '../schema.json';
 import RightDetailsHighlightedField from './RightDetailsHighlightedField';
 import RightDetailsShrinkedBottom from './RightDetailsShrinkedBottom';
 import RightDetailsTags from './RightDetailsTags';
 import RightDetailsTitle from './RightDetailsTitle';
-import {HIGHLIGHTED_FIELDS, SHRINKED_FIELDS, THROTTLE_TRAILING_MS} from '../constants';
+import {
+    HIGHLIGHTED_FIELDS,
+    SHRINKED_FIELDS,
+    THROTTLE_TRAILING_MS,
+    NoteError,
+    NoteMerged,
+    NotePending,
+    STATUS,
+} from '../constants';
 import './RightDetailsHeader.scss';
 
 const RightDetailsHeader = ({title, right, history, containerRef}) => {
@@ -90,6 +101,39 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 
     const onScrollThrottled = throttle(onScroll, THROTTLE_TRAILING_MS, {traling: true});
 
+    const getStatusNote = () => {
+        if (right) {
+            let note = {};
+            const {status} = right;
+            const [ERROR, MERGED, PENDING] = STATUS;
+            if (status === ERROR) {
+                note = NoteError;
+            } else if (status === MERGED) {
+                note = NoteMerged;
+            } else if (status === PENDING) {
+                note = NotePending;
+            }
+
+            return status === ERROR || status === MERGED || status === PENDING ? (
+                <div className="nexus-c-right-details-match">
+                    <SectionMessage appearance={note.noteStyle}>
+                        {status === 'Pending' ? (
+                            <Link
+                                to={URL.keepEmbedded(
+                                    `/avails/history/${right.availHistoryId}/right-matching/${right.id}`
+                                )}
+                            >
+                                {note.note}
+                            </Link>
+                        ) : (
+                            <p>{note.note}</p>
+                        )}
+                    </SectionMessage>
+                </div>
+            ) : null;
+        }
+    };
+
     return (
         <div
             className={classnames('nexus-c-right-details-header', {
@@ -120,6 +164,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
                     return <RightDetailsShrinkedBottom key={idx} name={field.title} value={right[field.field]} />;
                 })}
             </div>
+            {getStatusNote()}
             <div className="nexus-c-right-details-header__tabs-wrapper">
                 <div className="nexus-c-right-details-header__tabs">{buildTabs()}</div>
             </div>

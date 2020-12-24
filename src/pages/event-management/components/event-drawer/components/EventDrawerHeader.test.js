@@ -1,10 +1,10 @@
 import React from 'react';
+import * as ability from '@vubiquity-nexus/portal-utils/lib/ability';
 import {shallow} from 'enzyme';
 import configureStore from 'redux-mock-store';
-import * as ability from '../../../../../ability';
 import {EventDrawerH} from './EventDrawerHeader';
 
-jest.mock('../../../../../ability');
+jest.mock('@vubiquity-nexus/portal-utils/lib/ability');
 
 describe('EventDrawerHeader', () => {
     let mockStore = null;

@@ -8,6 +8,11 @@ import Flag, {FlagGroup} from '@atlaskit/flag';
 import {colors} from '@atlaskit/theme';
 import Tick from '@atlaskit/icon/glyph/check-circle';
 import Error from '@atlaskit/icon/glyph/error';
+import {
+    SUCCESS_ICON,
+    WARNING_ICON,
+    ERROR_ICON,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import './TitleEdit.scss';
 import TitleReadOnlyMode from './TitleReadOnlyMode';
 import TitleEditMode from './TitleEditMode';
@@ -23,13 +28,12 @@ import {
 } from '../../../../constants/metadata/metadataComponent';
 import {configService} from '../../service/ConfigService';
 import {COUNTRY} from '../../../../constants/metadata/constant-variables';
-import {Can} from '../../../../../../ability';
-import {CAST, getFilteredCastList, getFilteredCrewList} from '../../../../constants/metadata/configAPI';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
+import {CAST, getFilteredCastList, getFilteredCrewList} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {getRepositoryName} from '../../../../../avails/utils';
 import TitleSystems from '../../../../constants/metadata/systems';
 import PublishVzMovida from './publish/PublishVzMovida';
-import withToasts from '../../../../../../ui/toast/hoc/withToasts';
-import {SUCCESS_ICON, WARNING_ICON, ERROR_ICON} from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {isNexusTitle} from './utils/utils';
 import {publisherService} from '../../service/PublisherService';
 import {SYNC} from './publish/PublishConstants';
@@ -995,13 +999,14 @@ class TitleEdit extends Component {
         });
     };
 
-    handleUpdatingEditorialMetadataStatus = value => {
-        const updatedEditorialMetadata = {
-            ...this.state.updatedEditorialMetadata,
+    handleUpdatingEditorialMetadataStatus = (value, data) => {
+        const newOne = this.state.updatedEditorialMetadata.filter(el => el.id !== data.id);
+        newOne.push({
+            ...data,
             metadataStatus: value.value,
-        };
+        });
         this.setState({
-            updatedEditorialMetadata: updatedEditorialMetadata,
+            updatedEditorialMetadata: newOne || [],
         });
     };
 

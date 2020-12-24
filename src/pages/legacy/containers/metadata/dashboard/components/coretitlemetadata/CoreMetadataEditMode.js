@@ -13,7 +13,7 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {
     CREW_LIST_LABEL,
     CAST_LIST_LABEL,
@@ -28,7 +28,7 @@ import {
 import TitleSystems from '../../../../../constants/metadata/systems';
 import Rating from './rating/Rating';
 import PersonList from './PersonList';
-import NexusTagsContainer from '../../../../../../../ui/elements/nexus-tags-container/NexusTagsContainer';
+import NexusTagsContainer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tags-container/NexusTagsContainer';
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {loadOptionsPerson} from '../utils/utils';
