@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import {NexusGrid} from '../../../ui/elements';
-import {GRID_EVENTS} from '../../../ui/elements/nexus-grid/constants';
+import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
     defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
-} from '../../../ui/elements/nexus-grid/elements/columnDefinitions';
-import createValueFormatter from '../../../ui/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import createValueFormatter from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/value-formatter/createValueFormatter';
+import classNames from 'classnames';
+import {NexusGrid} from '../../../ui/elements';
 import {getRepositoryCell} from '../utils';
 import mappings from './MatchedCombinedTitlesTableMappings.json';
 import './MatchedCombinedTitlesTable.scss';

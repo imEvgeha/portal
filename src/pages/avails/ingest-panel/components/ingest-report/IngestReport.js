@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import PropTypes from 'prop-types';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import classnames from 'classnames';
-import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import RightsURL from '../../../../legacy/containers/avail/util/RightsURL';
 import Constants from '../../constants';
 import './IngestReport.scss';

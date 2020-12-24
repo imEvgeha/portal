@@ -1,15 +1,15 @@
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {push, goBack} from 'connected-react-router';
-import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {
     CREATE_NEW_RIGHT_SUCCESS_MESSAGE,
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
-} from '../../../ui/elements/nexus-toast-notification/constants';
-import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '../../../ui/toast/constants';
-import {ADD_TOAST} from '../../../ui/toast/toastActionTypes';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {SAVE_COMBINED_RIGHT_SUCCESS_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {push, goBack} from 'connected-react-router';
+import {all, call, fork, put, select, take, takeEvery, takeLatest} from 'redux-saga/effects';
 import {SET_LOCALE} from '../../legacy/constants/action-types';
 import {FETCH_AVAIL_MAPPING, STORE_AVAIL_MAPPING} from '../../legacy/containers/avail/availActionTypes';
 import {NULL_TO_ARRAY, NULL_TO_OBJECT} from '../../legacy/containers/avail/service/Constants';

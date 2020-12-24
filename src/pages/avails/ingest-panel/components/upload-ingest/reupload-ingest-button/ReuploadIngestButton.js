@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import UploadIcon from '@vubiquity-nexus/portal-assets/action-upload.svg';
-import {NexusModalContext} from '../../../../../../ui/elements/nexus-modal/NexusModal';
-import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import InputForm from '../InputForm/InputForm';
 
 const TITLE = 'Avail Ingest';

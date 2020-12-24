@@ -1,6 +1,6 @@
 import Constants from './Constants';
 import {get, isEqual} from 'lodash';
-import {ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {

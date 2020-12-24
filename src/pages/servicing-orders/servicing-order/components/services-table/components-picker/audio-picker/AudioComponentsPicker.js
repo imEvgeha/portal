@@ -131,10 +131,10 @@ const AudioComponentsPicker = ({data, closeModal, saveComponentData, index}) => 
     const flattenComponents = useMemo(() => flattenDeep(Object.values(components)), [components]);
 
     const isSummaryChanged =
-        differenceBy(flattenComponents, data.compSummary, 'componentID').length > 0 ||
+        differenceBy(flattenComponents, data.compSummary, 'amsComponentId').length > 0 ||
         flattenComponents.length !== data.compSummary.length;
 
-    const selectedVsSummaryDiff = differenceBy(selectedRows, flattenComponents, 'componentID').length > 0;
+    const selectedVsSummaryDiff = differenceBy(selectedRows, flattenComponents, 'amsComponentId').length > 0;
 
     useEffect(() => {
         setLanguage(languageOptions[0]);

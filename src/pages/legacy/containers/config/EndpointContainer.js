@@ -10,7 +10,7 @@ import {INPUT_TIMEOUT} from '../../constants/common-ui';
 import {configService} from './service/ConfigService';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import CreateEditConfigForm from './CreateEditConfigForm';
-import {Can, can} from '../../../../ability';
+import {Can, can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import './ConfigUI.scss';
 
 const DataContainer = styled.div`

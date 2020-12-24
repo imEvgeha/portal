@@ -21,10 +21,10 @@ import {titleSearchHelper} from '../../TitleSearchHelper';
 import {EPISODE, SEASON, SERIES, toPrettyContentTypeIfExist} from '../../../../../constants/metadata/contentType';
 import {titleService} from '../../../service/TitleService';
 import {formatNumberTwoDigits} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {defineColumn} from '../../../../../../../ui/elements/nexus-grid/elements/columnDefinitions';
+import {defineColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import ActionCellRender from './cell/ActionCellRenderer';
 import {getRepositoryCell} from '../../../../../../avails/utils';
-import getContextMenuItems from '../../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const colDef = [];
 let registeredOnSelect = false;

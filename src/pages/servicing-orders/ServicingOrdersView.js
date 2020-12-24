@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useContext} from 'react';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import './ServicingOrdersView.scss';
-import {NexusModalContext} from '../../ui/elements/nexus-modal/NexusModal';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {exportServicingOrders} from './servicingOrdersService';
 import {

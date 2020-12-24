@@ -1,6 +1,6 @@
 import React from 'react';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {shallow} from 'enzyme';
-import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import ReuploadIngestButton from './ReuploadIngestButton';
 
 describe('ReuploadIngestButton', () => {

@@ -6,7 +6,7 @@ import {AvField} from 'availity-reactstrap-validation'; // ?
 import {connect} from 'react-redux';
 import {configFields} from '../../../service/ConfigService';
 import {COUNTRY} from '../../../../../constants/metadata/constant-variables';
-import NexusDatePicker from '../../../../../../../ui/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
+import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 
 // TODO: Convert to functional component
 class TerritoryMetadataCreateTab extends Component {
