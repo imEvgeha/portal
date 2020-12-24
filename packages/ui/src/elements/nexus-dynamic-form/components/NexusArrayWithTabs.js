@@ -23,6 +23,7 @@ const NexusArrayWithTabs = ({
     subTabs,
     path,
     name,
+    generateMsvIds,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -222,7 +223,7 @@ const NexusArrayWithTabs = ({
                                 {Object.keys(fields).map((key, index) => {
                                     return (
                                         <div key={index} className="nexus-c-nexus-array-with-tabs__field">
-                                            {renderNexusField(key, VIEWS.CREATE, getValues, {
+                                            {renderNexusField(key, VIEWS.CREATE, getValues, generateMsvIds, {
                                                 field: fields[key],
                                                 selectValues,
                                                 setFieldValue,
@@ -331,6 +332,7 @@ NexusArrayWithTabs.propTypes = {
     subTabs: PropTypes.array,
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
+    generateMsvIds: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -344,6 +346,7 @@ NexusArrayWithTabs.defaultProps = {
     isUpdate: false,
     tabs: [],
     subTabs: [],
+    generateMsvIds: undefined,
 };
 
 export default NexusArrayWithTabs;
