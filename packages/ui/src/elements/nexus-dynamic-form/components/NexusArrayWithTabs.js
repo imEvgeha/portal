@@ -42,12 +42,15 @@ const NexusArrayWithTabs = ({
     const groupBy = values => {
         const keys = tabs;
         if (keys.length === 0) return {};
-        return values.reduce((acc, obj) => {
-            const prop = keys.length === 1 ? obj[keys[0]] : `${obj[keys[0]]} ${obj[keys[1]]}`;
-            acc[prop] = acc[prop] || [];
-            acc[prop].push(obj);
-            return acc;
-        }, {});
+        if (Array.isArray(values)) {
+            return values.reduce((acc, obj) => {
+                const prop = keys.length === 1 ? obj[keys[0]] : `${obj[keys[0]]} ${obj[keys[1]]}`;
+                acc[prop] = acc[prop] || [];
+                acc[prop].push(obj);
+                return acc;
+            }, {});
+        }
+        return {};
     };
 
     const getCurrentFormData = () => {
