@@ -1,7 +1,7 @@
 import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import config from 'react-global-configuration';
 import {registerApplication} from 'single-spa';
-import {can} from './ability';
 import {nexusFetch} from './util/http-client';
 
 export const defaultConfiguration = {

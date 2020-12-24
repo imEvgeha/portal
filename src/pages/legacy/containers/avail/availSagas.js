@@ -1,21 +1,21 @@
+import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {
+    EDIT_RIGHT_ERROR_TITLE,
+    CREATE_NEW_RIGHT_ERROR_TITLE,
+    ERROR_ICON,
+    RIGHT_ERROR_MSG_MERGED,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {call, put, all, take, fork, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './availActionTypes';
 import {profileService} from './service/ProfileService';
 import {configurationService} from './service/ConfigurationService';
 import {errorModal} from '../../components/modal/ErrorModal';
 import {processOptions} from './util/ProcessSelectOptions';
-import {MULTISELECT_SEARCHABLE_DATA_TYPES} from '../../../../ui/elements/nexus-grid/constants';
 import RightsURL from './util/RightsURL';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {
-    EDIT_RIGHT_ERROR_TITLE,
-    CREATE_NEW_RIGHT_ERROR_TITLE,
-    ERROR_ICON,
-    RIGHT_ERROR_MSG_MERGED,
-} from '../../../../ui/elements/nexus-toast-notification/constants';
 import React from 'react';
 import {BLOCK_UI} from '../../constants/action-types';
-import {ADD_TOAST} from '../../../../ui/toast/toastActionTypes';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {STORE_PENDING_RIGHT} from '../../../avails/right-matching/rightMatchingActionTypes';
 
 export function* fetchAvailMapping(requestMethod) {

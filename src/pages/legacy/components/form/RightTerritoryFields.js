@@ -7,7 +7,7 @@ import {ErrorMessage, Field} from '@atlaskit/form';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {useIntl} from 'react-intl';
 import Select from '@atlaskit/select/Select';
-import {getDateFormatBasedOnLocale, ISODateToView} from '../../../../util/date-time/DateTimeUtils';
+import {getDateFormatBasedOnLocale, ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import Textfield from '@atlaskit/textfield';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import './RightTerritoryFields.scss';

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
+import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
-import {ISODateToView} from '../../../../../util/date-time/DateTimeUtils';
 import './SyncPublish.scss';
 
 const SyncPublish = ({externalSystem, externalIds}) => {

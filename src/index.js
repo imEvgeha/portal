@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
+import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
+import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
+import Toast from '@vubiquity-nexus/portal-ui/lib/toast/Toast';
 import {LicenseManager} from 'ag-grid-enterprise';
 import {ConnectedRouter} from 'connected-react-router';
 import {createBrowserHistory} from 'history';
@@ -9,18 +12,15 @@ import {AppContainer} from 'react-hot-loader';
 import {Provider} from 'react-redux';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import AppProviders from './AppProviders';
 import Router from './Router';
 import {setEnvConfiguration, registerSingleSpaApps} from './config';
-import ErrorBoundary from './pages/fallback/ErrorBoundary';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore from './store';
 import {configurePersistor} from './store-persist-config';
-import NexusLayout from './ui/elements/nexus-layout/NexusLayout';
-import Toast from './ui/toast/Toast';
 import {initializeTracker} from './util/hoc/withTracker';
-import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import './styles/legacy/bootstrap.scss'; // TODO: remove
 import './styles/legacy/WeAre138.scss'; // TODO: lovely file name - remove
 import './styles/legacy/global.scss'; // TODO; refactor
@@ -86,7 +86,7 @@ if (module.hot) {
     module.hot.accept(
         [
             // TODO: we should enable AppProviders too
-            './ui/elements/nexus-layout/NexusLayout',
+            '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout',
             './Router',
             './routes',
             './saga',

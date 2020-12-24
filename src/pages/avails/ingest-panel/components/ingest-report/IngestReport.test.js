@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import React from 'react';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {shallow} from 'enzyme';
-import NexusTooltip from '../../../../../ui/elements/nexus-tooltip/NexusTooltip';
 import IngestReport from './IngestReport';
 
 describe('IngestReport', () => {

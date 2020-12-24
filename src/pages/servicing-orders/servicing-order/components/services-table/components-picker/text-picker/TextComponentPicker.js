@@ -85,11 +85,11 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     useEffect(() => {
         const componentID = get(
             componentArray.find(item => item.language === language.value && item.format === format.value),
-            'componentID',
+            'amsComponentId',
             ''
         );
         setComponentId(componentID);
-        const doesComponentExistInSummary = components.findIndex(item => item.componentID === componentID) !== -1;
+        const doesComponentExistInSummary = components.findIndex(item => item.amsComponentId === componentID) !== -1;
         setWarningText(doesComponentExistInSummary ? TEXT_COMP_EXISTS : '');
     }, [language, format, components]);
 
@@ -98,15 +98,15 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     }, [componentId]);
 
     const isSummaryChanged =
-        differenceBy(components, data.compSummary, 'componentID').length > 0 ||
+        differenceBy(components, data.compSummary, 'amsComponentId').length > 0 ||
         components.length !== data.compSummary.length;
 
     const saveComponentsLocally = () => {
-        setComponents([...components, {language: language.value, format: format.value, componentID: componentId}]);
+        setComponents([...components, {language: language.value, format: format.value, amsComponentId: componentId}]);
     };
 
     const removeComponent = compId => {
-        setComponents(prev => prev.filter(item => item.componentID !== compId));
+        setComponents(prev => prev.filter(item => item.amsComponentId !== compId));
     };
 
     const selectionData = {

@@ -3,7 +3,11 @@ import {FormGroup, Alert, Row, Col, ListGroup, Card, CardHeader, CardBody} from 
 import {get} from 'lodash';
 import Tag from '@atlaskit/tag';
 import PropTypes from 'prop-types';
-import {getFilteredCastList, getFilteredCrewList, getFormatTypeName} from '../../../../../constants/metadata/configAPI';
+import {
+    getFilteredCastList,
+    getFilteredCrewList,
+    getFormatTypeName,
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import TitleSystems from '../../../../../constants/metadata/systems';
 import Rating from './rating/Rating';
 import PersonListReadOnly from './PersonListReadOnly';

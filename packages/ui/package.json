@@ -1,0 +1,79 @@
+{
+    "name": "@vubiquity-nexus/portal-ui",
+    "version": "1.0.14",
+    "description": "Nexus Portal Common UI",
+    "author": "Vubiquity",
+    "license": "UNLICENSED",
+    "publishConfig": {
+        "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
+    },
+    "dependencies": {
+        "re-resizable": "^6.4.0",
+        "react-json-view": "^1.19.1",
+        "react-xml-viewer": "^1.0.3"
+    },
+    "peerDependencies": {
+        "@atlaskit/avatar": "^16.0.8",
+        "@atlaskit/blanket": "^10.0.14",
+        "@atlaskit/button": "^13.1.1",
+        "@atlaskit/checkbox": "^9.0.9",
+        "@atlaskit/datetime-picker": "^9.0.1",
+        "@atlaskit/dropdown-menu": "^8.1.1",
+        "@atlaskit/flag": "^12.3.2",
+        "@atlaskit/form": "8.1.4",
+        "@atlaskit/icon": "^19.0.1",
+        "@atlaskit/inline-edit": "^10.0.23",
+        "@atlaskit/lozenge": "^9.0.3",
+        "@atlaskit/modal-dialog": "^10.1.1",
+        "@atlaskit/navigation": "^35.1.12",
+        "@atlaskit/navigation-next": "^9.0.1",
+        "@atlaskit/page": "^11.0.5",
+        "@atlaskit/popup": "^1.0.0",
+        "@atlaskit/select": "^10.0.0",
+        "@atlaskit/spinner": "^12.1.6",
+        "@atlaskit/textarea": "^2.2.9",
+        "@atlaskit/theme": "^9.1.6",
+        "@atlaskit/tooltip": "^15.0.14",
+        "@vubiquity-nexus/portal-assets": "^1.x",
+        "@vubiquity-nexus/portal-styles": "1.x",
+        "@vubiquity-nexus/portal-utils": "1.x",
+        "ag-grid-enterprise": "^23.0.2",
+        "ag-grid-react": "^23.0.3",
+        "classnames": "^2.2.6",
+        "enzyme": "^3.11.0",
+        "enzyme-adapter-react-16": "^1.15.2",
+        "enzyme-to-json": "^3.4.4",
+        "file-saver": "^2.0.2",
+        "jest": "^25.1.0",
+        "jest-environment-jsdom": "^25.1.0",
+        "jest-react-hooks-shallow": "^1.4.1",
+        "lodash": "4.x",
+        "moment": "2.x",
+        "prop-types": "15.x",
+        "react": "16.x",
+        "react-beautiful-dnd": "^11.0.5",
+        "react-forms-processor": "0.0.43",
+        "react-forms-processor-atlaskit": "0.0.43",
+        "react-intl": "^3.3.2",
+        "react-redux": "^7.2.0",
+        "react-router-dom": "^4.3.1",
+        "react-uid": "^2.2.0",
+        "redux-mock-store": "^1.5.4",
+        "reselect": "^4.0.0",
+        "styled-components": "^3.2.6"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.1.0",
+        "gulp": "^4.0.2",
+        "gulp-rename": "^2.0.0"
+    },
+    "files": [
+        "lib/"
+    ],
+    "scripts": {
+        "prepublish": "babel src -d lib & gulp pipe-scss",
+        "postpublish": "rm -r lib",
+        "build": "babel src -d lib & gulp pipe-scss"
+    }
+}

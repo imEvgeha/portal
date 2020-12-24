@@ -10,7 +10,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import RepeatingFormField from './custom-types/Repeats';
 
 import RepeatingField from './custom-types/RepeatsPrimitives';
-import NexusDateTimePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 import {isObject, isObjectEmpty} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {getConfigApiValues} from '../../common/CommonConfigService';
 import {cache} from './EndpointContainer';
@@ -19,7 +19,7 @@ import DynamicObjectType from './custom-types/DynamicObjectType';
 import ObjectType from './custom-types/ObjectType';
 import ObjectKey from './custom-types/ObjectKey';
 import DelayedOptions from './custom-types/DelayedOptions';
-import {Can} from '../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {Field as AkField} from '@atlaskit/form';
 
 export default class CreateEditConfigForm extends React.Component {

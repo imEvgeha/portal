@@ -20,7 +20,7 @@ import {
     searchFormUpdateAdvancedHistorySearchCriteria,
 } from '../../../../stores/actions/avail/history';
 import {historyServiceManager} from '../HistoryServiceManager';
-import getContextMenuItems from '../../../../../../ui/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 
 const mapStateToProps = state => {
     return {

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import EmailIcon from '@atlaskit/icon/glyph/email';
 import UploadIcon from '@atlaskit/icon/glyph/upload';
+import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import moment from 'moment';
-import StatusTag from '../../../../../ui/elements/nexus-status-tag/StatusTag';
 import './IngestStatus.scss';
 
 const IngestStatus = ({date, status, ingestType}) => {

@@ -117,7 +117,7 @@ exports[`EventHeader should match snapshot 1`] = `
   </div>
   <div
     className="
-                    nexus-c-event-header__secondary-fields 
+                    nexus-c-event-header__secondary-fields
                     nexus-c-event-header__secondary-fields--is-hidden
                 "
   />

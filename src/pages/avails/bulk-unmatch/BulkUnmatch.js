@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SectionMessage from '@atlaskit/section-message';
+import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {connect} from 'react-redux';
-import NexusGrid from '../../../ui/elements/nexus-grid/NexusGrid';
 import {createRightMatchingColumnDefsSelector} from '../right-matching/rightMatchingSelectors';
 import {BULK_UNMATCH_WARNING} from './constants';
 import './BulkUnmatch.scss';

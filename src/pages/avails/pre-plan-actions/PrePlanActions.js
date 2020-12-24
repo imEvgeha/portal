@@ -1,16 +1,16 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
-import classNames from 'classnames';
-import {uniq, cloneDeep} from 'lodash';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,
     SUCCESS_TITLE,
     WARNING_ICON,
     WARNING_TITLE,
-} from '../../../ui/elements/nexus-toast-notification/constants';
-import withToasts from '../../../ui/toast/hoc/withToasts';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import classNames from 'classnames';
+import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';

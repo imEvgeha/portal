@@ -8,7 +8,7 @@ import RightsResultTable from '../../dashboard/components/RightsResultTable';
 import {profileService} from '../../service/ProfileService';
 import {historyService} from '../../service/HistoryService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {Can} from '../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import ManualRightsEntryDOPConnector from './components/ManualRightsEntryDOPConnector';
 import ManualRightEntryTableTabs from './components/ManualRightsEntryTableTabs';
 import * as selectors from './manualRightEntrySelector';
@@ -18,12 +18,12 @@ import {
     updateManualRightsEntryColumns,
 } from '../../../../stores/actions/avail/manualRightEntry';
 import UploadIngestButton from '../../../../../avails/ingest-panel/components/upload-ingest/upload-ingest-button/UploadIngestButton';
-import NexusTooltip from '../../../../../../ui/elements/nexus-tooltip/NexusTooltip';
-import StatusIcon from '../../../../../../ui/elements/nexus-status-icon/StatusIcon';
-import StatusTag from '../../../../../../ui/elements/nexus-status-tag/StatusTag';
-import TableDownloadRights from '../../../../../../ui/elements/nexus-table-download-rights/TableDownload';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
+import StatusIcon from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-icon/StatusIcon';
+import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
+import TableDownloadRights from '../../../../containers/avail/nexus-table-download-rights/TableDownload';
 import IngestReport from '../../../../../avails/ingest-panel/components/ingest-report/IngestReport';
-import TableColumnCustomization from '../../../../../../ui/elements/nexus-table-column-customization/TableColumnCustomization';
+import TableColumnCustomization from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-column-customization/TableColumnCustomization';
 import {ATTACHMENTS_TAB, FATAL, tabFilter, VIEW_JSON} from '../../../../constants/avails/manualRightsEntryTabs';
 import attachmentsColumnDefs from '../../../../constants/avails/manualRightsEntryAttachmentsColumnDefs.json';
 import Constants from './Constants.js';

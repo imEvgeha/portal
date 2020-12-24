@@ -2,18 +2,18 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
-import {get} from 'lodash';
-import {connect} from 'react-redux';
-import {NexusModalContext} from '../../../ui/elements/nexus-modal/NexusModal';
+import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
     SUCCESS_TITLE,
     WARNING_ICON,
     SUCCESS_ICON,
-} from '../../../ui/elements/nexus-toast-notification/constants';
-import {toggleRefreshGridData} from '../../../ui/grid/gridActions';
-import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '../../../ui/toast/constants';
-import withToasts from '../../../ui/toast/hoc/withToasts';
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui/lib/toast/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {get} from 'lodash';
+import {connect} from 'react-redux';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
 import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';

@@ -1,6 +1,6 @@
 import React from 'react';
-import {canRender} from '../../ability';
-import {EVENT_MANAGEMENT} from '../../ui/elements/nexus-navigation/constants';
+import {EVENT_MANAGEMENT} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-navigation/constants';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 const EventManagementImport = import(/* webpackChunkName: "EventManagement" */ './EventManagement');
 const EventManagement = React.lazy(() => EventManagementImport);
