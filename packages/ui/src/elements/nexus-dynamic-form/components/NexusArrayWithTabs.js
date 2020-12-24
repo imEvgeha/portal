@@ -268,7 +268,7 @@ const NexusArrayWithTabs = ({
         const renderedFields = Object.keys(fields).map((key, index) => {
             return (
                 <div key={index} className="nexus-c-nexus-array-with-tabs__field">
-                    {renderNexusField(key, view, getValues, {
+                    {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: currentData || data[0],
                         field: fields[key],
                         selectValues,
