@@ -1,4 +1,5 @@
 import authReducer from '@vubiquity-nexus/portal-auth/authReducer';
+import uiReducer from '@vubiquity-nexus/portal-ui/lib/uiReducer';
 import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
 import assetManagementReducer from './pages/asset-management/assetManagementReducer';
@@ -27,7 +28,6 @@ import {
     dopTasksPersistConfig,
     titleMetadataPersistConfig,
 } from './store-persist-config';
-import uiReducer from './ui/uiReducer';
 
 const createRootReducer = routerHistory =>
     combineReducers({

@@ -1,8 +1,9 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {connect} from 'react-redux';
-import NexusDynamicForm from '../../../../ui/elements/nexus-dynamic-form/NexusDynamicForm';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
+import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
 import {
     getTitle,
@@ -12,6 +13,7 @@ import {
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
+import {generateMsvIds} from '../../titleMetadataServices';
 import {handleEditorialGenres} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
@@ -65,6 +67,7 @@ const TitleDetails = ({
         <div className="nexus-c-title-details">
             <TitleDetailsHeader title={title} history={history} containerRef={containerRef} externalIds={externalIds} />
             <NexusDynamicForm
+                searchPerson={searchPerson}
                 schema={schema}
                 initialData={extendTitleWithExternalIds()}
                 isEdit
@@ -72,6 +75,7 @@ const TitleDetails = ({
                 containerRef={containerRef}
                 selectValues={selectValues}
                 onSubmit={values => onSubmit(values)}
+                generateMsvIds={generateMsvIds}
             />
         </div>
     );

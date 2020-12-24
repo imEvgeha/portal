@@ -1,6 +1,6 @@
 import React from 'react';
-import {canRender} from '../../ability';
-import {SYNC_LOG} from '../../ui/elements/nexus-navigation/constants';
+import {SYNC_LOG} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-navigation/constants';
+import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 
 const SyncLogViewImport = import(/* webpackChunkName: "SyncLog" */ './SyncLogView');
 const SyncLogView = React.lazy(() => SyncLogViewImport);

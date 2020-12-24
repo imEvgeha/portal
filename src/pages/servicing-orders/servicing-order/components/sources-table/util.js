@@ -56,7 +56,7 @@ const getAudioComponents = (componentsObject, componentArray) => {
                     `audioComponents[${index}].components[${inx}].channelPosition`,
                     comp.channelPosition
                 );
-                set(componentsObject, `audioComponents[${index}].components[${inx}].amsComponentID`, comp.deteId);
+                set(componentsObject, `audioComponents[${index}].components[${inx}].amsComponentId`, comp.deteId);
                 set(
                     componentsObject,
                     `audioComponents[${index}].components[${inx}].sourceChannelNumber`,
@@ -91,7 +91,7 @@ const getSubtitleComponents = (componentsObject, componentArray) => {
                 item.component.language || item.component.content
             );
             set(componentsObject, `subtitleComponents[${index}].format`, item.component.textType);
-            set(componentsObject, `subtitleComponents[${index}].componentID`, item.component.deteId);
+            set(componentsObject, `subtitleComponents[${index}].amsComponentId`, item.component.deteId);
         });
 };
 
@@ -105,7 +105,7 @@ const getCaptionComponents = (componentsObject, componentArray) => {
                 item.component.language || item.component.content
             );
             set(componentsObject, `captionComponents[${index}].format`, item.component.textType);
-            set(componentsObject, `captionComponents[${index}].componentID`, item.component.deteId);
+            set(componentsObject, `captionComponents[${index}].amsComponentId`, item.component.deteId);
         });
 };
 

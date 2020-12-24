@@ -1,9 +1,9 @@
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {normalizeDataForStore, URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {push} from 'connected-react-router';
 import {get} from 'lodash';
 import {call, put, all, select, fork, take, takeEvery} from 'redux-saga/effects';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../ui/elements/nexus-toast-notification/constants';
-import {ADD_TOAST} from '../../ui/toast/toastActionTypes';
 import {titleService} from '../legacy/containers/metadata/service/TitleService';
 import * as actionTypes from './metadataActionTypes';
 import * as selectors from './metadataSelectors';

@@ -1,4 +1,5 @@
 import React from 'react';
+import {SUCCESS_ICON, SUCCESS_TITLE} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {
     ModalFooter,
     ModalHeader,
@@ -30,8 +31,7 @@ import {
     SPECIAL,
 } from '../../../../constants/metadata/contentType';
 import constants from '../../MetadataConstants';
-import withToasts from '../../../../../../ui/toast/hoc/withToasts';
-import {SUCCESS_ICON, SUCCESS_TITLE} from '../../../../../../ui/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import titleConstants from '../../../../../avails/title-matching/components/create-title-form/CreateTitleFormConstants';
 import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {publisherService} from '../../service/PublisherService';

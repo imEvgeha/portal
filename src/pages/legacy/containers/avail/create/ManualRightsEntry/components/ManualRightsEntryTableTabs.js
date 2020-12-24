@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import config from 'react-global-configuration';
-import {ManualRightEntryTab, TabContainer} from '../../../../../../../ui/elements/nexus-table-tab/TableTab';
+import {ManualRightEntryTab, TabContainer} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-table-tab/TableTab';
 import {
     FATAL,
     TOTAL_RIGHTS,

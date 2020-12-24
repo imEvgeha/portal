@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import './Localization.scss';
 import {setLocale} from '../../stores/actions/localization/setLocale';
 import {TextHeader} from '../../components/navigation/CustomNavigationElements';
-import NexusDateTimePicker from '../../../../ui/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
+import NexusDateTimePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-time-picker/NexusDateTimePicker';
 
 const Localization = ({changeLocale}) => {
     const getLocale = () => {

@@ -1,5 +1,5 @@
+import {getDateFormatBasedOnLocale} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import moment from 'moment';
-import {getDateFormatBasedOnLocale} from './date-time/DateTimeUtils';
 
 const datePattern = new RegExp('[0-9]{2}[\\/][0-9]{2}[\\/][0-9]{4}');
 

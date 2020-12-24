@@ -140,6 +140,11 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
     }
     externalFilter={Object {}}
     fixedFilter={Object {}}
+    frameworkComponents={
+      Object {
+        "tooltipCellRenderer": [Function],
+      }
+    }
     mapping={
       Array [
         Object {

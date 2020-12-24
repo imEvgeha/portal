@@ -4,7 +4,7 @@ import {
     getFilteredCastList,
     getFilteredCrewList,
     PERSONS_PER_REQUEST,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 import {searchPerson} from '../../../service/ConfigService';
 
 export const isNexusTitle = titleId => {

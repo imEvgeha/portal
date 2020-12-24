@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {SORT_DIRECTION} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {get} from 'lodash';
 import moment from 'moment';
-import {ISODateToView, sortByDateFn} from '../../../../../util/date-time/DateTimeUtils';
 import FulfillmentOrderPanel from '../fulfillment-order-panel/FulfillmentOrderPanel';
 import ServicingOrderItem from '../servicing-order-item/ServicingOrderItem';
 

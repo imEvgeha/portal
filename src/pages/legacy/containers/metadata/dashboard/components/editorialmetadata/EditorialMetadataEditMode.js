@@ -34,10 +34,10 @@ import {
     getFilteredCastList,
     getFormatTypeName,
     CREW,
-} from '../../../../../constants/metadata/configAPI';
+} from '@vubiquity-nexus/portal-utils/lib/castCrewUtils';
 
 import constants from '../../../MetadataConstants';
-import {Can} from '../../../../../../../ability';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {loadOptionsPerson} from '../utils/utils';
 
 const mapStateToProps = state => {
@@ -210,7 +210,7 @@ class EditorialMetadataEditMode extends Component {
             castCrew,
             shortTitleTemplate,
         } = updateData || this.props.data;
-
+        const metadataStatus = updateData ? updateData.metadataStatus : this.props.data.metadataStatus;
         this.raiseValidationError(isMaster, [
             shortTitleTemplate,
             title.title,
@@ -436,17 +436,17 @@ class EditorialMetadataEditMode extends Component {
                         <Select
                             name="metadataStatus"
                             value={
-                                this.props.data.metadataStatus
+                                metadataStatus
                                     ? {
-                                          label: this.props.data.metadataStatus,
-                                          value: this.props.data.metadataStatus,
+                                          label: metadataStatus,
+                                          value: metadataStatus,
                                       }
                                     : {
                                           label: 'pending',
                                           value: 'pending',
                                       }
                             }
-                            onChange={value => this.props.handleUpdatingMetadataStatus(value)}
+                            onChange={value => this.props.handleUpdatingMetadataStatus(value, this.props.data)}
                             placeholder="Select Metadata Status"
                             options={[
                                 {label: 'pending', value: 'pending'},
