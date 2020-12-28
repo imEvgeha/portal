@@ -87,4 +87,25 @@ export const titleService = {
             body: JSON.stringify(editorialMetadata),
         });
     },
+    updateEditorialMetadata: editedEditorialMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedEditorialMetadata),
+        });
+    },
+    addTerritoryMetadata: territoryMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(territoryMetadata),
+        });
+    },
+    updateTerritoryMetadata: editedTerritoryMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedTerritoryMetadata),
+        });
+    },
 };
