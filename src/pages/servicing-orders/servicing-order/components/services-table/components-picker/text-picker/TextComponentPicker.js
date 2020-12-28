@@ -139,17 +139,14 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
                             style={{height: '40px'}}
                         />
                     </div>
-                    <AddToService isEnabled={!warningText} onClick={saveComponentsLocally} type="text" />
+                    <span title={warningText}>
+                        <AddToService isEnabled={!warningText} onClick={saveComponentsLocally} type="text" />
+                    </span>
                 </div>
                 <TextSummaryPanel list={components} setComponents={setComponents} remove={removeComponent} />
             </div>
             <hr className="solid" />
-            <Footer
-                onCancel={closeModal}
-                onSave={saveComponentsInRow}
-                isSummaryChanged={isSummaryChanged}
-                warning={warningText}
-            />
+            <Footer onCancel={closeModal} onSave={saveComponentsInRow} isSummaryChanged={isSummaryChanged} />
         </div>
     );
 };
