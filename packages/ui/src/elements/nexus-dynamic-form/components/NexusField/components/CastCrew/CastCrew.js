@@ -6,9 +6,10 @@ import {
     CREW_CONFIG,
     CREW_LIST,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-persons-list/constants';
+import classnames from 'classnames';
 import './CastCrew.scss';
 
-const CastCrew = ({persons, isEdit, onChange, searchPerson}) => {
+const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) => {
     const [cast, setCast] = useState(
         persons
             .filter(person => !CREW_LIST.includes(person.personType))
@@ -57,8 +58,16 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson}) => {
     };
 
     return (
-        <div className="nexus-c-cast-crew">
-            <div className="nexus-c-cast-crew__card">
+        <div
+            className={classnames('nexus-c-cast-crew', {
+                'nexus-c-cast-crew--vertical': isVerticalLayout,
+            })}
+        >
+            <div
+                className={classnames('nexus-c-cast-crew__card', {
+                    'nexus-c-cast-crew__card--vertical': isVerticalLayout,
+                })}
+            >
                 <NexusPersonsList
                     searchPerson={searchPerson}
                     personsList={cast}
@@ -68,7 +77,11 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson}) => {
                     updateCastCrew={updateCastCrew}
                 />
             </div>
-            <div className="nexus-c-cast-crew__card">
+            <div
+                className={classnames('nexus-c-cast-crew__card', {
+                    'nexus-c-cast-crew__card--vertical-bottom': isVerticalLayout,
+                })}
+            >
                 <NexusPersonsList
                     searchPerson={searchPerson}
                     personsList={crew}
@@ -86,6 +99,7 @@ CastCrew.propTypes = {
     isEdit: PropTypes.bool,
     persons: PropTypes.array,
     onChange: PropTypes.func,
+    isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
 };
 
@@ -93,6 +107,7 @@ CastCrew.defaultProps = {
     isEdit: false,
     persons: [],
     onChange: () => null,
+    isVerticalLayout: false,
     searchPerson: undefined,
 };
 

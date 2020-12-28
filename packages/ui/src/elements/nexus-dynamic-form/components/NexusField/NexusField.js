@@ -51,6 +51,7 @@ const NexusField = ({
     config,
     isEditable,
     isGridLayout,
+    isVerticalLayout,
     searchPerson,
     generateMsvIds,
     ...props
@@ -169,10 +170,12 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        searchPerson={searchPerson}
                         {...fieldProps}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={true}
+                        isVerticalLayout={isVerticalLayout}
+                        searchPerson={searchPerson}
+                        {...fieldProps}
                     />
                 );
             case 'licensors':
@@ -225,9 +228,10 @@ const NexusField = ({
             case 'castCrew':
                 return (
                     <CastCrew
-                        searchPerson={searchPerson}
                         persons={fieldProps.value ? fieldProps.value : []}
                         isEdit={false}
+                        isVerticalLayout={isVerticalLayout}
+                        searchPerson={searchPerson}
                     />
                 );
             case 'licensors':
@@ -324,6 +328,7 @@ NexusField.propTypes = {
     config: PropTypes.array,
     isEditable: PropTypes.bool,
     isGridLayout: PropTypes.bool,
+    isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
 };
@@ -352,6 +357,7 @@ NexusField.defaultProps = {
     isReturningTime: true,
     config: [],
     isGridLayout: false,
+    isVerticalLayout: false,
     searchPerson: undefined,
     generateMsvIds: undefined,
 };

@@ -1,9 +1,24 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
 .nexus-c-cast-crew {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
+.nexus-c-cast-crew--vertical {
+    flex-direction: column;
+}
+
 .nexus-c-cast-crew__card {
     width: 47.5%;
+}
+
+.nexus-c-cast-crew__card--vertical {
+    width: 100%;
+}
+
+.nexus-c-cast-crew__card--vertical-bottom {
+    width: 100%;
+    @include margin(4, 0, 0, 0);
 }

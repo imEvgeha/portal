@@ -57,6 +57,8 @@ const TitleDetails = ({
             ...title,
             vzExternalIds,
             movidaExternalIds,
+            editorialMetadata,
+            territorialMetadata: territoryMetadata,
         };
     };
 

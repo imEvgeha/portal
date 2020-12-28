@@ -106,5 +106,9 @@
     {
         "field": "originalLanguage",
         "configEndpoint": "/languages"
+    },
+    {
+        "field": "locale",
+        "configEndpoint": "/countries"
     }
 ]

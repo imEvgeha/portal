@@ -128,20 +128,30 @@ const NexusDynamicForm = ({
                                     id={`tab-${index}`}
                                     className="nexus-c-dynamic-form__section-start"
                                 >
-                                    {sections.map(({title: sectionTitle = '', fields = {}, isGridLayout = false}) => (
-                                        <Fragment key={`section-${sectionTitle}`}>
-                                            <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                            {buildSection(fields, getValues, view, generateMsvIds, {
-                                                selectValues,
-                                                initialData,
-                                                setFieldValue,
-                                                update,
-                                                config: schema.config || [],
-                                                isGridLayout,
-                                                searchPerson,
-                                            })}
-                                        </Fragment>
-                                    ))}
+                                    {sections.map(
+                                        ({
+                                            title: sectionTitle = '',
+                                            fields = {},
+                                            isGridLayout = false,
+                                            tabs,
+                                            subTabs,
+                                        }) => (
+                                            <Fragment key={`section-${sectionTitle}`}>
+                                                <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
+                                                {buildSection(fields, getValues, view, generateMsvIds, {
+                                                    selectValues,
+                                                    initialData,
+                                                    setFieldValue,
+                                                    update,
+                                                    config: schema.config || [],
+                                                    isGridLayout,
+                                                    searchPerson,
+                                                    tabs,
+                                                    subTabs,
+                                                })}
+                                            </Fragment>
+                                        )
+                                    )}
                                 </div>
                             ))}
                         </div>

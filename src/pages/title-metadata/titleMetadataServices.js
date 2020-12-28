@@ -80,4 +80,11 @@ export const titleService = {
             method: 'post',
         });
     },
+    addEditorialMetadata: editorialMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(editorialMetadata),
+        });
+    },
 };

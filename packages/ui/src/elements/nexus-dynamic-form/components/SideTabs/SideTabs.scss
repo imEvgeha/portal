@@ -1,0 +1,51 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.nexus-c-side-tabs {
+    @include padding(8, 0, 0, 0);
+}
+
+.nexus-c-side-tabs__tab-container {
+    width: 100%;
+    > button {
+        width: 100%;
+        background-color: map-get($neutrals, N0);
+        &:hover {
+            background-color: map-get($neutrals, N30A);
+        }
+    }
+}
+
+.nexus-c-side-tabs__tab-container--active {
+    width: 100%;
+    > button {
+        width: 100%;
+        background-color: map-get($neutrals, N30A);
+        &:hover {
+            background-color: map-get($neutrals, N30A);
+        }
+    }
+}
+
+.nexus-c-side-tabs__subtab-container {
+    width: 100%;
+    display: none;
+    justify-content: flex-end;
+    > button {
+        width: 80%;
+        background-color: map-get($neutrals, N0);
+        &:hover {
+            background-color: map-get($neutrals, N30A);
+        }
+    }
+}
+
+.nexus-c-side-tabs__subtab-container--active {
+    > button {
+        background-color: map-get($neutrals, N30A);
+    }
+}
+
+.nexus-c-side-tabs__subtab-container--open {
+    display: flex;
+}
