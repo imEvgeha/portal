@@ -379,37 +379,79 @@
                                     "name": "Locale",
                                     "path": "locale",
                                     "type": "select",
+                                    "isRequired": true,
+                                    "isReadOnlyInEdit": true,
                                     "optionsConfig": {
                                         "defaultValuePath": "countryCode",
                                         "defaultLabelPath": "countryName"
                                     }
                                 },
+                                "territorial.metadataStatus": {
+                                    "name": "Metadata Status",
+                                    "type": "select",
+                                    "path": "metadataStatus",
+                                    "isRequired": true,
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "Pending",
+                                                "value": "Pending"
+                                            },
+                                            {
+                                                "label": "Complete",
+                                                "value": "Complete"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "territorial.releaseYear": {
+                                    "name": "Release Year",
+                                    "path": "releaseYear",
+                                    "type": "string",
+                                    "validation": [
+                                        {
+                                            "name": "isYear"
+                                        }
+                                    ]
+                                },
                                 "territorial.boxOffice": {
                                     "name": "Box Office",
                                     "path": "boxOffice",
-                                    "type": "string"
+                                    "type": "number"
+                                },
+                                "territorial.originalAirDate": {
+                                    "name": "Original Air Date",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "originalAirDate"
+                                },
+                                "territorial.homeVideoReleaseDate": {
+                                    "name": "Home Video Release Date",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "homeVideoReleaseDate"
+                                },
+                                "territorial.availAnnounceDate": {
+                                    "name": "Avail Announce Date",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "availAnnounceDate"
+                                },
+                                "territorial.theatricalReleaseDate": {
+                                    "name": "Theatrical Release Date",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "theatricalReleaseDate"
+                                },
+                                "territorial.estReleaseDate": {
+                                    "name": "Est Release Date",
+                                    "type": "datetime",
+                                    "dateType": "regionalMidnight",
+                                    "path": "estReleaseDate"
                                 }
                             }
                         }
                     }
-                }
-            ]
-        },
-        {
-            "title": "Rights",
-            "sections": [
-                {
-                    "title": "Rights",
-                    "fields": {}
-                }
-            ]
-        },
-        {
-            "title": "Sync Log",
-            "sections": [
-                {
-                    "title": "Sync Log",
-                    "fields": {}
                 }
             ]
         }
