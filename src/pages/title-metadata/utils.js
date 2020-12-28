@@ -1,3 +1,4 @@
+import {cloneDeep} from 'lodash';
 import {titleService} from './titleMetadataServices';
 import {NEXUS, VZ, MOVIDA} from './constants';
 
@@ -92,4 +93,19 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
             });
         });
     }
+};
+
+export const handleEditorialGenres = data => {
+    const newData = cloneDeep(data);
+    return newData.map(record => {
+        const {genres} = record;
+        if (genres) {
+            const formattedGenres = [];
+            genres.forEach(genre => {
+                formattedGenres.push(genre.genre);
+            });
+            record.genres = formattedGenres;
+        }
+        return record;
+    });
 };

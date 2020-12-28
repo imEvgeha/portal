@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField, FormFooter} from '@atlaskit/form';
 import {default as AKForm} from '@atlaskit/form/Form';
+import SectionMessage from '@atlaskit/section-message';
 import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from '../constants';
+import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MASTER_EMET_MESSAGE} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -297,6 +298,29 @@ const NexusArrayWithTabs = ({
         );
     };
 
+    const isMasterEditorialRecord = () => {
+        if (path === 'editorialMetadata' && view === VIEWS.EDIT) {
+            const current = currentData || data[0];
+            return current && get(current, 'hasGeneratedChildren');
+        }
+        return false;
+    };
+
+    const showRegenerateAutoDecoratedMetadata = () => {
+        if (path === 'editorialMetadata' && view === VIEWS.VIEW) {
+            const usEnData = get(groupedData, 'US en');
+            const hasGeneratedChildren = usEnData && usEnData.some(obj => obj.hasGeneratedChildren);
+            const current = currentData || data[0];
+            const isUsEn = current && get(current, 'locale') === 'US' && get(current, 'language') === 'en';
+            return isUsEn && hasGeneratedChildren;
+        }
+        return false;
+    };
+
+    const regenerateAutoDecoratedMetadata = () => {
+        // todo: write this function
+    };
+
     const setValueForEachField = () => {
         const current = currentData || data[0];
         Object.keys(fields).forEach(key => {
@@ -353,7 +377,19 @@ const NexusArrayWithTabs = ({
                         )}
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
+                    {showRegenerateAutoDecoratedMetadata() && (
+                        <Button appearance="primary" onClick={regenerateAutoDecoratedMetadata}>
+                            Regenerate Auto-Decorated Metadata
+                        </Button>
+                    )}
                 </div>
+                {isMasterEditorialRecord() && (
+                    <div className="nexus-c-nexus-array-with-tabs__master-emet">
+                        <SectionMessage>
+                            <p>{MASTER_EMET_MESSAGE}</p>
+                        </SectionMessage>
+                    </div>
+                )}
                 <AKField name={path} defaultValue={data}>
                     {({fieldProps, error}) => <></>}
                 </AKField>

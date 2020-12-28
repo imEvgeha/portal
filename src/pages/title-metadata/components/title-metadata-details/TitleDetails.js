@@ -14,6 +14,7 @@ import {
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds} from '../../titleMetadataServices';
+import {handleEditorialGenres} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -57,7 +58,7 @@ const TitleDetails = ({
             ...title,
             vzExternalIds,
             movidaExternalIds,
-            editorialMetadata,
+            editorialMetadata: handleEditorialGenres(editorialMetadata),
             territorialMetadata: territoryMetadata,
         };
     };
