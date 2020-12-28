@@ -110,5 +110,17 @@
     {
         "field": "locale",
         "configEndpoint": "/countries"
+    },
+    {
+        "field": "ratingSystem",
+        "configEndpoint": "/rating-systems"
+    },
+    {
+        "field": "rating",
+        "configEndpoint": "/ratings"
+    },
+    {
+        "field": "advisoriesCode",
+        "configEndpoint": "/advisories"
     }
 ]

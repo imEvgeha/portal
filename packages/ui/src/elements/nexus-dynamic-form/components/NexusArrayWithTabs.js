@@ -32,7 +32,7 @@ const NexusArrayWithTabs = ({
     const [isRemoved, setIsRemoved] = useState(false);
 
     useEffect(() => {
-        const groupedObj = groupBy(data);
+        const groupedObj = data ? groupBy(data) : {};
         setGroupedData(groupedObj);
     }, [data]);
 
@@ -56,22 +56,30 @@ const NexusArrayWithTabs = ({
 
     const getCurrentFormData = () => {
         const formData = getValues();
+        if (path === 'ratings') {
+            const currentRating = {};
+            Object.keys(fields).forEach(key => {
+                currentRating[key] = formData[key];
+            });
+            return handleValuesFormat(currentRating);
+        }
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
     const changeTabData = (oldSubTab, key, index) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
-            const current = currentData || data[0];
-            replaceRecordInGroupedData(currentFormData, current, oldSubTab);
+            const current = currentData || currentFormData;
+            replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
+        } else {
+            const newCurrentData = groupedData[key][index];
+            setCurrentData(newCurrentData);
         }
-        const newCurrentData = groupedData[key][index];
-        setCurrentData(newCurrentData);
     };
 
-    const replaceRecordInGroupedData = (currentFormData, current, subTabIndex) => {
+    const replaceRecordInGroupedData = (currentFormData, current, subTabIndex, indexTo, keyTo) => {
         if (subTabs.length) {
             let key = '';
             tabs.forEach(property => {
@@ -82,6 +90,15 @@ const NexusArrayWithTabs = ({
                 ...updatedArray[subTabIndex],
                 ...currentFormData,
             };
+
+            const updatedGroupedData = {...groupedData};
+            updatedGroupedData[key][subTabIndex] = {
+                ...updatedGroupedData[key][subTabIndex],
+                ...currentFormData,
+            };
+            const newCurrentData = updatedGroupedData[keyTo][indexTo];
+            setCurrentData(newCurrentData);
+
             setGroupedData(prevState => {
                 return {
                     ...prevState,
@@ -91,12 +108,22 @@ const NexusArrayWithTabs = ({
         } else {
             const [property] = tabs;
             const key = current[property];
+
+            const updatedGroupedData = {...groupedData};
+            updatedGroupedData[key][0] = {
+                ...updatedGroupedData[key][0],
+                ...currentFormData,
+            };
+            const newCurrentData = updatedGroupedData[keyTo][indexTo];
+            setCurrentData(newCurrentData);
+
             setGroupedData(prevGroupedData => {
+                const [oldData] = prevGroupedData[key];
                 return {
                     ...prevGroupedData,
                     [key]: [
                         {
-                            ...prevGroupedData[key][0],
+                            ...oldData,
                             ...currentFormData,
                         },
                     ],
@@ -197,19 +224,32 @@ const NexusArrayWithTabs = ({
                 obj.hasOwnProperty('value')
             ) {
                 values[key] = obj.value;
+            } else if (obj && typeof obj === 'object' && Array.isArray(obj)) {
+                obj.forEach((val, index) => {
+                    if (val.hasOwnProperty('label') && val.hasOwnProperty('value')) {
+                        obj[index] = val.value;
+                    }
+                });
             }
         });
         return values;
     };
 
     const handleModalSubmit = values => {
-        const properValues = handleValuesFormat(values[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]);
+        const properValues =
+            path === 'ratings'
+                ? handleValuesFormat(values)
+                : handleValuesFormat(values[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]);
         const groupedValues = groupBy([properValues]);
         const [key] = Object.keys(groupedValues);
         const updatedGroupedData = {...groupedData};
         updatedGroupedData[key] = updatedGroupedData[key] ? updatedGroupedData[key] : [];
         updatedGroupedData[key].push(properValues);
         setGroupedData(updatedGroupedData);
+
+        if (!currentData) {
+            setCurrentData(properValues);
+        }
 
         const newData = [...getValues()[path]];
         newData.push(properValues);
@@ -287,7 +327,8 @@ const NexusArrayWithTabs = ({
             const fieldPath = fields[key].path;
             let value = get(current, fieldPath);
             if (value === null) value = '';
-            setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
+            if (path === 'ratings') setFieldValue(fieldPath, value);
+            else setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
         });
     };
 
