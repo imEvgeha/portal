@@ -66,10 +66,23 @@ const NexusArrayWithTabs = ({
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
+    const checkIsUpdated = (values, currentData) => {
+        const isUpdated = Object.keys(values).some(key => {
+            return !!(
+                (get(values, key) && get(values, key) !== get(currentData, key)) ||
+                (get(currentData, key) && get(values, key) !== get(currentData, key))
+            );
+        });
+        if (isUpdated) {
+            values.isUpdated = true;
+        }
+    };
+
     const changeTabData = (oldSubTab, key, index) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
+            checkIsUpdated(currentFormData, current);
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
@@ -202,7 +215,10 @@ const NexusArrayWithTabs = ({
             });
             return isEqual;
         });
-        newData.splice(index, 1);
+        newData[index] = {
+            ...newData[index],
+            isDeleted: true,
+        };
         setFieldValue(path, newData);
     };
 
@@ -252,7 +268,10 @@ const NexusArrayWithTabs = ({
         }
 
         const newData = [...getValues()[path]];
-        newData.push(properValues);
+        newData.push({
+            ...properValues,
+            isCreated: true,
+        });
         setFieldValue(path, newData);
         closeModal();
     };

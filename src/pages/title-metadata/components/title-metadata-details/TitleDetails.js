@@ -14,7 +14,7 @@ import {
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds} from '../../titleMetadataServices';
-import {handleEditorialGenres, prepareValuesForTitleUpdate} from '../../utils';
+import {handleEditorialGenres, prepareValuesForTitleUpdate, updateTerritoryMetadata} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -48,9 +48,12 @@ const TitleDetails = ({
     }, []);
 
     const onSubmit = values => {
+        const {params} = match || {};
+        const {id} = params;
         let updatedValues = {...values};
         updatedValues = prepareValuesForTitleUpdate(updatedValues);
         updateTitle({...updatedValues, id: title.id});
+        updateTerritoryMetadata(values, id);
     };
 
     const extendTitleWithExternalIds = () => {

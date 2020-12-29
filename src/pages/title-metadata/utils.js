@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash';
+import {cloneDeep, get} from 'lodash';
 import {titleService} from './titleMetadataServices';
 import {NEXUS, VZ, MOVIDA, FIELDS_TO_REMOVE} from './constants';
 
@@ -123,4 +123,39 @@ export const prepareValuesForTitleUpdate = values => {
     });
     values.externalIds = newExternalIds;
     return values;
+};
+
+const formatTerritoryBody = (data, titleId) => {
+    const body = {};
+    Object.keys(data).forEach(key => {
+        if (data[key] === undefined) body[key] = null;
+        else body[key] = data[key];
+    });
+    body.territoryType = 'country';
+    if (titleId) body.parentId = titleId;
+    delete body.isUpdated;
+    delete body.isDeleted;
+    delete body.isCreated;
+    return body;
+};
+
+export const updateTerritoryMetadata = async (values, titleId) => {
+    const data = values.territorialMetadata || [];
+    try {
+        await Promise.all(
+            data.map(async tmet => {
+                if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                    const body = formatTerritoryBody(tmet);
+                    const response = await titleService.updateTerritoryMetadata(body);
+                    // todo: add toast
+                } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                    const body = formatTerritoryBody(tmet, titleId);
+                    const response = await titleService.addTerritoryMetadata(body);
+                    // todo: add toast
+                }
+            })
+        );
+    } catch (error) {
+        // todo: add toast
+    }
 };
