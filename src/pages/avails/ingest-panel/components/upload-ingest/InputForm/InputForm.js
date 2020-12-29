@@ -5,6 +5,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import {RadioGroup} from '@atlaskit/radio';
 import Select from '@atlaskit/select';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {get, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
 import constants from '../../../constants';
@@ -41,22 +42,27 @@ const InputForm = ({
     const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
-        {label: 'Use International Template', value: INTERNATIONAL, disabled: isStudio, testId: isStudio && 'disabled'},
+        {
+            label: 'Use International Template',
+            value: INTERNATIONAL,
+            disabled: URL.isLocalOrDev() ? false : isStudio,
+            testId: isStudio && 'disabled',
+        },
         {
             label: 'Use US Template',
             value: USMASTER,
-            disabled: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
+            disabled: URL.isLocalOrDev() ? false : !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
             testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled',
         },
         {
             label: 'Use Studio Template',
             value: STUDIO,
-            disabled: !isEmpty(ingestData) && !isStudio,
+            disabled: URL.isLocalOrDev() ? false : !isEmpty(ingestData) && !isStudio,
             testId: !isEmpty(ingestData) && !isStudio && 'disabled',
         },
     ];
 
-    const initialTemplate = templates.find(t => !t.disabled);
+    const initialTemplate = templates.find(t => t.testId !== 'disabled');
     const [template, setTemplate] = useState(initialTemplate.value);
 
     const getLicensor = template === STUDIO &&
@@ -222,7 +228,11 @@ const InputForm = ({
                         onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={(template !== STUDIO && !isShowingCatalogType) || ingestLicensor}
+                        isDisabled={
+                            URL.isLocalOrDev()
+                                ? false
+                                : (template !== STUDIO && !isShowingCatalogType) || ingestLicensor
+                        }
                         placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
@@ -234,7 +244,11 @@ const InputForm = ({
                         onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
+                        isDisabled={
+                            URL.isLocalOrDev()
+                                ? false
+                                : ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)
+                        }
                         placeholder="Select"
                         {...selectProps}
                     />
