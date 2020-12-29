@@ -14,7 +14,7 @@ import {
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds} from '../../titleMetadataServices';
-import {handleEditorialGenres} from '../../utils';
+import {handleEditorialGenres, prepareValuesForTitleUpdate} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -48,7 +48,9 @@ const TitleDetails = ({
     }, []);
 
     const onSubmit = values => {
-        updateTitle({...values, id: title.id});
+        let updatedValues = {...values};
+        updatedValues = prepareValuesForTitleUpdate(updatedValues);
+        updateTitle({...updatedValues, id: title.id});
     };
 
     const extendTitleWithExternalIds = () => {

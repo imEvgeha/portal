@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
 import {titleService} from './titleMetadataServices';
-import {NEXUS, VZ, MOVIDA} from './constants';
+import {NEXUS, VZ, MOVIDA, FIELDS_TO_REMOVE} from './constants';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
@@ -108,4 +108,19 @@ export const handleEditorialGenres = data => {
         }
         return record;
     });
+};
+
+export const prepareValuesForTitleUpdate = values => {
+    const newExternalIds = {};
+    Object.keys(values).forEach(key => {
+        if (key.includes('externalIds.')) {
+            const [external, prop] = key.split('.');
+            newExternalIds[prop] = values[key] || null;
+            delete values[key];
+        } else if (FIELDS_TO_REMOVE.includes(key)) {
+            delete values[key];
+        }
+    });
+    values.externalIds = newExternalIds;
+    return values;
 };
