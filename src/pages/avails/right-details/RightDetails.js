@@ -7,7 +7,7 @@ import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
-import schema from './schema.json';
+import schema from './schema2.json';
 
 import './RightDetails.scss';
 

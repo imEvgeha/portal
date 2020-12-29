@@ -47,9 +47,9 @@ export const getValidationError = (validationErrors, field) => {
     return error;
 };
 
-const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
+const checkArrayFieldDependencies = (formData, {name, value, subfield}) => {
     let retValue = false;
-    formData[field].map(obj => {
+    formData[name].map(obj => {
         if (obj[subfield] === value) {
             retValue = obj[subfield];
         }
@@ -58,7 +58,7 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFoundDependencies = (dependencies, formData, name = {}) => {
+export const checkFoundDependencies = (dependencies, formData) => {
     // if(name === 'temporaryPriceReduction')
     console.log('dependencies:', dependencies);
     return !!(
@@ -73,9 +73,30 @@ export const checkFoundDependencies = (dependencies, formData, name = {}) => {
         })
     );
 };
+const evaluateDependency = (dep, formData) => {
+    dep.fields.some(({name, value, subfield}) => {
+        let dependencyValue = get(formData, name);
+        if (Array.isArray(dependencyValue)) {
+            console.log(formData[name]);
+            dependencyValue = checkArrayFieldDependencies(formData, {name, value, subfield});
+        }
+        // if has value || its value equal to the provided value
+        return dependencyValue === value || (!!dependencyValue && value === 'any');
+    });
+};
+export const checkFoundDependencies2 = (dependencies, formData) => {
+    // if(name === 'temporaryPriceReduction')
+    console.log('dependencies:', dependencies);
+    return !!(
+        dependencies &&
+        dependencies.every(dep => {
+            evaluateDependency(dep, formData);
+        })
+    );
+};
 
 // eslint-disable-next-line max-params
-export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, name}) => {
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
@@ -83,8 +104,7 @@ export const checkFieldDependencies = (type, view, dependencies, {formData, conf
 
     const globalConfigResult = checkFoundDependencies(globalConfig, formData);
 
-    console.log('name: ', name);
-    const localConfigResult = checkFoundDependencies(foundDependencies, formData, name);
+    const localConfigResult = checkFoundDependencies2(foundDependencies, formData);
     return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
