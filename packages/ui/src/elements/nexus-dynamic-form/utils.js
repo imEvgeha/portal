@@ -58,7 +58,9 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFoundDependencies = (dependencies, formData) => {
+export const checkFoundDependencies = (dependencies, formData, name = {}) => {
+    // if(name === 'temporaryPriceReduction')
+    console.log('dependencies:', dependencies);
     return !!(
         dependencies &&
         dependencies.some(({field, value, subfield}) => {
@@ -72,14 +74,17 @@ export const checkFoundDependencies = (dependencies, formData) => {
     );
 };
 
-export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+// eslint-disable-next-line max-params
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, name}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
     const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
 
     const globalConfigResult = checkFoundDependencies(globalConfig, formData);
-    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+
+    console.log('name: ', name);
+    const localConfigResult = checkFoundDependencies(foundDependencies, formData, name);
     return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 

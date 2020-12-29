@@ -439,6 +439,21 @@
                                 }
                             }
                         },
+                        "temporaryPriceReduction": {
+                            "name": "Temporary Price Reduction",
+                            "type": "boolean",
+                            "path": "temporaryPriceReduction",
+                            "dependencies": [
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "field": "temporaryPriceReduction",
+                                    "value": true,
+                                    "field2": "status",
+                                    "value2": "any"
+                                }
+                            ]
+                        },
                         "srp": {
                             "name": "SRP",
                             "type": "number",

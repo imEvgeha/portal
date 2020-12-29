@@ -56,8 +56,8 @@ const NexusField = ({
     generateMsvIds,
     ...props
 }) => {
-    const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
+    const checkDependencies = (type, name = {}) => {
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, name});
     };
 
     const addedProps = {
@@ -103,14 +103,14 @@ const NexusField = ({
             case 'boolean':
                 return (
                     <CheckboxField
-                        isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
+                        isDisabled={getIsReadOnly() || checkDependencies('readOnly', fieldProps)}
                         name={fieldProps.name}
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
+                                isDisabled={getIsReadOnly() || checkDependencies('readOnly', fieldProps)}
                                 {...addedProps}
                                 {...fieldProps}
                             />

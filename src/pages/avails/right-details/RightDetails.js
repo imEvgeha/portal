@@ -11,6 +11,12 @@ import schema from './schema.json';
 
 import './RightDetails.scss';
 
+/*
+ The new right details page implementation
+ uses NexusDynamicForm, which uses a schema (json) to display
+ and configure edit/view mode
+*/
+
 const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
     const containerRef = useRef();
 
