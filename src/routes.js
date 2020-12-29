@@ -2,7 +2,6 @@ import React from 'react';
 import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
 import {get} from 'lodash';
 import {start} from 'single-spa';
-import assetManagementRoutes from './pages/asset-management/routes';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
@@ -61,7 +60,6 @@ const restRoutes = [
 
 export const routes = [
     ...availsRoutes,
-    ...assetManagementRoutes,
     ...metadataRoutes,
     ...titleMetadataRoutes,
     ...servicingOrdersRoutes,
