@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules/
-packages/portal-media-asset-management/node_modules/
 
 # testing
 /coverage
