@@ -57,7 +57,7 @@ const NexusField = ({
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, path});
     };
 
     const addedProps = {
@@ -260,6 +260,7 @@ const NexusField = ({
     };
 
     const required = !!(checkDependencies('required') || isRequired);
+
     return (
         <ErrorBoundary>
             <div

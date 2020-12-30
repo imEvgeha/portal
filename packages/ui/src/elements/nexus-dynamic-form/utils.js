@@ -31,6 +31,7 @@ export const getDefaultValue = (field = {}, view, data) => {
 };
 
 export const getValidationError = (validationErrors, field) => {
+    // console.log('validationErrors, field ', validationErrors, field);
     let error = null;
     const fieldValidationError =
         validationErrors && validationErrors.find(e => equalOrIncluded(field.path, e.fieldName));
@@ -47,7 +48,18 @@ export const getValidationError = (validationErrors, field) => {
     return error;
 };
 
-const checkArrayFieldDependencies = (formData, {name, value, subfield}) => {
+const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
+    let retValue = false;
+    formData[field].map(obj => {
+        if (obj[subfield] === value) {
+            retValue = obj[subfield];
+        }
+        return null;
+    });
+    return retValue;
+};
+
+const checkArrayFieldDependencies2 = (formData, {name, value, subfield}) => {
     let retValue = false;
     formData[name].map(obj => {
         if (obj[subfield] === value) {
@@ -59,8 +71,6 @@ const checkArrayFieldDependencies = (formData, {name, value, subfield}) => {
 };
 
 export const checkFoundDependencies = (dependencies, formData) => {
-    // if(name === 'temporaryPriceReduction')
-    // console.log('dependencies:', dependencies);
     return !!(
         dependencies &&
         dependencies.some(({field, value, subfield}) => {
@@ -74,29 +84,26 @@ export const checkFoundDependencies = (dependencies, formData) => {
     );
 };
 const evaluateDependency = (dep, formData) => {
-    dep.fields.some(({name, value, subfield}) => {
+    return dep.fields.some(({name, value, subfield}, index) => {
         let dependencyValue = get(formData, name);
         if (Array.isArray(dependencyValue)) {
-            console.log(formData[name]);
-            dependencyValue = checkArrayFieldDependencies(formData, {name, value, subfield});
+            dependencyValue = checkArrayFieldDependencies2(formData, {name, value, subfield});
         }
         // if has value || its value equal to the provided value
+        if (dep.fields[index].hasOwnProperty('exclude')) {
+            console.log('exclude case - dependencyValue, value :', dependencyValue, value, formData);
+            return dependencyValue !== value;
+        }
+
         return dependencyValue === value || (!!dependencyValue && value === 'any');
     });
 };
-export const checkFoundDependencies2 = (dependencies, formData) => {
-    // if(name === 'temporaryPriceReduction')
-    console.log('dependencies:', dependencies);
-    return !!(
-        dependencies &&
-        dependencies.every(dep => {
-            evaluateDependency(dep, formData);
-        })
-    );
+export const checkFoundDependencies2 = (dependencies, formData, path) => {
+    return !!(dependencies.length && dependencies.every(dep => evaluateDependency(dep, formData)));
 };
 
 // eslint-disable-next-line max-params
-export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, path}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
@@ -104,7 +111,8 @@ export const checkFieldDependencies = (type, view, dependencies, {formData, conf
 
     const globalConfigResult = checkFoundDependencies(globalConfig, formData);
 
-    const localConfigResult = checkFoundDependencies2(foundDependencies, formData);
+    const localConfigResult = checkFoundDependencies2(foundDependencies, formData, path);
+
     return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
