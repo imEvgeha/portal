@@ -14,7 +14,12 @@ import {
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds} from '../../titleMetadataServices';
-import {handleEditorialGenres, prepareValuesForTitleUpdate, updateTerritoryMetadata} from '../../utils';
+import {
+    handleEditorialGenres,
+    prepareValuesForTitleUpdate,
+    updateTerritoryMetadata,
+    updateEditorialMetadata,
+} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -54,6 +59,7 @@ const TitleDetails = ({
         updatedValues = prepareValuesForTitleUpdate(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
+        updateEditorialMetadata(values, id);
     };
 
     const extendTitleWithExternalIds = () => {

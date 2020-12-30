@@ -159,3 +159,61 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         // todo: add toast
     }
 };
+
+const formatEditorialBody = (data, titleId, isCreate) => {
+    const body = {};
+    Object.keys(data).forEach(key => {
+        if (data[key] === undefined || data[key] === '') body[key] = null;
+        else if (key === 'genres') {
+            body[key] = data[key].map(genre => {
+                return {
+                    genre,
+                    order: null,
+                };
+            });
+        } else body[key] = data[key];
+    });
+    delete body.isUpdated;
+    delete body.isDeleted;
+    delete body.isCreated;
+    if (titleId) body.parentId = titleId;
+    let hasGeneratedChildren = get(body, 'hasGeneratedChildren');
+    if (hasGeneratedChildren === undefined) hasGeneratedChildren = false;
+    return isCreate
+        ? [
+              {
+                  itemIndex: '1',
+                  body: {
+                      decorateEditorialMetadata: hasGeneratedChildren,
+                      editorialMetadata: body,
+                  },
+              },
+          ]
+        : [
+              {
+                  itemIndex: null,
+                  body,
+              },
+          ];
+};
+
+export const updateEditorialMetadata = async (values, titleId) => {
+    const data = values.editorialMetadata || [];
+    try {
+        await Promise.all(
+            data.map(async emet => {
+                if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                    const body = formatEditorialBody(emet, titleId);
+                    const response = await titleService.updateEditorialMetadata(body);
+                    // todo: add toast
+                } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                    const body = formatEditorialBody(emet, titleId, true);
+                    const response = await titleService.addEditorialMetadata(body);
+                    // todo: add toast
+                }
+            })
+        );
+    } catch (error) {
+        // todo: add toast
+    }
+};
