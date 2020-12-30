@@ -56,8 +56,8 @@ const NexusField = ({
     generateMsvIds,
     ...props
 }) => {
-    const checkDependencies = (type, name = {}) => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, name});
+    const checkDependencies = type => {
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
     };
 
     const addedProps = {

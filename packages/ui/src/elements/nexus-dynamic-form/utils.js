@@ -60,7 +60,7 @@ const checkArrayFieldDependencies = (formData, {name, value, subfield}) => {
 
 export const checkFoundDependencies = (dependencies, formData) => {
     // if(name === 'temporaryPriceReduction')
-    console.log('dependencies:', dependencies);
+    // console.log('dependencies:', dependencies);
     return !!(
         dependencies &&
         dependencies.some(({field, value, subfield}) => {
