@@ -36,5 +36,3 @@ export const NoteMerged = {
 };
 
 export const STATUS = ['Error', 'Merged', 'Pending'];
-
-export const OBJECT_FIELDS = ['cmContentIds', 'eidr', 'episodic', 'retailer'];

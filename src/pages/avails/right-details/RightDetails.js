@@ -8,7 +8,6 @@ import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
-import {OBJECT_FIELDS} from './constants';
 
 import './RightDetails.scss';
 
@@ -22,24 +21,8 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
         }
     }, []);
 
-    const createObjectValues = (keyProp, values) => {
-        const newObject = {};
-        Object.keys(values).forEach(key => {
-            if (key.includes(`${keyProp}.`)) {
-                const [external, prop] = key.split('.');
-                newObject[prop] = values[key] || null;
-                delete values[key];
-            }
-        });
-        values[keyProp] = newObject;
-    };
-
     const onSubmit = values => {
-        const updatedValues = {...values};
-        OBJECT_FIELDS.forEach(key => {
-            createObjectValues(key, updatedValues);
-        });
-        updateRight(updatedValues);
+        updateRight(values);
     };
 
     return (
