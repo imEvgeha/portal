@@ -2,7 +2,6 @@ import authReducer from '@vubiquity-nexus/portal-auth/authReducer';
 import uiReducer from '@vubiquity-nexus/portal-ui/lib/uiReducer';
 import {connectRouter} from 'connected-react-router';
 import {combineReducers} from 'redux';
-import assetManagementReducer from './pages/asset-management/assetManagementReducer';
 import availsReducer from './pages/avails/availsReducer';
 import dopTasksReducer from './pages/dop-tasks/dopTasksReducer';
 import eventManagementReducer from './pages/event-management/eventManagementReducer';
@@ -55,7 +54,6 @@ const createRootReducer = routerHistory =>
         ui: uiReducer,
         auth: createPersistReducer(authPersistConfig, authReducer),
         titleMetadata: createPersistReducer(titleMetadataPersistConfig, titleMetadataReducer),
-        assetManagement: assetManagementReducer,
     });
 
 export default createRootReducer;
