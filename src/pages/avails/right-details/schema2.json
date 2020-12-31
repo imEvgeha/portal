@@ -488,8 +488,7 @@
                                     "fields": [
                                         {
                                             "name": "rightStatus",
-                                            "value": "Pending",
-                                            "exclude": true
+                                            "value": "Pending"
                                         }
                                     ]
                                 }

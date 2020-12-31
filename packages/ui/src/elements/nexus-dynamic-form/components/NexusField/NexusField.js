@@ -57,7 +57,7 @@ const NexusField = ({
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, path});
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
     };
 
     const addedProps = {
@@ -101,9 +101,16 @@ const NexusField = ({
                     />
                 );
             case 'boolean':
+                /* in case of temporaryPriceReduction, it's reverse condition,
+                 editOnly for TPR = false & rightStatus = pending
+                 */
                 return (
                     <CheckboxField
-                        isDisabled={getIsReadOnly() || checkDependencies('readOnly', fieldProps)}
+                        isDisabled={
+                            getIsReadOnly() || fieldProps.name === 'temporaryPriceReduction'
+                                ? !checkDependencies('readOnly', fieldProps)
+                                : checkDependencies('readOnly', fieldProps)
+                        }
                         name={fieldProps.name}
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
