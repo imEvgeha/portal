@@ -155,7 +155,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
             let keyValue = (map && map.queryParamName) || key;
             if (key === 'selected' || key === 'withdrawn') {
                 keyValue = `${key}FlattenList`;
-                value = value.split(',').map(v => `${v}true`);
+                value = value.split(',').map(v => `${v}true`.trim());
             }
             if (filtersInBody && map.searchDataType === 'multiselect') {
                 // change key - add List
