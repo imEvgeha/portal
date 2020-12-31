@@ -199,6 +199,15 @@ const RightsRepository = ({
 
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
+            const updatedPrePlanRights = cloneDeep(currentUserPrePlanRights);
+            selectedRepoRights.forEach(selectedRight => {
+                const index = currentUserPrePlanRights.findIndex(right => right.id === selectedRight.id);
+                if (index >= 0) {
+                    updatedPrePlanRights[index].coreTitleId = selectedRight.coreTitleId;
+                }
+            });
+            setPreplanRights({[username]: updatedPrePlanRights});
+
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -222,9 +231,9 @@ const RightsRepository = ({
         if (isMounted.current && isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
-        if (isMounted.current && activeTab !== RIGHTS_TAB) {
-            toggleRefreshGridData(true);
-        }
+        // if (isMounted.current && activeTab !== RIGHTS_TAB) {
+        //     toggleRefreshGridData(true);
+        // }
     }, [prePlanRights, username]);
 
     // Fetch only selected rights from the current user
