@@ -31,7 +31,6 @@ export const getDefaultValue = (field = {}, view, data) => {
 };
 
 export const getValidationError = (validationErrors, field) => {
-    // console.log('validationErrors, field ', validationErrors, field);
     let error = null;
     const fieldValidationError =
         validationErrors && validationErrors.find(e => equalOrIncluded(field.path, e.fieldName));
