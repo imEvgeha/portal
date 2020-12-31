@@ -108,8 +108,8 @@ const NexusField = ({
                     <CheckboxField
                         isDisabled={
                             getIsReadOnly() || fieldProps.name === 'temporaryPriceReduction'
-                                ? !checkDependencies('readOnly', fieldProps)
-                                : checkDependencies('readOnly', fieldProps)
+                                ? !checkDependencies('readOnly')
+                                : checkDependencies('readOnly')
                         }
                         name={fieldProps.name}
                         label={fieldProps.label}
@@ -117,7 +117,7 @@ const NexusField = ({
                     >
                         {({fieldProps}) => (
                             <CheckboxWithOptional
-                                isDisabled={getIsReadOnly() || checkDependencies('readOnly', fieldProps)}
+                                isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
                             />
