@@ -7,6 +7,7 @@ import {SUCCESS_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
 import {connect} from 'react-redux';
@@ -366,15 +367,17 @@ export const SelectedRightsActions = ({
                         'nexus-c-selected-rights-actions__menu--is-open': menuOpened,
                     })}
                 >
-                    <div
-                        className={classNames('nexus-c-selected-rights-actions__menu-item', {
-                            'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
-                        })}
-                        data-test-id="view-history"
-                        onClick={() => (selectedRights.length ? openAuditHistoryModal() : null)}
-                    >
-                        <div>{VIEW_AUDIT_HISTORY}</div>
-                    </div>
+                    <Can I="read" a="DopTasks">
+                        <div
+                            className={classNames('nexus-c-selected-rights-actions__menu-item', {
+                                'nexus-c-selected-rights-actions__menu-item--is-active': selectedRights.length,
+                            })}
+                            data-test-id="view-history"
+                            onClick={() => (selectedRights.length ? openAuditHistoryModal() : null)}
+                        >
+                            <div>{VIEW_AUDIT_HISTORY}</div>
+                        </div>
+                    </Can>
                     <div
                         className={classNames('nexus-c-selected-rights-actions__menu-item', {
                             'nexus-c-selected-rights-actions__menu-item--is-active': isMatchable && !statusDeleteMerged,

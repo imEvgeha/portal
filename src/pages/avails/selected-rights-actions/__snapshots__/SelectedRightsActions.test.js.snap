@@ -12,15 +12,20 @@ exports[`SelectedRightsActions SelectedRightsActions should match snapshot 1`] =
     <div
       className="nexus-c-selected-rights-actions__menu"
     >
-      <div
-        className="nexus-c-selected-rights-actions__menu-item"
-        data-test-id="view-history"
-        onClick={[Function]}
+      <r
+        I="read"
+        a="DopTasks"
       >
-        <div>
-          View Audit History
+        <div
+          className="nexus-c-selected-rights-actions__menu-item"
+          data-test-id="view-history"
+          onClick={[Function]}
+        >
+          <div>
+            View Audit History
+          </div>
         </div>
-      </div>
+      </r>
       <div
         className="nexus-c-selected-rights-actions__menu-item"
         data-test-id="bulk-match"

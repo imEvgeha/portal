@@ -5,6 +5,5 @@ export const fetchPosters = url => {
     return fetch(url, {
         method: 'GET',
         headers,
-    })
-        .then(response => response.json());
+    }).then(response => response.json());
 };

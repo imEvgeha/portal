@@ -21,14 +21,14 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
         } else {
             setSelectedItems([...selectedItems, id]);
         }
-/*        if (selectedItems.length === 1) {
+        /*        if (selectedItems.length === 1) {
             DOP.setErrorsCount(0);
             DOP.setData({
                 selected: 1,
             });
         } else {
             DOP.setErrorsCount(1);
-        }*/
+        } */
     };
 
     const setItems = () => {
