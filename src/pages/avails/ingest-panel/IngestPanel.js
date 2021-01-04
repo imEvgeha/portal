@@ -13,7 +13,7 @@ import './IngestPanel.scss';
 import Constants, {DEBOUNCE_TIMEOUT} from './constants';
 
 const {
-    attachmentTypes: {EXCEL},
+    attachmentTypes: {EXCEL, PDF},
 } = Constants;
 
 const IngestPanel = ({
@@ -55,22 +55,22 @@ const IngestPanel = ({
             <PanelHeader isShowingFilters={showFilters} toggleFilters={toggleFilters} onFiltersChange={filtersChange} />
             <div className="ingest-panel__list" onScroll={onScroll} ref={panelRef}>
                 {ingests.map(({id, attachments, received, licensor, ingestType}) => {
-                    const excelAttachments = attachments.filter(
-                        ({attachmentType}) => attachmentType && attachmentType === EXCEL
+                    const excelPdfAttachments = attachments.filter(
+                        ({attachmentType}) => attachmentType && (attachmentType === EXCEL || attachmentType === PDF)
                     );
 
                     const handleIngestClick = () =>
                         ingestClick({
                             availHistoryId: id,
-                            attachmentId: excelAttachments[0].id,
+                            attachmentId: excelPdfAttachments[0].id,
                             selectedAttachmentId,
                         });
 
-                    return excelAttachments.length > 1 ? (
+                    return excelPdfAttachments.length > 1 ? (
                         <Bundle
                             key={id}
                             id={id}
-                            attachments={excelAttachments}
+                            attachments={excelPdfAttachments}
                             received={received}
                             licensor={licensor}
                             ingestType={ingestType}
@@ -78,10 +78,10 @@ const IngestPanel = ({
                             selectedAttachmentId={selectedAttachmentId}
                         />
                     ) : (
-                        excelAttachments.length === 1 && (
+                        excelPdfAttachments.length === 1 && (
                             <Ingest
                                 key={id}
-                                attachment={excelAttachments[0]}
+                                attachment={excelPdfAttachments[0]}
                                 received={received}
                                 licensor={licensor}
                                 ingestType={ingestType}
