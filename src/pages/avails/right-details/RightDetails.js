@@ -7,8 +7,7 @@ import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
-import schema from './schema2.json';
-// todo: remove schema.json and rename schema2.json after PORT-3680 change works
+import schema from './schema.json';
 import './RightDetails.scss';
 
 /*
