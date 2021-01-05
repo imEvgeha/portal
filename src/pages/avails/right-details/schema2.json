@@ -36,15 +36,17 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "coreTitleId",
-                                    "value": "any"
-                                },
-                                {
-                                    "view": "EDIT",
-                                    "type": "readOnly",
-                                    "field": "territory",
-                                    "subfield": "selected",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -64,14 +66,22 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "licensed",
-                                    "value": false
+                                    "fields": [
+                                        {
+                                            "name": "licensed",
+                                            "value": false
+                                        }
+                                    ]
                                 },
                                 {
                                     "view": "EDIT",
                                     "type": "required",
-                                    "field": "licensed",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "licensed",
+                                            "value": true
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -102,9 +112,13 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "territory",
-                                    "subfield": "selected",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -117,9 +131,13 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "territory",
-                                    "subfield": "selected",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -132,9 +150,13 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "territory",
-                                    "subfield": "selected",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -147,15 +169,17 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "coreTitleId",
-                                    "value": "any"
-                                },
-                                {
-                                    "view": "EDIT",
-                                    "type": "readOnly",
-                                    "field": "territory",
-                                    "subfield": "selected",
-                                    "value": true
+                                    "fields": [
+                                        {
+                                            "name": "coreTitleId",
+                                            "value": "any"
+                                        },
+                                        {
+                                            "name": "territory",
+                                            "value": true,
+                                            "subfield": "selected"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -205,9 +229,13 @@
                                 {
                                     "view": "EDIT",
                                     "type": "required",
-                                    "field": "territory",
-                                    "subfield": "country",
-                                    "value": "US"
+                                    "fields": [
+                                        {
+                                            "name": "territory",
+                                            "value": "US",
+                                            "subfield": "country"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -447,10 +475,22 @@
                                 {
                                     "view": "EDIT",
                                     "type": "readOnly",
-                                    "field": "temporaryPriceReduction",
-                                    "value": true,
-                                    "field2": "status",
-                                    "value2": "any"
+                                    "fields": [
+                                        {
+                                            "name": "temporaryPriceReduction",
+                                            "value": false
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "EDIT",
+                                    "type": "readOnly",
+                                    "fields": [
+                                        {
+                                            "name": "rightStatus",
+                                            "value": "Pending"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1090,8 +1130,12 @@
                                 {
                                     "view": "EDIT",
                                     "type": "required",
-                                    "field": "licensed",
-                                    "value": false
+                                    "fields": [
+                                        {
+                                            "name": "licensed",
+                                            "value": false
+                                        }
+                                    ]
                                 }
                             ]
                         },

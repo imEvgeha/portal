@@ -7,9 +7,15 @@ import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
-import schema from './schema.json';
-
+import schema from './schema2.json';
+// todo: remove schema.json and rename schema2.json after PORT-3680 change works
 import './RightDetails.scss';
+
+/*
+ The new right details page implementation:
+ - uses NexusDynamicForm, which uses a schema to display
+ and configure edit/view form fields
+*/
 
 const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
     const containerRef = useRef();

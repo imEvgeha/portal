@@ -101,9 +101,16 @@ const NexusField = ({
                     />
                 );
             case 'boolean':
+                /* in case of temporaryPriceReduction, it's reverse condition,
+                 editOnly for TPR = false & rightStatus = pending
+                 */
                 return (
                     <CheckboxField
-                        isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
+                        isDisabled={
+                            getIsReadOnly() || fieldProps.name === 'temporaryPriceReduction'
+                                ? !checkDependencies('readOnly')
+                                : checkDependencies('readOnly')
+                        }
                         name={fieldProps.name}
                         label={fieldProps.label}
                         defaultIsChecked={fieldProps.value}
@@ -260,6 +267,7 @@ const NexusField = ({
     };
 
     const required = !!(checkDependencies('required') || isRequired);
+
     return (
         <ErrorBoundary>
             <div

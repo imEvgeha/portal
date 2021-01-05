@@ -58,7 +58,7 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFoundDependencies = (dependencies, formData) => {
+const checkGlobalDependencies = (dependencies, formData) => {
     return !!(
         dependencies &&
         dependencies.some(({field, value, subfield}) => {
@@ -71,15 +71,38 @@ export const checkFoundDependencies = (dependencies, formData) => {
         })
     );
 };
+const evaluateDependency = (dep, formData) => {
+    // checks 'OR' condition between every entry in sub array (fields)
+    return dep.fields.some(({name, value, subfield}, index) => {
+        let dependencyValue = get(formData, name);
+        if (Array.isArray(dependencyValue)) {
+            const field = name;
+            dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
+        }
+        if (dep.fields[index].hasOwnProperty('exclude')) {
+            // use { name: '..', value: '..', exclude: true } for NOT operator condition
+            return dependencyValue !== value;
+        }
+        // if has value || its value equal to the provided value
+        return dependencyValue === value || (!!dependencyValue && value === 'any');
+    });
+};
+const checkLocalDependencies = (dependencies, formData) => {
+    // checks 'AND' condition between every entry in dependencies array
+    return !!(dependencies.length && dependencies.every(dep => evaluateDependency(dep, formData)));
+};
 
+// eslint-disable-next-line max-params
 export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
     const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
 
-    const globalConfigResult = checkFoundDependencies(globalConfig, formData);
-    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+    const globalConfigResult = checkGlobalDependencies(globalConfig, formData);
+
+    const localConfigResult = checkLocalDependencies(foundDependencies, formData);
+
     return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
