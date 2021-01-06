@@ -3342,10 +3342,10 @@
   resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-styles/-/portal-styles-1.0.0.tgz#dbc7e348faafcb8fe5da7c4bc28d2ecea8f0e330"
   integrity sha512-s5h87pi66h+4ILLxrdRxj14XSKkPtc+WBb6gT0VrEY8ZIsM893Lik9p7NsmwrZQApIz7xawPRmXLiFFGFMYKDw==
 
-"@vubiquity-nexus/portal-ui@1.0.19":
-  version "1.0.19"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-ui/-/portal-ui-1.0.19.tgz#79fbe76050765564354da11164f72d298551bd9a"
-  integrity sha512-CJneJR8/EIzGgPmAyWsQl6eXu7rwxoz910Sd+TtKNnWGQdgyrZ4d4zp0kuBFcIdaQoTr2pn34BS8ImrTiCg28A==
+"@vubiquity-nexus/portal-ui@1.0.22":
+  version "1.0.22"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/@vubiquity-nexus/portal-ui/-/portal-ui-1.0.22.tgz#a97ab073d548003e6236bf954de123c1b9f78f6e"
+  integrity sha512-7+MRorK13AJBt+12qfqEKSo0y1YHA1tZMDtNTJD8SIlC4uiqHdFbU/pU62u/W8XuvY/OEctCcoood69cY4RpVg==
   dependencies:
     re-resizable "^6.4.0"
     react-json-view "^1.19.1"
