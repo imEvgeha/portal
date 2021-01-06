@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Dropdown, {DropdownItemCheckbox, DropdownItemGroupCheckbox} from '@atlaskit/dropdown-menu';
+import {cloneDeep} from 'lodash';
 import './DropdownCellEditor.scss';
 
 class DropdownCellEditor extends Component {
@@ -19,6 +20,12 @@ class DropdownCellEditor extends Component {
         const preparedOptions =
             Array.isArray(options) &&
             options.map(option => {
+                if (!option.hasOwnProperty('isDirty') && option.selected) {
+                    return {
+                        ...option,
+                        isDisabled: true,
+                    };
+                }
                 return {
                     ...option,
                     isDisabled: false,
@@ -45,7 +52,7 @@ class DropdownCellEditor extends Component {
     getValue = () => {
         const {value} = this.state;
         const cleanValues = value
-            .filter(option => !option.isDisabled)
+            // .filter(option => !option.isDisabled)
             .map(option => {
                 delete option.isDisabled;
                 return option;
@@ -55,11 +62,13 @@ class DropdownCellEditor extends Component {
 
     handleChange = index => {
         const {value} = this.state;
-        const prevIsSelected = value[index].selected;
-        value[index].selected = !prevIsSelected;
+        const updatedValue = cloneDeep(value);
+        const prevIsSelected = updatedValue[index].selected;
+        updatedValue[index].selected = !prevIsSelected;
+        updatedValue[index].isDirty = true;
 
         this.setState({
-            value,
+            value: updatedValue,
         });
     };
 
