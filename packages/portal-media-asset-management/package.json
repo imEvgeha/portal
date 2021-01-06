@@ -9,9 +9,7 @@
     "main": "index.js",
     "scripts": {
         "start": "webpack-dev-server",
-        "build": "webpack --config webpack.config.js --env.env=dev",
-        "build:analyze-prod": "webpack --config webpack.config.js --env.env=prod --env.addon=bundleanalyze --env.addon=bundlevisualizer",
-        "build:prod": "webpack --config webpack.config.js --env.env=prod",
+        "build:prod": "webpack-dev-server",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --colors",

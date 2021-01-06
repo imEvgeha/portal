@@ -141,6 +141,15 @@ export const getAllFields = schema => {
 };
 
 export const getFieldValue = fieldProps => {
+    if (fieldProps && Array.isArray(fieldProps)) {
+        const newValues = [];
+        fieldProps.forEach(obj => {
+            if (get(obj, 'value') && get(obj, 'label')) {
+                newValues.push(get(obj, 'value'));
+            }
+        });
+        return newValues;
+    }
     return fieldProps && fieldProps.value !== undefined ? fieldProps.value : fieldProps;
 };
 
