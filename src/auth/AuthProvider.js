@@ -4,7 +4,6 @@ import {keycloak, KEYCLOAK_INIT_OPTIONS} from '@vubiquity-nexus/portal-auth/keyc
 import {getValidToken, getTokenDuration, wait} from '@vubiquity-nexus/portal-auth/utils';
 import {updateAbility} from '@vubiquity-nexus/portal-utils/lib/ability';
 import jwtDecode from 'jwt-decode';
-import {isEmpty} from 'lodash';
 import config from 'react-global-configuration';
 import {connect} from 'react-redux';
 import {store} from '../index';
@@ -12,7 +11,6 @@ import {getSelectValues} from '../pages/avails/right-details/rightDetailsActions
 import DOPService from '../pages/avails/selected-for-planning/DOP-services';
 import {fetchAvailMapping} from '../pages/legacy/containers/avail/availActions';
 import {loadProfileInfo} from '../pages/legacy/stores/actions';
-import {loadDashboardState, loadHistoryState, loadCreateRightState, loadDopState} from '../pages/legacy/stores/index';
 import Loading from '../pages/static/Loading';
 
 const MIN_VALIDITY_SEC = 30;
@@ -22,7 +20,6 @@ const BEFORE_TOKEN_EXP = (MIN_VALIDITY_SEC - 5) * 1000;
 const AuthProvider = ({
     children,
     options = KEYCLOAK_INIT_OPTIONS,
-    appOptions,
     addUser,
     getAppOptions,
     logoutUser,
@@ -33,13 +30,12 @@ const AuthProvider = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!isEmpty(appOptions) && isAuthenticatedUser) {
+        if (isAuthenticatedUser) {
             setIsLoading(false);
         }
-    }, [appOptions, isAuthenticatedUser]);
+    }, [isAuthenticatedUser]);
 
     useLayoutEffect(() => {
-        let cancel = false;
         const runEffect = async () => {
             try {
                 const {token, refreshToken} = store.getState().auth;
@@ -54,16 +50,10 @@ const AuthProvider = ({
                     updateAbility(roles);
                     addUser({token, refreshToken});
                     loadUserAccount();
-                    loadDashboardState(); // TODO: to remove
-                    loadCreateRightState(); // TODO: to remove
-                    loadHistoryState(); // TODO: to remove
-                    loadDopState(); // TODO: to remove
                     loadProfileInfo();
-                    // get config options for app
-                    getAppOptions();
-
                     updateUserToken(token);
                     getSelectValues();
+                    getAppOptions();
                 } else {
                     // window.location.reload();
                 }
@@ -71,15 +61,9 @@ const AuthProvider = ({
             } catch (error) {
                 logoutUser();
             }
-            if (cancel) {
-                return;
-            }
         };
 
         runEffect();
-        return () => {
-            cancel = true;
-        };
     }, []);
 
     const loadUserAccount = async () => {
