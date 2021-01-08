@@ -1,6 +1,6 @@
 {
     "name": "@vubiquity-nexus/portal-utils",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Nexus Portal Common Utils",
     "author": "Vubiquity",
     "license": "UNLICENSED",
@@ -25,6 +25,7 @@
     ],
     "scripts": {
         "prepublish": "babel src -d lib",
-        "postpublish": "rm -r lib"
+        "postpublish": "rm -r lib",
+        "build": "babel src -d lib"
     }
 }
