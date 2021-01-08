@@ -270,8 +270,12 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -302,8 +306,12 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ],
                                     "optionsConfig": {
@@ -371,26 +379,42 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -411,14 +435,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -450,14 +482,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -469,14 +509,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
