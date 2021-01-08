@@ -62,7 +62,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             id={info.id}
             externalId={info.external_id}
             status={info.status}
-            dueDate={ISODateToView(get(info, 'definition.dueDate'), 'regionalMidnight')}
+            dueDate={ISODateToView(get(info, 'due_date'), 'regionalMidnight')}
             servicer={info.fs}
             selected={selectedFulfillmentOrder === info.id}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
@@ -77,9 +77,7 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
 
     const getDueDateOfServicingOrderItem = servicingOrderItem => {
         const {length} = servicingOrderItem.fulfillmentOrders;
-        const sortedDates = sortByDateFn(servicingOrderItem.fulfillmentOrders, 'definition.dueDate').map(
-            getMomentDueDate
-        );
+        const sortedDates = sortByDateFn(servicingOrderItem.fulfillmentOrders, 'due_date').map(getMomentDueDate);
         return dueDateSortDirection === SORT_DIRECTION.ASCENDING ? sortedDates[0] : sortedDates[length - 1];
     };
 
@@ -88,7 +86,7 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
             return moment(getDueDateOfServicingOrderItem(panel));
         }
 
-        return moment(get(panel, 'definition.dueDate'));
+        return moment(get(panel, 'due_date'));
     };
 
     const panelSortFn = (prevPanel, currPanel) => {
@@ -106,7 +104,7 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
         }
     };
 
-    const sorted = toSort
+    return toSort
         .map(panel => {
             if (panel.type === 'ServicingOrderItem') {
                 return {
@@ -117,5 +115,4 @@ export const sortPanelsByDueDate = (panels, dueDateSortDirection) => {
             return panel;
         })
         .sort(panelSortFn);
-    return sorted;
 };
