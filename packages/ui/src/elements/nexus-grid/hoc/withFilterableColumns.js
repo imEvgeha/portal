@@ -314,8 +314,14 @@ const withFilterableColumns = ({
                             case REGIONAL_MIDNIGHT:
                             case TIMESTAMP:
                             case BUSINESS_DATETIME: {
-                                const from = filters[`${field}From`];
-                                const to = filters[`${field}To`];
+                                const from =
+                                    !filters[`${field}From`] && filters[field] && filters[field][`${field}From`]
+                                        ? filters[field][`${field}From`]
+                                        : filters[`${field}From`];
+                                const to =
+                                    !filters[`${field}To`] && filters[field] && filters[field][`${field}To`]
+                                        ? filters[field][`${field}To`]
+                                        : filters[`${field}To`];
                                 const initialFilters = {
                                     ...(from && {from}),
                                     ...(to && {to}),

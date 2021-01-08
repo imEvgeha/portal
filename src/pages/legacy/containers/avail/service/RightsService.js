@@ -147,6 +147,10 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 continue;
             }
             if (value instanceof Object && !Array.isArray(value)) {
+                // is date range
+                for (let keyDate in value) {
+                    params[keyDate] = value[keyDate];
+                }
                 continue;
             }
             const map = mappings.find(
