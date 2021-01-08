@@ -51,12 +51,10 @@ class DropdownCellEditor extends Component {
 
     getValue = () => {
         const {value} = this.state;
-        const cleanValues = value
-            // .filter(option => !option.isDisabled)
-            .map(option => {
-                delete option.isDisabled;
-                return option;
-            });
+        const cleanValues = value.map(option => {
+            delete option.isDisabled;
+            return option;
+        });
         return cleanValues;
     };
 
