@@ -231,9 +231,6 @@ const RightsRepository = ({
         if (isMounted.current && isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
-        // if (isMounted.current && activeTab !== RIGHTS_TAB) {
-        //     toggleRefreshGridData(true);
-        // }
     }, [prePlanRights, username]);
 
     // Fetch only selected rights from the current user

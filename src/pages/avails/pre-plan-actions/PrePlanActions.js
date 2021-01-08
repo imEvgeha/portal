@@ -144,7 +144,6 @@ export const PrePlanActions = ({
                                         DOPService.startProject(projectId)
                                             .then(() => {
                                                 dispatchSuccessToast(eligibleRights.length);
-                                                // removeRightsFromPrePlan(false);
                                                 checkAllSelected();
                                                 setSelectedPrePlanRights([]);
                                                 clickHandler();
