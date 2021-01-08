@@ -869,7 +869,7 @@
                     "fields": {
                         "retailerId1": {
                             "name": "Retailer ID",
-                            "type": "string",
+                            "type": "stringInArray",
                             "path": "retailer.retailerId1"
                         },
                         "retailerSeriesId": {
