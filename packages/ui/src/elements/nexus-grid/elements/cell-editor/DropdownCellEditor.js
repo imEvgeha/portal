@@ -64,7 +64,6 @@ class DropdownCellEditor extends Component {
         const prevIsSelected = updatedValue[index].selected;
         updatedValue[index].selected = !prevIsSelected;
         updatedValue[index].isDirty = true;
-
         this.setState({
             value: updatedValue,
         });
