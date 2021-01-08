@@ -134,9 +134,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         return {...item, cellRenderer: loadingCell};
     });
 
-    // Todo : remove this when dete stg apis are working
-    if (!URL.isLocalOrDevOrQA()) newColDef = [columnDefinitions[0]];
-
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         switch (type) {
             case GRID_EVENTS.READY: {
@@ -251,7 +248,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
-        <div className={URL.isLocalOrDevOrQA() ? 'nexus-c-sources' : 'nexus-c-sources_stg'}>
+        <div className="nexus-c-sources">
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
                 <div>{SOURCE_SUBTITLE}</div>
