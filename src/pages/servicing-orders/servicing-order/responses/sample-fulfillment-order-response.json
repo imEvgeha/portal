@@ -23,7 +23,7 @@
             "external_id": "2nd",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2021-08-14T06:59:59Z",
+            "due_date": "2020-02-02T06:59:59Z",
             "soi_doc_id": "SOI_1",
             "product_description": "2nd"
         },
@@ -121,7 +121,7 @@
             "external_id": "1st",
             "fs_id": "",
             "start_date": "2020-01-01T20:41:03Z",
-            "due_date": "2022-01-01T06:59:59Z",
+            "due_date": "2020-01-01T06:59:59Z",
             "soi_doc_id": "SOI_1",
             "product_description": "1st"
         },
@@ -148,7 +148,7 @@
             "external_id": "3rd",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2022-08-14T06:59:59Z",
+            "due_date": "2020-03-03T06:59:59Z",
             "soi_doc_id": null,
             "product_description": "3rd"
         },
@@ -246,7 +246,7 @@
             "external_id": "4th",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2021-08-14T06:59:59Z",
+            "due_date": "2020-04-04T06:59:59Z",
             "soi_doc_id": "SOI_2",
             "product_description": "4th"
         },
@@ -344,7 +344,7 @@
             "external_id": "5th",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2022-08-14T06:59:59Z",
+            "due_date": "2020-05-05T06:59:59Z",
             "soi_doc_id": "SOI_2",
             "product_description": "5th"
         },
@@ -371,7 +371,7 @@
             "external_id": "6th",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2021-08-14T06:59:59Z",
+            "due_date": "2020-06-06T06:59:59Z",
             "soi_doc_id": null,
             "product_description": "6th"
         },
@@ -398,7 +398,7 @@
             "external_id": "7th",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2022-08-14T06:59:59Z",
+            "due_date": "2020-07-07T06:59:59Z",
             "soi_doc_id": "SOI_3",
             "product_description": "7th"
         },
@@ -496,7 +496,7 @@
             "external_id": "8th",
             "fs_id": "",
             "start_date": "2020-08-07T20:41:03Z",
-            "due_date": "2021-07-11T06:59:59Z",
+            "due_date": "2020-08-08T06:59:59Z",
             "soi_doc_id": "SOI_3",
             "product_description": "7th"
         }

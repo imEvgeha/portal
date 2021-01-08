@@ -213,7 +213,7 @@
                         },
                         "keywords": {
                             "name": "Keywords",
-                            "type": "string",
+                            "type": "stringInArray",
                             "path": "keywords"
                         },
                         "rightStatus": {
