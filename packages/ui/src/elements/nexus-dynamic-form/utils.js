@@ -217,6 +217,7 @@ export const buildSection = (
                             tabs={tabs}
                             subTabs={subTabs}
                             generateMsvIds={generateMsvIds}
+                            searchPerson={searchPerson}
                             {...fields[key]}
                         />
                     ) : (

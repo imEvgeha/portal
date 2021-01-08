@@ -55,9 +55,7 @@ const TitleDetails = ({
     const onSubmit = values => {
         const {params} = match || {};
         const {id} = params;
-        let updatedValues = {...values};
-        updatedValues = prepareValuesForTitleUpdate(updatedValues);
-        updateTitle({...updatedValues, id: title.id});
+        updateTitle({...values, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);
     };

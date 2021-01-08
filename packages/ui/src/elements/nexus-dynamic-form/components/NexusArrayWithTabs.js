@@ -25,6 +25,7 @@ const NexusArrayWithTabs = ({
     path,
     name,
     generateMsvIds,
+    searchPerson,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -361,6 +362,7 @@ const NexusArrayWithTabs = ({
                         selectValues,
                         setFieldValue,
                         config,
+                        searchPerson,
                         inTabs: true,
                         path,
                     })}
@@ -432,6 +434,7 @@ NexusArrayWithTabs.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     generateMsvIds: PropTypes.func,
+    searchPerson: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -446,6 +449,7 @@ NexusArrayWithTabs.defaultProps = {
     tabs: [],
     subTabs: [],
     generateMsvIds: undefined,
+    searchPerson: undefined,
 };
 
 export default NexusArrayWithTabs;

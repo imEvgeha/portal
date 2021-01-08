@@ -110,21 +110,6 @@ export const handleEditorialGenres = data => {
     });
 };
 
-export const prepareValuesForTitleUpdate = values => {
-    const newExternalIds = {};
-    Object.keys(values).forEach(key => {
-        if (key.includes('externalIds.')) {
-            const [external, prop] = key.split('.');
-            newExternalIds[prop] = values[key] || null;
-            delete values[key];
-        } else if (FIELDS_TO_REMOVE.includes(key)) {
-            delete values[key];
-        }
-    });
-    values.externalIds = newExternalIds;
-    return values;
-};
-
 const formatTerritoryBody = (data, titleId) => {
     const body = {};
     Object.keys(data).forEach(key => {
