@@ -369,6 +369,7 @@ const NexusArrayWithTabs = ({
                 </div>
             );
         });
+
         view === VIEWS.EDIT && setValueForEachField();
         return renderedFields;
     };
