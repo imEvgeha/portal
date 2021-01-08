@@ -48,6 +48,7 @@ const FILTER_TYPE = {
 };
 const FILTERABLE_DATA_TYPES = [
     'string',
+    'stringToArray',
     'integer',
     'double',
     'boolean',
