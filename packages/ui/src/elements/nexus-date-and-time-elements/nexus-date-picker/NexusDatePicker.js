@@ -31,12 +31,16 @@ const NexusDatePicker = ({
     isRequired,
     ...restProps
 }) => {
-    const [date, setDate] = useState(value || '');
+    // setting hour -2 (to show correct day) in case of endDate, as it shows next date in case of endDate like 2020-05-04:23:59:59
+    const dateWithZeroHour = value
+        ? // eslint-disable-next-line no-magic-numbers
+          moment(value).hour() === 1
+            ? moment(value).subtract(2, 'hours').utc(!isUtc(value)).toISOString()
+            : value
+        : '';
+    const [date, setDate] = useState(dateWithZeroHour);
     const [isSimulcast, setIsSimulcast] = useState(false);
 
-    useEffect(() => {
-        setDate(value || '');
-    }, [value]);
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
         typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));

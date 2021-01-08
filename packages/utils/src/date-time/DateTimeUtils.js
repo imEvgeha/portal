@@ -84,17 +84,21 @@ const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) =>
 };
 
 const dateToISO = (date, type) => {
+    // setting hour = hour - 2  in case of ex: 2020-05-04:23:59:59, as utc() shows next day in this case.
+    const dateWithZeroHour =
+        // eslint-disable-next-line no-magic-numbers
+        moment(date).hour() === 1 ? moment(date).subtract(2, 'hours').utc(!isUtc(date)).toISOString() : date;
     switch (type) {
         case DATETIME_FIELDS.TIMESTAMP:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            return moment(dateWithZeroHour).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
         case DATETIME_FIELDS.SIMULCAST:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+            return moment(dateWithZeroHour).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
         case DATETIME_FIELDS.REGIONAL:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss');
+            return moment(dateWithZeroHour).format('YYYY-MM-DD[T]HH:mm:ss');
         case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-            return moment(date).format('YYYY-MM-DD');
+            return moment(dateWithZeroHour).format('YYYY-MM-DD');
         default:
-            return null;
+            return moment(dateWithZeroHour).format('MM/DD/YYYY');
     }
 };
 
