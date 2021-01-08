@@ -478,17 +478,12 @@
                                     "fields": [
                                         {
                                             "name": "temporaryPriceReduction",
-                                            "value": false
-                                        }
-                                    ]
-                                },
-                                {
-                                    "view": "EDIT",
-                                    "type": "readOnly",
-                                    "fields": [
+                                            "value": true
+                                        },
                                         {
                                             "name": "rightStatus",
-                                            "value": "Pending"
+                                            "value": "Pending",
+                                            "operator": "ne"
                                         }
                                     ]
                                 }

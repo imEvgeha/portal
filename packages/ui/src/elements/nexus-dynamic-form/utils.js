@@ -79,9 +79,11 @@ const evaluateDependency = (dep, formData) => {
             const field = name;
             dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
         }
-        if (dep.fields[index].hasOwnProperty('exclude')) {
-            // use { name: '..', value: '..', exclude: true } for NOT operator condition
-            return dependencyValue !== value;
+        // check for operator: value (ne, gt, lt etc)
+        if (dep.fields[index].hasOwnProperty('operator')) {
+            if (dep.fields[index]['operator'] === 'ne') return dependencyValue !== value;
+            else if (dep.fields[index]['operator'] === 'lt') return dependencyValue < value;
+            else if (dep.fields[index]['operator'] === 'gt') return dependencyValue > value;
         }
         // if has value || its value equal to the provided value
         return dependencyValue === value || (!!dependencyValue && value === 'any');
