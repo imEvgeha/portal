@@ -58,8 +58,12 @@ describe('Utils', () => {
             {
                 view: 'EDIT',
                 type: 'required',
-                field: 'Core TitleId',
-                value: 'any',
+                fields: [
+                    {
+                        name: 'Core TitleId',
+                        value: 'any',
+                    },
+                ],
             },
         ];
         it('should return true when the dependencies include a field that has value', () => {
