@@ -116,7 +116,7 @@ const ServicingOrder = ({match}) => {
                         getSpecOptions(recipient, source.tenant).then(res => {
                             recp = {
                                 ...recp,
-                                [recipient]: get(res, 'outputFormats', []).map(item => item.outputTemplateName),
+                                [recipient]: get(res, 'outputFormats', []).map(item => item.externalMapExternalId),
                             };
                             setRecipientsOptions(prevState => {
                                 return {...prevState, ...recp};
