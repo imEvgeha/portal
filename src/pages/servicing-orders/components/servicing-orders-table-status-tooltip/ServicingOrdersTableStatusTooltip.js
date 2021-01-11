@@ -15,14 +15,8 @@ const ServicingOrdersTableStatusTooltip = ({soNumber}) => {
         let fulfillmentOrders = [];
         setIsLoading(true);
         try {
-            if (URL.isLocalOrDevOrQA()) {
-                const {fulfillmentOrders: fo} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
-                    soNumber
-                );
-                fulfillmentOrders = fo;
-            } else {
-                fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(soNumber);
-            }
+            const {fulfillmentOrders: fo} = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(soNumber);
+            fulfillmentOrders = fo;
         } catch (e) {
             setIsError(true);
         }

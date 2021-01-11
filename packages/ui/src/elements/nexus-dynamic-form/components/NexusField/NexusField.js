@@ -260,6 +260,7 @@ const NexusField = ({
     };
 
     const required = !!(checkDependencies('required') || isRequired);
+
     return (
         <ErrorBoundary>
             <div

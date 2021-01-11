@@ -44,60 +44,36 @@ const ServicingOrder = ({match}) => {
     const fetchFulfillmentOrders = async servicingOrder => {
         if (servicingOrder.so_number) {
             try {
-                if (URL.isLocalOrDevOrQA()) {
-                    const {
-                        fulfillmentOrders,
-                        servicingOrderItems,
-                    } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
+                const {
+                    fulfillmentOrders,
+                    servicingOrderItems,
+                } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
-                    let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
+                let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
 
-                    fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
-                    setDeteErrors(fulfillmentOrdersClone.errors || []);
+                fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
+                setDeteErrors(fulfillmentOrdersClone.errors || []);
 
+                setServiceOrder({
+                    ...servicingOrder,
+                    fulfillmentOrders: showLoading(fulfillmentOrdersClone),
+                    servicingOrderItems,
+                });
+                const barcodes = getBarCodes(fulfillmentOrdersClone);
+                fetchAssetInfo(barcodes).then(assetInfo => {
+                    const newFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
                     setServiceOrder({
                         ...servicingOrder,
-                        fulfillmentOrders: showLoading(fulfillmentOrdersClone),
+                        fulfillmentOrders: newFulfillmentOrders,
                         servicingOrderItems,
                     });
-                    const barcodes = getBarCodes(fulfillmentOrdersClone);
-                    fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrdersClone, assetInfo[0]);
-                        setServiceOrder({
-                            ...servicingOrder,
-                            fulfillmentOrders: newFulfillmentOrders,
-                            servicingOrderItems,
-                        });
-                        // Todo remove below comments after nothing is broken in SO page. kbora
-                        // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                        // setSelectedOrder(newFulfillmentOrders[0]);
-                        setComponents(assetInfo[1]);
-                    });
+                    // Todo remove below comments after nothing is broken in SO page. kbora
+                    // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
+                    // setSelectedOrder(newFulfillmentOrders[0]);
+                    setComponents(assetInfo[1]);
+                });
 
-                    setSelectedFulfillmentOrderID(get(fulfillmentOrdersClone, '[0].id', ''));
-                } else {
-                    const fulfillmentOrders = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(
-                        servicingOrder.so_number
-                    );
-
-                    setServiceOrder({
-                        ...servicingOrder,
-                        ...fulfillmentOrders,
-                    });
-                    /*
-                    Todo : uncomment below when MGM stories are done
-                    const barcodes = getBarCodes(fulfillmentOrders);
-                    fetchAssetInfo(barcodes).then(assetInfo => {
-                        const newFulfillmentOrders = populateAssetInfo(fulfillmentOrders, assetInfo);
-                        setServiceOrder({
-                            ...servicingOrder,
-                            fulfillmentOrders: newFulfillmentOrders,
-                        });
-                        setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
-                    });
-                    */
-                    setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
-                }
+                setSelectedFulfillmentOrderID(get(fulfillmentOrdersClone, '[0].id', ''));
             } catch (e) {
                 setServiceOrder(servicingOrder);
             }
@@ -140,7 +116,7 @@ const ServicingOrder = ({match}) => {
                         getSpecOptions(recipient, source.tenant).then(res => {
                             recp = {
                                 ...recp,
-                                [recipient]: get(res, 'outputFormats', []).map(item => item.outputTemplateName),
+                                [recipient]: get(res, 'outputFormats', []).map(item => item.externalMapExternalId),
                             };
                             setRecipientsOptions(prevState => {
                                 return {...prevState, ...recp};

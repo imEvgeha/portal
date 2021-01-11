@@ -153,7 +153,11 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 ({queryParamName, javaVariableName}) => queryParamName === key || javaVariableName === key
             );
             let keyValue = (map && map.queryParamName) || key;
-            if (filtersInBody && map.searchDataType === 'multiselect') {
+            if (key === 'selected' || key === 'withdrawn') {
+                keyValue = `${key}FlattenList`;
+                value = value.split(',').map(v => `${v}true`.trim());
+            }
+            if (filtersInBody && (map.searchDataType === 'multiselect' || map.searchDataType === 'stringToArray')) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array

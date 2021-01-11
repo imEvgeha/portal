@@ -41,22 +41,24 @@ const InputForm = ({
     const isStudio = !isEmpty(ingestData) && (ingestType === EMAIL || ingestLicensor);
 
     const templates = [
-        {label: 'Use International Template', value: INTERNATIONAL, disabled: isStudio, testId: isStudio && 'disabled'},
+        {
+            label: 'Use International Template',
+            value: INTERNATIONAL,
+            testId: isStudio && 'disabled',
+        },
         {
             label: 'Use US Template',
             value: USMASTER,
-            disabled: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US),
             testId: !isEmpty(ingestData) && (isStudio || ingestServiceRegion !== US) && 'disabled',
         },
         {
             label: 'Use Studio Template',
             value: STUDIO,
-            disabled: !isEmpty(ingestData) && !isStudio,
             testId: !isEmpty(ingestData) && !isStudio && 'disabled',
         },
     ];
 
-    const initialTemplate = templates.find(t => !t.disabled);
+    const initialTemplate = templates.find(t => t.testId !== 'disabled');
     const [template, setTemplate] = useState(initialTemplate.value);
 
     const getLicensor = template === STUDIO &&
@@ -222,7 +224,6 @@ const InputForm = ({
                         onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                        isDisabled={(template !== STUDIO && !isShowingCatalogType) || ingestLicensor}
                         placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
@@ -234,7 +235,6 @@ const InputForm = ({
                         onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}
-                        isDisabled={ingestServiceRegion || template === USMASTER || (template === STUDIO && !licensor)}
                         placeholder="Select"
                         {...selectProps}
                     />
