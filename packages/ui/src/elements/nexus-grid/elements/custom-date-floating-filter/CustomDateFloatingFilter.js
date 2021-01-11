@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ISODateToView, dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
+import {dateToISO} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import NexusTooltip from '../../../nexus-tooltip/NexusTooltip';
 import './CustomDateFloatingFilter.scss';
@@ -43,7 +43,7 @@ class CustomDateFloatingFilter extends React.Component {
         } = this.props;
 
         const type = isUsingTime ? DATETIME_FIELDS.TIMESTAMP : DATETIME_FIELDS.REGIONAL_MIDNIGHT;
-        const fromDate = from ? `From: ${ISODateToView(from, type)} ` : '';
+        const fromDate = from ? `From: ${dateToISO(from)} ` : '';
         const toDate = to ? `To: ${dateToISO(to)}` : '';
         const dateRange = `${fromDate}${toDate}`;
         return (

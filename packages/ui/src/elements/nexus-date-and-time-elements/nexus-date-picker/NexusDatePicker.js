@@ -31,14 +31,8 @@ const NexusDatePicker = ({
     isRequired,
     ...restProps
 }) => {
-    // setting hour -2 (to show correct day) in case of endDate, as it shows next date in case of endDate like 2020-05-04:23:59:59
-    const correctedDate = value
-        ? moment(value).hour() === 1
-            ? // eslint-disable-next-line no-magic-numbers
-              moment(value).subtract(2, 'hours').utc(!isUtc(value)).toISOString()
-            : value
-        : '';
-    const [date, setDate] = useState(correctedDate);
+    // format date without utc to show local time on picker
+    const [date, setDate] = useState(value ? moment(value).utc().toISOString() : '');
     const [isSimulcast, setIsSimulcast] = useState(false);
 
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
@@ -63,9 +57,9 @@ const NexusDatePicker = ({
             !isWithInlineEdit &&
                 onChange(
                     isTimestamp
-                        ? moment(date).utc(!isUtc(date)).toISOString()
+                        ? moment(date).utc().toISOString()
                         : `${moment(date)
-                              .utc(!isUtc(date))
+                              .utc()
                               .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
                 );
         } else {
