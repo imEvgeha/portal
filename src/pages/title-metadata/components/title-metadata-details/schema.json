@@ -59,6 +59,24 @@
                                 }
                             ]
                         },
+                        "metadataStatus": {
+                            "name": "Metadata Status",
+                            "type": "select",
+                            "path": "metadataStatus",
+                            "isRequired": true,
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Pending",
+                                        "value": "Pending"
+                                    },
+                                    {
+                                        "label": "Complete",
+                                        "value": "Complete"
+                                    }
+                                ]
+                            }
+                        },
                         "animated": {
                             "name": "Animated",
                             "type": "boolean",
