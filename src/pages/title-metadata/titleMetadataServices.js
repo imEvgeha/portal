@@ -48,6 +48,24 @@ export const generateMsvIds = (id, licensor, licensee) => {
         });
 };
 
+export const regenerateAutoDecoratedMetadata = masterEmet => {
+    const body = [
+        {
+            itemIndex: null,
+            body: masterEmet,
+        },
+    ];
+
+    return titleService
+        .updateEditorialMetadata(body)
+        .then(response => {
+            // add toast
+        })
+        .catch(err => {
+            // add toast
+        });
+};
+
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};

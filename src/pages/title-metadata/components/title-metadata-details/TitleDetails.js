@@ -13,13 +13,8 @@ import {
     updateTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds} from '../../titleMetadataServices';
-import {
-    handleEditorialGenres,
-    prepareValuesForTitleUpdate,
-    updateTerritoryMetadata,
-    updateEditorialMetadata,
-} from '../../utils';
+import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
+import {handleEditorialGenres, updateTerritoryMetadata, updateEditorialMetadata} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -85,6 +80,7 @@ const TitleDetails = ({
                 selectValues={selectValues}
                 onSubmit={values => onSubmit(values)}
                 generateMsvIds={generateMsvIds}
+                regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
             />
         </div>
     );

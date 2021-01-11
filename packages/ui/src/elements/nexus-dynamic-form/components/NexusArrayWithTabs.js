@@ -26,6 +26,7 @@ const NexusArrayWithTabs = ({
     name,
     generateMsvIds,
     searchPerson,
+    regenerateAutoDecoratedMetadata,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -337,8 +338,12 @@ const NexusArrayWithTabs = ({
         return false;
     };
 
-    const regenerateAutoDecoratedMetadata = () => {
-        // todo: write this function
+    const handleRegenerateAutoDecoratedMetadata = () => {
+        const usEnData = get(groupedData, 'US en');
+        if (usEnData) {
+            const masterEmet = usEnData.find(data => data.hasGeneratedChildren);
+            if (masterEmet) regenerateAutoDecoratedMetadata({...masterEmet});
+        }
     };
 
     const setValueForEachField = () => {
@@ -400,7 +405,7 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={regenerateAutoDecoratedMetadata}>
+                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata}>
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
@@ -436,6 +441,7 @@ NexusArrayWithTabs.propTypes = {
     name: PropTypes.string.isRequired,
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
+    regenerateAutoDecoratedMetadata: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -451,6 +457,7 @@ NexusArrayWithTabs.defaultProps = {
     subTabs: [],
     generateMsvIds: undefined,
     searchPerson: undefined,
+    regenerateAutoDecoratedMetadata: undefined,
 };
 
 export default NexusArrayWithTabs;

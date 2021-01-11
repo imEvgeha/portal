@@ -217,6 +217,7 @@ export const buildSection = (
     getValues,
     view,
     generateMsvIds,
+    regenerateAutoDecoratedMetadata,
     {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs}
 ) => {
     return (
@@ -251,6 +252,7 @@ export const buildSection = (
                             tabs={tabs}
                             subTabs={subTabs}
                             generateMsvIds={generateMsvIds}
+                            regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                             searchPerson={searchPerson}
                             {...fields[key]}
                         />
