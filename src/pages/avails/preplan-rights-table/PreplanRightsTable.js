@@ -12,7 +12,8 @@ import {
     planTerritoriesMapping,
     territoriesColumn,
     territoriesMapping,
-    COLUMN_POSITION,
+    COLUMNS_TO_REORDER,
+    INSERT_FROM,
 } from './constants';
 
 const PrePlanGrid = compose(withColumnsResizing(), withSideBar(), withEditableColumns())(NexusGrid);
@@ -52,13 +53,6 @@ const PreplanRightsTable = ({
                 setPrePlanGridApi(api);
                 break;
             }
-            case GRID_EVENTS.FIRST_DATA_RENDERED: {
-                const idIndex = columnDefs.findIndex(e => e.field === 'id');
-                // move column to position of id col position + 7 because we use columnDefs from RightsRepo
-                columnApi.moveColumn('territory', idIndex + COLUMN_POSITION);
-                columnApi.moveColumn('territoryAll', idIndex + COLUMN_POSITION);
-                break;
-            }
             case GRID_EVENTS.CELL_VALUE_CHANGED:
                 api.forEachNode(({data = {}}) => {
                     const {territory} = data || {};
@@ -74,10 +68,22 @@ const PreplanRightsTable = ({
         }
     };
 
+    const reorderColumns = defs => {
+        const updatedColumnDefs = [...defs];
+        COLUMNS_TO_REORDER.forEach((colHeader, headerIndex) => {
+            const index = updatedColumnDefs.findIndex(el => el.headerName === colHeader);
+            if (index >= 0) {
+                updatedColumnDefs.splice(INSERT_FROM + headerIndex, 0, updatedColumnDefs[index]);
+                updatedColumnDefs.splice(index, 1);
+            }
+        });
+        return updatedColumnDefs;
+    };
+
     return (
         <PrePlanGrid
             id="prePlanRightsRepo"
-            columnDefs={[...filteredColumnDefs, planTerritoriesColumn, territoriesColumn]}
+            columnDefs={reorderColumns([...filteredColumnDefs, planTerritoriesColumn, territoriesColumn])}
             singleClickEdit
             rowSelection="multiple"
             suppressRowClickSelection={true}

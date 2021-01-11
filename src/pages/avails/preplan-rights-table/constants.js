@@ -37,3 +37,5 @@ export const territoriesColumn = {
 };
 
 export const COLUMN_POSITION = 7;
+export const COLUMNS_TO_REORDER = ['Plan Territories', 'Keywords', 'Selected', 'Withdrawn', 'All Territories'];
+export const INSERT_FROM = 3;

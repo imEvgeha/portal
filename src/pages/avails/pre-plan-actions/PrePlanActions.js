@@ -65,9 +65,17 @@ export const PrePlanActions = ({
         clickHandler();
     };
 
+    const checkAllSelected = () => {
+        const updatedSelectedPrePlanRights = selectedPrePlanRights.filter(right => {
+            const unselectedTerritory = right.territory.filter(t => !t.selected);
+            return unselectedTerritory.length;
+        });
+        setPreplanRights({[username]: [...updatedSelectedPrePlanRights]});
+    };
+
     const addToSelectedForPlanning = () => {
         const selectedList = selectedPrePlanRights.every(right => {
-            return right['territory'].some(t => t.selected);
+            return right['territory'].some(t => t.selected && t.hasOwnProperty('isDirty'));
         });
         if (!selectedList) {
             addToast({
@@ -126,6 +134,9 @@ export const PrePlanActions = ({
                                 const projectId = res.id;
                                 Promise.all(
                                     mergedWithSelectedRights.map(right => {
+                                        right.territory.forEach(terr => {
+                                            delete terr.isDirty;
+                                        });
                                         return rightsService.update(right, right.id);
                                     })
                                 )
@@ -133,7 +144,9 @@ export const PrePlanActions = ({
                                         DOPService.startProject(projectId)
                                             .then(() => {
                                                 dispatchSuccessToast(eligibleRights.length);
-                                                removeRightsFromPrePlan(false);
+                                                checkAllSelected();
+                                                setSelectedPrePlanRights([]);
+                                                clickHandler();
                                                 setIsFetchDOP(false);
                                             })
                                             .catch(() => {
