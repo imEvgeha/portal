@@ -190,6 +190,7 @@ const NexusArray = ({
         checkFieldDependencies('required', view, dependencies, {formData: getValues(), config, isEditable}) ||
         isRequired
     );
+
     const readOnly = !!(
         checkFieldDependencies('readOnly', view, dependencies, {formData: getValues(), config, isEditable}) ||
         isReadOnly
