@@ -205,7 +205,7 @@ const NexusArray = ({
                 {({fieldProps, error}) => (
                     <>
                         {renderLabel(name, required, tooltip)}
-                        {renderError(error)}
+                        {error && renderError(error)}
                         {validationError && <div>{validationError}</div>}
                     </>
                 )}
