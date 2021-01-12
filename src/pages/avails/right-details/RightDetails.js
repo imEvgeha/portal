@@ -8,8 +8,13 @@ import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
-
 import './RightDetails.scss';
+
+/*
+ The new right details page implementation:
+ - uses NexusDynamicForm, which uses a schema to display
+ and configure edit/view form fields
+*/
 
 const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
     const containerRef = useRef();
