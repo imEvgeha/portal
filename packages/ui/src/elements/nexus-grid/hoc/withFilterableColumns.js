@@ -246,7 +246,6 @@ const withFilterableColumns = ({
                                     values: [false, true],
                                 };
                                 break;
-                            case INTEGER:
                             case DOUBLE:
                             case YEAR:
                                 columnDef.filter = NUMBER;
