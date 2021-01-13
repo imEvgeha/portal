@@ -75,7 +75,7 @@ export const PrePlanActions = ({
 
     const addToSelectedForPlanning = () => {
         const selectedList = selectedPrePlanRights.every(right => {
-            return right['territory'].some(t => t.selected && t.hasOwnProperty('isDirty'));
+            return right['territory'].some(t => t.selected);
         });
         if (!selectedList) {
             addToast({
