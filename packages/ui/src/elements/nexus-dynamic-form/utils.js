@@ -342,5 +342,9 @@ export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
 };
 
 export const renderError = (fieldProps, error) => {
-    return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
+    return (
+        <div className="nexus-c-field__error">
+            <ErrorMessage>{error}</ErrorMessage>
+        </div>
+    );
 };
