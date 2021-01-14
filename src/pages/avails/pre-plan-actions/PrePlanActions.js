@@ -66,11 +66,11 @@ export const PrePlanActions = ({
     };
 
     const checkAllSelected = () => {
-        const updatedSelectedPrePlanRights = selectedPrePlanRights.filter(right => {
+        const updatedPrePlanRepoRights = prePlanRepoRights.filter(right => {
             const unselectedTerritory = right.territory.filter(t => !t.selected);
             return unselectedTerritory.length;
         });
-        setPreplanRights({[username]: [...updatedSelectedPrePlanRights]});
+        setPreplanRights({[username]: [...updatedPrePlanRepoRights]});
     };
 
     const addToSelectedForPlanning = () => {
