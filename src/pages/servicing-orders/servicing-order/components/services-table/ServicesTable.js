@@ -174,7 +174,7 @@ const ServicesTable = ({
                 >
                     {tableData[rowIndex] &&
                         Object.keys(
-                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig || v.format])
+                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig || v.type])
                         ).map(item => <Tag key={item} text={item} />)}
                 </div>
             </Tooltip>
