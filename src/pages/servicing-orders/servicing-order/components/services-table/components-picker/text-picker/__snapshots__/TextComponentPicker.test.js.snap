@@ -8,29 +8,29 @@ exports[`TextSummaryPanel should match snapshot 1`] = `
     Text Service Summary
   </Component>
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
-    content="ENGLISH, testCC, Component ID 123"
+    content="ENGLISH, undefined, Component ID 123"
     key="123"
   >
     <ListItem
-      item="ENGLISH  testCC"
+      item="ENGLISH  undefined"
       onDelete={[Function]}
     />
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
-    content="FRENCH, testSubtitle, Component ID 12356"
+    content="FRENCH, undefined, Component ID 12356"
     key="12356"
   >
     <ListItem
-      item="FRENCH  testSubtitle"
+      item="FRENCH  undefined"
       onDelete={[Function]}
     />
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
   <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
-    content="DANISH, testCC, Component ID 123654"
+    content="DANISH, undefined, Component ID 123654"
     key="123654"
   >
     <ListItem
-      item="DANISH  testCC"
+      item="DANISH  undefined"
       onDelete={[Function]}
     />
   </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
