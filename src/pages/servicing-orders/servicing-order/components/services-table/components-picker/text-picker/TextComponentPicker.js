@@ -11,7 +11,7 @@ import {TEXT_COMP_EXISTS, TEXT_COMP_NOTFOUND} from '../constants';
 import './TextComponentPicker.scss';
 
 const SelectionPanel = ({data}) => {
-    const {languageOptions, formatOptions, language, setLanguage, format, setFormat} = data;
+    const {languageOptions, typeOptions, language, setLanguage, format, setFormat} = data;
 
     return (
         <div>
@@ -34,7 +34,7 @@ const SelectionPanel = ({data}) => {
                         id="track-select"
                         name="track-select"
                         className="text-picker__select"
-                        options={formatOptions}
+                        options={typeOptions}
                         value={format}
                         onChange={val => setFormat(val)}
                     />
@@ -46,7 +46,7 @@ const SelectionPanel = ({data}) => {
 
 const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
     const [language, setLanguage] = useState('');
-    const [format, setFormat] = useState('');
+    const [type, setType] = useState('');
     const [componentId, setComponentId] = useState('');
     const [components, setComponents] = useState([]);
     const [warningText, setWarningText] = useState('');
@@ -64,11 +64,11 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
         []
     );
 
-    const formatOptions = useMemo(
+    const typeOptions = useMemo(
         () =>
             uniqBy(
                 componentArray.map(item => {
-                    const track = get(item, 'format', '');
+                    const track = get(item, 'type', '');
                     return {value: track, label: track};
                 }),
                 'value'
@@ -78,20 +78,20 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
 
     useEffect(() => {
         setLanguage(languageOptions[0]);
-        setFormat(formatOptions[0]);
+        setType(typeOptions[0]);
         setComponents(data.compSummary);
     }, [data]);
 
     useEffect(() => {
         const componentID = get(
-            componentArray.find(item => item.language === language.value && item.format === format.value),
+            componentArray.find(item => item.language === language.value && item.type === type.value),
             'amsComponentId',
             ''
         );
         setComponentId(componentID);
         const doesComponentExistInSummary = components.findIndex(item => item.amsComponentId === componentID) !== -1;
         setWarningText(doesComponentExistInSummary ? TEXT_COMP_EXISTS : '');
-    }, [language, format, components]);
+    }, [language, type, components]);
 
     useEffect(() => {
         !componentId && setWarningText(TEXT_COMP_NOTFOUND);
@@ -102,7 +102,7 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
         components.length !== data.compSummary.length;
 
     const saveComponentsLocally = () => {
-        setComponents([...components, {language: language.value, format: format.value, amsComponentId: componentId}]);
+        setComponents([...components, {language: language.value, type: type.value, amsComponentId: componentId}]);
     };
 
     const removeComponent = compId => {
@@ -111,11 +111,11 @@ const TextComponentsPicker = ({data, closeModal, saveComponentData, index}) => {
 
     const selectionData = {
         languageOptions,
-        formatOptions,
+        typeOptions,
         language,
         setLanguage,
-        format,
-        setFormat,
+        type,
+        setType,
     };
 
     const saveComponentsInRow = () => {
@@ -161,3 +161,4 @@ TextComponentsPicker.propTypes = {
 TextComponentsPicker.defaultProps = {};
 
 export default TextComponentsPicker;
+
