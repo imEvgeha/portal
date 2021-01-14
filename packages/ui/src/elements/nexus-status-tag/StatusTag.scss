@@ -45,7 +45,8 @@
         background: map-get($secondary-colors, yellow);
     }
 
-    &--fo-complete {
+    &--fo-complete,
+    &--fo-accepted {
         background: map-get($secondary-colors, green);
     }
 
