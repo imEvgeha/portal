@@ -5,22 +5,36 @@ import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridAct
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {connect} from 'react-redux';
 import TitleCreate from '../legacy/containers/metadata/dashboard/components/TitleCreateModal'; // replace with new component
+import CatalogueOwner from './components/catalogue-owner/CatalogueOwner';
 import TitleMetadataHeader from './components/title-metadata-header/TitleMetadataHeader';
 import TitleMetadataTable from './components/title-metadata-table/TitleMetadataTable';
-import {CREATE_NEW_TITLE, SYNC_LOG} from './constants';
+import {CREATE_NEW_TITLE, SYNC_LOG, CATALOGUE_OWNER} from './constants';
 import './TitleMetadataView.scss';
 
 export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
     const [showModal, setShowModal] = useState(false);
+    const [catalogueOwner, setCatalogueOwner] = useState({
+        catalogueOwner: CATALOGUE_OWNER,
+    });
 
     const closeModalAndRefreshTable = () => {
         setShowModal(false);
         toggleRefreshGridData(true);
     };
 
+    const changeCatalogueOwner = owner => {
+        setCatalogueOwner(prevState => {
+            return {
+                ...prevState,
+                catalogueOwner: owner,
+            };
+        });
+    };
+
     return (
         <div className="nexus-c-title-metadata">
             <TitleMetadataHeader>
+                <CatalogueOwner setCatalogueOwner={changeCatalogueOwner} />
                 <Button
                     className="nexus-c-title-metadata__create-btn"
                     appearance="primary"
@@ -36,7 +50,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
                     {SYNC_LOG}
                 </Button>
             </TitleMetadataHeader>
-            <TitleMetadataTable history={history} />
+            <TitleMetadataTable history={history} catalogueOwner={catalogueOwner} />
             <TitleCreate display={showModal} toggle={closeModalAndRefreshTable} />
         </div>
     );

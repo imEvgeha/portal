@@ -12,7 +12,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {compose} from 'redux';
-import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT} from '../../constants';
+import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT, CATALOGUE_OWNER} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -25,7 +25,7 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = ({history}) => {
+const TitleMetadataTable = ({history, catalogueOwner}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -119,6 +119,7 @@ const TitleMetadataTable = ({history}) => {
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
+                externalFilter={catalogueOwner}
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
@@ -127,10 +128,12 @@ const TitleMetadataTable = ({history}) => {
 
 TitleMetadataTable.propTypes = {
     history: PropTypes.object,
+    catalogueOwner: PropTypes.string,
 };
 
 TitleMetadataTable.defaultProps = {
     history: {},
+    catalogueOwner: CATALOGUE_OWNER,
 };
 
 export default TitleMetadataTable;

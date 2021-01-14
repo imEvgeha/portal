@@ -1,0 +1,13 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
+
+.nexus-c-catalogue-owner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nexus-c-catalogue-owner-select {
+    @include addSpacing('width', 40);
+    @include margin(0, 10, 0, 2.5);
+}
