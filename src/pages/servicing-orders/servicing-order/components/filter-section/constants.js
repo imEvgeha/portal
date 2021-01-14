@@ -28,6 +28,7 @@ export const COLUMN_KEYS = [
     'secondaryAudio',
     'subtitlesFull',
     'subtitlesForced',
+    'closedCaptions',
     'trailer',
     'metaData',
     'artWork',
