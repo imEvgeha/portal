@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
+import {sortByDateFn} from '../../../util/date-time/DateTimeUtils';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -24,7 +23,6 @@ const ServicingOrder = ({match}) => {
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
     const [components, setComponents] = useState([]);
-    const [deteErrors, setDeteErrors] = useState([]);
     const [recipientsOptions, setRecipientsOptions] = useState({});
 
     // this piece of state is used for when a service is updated in the services table
@@ -52,7 +50,6 @@ const ServicingOrder = ({match}) => {
                 let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
 
                 fulfillmentOrdersClone = sortByDateFn(fulfillmentOrdersClone, 'definition.dueDate');
-                setDeteErrors(fulfillmentOrdersClone.errors || []);
 
                 setServiceOrder({
                     ...servicingOrder,
@@ -94,7 +91,6 @@ const ServicingOrder = ({match}) => {
                     payload: { id: servicingOrder.so_number },
                 });
                 const { fulfillmentOrders, servicingOrderItems, components } = serviceOrder2;
-
                 setServiceOrder({...servicingOrder, fulfillmentOrders, servicingOrderItems});
                 setComponents(components);
                 setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
@@ -138,7 +134,7 @@ const ServicingOrder = ({match}) => {
 
     const isFormDisabled = selectedOrder => {
         const {readiness, tenant} = selectedOrder;
-        return readiness === 'READY' || tenant === 'WB';
+        return readiness === 'READY' || readiness === 'ON_HOLD' || tenant === 'WB';
     };
 
     const cancelEdit = () => {
@@ -181,7 +177,7 @@ const ServicingOrder = ({match}) => {
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
                             components={components}
-                            deteErrors={deteErrors}
+                            deteErrors={selectedOrder.errors || []}
                             externalId={selectedOrder.external_id}
                         />
                     )}
