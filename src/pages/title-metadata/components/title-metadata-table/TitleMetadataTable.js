@@ -12,7 +12,7 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {compose} from 'redux';
-import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT, CATALOGUE_OWNER} from '../../constants';
+import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT, DEFAULT_CATALOGUE_OWNER} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -133,7 +133,7 @@ TitleMetadataTable.propTypes = {
 
 TitleMetadataTable.defaultProps = {
     history: {},
-    catalogueOwner: CATALOGUE_OWNER,
+    catalogueOwner: DEFAULT_CATALOGUE_OWNER,
 };
 
 export default TitleMetadataTable;
