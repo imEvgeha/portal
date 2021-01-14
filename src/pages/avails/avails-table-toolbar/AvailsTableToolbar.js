@@ -50,6 +50,8 @@ const AvailsTableToolbar = ({
                     setPreplanRights={setPreplanRights}
                     prePlanRepoRights={prePlanRepoRights}
                     username={username}
+                    singleRightMatch={singleRightMatch}
+                    setSingleRightMatch={setSingleRightMatch}
                 />
             ) : (
                 <SelectedRightsActions
