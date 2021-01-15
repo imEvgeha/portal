@@ -195,7 +195,7 @@ export const getProperValue = (type, value, path, schema) => {
             if (!value) {
                 val = [];
             } else {
-                val = Array.isArray(value) ? value : [value];
+                val = Array.isArray(value) ? value : value.split(',').map(strValue => strValue.trim());
             }
             break;
         case 'array':
