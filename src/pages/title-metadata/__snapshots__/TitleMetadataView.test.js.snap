@@ -28,7 +28,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataTable
     catalogueOwner={
       Object {
-        "catalogueOwner": "VU",
+        "tenantCode": "vu",
       }
     }
     history={Object {}}
