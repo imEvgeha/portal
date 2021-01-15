@@ -11,8 +11,15 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
 import {compose} from 'redux';
-import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT, DEFAULT_CATALOGUE_OWNER} from '../../constants';
+import {
+    COLUMN_MAPPINGS,
+    NEXUS,
+    LEGACY_TOOLTIP_TEXT,
+    DEFAULT_CATALOGUE_OWNER,
+    REPOSITORY_COLUMN_ID,
+} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -40,7 +47,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                 },
             };
         }
-        if (mapping.colId === 'repository') {
+        if (mapping.colId === REPOSITORY_COLUMN_ID) {
             return {
                 ...mapping,
                 cellRendererFramework: params => {
@@ -74,6 +81,13 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         };
     });
 
+    const [columnApi, setColumnApi] = useState(null);
+    if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER && columnApi) {
+        columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
+    } else if (columnApi) {
+        columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
+    }
+
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -102,6 +116,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
+                setColumnApi(columnApi);
                 break;
             }
             default:

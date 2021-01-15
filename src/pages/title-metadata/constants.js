@@ -13,6 +13,7 @@ export const CATALOGUE_OWNER_OPTIONS = [
 ];
 export const CATALOGUE_OWNER_DROPDOWN_PLACEHOLDER = 'Select Catalogue Owner';
 export const DEFAULT_CATALOGUE_OWNER = 'vu';
+export const REPOSITORY_COLUMN_ID = 'repository';
 
 export const COLUMN_MAPPINGS = [
     {
