@@ -512,7 +512,7 @@
                         "releaseHistoryOriginal": {
                             "name": "Release History Original",
                             "type": "datetime",
-                            "dateType": "timestamp",
+                            "dateType": "businessDateTime",
                             "path": "releaseHistoryOriginal"
                         },
                         "releaseHistoryPhysicalHV": {
