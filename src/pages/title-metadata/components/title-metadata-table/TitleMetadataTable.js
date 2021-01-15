@@ -128,7 +128,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
 
 TitleMetadataTable.propTypes = {
     history: PropTypes.object,
-    catalogueOwner: PropTypes.string,
+    catalogueOwner: PropTypes.object,
 };
 
 TitleMetadataTable.defaultProps = {
