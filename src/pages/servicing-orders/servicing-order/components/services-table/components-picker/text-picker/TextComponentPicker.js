@@ -11,7 +11,7 @@ import {TEXT_COMP_EXISTS, TEXT_COMP_NOTFOUND} from '../constants';
 import './TextComponentPicker.scss';
 
 const SelectionPanel = ({data}) => {
-    const {languageOptions, typeOptions, language, setLanguage, format, setFormat} = data;
+    const {languageOptions, typeOptions, language, setLanguage, type, setType} = data;
 
     return (
         <div>
@@ -35,8 +35,8 @@ const SelectionPanel = ({data}) => {
                         name="track-select"
                         className="text-picker__select"
                         options={typeOptions}
-                        value={format}
-                        onChange={val => setFormat(val)}
+                        value={type}
+                        onChange={val => setType(val)}
                     />
                 </div>
             </div>
