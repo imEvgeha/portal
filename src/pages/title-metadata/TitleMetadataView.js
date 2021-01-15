@@ -14,7 +14,7 @@ import './TitleMetadataView.scss';
 export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
     const [showModal, setShowModal] = useState(false);
     const [catalogueOwner, setCatalogueOwner] = useState({
-        catalogueOwner: DEFAULT_CATALOGUE_OWNER,
+        tenantCode: DEFAULT_CATALOGUE_OWNER,
     });
 
     const closeModalAndRefreshTable = () => {
@@ -26,7 +26,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
         setCatalogueOwner(prevState => {
             return {
                 ...prevState,
-                catalogueOwner: owner,
+                tenantCode: owner,
             };
         });
     };

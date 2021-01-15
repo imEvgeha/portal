@@ -8,11 +8,11 @@ export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'S
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
 export const CATALOGUE_OWNER_OPTIONS = [
-    {label: 'Vubiquity', value: 'VU'},
-    {label: 'MGM', value: 'MGM'},
+    {label: 'Vubiquity', value: 'vu'},
+    {label: 'MGM', value: 'mgm'},
 ];
 export const CATALOGUE_OWNER_DROPDOWN_PLACEHOLDER = 'Select Catalogue Owner';
-export const DEFAULT_CATALOGUE_OWNER = 'VU';
+export const DEFAULT_CATALOGUE_OWNER = 'vu';
 
 export const COLUMN_MAPPINGS = [
     {
