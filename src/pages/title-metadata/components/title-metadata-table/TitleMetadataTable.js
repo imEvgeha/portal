@@ -82,10 +82,13 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
     });
 
     const [columnApi, setColumnApi] = useState(null);
-    if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER && columnApi) {
-        columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
-    } else if (columnApi) {
-        columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
+
+    if (columnApi) {
+        if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER) {
+            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
+        } else {
+            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
+        }
     }
 
     const [paginationData, setPaginationData] = useState({
