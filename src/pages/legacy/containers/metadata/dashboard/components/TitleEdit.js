@@ -585,9 +585,7 @@ class TitleEdit extends Component {
     checkSyncResult = titleSystem => {
         this.state.externalIDs.forEach(externalId => {
             if (externalId.externalSystem === titleSystem) {
-                externalId.errors === null || externalId.errors.length === 0
-                    ? this.addToastToFlags(true)
-                    : this.addToastToFlags(false);
+                get(externalId, 'errors.length', 0) === 0 ? this.addToastToFlags(true) : this.addToastToFlags(false);
             }
         });
     };
