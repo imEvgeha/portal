@@ -19,19 +19,19 @@ describe('ArtworkActions', () => {
     });
 
     it('should handle Checkbox select all', () => {
-        wrapper.find('WithAnalyticsContext(WithAnalyticsEvents(Checkbox))').props().onChange();
+        wrapper.find('Checkbox').props().onChange();
         expect(setItemMock).toHaveBeenCalled();
     });
 
     it('should display Reject all button when few items are selected', () => {
         wrapper.setProps({selectedItems: 2});
         wrapper.update();
-        expect(wrapper.find('WithAnalyticsContext(WithAnalyticsEvents(Button))').length).toEqual(1);
+        expect(wrapper.find('Button').length).toEqual(1);
     });
 
     it('should not display Reject all button when no items are selected', () => {
         wrapper.setProps({selectedItems: 0});
         wrapper.update();
-        expect(wrapper.find('WithAnalyticsContext(WithAnalyticsEvents(Button))').length).toEqual(0);
+        expect(wrapper.find('Button').length).toEqual(0);
     });
 });
