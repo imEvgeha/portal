@@ -229,6 +229,12 @@ const NexusArrayWithTabs = ({
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
             width: 'medium',
         });
+        const currentValues = getCurrentFormData();
+        const updatedCurrentData = {
+            ...currentData,
+            ...currentValues,
+        };
+        setCurrentData(updatedCurrentData);
     };
 
     const handleValuesFormat = values => {
@@ -347,6 +353,7 @@ const NexusArrayWithTabs = ({
     };
 
     const setValueForEachField = () => {
+        if (currentData === null) return;
         const current = currentData || data[0];
         Object.keys(fields).forEach(key => {
             const fieldPath = fields[key].path;
