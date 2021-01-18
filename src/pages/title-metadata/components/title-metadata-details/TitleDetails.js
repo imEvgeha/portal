@@ -1,10 +1,13 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
+import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
+import {FIELDS_TO_REMOVE} from '../../constants';
 import {
     getTitle,
     getExternalIds,
@@ -50,7 +53,27 @@ const TitleDetails = ({
     const onSubmit = values => {
         const {params} = match || {};
         const {id} = params;
-        updateTitle({...values, id: title.id});
+        // remove fields under arrayWithTabs
+        const {fields} = schema;
+        const innerFields = getAllFields(fields, true);
+        const allFields = getAllFields(fields, false);
+        const valuesNoInnerFields = [];
+
+        // remove innerFields from values
+        Object.keys(values).forEach(key => {
+            const removeFromPayload = get(allFields, `${key}.removeFromPayload`);
+            if (!get(innerFields, key) && !removeFromPayload) {
+                valuesNoInnerFields[key] = values[key];
+            }
+        });
+
+        const updatedValues = [];
+        Object.keys(valuesNoInnerFields).forEach(key => {
+            if (!FIELDS_TO_REMOVE.find(e => e === key)) {
+                updatedValues[key] = values[key];
+            }
+        });
+        updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);
     };

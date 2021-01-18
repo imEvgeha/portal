@@ -252,6 +252,7 @@
                     "fields": {
                         "editorialMetadata": {
                             "name": "Editorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "editorialMetadata",
                             "tabs": ["locale", "language"],
@@ -590,6 +591,7 @@
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "territorialMetadata",
                             "tabs": ["locale"],
