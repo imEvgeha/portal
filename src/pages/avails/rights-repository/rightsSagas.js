@@ -154,10 +154,18 @@ export function* updateRight({payload}) {
     }
 
     try {
+        yield put({
+            type: actionTypes.SAVING,
+            payload: true,
+        });
         const response = yield rightsService.updateRightWithFullData(payload, payload.id, true);
         yield put({
             type: actionTypes.UPDATE_RIGHT_SUCCESS,
             payload: response,
+        });
+        yield put({
+            type: actionTypes.SAVING,
+            payload: false,
         });
         yield put({
             type: ADD_TOAST,
@@ -172,6 +180,10 @@ export function* updateRight({payload}) {
         yield put({
             type: actionTypes.UPDATE_RIGHT_ERROR,
             payload: error,
+        });
+        yield put({
+            type: actionTypes.SAVING,
+            payload: false,
         });
         yield put({
             type: ADD_TOAST,
