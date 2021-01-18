@@ -162,8 +162,7 @@ const formatEditorialBody = (data, titleId, isCreate) => {
     delete body.isDeleted;
     delete body.isCreated;
     if (titleId) body.parentId = titleId;
-    let hasGeneratedChildren = get(body, 'hasGeneratedChildren');
-    if (hasGeneratedChildren === undefined) hasGeneratedChildren = false;
+    const hasGeneratedChildren = get(body, 'hasGeneratedChildren', false);
     return isCreate
         ? [
               {
