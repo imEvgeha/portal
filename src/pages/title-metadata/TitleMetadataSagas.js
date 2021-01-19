@@ -1,3 +1,10 @@
+import {
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+    ERROR_TITLE,
+    ERROR_ICON,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
@@ -7,6 +14,7 @@ import {
     getEditorialMetadataByTitleId,
     updateTitle as updateTitleService,
 } from './titleMetadataServices';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -117,10 +125,28 @@ export function* updateTitle({payload}) {
         const response = yield call(updateTitleService, payload);
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TITLE_SUCCESS,
+            },
+        });
+        yield put({
             type: actionTypes.UPDATE_TITLE_SUCCESS,
             payload: updatedResponse,
         });
     } catch (error) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TITLE_ERROR,
+            },
+        });
         yield put({
             type: actionTypes.UPDATE_TITLE_ERROR,
             payload: error,

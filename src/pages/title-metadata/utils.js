@@ -114,10 +114,12 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
 
 export const handleTitleCategory = data => {
     let newData = cloneDeep(data.category);
-    newData = newData.map(record => {
-        const {name} = record;
-        return name;
-    });
+    newData =
+        newData &&
+        newData.map(record => {
+            const {name} = record;
+            return name;
+        });
     return {
         ...data,
         category: newData,
@@ -166,7 +168,7 @@ export const updateTerritoryMetadata = async (values, titleId) => {
             }
         })
     )
-        .then(() => {
+        .then(r => {
             store.dispatch(getTerritoryMetadata({id: titleId}));
             const toast = {
                 title: SUCCESS_TITLE,
@@ -236,7 +238,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
             }
         })
     )
-        .then(() => {
+        .then(r => {
             store.dispatch(getEditorialMetadata({id: titleId}));
             const toast = {
                 title: SUCCESS_TITLE,
