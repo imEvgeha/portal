@@ -95,16 +95,28 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
     }
 };
 
-export const handleEditorialGenres = data => {
+export const handleTitleCategory = data => {
+    let newData = cloneDeep(data.category);
+    newData = newData.map(record => {
+        const {name} = record;
+        return name;
+    });
+    return {
+        ...data,
+        category: newData,
+    };
+};
+
+export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
-        const {genres} = record;
-        if (genres) {
-            const formattedGenres = [];
-            genres.forEach(genre => {
-                formattedGenres.push(genre.genre);
+        const field = record[fieldName];
+        if (field) {
+            const formattedValues = [];
+            field.forEach(obj => {
+                formattedValues.push(obj[key]);
             });
-            record.genres = formattedGenres;
+            record[fieldName] = formattedValues;
         }
         return record;
     });
