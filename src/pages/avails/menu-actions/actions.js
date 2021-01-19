@@ -40,13 +40,12 @@ export const hasAtLeastOneUnselectedTerritory = territory => {
 };
 
 export const filterOutUnselectedTerritories = rights => {
-    const filteredSelectedRights = cloneDeep(rights).map(right => {
-        const territoriesUnselected = right.territory.filter(item => !item.selected);
+    return cloneDeep(rights).map(right => {
         return {
             ...right,
-            territory: territoriesUnselected,
+            territorySelected: right.territory.filter(item => item.selected).map(t => t.country),
+            territory: right.territory.filter(item => !item.selected),
             territoryAll: right.territory.map(item => item.country).join(', '),
         };
     });
-    return filteredSelectedRights;
 };
