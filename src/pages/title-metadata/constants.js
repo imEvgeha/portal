@@ -259,18 +259,4 @@ export const COLUMN_MAPPINGS = [
     },
 ];
 
-export const FIELDS_TO_REMOVE = [
-    'editorial',
-    'editorialMetadata',
-    'territorial',
-    'territorialMetadata',
-    'advisoriesFreeText',
-    'advisoriesCode',
-    'rating',
-    'ratingSystem',
-    'movidaExternalIds',
-    'movidaExternalIds.externalTitleId',
-    'movidaExternalIds.titleId',
-    'vzExternalIds',
-    'vzExternalIds.externalTitleId',
-];
+export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];

@@ -151,18 +151,18 @@ export const sortOptions = options => {
     return getSortedData(options, SORT_TYPE, true);
 };
 
-export const getAllFields = schema => {
+export const getAllFields = (schema, onlyInnerFields) => {
     let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
     fields.forEach(section => {
         sectionsFields = {...sectionsFields, ...section};
     });
-    let allFields = sectionsFields;
+    let innerFields = {};
     Object.keys(sectionsFields).forEach(key => {
         const arrayFields = get(sectionsFields[key], 'fields');
-        allFields = {...allFields, ...arrayFields};
+        innerFields = {...innerFields, ...arrayFields};
     });
-    return allFields;
+    return onlyInnerFields ? innerFields : {...sectionsFields, ...innerFields};
 };
 
 export const getFieldValue = fieldProps => {
