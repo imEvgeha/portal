@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {default as AKForm} from '@atlaskit/form';
+import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
 import {merge, set} from 'lodash';
 import moment from 'moment';
@@ -15,6 +15,7 @@ const NexusDynamicForm = ({
     onSubmit,
     isEdit,
     selectValues,
+    isSaving,
     containerRef,
     isTitlePage,
     searchPerson,
@@ -23,22 +24,53 @@ const NexusDynamicForm = ({
 }) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
+    const [validationErrorCount, setValidationErrorCount] = useState(0);
 
     const {fields} = schema;
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
 
-    const buildButtons = (dirty, submitting, reset) => {
+    useEffect(() => {
+        !isSaving && setView(VIEWS.VIEW);
+    }, [isSaving]);
+
+    useEffect(() => {
+        // eslint-disable-next-line prefer-destructuring
+        const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
+        if (firstErrorElement) firstErrorElement.scrollIntoView(false);
+    }, [validationErrorCount]);
+
+    const showValidationError = () => {
+        const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
+        errorsCount && setValidationErrorCount(errorsCount);
+    };
+
+    const onCancel = reset => {
+        reset();
+        setUpdate(true);
+        setView(VIEWS.VIEW);
+        setValidationErrorCount(0);
+    };
+
+    const buildButtons = (dirty, reset, errors) => {
         return view !== VIEWS.VIEW ? (
             <>
+                {errors > 0 && (
+                    <div className="nexus-c-dynamic-form__validation-msg">
+                        <ErrorMessage>{errors} errors on page</ErrorMessage>
+                    </div>
+                )}
                 <Button
                     type="submit"
                     className={classnames('nexus-c-dynamic-form__submit-button', {
                         'nexus-c-dynamic-form__submit-button--title': isTitlePage,
                     })}
                     appearance="primary"
-                    isDisabled={!dirty || submitting}
+                    isDisabled={!dirty}
+                    // this is a form submit button and hence validation check will not work on submit function
+                    onClick={showValidationError}
+                    isLoading={isSaving}
                 >
                     Save changes
                 </Button>
@@ -46,11 +78,7 @@ const NexusDynamicForm = ({
                     className={classnames('nexus-c-dynamic-form__cancel-button', {
                         'nexus-c-dynamic-form__cancel-button--title': isTitlePage,
                     })}
-                    onClick={() => {
-                        reset();
-                        setUpdate(true);
-                        setView(VIEWS.VIEW);
-                    }}
+                    onClick={() => onCancel(reset)}
                 >
                     Cancel
                 </Button>
@@ -83,8 +111,8 @@ const NexusDynamicForm = ({
     };
 
     const handleOnSubmit = (values, initialData) => {
+        setValidationErrorCount(0);
         if (validDateRange(values)) {
-            setView(VIEWS.VIEW);
             const properValues = getProperValues(fields, values);
             const correctValues = {};
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
@@ -95,9 +123,9 @@ const NexusDynamicForm = ({
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
-                {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
+                {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {buildButtons(dirty, submitting, reset)}
+                        {buildButtons(dirty, reset, validationErrorCount)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
@@ -166,6 +194,7 @@ NexusDynamicForm.propTypes = {
     isTitlePage: PropTypes.bool,
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
+    isSaving: PropTypes.bool,
     regenerateAutoDecoratedMetadata: PropTypes.func,
 };
 
@@ -178,6 +207,7 @@ NexusDynamicForm.defaultProps = {
     isTitlePage: false,
     searchPerson: undefined,
     generateMsvIds: undefined,
+    isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
 };
 

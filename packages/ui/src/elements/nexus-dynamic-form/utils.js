@@ -195,7 +195,7 @@ export const getProperValue = (type, value, path, schema) => {
             if (!value) {
                 val = [];
             } else {
-                val = Array.isArray(value) ? value : [value];
+                val = Array.isArray(value) ? value : value.split(',').map(strValue => strValue.trim());
             }
             break;
         case 'array':
@@ -344,5 +344,9 @@ export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
 };
 
 export const renderError = (fieldProps, error) => {
-    return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
+    return (
+        <div className="nexus-c-field__error">
+            <ErrorMessage>{error}</ErrorMessage>
+        </div>
+    );
 };

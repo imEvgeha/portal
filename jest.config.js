@@ -152,7 +152,7 @@ module.exports = {
     // ],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-    testPathIgnorePatterns: ['<rootDir>/webpack/webpack.test.js', '\\\\node_modules\\\\'],
+    testPathIgnorePatterns: ['<rootDir>/webpack/webpack.test.js', '\\\\node_modules\\\\', '<rootDir>/packages/'],
 
     // The regexp pattern or array of patterns that Jest uses to detect test files
     // testRegex: [],

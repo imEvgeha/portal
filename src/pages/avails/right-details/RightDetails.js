@@ -16,7 +16,7 @@ import './RightDetails.scss';
  and configure edit/view form fields
 */
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, history}) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -39,6 +39,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
                 isEdit
                 onSubmit={values => onSubmit(values)}
                 selectValues={selectValues}
+                isSaving={isSaving}
                 containerRef={containerRef}
                 searchPerson={searchPerson}
             />
@@ -52,6 +53,7 @@ RightDetails.propTypes = {
     right: PropTypes.object,
     match: PropTypes.object,
     selectValues: PropTypes.object,
+    isSaving: PropTypes.bool,
     history: PropTypes.object,
 };
 
@@ -61,6 +63,7 @@ RightDetails.defaultProps = {
     right: {},
     match: {},
     selectValues: {},
+    isSaving: false,
     history: {},
 };
 
@@ -70,6 +73,7 @@ const mapStateToProps = () => {
     return (state, props) => ({
         right: rightSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isSaving: detailsSelectors.isSavingSelector(state),
     });
 };
 

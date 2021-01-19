@@ -22,6 +22,7 @@ export default {
         COMPLETE: 'Complete',
         CANCELLED: 'Cancelled',
         FAILED: 'Failed',
+        ACCEPTED: 'Accepted',
     },
     READINESS_STATUS: [
         {value: 'NEW', label: 'New'},

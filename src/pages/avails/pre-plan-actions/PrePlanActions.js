@@ -1,6 +1,7 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,
@@ -12,6 +13,7 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
+import BulkMatching from '../bulk-matching/BulkMatching';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
@@ -33,12 +35,16 @@ export const PrePlanActions = ({
     setPreplanRights,
     prePlanRepoRights = [],
     username,
+    singleRightMatch,
+    setSingleRightMatch,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
     const [keywords, setKeywords] = useState('');
     const [bulkUpdate, setBulkUpdate] = useState([]);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [headerText, setHeaderText] = useState('');
 
     useEffect(() => {
         bulkSetInTable();
@@ -66,16 +72,16 @@ export const PrePlanActions = ({
     };
 
     const checkAllSelected = () => {
-        const updatedSelectedPrePlanRights = selectedPrePlanRights.filter(right => {
+        const updatedPrePlanRepoRights = prePlanRepoRights.filter(right => {
             const unselectedTerritory = right.territory.filter(t => !t.selected);
             return unselectedTerritory.length;
         });
-        setPreplanRights({[username]: [...updatedSelectedPrePlanRights]});
+        setPreplanRights({[username]: [...updatedPrePlanRepoRights]});
     };
 
     const addToSelectedForPlanning = () => {
         const selectedList = selectedPrePlanRights.every(right => {
-            return right['territory'].some(t => t.selected && t.hasOwnProperty('isDirty'));
+            return right['territory'].some(t => t.selected);
         });
         if (!selectedList) {
             addToast({
@@ -233,6 +239,23 @@ export const PrePlanActions = ({
         },
     ];
 
+    const openDrawer = () => {
+        setDrawerOpen(true);
+        setHeaderText('Title Matching');
+    };
+
+    const closeDrawer = () => {
+        singleRightMatch.length && setSingleRightMatch([]);
+        setDrawerOpen(false);
+    };
+
+    // single title match flow (from popover)
+    useEffect(() => {
+        if (singleRightMatch.length && !drawerOpen) {
+            openDrawer();
+        }
+    }, [singleRightMatch, openDrawer, drawerOpen]);
+
     return (
         <>
             <div className="nexus-c-selected-rights-actions" ref={node}>
@@ -260,6 +283,20 @@ export const PrePlanActions = ({
                     ))}
                 </div>
             </div>
+            <NexusDrawer
+                onClose={closeDrawer}
+                isOpen={drawerOpen}
+                isClosedOnBlur={false}
+                width="wider"
+                title={headerText}
+            >
+                <BulkMatching
+                    data={singleRightMatch}
+                    closeDrawer={closeDrawer}
+                    setHeaderText={setHeaderText}
+                    headerText={headerText}
+                />
+            </NexusDrawer>
         </>
     );
 };
@@ -271,12 +308,16 @@ PrePlanActions.propTypes = {
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
+    singleRightMatch: PropTypes.array,
+    setSingleRightMatch: PropTypes.func,
 };
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
     addToast: () => null,
     prePlanRepoRights: [],
+    singleRightMatch: [],
+    setSingleRightMatch: () => null,
 };
 
 export default withToasts(PrePlanActions);
