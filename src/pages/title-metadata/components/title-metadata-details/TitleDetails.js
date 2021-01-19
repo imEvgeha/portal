@@ -7,13 +7,15 @@ import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
-import {FIELDS_TO_REMOVE} from '../../constants';
+import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
     updateTitle,
+    syncTitle,
+    publishTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -40,6 +42,8 @@ const TitleDetails = ({
     getEditorialMetadata,
     updateTitle,
     selectValues,
+    syncTitle,
+    publishTitle,
 }) => {
     const containerRef = useRef();
 
@@ -88,6 +92,7 @@ const TitleDetails = ({
         const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+        console.log(updatedTitle);
         return {
             ...updatedTitle,
             vzExternalIds,
@@ -97,9 +102,25 @@ const TitleDetails = ({
         };
     };
 
+    const syncPublishHandler = (externalSystem, buttonType) => {
+        const {params} = match || {};
+        const {id} = params;
+        if (buttonType === SYNC) {
+            syncTitle({id, externalSystem});
+        } else {
+            publishTitle({id, externalSystem});
+        }
+    };
+
     return (
         <div className="nexus-c-title-details">
-            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} externalIds={externalIds} />
+            <TitleDetailsHeader
+                title={title}
+                history={history}
+                containerRef={containerRef}
+                externalIds={externalIds}
+                onSyncPublish={syncPublishHandler}
+            />
             <NexusDynamicForm
                 searchPerson={searchPerson}
                 schema={schema}
@@ -129,6 +150,8 @@ TitleDetails.propTypes = {
     getEditorialMetadata: PropTypes.func,
     updateTitle: PropTypes.func,
     selectValues: PropTypes.object,
+    syncTitle: PropTypes.func,
+    publishTitle: PropTypes.func,
 };
 
 TitleDetails.defaultProps = {
@@ -144,6 +167,8 @@ TitleDetails.defaultProps = {
     getEditorialMetadata: () => null,
     updateTitle: () => null,
     selectValues: {},
+    syncTitle: () => null,
+    publishTitle: () => null,
 };
 
 const mapStateToProps = () => {
@@ -167,6 +192,8 @@ const mapDispatchToProps = dispatch => ({
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),
     updateTitle: payload => dispatch(updateTitle(payload)),
+    syncTitle: payload => dispatch(syncTitle(payload)),
+    publishTitle: payload => dispatch(publishTitle(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);

@@ -4,6 +4,10 @@ export const SYNC_LOG = 'Sync Log';
 export const NEXUS = 'NEXUS';
 export const MOVIDA = 'MOVIDA';
 export const VZ = 'VZ';
+export const SUCCESS = 'success';
+export const ERROR = 'error';
+export const SYNC = 'sync';
+export const PUBLISH = 'publish';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
