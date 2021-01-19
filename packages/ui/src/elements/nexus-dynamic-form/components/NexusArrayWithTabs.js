@@ -298,6 +298,7 @@ const NexusArrayWithTabs = ({
                                                 field: fields[key],
                                                 selectValues,
                                                 setFieldValue,
+                                                searchPerson,
                                             })}
                                         </div>
                                     );
