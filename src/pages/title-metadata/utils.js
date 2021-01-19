@@ -1,6 +1,23 @@
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
 import {cloneDeep, get} from 'lodash';
+import {store} from '../../index';
+import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
-import {NEXUS, VZ, MOVIDA, FIELDS_TO_REMOVE} from './constants';
+import {
+    NEXUS,
+    VZ,
+    MOVIDA,
+    UPDATE_EDITORIAL_METADATA_ERROR,
+    UPDATE_EDITORIAL_METADATA_SUCCESS,
+    UPDATE_TERRITORY_METADATA_SUCCESS,
+    UPDATE_TERRITORY_METADATA_ERROR,
+} from './constants';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
@@ -141,26 +158,39 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
-    try {
-        await Promise.all(
-            data.map(async tmet => {
-                if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
-                    const body = formatTerritoryBody(tmet);
-                    const response = await titleService.updateTerritoryMetadata(body);
-                    // todo: add toast
-                } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
-                    const body = formatTerritoryBody(tmet, titleId);
-                    const response = await titleService.addTerritoryMetadata(body);
-                    // todo: add toast
-                }
-            })
-        );
-    } catch (error) {
-        // todo: add toast
-    }
+    await Promise.all(
+        data.map(async tmet => {
+            if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                const body = formatTerritoryBody(tmet);
+                const response = await titleService.updateTerritoryMetadata(body);
+            } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                const body = formatTerritoryBody(tmet, titleId);
+                const response = await titleService.addTerritoryMetadata(body);
+            }
+        })
+    )
+        .then(() => {
+            store.dispatch(getTerritoryMetadata({id: titleId}));
+            const toast = {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TERRITORY_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(toast));
+        })
+        .catch(error => {
+            const toast = {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TERRITORY_METADATA_ERROR,
+            };
+            store.dispatch(addToast(toast));
+        });
 };
 
-const formatEditorialBody = (data, titleId, isCreate) => {
+export const formatEditorialBody = (data, titleId, isCreate) => {
     const body = {};
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
@@ -198,21 +228,34 @@ const formatEditorialBody = (data, titleId, isCreate) => {
 
 export const updateEditorialMetadata = async (values, titleId) => {
     const data = values.editorialMetadata || [];
-    try {
-        await Promise.all(
-            data.map(async emet => {
-                if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                    const body = formatEditorialBody(emet, titleId);
-                    const response = await titleService.updateEditorialMetadata(body);
-                    // todo: add toast
-                } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                    const body = formatEditorialBody(emet, titleId, true);
-                    const response = await titleService.addEditorialMetadata(body);
-                    // todo: add toast
-                }
-            })
-        );
-    } catch (error) {
-        // todo: add toast
-    }
+    await Promise.all(
+        data.map(async emet => {
+            if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                const body = formatEditorialBody(emet, titleId);
+                const response = await titleService.updateEditorialMetadata(body);
+            } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                const body = formatEditorialBody(emet, titleId, true);
+                const response = await titleService.addEditorialMetadata(body);
+            }
+        })
+    )
+        .then(() => {
+            store.dispatch(getEditorialMetadata({id: titleId}));
+            const toast = {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(toast));
+        })
+        .catch(error => {
+            const toast = {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_EDITORIAL_METADATA_ERROR,
+            };
+            store.dispatch(addToast(toast));
+        });
 };

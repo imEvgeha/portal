@@ -11,6 +11,12 @@ export const PUBLISH = 'publish';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
+export const UPDATE_TERRITORY_METADATA_SUCCESS = 'Territorial Metadata added successfully';
+export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial Metadata';
+
+export const UPDATE_EDITORIAL_METADATA_SUCCESS = 'Editorial Metadata updated successfully';
+export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial Metadata';
+
 export const COLUMN_MAPPINGS = [
     {
         colId: 'id',
