@@ -81,6 +81,59 @@
                             "name": "Animated",
                             "type": "boolean",
                             "path": "animated"
+                        },
+                        "contentSubType": {
+                            "name": "Content Sub Type",
+                            "type": "select",
+                            "path": "contentSubType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "KIDS",
+                                        "value": "KIDS"
+                                    },
+                                    {
+                                        "label": "ADULT",
+                                        "value": "ADULT"
+                                    }
+                                ]
+                            }
+                        },
+                        "eventType": {
+                            "name": "Event Type",
+                            "type": "select",
+                            "path": "eventType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Live",
+                                        "value": "Live"
+                                    },
+                                    {
+                                        "label": "Tape Delayed",
+                                        "value": "Tape Delayed"
+                                    },
+                                    {
+                                        "label": "Taped",
+                                        "value": "Taped"
+                                    }
+                                ]
+                            }
+                        },
+                        "usBoxOffice": {
+                            "name": "US Box Office",
+                            "path": "usBoxOffice",
+                            "type": "number"
+                        },
+                        "category": {
+                            "name": "Category",
+                            "path": "category",
+                            "type": "multiselect"
+                        },
+                        "imdbLink": {
+                            "name": "IMDB Link",
+                            "path": "imdbLink",
+                            "type": "string"
                         }
                     }
                 }
@@ -445,6 +498,11 @@
                                         "defaultValuePath": "name",
                                         "defaultLabelPath": "name"
                                     }
+                                },
+                                "editorial.category": {
+                                    "name": "Category",
+                                    "path": "category",
+                                    "type": "multiselect"
                                 },
                                 "editorial.title.title": {
                                     "name": "Display Title",

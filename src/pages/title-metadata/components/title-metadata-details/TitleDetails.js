@@ -17,7 +17,12 @@ import {
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
-import {handleEditorialGenres, updateTerritoryMetadata, updateEditorialMetadata} from '../../utils';
+import {
+    handleEditorialGenresAndCategory,
+    handleTitleCategory,
+    updateTerritoryMetadata,
+    updateEditorialMetadata,
+} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -81,11 +86,13 @@ const TitleDetails = ({
     const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = externalIds.filter(ids => ids.externalSystem === 'vz');
         const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
+        const updatedTitle = handleTitleCategory(title);
+        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
         return {
-            ...title,
+            ...updatedTitle,
             vzExternalIds,
             movidaExternalIds,
-            editorialMetadata: handleEditorialGenres(editorialMetadata),
+            editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: territoryMetadata,
         };
     };
