@@ -96,15 +96,18 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
 };
 
 export const handleTitleCategory = data => {
-    let newData = cloneDeep(data.category);
-    newData = newData.map(record => {
-        const {name} = record;
-        return name;
-    });
-    return {
-        ...data,
-        category: newData,
-    };
+    if (get(data, 'category')) {
+        let newData = cloneDeep(data.category);
+        newData = newData.map(record => {
+            const {name} = record;
+            return name;
+        });
+        return {
+            ...data,
+            category: newData,
+        };
+    }
+    return data;
 };
 
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {

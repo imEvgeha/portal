@@ -19,3 +19,21 @@
     color: map-get($neutrals, N80);
     @include margin(1.5, 0, 0, 0);
 }
+
+.nexus-c-sync-publish__status--success {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    @include margin(0, 1, 0, 0);
+    background-color: map-get($greens, G400);
+}
+
+.nexus-c-sync-publish__status--error {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    @include margin(0, 1, 0, 0);
+    background-color: map-get($reds, R400);
+}

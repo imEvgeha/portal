@@ -6,6 +6,8 @@ import {
     getTerritoryMetadataById,
     getEditorialMetadataByTitleId,
     updateTitle as updateTitleService,
+    syncTitle as syncTitleService,
+    registerTitle,
 } from './titleMetadataServices';
 
 export function* loadParentTitle(title) {
@@ -133,6 +135,35 @@ export function* updateTitle({payload}) {
     }
 }
 
+export function* syncTitle({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const [response] = yield call(syncTitleService, payload);
+        const newPayload = {id: response.titleId};
+        yield call(loadExternalIds, {payload: newPayload});
+        // todo: add toast
+    } catch (err) {
+        // todo: add toast
+    }
+}
+
+export function* publishTitle({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const [response] = yield call(registerTitle, payload);
+        const newPayload = {id: response.titleId};
+        yield call(loadExternalIds, {payload: newPayload});
+    } catch (err) {
+        // todo: add toast
+    }
+}
+
 export function* titleMetadataWatcher() {
     yield all([
         takeEvery(actionTypes.GET_TITLE, loadTitle),
@@ -140,5 +171,7 @@ export function* titleMetadataWatcher() {
         takeEvery(actionTypes.GET_TERRITORY_METADATA, loadTerritoryMetadata),
         takeEvery(actionTypes.GET_EDITORIAL_METADATA, loadEditorialMetadata),
         takeEvery(actionTypes.UPDATE_TITLE, updateTitle),
+        takeEvery(actionTypes.SYNC_TITLE, syncTitle),
+        takeEvery(actionTypes.PUBLISH_TITLE, publishTitle),
     ]);
 }
