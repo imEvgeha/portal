@@ -158,35 +158,43 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
+    let response;
+    const errorToast = {
+        title: ERROR_TITLE,
+        icon: ERROR_ICON,
+        isAutoDismiss: true,
+        description: UPDATE_TERRITORY_METADATA_ERROR,
+    };
     await Promise.all(
         data.map(async tmet => {
             if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
                 const body = formatTerritoryBody(tmet);
-                const response = await titleService.updateTerritoryMetadata(body);
+                response = await titleService.updateTerritoryMetadata(body);
             } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                 const body = formatTerritoryBody(tmet, titleId);
-                const response = await titleService.addTerritoryMetadata(body);
+                response = await titleService.addTerritoryMetadata(body);
             }
         })
     )
-        .then(r => {
-            store.dispatch(getTerritoryMetadata({id: titleId}));
-            const toast = {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_TERRITORY_METADATA_SUCCESS,
-            };
-            store.dispatch(addToast(toast));
+        .then(() => {
+            if (response && response.length > 0) {
+                let toast;
+                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+                    store.dispatch(getTerritoryMetadata({id: titleId}));
+                    toast = {
+                        title: SUCCESS_TITLE,
+                        icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
+                        description: UPDATE_TERRITORY_METADATA_SUCCESS,
+                    };
+                } else {
+                    toast = errorToast;
+                }
+                store.dispatch(addToast(toast));
+            }
         })
         .catch(error => {
-            const toast = {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_TERRITORY_METADATA_ERROR,
-            };
-            store.dispatch(addToast(toast));
+            store.dispatch(addToast(errorToast));
         });
 };
 
@@ -227,35 +235,43 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 };
 
 export const updateEditorialMetadata = async (values, titleId) => {
+    let response;
+    const errorToast = {
+        title: ERROR_TITLE,
+        icon: ERROR_ICON,
+        isAutoDismiss: true,
+        description: UPDATE_EDITORIAL_METADATA_ERROR,
+    };
     const data = values.editorialMetadata || [];
     await Promise.all(
         data.map(async emet => {
             if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
                 const body = formatEditorialBody(emet, titleId);
-                const response = await titleService.updateEditorialMetadata(body);
+                response = await titleService.updateEditorialMetadata(body);
             } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
                 const body = formatEditorialBody(emet, titleId, true);
-                const response = await titleService.addEditorialMetadata(body);
+                response = await titleService.addEditorialMetadata(body);
             }
         })
     )
-        .then(r => {
-            store.dispatch(getEditorialMetadata({id: titleId}));
-            const toast = {
-                title: SUCCESS_TITLE,
-                icon: SUCCESS_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_EDITORIAL_METADATA_SUCCESS,
-            };
-            store.dispatch(addToast(toast));
+        .then(() => {
+            if (response && response.length > 0) {
+                let toast;
+                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+                    store.dispatch(getEditorialMetadata({id: titleId}));
+                    toast = {
+                        title: SUCCESS_TITLE,
+                        icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
+                        description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                    };
+                } else {
+                    toast = errorToast;
+                }
+                store.dispatch(addToast(toast));
+            }
         })
         .catch(error => {
-            const toast = {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_EDITORIAL_METADATA_ERROR,
-            };
-            store.dispatch(addToast(toast));
+            store.dispatch(addToast(errorToast));
         });
 };
