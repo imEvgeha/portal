@@ -57,11 +57,12 @@ export const PrePlanActions = ({
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
-            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected);
+            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected && !t.withdrawn);
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
-                    territory: unselectedTerritory,
+                    territorySelected: right.territorySelected.concat(right.territory.filter(t => t.selected).map(t => t.country)),
+                    territory: right.territory.filter(t => !t.selected),
                 });
             return right.id;
         });
@@ -69,14 +70,6 @@ export const PrePlanActions = ({
         setPreplanRights({[username]: [...notSelectedRights, ...selectedRights]});
         setSelectedPrePlanRights([]);
         clickHandler();
-    };
-
-    const checkAllSelected = () => {
-        const updatedPrePlanRepoRights = prePlanRepoRights.filter(right => {
-            const unselectedTerritory = right.territory.filter(t => !t.selected);
-            return unselectedTerritory.length;
-        });
-        setPreplanRights({[username]: [...updatedPrePlanRepoRights]});
     };
 
     const addToSelectedForPlanning = () => {
@@ -150,7 +143,7 @@ export const PrePlanActions = ({
                                         DOPService.startProject(projectId)
                                             .then(() => {
                                                 dispatchSuccessToast(eligibleRights.length);
-                                                checkAllSelected();
+                                                removeRightsFromPrePlan(false);
                                                 setSelectedPrePlanRights([]);
                                                 clickHandler();
                                                 setIsFetchDOP(false);
