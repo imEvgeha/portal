@@ -9,6 +9,7 @@ import {
     WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
@@ -61,7 +62,9 @@ export const PrePlanActions = ({
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
-                    territorySelected: right.territorySelected.concat(right.territory.filter(t => t.selected).map(t => t.country)),
+                    territorySelected: right.territorySelected.concat(
+                        right.territory.filter(t => t.selected).map(t => t.country)
+                    ),
                     territory: right.territory.filter(t => !t.selected),
                 });
             return right.id;
@@ -70,6 +73,7 @@ export const PrePlanActions = ({
         setPreplanRights({[username]: [...notSelectedRights, ...selectedRights]});
         setSelectedPrePlanRights([]);
         clickHandler();
+        toggleRefreshGridData(true);
     };
 
     const addToSelectedForPlanning = () => {
