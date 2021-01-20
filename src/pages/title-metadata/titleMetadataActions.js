@@ -24,3 +24,13 @@ export const updateTitle = payload => ({
     type: actionTypes.UPDATE_TITLE,
     payload,
 });
+
+export const syncTitle = payload => ({
+    type: actionTypes.SYNC_TITLE,
+    payload,
+});
+
+export const publishTitle = payload => ({
+    type: actionTypes.PUBLISH_TITLE,
+    payload,
+});

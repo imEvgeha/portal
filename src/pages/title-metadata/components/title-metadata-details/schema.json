@@ -59,10 +59,81 @@
                                 }
                             ]
                         },
+                        "metadataStatus": {
+                            "name": "Metadata Status",
+                            "type": "select",
+                            "path": "metadataStatus",
+                            "isRequired": true,
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Pending",
+                                        "value": "Pending"
+                                    },
+                                    {
+                                        "label": "Complete",
+                                        "value": "Complete"
+                                    }
+                                ]
+                            }
+                        },
                         "animated": {
                             "name": "Animated",
                             "type": "boolean",
                             "path": "animated"
+                        },
+                        "contentSubType": {
+                            "name": "Content Sub Type",
+                            "type": "select",
+                            "path": "contentSubType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "KIDS",
+                                        "value": "KIDS"
+                                    },
+                                    {
+                                        "label": "ADULT",
+                                        "value": "ADULT"
+                                    }
+                                ]
+                            }
+                        },
+                        "eventType": {
+                            "name": "Event Type",
+                            "type": "select",
+                            "path": "eventType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Live",
+                                        "value": "Live"
+                                    },
+                                    {
+                                        "label": "Tape Delayed",
+                                        "value": "Tape Delayed"
+                                    },
+                                    {
+                                        "label": "Taped",
+                                        "value": "Taped"
+                                    }
+                                ]
+                            }
+                        },
+                        "usBoxOffice": {
+                            "name": "US Box Office",
+                            "path": "usBoxOffice",
+                            "type": "number"
+                        },
+                        "category": {
+                            "name": "Category",
+                            "path": "category",
+                            "type": "multiselect"
+                        },
+                        "imdbLink": {
+                            "name": "IMDB Link",
+                            "path": "imdbLink",
+                            "type": "string"
                         }
                     }
                 }
@@ -234,6 +305,7 @@
                     "fields": {
                         "editorialMetadata": {
                             "name": "Editorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "editorialMetadata",
                             "tabs": ["locale", "language"],
@@ -270,8 +342,12 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -302,8 +378,12 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ],
                                     "optionsConfig": {
@@ -371,26 +451,42 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -403,6 +499,11 @@
                                         "defaultLabelPath": "name"
                                     }
                                 },
+                                "editorial.category": {
+                                    "name": "Category",
+                                    "path": "category",
+                                    "type": "multiselect"
+                                },
                                 "editorial.title.title": {
                                     "name": "Display Title",
                                     "path": "title.title",
@@ -411,14 +512,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -450,14 +559,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -469,14 +586,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -524,6 +649,7 @@
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "territorialMetadata",
                             "tabs": ["locale"],

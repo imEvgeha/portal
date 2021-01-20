@@ -77,7 +77,7 @@ export const FulfillmentOrder = ({
             if (!isEmpty(selectedFulfillmentOrder)) {
                 setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
-                 // Disable form if status is READY || ON_HOLD
+                // Disable form if status is READY || ON_HOLD
                 const readiness = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
                 readiness === 'READY' || readiness === 'ON_HOLD' ? setIsFormDisabled(true) : setIsFormDisabled(false);
             }

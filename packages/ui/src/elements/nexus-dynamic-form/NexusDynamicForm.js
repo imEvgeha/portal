@@ -20,6 +20,7 @@ const NexusDynamicForm = ({
     isTitlePage,
     searchPerson,
     generateMsvIds,
+    regenerateAutoDecoratedMetadata,
 }) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
@@ -152,17 +153,24 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                                {buildSection(fields, getValues, view, generateMsvIds, {
-                                                    selectValues,
-                                                    initialData,
-                                                    setFieldValue,
-                                                    update,
-                                                    config: schema.config || [],
-                                                    isGridLayout,
-                                                    searchPerson,
-                                                    tabs,
-                                                    subTabs,
-                                                })}
+                                                {buildSection(
+                                                    fields,
+                                                    getValues,
+                                                    view,
+                                                    generateMsvIds,
+                                                    regenerateAutoDecoratedMetadata,
+                                                    {
+                                                        selectValues,
+                                                        initialData,
+                                                        setFieldValue,
+                                                        update,
+                                                        config: schema.config || [],
+                                                        isGridLayout,
+                                                        searchPerson,
+                                                        tabs,
+                                                        subTabs,
+                                                    }
+                                                )}
                                             </Fragment>
                                         )
                                     )}
@@ -187,6 +195,7 @@ NexusDynamicForm.propTypes = {
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
     isSaving: PropTypes.bool,
+    regenerateAutoDecoratedMetadata: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -199,6 +208,7 @@ NexusDynamicForm.defaultProps = {
     searchPerson: undefined,
     generateMsvIds: undefined,
     isSaving: false,
+    regenerateAutoDecoratedMetadata: undefined,
 };
 
 export default NexusDynamicForm;

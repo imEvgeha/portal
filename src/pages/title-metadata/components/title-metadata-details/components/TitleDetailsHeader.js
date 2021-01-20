@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
+import {VZ, MOVIDA} from '../../../constants';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
 import TitleInfo from './TitleInfo';
@@ -9,7 +10,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef, externalIds}) => {
+const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -57,11 +58,16 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds}) => {
                     />
                 </div>
                 <div className="nexus-c-title-details-header__publish-info-container">
-                    <SyncPublish externalSystem="vz" externalIds={externalIds} />
-                    <SyncPublish externalSystem="movida" externalIds={externalIds} />
+                    <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                    <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
                 </div>
             </div>
-            <ShrinkedHeader isShrinked={isShrinked} title={title.title} />
+            <ShrinkedHeader
+                isShrinked={isShrinked}
+                title={title.title}
+                externalIds={externalIds}
+                onSyncPublish={onSyncPublish}
+            />
         </div>
     );
 };
@@ -71,6 +77,7 @@ TitleDetailsHeader.propTypes = {
     title: PropTypes.object,
     containerRef: PropTypes.any,
     externalIds: PropTypes.array,
+    onSyncPublish: PropTypes.func,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -78,6 +85,7 @@ TitleDetailsHeader.defaultProps = {
     title: {},
     containerRef: null,
     externalIds: [],
+    onSyncPublish: () => null,
 };
 
 export default TitleDetailsHeader;

@@ -29,10 +29,7 @@ const TextSummaryPanel = ({list = [], remove}) => {
                     key={item.amsComponentId}
                     content={`${item.language}, ${item.type}, Component ID ${item.amsComponentId}`}
                 >
-                    <ListItem
-                        item={`${item.language}  ${item.type}`}
-                        onDelete={() => onDelete(item.amsComponentId)}
-                    />
+                    <ListItem item={`${item.language}  ${item.type}`} onDelete={() => onDelete(item.amsComponentId)} />
                 </Tooltip>
             ))}
         </div>

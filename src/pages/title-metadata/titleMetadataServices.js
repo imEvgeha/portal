@@ -48,6 +48,46 @@ export const generateMsvIds = (id, licensor, licensee) => {
         });
 };
 
+export const regenerateAutoDecoratedMetadata = masterEmet => {
+    const body = [
+        {
+            itemIndex: null,
+            body: masterEmet,
+        },
+    ];
+
+    return titleService
+        .updateEditorialMetadata(body)
+        .then(response => {
+            // add toast
+        })
+        .catch(err => {
+            // add toast
+        });
+};
+
+export const syncTitle = payload => {
+    const {id: titleId, externalSystem} = payload;
+    const params = {externalSystem, titleId};
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/syncTitle`;
+
+    return nexusFetch(url, {
+        method: 'post',
+        params: encodedSerialize(params),
+    });
+};
+
+export const registerTitle = payload => {
+    const {id: titleId, externalSystem: externalSystems} = payload;
+    const params = {externalSystems, titleId};
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/registerTitle`;
+
+    return nexusFetch(url, {
+        method: 'post',
+        params: encodedSerialize(params),
+    });
+};
+
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
@@ -85,6 +125,27 @@ export const titleService = {
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
+        });
+    },
+    updateEditorialMetadata: editedEditorialMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedEditorialMetadata),
+        });
+    },
+    addTerritoryMetadata: territoryMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(territoryMetadata),
+        });
+    },
+    updateTerritoryMetadata: editedTerritoryMetadata => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedTerritoryMetadata),
         });
     },
 };

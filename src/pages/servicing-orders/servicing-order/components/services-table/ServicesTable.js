@@ -282,7 +282,7 @@ const ServicesTable = ({
                 currentService.overrideStartDate = data.doNotStartBefore || '';
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
-                if(get(currentService,'deteTasks.deteDeliveries.length',0) !== 0)
+                if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
                     currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
 

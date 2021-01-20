@@ -26,6 +26,7 @@ const NexusArrayWithTabs = ({
     name,
     generateMsvIds,
     searchPerson,
+    regenerateAutoDecoratedMetadata,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -228,6 +229,12 @@ const NexusArrayWithTabs = ({
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
             width: 'medium',
         });
+        const currentValues = getCurrentFormData();
+        const updatedCurrentData = {
+            ...currentData,
+            ...currentValues,
+        };
+        setCurrentData(updatedCurrentData);
     };
 
     const handleValuesFormat = values => {
@@ -291,6 +298,7 @@ const NexusArrayWithTabs = ({
                                                 field: fields[key],
                                                 selectValues,
                                                 setFieldValue,
+                                                searchPerson,
                                             })}
                                         </div>
                                     );
@@ -337,11 +345,16 @@ const NexusArrayWithTabs = ({
         return false;
     };
 
-    const regenerateAutoDecoratedMetadata = () => {
-        // todo: write this function
+    const handleRegenerateAutoDecoratedMetadata = () => {
+        const usEnData = get(groupedData, 'US en');
+        if (usEnData) {
+            const masterEmet = usEnData.find(data => data.hasGeneratedChildren);
+            if (masterEmet) regenerateAutoDecoratedMetadata({...masterEmet});
+        }
     };
 
     const setValueForEachField = () => {
+        if (currentData === null) return;
         const current = currentData || data[0];
         Object.keys(fields).forEach(key => {
             const fieldPath = fields[key].path;
@@ -355,7 +368,7 @@ const NexusArrayWithTabs = ({
     const renderFields = () => {
         const renderedFields = Object.keys(fields).map((key, index) => {
             return (
-                <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: currentData || data[0],
                         field: fields[key],
@@ -369,6 +382,7 @@ const NexusArrayWithTabs = ({
                 </div>
             );
         });
+
         view === VIEWS.EDIT && setValueForEachField();
         return renderedFields;
     };
@@ -399,7 +413,7 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={regenerateAutoDecoratedMetadata}>
+                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata}>
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
@@ -435,6 +449,7 @@ NexusArrayWithTabs.propTypes = {
     name: PropTypes.string.isRequired,
     generateMsvIds: PropTypes.func,
     searchPerson: PropTypes.func,
+    regenerateAutoDecoratedMetadata: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -450,6 +465,7 @@ NexusArrayWithTabs.defaultProps = {
     subTabs: [],
     generateMsvIds: undefined,
     searchPerson: undefined,
+    regenerateAutoDecoratedMetadata: undefined,
 };
 
 export default NexusArrayWithTabs;

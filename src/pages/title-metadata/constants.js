@@ -4,6 +4,10 @@ export const SYNC_LOG = 'Sync Log';
 export const NEXUS = 'NEXUS';
 export const MOVIDA = 'MOVIDA';
 export const VZ = 'VZ';
+export const SUCCESS = 'success';
+export const ERROR = 'error';
+export const SYNC = 'sync';
+export const PUBLISH = 'publish';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
@@ -14,6 +18,15 @@ export const CATALOGUE_OWNER_OPTIONS = [
 export const CATALOGUE_OWNER_DROPDOWN_PLACEHOLDER = 'Select Catalogue Owner';
 export const DEFAULT_CATALOGUE_OWNER = 'vu';
 export const REPOSITORY_COLUMN_ID = 'repository';
+
+export const UPDATE_TITLE_SUCCESS = 'Title updated successfully';
+export const UPDATE_TITLE_ERROR = 'Error while updating Title';
+
+export const UPDATE_TERRITORY_METADATA_SUCCESS = 'Territorial Metadata updated successfully';
+export const UPDATE_TERRITORY_METADATA_ERROR = 'Error while updating Territorial Metadata';
+
+export const UPDATE_EDITORIAL_METADATA_SUCCESS = 'Editorial Metadata updated successfully';
+export const UPDATE_EDITORIAL_METADATA_ERROR = 'Error while updating Editorial Metadata';
 
 export const COLUMN_MAPPINGS = [
     {
@@ -266,3 +279,5 @@ export const COLUMN_MAPPINGS = [
         hide: true,
     },
 ];
+
+export const FIELDS_TO_REMOVE = ['editorial', 'territorial', 'movidaExternalIds', 'vzExternalIds'];
