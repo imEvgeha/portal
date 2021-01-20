@@ -84,17 +84,19 @@ const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) =>
 };
 
 const dateToISO = (date, type) => {
+    // format date without utc to show local time
+    const localDate = moment(date).utc().toISOString();
     switch (type) {
         case DATETIME_FIELDS.TIMESTAMP:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            return moment(localDate).format('YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
         case DATETIME_FIELDS.SIMULCAST:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+            return moment(localDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
         case DATETIME_FIELDS.REGIONAL:
-            return moment(date).format('YYYY-MM-DD[T]HH:mm:ss');
+            return moment(localDate).format('YYYY-MM-DD[T]HH:mm:ss');
         case DATETIME_FIELDS.REGIONAL_MIDNIGHT:
-            return moment(date).format('YYYY-MM-DD');
+            return moment(localDate).format('YYYY-MM-DD');
         default:
-            return null;
+            return moment(localDate).format('MM/DD/YYYY');
     }
 };
 
