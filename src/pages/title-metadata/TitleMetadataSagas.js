@@ -1,3 +1,10 @@
+import {
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+    ERROR_TITLE,
+    ERROR_ICON,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
@@ -6,7 +13,10 @@ import {
     getTerritoryMetadataById,
     getEditorialMetadataByTitleId,
     updateTitle as updateTitleService,
+    syncTitle as syncTitleService,
+    registerTitle,
 } from './titleMetadataServices';
+import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
 
 export function* loadParentTitle(title) {
     const {parentIds} = title;
@@ -117,10 +127,28 @@ export function* updateTitle({payload}) {
         const response = yield call(updateTitleService, payload);
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TITLE_SUCCESS,
+            },
+        });
+        yield put({
             type: actionTypes.UPDATE_TITLE_SUCCESS,
             payload: updatedResponse,
         });
     } catch (error) {
+        yield put({
+            type: ADD_TOAST,
+            payload: {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TITLE_ERROR,
+            },
+        });
         yield put({
             type: actionTypes.UPDATE_TITLE_ERROR,
             payload: error,
@@ -133,6 +161,35 @@ export function* updateTitle({payload}) {
     }
 }
 
+export function* syncTitle({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const [response] = yield call(syncTitleService, payload);
+        const newPayload = {id: response.titleId};
+        yield call(loadExternalIds, {payload: newPayload});
+        // todo: add toast
+    } catch (err) {
+        // todo: add toast
+    }
+}
+
+export function* publishTitle({payload}) {
+    if (!payload.id) {
+        return;
+    }
+
+    try {
+        const [response] = yield call(registerTitle, payload);
+        const newPayload = {id: response.titleId};
+        yield call(loadExternalIds, {payload: newPayload});
+    } catch (err) {
+        // todo: add toast
+    }
+}
+
 export function* titleMetadataWatcher() {
     yield all([
         takeEvery(actionTypes.GET_TITLE, loadTitle),
@@ -140,5 +197,7 @@ export function* titleMetadataWatcher() {
         takeEvery(actionTypes.GET_TERRITORY_METADATA, loadTerritoryMetadata),
         takeEvery(actionTypes.GET_EDITORIAL_METADATA, loadEditorialMetadata),
         takeEvery(actionTypes.UPDATE_TITLE, updateTitle),
+        takeEvery(actionTypes.SYNC_TITLE, syncTitle),
+        takeEvery(actionTypes.PUBLISH_TITLE, publishTitle),
     ]);
 }

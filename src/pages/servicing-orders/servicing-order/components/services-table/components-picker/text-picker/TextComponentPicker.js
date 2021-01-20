@@ -161,4 +161,3 @@ TextComponentsPicker.propTypes = {
 TextComponentsPicker.defaultProps = {};
 
 export default TextComponentsPicker;
-

@@ -1,6 +1,23 @@
-import {cloneDeep} from 'lodash';
+import {
+    ERROR_ICON,
+    ERROR_TITLE,
+    SUCCESS_ICON,
+    SUCCESS_TITLE,
+} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
+import {cloneDeep, get} from 'lodash';
+import {store} from '../../index';
+import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
-import {NEXUS, VZ, MOVIDA} from './constants';
+import {
+    NEXUS,
+    VZ,
+    MOVIDA,
+    UPDATE_EDITORIAL_METADATA_ERROR,
+    UPDATE_EDITORIAL_METADATA_SUCCESS,
+    UPDATE_TERRITORY_METADATA_SUCCESS,
+    UPDATE_TERRITORY_METADATA_ERROR,
+} from './constants';
 
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
@@ -95,17 +112,166 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
     }
 };
 
-export const handleEditorialGenres = data => {
+export const handleTitleCategory = data => {
+    if (get(data, 'category')) {
+        let newData = cloneDeep(data.category);
+        newData = newData.map(record => {
+            const {name} = record;
+            return name;
+        });
+        return {
+            ...data,
+            category: newData,
+        };
+    }
+    return data;
+};
+
+export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
-        const {genres} = record;
-        if (genres) {
-            const formattedGenres = [];
-            genres.forEach(genre => {
-                formattedGenres.push(genre.genre);
+        const field = record[fieldName];
+        if (field) {
+            const formattedValues = [];
+            field.forEach(obj => {
+                formattedValues.push(obj[key]);
             });
-            record.genres = formattedGenres;
+            record[fieldName] = formattedValues;
         }
         return record;
     });
+};
+
+const formatTerritoryBody = (data, titleId) => {
+    const body = {};
+    Object.keys(data).forEach(key => {
+        if (data[key] === undefined) body[key] = null;
+        else body[key] = data[key];
+    });
+    body.territoryType = 'country';
+    if (titleId) body.parentId = titleId;
+    delete body.isUpdated;
+    delete body.isDeleted;
+    delete body.isCreated;
+    return body;
+};
+
+export const updateTerritoryMetadata = async (values, titleId) => {
+    const data = values.territorialMetadata || [];
+    let response;
+    const errorToast = {
+        title: ERROR_TITLE,
+        icon: ERROR_ICON,
+        isAutoDismiss: true,
+        description: UPDATE_TERRITORY_METADATA_ERROR,
+    };
+    await Promise.all(
+        data.map(async tmet => {
+            if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                const body = formatTerritoryBody(tmet);
+                response = await titleService.updateTerritoryMetadata(body);
+            } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                const body = formatTerritoryBody(tmet, titleId);
+                response = await titleService.addTerritoryMetadata(body);
+            }
+        })
+    )
+        .then(() => {
+            if (response && response.length > 0) {
+                let toast;
+                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+                    store.dispatch(getTerritoryMetadata({id: titleId}));
+                    toast = {
+                        title: SUCCESS_TITLE,
+                        icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
+                        description: UPDATE_TERRITORY_METADATA_SUCCESS,
+                    };
+                } else {
+                    toast = errorToast;
+                }
+                store.dispatch(addToast(toast));
+            }
+        })
+        .catch(error => {
+            store.dispatch(addToast(errorToast));
+        });
+};
+
+export const formatEditorialBody = (data, titleId, isCreate) => {
+    const body = {};
+    Object.keys(data).forEach(key => {
+        if (data[key] === undefined || data[key] === '') body[key] = null;
+        else if (key === 'genres') {
+            body[key] = data[key].map(genre => {
+                return {
+                    genre,
+                    order: null,
+                };
+            });
+        } else body[key] = data[key];
+    });
+    delete body.isUpdated;
+    delete body.isDeleted;
+    delete body.isCreated;
+    if (titleId) body.parentId = titleId;
+    const hasGeneratedChildren = get(body, 'hasGeneratedChildren', false);
+    return isCreate
+        ? [
+              {
+                  itemIndex: '1',
+                  body: {
+                      decorateEditorialMetadata: hasGeneratedChildren,
+                      editorialMetadata: body,
+                  },
+              },
+          ]
+        : [
+              {
+                  itemIndex: null,
+                  body,
+              },
+          ];
+};
+
+export const updateEditorialMetadata = async (values, titleId) => {
+    let response;
+    const errorToast = {
+        title: ERROR_TITLE,
+        icon: ERROR_ICON,
+        isAutoDismiss: true,
+        description: UPDATE_EDITORIAL_METADATA_ERROR,
+    };
+    const data = values.editorialMetadata || [];
+    await Promise.all(
+        data.map(async emet => {
+            if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                const body = formatEditorialBody(emet, titleId);
+                response = await titleService.updateEditorialMetadata(body);
+            } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                const body = formatEditorialBody(emet, titleId, true);
+                response = await titleService.addEditorialMetadata(body);
+            }
+        })
+    )
+        .then(() => {
+            if (response && response.length > 0) {
+                let toast;
+                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+                    store.dispatch(getEditorialMetadata({id: titleId}));
+                    toast = {
+                        title: SUCCESS_TITLE,
+                        icon: SUCCESS_ICON,
+                        isAutoDismiss: true,
+                        description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                    };
+                } else {
+                    toast = errorToast;
+                }
+                store.dispatch(addToast(toast));
+            }
+        })
+        .catch(error => {
+            store.dispatch(addToast(errorToast));
+        });
 };

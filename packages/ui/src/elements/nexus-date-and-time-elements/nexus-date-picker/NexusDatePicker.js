@@ -31,12 +31,10 @@ const NexusDatePicker = ({
     isRequired,
     ...restProps
 }) => {
-    const [date, setDate] = useState(value || '');
+    // format date without utc to show local time on picker
+    const [date, setDate] = useState(value ? moment(value).utc().toISOString() : '');
     const [isSimulcast, setIsSimulcast] = useState(false);
 
-    useEffect(() => {
-        setDate(value || '');
-    }, [value]);
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
         typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));
@@ -59,9 +57,9 @@ const NexusDatePicker = ({
             !isWithInlineEdit &&
                 onChange(
                     isTimestamp
-                        ? moment(date).utc(!isUtc(date)).toISOString()
+                        ? moment(date).utc().toISOString()
                         : `${moment(date)
-                              .utc(!isUtc(date))
+                              .utc()
                               .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
                 );
         } else {

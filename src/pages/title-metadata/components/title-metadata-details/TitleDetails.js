@@ -1,20 +1,30 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
+import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
+import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
 import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
+import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
     getExternalIds,
     getTerritoryMetadata,
     getEditorialMetadata,
     updateTitle,
+    syncTitle,
+    publishTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
-import {generateMsvIds} from '../../titleMetadataServices';
-import {handleEditorialGenres} from '../../utils';
+import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
+import {
+    handleEditorialGenresAndCategory,
+    handleTitleCategory,
+    updateTerritoryMetadata,
+    updateEditorialMetadata,
+} from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
 import schema from './schema.json';
@@ -32,6 +42,8 @@ const TitleDetails = ({
     getEditorialMetadata,
     updateTitle,
     selectValues,
+    syncTitle,
+    publishTitle,
 }) => {
     const containerRef = useRef();
 
@@ -48,24 +60,67 @@ const TitleDetails = ({
     }, []);
 
     const onSubmit = values => {
-        updateTitle({...values, id: title.id});
+        const {params} = match || {};
+        const {id} = params;
+        // remove fields under arrayWithTabs
+        const {fields} = schema;
+        const innerFields = getAllFields(fields, true);
+        const allFields = getAllFields(fields, false);
+        const valuesNoInnerFields = [];
+
+        // remove innerFields from values
+        Object.keys(values).forEach(key => {
+            const removeFromPayload = get(allFields, `${key}.removeFromPayload`);
+            if (!get(innerFields, key) && !removeFromPayload) {
+                valuesNoInnerFields[key] = values[key];
+            }
+        });
+
+        const updatedValues = [];
+        Object.keys(valuesNoInnerFields).forEach(key => {
+            if (!FIELDS_TO_REMOVE.find(e => e === key)) {
+                updatedValues[key] = values[key];
+            }
+        });
+        updateTitle({...updatedValues, id: title.id});
+        updateTerritoryMetadata(values, id);
+        updateEditorialMetadata(values, id);
     };
 
     const extendTitleWithExternalIds = () => {
         const [vzExternalIds] = externalIds.filter(ids => ids.externalSystem === 'vz');
         const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
+        const updatedTitle = handleTitleCategory(title);
+        const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
+        console.log(updatedTitle);
         return {
-            ...title,
+            ...updatedTitle,
             vzExternalIds,
             movidaExternalIds,
-            editorialMetadata: handleEditorialGenres(editorialMetadata),
+            editorialMetadata: handleEditorialGenresAndCategory(updatedEditorialMetadata, 'genres', 'genre'),
             territorialMetadata: territoryMetadata,
         };
     };
 
+    const syncPublishHandler = (externalSystem, buttonType) => {
+        const {params} = match || {};
+        const {id} = params;
+        if (buttonType === SYNC) {
+            syncTitle({id, externalSystem});
+        } else {
+            publishTitle({id, externalSystem});
+        }
+    };
+
     return (
         <div className="nexus-c-title-details">
-            <TitleDetailsHeader title={title} history={history} containerRef={containerRef} externalIds={externalIds} />
+            <TitleDetailsHeader
+                title={title}
+                history={history}
+                containerRef={containerRef}
+                externalIds={externalIds}
+                onSyncPublish={syncPublishHandler}
+            />
             <NexusDynamicForm
                 searchPerson={searchPerson}
                 schema={schema}
@@ -76,6 +131,7 @@ const TitleDetails = ({
                 selectValues={selectValues}
                 onSubmit={values => onSubmit(values)}
                 generateMsvIds={generateMsvIds}
+                regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
             />
         </div>
     );
@@ -94,6 +150,8 @@ TitleDetails.propTypes = {
     getEditorialMetadata: PropTypes.func,
     updateTitle: PropTypes.func,
     selectValues: PropTypes.object,
+    syncTitle: PropTypes.func,
+    publishTitle: PropTypes.func,
 };
 
 TitleDetails.defaultProps = {
@@ -109,6 +167,8 @@ TitleDetails.defaultProps = {
     getEditorialMetadata: () => null,
     updateTitle: () => null,
     selectValues: {},
+    syncTitle: () => null,
+    publishTitle: () => null,
 };
 
 const mapStateToProps = () => {
@@ -132,6 +192,8 @@ const mapDispatchToProps = dispatch => ({
     getTerritoryMetadata: payload => dispatch(getTerritoryMetadata(payload)),
     getEditorialMetadata: payload => dispatch(getEditorialMetadata(payload)),
     updateTitle: payload => dispatch(updateTitle(payload)),
+    syncTitle: payload => dispatch(syncTitle(payload)),
+    publishTitle: payload => dispatch(publishTitle(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);

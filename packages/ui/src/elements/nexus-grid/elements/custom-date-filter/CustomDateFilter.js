@@ -32,7 +32,7 @@ export class CustomDateFilter extends React.Component {
         const keys = Object.keys(dateRange);
 
         if (keys.includes('startDate') && dateRange.startDate !== startDate) {
-            const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : true;
+            const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : false;
             this.setState(
                 {
                     dates: {
@@ -40,10 +40,10 @@ export class CustomDateFilter extends React.Component {
                         endDate,
                     },
                 },
-                () => (!dateRange.startDate || needUpdate) && filterChangedCallback()
+                () => needUpdate && filterChangedCallback()
             );
         } else if (keys.includes('endDate') && dateRange.endDate !== endDate) {
-            const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : true;
+            const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : false;
             this.setState(
                 {
                     dates: {
@@ -51,7 +51,7 @@ export class CustomDateFilter extends React.Component {
                         startDate,
                     },
                 },
-                () => (!dateRange.endDate || needUpdate) && filterChangedCallback()
+                () => needUpdate && filterChangedCallback()
             );
         } else if (keys.includes('type') && dateRange.type === 'range' && keys.includes('filter')) {
             this.setState(
