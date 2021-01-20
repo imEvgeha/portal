@@ -4,12 +4,19 @@ import * as actionTypes from './rightDetailsActionTypes';
 const initialState = {
     selectValues: {},
     areValid: true,
+    isSaving: false,
 };
 
 const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
     const {type, payload = {}} = action;
 
     switch (type) {
+        case actionTypes.SAVING: {
+            return {
+                ...state,
+                isSaving: payload,
+            };
+        }
         case actionTypes.FETCH_SELECT_VALUES_REQUEST:
             return {
                 ...state,

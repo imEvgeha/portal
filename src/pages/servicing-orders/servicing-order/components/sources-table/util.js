@@ -90,7 +90,7 @@ const getSubtitleComponents = (componentsObject, componentArray) => {
                 `subtitleComponents[${index}].language`,
                 item.component.language || item.component.content
             );
-            set(componentsObject, `subtitleComponents[${index}].format`, item.component.textType);
+            set(componentsObject, `subtitleComponents[${index}].type`, item.component.textType);
             set(componentsObject, `subtitleComponents[${index}].amsComponentId`, item.component.deteId);
         });
 };
@@ -104,7 +104,7 @@ const getCaptionComponents = (componentsObject, componentArray) => {
                 `captionComponents[${index}].language`,
                 item.component.language || item.component.content
             );
-            set(componentsObject, `captionComponents[${index}].format`, item.component.textType);
+            set(componentsObject, `captionComponents[${index}].type`, item.component.textType);
             set(componentsObject, `captionComponents[${index}].amsComponentId`, item.component.deteId);
         });
 };

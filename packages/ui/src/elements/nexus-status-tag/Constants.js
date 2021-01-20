@@ -12,4 +12,5 @@ export default {
     FO_COMPLETE: 'Complete',
     FO_CANCELLED: 'Cancelled',
     FO_FAILED: 'Failed',
+    FO_ACCEPTED: 'Accepted',
 };

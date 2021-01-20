@@ -11,8 +11,15 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
 import {compose} from 'redux';
-import {COLUMN_MAPPINGS, NEXUS, LEGACY_TOOLTIP_TEXT} from '../../constants';
+import {
+    COLUMN_MAPPINGS,
+    NEXUS,
+    LEGACY_TOOLTIP_TEXT,
+    DEFAULT_CATALOGUE_OWNER,
+    REPOSITORY_COLUMN_ID,
+} from '../../constants';
 import {fetchTitleMetadata} from '../../utils';
 import TitleMetadataTableStatusBar from '../title-metadata-table-status-bar/TitleMetadataTableStatusBar';
 import './TitleMetadataTable.scss';
@@ -25,7 +32,7 @@ const TitleMetadataTableGrid = compose(
     withInfiniteScrolling({fetchData: fetchTitleMetadata})
 )(NexusGrid);
 
-const TitleMetadataTable = ({history}) => {
+const TitleMetadataTable = ({history, catalogueOwner}) => {
     const columnDefs = COLUMN_MAPPINGS.map(mapping => {
         if (mapping.colId === 'title') {
             return {
@@ -40,7 +47,7 @@ const TitleMetadataTable = ({history}) => {
                 },
             };
         }
-        if (mapping.colId === 'repository') {
+        if (mapping.colId === REPOSITORY_COLUMN_ID) {
             return {
                 ...mapping,
                 cellRendererFramework: params => {
@@ -74,6 +81,16 @@ const TitleMetadataTable = ({history}) => {
         };
     });
 
+    const [columnApi, setColumnApi] = useState(null);
+
+    if (columnApi) {
+        if (get(catalogueOwner, 'tenantCode') !== DEFAULT_CATALOGUE_OWNER) {
+            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, false);
+        } else {
+            columnApi.setColumnVisible(REPOSITORY_COLUMN_ID, true);
+        }
+    }
+
     const [paginationData, setPaginationData] = useState({
         pageSize: 0,
         totalCount: 0,
@@ -102,6 +119,7 @@ const TitleMetadataTable = ({history}) => {
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
+                setColumnApi(columnApi);
                 break;
             }
             default:
@@ -119,6 +137,7 @@ const TitleMetadataTable = ({history}) => {
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
+                externalFilter={catalogueOwner}
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
@@ -127,10 +146,12 @@ const TitleMetadataTable = ({history}) => {
 
 TitleMetadataTable.propTypes = {
     history: PropTypes.object,
+    catalogueOwner: PropTypes.object,
 };
 
 TitleMetadataTable.defaultProps = {
     history: {},
+    catalogueOwner: DEFAULT_CATALOGUE_OWNER,
 };
 
 export default TitleMetadataTable;

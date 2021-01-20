@@ -7,6 +7,14 @@ export const VZ = 'VZ';
 export const CONTENT_TYPE = ['MOVIE', 'EPISODE', 'EVENT', 'SERIES', 'SEASON', 'SPORTS', 'AD', 'SPECIAL'];
 export const LEGACY_TOOLTIP_TEXT = 'This is Legacy title. Click to Reconcile';
 
+export const CATALOGUE_OWNER_OPTIONS = [
+    {label: 'Vubiquity', value: 'vu'},
+    {label: 'MGM', value: 'mgm'},
+];
+export const CATALOGUE_OWNER_DROPDOWN_PLACEHOLDER = 'Select Catalogue Owner';
+export const DEFAULT_CATALOGUE_OWNER = 'vu';
+export const REPOSITORY_COLUMN_ID = 'repository';
+
 export const COLUMN_MAPPINGS = [
     {
         colId: 'id',

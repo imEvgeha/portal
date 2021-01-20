@@ -432,7 +432,7 @@
                         },
                         "regionExcluded": {
                             "name": "Region Excluded",
-                            "type": "string",
+                            "type": "stringInArray",
                             "path": "regionExcluded"
                         }
                     }
@@ -512,7 +512,7 @@
                         "releaseHistoryOriginal": {
                             "name": "Release History Original",
                             "type": "datetime",
-                            "dateType": "timestamp",
+                            "dateType": "businessDateTime",
                             "path": "releaseHistoryOriginal"
                         },
                         "releaseHistoryPhysicalHV": {

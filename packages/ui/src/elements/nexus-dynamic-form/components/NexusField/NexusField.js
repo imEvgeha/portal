@@ -291,7 +291,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {renderError({...fieldProps}, error)}
+                                {error && renderError({...fieldProps}, error)}
                             </div>
                         </>
                     )}
