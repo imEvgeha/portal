@@ -35,6 +35,7 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   />
   <Connect(ComposedComponent)
     display={false}
+    tenantCode="vu"
     toggle={[Function]}
   />
 </div>
