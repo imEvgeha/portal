@@ -40,7 +40,7 @@ class DropdownCellEditor extends Component {
                 country: option,
             }));
 
-        const optionsList = [...preparedOptions, ...preparedDisabledOptions];
+        const optionsList = [...preparedDisabledOptions, ...preparedOptions];
 
         return preparedOptions[0].country ? uniqBy(optionsList, 'country') : optionsList;
     };
