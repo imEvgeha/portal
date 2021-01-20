@@ -45,6 +45,7 @@ const ServicingOrder = ({match}) => {
                 const {
                     fulfillmentOrders,
                     servicingOrderItems,
+                    fulfillmentOrderItems,
                 } = await servicingOrdersService.getFulfilmentOrdersForServiceOrder(servicingOrder.so_number);
 
                 let fulfillmentOrdersClone = cloneDeep(fulfillmentOrders);
@@ -55,6 +56,7 @@ const ServicingOrder = ({match}) => {
                     ...servicingOrder,
                     fulfillmentOrders: showLoading(fulfillmentOrdersClone),
                     servicingOrderItems,
+                    fulfillmentOrderItems,
                 });
                 const barcodes = getBarCodes(fulfillmentOrdersClone);
                 fetchAssetInfo(barcodes).then(assetInfo => {
@@ -63,6 +65,7 @@ const ServicingOrder = ({match}) => {
                         ...servicingOrder,
                         fulfillmentOrders: newFulfillmentOrders,
                         servicingOrderItems,
+                        fulfillmentOrderItems,
                     });
                     // Todo remove below comments after nothing is broken in SO page. kbora
                     // setSelectedFulfillmentOrderID(get(newFulfillmentOrders, '[0].id', ''));
@@ -107,6 +110,10 @@ const ServicingOrder = ({match}) => {
             if (Array.isArray(source.deteServices) && source.deteServices.length > 0) {
                 let recp = {};
                 source.deteServices.forEach(item => {
+                    const extId = get(item, 'externalServices.externalId', '');
+                    item.foiStatus =
+                        (get(serviceOrder, 'fulfillmentOrderItems', []).find(item => item.external_id === extId) || {})
+                            .status || '';
                     const recipient = get(item, 'deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
                     if (recipient && !recipientsOptions.hasOwnProperty(recipient)) {
                         getSpecOptions(recipient, source.tenant).then(res => {
