@@ -145,7 +145,7 @@ class TitleCreate extends React.Component {
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService
-            .createTitle(title)
+            .createTitle(title, this.props.catalogueOwner.tenantCode)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
@@ -543,6 +543,27 @@ class TitleCreate extends React.Component {
                                             </Col>
                                         </Row>
                                     ) : null}
+                                    <Row>
+                                        <Col>
+                                            {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
+                                            <Label for="catalogueOwner">
+                                                Catalogue Owner<span style={{color: 'red'}}>*</span>
+                                            </Label>
+                                            <AvField
+                                                type="select"
+                                                name="catalogueOwner"
+                                                required
+                                                disabled={true}
+                                                value={this.props.catalogueOwner.tenantCode}
+                                            >
+                                                <option value={this.props.catalogueOwner.tenantCode}>
+                                                    {this.props.catalogueOwner.tenantCode === 'vu'
+                                                        ? 'Vubiquity'
+                                                        : 'MGM'}
+                                                </option>
+                                            </AvField>
+                                        </Col>
+                                    </Row>
                                     {this.renderSyncCheckBoxes()}
                                 </Container>
                             </Col>
@@ -571,6 +592,7 @@ TitleCreate.propTypes = {
     toggle: PropTypes.func.isRequired,
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
+    catalogueOwner: PropTypes.object.isRequired,
 };
 
 export default withToasts(TitleCreate);

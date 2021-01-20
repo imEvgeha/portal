@@ -51,7 +51,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
                 </Button>
             </TitleMetadataHeader>
             <TitleMetadataTable history={history} catalogueOwner={catalogueOwner} />
-            <TitleCreate display={showModal} toggle={closeModalAndRefreshTable} />
+            <TitleCreate display={showModal} toggle={closeModalAndRefreshTable} catalogueOwner={catalogueOwner} />
         </div>
     );
 };
