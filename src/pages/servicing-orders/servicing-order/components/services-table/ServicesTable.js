@@ -79,7 +79,7 @@ const ServicesTable = ({
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
                     recipient,
-                    operationalStatus: service.status,
+                    operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
                 }));
