@@ -20,7 +20,7 @@ class DropdownCellEditor extends Component {
         const preparedOptions =
             Array.isArray(options) &&
             options.map(option => {
-                if (!option.hasOwnProperty('isDirty') && option.selected && option.isDisabled) {
+                if ((!option.hasOwnProperty('isDirty') && option.selected) || option.isDisabled) {
                     return {
                         ...option,
                         isDisabled: true,
