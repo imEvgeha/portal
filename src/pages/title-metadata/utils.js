@@ -158,13 +158,7 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
-    let response;
-    const errorToast = {
-        title: ERROR_TITLE,
-        icon: ERROR_ICON,
-        isAutoDismiss: true,
-        description: UPDATE_TERRITORY_METADATA_ERROR,
-    };
+    let response = [];
     await Promise.all(
         data.map(async tmet => {
             if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
@@ -177,23 +171,22 @@ export const updateTerritoryMetadata = async (values, titleId) => {
         })
     )
         .then(() => {
-            if (response && response.length > 0) {
-                let toast;
-                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
-                    store.dispatch(getTerritoryMetadata({id: titleId}));
-                    toast = {
-                        title: SUCCESS_TITLE,
-                        icon: SUCCESS_ICON,
-                        isAutoDismiss: true,
-                        description: UPDATE_TERRITORY_METADATA_SUCCESS,
-                    };
-                } else {
-                    toast = errorToast;
-                }
-                store.dispatch(addToast(toast));
-            }
+            store.dispatch(getTerritoryMetadata({id: titleId}));
+            const successToast = {
+                title: SUCCESS_TITLE,
+                icon: SUCCESS_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TERRITORY_METADATA_SUCCESS,
+            };
+            store.dispatch(addToast(successToast));
         })
         .catch(error => {
+            const errorToast = {
+                title: ERROR_TITLE,
+                icon: ERROR_ICON,
+                isAutoDismiss: true,
+                description: UPDATE_TERRITORY_METADATA_ERROR,
+            };
             store.dispatch(addToast(errorToast));
         });
 };
@@ -235,7 +228,7 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
 };
 
 export const updateEditorialMetadata = async (values, titleId) => {
-    let response;
+    let response = [];
     const errorToast = {
         title: ERROR_TITLE,
         icon: ERROR_ICON,
@@ -256,7 +249,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
     )
         .then(() => {
             if (response && response.length > 0) {
-                let toast;
+                let toast = errorToast;
                 if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
                     store.dispatch(getEditorialMetadata({id: titleId}));
                     toast = {
@@ -265,8 +258,6 @@ export const updateEditorialMetadata = async (values, titleId) => {
                         isAutoDismiss: true,
                         description: UPDATE_EDITORIAL_METADATA_SUCCESS,
                     };
-                } else {
-                    toast = errorToast;
                 }
                 store.dispatch(addToast(toast));
             }
