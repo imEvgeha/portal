@@ -82,6 +82,9 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
         case 'territory.selected':
             return params => {
                 const {data = {}} = params || {};
+                if (data['territorySelected']) {
+                    return data['territorySelected'];
+                }
                 if (data && Array.isArray(data[javaVariableName])) {
                     const items = data[javaVariableName]
                         .filter(item => item.selected)
