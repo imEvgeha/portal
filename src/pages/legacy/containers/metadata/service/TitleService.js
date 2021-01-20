@@ -93,7 +93,7 @@ export const titleService = {
 
     createTitle: (title, tenantCode) => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
-        const params = {tenantCode};
+        const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
