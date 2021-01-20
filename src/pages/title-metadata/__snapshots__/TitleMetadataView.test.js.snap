@@ -34,6 +34,11 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     history={Object {}}
   />
   <Connect(ComposedComponent)
+    catalogueOwner={
+      Object {
+        "tenantCode": "vu",
+      }
+    }
     display={false}
     toggle={[Function]}
   />
