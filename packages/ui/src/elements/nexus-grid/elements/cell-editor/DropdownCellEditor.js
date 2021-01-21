@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Dropdown, {DropdownItemCheckbox, DropdownItemGroupCheckbox} from '@atlaskit/dropdown-menu';
-import {cloneDeep} from 'lodash';
+import {cloneDeep, uniqBy} from 'lodash';
 import './DropdownCellEditor.scss';
 
 class DropdownCellEditor extends Component {
@@ -20,7 +20,7 @@ class DropdownCellEditor extends Component {
         const preparedOptions =
             Array.isArray(options) &&
             options.map(option => {
-                if (!option.hasOwnProperty('isDirty') && option.selected) {
+                if ((!option.hasOwnProperty('isDirty') && option.selected) || option.isDisabled) {
                     return {
                         ...option,
                         isDisabled: true,
@@ -40,7 +40,9 @@ class DropdownCellEditor extends Component {
                 country: option,
             }));
 
-        return [...preparedOptions, ...preparedDisabledOptions];
+        const optionsList = [...preparedDisabledOptions, ...preparedOptions];
+
+        return preparedOptions[0].country ? uniqBy(optionsList, 'country') : optionsList;
     };
 
     isPopup = () => {

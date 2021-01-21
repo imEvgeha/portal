@@ -1,4 +1,5 @@
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
@@ -91,7 +92,9 @@ export const registerTitle = payload => {
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
-        const filterIsActive = !!Object.keys(searchCriteria).length;
+        const filterIsActive =
+            !!Object.keys(searchCriteria).length &&
+            !(Object.keys(searchCriteria).length === 1 && get(searchCriteria, 'tenantCode'));
         const partialContentTypeSearch = searchCriteria.contentType
             ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
             : '';
