@@ -35,6 +35,10 @@
     align-items: flex-start;
 }
 
+.nexus-c-title-details-header__title-info-container--no-border {
+    border-right: none;
+}
+
 .nexus-c-title-details-header__publish-info-container {
     width: 25%;
     @include margin(0, 0, 0, 6);

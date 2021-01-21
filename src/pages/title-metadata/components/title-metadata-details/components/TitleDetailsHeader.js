@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
-import {VZ, MOVIDA} from '../../../constants';
+import {VZ, MOVIDA, VU, MGM} from '../../../constants';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
 import TitleInfo from './TitleInfo';
@@ -49,24 +49,33 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                     'nexus-c-title-details-header__content--hidden': isShrinked,
                 })}
             >
-                <div className="nexus-c-title-details-header__title-info-container">
+                <div
+                    className={classnames('nexus-c-title-details-header__title-info-container', {
+                        'nexus-c-title-details-header__title-info-container--no-border':
+                            title.catalogueOwner && title.catalogueOwner === MGM,
+                    })}
+                >
                     <TitleInfo
                         title={title.title}
                         releaseYear={title.releaseYear}
                         contentType={title.contentType}
                         titleImages={title.images}
+                        catalogueOwner={title.catalogueOwner}
                     />
                 </div>
-                <div className="nexus-c-title-details-header__publish-info-container">
-                    <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
-                    <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
-                </div>
+                {title.catalogueOwner && title.catalogueOwner === VU && (
+                    <div className="nexus-c-title-details-header__publish-info-container">
+                        <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                        <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                    </div>
+                )}
             </div>
             <ShrinkedHeader
                 isShrinked={isShrinked}
                 title={title.title}
                 externalIds={externalIds}
                 onSyncPublish={onSyncPublish}
+                catalogueOwner={title.catalogueOwner}
             />
         </div>
     );
