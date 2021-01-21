@@ -12,7 +12,8 @@
     font-size: 11px;
     color: #ffffff;
 
-    &--completed {
+    &--completed,
+    &--complete {
         background: #36b37e;
     }
 
@@ -34,6 +35,8 @@
     }
 
     &--fo-not-started,
+    &--not-started,
+    &--grey,
     &--ready {
         background: map-get($light-neutral-colors, light-neutral-1);
     }
