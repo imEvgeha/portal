@@ -158,19 +158,20 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
-    let response = [];
-    await Promise.all(
-        data.map(async tmet => {
-            if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
-                const body = formatTerritoryBody(tmet);
-                response = await titleService.updateTerritoryMetadata(body);
-            } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
-                const body = formatTerritoryBody(tmet, titleId);
-                response = await titleService.addTerritoryMetadata(body);
-            }
-        })
-    )
-        .then(() => {
+    try {
+        let response;
+        await Promise.all(
+            data.map(async tmet => {
+                if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
+                    const body = formatTerritoryBody(tmet);
+                    response = await titleService.updateTerritoryMetadata(body);
+                } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
+                    const body = formatTerritoryBody(tmet, titleId);
+                    response = await titleService.addTerritoryMetadata(body);
+                }
+            })
+        );
+        if (response) {
             store.dispatch(getTerritoryMetadata({id: titleId}));
             const successToast = {
                 title: SUCCESS_TITLE,
@@ -179,16 +180,16 @@ export const updateTerritoryMetadata = async (values, titleId) => {
                 description: UPDATE_TERRITORY_METADATA_SUCCESS,
             };
             store.dispatch(addToast(successToast));
-        })
-        .catch(error => {
-            const errorToast = {
-                title: ERROR_TITLE,
-                icon: ERROR_ICON,
-                isAutoDismiss: true,
-                description: UPDATE_TERRITORY_METADATA_ERROR,
-            };
-            store.dispatch(addToast(errorToast));
-        });
+        }
+    } catch (error) {
+        const errorToast = {
+            title: ERROR_TITLE,
+            icon: ERROR_ICON,
+            isAutoDismiss: true,
+            description: UPDATE_TERRITORY_METADATA_ERROR,
+        };
+        store.dispatch(addToast(errorToast));
+    }
 };
 
 export const formatEditorialBody = (data, titleId, isCreate) => {
@@ -236,33 +237,32 @@ export const updateEditorialMetadata = async (values, titleId) => {
         description: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
-    await Promise.all(
-        data.map(async emet => {
-            if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
-                const body = formatEditorialBody(emet, titleId);
-                response = await titleService.updateEditorialMetadata(body);
-            } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
-                const body = formatEditorialBody(emet, titleId, true);
-                response = await titleService.addEditorialMetadata(body);
-            }
-        })
-    )
-        .then(() => {
-            if (response && response.length > 0) {
-                let toast = errorToast;
-                if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
-                    store.dispatch(getEditorialMetadata({id: titleId}));
-                    toast = {
-                        title: SUCCESS_TITLE,
-                        icon: SUCCESS_ICON,
-                        isAutoDismiss: true,
-                        description: UPDATE_EDITORIAL_METADATA_SUCCESS,
-                    };
+    try {
+        await Promise.all(
+            data.map(async emet => {
+                if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
+                    const body = formatEditorialBody(emet, titleId);
+                    response = await titleService.updateEditorialMetadata(body);
+                } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
+                    const body = formatEditorialBody(emet, titleId, true);
+                    response = await titleService.addEditorialMetadata(body);
                 }
-                store.dispatch(addToast(toast));
+            })
+        );
+        if (response && response.length > 0) {
+            let toast = errorToast;
+            if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
+                store.dispatch(getEditorialMetadata({id: titleId}));
+                toast = {
+                    title: SUCCESS_TITLE,
+                    icon: SUCCESS_ICON,
+                    isAutoDismiss: true,
+                    description: UPDATE_EDITORIAL_METADATA_SUCCESS,
+                };
             }
-        })
-        .catch(error => {
-            store.dispatch(addToast(errorToast));
-        });
+            store.dispatch(addToast(toast));
+        }
+    } catch (error) {
+        store.dispatch(addToast(errorToast));
+    }
 };

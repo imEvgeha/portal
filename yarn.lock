@@ -7709,6 +7709,13 @@ create-react-context@^0.3.0:
     gud "^1.0.0"
     warning "^4.0.3"
 
+cross-fetch@^3.0.4:
+  version "3.0.6"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/cross-fetch/-/cross-fetch-3.0.6.tgz#3a4040bc8941e653e0e9cf17f29ebcd177d3365c"
+  integrity sha512-KBPUbqgFjzWlVcURG+Svp9TlhA5uliYtiNx/0r8nv0pdypeQCRJ9IaSIc3q/x3q8t3F75cHuwxVql1HFGHCNJQ==
+  dependencies:
+    node-fetch "2.6.1"
+
 cross-spawn@5.1.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -10576,12 +10583,12 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-fbemitter@^2.0.0:
-  version "2.1.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/fbemitter/-/fbemitter-2.1.1.tgz#523e14fdaf5248805bb02f62efc33be703f51865"
-  integrity sha1-Uj4U/a9SSIBbsC9i78M75wP1GGU=
+fbemitter@^3.0.0:
+  version "3.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/fbemitter/-/fbemitter-3.0.0.tgz#00b2a1af5411254aab416cd75f9e6289bee4bff3"
+  integrity sha512-KWKaceCwKQU0+HPoop6gn4eOHk50bBv/VxjJtGMfwmJt3D29JpN4H4eisCtIPA+a8GVBam+ldMMpMjJUvpDyHw==
   dependencies:
-    fbjs "^0.8.4"
+    fbjs "^3.0.0"
 
 fbjs-css-vars@^1.0.0:
   version "1.0.2"
@@ -10620,6 +10627,19 @@ fbjs@^1.0.0:
     core-js "^2.4.1"
     fbjs-css-vars "^1.0.0"
     isomorphic-fetch "^2.1.1"
+    loose-envify "^1.0.0"
+    object-assign "^4.1.0"
+    promise "^7.1.1"
+    setimmediate "^1.0.5"
+    ua-parser-js "^0.7.18"
+
+fbjs@^3.0.0:
+  version "3.0.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/fbjs/-/fbjs-3.0.0.tgz#0907067fb3f57a78f45d95f1eacffcacd623c165"
+  integrity sha512-dJd4PiDOFuhe7vk4F80Mba83Vr2QuK86FoxtgPmzBqEJahncp+13YCmfoa53KHCo6OnlXLG7eeMWPfB5CrpVKg==
+  dependencies:
+    cross-fetch "^3.0.4"
+    fbjs-css-vars "^1.0.0"
     loose-envify "^1.0.0"
     object-assign "^4.1.0"
     promise "^7.1.1"
@@ -10997,13 +11017,13 @@ flushable@^1.0.0:
   resolved "http://nexus.vubiquity.com:8081/repository/npm/flushable/-/flushable-1.0.0.tgz#2fc16837ec85f8d7ec1bd777087b8448e1ca8216"
   integrity sha512-WQr7DsBZfdmXwqWk7yyk9H2R60iHiUpLMvkov6KivafC9d1SzDTjSBsKMa8skT4laaSxus+F4v7WLO6J0zxPkw==
 
-flux@^3.1.3:
-  version "3.1.3"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/flux/-/flux-3.1.3.tgz#d23bed515a79a22d933ab53ab4ada19d05b2f08a"
-  integrity sha1-0jvtUVp5oi2TOrU6tK2hnQWy8Io=
+flux@^4.0.1:
+  version "4.0.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/flux/-/flux-4.0.1.tgz#7843502b02841d4aaa534af0b373034a1f75ee5c"
+  integrity sha512-emk4RCvJ8RzNP2lNpphKnG7r18q8elDYNAPx7xn+bDeOIo9FFfxEfIQ2y6YbQNmnsGD3nH1noxtLE64Puz1bRQ==
   dependencies:
-    fbemitter "^2.0.0"
-    fbjs "^0.8.0"
+    fbemitter "^3.0.0"
+    fbjs "^3.0.0"
 
 focus-lock@^0.6.3:
   version "0.6.6"
@@ -16645,6 +16665,11 @@ no-case@^2.2.0:
   dependencies:
     lower-case "^1.1.1"
 
+node-fetch@2.6.1:
+  version "2.6.1"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
 node-fetch@^1.0.1:
   version "1.7.3"
   resolved "http://nexus.vubiquity.com:8081/repository/npm/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
@@ -20151,11 +20176,11 @@ react-is@^16.12.0, react-is@^16.3.1, react-is@^16.3.2, react-is@^16.6.3, react-i
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
 react-json-view@^1.19.1:
-  version "1.19.1"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-json-view/-/react-json-view-1.19.1.tgz#95d8e59e024f08a25e5dc8f076ae304eed97cf5c"
-  integrity sha512-u5e0XDLIs9Rj43vWkKvwL8G3JzvXSl6etuS5G42a8klMohZuYFQzSN6ri+/GiBptDqlrXPTdExJVU7x9rrlXhg==
+  version "1.20.2"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-json-view/-/react-json-view-1.20.2.tgz#b3bfaeb13842c68a752e0a10fb165761dca6d523"
+  integrity sha512-DOGrMqhDHrvBwzwiIU/LKpZ7CFrOHrjoQ+e+d1aOJHn82t++PKuB4atiNR1Ko8UBEoGrMv44RagRSyYWTsEHKg==
   dependencies:
-    flux "^3.1.3"
+    flux "^4.0.1"
     react-base16-styling "^0.6.0"
     react-lifecycles-compat "^3.0.4"
     react-textarea-autosize "^6.1.0"
@@ -20685,9 +20710,9 @@ react-x-editable@0.0.10-beta:
     react-css-modules "^4.3.0"
 
 react-xml-viewer@^1.0.3:
-  version "1.1.0"
-  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-xml-viewer/-/react-xml-viewer-1.1.0.tgz#7c33380ae028e3a5125ea546a7f00f00a76965e1"
-  integrity sha512-L8kcNv1y0j1XD7muqcqMAIXJfFrFaMsfNzjymAeLb9GQjkwp0eM+xqQviCP8Vn+PqMzl3l4kIu+JvgX7GOVbjQ==
+  version "1.2.0"
+  resolved "http://nexus.vubiquity.com:8081/repository/npm/react-xml-viewer/-/react-xml-viewer-1.2.0.tgz#c786c9035f7aec86011f5b8015b52072483da88e"
+  integrity sha512-bo47THsy1kkXxpg4nfa1qIADHGuuuUL+AvLDbyp8QMnxrf+VAqMe49EsgZChaD/8RT65Q5+VlqSC732owrJQSg==
   dependencies:
     xml-js "^1.6.11"
 
