@@ -92,7 +92,6 @@ const TitleDetails = ({
         const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
-        console.log(updatedTitle);
         return {
             ...updatedTitle,
             vzExternalIds,
