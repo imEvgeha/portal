@@ -6,7 +6,7 @@ import {VZ, MOVIDA} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
-const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId}) => {
+const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId, isEditView}) => {
     const [vzExternalData] = externalIds.filter(id => id.externalSystem === VZ.toLowerCase());
     const vzButtonType = vzExternalData ? 'sync' : 'publish';
     const [movidaExternalData] = externalIds.filter(id => id.externalSystem === MOVIDA.toLowerCase());
@@ -24,7 +24,7 @@ const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId}
             })}
         >
             <div>{title}</div>
-            {isNexusTitle(titleId) && (
+            {isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
                     <Button appearance="default" onClick={() => onSyncPublish(VZ, vzButtonType)}>
                         {getButtonLabel(VZ)}
@@ -44,6 +44,7 @@ ShrinkedHeader.propTypes = {
     onSyncPublish: PropTypes.func,
     externalIds: PropTypes.array,
     titleId: PropTypes.string,
+    isEditView: PropTypes.bool,
 };
 
 ShrinkedHeader.defaultProps = {
@@ -52,6 +53,7 @@ ShrinkedHeader.defaultProps = {
     onSyncPublish: () => null,
     externalIds: [],
     titleId: null,
+    isEditView: false,
 };
 
 export default ShrinkedHeader;

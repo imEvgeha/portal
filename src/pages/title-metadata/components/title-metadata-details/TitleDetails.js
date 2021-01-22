@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
@@ -46,6 +46,7 @@ const TitleDetails = ({
     publishTitle,
 }) => {
     const containerRef = useRef();
+    const [isEditView, setIsEditView] = useState(false);
 
     useEffect(() => {
         const {params} = match || {};
@@ -120,6 +121,7 @@ const TitleDetails = ({
                 containerRef={containerRef}
                 externalIds={externalIds}
                 onSyncPublish={syncPublishHandler}
+                isEditView={isEditView}
             />
             <NexusDynamicForm
                 searchPerson={searchPerson}
@@ -133,6 +135,7 @@ const TitleDetails = ({
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}
+                setIsEditView={setIsEditView}
             />
         </div>
     );

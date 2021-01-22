@@ -11,7 +11,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish}) => {
+const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish, isEditView}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -52,7 +52,8 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
             >
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
-                        'nexus-c-title-details-header__title-info-container--no-border': !isNexusTitle(title.id),
+                        'nexus-c-title-details-header__title-info-container--no-border':
+                            !isNexusTitle(title.id) || isEditView,
                     })}
                 >
                     <TitleInfo
@@ -62,7 +63,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                         titleImages={title.images}
                     />
                 </div>
-                {isNexusTitle(title.id) && (
+                {isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
                         <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
                         <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
@@ -75,6 +76,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 externalIds={externalIds}
                 onSyncPublish={onSyncPublish}
                 titleId={title.id}
+                isEditView={isEditView}
             />
         </div>
     );
@@ -86,6 +88,7 @@ TitleDetailsHeader.propTypes = {
     containerRef: PropTypes.any,
     externalIds: PropTypes.array,
     onSyncPublish: PropTypes.func,
+    isEditView: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -94,6 +97,7 @@ TitleDetailsHeader.defaultProps = {
     containerRef: null,
     externalIds: [],
     onSyncPublish: () => null,
+    isEditView: false,
 };
 
 export default TitleDetailsHeader;
