@@ -37,9 +37,9 @@ import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {publisherService} from '../../service/PublisherService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
-const onViewTitleClick = response => {
+const onViewTitleClick = (response, isV2) => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
+    const url = isV2 ? `${getDomainName()}/metadata/v2/detail/${id}` : `${getDomainName()}/metadata/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -177,7 +177,9 @@ class TitleCreate extends React.Component {
                     icon: SUCCESS_ICON,
                     isAutoDismiss: true,
                     description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
+                    actions: [
+                        {content: 'View title', onClick: () => onViewTitleClick(response, !!this.props.tenantCode)},
+                    ],
                 });
             })
             .catch(e => {
