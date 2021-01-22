@@ -6,7 +6,6 @@ import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
-import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
@@ -24,6 +23,7 @@ import {
     handleTitleCategory,
     updateTerritoryMetadata,
     updateEditorialMetadata,
+    isNexusTitle,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
@@ -132,6 +132,7 @@ const TitleDetails = ({
                 onSubmit={values => onSubmit(values)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                hasButtons={isNexusTitle(title.id)}
             />
         </div>
     );

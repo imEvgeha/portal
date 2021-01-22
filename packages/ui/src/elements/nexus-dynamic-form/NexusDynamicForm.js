@@ -21,6 +21,7 @@ const NexusDynamicForm = ({
     searchPerson,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
+    hasButtons,
 }) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
@@ -125,7 +126,7 @@ const NexusDynamicForm = ({
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {buildButtons(dirty, reset, validationErrorCount)}
+                        {hasButtons && buildButtons(dirty, reset, validationErrorCount)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
@@ -196,6 +197,7 @@ NexusDynamicForm.propTypes = {
     generateMsvIds: PropTypes.func,
     isSaving: PropTypes.bool,
     regenerateAutoDecoratedMetadata: PropTypes.func,
+    hasButtons: PropTypes.bool,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -209,6 +211,7 @@ NexusDynamicForm.defaultProps = {
     generateMsvIds: undefined,
     isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
+    hasButtons: false,
 };
 
 export default NexusDynamicForm;
