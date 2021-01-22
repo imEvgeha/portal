@@ -220,7 +220,7 @@ NexusDynamicForm.defaultProps = {
     generateMsvIds: undefined,
     isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
-    hasButtons: false,
+    hasButtons: true,
     setIsEditView: () => null,
 };
 
