@@ -24,6 +24,7 @@ import {
     handleTitleCategory,
     updateTerritoryMetadata,
     updateEditorialMetadata,
+    prepareCategoryField,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
@@ -82,6 +83,7 @@ const TitleDetails = ({
                 updatedValues[key] = values[key];
             }
         });
+        prepareCategoryField(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);

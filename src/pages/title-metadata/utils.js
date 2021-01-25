@@ -127,6 +127,19 @@ export const handleTitleCategory = data => {
     return data;
 };
 
+export const prepareCategoryField = data => {
+    if (get(data, 'category')) {
+        const updatedCategory = [];
+        data.category.forEach((category, index) => {
+            updatedCategory.push({
+                name: category,
+                order: index,
+            });
+        });
+        data.category = updatedCategory;
+    }
+};
+
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
