@@ -21,6 +21,8 @@ const NexusDynamicForm = ({
     searchPerson,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
+    hasButtons,
+    setIsEditView,
 }) => {
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
@@ -32,7 +34,10 @@ const NexusDynamicForm = ({
     }, [update]);
 
     useEffect(() => {
-        !isSaving && setView(VIEWS.VIEW);
+        if (!isSaving) {
+            setView(VIEWS.VIEW);
+            setIsEditView(false);
+        }
     }, [isSaving]);
 
     useEffect(() => {
@@ -50,6 +55,7 @@ const NexusDynamicForm = ({
         reset();
         setUpdate(true);
         setView(VIEWS.VIEW);
+        setIsEditView(false);
         setValidationErrorCount(0);
     };
 
@@ -89,7 +95,10 @@ const NexusDynamicForm = ({
                     'nexus-c-dynamic-form__edit-button--title': isTitlePage,
                 })}
                 appearance="primary"
-                onClick={() => setView(VIEWS.EDIT)}
+                onClick={() => {
+                    setView(VIEWS.EDIT);
+                    setIsEditView(true);
+                }}
             >
                 Edit
             </Button>
@@ -125,7 +134,7 @@ const NexusDynamicForm = ({
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
                 {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {buildButtons(dirty, reset, validationErrorCount)}
+                        {hasButtons && buildButtons(dirty, reset, validationErrorCount)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
@@ -196,6 +205,8 @@ NexusDynamicForm.propTypes = {
     generateMsvIds: PropTypes.func,
     isSaving: PropTypes.bool,
     regenerateAutoDecoratedMetadata: PropTypes.func,
+    hasButtons: PropTypes.bool,
+    setIsEditView: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -209,6 +220,8 @@ NexusDynamicForm.defaultProps = {
     generateMsvIds: undefined,
     isSaving: false,
     regenerateAutoDecoratedMetadata: undefined,
+    hasButtons: true,
+    setIsEditView: () => null,
 };
 
 export default NexusDynamicForm;

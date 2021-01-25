@@ -19,6 +19,10 @@ import {
     UPDATE_TERRITORY_METADATA_ERROR,
 } from './constants';
 
+export const isNexusTitle = titleId => {
+    return titleId && titleId.startsWith('titl');
+};
+
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
         return `${VZ},${MOVIDA}`;
