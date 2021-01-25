@@ -44,6 +44,7 @@ const TitleDetails = ({
     selectValues,
     syncTitle,
     publishTitle,
+    isSaving,
 }) => {
     const containerRef = useRef();
 
@@ -131,6 +132,7 @@ const TitleDetails = ({
                 onSubmit={values => onSubmit(values)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                isSaving={isSaving}
             />
         </div>
     );
@@ -151,6 +153,7 @@ TitleDetails.propTypes = {
     selectValues: PropTypes.object,
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
+    isSaving: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -168,6 +171,7 @@ TitleDetails.defaultProps = {
     selectValues: {},
     syncTitle: () => null,
     publishTitle: () => null,
+    isSaving: false,
 };
 
 const mapStateToProps = () => {
@@ -182,6 +186,7 @@ const mapStateToProps = () => {
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isSaving: detailsSelectors.isSavingSelector(state),
     });
 };
 
