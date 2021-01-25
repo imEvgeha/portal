@@ -42,7 +42,26 @@ const PreplanRightsTable = ({
             rightsService
                 .get(right.id, {isWithErrorHandling: true})
                 .then(result => {
-                    updatedPrePlanRepo = [...updatedPrePlanRepo.filter(p => p.id !== right.id), result];
+                    const oldRecord = prePlanRepoRights.find(p => p.id === right.id);
+                    const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
+                    // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
+                    const updatedTerritories = result.territory.map(t => {
+                        const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
+                        if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
+                            return {...t, selected: true, isDirty: true};
+                        return t;
+                    });
+
+                    // update territory in result
+                    result.territory = updatedTerritories;
+                    const updatedResult = {
+                        ...result,
+                        keywords: oldRecord.keywords,
+                        territorySelected: oldRecord.territorySelected,
+                        territoryAll: oldRecord.territoryAll,
+                    };
+                    const prePlanRight = updatedPrePlanRepo.filter(p => p.id !== right.id);
+                    updatedPrePlanRepo = [...prePlanRight, updatedResult];
                     setPreplanRights({[username]: updatedPrePlanRepo});
                 })
                 .catch(error => {
