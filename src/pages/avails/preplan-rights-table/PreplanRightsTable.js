@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -7,6 +7,7 @@ import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
+import Loading from '../../static/Loading';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
     planTerritoriesColumn,
@@ -30,7 +31,9 @@ const PreplanRightsTable = ({
     setPrePlanColumnApi,
     setPrePlanGridApi,
 }) => {
+    const [counter, setCounter] = useState(0);
     useEffect(() => {
+        setCounter(0);
         if (activeTab === PRE_PLAN_TAB) {
             updateRightDetails();
         }
@@ -42,6 +45,7 @@ const PreplanRightsTable = ({
             rightsService
                 .get(right.id, {isWithErrorHandling: true})
                 .then(result => {
+                    setCounter(counter + 1);
                     const oldRecord = prePlanRepoRights.find(p => p.id === right.id);
                     const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
                     // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
@@ -65,6 +69,7 @@ const PreplanRightsTable = ({
                     setPreplanRights({[username]: updatedPrePlanRepo});
                 })
                 .catch(error => {
+                    setCounter(counter + 1);
                     updatedPrePlanRepo = updatedPrePlanRepo.filter(p => p.id !== right.id);
                     setPreplanRights({[username]: updatedPrePlanRepo});
                 })
@@ -122,7 +127,9 @@ const PreplanRightsTable = ({
         return updatedColumnDefs;
     };
 
-    return (
+    return activeTab === PRE_PLAN_TAB && counter < prePlanRepoRights.length ? (
+        <Loading />
+    ) : (
         <PrePlanGrid
             id="prePlanRightsRepo"
             columnDefs={reorderColumns([...filteredColumnDefs, planTerritoriesColumn, territoriesColumn])}
