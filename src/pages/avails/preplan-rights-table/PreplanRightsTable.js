@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -6,6 +6,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {compose} from 'redux';
+import {rightsService} from '../../legacy/containers/avail/service/RightsService';
 import {PRE_PLAN_TAB} from '../rights-repository/constants';
 import {
     planTerritoriesColumn,
@@ -29,6 +30,28 @@ const PreplanRightsTable = ({
     setPrePlanColumnApi,
     setPrePlanGridApi,
 }) => {
+    useEffect(() => {
+        if (activeTab === PRE_PLAN_TAB) {
+            updateRightDetails();
+        }
+    }, [activeTab]);
+
+    const updateRightDetails = () => {
+        let updatedPrePlanRepo = prePlanRepoRights;
+        prePlanRepoRights.forEach(right =>
+            rightsService
+                .get(right.id, {isWithErrorHandling: true})
+                .then(result => {
+                    updatedPrePlanRepo = [...updatedPrePlanRepo.filter(p => p.id !== right.id), result];
+                    setPreplanRights({[username]: updatedPrePlanRepo});
+                })
+                .catch(error => {
+                    updatedPrePlanRepo = updatedPrePlanRepo.filter(p => p.id !== right.id);
+                    setPreplanRights({[username]: updatedPrePlanRepo});
+                })
+        );
+    };
+
     const filteredColumnDefs = columnDefs.filter(columnDef => columnDef.colId !== 'territoryCountry');
     const editedMappings = mapping
         .filter(mapping => mapping.javaVariableName !== 'territory')
