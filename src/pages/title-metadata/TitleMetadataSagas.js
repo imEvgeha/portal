@@ -6,6 +6,7 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {ADD_TOAST} from '@vubiquity-nexus/portal-ui/lib/toast/toastActionTypes';
 import {put, all, call, takeEvery} from 'redux-saga/effects';
+import * as rightActionTypes from '../avails/rights-repository/rightsActionTypes';
 import * as actionTypes from './titleMetadataActionTypes';
 import {
     getTitleById,
@@ -124,6 +125,11 @@ export function* updateTitle({payload}) {
     }
 
     try {
+        yield put({
+            type: rightActionTypes.SAVING,
+            payload: true,
+        });
+
         const response = yield call(updateTitleService, payload);
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
@@ -139,6 +145,11 @@ export function* updateTitle({payload}) {
             type: actionTypes.UPDATE_TITLE_SUCCESS,
             payload: updatedResponse,
         });
+
+        yield put({
+            type: rightActionTypes.SAVING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: ADD_TOAST,
@@ -152,6 +163,11 @@ export function* updateTitle({payload}) {
         yield put({
             type: actionTypes.UPDATE_TITLE_ERROR,
             payload: error,
+        });
+
+        yield put({
+            type: rightActionTypes.SAVING,
+            payload: false,
         });
     } finally {
         yield put({

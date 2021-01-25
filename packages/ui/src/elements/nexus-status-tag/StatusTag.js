@@ -5,11 +5,12 @@ import './StatusTag.scss';
 
 const StatusTag = ({status}) => {
     const statusClassNameModifier = status.toLowerCase().replace(/_/g, '-');
-    return (
-        <div className={`nexus-status-tag nexus-status-tag--${statusClassNameModifier}`}>
-            {Constants[status.toUpperCase()]}
-        </div>
-    );
+    const statusText = Constants[status.toUpperCase()] || status.replace(/_/g, ' ');
+    const statusStyle = Constants[status.toUpperCase()]
+        ? `nexus-status-tag nexus-status-tag--${statusClassNameModifier}`
+        : `nexus-status-tag nexus-status-tag--grey`;
+
+    return statusText ? <div className={statusStyle}>{statusText}</div> : '';
 };
 
 StatusTag.propTypes = {

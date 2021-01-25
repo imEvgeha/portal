@@ -44,6 +44,7 @@ const TitleDetails = ({
     selectValues,
     syncTitle,
     publishTitle,
+    isSaving,
 }) => {
     const containerRef = useRef();
     const [isEditView, setIsEditView] = useState(false);
@@ -93,7 +94,6 @@ const TitleDetails = ({
         const [movidaExternalIds] = externalIds.filter(ids => ids.externalSystem === 'movida');
         const updatedTitle = handleTitleCategory(title);
         const updatedEditorialMetadata = handleEditorialGenresAndCategory(editorialMetadata, 'category', 'name');
-        console.log(updatedTitle);
         return {
             ...updatedTitle,
             vzExternalIds,
@@ -136,6 +136,7 @@ const TitleDetails = ({
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
                 hasButtons={isNexusTitle(title.id)}
                 setIsEditView={setIsEditView}
+                isSaving={isSaving}
             />
         </div>
     );
@@ -156,6 +157,7 @@ TitleDetails.propTypes = {
     selectValues: PropTypes.object,
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
+    isSaving: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -173,6 +175,7 @@ TitleDetails.defaultProps = {
     selectValues: {},
     syncTitle: () => null,
     publishTitle: () => null,
+    isSaving: false,
 };
 
 const mapStateToProps = () => {
@@ -187,6 +190,7 @@ const mapStateToProps = () => {
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isSaving: detailsSelectors.isSavingSelector(state),
     });
 };
 

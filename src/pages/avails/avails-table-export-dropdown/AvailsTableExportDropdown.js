@@ -43,7 +43,9 @@ const AvailsTableExportDropdown = ({
 
     useEffect(() => {
         if (mapping) {
-            setMappingColumnNames(mapping.filter(({dataType}) => dataType).map(({queryParamName}) => queryParamName));
+            setMappingColumnNames(
+                mapping.filter(({dataType}) => dataType).map(({javaVariableName}) => javaVariableName)
+            );
         }
     }, [mapping]);
 
@@ -192,9 +194,13 @@ const AvailsTableExportDropdown = ({
 
     const getDownloadableColumns = (columns = []) => {
         const headerFields = new Set(); // no duplicates
-        columns.map(({colDef: {colId} = {}}) => {
-            if (mappingColumnNames.includes(colId)) {
-                headerFields.add(colId);
+        columns.map(({colDef: {field, colId} = {}}) => {
+            if (mappingColumnNames.includes(field)) {
+                if (headerFields.has(field)) {
+                    headerFields.add(colId);
+                } else {
+                    headerFields.add(field);
+                }
             }
             return null;
         });

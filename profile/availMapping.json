@@ -2020,6 +2020,17 @@
             "enableSearch": true,
             "enableEdit": true,
             "required": false
+        },
+        {
+            "javaVariableName": "titleLocal",
+            "displayName": "Title Local",
+            "dataType": "string",
+            "searchDataType": "string",
+            "queryParamName": "titleLocal",
+            "readOnly": false,
+            "enableSearch": true,
+            "enableEdit": true,
+            "required": false
         }
     ]
 }
