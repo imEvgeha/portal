@@ -141,7 +141,7 @@ const ServicingOrder = ({match}) => {
 
     const isFormDisabled = selectedOrder => {
         const {readiness, tenant} = selectedOrder;
-        return readiness === 'READY' || readiness === 'ON_HOLD' || tenant === 'WB';
+        return readiness === 'READY' || tenant === 'WB';
     };
 
     const cancelEdit = () => {

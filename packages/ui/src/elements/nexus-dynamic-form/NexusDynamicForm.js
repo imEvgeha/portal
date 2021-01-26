@@ -23,8 +23,11 @@ const NexusDynamicForm = ({
     regenerateAutoDecoratedMetadata,
     hasButtons,
     setIsEditView,
+    editRight,
 }) => {
-    const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+
+
+    const [view, setView] = useState(isEdit === false? VIEWS.VIEW :VIEWS.EDIT);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
 
@@ -34,11 +37,15 @@ const NexusDynamicForm = ({
     }, [update]);
 
     useEffect(() => {
-        if (!isSaving) {
+        if (!isSaving && !isEdit) {
             setView(VIEWS.VIEW);
             setIsEditView(false);
         }
+        console.log('view useEffect: ', view);
     }, [isSaving]);
+
+    console.log('isEdit: ', isEdit);
+    console.log('view: ', view);
 
     useEffect(() => {
         // eslint-disable-next-line prefer-destructuring
@@ -96,8 +103,9 @@ const NexusDynamicForm = ({
                 })}
                 appearance="primary"
                 onClick={() => {
-                    setView(VIEWS.EDIT);
-                    setIsEditView(true);
+                    //setView(VIEWS.EDIT);
+                    //setIsEditView(true);
+                    editRight(true);
                 }}
             >
                 Edit
@@ -207,6 +215,7 @@ NexusDynamicForm.propTypes = {
     regenerateAutoDecoratedMetadata: PropTypes.func,
     hasButtons: PropTypes.bool,
     setIsEditView: PropTypes.func,
+    editRight: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -222,6 +231,7 @@ NexusDynamicForm.defaultProps = {
     regenerateAutoDecoratedMetadata: undefined,
     hasButtons: true,
     setIsEditView: () => null,
+    editRight: () =>null,
 };
 
 export default NexusDynamicForm;

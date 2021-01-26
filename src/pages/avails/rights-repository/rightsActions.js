@@ -38,3 +38,8 @@ export const updateRight = payload => ({
     type: actionTypes.UPDATE_RIGHT,
     payload,
 });
+
+export const editRight = payload => ({
+    type: actionTypes.EDITING,
+    payload,
+});

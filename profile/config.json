@@ -29,7 +29,7 @@
         "url": "https://availsapi.dev.vubiquity.com"
     },
     "keycloak": {
-        "clientId": "temportalapp-dev",
+        "clientId": "portalapp-public",
         "realm": "Vubiquity",
         "url": "https://auth.dev.vubiquity.com/auth"
     },

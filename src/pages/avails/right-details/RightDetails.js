@@ -2,7 +2,7 @@ import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {connect} from 'react-redux';
-import {getRight, updateRight} from '../rights-repository/rightsActions';
+import {getRight, updateRight, editRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
@@ -16,7 +16,7 @@ import './RightDetails.scss';
  and configure edit/view form fields
 */
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, history}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, isEditMode, editRight, history}) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -36,12 +36,13 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
             <NexusDynamicForm
                 schema={schema}
                 initialData={right}
-                isEdit
+                isEdit={isEditMode}
                 onSubmit={values => onSubmit(values)}
                 selectValues={selectValues}
                 isSaving={isSaving}
                 containerRef={containerRef}
                 searchPerson={searchPerson}
+                editRight={editRight}
             />
         </div>
     );
@@ -50,20 +51,24 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
 RightDetails.propTypes = {
     getRight: PropTypes.func,
     updateRight: PropTypes.func,
+    editRight: PropTypes.func,
     right: PropTypes.object,
     match: PropTypes.object,
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
+    isEditMode: PropTypes.bool,
     history: PropTypes.object,
 };
 
 RightDetails.defaultProps = {
     getRight: () => null,
     updateRight: () => null,
+    editRight: () =>null,
     right: {},
     match: {},
     selectValues: {},
     isSaving: false,
+    isEditMode: false,
     history: {},
 };
 
@@ -74,12 +79,14 @@ const mapStateToProps = () => {
         right: rightSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
         isSaving: detailsSelectors.isSavingSelector(state),
+        isEditMode: detailsSelectors.isEditModeSelector(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
     updateRight: payload => dispatch(updateRight(payload)),
+    editRight: payload => dispatch(editRight(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));

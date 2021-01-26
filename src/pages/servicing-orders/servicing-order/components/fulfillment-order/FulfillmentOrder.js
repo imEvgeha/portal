@@ -79,7 +79,7 @@ export const FulfillmentOrder = ({
 
                 // Disable form if status is READY || ON_HOLD
                 const readiness = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
-                readiness === 'READY' || readiness === 'ON_HOLD' ? setIsFormDisabled(true) : setIsFormDisabled(false);
+                readiness === 'READY' ? setIsFormDisabled(true) : setIsFormDisabled(false);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -185,6 +185,9 @@ export const FulfillmentOrder = ({
         dispatch(saveFulfillmentOrder(payload));
         setIsSaveDisabled(true);
     };
+
+    console.log('startdate ', get(fulfillmentOrder, fieldKeys.START_DATE, '')); //getValidDate
+    console.log('getValidDate startdate ', getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, '')));
 
     return (
         <Page>
