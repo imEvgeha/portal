@@ -77,9 +77,9 @@ export const FulfillmentOrder = ({
             if (!isEmpty(selectedFulfillmentOrder)) {
                 setFulfillmentOrder(cloneDeep(savedFulfillmentOrder || selectedFulfillmentOrder));
 
-                // Disable form if status is READY || ON_HOLD
+                // Disable form if status is READY
                 const readiness = get(selectedFulfillmentOrder, fieldKeys.READINESS, '');
-                readiness === 'READY' || readiness === 'ON_HOLD' ? setIsFormDisabled(true) : setIsFormDisabled(false);
+                readiness === 'READY' ? setIsFormDisabled(true) : setIsFormDisabled(false);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
