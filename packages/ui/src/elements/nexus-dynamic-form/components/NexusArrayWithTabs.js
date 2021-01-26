@@ -69,14 +69,16 @@ const NexusArrayWithTabs = ({
     };
 
     const checkIsUpdated = (values, currentData) => {
-        const isUpdated = Object.keys(values).some(key => {
-            return !!(
-                (get(values, key) && get(values, key) !== get(currentData, key)) ||
-                (get(currentData, key) && get(values, key) !== get(currentData, key))
-            );
-        });
-        if (isUpdated) {
-            values.isUpdated = true;
+        if (path !== 'ratings') {
+            const isUpdated = Object.keys(values).some(key => {
+                return !!(
+                    (get(values, key) && get(values, key) !== get(currentData, key)) ||
+                    (get(currentData, key) && get(values, key) !== get(currentData, key))
+                );
+            });
+            if (isUpdated) {
+                values.isUpdated = true;
+            }
         }
     };
 
@@ -217,10 +219,16 @@ const NexusArrayWithTabs = ({
             });
             return isEqual;
         });
-        newData[index] = {
-            ...newData[index],
-            isDeleted: true,
-        };
+        const newObject =
+            path === 'ratings'
+                ? {
+                      ...newData[index],
+                  }
+                : {
+                      ...newData[index],
+                      isDeleted: true,
+                  };
+        newData[index] = newObject;
         setFieldValue(path, newData);
     };
 
@@ -276,10 +284,16 @@ const NexusArrayWithTabs = ({
         }
 
         const newData = [...getValues()[path]];
-        newData.push({
-            ...properValues,
-            isCreated: true,
-        });
+        const newObject =
+            path === 'ratings'
+                ? {
+                      ...properValues,
+                  }
+                : {
+                      ...properValues,
+                      isCreated: true,
+                  };
+        newData.push(newObject);
         setFieldValue(path, newData);
         closeModal();
     };
