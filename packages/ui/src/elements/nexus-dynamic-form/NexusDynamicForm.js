@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
-import {merge, set} from 'lodash';
+import {merge, mergeWith, set} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
 import {VIEWS} from './constants';
@@ -125,7 +125,14 @@ const NexusDynamicForm = ({
             const properValues = getProperValues(fields, values);
             const correctValues = {};
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
-            onSubmit(merge({}, initialData, correctValues));
+            // onSubmit(merge({}, initialData, correctValues));
+            onSubmit(
+                mergeWith({}, initialData, correctValues, (obj, src) => {
+                    if (Array.isArray(src)) {
+                        return src;
+                    }
+                })
+            );
         }
     };
 

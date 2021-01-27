@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField, FormFooter} from '@atlaskit/form';
@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MASTER_EMET_MESSAGE} from '../constants';
+import {MASTER_EMET_MESSAGE, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, VIEWS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -219,16 +219,14 @@ const NexusArrayWithTabs = ({
             });
             return isEqual;
         });
-        const newObject =
-            path === 'ratings'
-                ? {
-                      ...newData[index],
-                  }
-                : {
-                      ...newData[index],
-                      isDeleted: true,
-                  };
-        newData[index] = newObject;
+        if (path === 'ratings') {
+            newData.splice(index, 1);
+        } else {
+            newData[index] = {
+                ...newData[index],
+                isDeleted: true,
+            };
+        }
         setFieldValue(path, newData);
     };
 

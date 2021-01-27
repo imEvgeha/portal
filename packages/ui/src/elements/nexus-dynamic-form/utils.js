@@ -192,6 +192,8 @@ export const getFieldValue = fieldProps => {
         fieldProps.forEach(obj => {
             if (get(obj, 'value') && get(obj, 'label')) {
                 newValues.push(get(obj, 'value'));
+            } else {
+                newValues.push(obj);
             }
         });
         return newValues;
