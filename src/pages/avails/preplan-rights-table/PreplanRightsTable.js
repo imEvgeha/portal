@@ -31,9 +31,10 @@ const PreplanRightsTable = ({
     setPrePlanColumnApi,
     setPrePlanGridApi,
 }) => {
-    const [counter, setCounter] = useState(0);
+    const [count, setCount] = useState(0);
+
     useEffect(() => {
-        setCounter(0);
+        setCount(0);
         if (activeTab === PRE_PLAN_TAB) {
             updateRightDetails();
         }
@@ -45,7 +46,7 @@ const PreplanRightsTable = ({
             rightsService
                 .get(right.id, {isWithErrorHandling: true})
                 .then(result => {
-                    setCounter(counter + 1);
+                    setCount(prevCount => prevCount + 1);
                     const oldRecord = prePlanRepoRights.find(p => p.id === right.id);
                     const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
                     // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
@@ -69,7 +70,7 @@ const PreplanRightsTable = ({
                     setPreplanRights({[username]: updatedPrePlanRepo});
                 })
                 .catch(error => {
-                    setCounter(counter + 1);
+                    setCount(prevCount => prevCount + 1);
                     updatedPrePlanRepo = updatedPrePlanRepo.filter(p => p.id !== right.id);
                     setPreplanRights({[username]: updatedPrePlanRepo});
                 })
@@ -127,7 +128,7 @@ const PreplanRightsTable = ({
         return updatedColumnDefs;
     };
 
-    return activeTab === PRE_PLAN_TAB && counter < prePlanRepoRights.length ? (
+    return activeTab === PRE_PLAN_TAB && count < prePlanRepoRights.length ? (
         <Loading />
     ) : (
         <PrePlanGrid

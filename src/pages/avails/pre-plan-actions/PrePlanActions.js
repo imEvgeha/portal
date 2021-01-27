@@ -175,6 +175,7 @@ export const PrePlanActions = ({
                     // eslint-disable-next-line prefer-destructuring
                     updatedRight = rightsList.filter(r => r.id === right.id)[0];
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                    updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
                     let keywordsStr = '';
                     keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
                     updatedRight.keywords =
