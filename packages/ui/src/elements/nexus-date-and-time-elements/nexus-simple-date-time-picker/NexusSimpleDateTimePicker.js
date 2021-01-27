@@ -12,18 +12,18 @@ import {TIME_PLACEHOLDER, ATLASKIT_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_
 const MIN_DATE_LENGTH = 10;
 
 const NexusSimpleDateTimePicker = ({
-                                       label,
-                                       id,
-                                       value,
-                                       defaultValue,
-                                       onChange,
-                                       error,
-                                       isSimulcast,
-                                       isTimestamp,
-                                       isClearable,
-                                       isClearableOnly,
-                                       ...restProps
-                                   }) => {
+    label,
+    id,
+    value,
+    defaultValue,
+    onChange,
+    error,
+    isSimulcast,
+    isTimestamp,
+    isClearable,
+    isClearableOnly,
+    ...restProps
+  }) => {
     const [date, setDate] = useState(value||'');
 
     // Get locale provided by intl
