@@ -34,8 +34,8 @@ const PreplanRightsTable = ({
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        setCount(0);
         if (activeTab === PRE_PLAN_TAB) {
+            setCount(0);
             updateRightDetails();
         }
     }, [activeTab]);
@@ -53,7 +53,7 @@ const PreplanRightsTable = ({
                     const updatedTerritories = result.territory.map(t => {
                         const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
                         if (!t.withdrawn && !t.selected && dirtyTerritoryFound)
-                            return {...t, selected: true, isDirty: true};
+                            return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
                         return t;
                     });
 
