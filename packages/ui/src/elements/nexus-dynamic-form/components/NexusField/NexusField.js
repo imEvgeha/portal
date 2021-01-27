@@ -57,7 +57,7 @@ const NexusField = ({
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
 
     const addedProps = {
@@ -135,6 +135,8 @@ const NexusField = ({
                         isMultiselect={false}
                         addedProps={addedProps}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
+                        optionsFilterParameter={checkDependencies('values')}
+                        isCreateMode={view === VIEWS.CREATE}
                     />
                 );
             case 'multiselect':

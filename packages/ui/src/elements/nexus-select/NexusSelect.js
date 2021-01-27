@@ -19,6 +19,8 @@ const NexusSelect = ({
     isRequired,
     isMultiselect,
     addedProps,
+    optionsFilterParameter,
+    isCreateMode,
 }) => {
     const [fetchedOptions, setFetchedOptions] = useState([]);
 
@@ -33,11 +35,31 @@ const NexusSelect = ({
         }
     }, [selectValues]);
 
+    useEffect(() => {
+        // todo: reset select value
+        // isCreateMode && optionsFilterParameter.length && addedProps.setFieldValue && addedProps.setFieldValue(path, undefined);
+    }, [optionsFilterParameter]);
+
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
             const deselectOption = {label: 'Select...', value: ''};
             options.unshift(deselectOption);
         }
+    };
+
+    const filterOptions = () => {
+        if (optionsFilterParameter.length) {
+            const options = cloneDeep(selectValues[path]);
+            let filteredOptions = [];
+            optionsFilterParameter.forEach(({name, value}) => {
+                const [fieldName, propName] = name.split('.');
+                const property = propName || fieldName;
+                const filteredArray = options.filter(opt => opt[property] === value);
+                filteredOptions = filteredOptions.concat(filteredArray);
+            });
+            return formatOptions(filteredOptions, optionsConfig);
+        }
+        return fetchedOptions;
     };
 
     return isMultiselect ? (
@@ -51,7 +73,7 @@ const NexusSelect = ({
     ) : (
         <SelectWithOptional
             {...fieldProps}
-            options={optionsConfig.options !== undefined ? optionsConfig.options : fetchedOptions}
+            options={optionsConfig.options !== undefined ? optionsConfig.options : filterOptions()}
             defaultValue={defaultValue}
             {...addedProps}
             className="nexus-c-nexus-select-container"
@@ -70,6 +92,8 @@ NexusSelect.propTypes = {
     isRequired: PropTypes.bool,
     isMultiselect: PropTypes.bool,
     addedProps: PropTypes.object.isRequired,
+    optionsFilterParameter: PropTypes.array,
+    isCreateMode: PropTypes.bool,
 };
 
 NexusSelect.defaultProps = {
@@ -79,6 +103,8 @@ NexusSelect.defaultProps = {
     path: null,
     isRequired: false,
     isMultiselect: false,
+    optionsFilterParameter: [],
+    isCreateMode: false,
 };
 
 export default NexusSelect;
