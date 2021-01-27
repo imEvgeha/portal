@@ -237,7 +237,7 @@ export const rightsService = {
     },
 
     update: payload => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights`;
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/bulk-partial-update`;
         return nexusFetch(url, {
             method: 'PATCH',
             body: JSON.stringify(payload),
