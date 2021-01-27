@@ -24,6 +24,7 @@ import {
     updateTerritoryMetadata,
     updateEditorialMetadata,
     isNexusTitle,
+    handleDirtyValues,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
 import './TitleDetails.scss';
@@ -62,6 +63,7 @@ const TitleDetails = ({
     }, []);
 
     const onSubmit = values => {
+        handleDirtyValues(values);
         const {params} = match || {};
         const {id} = params;
         // remove fields under arrayWithTabs

@@ -270,3 +270,44 @@ export const updateEditorialMetadata = async (values, titleId) => {
         store.dispatch(addToast(errorToast));
     }
 };
+
+export const handleDirtyValues = values => {
+    handleDirtyRatingsValues(values);
+    // todo: handleDirtyEMETValues(values);
+    // todo: handleDirtyTMETValues(values);
+};
+
+const handleDirtyRatingsValues = values => {
+    const rating = get(values, 'rating');
+    const ratingSystem = get(values, 'ratingSystem');
+    const advisoriesCode = get(values, 'advisoriesCode', null);
+    const advisoriesFreeText = get(values, 'advisoriesFreeText', null);
+    const updatedRatingRecord = {
+        rating,
+        ratingSystem,
+        advisoriesCode,
+        advisoriesFreeText,
+    };
+    const index = values.ratings && values.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
+    values.ratings[index] = updatedRatingRecord;
+};
+
+const handleDirtyEMETValues = values => {
+    const editorial = get(values, 'editorial');
+    const index = values.editorialMetadata.findIndex(
+        elem =>
+            elem.locale === editorial.locale &&
+            elem.language === editorial.language &&
+            elem.format === editorial.format &&
+            elem.service === editorial.service
+    );
+    values.editorialMetadata[index] = editorial;
+};
+
+const handleDirtyTMETValues = values => {
+    const territorial = get(values, 'territorial');
+    const index = values.territorialMetadata.findIndex(
+        elem => elem.locale === territorial.locale && elem.language === territorial.language
+    );
+    values.territorialMetadata[index] = territorial;
+};
