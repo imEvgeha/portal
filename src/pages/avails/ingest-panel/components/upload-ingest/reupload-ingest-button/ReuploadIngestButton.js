@@ -7,12 +7,13 @@ import InputForm from '../InputForm/InputForm';
 
 const TITLE = 'Avail Ingest';
 
-const ReuploadIngestButton = ({attachment}) => {
+const ReuploadIngestButton = ({attachment, ingestData}) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
 
     const buildForm = () => {
         return (
             <InputForm
+                ingestData={ingestData}
                 closeModal={closeModal}
                 attachment={attachment}
                 openModalCallback={openModal}
@@ -34,6 +35,10 @@ const ReuploadIngestButton = ({attachment}) => {
 
 ReuploadIngestButton.propTypes = {
     attachment: PropTypes.object.isRequired,
+    ingestData: PropTypes.object,
+};
+ReuploadIngestButton.defaultProps = {
+    ingestData: null,
 };
 
 export default ReuploadIngestButton;
