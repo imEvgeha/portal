@@ -16,28 +16,28 @@ import {RELATIVE_DATE_FORMAT, SIMULCAST_DATE_FORMAT, RELATIVE_DATE_FORMAT_WITHOU
 import './NexusDatePicker.scss';
 
 const NexusDatePicker = ({
-    id,
-    isWithInlineEdit, // If set, allows for switching between read and edit modes
-    isReadOnly,
-    isTimestamp, // If set, value includes milliseconds and return value is in ISO format
-    onChange,
-    onConfirm,
-    value,
-    error,
-    label,
-    isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
-    isReturningTime,
-    isClearable,
-    isRequired,
-    ...restProps
-}) => {
+                             id,
+                             isWithInlineEdit, // If set, allows for switching between read and edit modes
+                             isReadOnly,
+                             isTimestamp, // If set, value includes milliseconds and return value is in ISO format
+                             onChange,
+                             onConfirm,
+                             value,
+                             error,
+                             label,
+                             isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
+                             isReturningTime,
+                             isClearable,
+                             isRequired,
+                             ...restProps
+                         }) => {
     const [date, setDate] = useState(value || '');
     const [isSimulcast, setIsSimulcast] = useState(false);
 
     useEffect(() => {
         setDate(value || '');
     }, [value]);
-    
+
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
         typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));
@@ -58,13 +58,13 @@ const NexusDatePicker = ({
             // Don't use onChange if the component has InlineEdit
             // onConfirm will handle changes
             !isWithInlineEdit &&
-                onChange(
-                    isTimestamp
-                        ? moment(date).utc().toISOString()
-                        : `${moment(date)
-                              .utc()
-                              .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
-                );
+            onChange(
+                isTimestamp
+                    ? moment(date).utc().toISOString()
+                    : `${moment(date)
+                        .utc()
+                        .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
+            );
         } else {
             setDate('');
             onChange('');
@@ -137,7 +137,7 @@ NexusDatePicker.propTypes = {
     isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     isClearable: PropTypes.bool,
     isRequired: PropTypes.bool,
 };
@@ -152,6 +152,7 @@ NexusDatePicker.defaultProps = {
     isLabelHidden: false,
     isReturningTime: false,
     onConfirm: () => null,
+    onChange: () => null,
     isClearable: false,
     isRequired: false,
 };
