@@ -20,21 +20,21 @@ import {
 import "./NexusDatePicker.scss";
 
 const NexusDatePicker = ({
-   id,
-   isWithInlineEdit, // If set, allows for switching between read and edit modes
-   isReadOnly,
-   isTimestamp, // If set, value includes milliseconds and return value is in ISO format
-   onChange,
-   onConfirm,
-   value,
-   error,
-   label,
-   isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
-   isReturningTime,
-   isClearable,
-   isRequired,
-   ...restProps
- }) => {
+  id,
+  isWithInlineEdit, // If set, allows for switching between read and edit modes
+  isReadOnly,
+  isTimestamp, // If set, value includes milliseconds and return value is in ISO format
+  onChange,
+  onConfirm,
+  value,
+  error,
+  label,
+  isLabelHidden, // TODO: Remove when RightDetails gets refactored/redesigned
+  isReturningTime,
+  isClearable,
+  isRequired,
+  ...restProps
+}) => {
     const [date, setDate] = useState(value || "");
     const [isSimulcast, setIsSimulcast] = useState(false);
 
