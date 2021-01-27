@@ -236,12 +236,11 @@ export const rightsService = {
         return nexusFetch(url, isWithErrorHandling);
     },
 
-    update: (rightDiff, id) => {
-        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
-        const data = prepareRight(rightDiff, true);
+    update: payload => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights`;
         return nexusFetch(url, {
             method: 'PATCH',
-            body: JSON.stringify(data),
+            body: JSON.stringify(payload),
         });
     },
 

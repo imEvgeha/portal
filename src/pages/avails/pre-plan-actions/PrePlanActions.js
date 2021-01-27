@@ -114,14 +114,14 @@ export const PrePlanActions = ({
                             : previousRight['keywords'].split(',');
                         const prevTerritory = [];
                         const updatedRight = {
-                            id: right.id,
+                            rightId: right.id,
                             keywords: uniq(prevKeywords.concat(right['keywords'])),
-                            territory: right['territory'].map(territory => {
+                            selected: right['territory'].map(territory => {
                                 const selected = previousRight['territory'].find(
                                     obj => obj.country === territory.country && obj.selected
                                 );
                                 selected && prevTerritory.push(selected);
-                                return selected || territory;
+                                return selected ? selected.country : territory.country;
                             }),
                         };
                         DOPRequestRights.push({
@@ -135,14 +135,8 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                Promise.all(
-                                    mergedWithSelectedRights.map(right => {
-                                        right.territory.forEach(terr => {
-                                            delete terr.isDirty;
-                                        });
-                                        return rightsService.update(right, right.id);
-                                    })
-                                )
+                                rightsService
+                                    .update(mergedWithSelectedRights)
                                     .then(() => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
