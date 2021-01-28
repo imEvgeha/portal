@@ -9,7 +9,7 @@
 }
 
 .nexus-c-nexus-person__info {
-    width: 65%;
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -35,16 +35,4 @@
     height: 35px;
     width: 35px;
     @include margin(0, 2);
-}
-
-.nexus-c-nexus-person__add-character {
-    background-color: map-get($neutrals, N40);
-    font-size: 12px;
-    font-weight: bold;
-    border-radius: 3px;
-    @include padding(0, 0.75);
-
-    &:hover {
-        cursor: pointer;
-    }
 }

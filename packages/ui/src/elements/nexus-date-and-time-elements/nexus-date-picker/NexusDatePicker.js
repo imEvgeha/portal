@@ -31,9 +31,12 @@ const NexusDatePicker = ({
     isRequired,
     ...restProps
 }) => {
-    // format date without utc to show local time on picker
-    const [date, setDate] = useState(value ? moment(value).utc().toISOString() : '');
+    const [date, setDate] = useState(value || '');
     const [isSimulcast, setIsSimulcast] = useState(false);
+
+    useEffect(() => {
+        setDate(value || '');
+    }, [value]);
 
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
@@ -134,7 +137,7 @@ NexusDatePicker.propTypes = {
     isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     isClearable: PropTypes.bool,
     isRequired: PropTypes.bool,
 };
@@ -149,6 +152,7 @@ NexusDatePicker.defaultProps = {
     isLabelHidden: false,
     isReturningTime: false,
     onConfirm: () => null,
+    onChange: () => null,
     isClearable: false,
     isRequired: false,
 };

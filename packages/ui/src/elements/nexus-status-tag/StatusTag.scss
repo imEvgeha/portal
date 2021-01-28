@@ -3,15 +3,17 @@
 
 .nexus-status-tag {
     border-radius: 3px;
-    width: 75px;
+    min-width: 75px;
     height: 16px;
+    padding: 2px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     font-size: 11px;
     color: #ffffff;
 
-    &--completed {
+    &--completed,
+    &--complete {
         background: #36b37e;
     }
 
@@ -33,6 +35,8 @@
     }
 
     &--fo-not-started,
+    &--not-started,
+    &--grey,
     &--ready {
         background: map-get($light-neutral-colors, light-neutral-1);
     }

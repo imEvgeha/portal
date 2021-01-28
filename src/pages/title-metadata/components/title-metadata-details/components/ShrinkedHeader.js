@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import classnames from 'classnames';
 import {VZ, MOVIDA, VU} from '../../../constants';
+import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
-const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, catalogueOwner}) => {
+const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId, isEditView, catalogueOwner}) => {
     const [vzExternalData] = externalIds.filter(id => id.externalSystem === VZ.toLowerCase());
     const vzButtonType = vzExternalData ? 'sync' : 'publish';
     const [movidaExternalData] = externalIds.filter(id => id.externalSystem === MOVIDA.toLowerCase());
@@ -23,7 +24,7 @@ const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, catalogu
             })}
         >
             <div>{title}</div>
-            {catalogueOwner && catalogueOwner === VU && (
+            {catalogueOwner && catalogueOwner === VU && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
                     <Button appearance="default" onClick={() => onSyncPublish(VZ, vzButtonType)}>
                         {getButtonLabel(VZ)}
@@ -42,6 +43,8 @@ ShrinkedHeader.propTypes = {
     title: PropTypes.string,
     onSyncPublish: PropTypes.func,
     externalIds: PropTypes.array,
+    titleId: PropTypes.string,
+    isEditView: PropTypes.bool,
     catalogueOwner: PropTypes.string,
 };
 
@@ -50,6 +53,8 @@ ShrinkedHeader.defaultProps = {
     title: null,
     onSyncPublish: () => null,
     externalIds: [],
+    titleId: null,
+    isEditView: false,
     catalogueOwner: null,
 };
 

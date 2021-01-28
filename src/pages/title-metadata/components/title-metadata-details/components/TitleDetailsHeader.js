@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
 import {VZ, MOVIDA, VU, MGM} from '../../../constants';
+import {isNexusTitle} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
 import TitleInfo from './TitleInfo';
@@ -10,7 +11,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish}) => {
+const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish, isEditView}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -52,7 +53,9 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            title.catalogueOwner && title.catalogueOwner === MGM,
+                            (title.catalogueOwner && title.catalogueOwner === MGM) ||
+                            !isNexusTitle(title.id) ||
+                            isEditView,
                     })}
                 >
                     <TitleInfo
@@ -63,7 +66,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                         catalogueOwner={title.catalogueOwner}
                     />
                 </div>
-                {title.catalogueOwner && title.catalogueOwner === VU && (
+                {title.catalogueOwner && title.catalogueOwner === VU && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
                         <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
                         <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
@@ -75,6 +78,8 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 title={title.title}
                 externalIds={externalIds}
                 onSyncPublish={onSyncPublish}
+                titleId={title.id}
+                isEditView={isEditView}
                 catalogueOwner={title.catalogueOwner}
             />
         </div>
@@ -87,6 +92,7 @@ TitleDetailsHeader.propTypes = {
     containerRef: PropTypes.any,
     externalIds: PropTypes.array,
     onSyncPublish: PropTypes.func,
+    isEditView: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -95,6 +101,7 @@ TitleDetailsHeader.defaultProps = {
     containerRef: null,
     externalIds: [],
     onSyncPublish: () => null,
+    isEditView: false,
 };
 
 export default TitleDetailsHeader;
