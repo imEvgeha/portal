@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
@@ -6,7 +6,6 @@ import InlineEdit from '@atlaskit/inline-edit';
 import {
     getDateFormatBasedOnLocale,
     parseSimulcast,
-    isUtc,
 } from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import classnames from 'classnames';
 import moment from 'moment';
@@ -75,7 +74,7 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = isReadOnly => {
         return (
-            <>
+            <div className="nexus_c_date_picker_filter">
                 {!isLabelHidden && label && (
                     <label htmlFor={id} className={classnames(isRequired && 'required')}>
                         {label}
@@ -99,7 +98,7 @@ const NexusDatePicker = ({
                     </div>
                 )}
                 {error && <ErrorMessage>{error}</ErrorMessage>}
-            </>
+            </div>
         );
     };
 
