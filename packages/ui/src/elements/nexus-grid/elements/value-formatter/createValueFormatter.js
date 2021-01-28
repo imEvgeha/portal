@@ -82,7 +82,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
         case 'territory.selected':
             return params => {
                 const {data = {}} = params || {};
-                if (data['territorySelected']) {
+                if (data && data['territorySelected']) {
                     return data['territorySelected'];
                 }
                 if (data && Array.isArray(data[javaVariableName])) {
