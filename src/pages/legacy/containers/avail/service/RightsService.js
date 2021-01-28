@@ -244,6 +244,15 @@ export const rightsService = {
         });
     },
 
+    updateSingleRight: (rightDiff, id) => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
+        const data = prepareRight(rightDiff, true);
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    },
+
     updateRightWithFullData: (right, id, isFormatted = false, isWithErrorHandling = false) => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
         const data = isFormatted ? right : prepareRight(right, true);

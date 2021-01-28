@@ -11,6 +11,7 @@ import {
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
+import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
@@ -76,6 +77,18 @@ export const PrePlanActions = ({
         toggleRefreshGridData(true);
     };
 
+    const callUpdateAPI = mergedWithSelectedRights => {
+        return false
+            ? rightsService.update(mergedWithSelectedRights)
+            : Promise.all(
+                  mergedWithSelectedRights.map(right => {
+                      right.territory.forEach(terr => {
+                          delete terr.isDirty;
+                      });
+                      return rightsService.updateSingleRight(right, right.id);
+                  })
+              );
+    };
     const addToSelectedForPlanning = () => {
         const selectedList = selectedPrePlanRights.every(right => {
             return right['territory'].some(t => t.selected);
@@ -113,19 +126,31 @@ export const PrePlanActions = ({
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
                         const prevTerritory = [];
-                        const updatedRight = {
-                            id: right.id,
-                            properties: {
-                                keywords: uniq(prevKeywords.concat(right['keywords'])),
-                                selected: right['territory'].map(territory => {
-                                    const selected = previousRight['territory'].find(
-                                        obj => obj.country === territory.country && obj.selected
-                                    );
-                                    selected && prevTerritory.push(selected);
-                                    return selected ? selected.country : territory.country;
-                                }),
-                            },
-                        };
+                        const updatedRight = false
+                            ? {
+                                  id: right.id,
+                                  properties: {
+                                      keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                      selected: right['territory'].map(territory => {
+                                          const selected = previousRight['territory'].find(
+                                              obj => obj.country === territory.country && obj.selected
+                                          );
+                                          selected && prevTerritory.push(selected);
+                                          return selected ? selected.country : territory.country;
+                                      }),
+                                  },
+                              }
+                            : {
+                                  id: right.id,
+                                  keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                  territory: right['territory'].map(territory => {
+                                      const selected = previousRight['territory'].find(
+                                          obj => obj.country === territory.country && obj.selected
+                                      );
+                                      selected && prevTerritory.push(selected);
+                                      return selected || territory;
+                                  }),
+                              };
                         DOPRequestRights.push({
                             id: right.id,
                             territory: prevTerritory,
@@ -137,8 +162,7 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                rightsService
-                                    .update(mergedWithSelectedRights)
+                                callUpdateAPI(mergedWithSelectedRights)
                                     .then(() => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
