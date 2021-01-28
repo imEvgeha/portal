@@ -221,7 +221,7 @@
                             "path": "externalIds.isan"
                         },
                         "isrc": {
-                            "name": "ISCR",
+                            "name": "ISRC",
                             "type": "string",
                             "path": "externalIds.isrc"
                         },
