@@ -5,7 +5,7 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {cloneDeep, get} from 'lodash';
+import {cloneDeep, get, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
@@ -215,9 +215,24 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
         else if (key === 'genres') {
             body[key] = data[key].map(genre => {
+                let genreValue = genre;
+                if (isObjectLike(genre) && get(genre, 'value')) {
+                    genreValue = get(genre, 'value');
+                }
                 return {
-                    genre,
+                    genre: genreValue,
                     order: null,
+                };
+            });
+        } else if (key === 'category') {
+            body[key] = data[key].map((category, index) => {
+                let categoryValue = category;
+                if (isObjectLike(category) && get(category, 'value')) {
+                    categoryValue = get(category, 'value');
+                }
+                return {
+                    category: categoryValue,
+                    order: index,
                 };
             });
         } else body[key] = data[key];
