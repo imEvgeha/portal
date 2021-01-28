@@ -35,11 +35,6 @@ const NexusSelect = ({
         }
     }, [selectValues]);
 
-    useEffect(() => {
-        // todo: reset select value
-        // isCreateMode && optionsFilterParameter.length && addedProps.setFieldValue && addedProps.setFieldValue(path, undefined);
-    }, [optionsFilterParameter]);
-
     const addDeselectOption = options => {
         if (type === 'select' && !isRequired) {
             const deselectOption = {label: 'Select...', value: ''};
