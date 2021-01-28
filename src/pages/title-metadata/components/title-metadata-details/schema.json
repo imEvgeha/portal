@@ -223,7 +223,7 @@
                         "isrc": {
                             "name": "ISCR",
                             "type": "string",
-                            "path": "externalIds.iscr"
+                            "path": "externalIds.isrc"
                         },
                         "tmsId": {
                             "name": "TMS ID",
