@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
 import {VZ, MOVIDA} from '../../../constants';
+import {isNexusTitle} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
 import TitleInfo from './TitleInfo';
@@ -10,7 +11,7 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish}) => {
+const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish, isEditView}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -49,7 +50,12 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                     'nexus-c-title-details-header__content--hidden': isShrinked,
                 })}
             >
-                <div className="nexus-c-title-details-header__title-info-container">
+                <div
+                    className={classnames('nexus-c-title-details-header__title-info-container', {
+                        'nexus-c-title-details-header__title-info-container--no-border':
+                            !isNexusTitle(title.id) || isEditView,
+                    })}
+                >
                     <TitleInfo
                         title={title.title}
                         releaseYear={title.releaseYear}
@@ -57,16 +63,20 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                         titleImages={title.images}
                     />
                 </div>
-                <div className="nexus-c-title-details-header__publish-info-container">
-                    <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
-                    <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
-                </div>
+                {isNexusTitle(title.id) && !isEditView && (
+                    <div className="nexus-c-title-details-header__publish-info-container">
+                        <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                        <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                    </div>
+                )}
             </div>
             <ShrinkedHeader
                 isShrinked={isShrinked}
                 title={title.title}
                 externalIds={externalIds}
                 onSyncPublish={onSyncPublish}
+                titleId={title.id}
+                isEditView={isEditView}
             />
         </div>
     );
@@ -78,6 +88,7 @@ TitleDetailsHeader.propTypes = {
     containerRef: PropTypes.any,
     externalIds: PropTypes.array,
     onSyncPublish: PropTypes.func,
+    isEditView: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -86,6 +97,7 @@ TitleDetailsHeader.defaultProps = {
     containerRef: null,
     externalIds: [],
     onSyncPublish: () => null,
+    isEditView: false,
 };
 
 export default TitleDetailsHeader;

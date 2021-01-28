@@ -115,14 +115,16 @@ export const PrePlanActions = ({
                         const prevTerritory = [];
                         const updatedRight = {
                             id: right.id,
-                            keywords: uniq(prevKeywords.concat(right['keywords'])),
-                            territory: right['territory'].map(territory => {
-                                const selected = previousRight['territory'].find(
-                                    obj => obj.country === territory.country && obj.selected
-                                );
-                                selected && prevTerritory.push(selected);
-                                return selected || territory;
-                            }),
+                            properties: {
+                                keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                selected: right['territory'].map(territory => {
+                                    const selected = previousRight['territory'].find(
+                                        obj => obj.country === territory.country && obj.selected
+                                    );
+                                    selected && prevTerritory.push(selected);
+                                    return selected ? selected.country : territory.country;
+                                }),
+                            },
                         };
                         DOPRequestRights.push({
                             id: right.id,
@@ -135,14 +137,8 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                Promise.all(
-                                    mergedWithSelectedRights.map(right => {
-                                        right.territory.forEach(terr => {
-                                            delete terr.isDirty;
-                                        });
-                                        return rightsService.update(right, right.id);
-                                    })
-                                )
+                                rightsService
+                                    .update(mergedWithSelectedRights)
                                     .then(() => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
@@ -175,6 +171,7 @@ export const PrePlanActions = ({
                     // eslint-disable-next-line prefer-destructuring
                     updatedRight = rightsList.filter(r => r.id === right.id)[0];
                     updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                    updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
                     let keywordsStr = '';
                     keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
                     updatedRight.keywords =

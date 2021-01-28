@@ -47,7 +47,7 @@ DateTime.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     isReadOnly: PropTypes.bool,
     isDisabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     isReturningTime: PropTypes.bool,
 };
 
@@ -60,6 +60,7 @@ DateTime.defaultProps = {
     isReadOnly: false,
     isDisabled: false,
     isReturningTime: true,
+    onChange: () => null,
 };
 
 export default DateTime;

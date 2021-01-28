@@ -25,12 +25,6 @@ const NexusPerson = ({person, index, onRemove, onEditCharacter}) => {
                                 <Lozenge appearance="default">{person.personType}</Lozenge>
                             </div>
                             <div className="nexus-c-nexus-person__buttons">
-                                <div
-                                    className="nexus-c-nexus-person__add-character"
-                                    onClick={() => onEditCharacter(index)}
-                                >
-                                    {person.characterName ? 'Edit Character' : 'Add Character'}
-                                </div>
                                 <RemovePerson onClick={onRemove} />
                                 <DragButton {...provided.dragHandleProps} />
                             </div>

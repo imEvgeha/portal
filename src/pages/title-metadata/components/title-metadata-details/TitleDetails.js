@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {getAllFields} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/utils';
@@ -6,7 +6,6 @@ import {get} from 'lodash';
 import {connect} from 'react-redux';
 import * as detailsSelectors from '../../../avails/right-details/rightDetailsSelector';
 import {searchPerson} from '../../../avails/right-details/rightDetailsServices';
-import {isNexusTitle} from '../../../legacy/containers/metadata/dashboard/components/utils/utils';
 import {FIELDS_TO_REMOVE, SYNC} from '../../constants';
 import {
     getTitle,
@@ -24,6 +23,7 @@ import {
     handleTitleCategory,
     updateTerritoryMetadata,
     updateEditorialMetadata,
+    isNexusTitle,
     prepareCategoryField,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -45,8 +45,10 @@ const TitleDetails = ({
     selectValues,
     syncTitle,
     publishTitle,
+    isSaving,
 }) => {
     const containerRef = useRef();
+    const [isEditView, setIsEditView] = useState(false);
 
     useEffect(() => {
         const {params} = match || {};
@@ -121,6 +123,7 @@ const TitleDetails = ({
                 containerRef={containerRef}
                 externalIds={externalIds}
                 onSyncPublish={syncPublishHandler}
+                isEditView={isEditView}
             />
             <NexusDynamicForm
                 searchPerson={searchPerson}
@@ -133,6 +136,9 @@ const TitleDetails = ({
                 onSubmit={values => onSubmit(values)}
                 generateMsvIds={generateMsvIds}
                 regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                hasButtons={isNexusTitle(title.id)}
+                setIsEditView={setIsEditView}
+                isSaving={isSaving}
             />
         </div>
     );
@@ -153,6 +159,7 @@ TitleDetails.propTypes = {
     selectValues: PropTypes.object,
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
+    isSaving: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -170,6 +177,7 @@ TitleDetails.defaultProps = {
     selectValues: {},
     syncTitle: () => null,
     publishTitle: () => null,
+    isSaving: false,
 };
 
 const mapStateToProps = () => {
@@ -184,6 +192,7 @@ const mapStateToProps = () => {
         territoryMetadata: territoryMetadataSelector(state, props),
         editorialMetadata: editorialMetadataSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isSaving: detailsSelectors.isSavingSelector(state),
     });
 };
 
