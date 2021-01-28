@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import classnames from 'classnames';
-import {VZ, MOVIDA, VU} from '../../../constants';
+import {VZ, MOVIDA, MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
@@ -24,7 +24,7 @@ const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId,
             })}
         >
             <div>{title}</div>
-            {catalogueOwner && catalogueOwner === VU && isNexusTitle(titleId) && !isEditView && (
+            {catalogueOwner !== MGM && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
                     <Button appearance="default" onClick={() => onSyncPublish(VZ, vzButtonType)}>
                         {getButtonLabel(VZ)}

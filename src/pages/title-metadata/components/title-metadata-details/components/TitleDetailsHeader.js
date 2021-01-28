@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
-import {VZ, MOVIDA, VU, MGM} from '../../../constants';
+import {VZ, MOVIDA, MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
@@ -53,9 +53,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            (title.catalogueOwner && title.catalogueOwner === MGM) ||
-                            !isNexusTitle(title.id) ||
-                            isEditView,
+                            title.catalogueOwner === MGM || !isNexusTitle(title.id) || isEditView,
                     })}
                 >
                     <TitleInfo
@@ -66,7 +64,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                         catalogueOwner={title.catalogueOwner}
                     />
                 </div>
-                {title.catalogueOwner && title.catalogueOwner === VU && isNexusTitle(title.id) && !isEditView && (
+                {title.catalogueOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
                         <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
                         <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
