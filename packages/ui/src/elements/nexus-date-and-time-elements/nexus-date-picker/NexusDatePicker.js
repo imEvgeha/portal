@@ -44,26 +44,28 @@ const NexusDatePicker = ({
 
     // Get locale provided by intl
     const intl = useIntl();
-    const {locale = 'en-US'} = intl || {};
+    const { locale = 'en-US' } = intl || {};
 
     // Create date placeholder based on locale
     const dateFormat = `${getDateFormatBasedOnLocale(locale)}`;
 
-    const RELATIVE_FORMAT = isReturningTime ? RELATIVE_DATE_FORMAT : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
+    const RELATIVE_FORMAT = isReturningTime
+        ? RELATIVE_DATE_FORMAT
+        : RELATIVE_DATE_FORMAT_WITHOUT_TIME;
 
-    const onDateChange = date => {
+    const onDateChange = (date) => {
         if (date) {
             setDate(date);
             // Don't use onChange if the component has InlineEdit
             // onConfirm will handle changes
             !isWithInlineEdit &&
-                onChange(
-                    isTimestamp
-                        ? moment(date).utc().toISOString()
-                        : `${moment(date)
-                              .utc()
-                              .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
-                );
+            onChange(
+                isTimestamp
+                    ? moment(date).utc().toISOString()
+                    : `${moment(date)
+                        .utc()
+                        .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
+            );
         } else {
             setDate('');
             onChange('');
@@ -107,7 +109,8 @@ const NexusDatePicker = ({
                 <InlineEdit
                     readView={() => (
                         <div className="nexus-c-date-picker__read-view-container">
-                            {(moment(value).isValid() && parseSimulcast(value, dateFormat, false)) || (
+                            {(moment(value).isValid() &&
+                                parseSimulcast(value, dateFormat, false)) || (
                                 <div className="read-view-container__placeholder">{`Enter ${label}`}</div>
                             )}
                         </div>
@@ -136,7 +139,7 @@ NexusDatePicker.propTypes = {
     isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     isClearable: PropTypes.bool,
     isRequired: PropTypes.bool,
 };
@@ -151,6 +154,7 @@ NexusDatePicker.defaultProps = {
     isLabelHidden: false,
     isReturningTime: false,
     onConfirm: () => null,
+    onChange: () => null,
     isClearable: false,
     isRequired: false,
 };

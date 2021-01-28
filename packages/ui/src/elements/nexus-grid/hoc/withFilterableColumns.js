@@ -249,6 +249,9 @@ const withFilterableColumns = ({
                             case DOUBLE:
                             case YEAR:
                                 columnDef.filter = NUMBER;
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                };
                                 break;
                             case MULTISELECT:
                                 columnDef.filter = SET;
