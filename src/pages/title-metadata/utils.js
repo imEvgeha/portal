@@ -273,8 +273,8 @@ export const updateEditorialMetadata = async (values, titleId) => {
 
 export const handleDirtyValues = values => {
     handleDirtyRatingsValues(values);
-    // todo: handleDirtyEMETValues(values);
-    // todo: handleDirtyTMETValues(values);
+    handleDirtyEMETValues(values);
+    handleDirtyTMETValues(values);
 };
 
 const handleDirtyRatingsValues = values => {
@@ -289,25 +289,42 @@ const handleDirtyRatingsValues = values => {
         advisoriesFreeText,
     };
     const index = values.ratings && values.ratings.findIndex(elem => elem.ratingSystem === ratingSystem);
-    values.ratings[index] = updatedRatingRecord;
+    if (index !== null && index >= 0) {
+        values.ratings[index] = updatedRatingRecord;
+    }
 };
 
 const handleDirtyEMETValues = values => {
     const editorial = get(values, 'editorial');
-    const index = values.editorialMetadata.findIndex(
-        elem =>
-            elem.locale === editorial.locale &&
-            elem.language === editorial.language &&
-            elem.format === editorial.format &&
-            elem.service === editorial.service
-    );
-    values.editorialMetadata[index] = editorial;
+    const index =
+        values.editorialMetadata &&
+        values.editorialMetadata.findIndex(
+            elem =>
+                elem.locale === editorial.locale &&
+                elem.language === editorial.language &&
+                elem.format === editorial.format &&
+                elem.service === editorial.service
+        );
+    if (index !== null && index >= 0) {
+        const updatedEmetRecord = {
+            ...values.editorialMetadata[index],
+            ...editorial,
+            isUpdated: true,
+        };
+        values.editorialMetadata[index] = updatedEmetRecord;
+    }
 };
 
 const handleDirtyTMETValues = values => {
     const territorial = get(values, 'territorial');
-    const index = values.territorialMetadata.findIndex(
-        elem => elem.locale === territorial.locale && elem.language === territorial.language
-    );
-    values.territorialMetadata[index] = territorial;
+    const index =
+        values.territorialMetadata && values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
+    if (index !== null && index >= 0) {
+        const updatedTmetRecord = {
+            ...values.territorialMetadata[index],
+            ...territorial,
+            isUpdated: true,
+        };
+        values.territorialMetadata[index] = updatedTmetRecord;
+    }
 };
