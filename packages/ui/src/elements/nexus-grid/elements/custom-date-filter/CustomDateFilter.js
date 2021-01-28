@@ -19,7 +19,7 @@ export class CustomDateFilter extends React.Component {
     }
 
     // eslint-disable-next-line react/destructuring-assignment
-    filterDisabled = () => !(this.state.dates.startDate || this.state.dates.endDate);
+    isFilterDisabled = () => !(this.state.dates.startDate || this.state.dates.endDate);
 
     onChange = dateRange => {
         if (!dateRange) {
@@ -141,7 +141,7 @@ export class CustomDateFilter extends React.Component {
                 />
                 <div className="nexus-c-date-filter-btn">
                     <Button appearance="primary"
-                            isDisabled={this.filterDisabled()}
+                            isDisabled={this.isFilterDisabled()}
                             onClick={() =>filterChangedCallback()}>
                         Filter
                     </Button>
