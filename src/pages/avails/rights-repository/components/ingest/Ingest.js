@@ -62,7 +62,7 @@ const Ingest = ({ingest, filterByStatus, attachment, deselectIngest, downloadIng
                         </div>
                     ))}
                     <div className="nexus-c-avails-ingest__download">
-                        {URL.isLocalOrDev() && status === 'FAILED' && <ReuploadIngestButton attachment={attachment} />}
+                        {status === 'FAILED' && <ReuploadIngestButton ingestData={ingest} attachment={attachment} />}
                         <NexusTooltip content="Download Attachment">
                             <DownloadIcon
                                 className="nexus-c-avails-ingest__download-icon"
