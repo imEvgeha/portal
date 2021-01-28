@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {get} from 'lodash';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
@@ -16,6 +17,9 @@ export class CustomDateFilter extends React.Component {
             },
         };
     }
+
+    // eslint-disable-next-line react/destructuring-assignment
+    filterDisabled = () => !(this.state.dates.startDate || this.state.dates.endDate);
 
     onChange = dateRange => {
         if (!dateRange) {
@@ -114,6 +118,7 @@ export class CustomDateFilter extends React.Component {
         const {
             colDef: {field},
             isUsingTime,
+            filterChangedCallback,
         } = this.props;
         const {dates = {}} = this.state;
         const {startDate, endDate} = dates;
@@ -134,6 +139,13 @@ export class CustomDateFilter extends React.Component {
                     labels={DATEPICKER_LABELS}
                     isClearable={true}
                 />
+                <div className="nexus-c-date-filter-btn">
+                    <Button appearance="primary"
+                            isDisabled={this.filterDisabled()}
+                            onClick={() =>filterChangedCallback()}>
+                        Filter
+                    </Button>
+                </div>
             </div>
         );
     }
