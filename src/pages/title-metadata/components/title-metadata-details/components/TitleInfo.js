@@ -21,10 +21,12 @@ const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner
                     <span>Type:</span>
                     <span>{contentType}</span>
                 </div>
-                <div>
-                    <span>Catalogue Owner:</span>
-                    <span>{catalogueOwner}</span>
-                </div>
+                {catalogueOwner && (
+                    <div>
+                        <span>Catalogue Owner:</span>
+                        <span>{catalogueOwner}</span>
+                    </div>
+                )}
             </div>
         </div>
     );
