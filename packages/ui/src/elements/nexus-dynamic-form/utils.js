@@ -24,10 +24,11 @@ export const getDefaultValue = (field = {}, view, data, selectValues=[]) => {
         };
     }
     const value = get(data, field.path) || '';
-    if (field.type === 'select') {
+    if (value && field.type === 'select' && selectValues.length) {
         const {defaultValuePath, defaultLabelPath} = get(field, 'optionsConfig', {});
         if(defaultLabelPath && defaultValuePath) {
-            return selectValues.find(option => option[defaultValuePath] === value)[defaultLabelPath] || value;
+            const optionField = selectValues.find(option => option[defaultValuePath] === value);
+            return optionField ? optionField[defaultLabelPath] : value;
         }
     }
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
