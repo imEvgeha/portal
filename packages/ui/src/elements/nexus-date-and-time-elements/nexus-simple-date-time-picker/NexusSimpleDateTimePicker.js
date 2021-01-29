@@ -23,8 +23,8 @@ const NexusSimpleDateTimePicker = ({
     isClearable,
     isClearableOnly,
     ...restProps
-  }) => {
-    const [date, setDate] = useState(value||'');
+}) => {
+    const [date, setDate] = useState(value || '');
 
     // Get locale provided by intl
     const intl = useIntl();

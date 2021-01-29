@@ -5,7 +5,7 @@ import {
     SUCCESS_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
 import {addToast} from '@vubiquity-nexus/portal-ui/lib/toast/toastActions';
-import {cloneDeep, get} from 'lodash';
+import {cloneDeep, get, isObjectLike} from 'lodash';
 import {store} from '../../index';
 import {getEditorialMetadata, getTerritoryMetadata} from './titleMetadataActions';
 import {titleService} from './titleMetadataServices';
@@ -131,6 +131,19 @@ export const handleTitleCategory = data => {
     return data;
 };
 
+export const prepareCategoryField = data => {
+    if (get(data, 'category')) {
+        const updatedCategory = [];
+        data.category.forEach((category, index) => {
+            updatedCategory.push({
+                name: category,
+                order: index,
+            });
+        });
+        data.category = updatedCategory;
+    }
+};
+
 export const handleEditorialGenresAndCategory = (data, fieldName, key) => {
     const newData = cloneDeep(data);
     return newData.map(record => {
@@ -201,12 +214,31 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
     Object.keys(data).forEach(key => {
         if (data[key] === undefined || data[key] === '') body[key] = null;
         else if (key === 'genres') {
-            body[key] = data[key].map(genre => {
-                return {
-                    genre,
-                    order: null,
-                };
-            });
+            body[key] =
+                data[key] &&
+                data[key].map(genre => {
+                    let genreValue = genre;
+                    if (isObjectLike(genre) && get(genre, 'value')) {
+                        genreValue = get(genre, 'value');
+                    }
+                    return {
+                        genre: genreValue,
+                        order: null,
+                    };
+                });
+        } else if (key === 'category') {
+            body[key] =
+                data[key] &&
+                data[key].map((category, index) => {
+                    let categoryValue = category;
+                    if (isObjectLike(category) && get(category, 'value')) {
+                        categoryValue = get(category, 'value');
+                    }
+                    return {
+                        category: categoryValue,
+                        order: index,
+                    };
+                });
         } else body[key] = data[key];
     });
     delete body.isUpdated;

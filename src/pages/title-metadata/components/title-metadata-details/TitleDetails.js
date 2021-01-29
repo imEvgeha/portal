@@ -24,6 +24,7 @@ import {
     updateTerritoryMetadata,
     updateEditorialMetadata,
     isNexusTitle,
+    prepareCategoryField,
     handleDirtyValues,
 } from '../../utils';
 import TitleDetailsHeader from './components/TitleDetailsHeader';
@@ -86,6 +87,7 @@ const TitleDetails = ({
                 updatedValues[key] = values[key];
             }
         });
+        prepareCategoryField(updatedValues);
         updateTitle({...updatedValues, id: title.id});
         updateTerritoryMetadata(values, id);
         updateEditorialMetadata(values, id);
