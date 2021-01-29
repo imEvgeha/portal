@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import classnames from 'classnames';
-import {VZ, MOVIDA} from '../../../constants';
+import {VZ, MOVIDA, MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import ShrinkedHeader from './ShrinkedHeader';
 import SyncPublish from './SyncPublish';
@@ -53,7 +53,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            !isNexusTitle(title.id) || isEditView,
+                            title.catalogueOwner === MGM || !isNexusTitle(title.id) || isEditView,
                     })}
                 >
                     <TitleInfo
@@ -61,9 +61,10 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                         releaseYear={title.releaseYear}
                         contentType={title.contentType}
                         titleImages={title.images}
+                        catalogueOwner={title.catalogueOwner}
                     />
                 </div>
-                {isNexusTitle(title.id) && !isEditView && (
+                {title.catalogueOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
                         <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
                         <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
@@ -77,6 +78,7 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 onSyncPublish={onSyncPublish}
                 titleId={title.id}
                 isEditView={isEditView}
+                catalogueOwner={title.catalogueOwner}
             />
         </div>
     );
