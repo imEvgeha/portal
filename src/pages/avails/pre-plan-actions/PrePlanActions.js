@@ -78,7 +78,7 @@ export const PrePlanActions = ({
     };
 
     const callUpdateAPI = mergedWithSelectedRights => {
-        return false
+        return URL.isLocalOrDev()
             ? rightsService.update(mergedWithSelectedRights)
             : Promise.all(
                   mergedWithSelectedRights.map(right => {
@@ -126,7 +126,7 @@ export const PrePlanActions = ({
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
                         const prevTerritory = [];
-                        const updatedRight = false
+                        const updatedRight = URL.isLocalOrDev()
                             ? {
                                   id: right.id,
                                   properties: {
@@ -163,10 +163,12 @@ export const PrePlanActions = ({
                             if (res.id) {
                                 const projectId = res.id;
                                 callUpdateAPI(mergedWithSelectedRights)
-                                    .then(() => {
+                                    .then(response => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
-                                                dispatchSuccessToast(eligibleRights.length);
+                                                dispatchSuccessToast(
+                                                    URL.isLocalOrDev() ? response.length : eligibleRights.length
+                                                );
                                                 removeRightsFromPrePlan(false);
                                                 setSelectedPrePlanRights([]);
                                                 clickHandler();
