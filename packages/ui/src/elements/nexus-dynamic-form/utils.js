@@ -2,7 +2,7 @@ import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
-import {get} from 'lodash';
+import {get, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
@@ -94,12 +94,33 @@ const checkLocalDependencies = (dependencies, formData) => {
     return !!(dependencies.length && dependencies.every(dep => evaluateDependency(dep, formData)));
 };
 
+const checkDependencyValues = (dependencies, getCurrentValues) => {
+    let allValues = [];
+    dependencies.length &&
+        dependencies.forEach(dep => {
+            const fields = get(dep, 'fields', []);
+            const values = [];
+            fields.forEach(({name}) => {
+                const formData = getCurrentValues();
+                let value = get(formData, name);
+                if (isObjectLike(value) && get(value, 'value')) {
+                    value = get(value, 'value');
+                }
+                values.push({value, name});
+            });
+            allValues = allValues.concat(values);
+        });
+    return allValues;
+};
+
 // eslint-disable-next-line max-params
-export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, getCurrentValues}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
     const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
+
+    if (type === 'values') return checkDependencyValues(foundDependencies, getCurrentValues);
 
     const globalConfigResult = checkGlobalDependencies(globalConfig, formData);
 
@@ -171,6 +192,8 @@ export const getFieldValue = fieldProps => {
         fieldProps.forEach(obj => {
             if (get(obj, 'value') && get(obj, 'label')) {
                 newValues.push(get(obj, 'value'));
+            } else {
+                newValues.push(obj);
             }
         });
         return newValues;
