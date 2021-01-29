@@ -1,5 +1,9 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
+.nexus_c_date_picker_filter {
+    display: flex;
+    flex-direction: column;
+}
 .nexus-c-date-picker__read-view-container {
     display: flex;
     align-items: center;

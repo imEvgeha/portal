@@ -176,7 +176,27 @@
                                     "name": "Rating",
                                     "path": "rating",
                                     "type": "select",
-                                    "isRequired": true
+                                    "isRequired": true,
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "advisoriesCode": {
                                     "name": "Advisory Codes",
@@ -221,9 +241,9 @@
                             "path": "externalIds.isan"
                         },
                         "isrc": {
-                            "name": "ISCR",
+                            "name": "ISRC",
                             "type": "string",
-                            "path": "externalIds.iscr"
+                            "path": "externalIds.isrc"
                         },
                         "tmsId": {
                             "name": "TMS ID",

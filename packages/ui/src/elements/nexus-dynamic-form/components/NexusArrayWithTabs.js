@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField, FormFooter} from '@atlaskit/form';
@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MASTER_EMET_MESSAGE} from '../constants';
+import {MASTER_EMET_MESSAGE, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, VIEWS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -69,14 +69,16 @@ const NexusArrayWithTabs = ({
     };
 
     const checkIsUpdated = (values, currentData) => {
-        const isUpdated = Object.keys(values).some(key => {
-            return !!(
-                (get(values, key) && get(values, key) !== get(currentData, key)) ||
-                (get(currentData, key) && get(values, key) !== get(currentData, key))
-            );
-        });
-        if (isUpdated) {
-            values.isUpdated = true;
+        if (path !== 'ratings') {
+            const isUpdated = Object.keys(values).some(key => {
+                return !!(
+                    (get(values, key) && get(values, key) !== get(currentData, key)) ||
+                    (get(currentData, key) && get(values, key) !== get(currentData, key))
+                );
+            });
+            if (isUpdated) {
+                values.isUpdated = true;
+            }
         }
     };
 
@@ -217,10 +219,14 @@ const NexusArrayWithTabs = ({
             });
             return isEqual;
         });
-        newData[index] = {
-            ...newData[index],
-            isDeleted: true,
-        };
+        if (path === 'ratings') {
+            newData.splice(index, 1);
+        } else {
+            newData[index] = {
+                ...newData[index],
+                isDeleted: true,
+            };
+        }
         setFieldValue(path, newData);
     };
 
@@ -276,10 +282,16 @@ const NexusArrayWithTabs = ({
         }
 
         const newData = [...getValues()[path]];
-        newData.push({
-            ...properValues,
-            isCreated: true,
-        });
+        const newObject =
+            path === 'ratings'
+                ? {
+                      ...properValues,
+                  }
+                : {
+                      ...properValues,
+                      isCreated: true,
+                  };
+        newData.push(newObject);
         setFieldValue(path, newData);
         closeModal();
     };
