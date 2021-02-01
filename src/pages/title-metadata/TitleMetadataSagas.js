@@ -106,7 +106,7 @@ export function* loadEditorialMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getEditorialMetadataByTitleId, payload.id);
+        const response = yield call(getEditorialMetadataByTitleId, {id: payload.id, isMgm: payload.isMgm});
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
             payload: response,

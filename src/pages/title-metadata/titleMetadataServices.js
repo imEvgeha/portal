@@ -29,11 +29,15 @@ export const getTerritoryMetadataById = payload => {
     });
 };
 
-export const getEditorialMetadataByTitleId = id => {
+export const getEditorialMetadataByTitleId = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get(
         'gateway.service.title'
     )}/editorialmetadata?titleId=${id}&includeDeleted=false`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const updateTitle = (title, syncToVZ, syncToMovida) => {

@@ -61,7 +61,7 @@ const TitleDetails = ({
             getTitle({id, isMgm});
             nexusTitle && getExternalIds({id});
             getTerritoryMetadata({id, isMgm});
-            getEditorialMetadata({id});
+            getEditorialMetadata({id, isMgm});
         }
     }, []);
 
