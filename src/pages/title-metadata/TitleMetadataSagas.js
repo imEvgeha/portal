@@ -87,7 +87,7 @@ export function* loadTerritoryMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getTerritoryMetadataById, payload.id);
+        const response = yield call(getTerritoryMetadataById, {id: payload.id, isMgm: payload.isMgm});
         yield put({
             type: actionTypes.GET_TERRITORY_METADATA_SUCCESS,
             payload: response,

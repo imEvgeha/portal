@@ -19,10 +19,14 @@ export const getExternalIds = id => {
     return nexusFetch(url);
 };
 
-export const getTerritoryMetadataById = id => {
+export const getTerritoryMetadataById = payload => {
+    const {id, isMgm} = payload;
     const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
     const url = `${api}?includeDeleted=false&titleId=${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const getEditorialMetadataByTitleId = id => {

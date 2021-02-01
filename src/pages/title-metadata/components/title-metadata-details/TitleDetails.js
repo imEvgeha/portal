@@ -60,7 +60,7 @@ const TitleDetails = ({
             const isMgm = isMgmTitle(id);
             getTitle({id, isMgm});
             nexusTitle && getExternalIds({id});
-            getTerritoryMetadata({id});
+            getTerritoryMetadata({id, isMgm});
             getEditorialMetadata({id});
         }
     }, []);
