@@ -77,18 +77,6 @@ export const PrePlanActions = ({
         toggleRefreshGridData(true);
     };
 
-    const callUpdateAPI = mergedWithSelectedRights => {
-        return URL.isLocalOrDev()
-            ? rightsService.update(mergedWithSelectedRights)
-            : Promise.all(
-                  mergedWithSelectedRights.map(right => {
-                      right.territory.forEach(terr => {
-                          delete terr.isDirty;
-                      });
-                      return rightsService.updateSingleRight(right, right.id);
-                  })
-              );
-    };
     const addToSelectedForPlanning = () => {
         const selectedList = selectedPrePlanRights.every(right => {
             return right['territory'].some(t => t.selected);
@@ -126,8 +114,7 @@ export const PrePlanActions = ({
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
                         const prevTerritory = [];
-                        const updatedRight = URL.isLocalOrDev()
-                            ? {
+                        const updatedRight = {
                                   id: right.id,
                                   properties: {
                                       keywords: uniq(prevKeywords.concat(right['keywords'])),
@@ -139,17 +126,6 @@ export const PrePlanActions = ({
                                           return selected ? selected.country : territory.country;
                                       }),
                                   },
-                              }
-                            : {
-                                  id: right.id,
-                                  keywords: uniq(prevKeywords.concat(right['keywords'])),
-                                  territory: right['territory'].map(territory => {
-                                      const selected = previousRight['territory'].find(
-                                          obj => obj.country === territory.country && obj.selected
-                                      );
-                                      selected && prevTerritory.push(selected);
-                                      return selected || territory;
-                                  }),
                               };
                         DOPRequestRights.push({
                             id: right.id,
@@ -162,12 +138,12 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                callUpdateAPI(mergedWithSelectedRights)
+                                rightsService.update(mergedWithSelectedRights)
                                     .then(response => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
                                                 dispatchSuccessToast(
-                                                    URL.isLocalOrDev() ? response.length : eligibleRights.length
+                                                    response.length
                                                 );
                                                 removeRightsFromPrePlan(false);
                                                 setSelectedPrePlanRights([]);
