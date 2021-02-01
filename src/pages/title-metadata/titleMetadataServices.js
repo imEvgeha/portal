@@ -5,9 +5,13 @@ import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
-export const getTitleById = id => {
+export const getTitleById = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const getExternalIds = id => {

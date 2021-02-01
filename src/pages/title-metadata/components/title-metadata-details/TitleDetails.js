@@ -24,6 +24,7 @@ import {
     updateTerritoryMetadata,
     updateEditorialMetadata,
     isNexusTitle,
+    isMgmTitle,
     prepareCategoryField,
     handleDirtyValues,
 } from '../../utils';
@@ -56,7 +57,8 @@ const TitleDetails = ({
         const {id} = params;
         if (id) {
             const nexusTitle = isNexusTitle(id);
-            getTitle({id});
+            const isMgm = isMgmTitle(id);
+            getTitle({id, isMgm});
             nexusTitle && getExternalIds({id});
             getTerritoryMetadata({id});
             getEditorialMetadata({id});
