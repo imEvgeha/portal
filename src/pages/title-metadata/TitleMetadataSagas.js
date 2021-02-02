@@ -17,15 +17,18 @@ import {
     syncTitle as syncTitleService,
     registerTitle,
 } from './titleMetadataServices';
+import {isMgmTitle} from './utils';
 import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
 
 export function* loadParentTitle(title) {
+    console.log(title);
     const {parentIds} = title;
     if (parentIds) {
         const parent = parentIds.find(e => e.contentType === 'SERIES');
         if (parent) {
             try {
-                const response = yield call(getTitleById, parent.id);
+                const isMgm = isMgmTitle(parent.id);
+                const response = yield call(getTitleById, {id: parent.id, isMgm});
                 const newEpisodic = Object.assign(title.episodic, {
                     seriesTitleName: response.title,
                 });
