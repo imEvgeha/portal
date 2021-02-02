@@ -118,13 +118,7 @@ export const PrePlanActions = ({
                                   id: right.id,
                                   properties: {
                                       keywords: uniq(prevKeywords.concat(right['keywords'])),
-                                      selected: right['territory'].map(territory => {
-                                          const selected = previousRight['territory'].find(
-                                              obj => obj.country === territory.country && obj.selected
-                                          );
-                                          selected && prevTerritory.push(selected);
-                                          return selected ? selected.country : territory.country;
-                                      }),
+                                      selected: previousRight.territory.filter(obj => obj.isDirty && obj.selected).map(t => t.country)
                                   },
                               };
                         DOPRequestRights.push({
