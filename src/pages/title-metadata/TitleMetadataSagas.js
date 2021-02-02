@@ -21,7 +21,6 @@ import {isMgmTitle} from './utils';
 import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
 
 export function* loadParentTitle(title) {
-    console.log(title);
     const {parentIds} = title;
     if (parentIds) {
         const parent = parentIds.find(e => e.contentType === 'SERIES');
