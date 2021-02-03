@@ -1,10 +1,15 @@
 import * as actionTypes from './titleMetadataActionTypes';
+import {VZ, MOVIDA} from './constants';
 
 const initialState = {
     title: {},
     externalIds: [],
     territoryMetadata: [],
     editorialMetadata: [],
+    isSyncingVZ: false,
+    isPublishingVZ: false,
+    isSyncingMOV: false,
+    isPublishingMOV: false,
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -54,6 +59,30 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.UPDATE_TITLE_ERROR:
             return {
                 ...state,
+            };
+        case actionTypes.TITLE_IS_SYNCING_START:
+            return {
+                ...state,
+                isSyncingVZ: payload === VZ ? true : state.isSyncingVZ,
+                isSyncingMOV: payload === MOVIDA ? true : state.isSyncingMOV,
+            };
+        case actionTypes.TITLE_IS_SYNCING_END:
+            return {
+                ...state,
+                isSyncingVZ: payload === VZ ? false : state.isSyncingVZ,
+                isSyncingMOV: payload === MOVIDA ? false : state.isSyncingMOV,
+            };
+        case actionTypes.TITLE_IS_PUBLISHING_START:
+            return {
+                ...state,
+                isPublishingVZ: payload === VZ ? true : state.isPublishingVZ,
+                isPublishingMOV: payload === MOVIDA ? true : state.isPublishingMOV,
+            };
+        case actionTypes.TITLE_IS_PUBLISHING_END:
+            return {
+                ...state,
+                isPublishingVZ: payload === VZ ? false : state.isPublishingVZ,
+                isPublishingMOV: payload === MOVIDA ? false : state.isPublishingMOV,
             };
         default:
             return state;
