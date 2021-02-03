@@ -159,20 +159,23 @@ export const PrePlanActions = ({
         const rightsList = cloneDeep(prePlanRepoRights);
         let updatedRight = {};
         selectedPrePlanRights.forEach(right => {
-            right.territory.forEach(t => {
-                if (bulkTerritories.includes(t.country)) {
-                    // eslint-disable-next-line prefer-destructuring
-                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
-                    updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
-                    let keywordsStr = '';
-                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
-                    updatedRight.keywords =
-                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
-                            ? keywordsStr.slice(0, -1)
-                            : keywordsStr;
-                }
-            });
+            updatedRight = rightsList.find(r => r.id === right.id);
+            if(updatedRight) {
+                let keywordsStr = '';
+                keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                updatedRight.keywords =
+                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
+                        ? keywordsStr.slice(0, -1)
+                        : keywordsStr;
+
+                right.territory.forEach(t => {
+                    if (bulkTerritories.includes(t.country)) {
+                        // eslint-disable-next-line prefer-destructuring
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
+                    }
+                });
+            }
         });
         setPreplanRights({[username]: rightsList});
         closeModal();
