@@ -12,7 +12,6 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
-import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -81,7 +80,6 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
-    toggleRefreshGridData,
 }) => {
     const isMounted = useRef(true);
     const [totalCount, setTotalCount] = useState(0);
@@ -541,7 +539,6 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
-    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 RightsRepository.defaultProps = {
@@ -584,7 +581,6 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
-    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

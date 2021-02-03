@@ -54,7 +54,7 @@ const DOPService = {
             projectAttribute.push({code: `selectedRightID[${index}]`, value: right.id});
             projectAttribute.push({
                 code: `selectedRightTerritory[${right.id}]`,
-                value: right.territory.map(territory => territory.country).toString(),
+                value: right.territory.toString(),
             });
         });
 
