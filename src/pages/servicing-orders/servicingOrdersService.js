@@ -23,6 +23,7 @@ export const getSpecOptions = (recipientId, tenant) => {
 
 // TODO: Use an actual API when ready
 export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams) => {
+    const defaultSort = sortedParams.length ? sortedParams : [{colId: "submitted_date", sort: "desc"}];
     let queryParams = {};
     Object.keys(searchCriteria).forEach(key => {
         const value = searchCriteria[key];
@@ -35,7 +36,7 @@ export const getServicingOrders = (searchCriteria = {}, page, size, sortedParams
             queryParams[key] = value;
         }
     });
-    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(sortedParams)}`;
+    const url = `${baseServicingOrdersURL(config)}/search/so${prepareSortMatrixParam(defaultSort)}`;
     const params = encodedSerialize({...queryParams, page, size});
     return nexusFetch(url, {params});
 };
