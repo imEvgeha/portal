@@ -24,7 +24,7 @@ import {
     filterOutUnselectedTerritories,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
-import {PRE_PLAN_TAB} from '../rights-repository/constants';
+import {PRE_PLAN_TAB, RIGHTS_TAB} from '../rights-repository/constants';
 import {getLinkedRights, clearLinkedRights, bulkDeleteRights} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import {
@@ -89,6 +89,12 @@ export const SelectedRightsActions = ({
             window.removeEventListener('click', removeMenu);
         };
     }, []);
+
+    useEffect(() => {
+        if(activeTab === RIGHTS_TAB) {
+            toggleRefreshGridData(true);
+        }
+    }, [activeTab]);
 
     // All the rights have empty SourceRightId or all the rights have uniq SourceRightId
     const checkSourceRightIds = () => {
@@ -157,6 +163,7 @@ export const SelectedRightsActions = ({
     };
 
     const openDrawer = () => {
+        setMenuOpened(false);
         setDrawerOpen(true);
         setHeaderText(HEADER_TITLE_TITLE_MATCHING);
     };
@@ -195,6 +202,7 @@ export const SelectedRightsActions = ({
     );
 
     const openBulkUnmatchModal = () => {
+        setMenuOpened(false);
         const selectedRightsIds = selectedRights.map(({id}) => id);
         getAffectedRights(selectedRightsIds).then(rights => {
             const actions = [
@@ -238,6 +246,7 @@ export const SelectedRightsActions = ({
     };
 
     const openDeleteConfirmationModal = () => {
+        setMenuOpened(false);
         openModal(
             <BulkDeleteConfirmation
                 onSubmit={() => getLinkedRights({rights: selectedRights, closeModal, toggleRefreshGridData})}
@@ -267,6 +276,7 @@ export const SelectedRightsActions = ({
     }, []);
 
     const openAuditHistoryModal = () => {
+        setMenuOpened(false);
         const title = `Audit History (${selectedRights.length})`;
 
         const actions = [
@@ -285,6 +295,7 @@ export const SelectedRightsActions = ({
     };
 
     const prepareRightsForPrePlan = () => {
+        setMenuOpened(false);
         if (isPreplanEligible) {
             // move to pre-plan, clear selectedRights
             setPrePlanRepoRights(filterOutUnselectedTerritories(selectedRights));
@@ -305,6 +316,7 @@ export const SelectedRightsActions = ({
     };
 
     const createBonusRights = () => {
+        setMenuOpened(false);
         setIsBonusRight(true);
         setHeaderText(HEADER_TITLE_BONUS_RIGHT);
         setDrawerOpen(true);

@@ -49,6 +49,7 @@ const PreplanRightsTable = ({
                     setCount(prevCount => prevCount + 1);
                     const oldRecord = prePlanRepoRights.find(p => p.id === right.id);
                     const dirtyTerritories = oldRecord.territory.filter(t => t.isDirty);
+
                     // if the territory is not withdrawn and not selected, keep it in plan else remove the selected flag
                     const updatedTerritories = result.territory.map(t => {
                         const dirtyTerritoryFound = dirtyTerritories.find(o => o.country === t.country);
@@ -56,14 +57,12 @@ const PreplanRightsTable = ({
                             return {...t, selected: dirtyTerritoryFound.selected, isDirty: true};
                         return t;
                     });
-
-                    // update territory in result
-                    result.territory = updatedTerritories;
                     const updatedResult = {
                         ...result,
                         keywords: oldRecord.keywords,
-                        territorySelected: oldRecord.territorySelected,
-                        territoryAll: oldRecord.territoryAll,
+                        territory: updatedTerritories.filter(t => ((!t.selected && !t.isDirty) || t.isDirty)),
+                        territorySelected: result.territory.filter(item => item.selected).map(t => t.country),
+                        territoryAll: result.territory.map(item => item.country).join(', '),
                     };
                     const prePlanRight = updatedPrePlanRepo.filter(p => p.id !== right.id);
                     updatedPrePlanRepo = [...prePlanRight, updatedResult];
