@@ -16,6 +16,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             .map((e, index) => {
                 return {...e, id: index};
             })
+            .sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     const [crew, setCrew] = useState(
@@ -24,6 +25,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
             .map((e, index) => {
                 return {...e, id: index};
             })
+            .sort((a, b) => a.creditsOrder - b.creditsOrder)
     );
 
     useEffect(() => {
@@ -37,6 +39,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
                 .map((e, index) => {
                     return {...e, id: index};
                 })
+                .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
         setCrew(
             persons
@@ -44,6 +47,7 @@ const CastCrew = ({persons, isEdit, onChange, searchPerson, isVerticalLayout}) =
                 .map((e, index) => {
                     return {...e, id: index};
                 })
+                .sort((a, b) => a.creditsOrder - b.creditsOrder)
         );
     };
 
