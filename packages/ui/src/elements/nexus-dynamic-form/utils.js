@@ -241,7 +241,7 @@ export const buildSection = (
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
-    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs}
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs, setDisableSubmit}
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
@@ -289,6 +289,7 @@ export const buildSection = (
                                 config,
                                 isGridLayout,
                                 searchPerson,
+                                setDisableSubmit,
                             })}
                         </div>
                     ))
@@ -303,7 +304,7 @@ export const renderNexusField = (
     view,
     getValues,
     generateMsvIds,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path, setDisableSubmit}
 ) => {
     return (
         <NexusField
@@ -323,6 +324,7 @@ export const renderNexusField = (
             isGridLayout={isGridLayout}
             searchPerson={searchPerson}
             generateMsvIds={generateMsvIds}
+            setDisableSubmit={setDisableSubmit}
         />
     );
 };
