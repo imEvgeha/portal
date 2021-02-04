@@ -191,8 +191,6 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
-    console.log('fulfillmentOrder: ', fulfillmentOrder);
-
     return (
         <Page>
             <div className="fulfillment-order__section">
@@ -243,13 +241,20 @@ export const FulfillmentOrder = ({
 
                             <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
-                                    <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
+                                    <Tooltip content={deteErrors.length ?
+                                        `View ${deteErrors.length} errors`
+                                        : '0 errors'}>
                                         <div
                                             onClick={() =>
-                                                deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null
+                                                deteErrors.length ?
+                                                    openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)
+                                                    : null
                                             }
                                         >
-                                            Fulfillment Status <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
+                                            Fulfillment Status <ErrorIcon size="small" primaryColor={deteErrors.length ?
+                                            'red' :
+                                            'grey'}
+                                        />
                                         </div>
                                     </Tooltip>
                                     <Textfield
