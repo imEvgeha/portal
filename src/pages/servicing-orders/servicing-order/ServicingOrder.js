@@ -170,6 +170,7 @@ const ServicingOrder = ({match}) => {
                     updatedServices={updatedServices}
                     cancelEditing={cancelEdit}
                     lastOrder={lastOrder}
+                    deteErrors={selectedOrder.errors || []}
                 >
                     <SourcesTable
                         onSelectedSourceChange={handleSelectedSourceChange}
@@ -184,7 +185,6 @@ const ServicingOrder = ({match}) => {
                             isDisabled={isFormDisabled(selectedOrder)}
                             setUpdatedServices={setUpdatedServices}
                             components={components}
-                            deteErrors={selectedOrder.errors || []}
                             externalId={selectedOrder.external_id}
                         />
                     )}

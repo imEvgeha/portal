@@ -2,8 +2,8 @@ export default {
     fieldKeys: {
         ID: 'external_id',
         STATUS: 'status',
-        DUE_DATE: 'definition.dueDate',
-        START_DATE: 'definition.startDate',
+        DUE_DATE: 'due_date',
+        START_DATE: 'start_date',
         SERVICER: 'fs',
         NOTES: 'notes',
         READINESS: 'readiness',
