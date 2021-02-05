@@ -10,6 +10,7 @@ import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, get, startCase} from 'lodash';
+import moment from 'moment';
 import {compose} from 'redux';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
@@ -90,6 +91,22 @@ const ServicingOrdersTable = ({
                                 isDisabled={params.data.tenant !== 'MGM'}
                             />
                         );
+                    },
+                };
+            }
+
+            if (columnDef.field === 'sr_due_date') {
+                return {
+                    ...columnDef,
+                    cellRendererFramework: params => {
+                        const dueDate = ISODateToView(params.value, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
+                        const daysDiff = moment().diff(dueDate, 'days');
+                        // eslint-disable-next-line init-declarations
+                        let styleColor;
+                        if(daysDiff >= 0) styleColor = 'red'; // expired or last day
+                        // eslint-disable-next-line no-magic-numbers
+                        else if(daysDiff >= -3 && daysDiff <= -1) styleColor = 'orange'; // 3 days or less
+                        return <div style={{color: styleColor}}>{dueDate}</div>
                     },
                 };
             }
