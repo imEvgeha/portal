@@ -72,7 +72,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 150,
         },
         Object {
-          "cellRendererFramework": "loadingCellRenderer",
+          "cellRenderer": "loadingCellRenderer",
           "colId": "sr_due_date",
           "dataType": "regionalMidnight",
           "enableSearch": true,
@@ -81,6 +81,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "javaVariableName": "sr_due_date",
           "searchDataType": "regionalMidnight",
           "sortable": true,
+          "valueFormatter": [Function],
           "width": 150,
         },
         Object {
