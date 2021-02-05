@@ -24,6 +24,7 @@ const NexusDynamicForm = ({
     hasButtons,
     setIsEditView,
 }) => {
+    const [disableSubmit, setDisableSubmit] = useState(true);
     const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
     const [update, setUpdate] = useState(false);
     const [validationErrorCount, setValidationErrorCount] = useState(0);
@@ -73,7 +74,7 @@ const NexusDynamicForm = ({
                         'nexus-c-dynamic-form__submit-button--title': isTitlePage,
                     })}
                     appearance="primary"
-                    isDisabled={!dirty}
+                    isDisabled={!dirty && disableSubmit}
                     // this is a form submit button and hence validation check will not work on submit function
                     onClick={showValidationError}
                     isLoading={isSaving}
@@ -206,6 +207,7 @@ const NexusDynamicForm = ({
                                                         searchPerson,
                                                         tabs,
                                                         subTabs,
+                                                        setDisableSubmit,
                                                     }
                                                 )}
                                             </Fragment>

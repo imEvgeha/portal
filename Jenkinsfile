@@ -14,6 +14,7 @@ pipeline {
                  imageTag = "${tagTime}.${BUILD_NUMBER}"
                }
                sh 'yarn'
+               sh 'yarn prebuild'
                sh 'yarn build:prod'
                sh 'yarn test'
              }
