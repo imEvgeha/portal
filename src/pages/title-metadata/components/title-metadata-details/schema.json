@@ -179,6 +179,7 @@
                             "name": "Season Number",
                             "path": "episodic.seasonNumber",
                             "type": "link",
+                            "isRequired": true,
                             "linkConfig": {
                                 "baseUrl": "/metadata/v2/detail/",
                                 "contentType": "SEASON"
