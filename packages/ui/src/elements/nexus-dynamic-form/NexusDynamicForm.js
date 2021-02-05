@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import {merge, mergeWith, set, get} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
-import {VIEWS, SEASON, SERIES, EPISODE} from './constants';
+import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -190,7 +190,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                                {showAll()}
+                                                {sectionTitle === CORE_TITLE_SECTION && showAll()}
                                                 {buildSection(
                                                     fields,
                                                     getValues,

@@ -51,3 +51,4 @@ export const TABS_MAPPINGS = [
 export const SEASON = 'SEASON';
 export const SERIES = 'SERIES';
 export const EPISODE = 'EPISODE';
+export const CORE_TITLE_SECTION = 'Core Title';
