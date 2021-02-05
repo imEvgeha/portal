@@ -235,6 +235,19 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
+const toShow = (field, initialData) => {
+    const showWhen = get(field, 'showWhen', []);
+    if (showWhen.length) {
+        let retValue = false;
+        field.showWhen.forEach(conditionObj => {
+            const value = get(initialData, conditionObj.field, '');
+            if (value === conditionObj.hasValue) retValue = true;
+        });
+        return retValue;
+    }
+    return true;
+};
+
 export const buildSection = (
     fields = {},
     getValues,
@@ -248,6 +261,7 @@ export const buildSection = (
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
+                    toShow(fields[key], initialData) &&
                     (get(fields[key], 'type') === 'array' ? (
                         <NexusArray
                             key={key}
