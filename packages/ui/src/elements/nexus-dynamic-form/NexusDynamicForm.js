@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
-import {merge, mergeWith, set} from 'lodash';
+import {merge, mergeWith, set, get} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
-import {VIEWS} from './constants';
+import {VIEWS, SEASON, SERIES, EPISODE} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -135,6 +135,27 @@ const NexusDynamicForm = ({
         }
     };
 
+    const createLink = contentType => {
+        const baseUrl = '/metadata?parentId=';
+        const id = get(initialData, 'id', '');
+        return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
+    };
+
+    const showAll = () => {
+        if (isTitlePage) {
+            const allowedContents = [SEASON, SERIES];
+            const contentType = get(initialData, 'contentType', '');
+            if (allowedContents.includes(contentType)) {
+                return (
+                    <div className="nexus-c-dynamic-form__show-all">
+                        <a href={createLink(contentType)}>Show all {contentType === SERIES ? 'seasons' : 'episodes'}</a>
+                    </div>
+                );
+            }
+        }
+        return null;
+    };
+
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
@@ -168,6 +189,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
+                                                {showAll()}
                                                 {buildSection(
                                                     fields,
                                                     getValues,

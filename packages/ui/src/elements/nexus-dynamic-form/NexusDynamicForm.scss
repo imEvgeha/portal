@@ -61,6 +61,11 @@
     border-bottom: 2px solid map-get($neutrals, N40);
 }
 
+.nexus-c-dynamic-form__show-all {
+    width: 20%;
+    @include margin(4, auto);
+}
+
 .nexus-c-dynamic-form__cancel-button,
 .nexus-c-dynamic-form__submit-button,
 .nexus-c-dynamic-form__edit-button {
