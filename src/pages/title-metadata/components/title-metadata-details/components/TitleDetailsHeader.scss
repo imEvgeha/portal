@@ -2,8 +2,9 @@
 @import '~@vubiquity-nexus/portal-styles/scss/atlaskit/colors';
 
 .nexus-c-title-details-header {
-    width: calc((100% - 64px) * 1);
-    position: fixed;
+    width: 100%;
+    position: sticky;
+    position: -webkit-sticky;
     top: 0;
     @include padding(6, 0);
     transition: padding linear 0.5s;
