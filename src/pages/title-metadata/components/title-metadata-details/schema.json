@@ -138,7 +138,11 @@
                         "seriesTitleName": {
                             "name": "Series",
                             "path": "episodic.seriesTitleName",
-                            "type": "string",
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SERIES"
+                            },
                             "showWhen": [
                                 {
                                     "field": "contentType",
@@ -172,7 +176,11 @@
                         "seasonNumber": {
                             "name": "Season Number",
                             "path": "episodic.seasonNumber",
-                            "type": "string",
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SEASON"
+                            },
                             "showWhen": [
                                 {
                                     "field": "contentType",

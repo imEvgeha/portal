@@ -254,7 +254,7 @@ export const buildSection = (
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
-    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs}
+    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs, history}
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
@@ -303,6 +303,7 @@ export const buildSection = (
                                 config,
                                 isGridLayout,
                                 searchPerson,
+                                history,
                             })}
                         </div>
                     ))
@@ -317,7 +318,7 @@ export const renderNexusField = (
     view,
     getValues,
     generateMsvIds,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path}
+    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path, history}
 ) => {
     return (
         <NexusField
@@ -337,6 +338,8 @@ export const renderNexusField = (
             isGridLayout={isGridLayout}
             searchPerson={searchPerson}
             generateMsvIds={generateMsvIds}
+            initialData={initialData}
+            history={history}
         />
     );
 };
@@ -386,4 +389,14 @@ export const renderError = (fieldProps, error) => {
             <ErrorMessage>{error}</ErrorMessage>
         </div>
     );
+};
+
+export const createUrl = (linkConfig, initialData) => {
+    const {baseUrl, contentType} = linkConfig;
+    const parentIds = get(initialData, 'parentIds', []);
+    const id = parentIds.filter(parent => parent.contentType === contentType);
+    if (id.length) {
+        return baseUrl + id[0].id;
+    }
+    return '';
 };
