@@ -15,6 +15,7 @@
         "start:packages": "uno watch --ignore node_modules,dist,build,bld,lib",
         "prestart": "lerna run build",
         "start": "concurrently \"yarn start:root\" \"yarn start:packages\"",
+        "prebuild": "lerna run build",
         "build": "webpack --config webpack/webpack.config.js --env.env=dev",
         "build:analyze-prod": "webpack --config webpack/webpack.config.js --env.env=prod --env.addon=bundleanalyze --env.addon=bundlevisualizer",
         "build:prod": "webpack --config webpack/webpack.config.js --env.env=prod && docker build . -t nexus/vehicle-ui",
