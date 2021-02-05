@@ -138,6 +138,7 @@
                         "seriesTitleName": {
                             "name": "Series",
                             "path": "episodic.seriesTitleName",
+                            "isReadOnly": true,
                             "type": "link",
                             "linkConfig": {
                                 "baseUrl": "/metadata/v2/detail/",
@@ -166,6 +167,7 @@
                             "name": "Season",
                             "path": "episodic.seasonTitleName",
                             "type": "string",
+                            "isReadOnly": true,
                             "showWhen": [
                                 {
                                     "field": "contentType",
