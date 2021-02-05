@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
+import ErrorIcon from "@atlaskit/icon/glyph/error";
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
+import Tooltip from "@atlaskit/tooltip";
 import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
@@ -14,8 +16,10 @@ import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
+import ErrorsList from './ErrorsList';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
+
 
 export const FulfillmentOrder = ({
     selectedFulfillmentOrder = {},
@@ -27,6 +31,7 @@ export const FulfillmentOrder = ({
     children,
     cancelEditing,
     lastOrder,
+    deteErrors,
 }) => {
     const {fieldKeys} = Constants;
     const [savedFulfillmentOrder, setSavedFulfillmentOrder] = useState(null);
@@ -38,6 +43,8 @@ export const FulfillmentOrder = ({
     const isSaving = useSelector(state => createLoadingSelector([SAVE_FULFILLMENT_ORDER])(state));
     const isSuccess = useSelector(state => createSuccessMessageSelector([SAVE_FULFILLMENT_ORDER])(state));
     const dispatch = useDispatch();
+
+    const {openModal, closeModal} = useContext(NexusModalContext);
 
     const ModalContent = (
         <>
@@ -138,8 +145,6 @@ export const FulfillmentOrder = ({
         ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
         : {};
 
-    const {openModal, closeModal} = useContext(NexusModalContext);
-
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
@@ -236,7 +241,22 @@ export const FulfillmentOrder = ({
 
                             <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
-                                    <label htmlFor="fulfillment-status">Fulfillment Status</label>
+                                    <Tooltip content={deteErrors.length ?
+                                        `View ${deteErrors.length} errors`
+                                        : '0 errors'}>
+                                        <div
+                                            onClick={() =>
+                                                deteErrors.length ?
+                                                    openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)
+                                                    : null
+                                            }
+                                        >
+                                            Fulfillment Status <ErrorIcon size="small" primaryColor={deteErrors.length ?
+                                            'red' :
+                                            'grey'}
+                                        />
+                                        </div>
+                                    </Tooltip>
                                     <Textfield
                                         name="fulfillment-status"
                                         value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || ''}
@@ -302,6 +322,7 @@ FulfillmentOrder.propTypes = {
     children: PropTypes.any,
     cancelEditing: PropTypes.func,
     lastOrder: PropTypes.object.isRequired,
+    deteErrors: PropTypes.array,
 };
 
 FulfillmentOrder.defaultProps = {
@@ -313,6 +334,7 @@ FulfillmentOrder.defaultProps = {
     updatedServices: () => null,
     children: null,
     cancelEditing: () => null,
+    deteErrors: [],
 };
 
 export default FulfillmentOrder;

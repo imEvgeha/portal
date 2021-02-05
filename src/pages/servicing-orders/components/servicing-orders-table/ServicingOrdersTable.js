@@ -4,6 +4,7 @@ import {Checkbox} from '@atlaskit/checkbox';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
@@ -21,6 +22,7 @@ import './ServicingOrdersTable.scss';
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 

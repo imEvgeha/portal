@@ -84,11 +84,19 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             <div
               className="fulfillment-order__input"
             >
-              <label
-                htmlFor="fulfillment-status"
+              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+                content="0 errors"
               >
-                Fulfillment Status
-              </label>
+                <div
+                  onClick={[Function]}
+                >
+                  Fulfillment Status 
+                  <ErrorIcon
+                    primaryColor="grey"
+                    size="small"
+                  />
+                </div>
+              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
               <WithAnalyticsContext(WithAnalyticsEvents(undefined))
                 isDisabled={true}
                 name="fulfillment-status"
