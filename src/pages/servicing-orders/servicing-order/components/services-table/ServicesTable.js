@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
@@ -21,7 +20,6 @@ import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
-import ErrorsList from './ErrorsList';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
@@ -34,7 +32,6 @@ const ServicesTable = ({
     isDisabled,
     setUpdatedServices,
     components: componentsArray,
-    deteErrors,
     externalId,
 }) => {
     const [services, setServices] = useState({});
@@ -193,17 +190,6 @@ const ServicesTable = ({
     };
 
     const statusCol = {
-        headerComponentFramework: () => (
-            <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
-                <div
-                    onClick={() =>
-                        deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null
-                    }
-                >
-                    Operational Status <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
-                </div>
-            </Tooltip>
-        ),
         sortable: false,
         // eslint-disable-next-line react/prop-types
         cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
@@ -369,7 +355,6 @@ ServicesTable.propTypes = {
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
-    deteErrors: PropTypes.array,
     recipientsOptions: PropTypes.object,
     externalId: PropTypes.string.isRequired,
 };
@@ -379,7 +364,6 @@ ServicesTable.defaultProps = {
     isDisabled: false,
     setUpdatedServices: () => null,
     components: [],
-    deteErrors: [],
     recipientsOptions: {},
 };
 
