@@ -57,6 +57,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 usBoxOffice = '',
                 category = '',
                 externalIds = {},
+                episodic = {},
             } = obj || {};
             const repository = id.includes('vztitl_') ? VZ : id.includes('movtitl_') ? MOVIDA : NEXUS;
             const {
@@ -71,6 +72,7 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                 cid = '',
                 isrc = '',
             } = externalIds || {};
+            const {seasonNumber = '', episodeNumber = '', seriesTitleName = ''} = episodic || {};
             return [
                 ...acc,
                 {
@@ -97,6 +99,9 @@ export const fetchTitleMetadata = async (searchCriteria, offset, limit, sortedPa
                     alid,
                     cid,
                     isrc,
+                    seasonNumber,
+                    episodeNumber,
+                    seriesTitleName,
                 },
             ];
         }, []);

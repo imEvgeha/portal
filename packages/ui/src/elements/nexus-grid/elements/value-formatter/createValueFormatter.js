@@ -1,6 +1,7 @@
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, startCase} from 'lodash';
+import {EPISODE_CONTENT_TYPE} from '../../constants';
 
 const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
     switch (dataType) {
@@ -142,6 +143,18 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
                         return data[javaVariableName].map(({genre}) => genre).join(', ');
+                    }
+                };
+            } else if (javaVariableName === 'title') {
+                return params => {
+                    const {data = {}} = params || {};
+                    if (data && data[javaVariableName]) {
+                        const {contentType} = data || '';
+                        if (contentType && contentType === EPISODE_CONTENT_TYPE) {
+                            const {seriesTitleName, seasonNumber, episodeNumber} = data || '';
+                            return `${seriesTitleName}:S${seasonNumber},E${episodeNumber}:${data[javaVariableName]}`;
+                        }
+                        return data[javaVariableName];
                     }
                 };
             }

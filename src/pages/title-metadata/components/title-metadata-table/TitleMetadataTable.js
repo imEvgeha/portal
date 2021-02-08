@@ -45,6 +45,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                         newTab: false,
                     };
                 },
+                valueFormatter: createValueFormatter(mapping),
             };
         }
         if (mapping.colId === REPOSITORY_COLUMN_ID) {

@@ -28,6 +28,7 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
           "headerName": "Title",
           "javaVariableName": "title",
           "searchDataType": "string",
+          "valueFormatter": [Function],
           "width": 200,
         },
         Object {

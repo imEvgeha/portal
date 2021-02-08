@@ -101,3 +101,5 @@ export {
     AG_GRID_COLUMN_FILTER,
     DEFAULT_SORT_ORDER,
 };
+
+export const EPISODE_CONTENT_TYPE = 'EPISODE';
