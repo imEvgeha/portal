@@ -479,6 +479,26 @@
                                     "path": "format",
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "HD",
+                                                "value": "HD"
+                                            },
+                                            {
+                                                "label": "SD",
+                                                "value": "SD"
+                                            },
+                                            {
+                                                "label": "4K",
+                                                "value": "4K"
+                                            },
+                                            {
+                                                "label": "3D",
+                                                "value": "3D"
+                                            }
+                                        ]
+                                    },
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
