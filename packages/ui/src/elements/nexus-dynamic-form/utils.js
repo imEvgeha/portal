@@ -16,14 +16,21 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
-export const getDefaultValue = (field = {}, view, data) => {
+export const getDefaultValue = (field = {}, view, data, selectValues=[]) => {
     if (field.type === 'dateRange') {
         return {
             startDate: get(data, field.path[0]),
             endDate: get(data, field.path[1]),
         };
     }
-    const value = get(data, field.path) !== null ? get(data, field.path) : '';
+    const value = get(data, field.path) || '';
+    if (value && field.type === 'select' && selectValues.length) {
+        const {defaultValuePath, defaultLabelPath} = get(field, 'optionsConfig', {});
+        if(defaultLabelPath && defaultValuePath) {
+            const optionField = selectValues.find(option => option[defaultValuePath] === value);
+            return optionField ? optionField[defaultLabelPath] : value;
+        }
+    }
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
@@ -352,7 +359,7 @@ export const renderNexusField = (
             view={view}
             formData={inTabs ? {[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]]: initialData} : getValues()}
             validationError={getValidationError(initialData.validationErrors, field)}
-            defaultValue={getDefaultValue(field, view, initialData)}
+            defaultValue={getDefaultValue(field, view, initialData, get(selectValues, field.path, []))}
             selectValues={selectValues}
             setFieldValue={setFieldValue}
             getCurrentValues={getValues}
