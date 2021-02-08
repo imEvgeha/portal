@@ -235,19 +235,44 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
+const toShow = (field, initialData) => {
+    const showWhen = get(field, 'showWhen', []);
+    if (showWhen.length) {
+        let retValue = false;
+        field.showWhen.forEach(conditionObj => {
+            const value = get(initialData, conditionObj.field, '');
+            if (value === conditionObj.hasValue) retValue = true;
+        });
+        return retValue;
+    }
+    return true;
+};
+
 export const buildSection = (
     fields = {},
     getValues,
     view,
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
-    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs, setDisableSubmit}
+    {
+        selectValues,
+        initialData,
+        setFieldValue,
+        update,
+        config,
+        isGridLayout,
+        searchPerson,
+        tabs,
+        subTabs,
+        setDisableSubmit,
+    }
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
+                    toShow(fields[key], initialData) &&
                     (get(fields[key], 'type') === 'array' ? (
                         <NexusArray
                             key={key}
@@ -304,7 +329,18 @@ export const renderNexusField = (
     view,
     getValues,
     generateMsvIds,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path, setDisableSubmit}
+    {
+        initialData = {},
+        field,
+        selectValues,
+        setFieldValue,
+        config,
+        isGridLayout,
+        searchPerson,
+        inTabs,
+        path,
+        setDisableSubmit,
+    }
 ) => {
     return (
         <NexusField
@@ -325,6 +361,7 @@ export const renderNexusField = (
             searchPerson={searchPerson}
             generateMsvIds={generateMsvIds}
             setDisableSubmit={setDisableSubmit}
+            initialData={initialData}
         />
     );
 };
@@ -374,4 +411,14 @@ export const renderError = (fieldProps, error) => {
             <ErrorMessage>{error}</ErrorMessage>
         </div>
     );
+};
+
+export const createUrl = (linkConfig, initialData) => {
+    const {baseUrl, contentType} = linkConfig;
+    const parentIds = get(initialData, 'parentIds', []);
+    const id = parentIds.filter(parent => parent.contentType === contentType);
+    if (id.length) {
+        return baseUrl + id[0].id;
+    }
+    return '';
 };

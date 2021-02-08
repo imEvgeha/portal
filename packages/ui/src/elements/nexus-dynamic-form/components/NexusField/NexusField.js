@@ -10,7 +10,14 @@ import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
-import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
+import {
+    checkFieldDependencies,
+    getFieldValue,
+    getValidationFunction,
+    renderLabel,
+    renderError,
+    createUrl,
+} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
@@ -55,6 +62,8 @@ const NexusField = ({
     searchPerson,
     generateMsvIds,
     setDisableSubmit,
+    initialData,
+    linkConfig,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -93,6 +102,7 @@ const NexusField = ({
         switch (type) {
             case 'string':
             case 'stringInArray':
+            case 'link':
                 return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'textarea':
                 return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
@@ -258,6 +268,18 @@ const NexusField = ({
                         isEdit={false}
                     />
                 );
+            case 'link':
+                return (
+                    <>
+                        <a href={createUrl(linkConfig, initialData)}>
+                            {fieldProps.value ? (
+                                getValue(fieldProps)
+                            ) : (
+                                <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
+                            )}
+                        </a>
+                    </>
+                );
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
@@ -341,6 +363,8 @@ NexusField.propTypes = {
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
     setDisableSubmit: PropTypes.func,
+    initialData: PropTypes.object,
+    linkConfig: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -371,6 +395,8 @@ NexusField.defaultProps = {
     searchPerson: undefined,
     generateMsvIds: undefined,
     setDisableSubmit: undefined,
+    initialData: {},
+    linkConfig: {},
 };
 
 export default NexusField;

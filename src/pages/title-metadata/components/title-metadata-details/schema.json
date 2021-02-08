@@ -138,6 +138,123 @@
                             "name": "IMDB Link",
                             "path": "imdbLink",
                             "type": "string"
+                        },
+                        "seriesTitleName": {
+                            "name": "Series",
+                            "path": "episodic.seriesTitleName",
+                            "isReadOnlyInEdit": true,
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SERIES"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EVENT"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SPORTS"
+                                }
+                            ]
+                        },
+                        "seasonTitleName": {
+                            "name": "Season",
+                            "path": "episodic.seasonTitleName",
+                            "type": "string",
+                            "isReadOnlyInEdit": true,
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                }
+                            ]
+                        },
+                        "seasonNumber": {
+                            "name": "Season Number",
+                            "path": "episodic.seasonNumber",
+                            "type": "link",
+                            "isRequired": true,
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SEASON"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EVENT"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SPORTS"
+                                }
+                            ]
+                        },
+                        "seasonId": {
+                            "name": "Season ID",
+                            "path": "episodic.seasonId",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
+                        "episodeNumber": {
+                            "name": "Episode Number",
+                            "path": "episodic.episodeNumber",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EVENT"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SPORTS"
+                                }
+                            ]
+                        },
+                        "episodeId": {
+                            "name": "Episode ID",
+                            "path": "episodic.episodeId",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EVENT"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SPORTS"
+                                }
+                            ]
                         }
                     }
                 }
