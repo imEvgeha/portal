@@ -171,6 +171,9 @@ const formatTerritoryBody = (data, titleId) => {
     });
     body.territoryType = 'country';
     if (titleId) body.parentId = titleId;
+    if (body.isDeleted) {
+        body.metadataStatus = 'deleted';
+    }
     delete body.isUpdated;
     delete body.isDeleted;
     delete body.isCreated;
@@ -245,6 +248,9 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                 });
         } else body[key] = data[key];
     });
+    if (body.isDeleted) {
+        body.metadataStatus = 'deleted';
+    }
     delete body.isUpdated;
     delete body.isDeleted;
     delete body.isCreated;
@@ -332,35 +338,40 @@ const handleDirtyRatingsValues = values => {
 
 const handleDirtyEMETValues = values => {
     const editorial = get(values, 'editorial');
-    const index =
-        values.editorialMetadata &&
-        values.editorialMetadata.findIndex(
-            elem =>
-                elem.locale === editorial.locale &&
-                elem.language === editorial.language &&
-                elem.format === editorial.format &&
-                elem.service === editorial.service
-        );
-    if (index !== null && index >= 0) {
-        const updatedEmetRecord = {
-            ...values.editorialMetadata[index],
-            ...editorial,
-            isUpdated: true,
-        };
-        values.editorialMetadata[index] = updatedEmetRecord;
+    if (editorial) {
+        const index =
+            values.editorialMetadata &&
+            values.editorialMetadata.findIndex(
+                elem =>
+                    elem.locale === editorial.locale &&
+                    elem.language === editorial.language &&
+                    elem.format === editorial.format &&
+                    elem.service === editorial.service
+            );
+        if (index !== null && index >= 0) {
+            const updatedEmetRecord = {
+                ...values.editorialMetadata[index],
+                ...editorial,
+                isUpdated: true,
+            };
+            values.editorialMetadata[index] = updatedEmetRecord;
+        }
     }
 };
 
 const handleDirtyTMETValues = values => {
     const territorial = get(values, 'territorial');
-    const index =
-        values.territorialMetadata && values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
-    if (index !== null && index >= 0) {
-        const updatedTmetRecord = {
-            ...values.territorialMetadata[index],
-            ...territorial,
-            isUpdated: true,
-        };
-        values.territorialMetadata[index] = updatedTmetRecord;
+    if (territorial) {
+        const index =
+            values.territorialMetadata &&
+            values.territorialMetadata.findIndex(elem => elem.locale === territorial.locale);
+        if (index !== null && index >= 0) {
+            const updatedTmetRecord = {
+                ...values.territorialMetadata[index],
+                ...territorial,
+                isUpdated: true,
+            };
+            values.territorialMetadata[index] = updatedTmetRecord;
+        }
     }
 };
