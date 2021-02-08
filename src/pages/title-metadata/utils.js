@@ -23,6 +23,10 @@ export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
 };
 
+export const isMgmTitle = titleId => {
+    return titleId && (titleId.startsWith('titl_mgm') || titleId.startsWith('titl_MGM'));
+};
+
 export const getSyncQueryParams = (syncToVZ, syncToMovida) => {
     if (syncToVZ && syncToMovida) {
         return `${VZ},${MOVIDA}`;

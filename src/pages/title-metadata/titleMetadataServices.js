@@ -5,9 +5,13 @@ import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
-export const getTitleById = id => {
+export const getTitleById = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const getExternalIds = id => {
@@ -15,17 +19,25 @@ export const getExternalIds = id => {
     return nexusFetch(url);
 };
 
-export const getTerritoryMetadataById = id => {
+export const getTerritoryMetadataById = payload => {
+    const {id, isMgm} = payload;
     const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
     const url = `${api}?includeDeleted=false&titleId=${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
-export const getEditorialMetadataByTitleId = id => {
+export const getEditorialMetadataByTitleId = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get(
         'gateway.service.title'
     )}/editorialmetadata?titleId=${id}&includeDeleted=false`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const updateTitle = (title, syncToVZ, syncToMovida) => {

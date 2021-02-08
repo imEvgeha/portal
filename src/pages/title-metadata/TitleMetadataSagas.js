@@ -17,6 +17,7 @@ import {
     syncTitle as syncTitleService,
     registerTitle,
 } from './titleMetadataServices';
+import {isMgmTitle} from './utils';
 import {UPDATE_TITLE_SUCCESS, UPDATE_TITLE_ERROR} from './constants';
 
 export function* loadParentTitle(title) {
@@ -25,7 +26,8 @@ export function* loadParentTitle(title) {
         const parent = parentIds.find(e => e.contentType === 'SERIES');
         if (parent) {
             try {
-                const response = yield call(getTitleById, parent.id);
+                const isMgm = isMgmTitle(parent.id);
+                const response = yield call(getTitleById, {id: parent.id, isMgm});
                 const newEpisodic = Object.assign(title.episodic, {
                     seriesTitleName: response.title,
                 });
@@ -48,7 +50,7 @@ export function* loadTitle({payload}) {
         return;
     }
     try {
-        const response = yield call(getTitleById, payload.id);
+        const response = yield call(getTitleById, {id: payload.id, isMgm: payload.isMgm});
         const updatedResponse = yield call(loadParentTitle, response);
         yield put({
             type: actionTypes.GET_TITLE_SUCCESS,
@@ -87,7 +89,7 @@ export function* loadTerritoryMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getTerritoryMetadataById, payload.id);
+        const response = yield call(getTerritoryMetadataById, {id: payload.id, isMgm: payload.isMgm});
         yield put({
             type: actionTypes.GET_TERRITORY_METADATA_SUCCESS,
             payload: response,
@@ -106,7 +108,7 @@ export function* loadEditorialMetadata({payload}) {
     }
 
     try {
-        const response = yield call(getEditorialMetadataByTitleId, payload.id);
+        const response = yield call(getEditorialMetadataByTitleId, {id: payload.id, isMgm: payload.isMgm});
         yield put({
             type: actionTypes.GET_EDITORIAL_METADATA_SUCCESS,
             payload: response,
