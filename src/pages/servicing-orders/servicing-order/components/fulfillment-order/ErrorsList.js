@@ -2,8 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {OPERATIONAL_ERRORS} from './Constants';
-import './ServicesTable.scss';
+import {OPERATIONAL_ERRORS} from '../services-table/Constants';
+import '../services-table/ServicesTable.scss';
 
 const ErrorItem = ({error}) => {
     return (

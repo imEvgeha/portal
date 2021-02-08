@@ -64,7 +64,7 @@ const LegacyTitleReconciliationView = ({
 
     const colDefsWithTitleLink = () => {
         const [title] = columnDefs.filter(col => col.cellRendererParams.link);
-        set(title, 'cellRendererParams.link', '/metadata/detail/');
+        set(title, 'cellRendererParams.link', '/metadata/v2/detail/');
         return columnDefs;
     };
 

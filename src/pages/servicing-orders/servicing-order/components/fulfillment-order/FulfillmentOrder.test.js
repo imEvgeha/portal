@@ -38,6 +38,7 @@ describe('FulfillmentOrder', () => {
         it('should match snapshot', () => {
             expect(wrapper).toMatchSnapshot();
         });
+
     });
 
     describe('client to server fulfillment order transformation function', () => {

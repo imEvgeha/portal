@@ -54,6 +54,7 @@ const NexusField = ({
     isVerticalLayout,
     searchPerson,
     generateMsvIds,
+    setDisableSubmit,
     ...props
 }) => {
     const checkDependencies = type => {
@@ -80,6 +81,10 @@ const NexusField = ({
         useCurrentDate,
         isReturningTime,
         ...addedProps,
+    };
+
+    const disableSaveButton = () => {
+        setDisableSubmit(false);
     };
 
     const renderFieldEditMode = fieldProps => {
@@ -113,6 +118,7 @@ const NexusField = ({
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
+                                onFocus={disableSaveButton}
                             />
                         )}
                     </CheckboxField>
@@ -220,7 +226,7 @@ const NexusField = ({
         }
         switch (type) {
             case 'boolean':
-                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+                return <Checkbox isDisabled isChecked={fieldProps.value} />;
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
@@ -334,6 +340,7 @@ NexusField.propTypes = {
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
+    setDisableSubmit: PropTypes.func,
 };
 
 NexusField.defaultProps = {
@@ -363,6 +370,7 @@ NexusField.defaultProps = {
     isVerticalLayout: false,
     searchPerson: undefined,
     generateMsvIds: undefined,
+    setDisableSubmit: undefined,
 };
 
 export default NexusField;

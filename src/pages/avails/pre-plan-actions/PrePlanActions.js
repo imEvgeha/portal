@@ -9,9 +9,7 @@ import {
     WARNING_ICON,
     WARNING_TITLE,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
-import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
@@ -74,7 +72,6 @@ export const PrePlanActions = ({
         setPreplanRights({[username]: [...notSelectedRights, ...selectedRights]});
         setSelectedPrePlanRights([]);
         clickHandler();
-        toggleRefreshGridData(true);
     };
 
     const addToSelectedForPlanning = () => {
@@ -113,18 +110,12 @@ export const PrePlanActions = ({
                         const prevKeywords = Array.isArray(previousRight['keywords'])
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
-                        const prevTerritory = [];
+                        const prevTerritory = previousRight.territory.filter(obj => obj.isDirty && obj.selected).map(t => t.country);
                         const updatedRight = {
                                   id: right.id,
                                   properties: {
                                       keywords: uniq(prevKeywords.concat(right['keywords'])),
-                                      selected: right['territory'].map(territory => {
-                                          const selected = previousRight['territory'].find(
-                                              obj => obj.country === territory.country && obj.selected
-                                          );
-                                          selected && prevTerritory.push(selected);
-                                          return selected ? selected.country : territory.country;
-                                      }),
+                                      selected: prevTerritory,
                                   },
                               };
                         DOPRequestRights.push({
@@ -168,20 +159,23 @@ export const PrePlanActions = ({
         const rightsList = cloneDeep(prePlanRepoRights);
         let updatedRight = {};
         selectedPrePlanRights.forEach(right => {
-            right.territory.forEach(t => {
-                if (bulkTerritories.includes(t.country)) {
-                    // eslint-disable-next-line prefer-destructuring
-                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
-                    updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
-                    let keywordsStr = '';
-                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
-                    updatedRight.keywords =
-                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
-                            ? keywordsStr.slice(0, -1)
-                            : keywordsStr;
-                }
-            });
+            updatedRight = rightsList.find(r => r.id === right.id);
+            if(updatedRight) {
+                let keywordsStr = '';
+                keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                updatedRight.keywords =
+                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
+                        ? keywordsStr.slice(0, -1)
+                        : keywordsStr;
+
+                right.territory.forEach(t => {
+                    if (bulkTerritories.includes(t.country)) {
+                        // eslint-disable-next-line prefer-destructuring
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
+                    }
+                });
+            }
         });
         setPreplanRights({[username]: rightsList});
         closeModal();

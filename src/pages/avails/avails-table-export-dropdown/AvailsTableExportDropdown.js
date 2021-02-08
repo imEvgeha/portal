@@ -195,8 +195,9 @@ const AvailsTableExportDropdown = ({
     const getDownloadableColumns = (columns = []) => {
         const headerFields = new Set(); // no duplicates
         columns.map(({colDef: {field, colId} = {}}) => {
+            //
             if (mappingColumnNames.includes(field)) {
-                if (headerFields.has(field)) {
+                if (colId === 'selected' || colId === 'withdrawn') {
                     headerFields.add(colId);
                 } else {
                     headerFields.add(field);

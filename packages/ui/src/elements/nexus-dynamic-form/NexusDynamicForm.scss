@@ -28,14 +28,6 @@
     top: 82px;
 }
 
-.nexus-c-dynamic-form__tab-content {
-    @include padding(3, 0, 0, 0);
-}
-
-.nexus-c-dynamic-form__tab-content--title {
-    @include padding(46, 0, 0, 0);
-}
-
 .nexus-c-dynamic-form__tab {
     display: flex;
     justify-content: center;
