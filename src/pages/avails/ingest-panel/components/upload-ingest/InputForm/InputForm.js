@@ -232,6 +232,7 @@ const InputForm = ({
                     <label className="manual-ingest-config__label">Service Region</label>
                     <Select
                         id="manual-upload-service-region"
+                        isDisabled={template === USMASTER}
                         onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}
