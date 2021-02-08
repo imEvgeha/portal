@@ -91,7 +91,7 @@ export const SelectedRightsActions = ({
     }, []);
 
     useEffect(() => {
-        if(activeTab === RIGHTS_TAB) {
+        if (activeTab === RIGHTS_TAB) {
             toggleRefreshGridData(true);
         }
     }, [activeTab]);
@@ -134,11 +134,12 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction}) =>
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&
-                hasAtLeastOneUnselectedTerritory(territory)
+                hasAtLeastOneUnselectedTerritory(territory) &&
+                !temporaryPriceReduction
         );
     };
 
