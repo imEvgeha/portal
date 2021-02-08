@@ -72,7 +72,7 @@ exports[`ServicingOrdersTable should match snapshot 1`] = `
           "width": 150,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
+          "cellStyle": [Function],
           "colId": "sr_due_date",
           "dataType": "regionalMidnight",
           "enableSearch": true,
