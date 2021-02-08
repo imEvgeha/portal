@@ -89,6 +89,10 @@
                             "optionsConfig": {
                                 "options": [
                                     {
+                                        "label": "Select...",
+                                        "value": null
+                                    },
+                                    {
                                         "label": "KIDS",
                                         "value": "KIDS"
                                     },
