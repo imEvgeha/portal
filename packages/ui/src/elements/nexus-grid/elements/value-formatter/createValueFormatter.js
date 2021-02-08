@@ -144,6 +144,18 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return data[javaVariableName].map(({genre}) => genre).join(', ');
                     }
                 };
+            } else if (javaVariableName === 'title') {
+                return params => {
+                    const {data = {}} = params || {};
+                    if (data && data[javaVariableName]) {
+                        const {contentType} = data || '';
+                        if (contentType && contentType === 'EPISODE') {
+                            const {seriesTitleName, seasonNumber, episodeNumber} = data || '';
+                            return `${seriesTitleName}:S${seasonNumber},E${episodeNumber}:${data[javaVariableName]}`;
+                        }
+                        return data[javaVariableName];
+                    }
+                };
             }
             return;
         case 'yesOrNo':
