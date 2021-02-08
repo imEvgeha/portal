@@ -100,16 +100,17 @@ const ServicingOrdersTable = ({
             if (columnDef.field === 'sr_due_date') {
                 return {
                     ...columnDef,
-                    cellRendererFramework: params => {
+                    valueFormatter: valueFormatter(columnDef),
+                    cellStyle: params => {
                         const dueDate = ISODateToView(params.value, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
                         const daysDiff = moment().diff(dueDate, 'days');
-                        // eslint-disable-next-line init-declarations
-                        let styleColor;
-                        if(daysDiff >= 0) styleColor = 'red'; // expired or last day
+                        if (daysDiff >= 0)
+                            return {color: 'red'}; // last day or expired
                         // eslint-disable-next-line no-magic-numbers
-                        else if(daysDiff >= -3 && daysDiff <= -1) styleColor = 'orange'; // 3 days or less
-                        return <div style={{color: styleColor}}>{dueDate}</div>
-                    },
+                        else if(daysDiff >= -3 && daysDiff <= -1)
+                            return {color: 'orange'}; // 3 days or less
+                        return null;
+                    }
                 };
             }
 
