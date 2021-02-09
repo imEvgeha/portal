@@ -137,7 +137,7 @@ const NexusDynamicForm = ({
     };
 
     const createLink = contentType => {
-        const baseUrl = '/metadata?parentId=';
+        const baseUrl = '/metadata/v2?parentId=';
         const id = get(initialData, 'id', '');
         return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
     };
