@@ -147,7 +147,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
             }
         }
         setExternalFilter(externalFilter);
-    }, [catalogueOwner, history.location.search]);
+    }, [catalogueOwner, history?.location?.search]);
 
     return (
         <div className="nexus-c-title-metadata-table">
