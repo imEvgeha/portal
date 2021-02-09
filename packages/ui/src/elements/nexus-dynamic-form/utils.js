@@ -6,6 +6,14 @@ import {get, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
+import {areAllWithdrawn} from './valdationUtils/areAllWithdrawn';
+import {fieldRequired} from './valdationUtils/fieldRequired';
+import {incorrectValue} from './valdationUtils/incorrectValue';
+import {isDuration} from './valdationUtils/isDuration';
+import {isInteger} from './valdationUtils/isInteger';
+import {isTime} from './valdationUtils/isTime';
+import {isYear} from './valdationUtils/isYear';
+import {lengthEqual} from './valdationUtils/lengthEqual';
 import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -16,7 +24,7 @@ export const getFieldConfig = (field, config, view) => {
     return viewConfig && viewConfig[config];
 };
 
-export const getDefaultValue = (field = {}, view, data, selectValues=[]) => {
+export const getDefaultValue = (field = {}, view, data, selectValues = []) => {
     if (field.type === 'dateRange') {
         return {
             startDate: get(data, field.path[0]),
@@ -26,7 +34,7 @@ export const getDefaultValue = (field = {}, view, data, selectValues=[]) => {
     const value = get(data, field.path) || '';
     if (value && field.type === 'select' && selectValues.length) {
         const {defaultValuePath, defaultLabelPath} = get(field, 'optionsConfig', {});
-        if(defaultLabelPath && defaultValuePath) {
+        if (defaultLabelPath && defaultValuePath) {
             const optionField = selectValues.find(option => option[defaultValuePath] === value);
             return optionField ? optionField[defaultLabelPath] : value;
         }
@@ -148,11 +156,34 @@ export const getValidationFunction = (value, validations, {type, isRequired, get
     const updatedValidations = isRequired ? [...validations, isRequiredFunction] : validations;
     // load dynamic file
     if (updatedValidations && updatedValidations.length > 0) {
-        const promises = updatedValidations.map(v =>
-            import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, v.args, getCurrentValues);
-            })
-        );
+        const promises = updatedValidations.map(v => {
+            switch (v.name) {
+                case 'fieldRequired':
+                    return fieldRequired(value, v.args, getCurrentValues);
+                    break;
+                case 'areAllWithdrawn':
+                    return areAllWithdrawn(value, v.args, getCurrentValues);
+                    break;
+                case 'incorrectValue':
+                    return incorrectValue(value, v.args, getCurrentValues);
+                    break;
+                case 'isDuration':
+                    return isDuration(value, v.args, getCurrentValues);
+                    break;
+                case 'isInteger':
+                    return isInteger(value, v.args, getCurrentValues);
+                    break;
+                case 'isTime':
+                    return isTime(value, v.args, getCurrentValues);
+                    break;
+                case 'isYear':
+                    return isYear(value, v.args, getCurrentValues);
+                    break;
+                case 'lengthEqual':
+                    return lengthEqual(value, v.args, getCurrentValues);
+                    break;
+            }
+        });
         return Promise.all(promises).then(responses => {
             return responses.find(e => e !== undefined);
         });
