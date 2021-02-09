@@ -166,13 +166,7 @@ const NexusArray = ({
                     {({formProps, dirty, submitting, reset, getValues}) => (
                         <form {...formProps}>
                             <div className="nexus-c-array__modal-fields">
-                                {buildSection(
-                                    fields,
-                                    getValues,
-                                    VIEWS.CREATE,
-                                    null,
-                                    null,
-                                    {
+                                {buildSection(fields, getValues, VIEWS.CREATE, null, null, {
                                     selectValues,
                                     setFieldValue,
                                 })}
@@ -217,7 +211,9 @@ const NexusArray = ({
                 )}
             </AKField>
             {!readOnly && <div className="nexus-c-array__add">{view !== VIEWS.VIEW && renderAddButton()}</div>}
-            <div className="nexus-c-array__objects">{allData.map((o, index) => renderObject(o, index))}</div>
+            <div className="nexus-c-array__objects">
+                {allData && Array.isArray(allData) && allData.map((o, index) => renderObject(o, index))}
+            </div>
         </div>
     );
 };
