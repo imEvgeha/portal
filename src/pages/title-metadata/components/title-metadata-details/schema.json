@@ -715,7 +715,7 @@
                                 "editorial.synopsis.shortDescription": {
                                     "name": "Short Synopsis",
                                     "path": "synopsis.description",
-                                    "type": "string",
+                                    "type": "textarea",
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
@@ -742,7 +742,7 @@
                                 "editorial.synopsis.mediumDescription": {
                                     "name": "Medium Synopsis",
                                     "path": "synopsis.shortDescription",
-                                    "type": "string",
+                                    "type": "textarea",
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
@@ -769,7 +769,7 @@
                                 "editorial.synopsis.description": {
                                     "name": "Long Synopsis",
                                     "path": "synopsis.longDescription",
-                                    "type": "string"
+                                    "type": "textarea"
                                 },
                                 "editorial.copyright": {
                                     "name": "Copyright",
