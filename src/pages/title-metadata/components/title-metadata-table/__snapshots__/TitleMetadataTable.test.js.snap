@@ -282,7 +282,7 @@ exports[`TitleMetadataTable should match snapshot 1`] = `
         },
       ]
     }
-    externalFilter="vu"
+    externalFilter={null}
     id="TitleMetadataTable"
     mapping={
       Array [
