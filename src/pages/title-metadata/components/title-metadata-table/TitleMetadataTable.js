@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import EditorWarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
@@ -128,6 +128,27 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
         }
     };
 
+    const [externalFilter, setExternalFilter] = useState(null);
+
+    useEffect(() => {
+        let externalFilter = catalogueOwner;
+        const {location} = history;
+        if (location) {
+            const {search} = location;
+            if (search) {
+                const contentType = URL.getParamIfExists('contentType');
+                const parentId = URL.getParamIfExists('parentId');
+                if (contentType && parentId) {
+                    externalFilter = {
+                        parentId,
+                        contentType,
+                    };
+                }
+            }
+        }
+        setExternalFilter(externalFilter);
+    }, [catalogueOwner, history?.location?.search]);
+
     return (
         <div className="nexus-c-title-metadata-table">
             <TitleMetadataTableGrid
@@ -138,7 +159,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                 onGridEvent={onGridReady}
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
-                externalFilter={catalogueOwner}
+                externalFilter={externalFilter}
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
