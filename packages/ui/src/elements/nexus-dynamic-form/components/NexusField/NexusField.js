@@ -220,12 +220,24 @@ const NexusField = ({
         }
     };
 
+    const getValueFromSelectValues = (field, value) => {
+        const values = selectValues?.[field] || [];
+        const option = values.find(o => o[`${field}Code`] === value);
+        return option?.[`${field}Name`] || value;
+    };
+
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
                 return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
             }
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+        }
+        if (/country/i.test(fieldProps.name)) {
+            return getValueFromSelectValues('country', fieldProps.value);
+        }
+        if (/language/i.test(fieldProps.name)) {
+            return getValueFromSelectValues('language', fieldProps.value);
         }
         return getFieldValue(fieldProps.value);
     };
