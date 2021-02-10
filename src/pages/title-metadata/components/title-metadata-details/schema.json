@@ -712,10 +712,10 @@
                                     "path": "title.shortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.shortDescription": {
+                                "editorial.synopsis.description": {
                                     "name": "Short Synopsis",
                                     "path": "synopsis.description",
-                                    "type": "string",
+                                    "type": "textarea",
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
@@ -739,10 +739,10 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.mediumDescription": {
+                                "editorial.synopsis.shortDescription": {
                                     "name": "Medium Synopsis",
                                     "path": "synopsis.shortDescription",
-                                    "type": "string",
+                                    "type": "textarea",
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
@@ -766,10 +766,10 @@
                                         }
                                     ]
                                 },
-                                "editorial.synopsis.description": {
+                                "editorial.synopsis.longDescription": {
                                     "name": "Long Synopsis",
                                     "path": "synopsis.longDescription",
-                                    "type": "string"
+                                    "type": "textarea"
                                 },
                                 "editorial.copyright": {
                                     "name": "Copyright",

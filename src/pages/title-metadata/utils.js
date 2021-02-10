@@ -346,13 +346,18 @@ const handleDirtyEMETValues = values => {
     if (editorial) {
         const index =
             values.editorialMetadata &&
-            values.editorialMetadata.findIndex(
-                elem =>
-                    elem.locale === editorial.locale &&
-                    elem.language === editorial.language &&
-                    elem.format === editorial.format &&
-                    elem.service === editorial.service
-            );
+            values.editorialMetadata.findIndex(elem => {
+                if (elem.locale === editorial.locale && elem.language === editorial.language) {
+                    const isFormatOk =
+                        (elem.format && editorial.format && elem.format === editorial.format) ||
+                        (!elem.format && !editorial.format);
+                    const isServiceOk =
+                        (elem.service && editorial.service && elem.service === editorial.service) ||
+                        (!elem.service && !editorial.service);
+                    return isFormatOk && isServiceOk;
+                }
+                return false;
+            });
         if (index !== null && index >= 0) {
             const updatedEmetRecord = {
                 ...values.editorialMetadata[index],
