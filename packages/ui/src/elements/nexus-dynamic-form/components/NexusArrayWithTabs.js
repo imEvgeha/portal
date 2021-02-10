@@ -365,20 +365,8 @@ const NexusArrayWithTabs = ({
         }
     };
 
-    const setValueForEachField = () => {
-        if (currentData === null) return;
-        const current = currentData || data[0];
-        Object.keys(fields).forEach(key => {
-            const fieldPath = fields[key].path;
-            let value = get(current, fieldPath);
-            if (value === null) value = '';
-            if (path === 'ratings') setFieldValue(fieldPath, value);
-            else setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
-        });
-    };
-
     const renderFields = () => {
-        const renderedFields = Object.keys(fields).map((key, index) => {
+        return Object.keys(fields).map((key, index) => {
             return (
                 <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
@@ -394,9 +382,6 @@ const NexusArrayWithTabs = ({
                 </div>
             );
         });
-
-        view === VIEWS.EDIT && setValueForEachField();
-        return renderedFields;
     };
 
     return (
