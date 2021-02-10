@@ -251,6 +251,25 @@ export const formatEditorialBody = (data, titleId, isCreate) => {
                         order: index,
                     };
                 });
+        } else if (key === 'title' || key === 'synopsis') {
+            const obj = data[key];
+            if (obj) {
+                let areAllEmpty = true;
+                Object.keys(obj).forEach(keyProp => {
+                    if (obj[keyProp] !== null && obj[keyProp] !== '') {
+                        areAllEmpty = false;
+                    } else {
+                        obj[keyProp] = null;
+                    }
+                });
+                if (areAllEmpty) {
+                    body[key] = null;
+                } else {
+                    body[key] = obj;
+                }
+            } else {
+                body[key] = null;
+            }
         } else body[key] = data[key];
     });
     if (body.isDeleted) {
