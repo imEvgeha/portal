@@ -11,7 +11,18 @@ import './TitleDetailsHeader.scss';
 
 const ARROW_COLOR = '#42526e';
 
-const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPublish, isEditView}) => {
+const TitleDetailsHeader = ({
+    history,
+    title,
+    containerRef,
+    externalIds,
+    onSyncPublish,
+    isEditView,
+    isVZSyncing,
+    isVZPublishing,
+    isMOVSyncing,
+    isMOVPublishing,
+}) => {
     const [isShrinked, setIsShrinked] = useState(false);
 
     useEffect(() => {
@@ -66,8 +77,20 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 </div>
                 {title.catalogueOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
-                        <SyncPublish externalSystem={VZ} externalIds={externalIds} onSyncPublish={onSyncPublish} />
-                        <SyncPublish externalSystem={MOVIDA} externalIds={externalIds} onSyncPublish={onSyncPublish} />
+                        <SyncPublish
+                            externalSystem={VZ}
+                            externalIds={externalIds}
+                            onSyncPublish={onSyncPublish}
+                            isSyncing={isVZSyncing}
+                            isPublishing={isVZPublishing}
+                        />
+                        <SyncPublish
+                            externalSystem={MOVIDA}
+                            externalIds={externalIds}
+                            onSyncPublish={onSyncPublish}
+                            isSyncing={isMOVSyncing}
+                            isPublishing={isMOVPublishing}
+                        />
                     </div>
                 )}
             </div>
@@ -79,6 +102,10 @@ const TitleDetailsHeader = ({history, title, containerRef, externalIds, onSyncPu
                 titleId={title.id}
                 isEditView={isEditView}
                 catalogueOwner={title.catalogueOwner}
+                isVZSyncing={isVZSyncing}
+                isVZPublishing={isVZPublishing}
+                isMOVSyncing={isMOVSyncing}
+                isMOVPublishing={isMOVPublishing}
             />
         </div>
     );
@@ -91,6 +118,10 @@ TitleDetailsHeader.propTypes = {
     externalIds: PropTypes.array,
     onSyncPublish: PropTypes.func,
     isEditView: PropTypes.bool,
+    isVZSyncing: PropTypes.bool,
+    isVZPublishing: PropTypes.bool,
+    isMOVSyncing: PropTypes.bool,
+    isMOVPublishing: PropTypes.bool,
 };
 
 TitleDetailsHeader.defaultProps = {
@@ -100,6 +131,10 @@ TitleDetailsHeader.defaultProps = {
     externalIds: [],
     onSyncPublish: () => null,
     isEditView: false,
+    isVZSyncing: false,
+    isVZPublishing: false,
+    isMOVSyncing: false,
+    isMOVPublishing: false,
 };
 
 export default TitleDetailsHeader;

@@ -48,6 +48,10 @@ const TitleDetails = ({
     syncTitle,
     publishTitle,
     isSaving,
+    isVZTitleSyncing,
+    isMOVTitleSyncing,
+    isVZTitlePublishing,
+    isMOVTitlePublishing,
 }) => {
     const containerRef = useRef();
     const [isEditView, setIsEditView] = useState(false);
@@ -128,6 +132,10 @@ const TitleDetails = ({
                 externalIds={externalIds}
                 onSyncPublish={syncPublishHandler}
                 isEditView={isEditView}
+                isVZSyncing={isVZTitleSyncing}
+                isMOVSyncing={isMOVTitleSyncing}
+                isVZPublishing={isVZTitlePublishing}
+                isMOVPublishing={isMOVTitlePublishing}
             />
             <NexusDynamicForm
                 searchPerson={searchPerson}
@@ -164,6 +172,10 @@ TitleDetails.propTypes = {
     syncTitle: PropTypes.func,
     publishTitle: PropTypes.func,
     isSaving: PropTypes.bool,
+    isVZTitleSyncing: PropTypes.bool,
+    isMOVTitleSyncing: PropTypes.bool,
+    isVZTitlePublishing: PropTypes.bool,
+    isMOVTitlePublishing: PropTypes.bool,
 };
 
 TitleDetails.defaultProps = {
@@ -182,6 +194,10 @@ TitleDetails.defaultProps = {
     syncTitle: () => null,
     publishTitle: () => null,
     isSaving: false,
+    isVZTitleSyncing: false,
+    isMOVTitleSyncing: false,
+    isVZTitlePublishing: false,
+    isMOVTitlePublishing: false,
 };
 
 const mapStateToProps = () => {
@@ -189,6 +205,10 @@ const mapStateToProps = () => {
     const externalIdsSelector = selectors.createExternalIdsSelector();
     const territoryMetadataSelector = selectors.createTerritoryMetadataSelector();
     const editorialMetadataSelector = selectors.createEditorialMetadataSelector();
+    const isVZTitleSyncingSelector = selectors.createVZTitleIsSyncingSelector();
+    const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
+    const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
+    const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
@@ -197,6 +217,10 @@ const mapStateToProps = () => {
         editorialMetadata: editorialMetadataSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
         isSaving: detailsSelectors.isSavingSelector(state),
+        isVZTitleSyncing: isVZTitleSyncingSelector(state, props),
+        isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
+        isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
+        isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
     });
 };
 

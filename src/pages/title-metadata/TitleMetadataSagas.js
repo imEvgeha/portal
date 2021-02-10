@@ -184,6 +184,11 @@ export function* syncTitle({payload}) {
         return;
     }
 
+    yield put({
+        type: actionTypes.TITLE_IS_SYNCING_START,
+        payload: payload.externalSystem,
+    });
+
     try {
         const [response] = yield call(syncTitleService, payload);
         const newPayload = {id: response.titleId};
@@ -191,6 +196,11 @@ export function* syncTitle({payload}) {
         // todo: add toast
     } catch (err) {
         // todo: add toast
+    } finally {
+        yield put({
+            type: actionTypes.TITLE_IS_SYNCING_END,
+            payload: payload.externalSystem,
+        });
     }
 }
 
@@ -199,12 +209,22 @@ export function* publishTitle({payload}) {
         return;
     }
 
+    yield put({
+        type: actionTypes.TITLE_IS_PUBLISHING_START,
+        payload: payload.externalSystem,
+    });
+
     try {
         const [response] = yield call(registerTitle, payload);
         const newPayload = {id: response.titleId};
         yield call(loadExternalIds, {payload: newPayload});
     } catch (err) {
         // todo: add toast
+    } finally {
+        yield put({
+            type: actionTypes.TITLE_IS_PUBLISHING_END,
+            payload: payload.externalSystem,
+        });
     }
 }
 

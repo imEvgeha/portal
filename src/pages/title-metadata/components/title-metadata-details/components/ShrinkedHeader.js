@@ -6,7 +6,19 @@ import {VZ, MOVIDA, MGM} from '../../../constants';
 import {isNexusTitle} from '../../../utils';
 import './ShrinkedHeader.scss';
 
-const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId, isEditView, catalogueOwner}) => {
+const ShrinkedHeader = ({
+    isShrinked,
+    title,
+    externalIds,
+    onSyncPublish,
+    titleId,
+    isEditView,
+    catalogueOwner,
+    isVZSyncing,
+    isVZPublishing,
+    isMOVSyncing,
+    isMOVPublishing,
+}) => {
     const [vzExternalData] = externalIds.filter(id => id.externalSystem === VZ.toLowerCase());
     const vzButtonType = vzExternalData ? 'sync' : 'publish';
     const [movidaExternalData] = externalIds.filter(id => id.externalSystem === MOVIDA.toLowerCase());
@@ -26,10 +38,18 @@ const ShrinkedHeader = ({isShrinked, title, externalIds, onSyncPublish, titleId,
             <div>{title}</div>
             {catalogueOwner !== MGM && isNexusTitle(titleId) && !isEditView && (
                 <div className="nexus-c-shrinked-header__sync-publish">
-                    <Button appearance="default" onClick={() => onSyncPublish(VZ, vzButtonType)}>
+                    <Button
+                        appearance="default"
+                        isLoading={isVZSyncing || isVZPublishing}
+                        onClick={() => onSyncPublish(VZ, vzButtonType)}
+                    >
                         {getButtonLabel(VZ)}
                     </Button>
-                    <Button appearance="default" onClick={() => onSyncPublish(MOVIDA, movidaButtonType)}>
+                    <Button
+                        appearance="default"
+                        isLoading={isMOVSyncing || isMOVPublishing}
+                        onClick={() => onSyncPublish(MOVIDA, movidaButtonType)}
+                    >
                         {getButtonLabel(MOVIDA)}
                     </Button>
                 </div>
@@ -46,6 +66,10 @@ ShrinkedHeader.propTypes = {
     titleId: PropTypes.string,
     isEditView: PropTypes.bool,
     catalogueOwner: PropTypes.string,
+    isVZSyncing: PropTypes.bool,
+    isVZPublishing: PropTypes.bool,
+    isMOVSyncing: PropTypes.bool,
+    isMOVPublishing: PropTypes.bool,
 };
 
 ShrinkedHeader.defaultProps = {
@@ -56,6 +80,10 @@ ShrinkedHeader.defaultProps = {
     titleId: null,
     isEditView: false,
     catalogueOwner: null,
+    isVZSyncing: false,
+    isVZPublishing: false,
+    isMOVSyncing: false,
+    isMOVPublishing: false,
 };
 
 export default ShrinkedHeader;
