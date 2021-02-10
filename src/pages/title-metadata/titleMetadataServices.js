@@ -115,9 +115,22 @@ export const titleService = {
         if (!partialContentTypeSearch) {
             delete searchCriteria.contentType;
         }
+
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                queryParams[key] = key === 'contentType' ? partialContentTypeSearch : searchCriteria[key];
+                if (key === 'contentType') {
+                    queryParams[key] = partialContentTypeSearch;
+                } else if (key === 'title') {
+                    const title = searchCriteria[key];
+                    if (title.startsWith('"') && title.endsWith('"')) {
+                        queryParams[key] = title.slice(1, title.length - 1);
+                        queryParams['exactMatch'] = true;
+                    } else {
+                        queryParams[key] = title;
+                    }
+                } else {
+                    queryParams[key] = searchCriteria[key];
+                }
             }
         }
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${
