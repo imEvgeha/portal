@@ -209,7 +209,7 @@ const withInfiniteScrolling = ({
             cacheOverflowSize,
             maxConcurrentDatasourceRequests,
             maxBlocksInCache,
-            deltaRowDataMode: true,
+            immutableData: true,
             getRowNodeId: data => data.id,
             suppressAnimationFrame: true,
         };
