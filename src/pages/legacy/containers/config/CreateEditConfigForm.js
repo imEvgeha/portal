@@ -226,6 +226,36 @@ const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, 
         setDropdownOpen(!dropdownOpen);
     };
 
+    const validationHandler = field => {
+        //if regular array of objects
+        if (field.type === 'array' && field.misc.fields.length > 1 && !field.dynamic) {
+            //get the array
+            const currentValue = get(val, field.name, []) || get(val, field.id, []);
+            let isValid = true;
+            let index = 0;
+            //for each element of the array
+            while (isValid && index < currentValue.length) {
+                //create a virtual form (list of fields with schema props and values)
+                let toValidate = cloneDeep(field.misc);
+                toValidate.showValidationBeforeTouched = true;
+                //populate all fields with current values
+                for (let j = 0; j < toValidate.fields.length; j++) {
+                    toValidate.fields[j].visible = true;
+                    const fieldValue = currentValue[index][toValidate.fields[j].id];
+                    if (fieldValue || fieldValue === 0 || fieldValue === false) {
+                        toValidate.fields[j].value = fieldValue;
+                    }
+                }
+                //validate the virtual form
+                //if valid check the next object in array
+                //until one invalid found or all checked
+                isValid = !validateAllFields(toValidate).find(({isValid}) => !isValid);
+                index++;
+            }
+            return isValid ? '' : 'Invalid';
+        }
+    };
+
     return (
         <Modal isOpen={!!value} toggle={onCancel} style={{paddingLeft: '30px', maxWidth: '650px'}}>
             <ModalBody>
@@ -257,35 +287,7 @@ const CreateEditConfigForm = ({value, onRemoveItem, onCancel, schema, onSubmit, 
                     optionsHandler={optionsHandler}
                     onChange={setVal}
                     defaultValue={val}
-                    validationHandler={field => {
-                        //if regular array of objects
-                        if (field.type === 'array' && field.misc.fields.length > 1 && !field.dynamic) {
-                            //get the array
-                            const currentValue = get(val, field.name, []) || get(val, field.id, []);
-                            let isValid = true;
-                            let index = 0;
-                            //for each element of the array
-                            while (isValid && index < currentValue.length) {
-                                //create a virtual form (list of fields with schema props and values)
-                                let toValidate = cloneDeep(field.misc);
-                                toValidate.showValidationBeforeTouched = true;
-                                //populate all fields with current values
-                                for (let j = 0; j < toValidate.fields.length; j++) {
-                                    toValidate.fields[j].visible = true;
-                                    const fieldValue = currentValue[index][toValidate.fields[j].id];
-                                    if (fieldValue || fieldValue === 0 || fieldValue === false) {
-                                        toValidate.fields[j].value = fieldValue;
-                                    }
-                                }
-                                //validate the virtual form
-                                //if valid check the next object in array
-                                //until one invalid found or all checked
-                                isValid = !validateAllFields(toValidate).find(({isValid}) => !isValid);
-                                index++;
-                            }
-                            return isValid ? '' : 'Invalid';
-                        }
-                    }}
+                    validationHandler={validationHandler}
                 >
                     <ModalFooter>
                         <Button onClick={onCancel}>Cancel</Button>
