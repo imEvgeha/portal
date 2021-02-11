@@ -42,7 +42,8 @@ export const getEditorialMetadataByTitleId = payload => {
 
 export const updateTitle = (title, syncToVZ, syncToMovida) => {
     const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-    const params = legacySystemNames ? {legacySystemNames} : {};
+    const {catalogueOwner: tenantCode} = title;
+    const params = legacySystemNames ? {legacySystemNames, tenantCode} : {tenantCode};
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${title.id}`;
 
     return nexusFetch(url, {

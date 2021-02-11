@@ -172,9 +172,10 @@ export function* updateTitle({payload}) {
             payload: false,
         });
     } finally {
+        const isMgm = isMgmTitle(payload.id);
         yield put({
             type: actionTypes.GET_TITLE,
-            payload,
+            payload: {...payload, isMgm},
         });
     }
 }
