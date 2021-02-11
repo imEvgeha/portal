@@ -187,21 +187,23 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
+    const {catalogueOwner: tenantCode} = values;
     try {
         let response;
         await Promise.all(
             data.map(async tmet => {
                 if ((get(tmet, 'isUpdated') || get(tmet, 'isDeleted')) && !get(tmet, 'isCreated')) {
                     const body = formatTerritoryBody(tmet);
-                    response = await titleService.updateTerritoryMetadata(body);
+                    response = await titleService.updateTerritoryMetadata(body, tenantCode);
                 } else if (get(tmet, 'isCreated') && !get(tmet, 'isDeleted')) {
                     const body = formatTerritoryBody(tmet, titleId);
-                    response = await titleService.addTerritoryMetadata(body);
+                    response = await titleService.addTerritoryMetadata(body, tenantCode);
                 }
             })
         );
         if (response) {
-            store.dispatch(getTerritoryMetadata({id: titleId}));
+            const isMgm = isMgmTitle(titleId);
+            store.dispatch(getTerritoryMetadata({id: titleId, isMgm}));
             const successToast = {
                 title: SUCCESS_TITLE,
                 icon: SUCCESS_ICON,
