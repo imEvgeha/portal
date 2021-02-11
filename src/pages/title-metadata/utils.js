@@ -309,22 +309,24 @@ export const updateEditorialMetadata = async (values, titleId) => {
         description: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
+    const {catalogueOwner: tenantCode} = values;
     try {
         await Promise.all(
             data.map(async emet => {
                 if ((get(emet, 'isUpdated') || get(emet, 'isDeleted')) && !get(emet, 'isCreated')) {
                     const body = formatEditorialBody(emet, titleId);
-                    response = await titleService.updateEditorialMetadata(body);
+                    response = await titleService.updateEditorialMetadata(body, tenantCode);
                 } else if (get(emet, 'isCreated') && !get(emet, 'isDeleted')) {
                     const body = formatEditorialBody(emet, titleId, true);
-                    response = await titleService.addEditorialMetadata(body);
+                    response = await titleService.addEditorialMetadata(body, tenantCode);
                 }
             })
         );
         if (response && response.length > 0) {
             let toast = errorToast;
             if (get(response[0], 'response.failed') && get(response[0], 'response.failed').length === 0) {
-                store.dispatch(getEditorialMetadata({id: titleId}));
+                const isMgm = isMgmTitle(titleId);
+                store.dispatch(getEditorialMetadata({id: titleId, isMgm}));
                 toast = {
                     title: SUCCESS_TITLE,
                     icon: SUCCESS_ICON,

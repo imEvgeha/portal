@@ -149,18 +149,22 @@ export const titleService = {
             method: 'post',
         });
     },
-    addEditorialMetadata: editorialMetadata => {
+    addEditorialMetadata: (editorialMetadata, tenantCode) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
+            params: encodedSerialize(params),
         });
     },
-    updateEditorialMetadata: editedEditorialMetadata => {
+    updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedEditorialMetadata),
+            params: encodedSerialize(params),
         });
     },
     addTerritoryMetadata: (territoryMetadata, tenantCode) => {
