@@ -15,7 +15,7 @@ describe('TitleNameCellRenderer', () => {
     });
 
     it('should render a react-router link that links to the right title page', () => {
-        expect(wrapper.find('Link').props().to).toEqual('/metadata/v2/detail/coreTitleId');
+        expect(wrapper.find('Link').props().to).toEqual('/metadata/detail/coreTitleId');
     });
 
     it('should render a react-router link that contains the right title text', () => {
