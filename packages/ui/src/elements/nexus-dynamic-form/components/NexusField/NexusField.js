@@ -97,7 +97,7 @@ const NexusField = ({
     };
 
     const renderFieldEditMode = fieldProps => {
-        const selectFieldProps = {...fieldProps};
+        let selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
@@ -140,6 +140,26 @@ const NexusField = ({
                         value: fieldProps.value,
                     };
                 }
+                // set label to full text string (not code). label is used in select as display text
+                if (/locale/i.test(fieldProps.name)) {
+                    const selectVal = getValueFromSelectValues('country', fieldProps.value);
+                    selectFieldProps.value = typeof selectVal === "string" ?
+                        {
+                            label: selectVal,
+                            value: fieldProps.value,
+                        }: selectVal;
+
+                }
+                else if (/language/i.test(fieldProps.name)) {
+                    const selectVal = getValueFromSelectValues('language', fieldProps.value);
+                    selectFieldProps.value = typeof selectVal === "string" ?
+                    {
+                        label: selectVal,
+                        value: fieldProps.value,
+                    }: selectVal;
+
+                }
+
                 return (
                     <NexusSelect
                         fieldProps={selectFieldProps}
@@ -233,11 +253,14 @@ const NexusField = ({
             }
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
         }
-        if (/country/i.test(fieldProps.name)) {
-            return getValueFromSelectValues('country', fieldProps.value);
+        if (/country/i.test(fieldProps.name) || /locale/i.test(fieldProps.name)) {
+            // the section doesn't get refreshed (rights detail) when save, hence the below check
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('country', val);
         }
         if (/language/i.test(fieldProps.name)) {
-            return getValueFromSelectValues('language', fieldProps.value);
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('language', val);
         }
         return getFieldValue(fieldProps.value);
     };
