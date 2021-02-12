@@ -191,9 +191,6 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
-    console.log('startdate ', get(fulfillmentOrder, fieldKeys.START_DATE, '')); //getValidDate
-    console.log('getValidDate startdate ', getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, '')));
-
     return (
         <Page>
             <div className="fulfillment-order__section">
