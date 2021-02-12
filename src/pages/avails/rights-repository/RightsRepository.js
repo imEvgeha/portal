@@ -45,17 +45,17 @@ import constants from '../constants';
 import './RightsRepository.scss';
 
 const RightsRepositoryTable = compose(
-    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
-    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withSorting()
 )(NexusGrid);
 
