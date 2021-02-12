@@ -5,7 +5,6 @@ const initialState = {
     selectValues: {},
     areValid: true,
     isSaving: false,
-    isEditMode: false,
 };
 
 const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
@@ -18,7 +17,7 @@ const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
                 isSaving: payload,
             };
         }
-        case "EDITING":
+        case actionTypes.EDITING:
             return {
                 ...state,
                 isEditMode: payload,
