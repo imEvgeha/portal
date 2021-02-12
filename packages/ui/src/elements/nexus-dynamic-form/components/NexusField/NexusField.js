@@ -140,7 +140,7 @@ const NexusField = ({
                         value: fieldProps.value,
                     };
                 }
-                // set lable to full text string (not code). label is used in select as display text
+                // set label to full text string (not code). label is used in select as display text
                 if (/locale/i.test(fieldProps.name)) {
                     const selectVal = getValueFromSelectValues('country', fieldProps.value);
                     selectFieldProps.value = typeof selectVal === "string" ?
@@ -254,10 +254,13 @@ const NexusField = ({
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
         }
         if (/country/i.test(fieldProps.name) || /locale/i.test(fieldProps.name)) {
-            return getValueFromSelectValues('country', fieldProps.value);
+            // the section doesn't get refreshed (rights detail) when save, hence the below check
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('country', val);
         }
         if (/language/i.test(fieldProps.name)) {
-            return getValueFromSelectValues('language', fieldProps.value);
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('language', val);
         }
         return getFieldValue(fieldProps.value);
     };
