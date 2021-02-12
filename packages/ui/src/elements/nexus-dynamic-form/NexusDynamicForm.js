@@ -182,6 +182,7 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
+                                                {sectionTitle === CORE_TITLE_SECTION && showAll()}
                                                 {buildSection(
                                                     fields,
                                                     getValues,
@@ -198,6 +199,7 @@ const NexusDynamicForm = ({
                                                         searchPerson,
                                                         tabs,
                                                         subTabs,
+                                                        setDisableSubmit,
                                                     }
                                                 )}
                                             </Fragment>
