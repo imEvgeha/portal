@@ -153,7 +153,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                     if (data && data[javaVariableName]) {
                         const {contentType} = data || '';
                         if (contentType && contentType === EPISODE_CONTENT_TYPE) {
-                            const {seriesTitleName, seasonNumber, episodeNumber} = data || '';
+                            const {seriesTitleName = '', seasonNumber = '', episodeNumber = ''} = data.episodic || {};
                             return `${seriesTitleName}:S${seasonNumber},E${episodeNumber}:${data[javaVariableName]}`;
                         }
                         return data[javaVariableName];

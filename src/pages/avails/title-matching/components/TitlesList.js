@@ -29,9 +29,9 @@ import ActionsBar from './ActionsBar';
 import './TitlesList.scss';
 
 const TitleRepositoriesTable = compose(
-    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
     withSorting()
 )(NexusGrid);
