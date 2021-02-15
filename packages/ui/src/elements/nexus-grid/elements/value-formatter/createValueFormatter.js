@@ -1,6 +1,6 @@
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {camelCase, startCase} from 'lodash';
+import {camelCase, startCase, get} from 'lodash';
 import {EPISODE_CONTENT_TYPE} from '../../constants';
 
 const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
@@ -125,7 +125,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             } else if (javaVariableName === 'system') {
                 return params => {
                     const {data = {}} = params || {};
-                    const {id, legacyIds = {}} = data || {};
+                    const {id = '', legacyIds = {}} = data || {};
                     const {movida, vz} = legacyIds || {};
                     const {movidaTitleId} = movida || {};
                     const {vzTitleId} = vz || {};
@@ -135,8 +135,10 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return `Movida Title ID: ${movidaTitleId}`;
                     } else if (vzTitleId) {
                         return `VZ Title ID: ${vzTitleId}`;
+                    } else if (id.startsWith('titl_')) {
+                        return `Nexus Title ID: ${id}`;
                     }
-                    return `Nexus Title ID: ${id}`;
+                    return '';
                 };
             } else if (javaVariableName === 'editorialGenres') {
                 return params => {

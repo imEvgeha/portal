@@ -110,14 +110,16 @@ export const PrePlanActions = ({
                         const prevKeywords = Array.isArray(previousRight['keywords'])
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
-                        const prevTerritory = previousRight.territory.filter(obj => obj.isDirty && obj.selected).map(t => t.country);
+                        const prevTerritory = previousRight.territory
+                            .filter(obj => obj.isDirty && obj.selected)
+                            .map(t => t.country);
                         const updatedRight = {
-                                  id: right.id,
-                                  properties: {
-                                      keywords: uniq(prevKeywords.concat(right['keywords'])),
-                                      selected: prevTerritory,
-                                  },
-                              };
+                            id: right.id,
+                            properties: {
+                                keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                selected: prevTerritory,
+                            },
+                        };
                         DOPRequestRights.push({
                             id: right.id,
                             territory: prevTerritory,
@@ -129,13 +131,12 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                rightsService.update(mergedWithSelectedRights)
+                                rightsService
+                                    .bulkUpdate(mergedWithSelectedRights)
                                     .then(response => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
-                                                dispatchSuccessToast(
-                                                    response.length
-                                                );
+                                                dispatchSuccessToast(response.length);
                                                 removeRightsFromPrePlan(false);
                                                 setSelectedPrePlanRights([]);
                                                 clickHandler();
@@ -160,13 +161,11 @@ export const PrePlanActions = ({
         let updatedRight = {};
         selectedPrePlanRights.forEach(right => {
             updatedRight = rightsList.find(r => r.id === right.id);
-            if(updatedRight) {
+            if (updatedRight) {
                 let keywordsStr = '';
                 keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
                 updatedRight.keywords =
-                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
-                        ? keywordsStr.slice(0, -1)
-                        : keywordsStr;
+                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ',' ? keywordsStr.slice(0, -1) : keywordsStr;
 
                 right.territory.forEach(t => {
                     if (bulkTerritories.includes(t.country)) {

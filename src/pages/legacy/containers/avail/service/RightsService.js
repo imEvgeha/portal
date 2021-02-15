@@ -236,7 +236,16 @@ export const rightsService = {
         return nexusFetch(url, isWithErrorHandling);
     },
 
-    update: payload => {
+    update: (rightDiff, id) => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/${id}`;
+        const data = prepareRight(rightDiff, true);
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+        });
+    },
+
+    bulkUpdate: payload => {
         const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/bulk-partial-update`;
         return nexusFetch(url, {
             method: 'PATCH',
