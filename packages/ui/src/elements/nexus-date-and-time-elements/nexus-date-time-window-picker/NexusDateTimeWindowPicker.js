@@ -69,10 +69,6 @@ const NexusDateTimeWindowPicker = ({
         !isWithInlineEdit && handleChange();
     }, [endDate]);
 
-    useEffect(() => {
-        startDate && !endDate && setEndDateError(END_DATE_EMPTY_ERROR);
-        !startDate && endDate && setStartDateError(START_DATE_EMPTY_ERROR);
-    }, [startDate, endDate]);
 
     // Get locale provided by intl
     const intl = useIntl();

@@ -32,7 +32,6 @@ const withFilterableColumns = ({
     notFilterableColumns = NOT_FILTERABLE_COLUMNS,
     useDatesWithTime = false,
     prepareFilterParams = params => params,
-    defaultColDef,
 } = {}) => WrappedComponent => {
     const ComposedComponent = props => {
         const {
@@ -226,6 +225,7 @@ const withFilterableColumns = ({
                             // if current filter is readonly (it just got unlocked) destroy to create the proper one
                             gridApi.destroyFilter(field);
                         }
+                        columnDef.floatingFilter = true;
 
                         switch (searchDataType) {
                             case READONLY:
@@ -434,10 +434,6 @@ const withFilterableColumns = ({
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
-                defaultColDef={{
-                    ...defaultColDef,
-                    floatingFilter:true
-                }}
             />
         ) : null;
     };
