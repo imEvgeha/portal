@@ -18,7 +18,10 @@ const LoadingCellRenderer = params => {
         return <img src={loadingGif} alt="loadingSpinner" />;
     }
 
-    const linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
+    let linkTo = link && URL.keepEmbedded(`${link}${data[linkId] || data.id || data[colId]}`);
+    if (data.type === 'title') {
+        linkTo = URL.keepEmbedded(`/metadata/detail/${data.id}`);
+    }
 
     let value = getDeepValue(data, field);
     if (isObject(value)) {
@@ -51,7 +54,7 @@ const LoadingCellRenderer = params => {
             </div>
         );
 
-        return link ? (
+        return linkTo ? (
             newTab ? (
                 <a href={linkTo} target="_blank">
                     {displayValue}
