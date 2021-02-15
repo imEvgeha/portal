@@ -100,18 +100,15 @@ export class CustomDateFilter extends React.Component {
         return !!(startDate || endDate);
     };
 
-    doesFilterPass = params => {
+    doesFilterPass = () => {
         const {dates = {}} = this.state;
-        const {colDef} = this.props;
-
         const {startDate, endDate} = dates;
-        const {field} = colDef;
-        const fieldValue = params.data[field];
 
-        const isAfterStartDate = startDate ? moment(fieldValue).isAfter(startDate) : true;
-        const isBeforeEndDate = endDate ? moment(fieldValue).isBefore(endDate) : true;
-
-        return isAfterStartDate && isBeforeEndDate;
+        if(!startDate || !endDate)
+            return true;
+        else if(moment(endDate).isAfter(startDate))
+            return true;
+        return false;
     };
 
     render() {
@@ -141,7 +138,7 @@ export class CustomDateFilter extends React.Component {
                 />
                 <div className="nexus-c-date-filter-btn">
                     <Button appearance="primary"
-                            isDisabled={this.isFilterDisabled()}
+                            isDisabled={!this.doesFilterPass()}
                             onClick={() =>filterChangedCallback()}>
                         Filter
                     </Button>
