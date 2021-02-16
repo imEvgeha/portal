@@ -397,6 +397,12 @@
                             "path": "vzExternalIds.externalTitleId",
                             "isReadOnly": true
                         },
+                        "vzId": {
+                            "name": "VZ Vendor ID",
+                            "type": "string",
+                            "path": "vzExternalIds.externalId",
+                            "isReadOnly": true
+                        },
                         "movidaTitleId": {
                             "name": "Movida Title ID",
                             "type": "string",
@@ -406,7 +412,7 @@
                         "movidaId": {
                             "name": "Movida ID",
                             "type": "string",
-                            "path": "movidaExternalIds.titleId",
+                            "path": "movidaExternalIds.externalId",
                             "isReadOnly": true
                         },
                         "assetName": {
