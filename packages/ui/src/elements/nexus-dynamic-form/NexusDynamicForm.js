@@ -22,7 +22,6 @@ const NexusDynamicForm = ({
     generateMsvIds,
     regenerateAutoDecoratedMetadata,
     hasButtons,
-    setIsEditView,
     setEditMode,
 }) => {
     const [disableSubmit, setDisableSubmit] = useState(true);
@@ -59,7 +58,7 @@ const NexusDynamicForm = ({
         return view !== VIEWS.VIEW ? (
             <>
                 {errors > 0 && (
-                    <div className="nexus-c-dynamic-form__validation-msg">
+                    <div className={isTitlePage? "nexus-c-dynamic-form__title-validation-msg":"nexus-c-dynamic-form__validation-msg"}>
                         <ErrorMessage>{errors} errors on page</ErrorMessage>
                     </div>
                 )}

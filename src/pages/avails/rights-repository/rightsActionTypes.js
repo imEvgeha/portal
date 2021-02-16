@@ -18,4 +18,4 @@ export const UPDATE_RIGHT = 'UPDATE_RIGHT';
 export const UPDATE_RIGHT_SUCCESS = 'UPDATE_RIGHT_SUCCESS';
 export const UPDATE_RIGHT_ERROR = 'UPDATE_RIGHT_ERROR';
 export const SAVING = 'SAVING';
-export const EDITING = 'EDITING';
+export const EDITING = 'EDIT_RIGHT';

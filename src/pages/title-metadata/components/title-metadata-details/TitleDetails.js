@@ -15,6 +15,7 @@ import {
     updateTitle,
     syncTitle,
     publishTitle,
+    editTitle,
 } from '../../titleMetadataActions';
 import * as selectors from '../../titleMetadataSelectors';
 import {generateMsvIds, regenerateAutoDecoratedMetadata} from '../../titleMetadataServices';
@@ -52,6 +53,8 @@ const TitleDetails = ({
     isMOVTitleSyncing,
     isVZTitlePublishing,
     isMOVTitlePublishing,
+    isEditMode,
+    setEditTitle,
 }) => {
     const containerRef = useRef();
     const [isEditView, setIsEditView] = useState(false);
@@ -141,7 +144,8 @@ const TitleDetails = ({
                 searchPerson={searchPerson}
                 schema={schema}
                 initialData={extendTitleWithExternalIds()}
-                isEdit
+                isEdit={isEditMode}
+                setEditMode={setEditTitle}
                 isTitlePage={true}
                 containerRef={containerRef}
                 selectValues={selectValues}
@@ -176,6 +180,8 @@ TitleDetails.propTypes = {
     isMOVTitleSyncing: PropTypes.bool,
     isVZTitlePublishing: PropTypes.bool,
     isMOVTitlePublishing: PropTypes.bool,
+    isEditMode: PropTypes.bool,
+    setEditTitle: PropTypes.func,
 };
 
 TitleDetails.defaultProps = {
@@ -198,6 +204,8 @@ TitleDetails.defaultProps = {
     isMOVTitleSyncing: false,
     isVZTitlePublishing: false,
     isMOVTitlePublishing: false,
+    isEditMode: false,
+    setEditTitle: () => null,
 };
 
 const mapStateToProps = () => {
@@ -209,6 +217,7 @@ const mapStateToProps = () => {
     const isMOVTitleSyncingSelector = selectors.createMOVTitleIsSyncingSelector();
     const isVZTitlePublishingSelector = selectors.createVZTitleIsPublishingSelector();
     const isMOVTitlePublishingSelector = selectors.createMOVTitleIsPublishingSelector();
+    const isEditModeSelector = selectors.createIsEditModeSelector();
 
     return (state, props) => ({
         title: titleSelector(state, props),
@@ -221,6 +230,7 @@ const mapStateToProps = () => {
         isMOVTitleSyncing: isMOVTitleSyncingSelector(state, props),
         isVZTitlePublishing: isVZTitlePublishingSelector(state, props),
         isMOVTitlePublishing: isMOVTitlePublishingSelector(state, props),
+        isEditMode: isEditModeSelector(state, props),
     });
 };
 
@@ -232,6 +242,7 @@ const mapDispatchToProps = dispatch => ({
     updateTitle: payload => dispatch(updateTitle(payload)),
     syncTitle: payload => dispatch(syncTitle(payload)),
     publishTitle: payload => dispatch(publishTitle(payload)),
+    setEditTitle: payload => dispatch(editTitle(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TitleDetails);
