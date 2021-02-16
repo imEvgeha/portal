@@ -860,7 +860,7 @@
             "title": "Territorial",
             "sections": [
                 {
-                    "title": "Territorial",
+                    "title": "Territory Metadata",
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",
