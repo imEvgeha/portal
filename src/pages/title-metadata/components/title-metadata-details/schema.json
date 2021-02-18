@@ -157,14 +157,26 @@
                                     "field": "contentType",
                                     "hasValue": "EPISODE"
                                 },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "EVENT"
-                                },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SPORTS"
-                                }
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
                             ]
                         },
                         "seasonTitleName": {
@@ -197,14 +209,26 @@
                                     "field": "contentType",
                                     "hasValue": "EPISODE"
                                 },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "EVENT"
-                                },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SPORTS"
-                                }
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
                             ]
                         },
                         "seasonId": {
@@ -227,14 +251,26 @@
                                     "field": "contentType",
                                     "hasValue": "EPISODE"
                                 },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "EVENT"
-                                },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SPORTS"
-                                }
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
                             ]
                         },
                         "episodeId": {
@@ -246,14 +282,26 @@
                                     "field": "contentType",
                                     "hasValue": "EPISODE"
                                 },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "EVENT"
-                                },
-                                {
-                                    "field": "contentType",
-                                    "hasValue": "SPORTS"
-                                }
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
                             ]
                         }
                     }
@@ -812,7 +860,7 @@
             "title": "Territorial",
             "sections": [
                 {
-                    "title": "Territorial",
+                    "title": "Territory Metadata",
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",

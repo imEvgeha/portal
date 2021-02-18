@@ -272,8 +272,23 @@ const toShow = (field, initialData) => {
     if (showWhen.length) {
         let retValue = false;
         field.showWhen.forEach(conditionObj => {
-            const value = get(initialData, conditionObj.field, '');
-            if (value === conditionObj.hasValue) retValue = true;
+            // OR condition
+            if (Array.isArray(conditionObj)) {
+                // AND condition
+                let areAllTrue = true;
+                conditionObj.forEach(obj => {
+                    const value = get(initialData, obj.field, '');
+                    if (obj.hasValue === 'any') {
+                        areAllTrue = !value ? false : areAllTrue;
+                    } else if (value !== obj.hasValue) {
+                        areAllTrue = false;
+                    }
+                });
+                retValue = areAllTrue ? true : retValue;
+            } else {
+                const value = get(initialData, conditionObj.field, '');
+                if (value === conditionObj.hasValue) retValue = true;
+            }
         });
         return retValue;
     }
