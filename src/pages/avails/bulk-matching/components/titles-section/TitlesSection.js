@@ -10,7 +10,6 @@ import './TitlesSection.scss';
 
 const TitlesSection = ({
     isTitlesTableLoading,
-    restrictedCoreTitleIds,
     onMatchAndCreate,
     closeDrawer,
     contentType,
@@ -23,10 +22,7 @@ const TitlesSection = ({
     const [totalCount, setTotalCount] = useState(0);
     const [selectedActive, setSelectedActive] = useState(false);
 
-    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = selectionList;
-    const getMatchAndDuplicateItems = () => {
-        return [...Object.values(matchList), ...Object.values(duplicateList)];
-    };
+    const {matchList, onCellValueChanged, selectedItems, duplicateButton, matchButton} = selectionList;
 
     return (
         <>
@@ -45,7 +41,7 @@ const TitlesSection = ({
                             isSelected={selectedActive}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}
                         >
-                            Selected ({getMatchAndDuplicateItems().length})
+                            Selected ({selectedItems.length})
                         </Button>
                     </div>
                     <div
@@ -55,15 +51,13 @@ const TitlesSection = ({
                         )}
                     >
                         <RightsMatchingTitlesTable
-                            restrictedCoreTitleIds={restrictedCoreTitleIds}
                             setTotalCount={setTotalCount}
                             contentType={contentType}
-                            matchList={matchList}
-                            handleMatchClick={handleMatchClick}
-                            handleDuplicateClick={handleDuplicateClick}
-                            duplicateList={duplicateList}
                             setTitlesTableIsReady={setTitlesTableIsReady}
                             isDisabled={isMatchAndCreateLoading || isMatchLoading}
+                            matchButton={matchButton}
+                            duplicateButton={duplicateButton}
+                            onCellValueChanged={onCellValueChanged}
                         />
                     </div>
                     <div
@@ -72,7 +66,7 @@ const TitlesSection = ({
                             selectedActive && 'nexus-c-bulk-matching__selected-table--active'
                         )}
                     >
-                        <MatchedCombinedTitlesTable data={getMatchAndDuplicateItems()} />
+                        <MatchedCombinedTitlesTable data={selectedItems} />
                     </div>
                     <BulkMatchingActionsBar
                         matchList={matchList}
@@ -97,7 +91,6 @@ TitlesSection.propTypes = {
     isTitlesTableLoading: PropTypes.bool,
     isMatchAndCreateLoading: PropTypes.bool,
     isMatchLoading: PropTypes.bool,
-    restrictedCoreTitleIds: PropTypes.array,
     onMatchAndCreate: PropTypes.func.isRequired,
     onMatch: PropTypes.func.isRequired,
     closeDrawer: PropTypes.func.isRequired,
@@ -109,7 +102,6 @@ TitlesSection.defaultProps = {
     isTitlesTableLoading: false,
     isMatchAndCreateLoading: false,
     isMatchLoading: false,
-    restrictedCoreTitleIds: [],
     contentType: '',
 };
 
