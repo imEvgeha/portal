@@ -7,6 +7,7 @@ const initialState = {
     total: 0,
     selectedIngestId: null,
     selectedAttachmentId: null,
+    isFilterLoading: false,
 };
 
 const ingestReducer = (state = initialState, action = {}) => {
@@ -17,6 +18,11 @@ const ingestReducer = (state = initialState, action = {}) => {
                 ...state,
                 list: payload.data,
                 total: payload.total,
+            };
+        case actionTypes.FILTER_LOADING:
+            return {
+                ...state,
+                isFilterLoading: payload,
             };
         case actionTypes.FETCH_NEXT_PAGE_SUCCESS:
             return {
