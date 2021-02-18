@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -15,8 +15,6 @@ import {NexusTitle, NexusGrid} from '../../../../ui/elements';
 import SelectedButton from '../../../avails/avails-table-toolbar/components/SelectedButton';
 import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-table/MatchedCombinedTitlesTable';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
-import constants from '../../../avails/title-matching/titleMatchingConstants';
-import {getRepositoryName} from '../../../avails/utils';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
@@ -27,70 +25,18 @@ const NexusGridWithInfiniteScrolling = compose(
     withSorting()
 )(NexusGrid);
 
-const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) => {
+const CandidatesList = ({
+    columnDefs,
+    titleId,
+    queryParams,
+    matchButton,
+    duplicateButton,
+    onCellValueChanged,
+    selectedItems,
+}) => {
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
-    const [matchList, setMatchList] = useState({});
-    const [duplicateList, setDuplicateList] = useState({});
-
-    // inform parent component about match, duplicate list change
-    useEffect(() => {
-        onCandidatesChange({matchList, duplicateList});
-    }, [matchList, duplicateList, onCandidatesChange]);
-
-    const matchButton = {
-        ...constants.ADDITIONAL_COLUMN_DEF,
-        colId: 'matchButton',
-        field: 'matchButton',
-        headerName: 'Master',
-        cellRendererParams: {isNexusDisabled: true, selectionType: 'radio'},
-        cellRenderer: 'titleSelectionRenderer',
-        editable: true,
-    };
-    const duplicateButton = {
-        ...constants.ADDITIONAL_COLUMN_DEF,
-        colId: 'duplicateButton',
-        field: 'duplicateButton',
-        headerName: 'Duplicate',
-        cellRendererParams: {isNexusDisabled: true},
-        cellRenderer: 'titleSelectionRenderer',
-        editable: true,
-    };
-
-    const onCellValueChanged = (params = {}) => {
-        const {
-            newValue,
-            data: {id},
-            data = {},
-            node,
-            column,
-            api,
-        } = params;
-        const repo = getRepositoryName(id);
-        if (column.colId === 'duplicateButton') {
-            const newList = {...duplicateList};
-            if (newValue) {
-                if (matchList[repo] && matchList[repo].id === id) {
-                    node.setDataValue('duplicateButton', false);
-                } else {
-                    newList[id] = data;
-                }
-            } else {
-                delete newList[id];
-            }
-            setDuplicateList(newList);
-        } else if (column.colId === 'matchButton') {
-            if (newValue) {
-                const newMatchList = {...matchList};
-                if (matchList[repo]) {
-                    api.getRowNode(matchList[repo].id).setDataValue('matchButton', false);
-                }
-                newMatchList[repo] = data;
-                setMatchList(newMatchList);
-            }
-        }
-    };
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
 
@@ -109,8 +55,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
             gridApi.setFilterModel();
         }
     };
-
-    const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
 
     return (
         <div className="nexus-c-candidates-list">
@@ -160,14 +104,20 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
 CandidatesList.propTypes = {
     queryParams: PropTypes.object,
     columnDefs: PropTypes.array,
-    onCandidatesChange: PropTypes.func,
     titleId: PropTypes.string.isRequired,
+    onCellValueChanged: PropTypes.func,
+    matchButton: PropTypes.object,
+    duplicateButton: PropTypes.object,
+    selectedItems: PropTypes.array,
 };
 
 CandidatesList.defaultProps = {
     queryParams: {},
     columnDefs: [],
-    onCandidatesChange: () => null,
+    onCellValueChanged: () => null,
+    matchButton: {},
+    duplicateButton: {},
+    selectedItems: [],
 };
 
 export default CandidatesList;

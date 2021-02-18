@@ -4,9 +4,11 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {set} from 'lodash';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../../ui/elements';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
@@ -16,6 +18,8 @@ import {fetchTitle, reconcileTitles} from '../metadataActions';
 import * as selectors from '../metadataSelectors';
 import CandidatesList from './components/CandidatesList';
 import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
+
+const Candidates = compose(withMatchAndDuplicateList())(CandidatesList);
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,
@@ -90,7 +94,7 @@ const LegacyTitleReconciliationView = ({
             <SectionMessage appearance="info">
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
-            <CandidatesList
+            <Candidates
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
                 queryParams={{
