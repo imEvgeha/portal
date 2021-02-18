@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './TitleSelectionRenderer.scss';
 
 const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selectionType}) => {
     const checkedHandler = event => {
