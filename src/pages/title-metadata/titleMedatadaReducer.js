@@ -10,6 +10,7 @@ const initialState = {
     isPublishingVZ: false,
     isSyncingMOV: false,
     isPublishingMOV: false,
+    isEditMode: false,
 };
 
 const titleMetadataReducer = (state = initialState, action = {}) => {
@@ -23,6 +24,11 @@ const titleMetadataReducer = (state = initialState, action = {}) => {
         case actionTypes.GET_TITLE_ERROR:
             return {
                 ...state,
+            };
+        case actionTypes.EDITING:
+            return {
+                ...state,
+                isEditMode: payload,
             };
         case actionTypes.GET_EXTERNAL_IDS_SUCCESS:
             return {

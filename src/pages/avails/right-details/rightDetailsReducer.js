@@ -17,6 +17,11 @@ const rightDetailsOptionsReducer = (state = initialState, action = {}) => {
                 isSaving: payload,
             };
         }
+        case actionTypes.EDITING:
+            return {
+                ...state,
+                isEditMode: payload,
+            };
         case actionTypes.FETCH_SELECT_VALUES_REQUEST:
             return {
                 ...state,

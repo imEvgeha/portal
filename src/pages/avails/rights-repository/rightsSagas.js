@@ -168,6 +168,10 @@ export function* updateRight({payload}) {
             payload: false,
         });
         yield put({
+            type: actionTypes.EDITING,
+            payload: false,
+        });
+        yield put({
             type: ADD_TOAST,
             payload: {
                 title: SUCCESS_TITLE,

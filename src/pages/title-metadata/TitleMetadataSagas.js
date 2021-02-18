@@ -147,9 +147,12 @@ export function* updateTitle({payload}) {
             type: actionTypes.UPDATE_TITLE_SUCCESS,
             payload: updatedResponse,
         });
-
         yield put({
             type: rightActionTypes.SAVING,
+            payload: false,
+        });
+        yield put({
+            type: actionTypes.EDITING,
             payload: false,
         });
     } catch (error) {

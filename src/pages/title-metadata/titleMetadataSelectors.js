@@ -28,3 +28,8 @@ export const createVZTitleIsPublishingSelector = () =>
 
 export const createMOVTitleIsPublishingSelector = () =>
     createSelector(getTitleMetadataReducer, titleMetadata => titleMetadata.isPublishingMOV || false);
+
+export const createIsEditModeSelector = () => createSelector(
+    getTitleMetadataReducer,
+    titleMetadata => titleMetadata.isEditMode || false
+);

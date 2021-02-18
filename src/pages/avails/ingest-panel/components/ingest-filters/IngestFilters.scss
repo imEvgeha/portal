@@ -70,19 +70,7 @@
 
         button {
             width: 135px;
-            background: #ebedf0;
-            color: #42526e;
             justify-content: center;
-
-            &.ingest-filters__actions--apply {
-                pointer-events: none;
-
-                &.ingest-filters__actions--active {
-                    background: #42526e;
-                    color: #ffffff !important;
-                    pointer-events: all;
-                }
-            }
         }
     }
 }
