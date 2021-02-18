@@ -19,7 +19,7 @@ import {rightsService} from '../../../legacy/containers/avail/service/RightsServ
 
 const {NEXUS, MOVIDA, VZ} = TitleSystems;
 
-const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) => {
+const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast, isMerging}) => {
     const [buttonStatus, setButtonStatus] = useState({
         match: false,
         matchAndCreate: false,
@@ -103,6 +103,7 @@ const ActionsBar = ({matchList, mergeTitles, rightId, addToast, removeToast}) =>
                     isDisabled={!buttonStatus.matchAndCreate}
                     className="nexus-c-button"
                     appearance="primary"
+                    isLoading={isMerging}
                 >
                     Match & Create
                 </Button>
@@ -116,6 +117,7 @@ ActionsBar.propTypes = {
     addToast: PropTypes.func,
     removeToast: PropTypes.func,
     rightId: PropTypes.string.isRequired,
+    isMerging: PropTypes.bool,
 };
 
 ActionsBar.defaultProps = {
@@ -123,6 +125,7 @@ ActionsBar.defaultProps = {
     addToast: () => null,
     removeToast: () => null,
     mergeTitles: () => null,
+    isMerging: false,
 };
 
 export default withToasts(ActionsBar);

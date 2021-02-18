@@ -41,6 +41,7 @@ const TitlesList = ({
     selectedItems,
     matchList,
     duplicateList,
+    isMerging,
 }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
@@ -101,6 +102,7 @@ const TitlesList = ({
                 rightId={rightId}
                 matchList={matchList}
                 mergeTitles={() => mergeTitles(matchList, duplicateList, rightId)}
+                isMerging={isMerging}
             />
         </>
     );
@@ -117,6 +119,7 @@ TitlesList.propTypes = {
     selectedItems: PropTypes.array,
     matchList: PropTypes.object,
     duplicateList: PropTypes.object,
+    isMerging: PropTypes.bool,
 };
 
 TitlesList.defaultProps = {
@@ -129,6 +132,7 @@ TitlesList.defaultProps = {
     selectedItems: [],
     matchList: {},
     duplicateList: {},
+    isMerging: false,
 };
 
 export default TitlesList;

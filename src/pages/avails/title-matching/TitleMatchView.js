@@ -6,6 +6,7 @@ import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/n
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
+import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
@@ -36,6 +37,7 @@ const TitleMatchView = ({
     focusedRight,
     columnDefs,
     searchCriteria,
+    isMerging,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const rightColumns = getRightColumns(mappings);
@@ -122,6 +124,7 @@ const TitleMatchView = ({
                             title,
                             releaseYear,
                         }}
+                        isMerging={isMerging}
                     />
                 </>
             )}
@@ -137,6 +140,7 @@ TitleMatchView.propTypes = {
     focusedRight: PropTypes.object,
     searchCriteria: PropTypes.object,
     columnDefs: PropTypes.array,
+    isMerging: PropTypes.bool,
 };
 
 TitleMatchView.defaultProps = {
@@ -144,13 +148,17 @@ TitleMatchView.defaultProps = {
     columnDefs: [],
     searchCriteria: {},
     match: {},
+    isMerging: false,
 };
 
 const createMapStateToProps = () => {
+    const loadingSelector = createLoadingSelector(['TITLE_MATCHING_MERGE_TITLES']);
+
     return state => ({
         focusedRight: getFocusedRight(state),
         columnDefs: getColumnDefs(state),
         searchCriteria: getSearchCriteria(state),
+        isMerging: loadingSelector(state),
     });
 };
 
