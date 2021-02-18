@@ -5,6 +5,7 @@ import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
+import CheckboxRenderer from '../elements/checkbox/CheckboxRenderer';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
@@ -431,6 +432,7 @@ const withFilterableColumns = ({
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
                     customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
+                    checkboxRenderer: CheckboxRenderer,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}

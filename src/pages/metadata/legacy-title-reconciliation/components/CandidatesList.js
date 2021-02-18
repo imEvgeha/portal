@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {Checkbox} from '@atlaskit/checkbox';
-import {Radio} from '@atlaskit/radio';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import classNames from 'classnames';
+import {get} from 'lodash';
 import {compose} from 'redux';
 import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
@@ -22,7 +20,6 @@ import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {getRepositoryName} from '../../../avails/utils';
 import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
-import useMatchAndDuplicateList from '../hooks/useMatchAndDuplicateList';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
 const NexusGridWithInfiniteScrolling = compose(
@@ -36,63 +33,52 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
     const [totalCount, setTotalCount] = useState(0);
     const [gridApi, setGridApi] = useState();
     const [activeTab, setActiveTab] = useState(RIGHTS_TAB);
-    const {matchList, handleMatchClick, duplicateList, handleDuplicateClick} = useMatchAndDuplicateList();
+    const [matchList, setMatchList] = useState({});
+    const [duplicateList, setDuplicateList] = useState({});
 
     // inform parent component about match, duplicate list change
     useEffect(() => {
         onCandidatesChange({matchList, duplicateList});
     }, [matchList, duplicateList, onCandidatesChange]);
 
-    // eslint-disable-next-line
-    const matchButtonCell = ({data}) => {
-        const {id} = data || {};
-        const repo = getRepositoryName(id);
-
-        return (
-            repo !== TitleSystems.NEXUS && (
-                <CustomActionsCellRenderer id={id}>
-                    <Radio
-                        name={repo}
-                        isChecked={matchList[repo] && matchList[repo].id === id}
-                        onChange={({target}) => handleMatchClick(data, repo, target.checked)}
-                    />
-                </CustomActionsCellRenderer>
-            )
-        );
-    };
-
     const matchButton = {
         ...constants.ADDITIONAL_COLUMN_DEF,
         colId: 'matchButton',
         field: 'matchButton',
         headerName: 'Master',
-        cellRendererParams: matchList,
-        cellRendererFramework: matchButtonCell,
+        checkboxSelection: params => {
+            return !(getRepositoryName(get(params, 'data.id', '')) === TitleSystems.NEXUS);
+        },
     };
-
-    // eslint-disable-next-line
-    const duplicateButtonCell = ({data}) => {
-        const {id} = data || {};
-        const repo = getRepositoryName(id);
-        return (
-            repo !== TitleSystems.NEXUS && (
-                <CustomActionsCellRenderer id={id}>
-                    <Checkbox
-                        isChecked={duplicateList[id]}
-                        onChange={({currentTarget}) => handleDuplicateClick(data, repo, currentTarget.checked)}
-                    />
-                </CustomActionsCellRenderer>
-            )
-        );
-    };
-
     const duplicateButton = {
         ...constants.ADDITIONAL_COLUMN_DEF,
         colId: 'duplicateButton',
         field: 'duplicateButton',
         headerName: 'Duplicate',
-        cellRendererParams: duplicateList,
-        cellRendererFramework: duplicateButtonCell,
+        cellRendererParams: {isNexusDisabled: true},
+        cellRenderer: 'checkboxRenderer',
+        editable: true,
+    };
+
+    const onCellValueChanged = (params = {}) => {
+        const {
+            newValue,
+            data: {id},
+            data = {},
+            node,
+        } = params;
+        const newList = {...duplicateList};
+        const repo = getRepositoryName(id);
+        if (newValue) {
+            if (matchList[repo] && matchList[repo].id === id) {
+                node.setDataValue('duplicateButton', false);
+            } else {
+                newList[id] = data;
+            }
+        } else {
+            delete newList[id];
+        }
+        setDuplicateList(newList);
     };
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
@@ -111,6 +97,27 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         if (gridApi) {
             gridApi.setFilterModel();
         }
+    };
+
+    const onSelectionChanged = (params = {}) => {
+        const {api = {}, node: {id, selected} = {}} = params;
+        const repo = getRepositoryName(id);
+        const newMatchList = {};
+        if (selected) {
+            api.getSelectedNodes().forEach(n => {
+                const nodeRepo = getRepositoryName(n.id);
+                if (n.id !== id && nodeRepo === repo) {
+                    n.setSelected(false);
+                } else {
+                    newMatchList[nodeRepo] = n.data;
+                }
+            });
+        } else {
+            api.getSelectedNodes().forEach(n => {
+                newMatchList[getRepositoryName(n.id)] = n.data;
+            });
+        }
+        setMatchList(newMatchList);
     };
 
     const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
@@ -144,6 +151,10 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         setTotalCount={setTotalCount}
                         initialFilter={queryParams}
                         mapping={mappings}
+                        rowSelection="multiple"
+                        suppressRowClickSelection
+                        onRowSelected={onSelectionChanged}
+                        onCellValueChanged={onCellValueChanged}
                     />
                 )}
             </div>
