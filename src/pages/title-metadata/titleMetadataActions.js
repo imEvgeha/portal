@@ -34,3 +34,8 @@ export const publishTitle = payload => ({
     type: actionTypes.PUBLISH_TITLE,
     payload,
 });
+
+export const editTitle = payload => ({
+    type: actionTypes.EDITING,
+    payload,
+});

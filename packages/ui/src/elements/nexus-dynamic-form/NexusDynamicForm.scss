@@ -79,6 +79,14 @@
     right: 245px;
 }
 
+.nexus-c-dynamic-form__title-validation-msg {
+    position: absolute;
+    top: 7%;
+    z-index: 1;
+    font-size: 1.3rem;
+    right: 35%;
+}
+
 .nexus-c-dynamic-form__cancel-button--title,
 .nexus-c-dynamic-form__submit-button--title,
 .nexus-c-dynamic-form__edit-button--title {

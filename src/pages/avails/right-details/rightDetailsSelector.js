@@ -13,6 +13,11 @@ export const isSavingSelector = createSelector(
     rightDetailsOptions => rightDetailsOptions.isSaving || false
 );
 
+export const isEditModeSelector = createSelector(
+    getRightDetailsOptionsReducer,
+    rightDetailsOptions => rightDetailsOptions.isEditMode || false
+);
+
 export const selectValuesSelector = createSelector(
     getRightDetailsOptionsReducer,
     rightDetailsOptions => rightDetailsOptions.selectValues || {}
