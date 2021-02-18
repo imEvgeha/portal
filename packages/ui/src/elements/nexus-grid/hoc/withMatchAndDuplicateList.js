@@ -1,18 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getRepositoryName} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {getRepositoryName, TitleSystems} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {PINNED_COLUMN_DEF} from '../constants';
 
-const withMatchAndDuplicateList = () => WrappedComponent => {
+const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent => {
     const ComposedComponent = ({onCandidatesChange, ...rest}) => {
-        const [selectedItems, setSelectedItems] = useState([]);
         const [matchList, setMatchList] = useState({});
         const [duplicateList, setDuplicateList] = useState({});
 
         // inform parent component about match, duplicate list change
         useEffect(() => {
             onCandidatesChange({matchList, duplicateList});
-            setSelectedItems([...Object.values(matchList), ...Object.values(duplicateList)]);
         }, [matchList, duplicateList, onCandidatesChange]);
 
         const matchButton = {
@@ -20,7 +18,7 @@ const withMatchAndDuplicateList = () => WrappedComponent => {
             colId: 'matchButton',
             field: 'matchButton',
             headerName: 'Master',
-            cellRendererParams: {isNexusDisabled: true, selectionType: 'radio'},
+            cellRendererParams: {isNexusDisabled, selectionType: 'radio', matchList, duplicateList},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -29,7 +27,7 @@ const withMatchAndDuplicateList = () => WrappedComponent => {
             colId: 'duplicateButton',
             field: 'duplicateButton',
             headerName: 'Duplicate',
-            cellRendererParams: {isNexusDisabled: true},
+            cellRendererParams: {isNexusDisabled, matchList, duplicateList},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -44,6 +42,8 @@ const withMatchAndDuplicateList = () => WrappedComponent => {
                 api,
             } = params;
             const repo = getRepositoryName(id);
+            let nodeFound = {};
+            const {NEXUS, MOVIDA, VZ} = TitleSystems;
             if (column.colId === 'duplicateButton') {
                 const newList = {...duplicateList};
                 if (newValue) {
@@ -60,20 +60,37 @@ const withMatchAndDuplicateList = () => WrappedComponent => {
                 if (newValue) {
                     const newMatchList = {...matchList};
                     if (matchList[repo]) {
-                        api.getRowNode(matchList[repo].id).setDataValue('matchButton', false);
+                        nodeFound = api.getRowNode(matchList[repo].id);
+                        nodeFound && nodeFound.setDataValue('matchButton', false);
                     }
                     newMatchList[repo] = data;
+                    if (repo === NEXUS) {
+                        [MOVIDA, VZ].forEach(r => {
+                            if (matchList[r]) {
+                                delete newMatchList[r];
+                                nodeFound = api.getRowNode(matchList[r].id);
+                                nodeFound && nodeFound.setDataValue('matchButton', false);
+                            }
+                        });
+                    } else if (matchList[NEXUS]) {
+                            delete newMatchList[NEXUS];
+                            nodeFound = api.getRowNode(matchList[NEXUS].id);
+                            nodeFound && nodeFound.setDataValue('matchButton', false);
+                        }
                     setMatchList(newMatchList);
                 }
             }
         };
+
         return (
             <WrappedComponent
                 {...rest}
                 onCellValueChanged={onCellValueChanged}
                 matchButton={matchButton}
                 duplicateButton={duplicateButton}
-                selectedItems={selectedItems}
+                selectedItems={[...Object.values(matchList), ...Object.values(duplicateList)]}
+                matchList={matchList}
+                duplicateList={duplicateList}
             />
         );
     };

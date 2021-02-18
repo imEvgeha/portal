@@ -19,7 +19,7 @@ import * as selectors from '../metadataSelectors';
 import CandidatesList from './components/CandidatesList';
 import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
 
-const Candidates = compose(withMatchAndDuplicateList())(CandidatesList);
+const Candidates = compose(withMatchAndDuplicateList(true))(CandidatesList);
 
 const LegacyTitleReconciliationView = ({
     titleMetadata,

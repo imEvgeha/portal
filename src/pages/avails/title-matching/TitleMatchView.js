@@ -4,10 +4,12 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import DOP from '@vubiquity-nexus/portal-utils/lib/DOP';
 import {cloneDeep} from 'lodash';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import mappings from '../../../../profile/titleMatchingRightMappings.json';
 import {NexusGrid, NexusTitle} from '../../../ui/elements';
 import {getSearchCriteria} from '../../legacy/stores/selectors/metadata/titleSelectors';
@@ -24,6 +26,7 @@ const SECTION_MESSAGE = `Select titles from the repository that match the Incomi
 from the action menu.`;
 
 const IncomingRightTable = withColumnsResizing()(NexusGrid);
+const Titles = compose(withMatchAndDuplicateList())(TitlesList);
 
 const TitleMatchView = ({
     match,
@@ -109,7 +112,7 @@ const TitleMatchView = ({
                         <p className="nexus-c-right-to-match-view__section-message">{SECTION_MESSAGE}</p>
                     </SectionMessage>
                     <br />
-                    <TitlesList
+                    <Titles
                         rightId={match && match.params.rightId}
                         columnDefs={columnDefs}
                         mergeTitles={mergeTitles}

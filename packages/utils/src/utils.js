@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const TitleSystems = {
+export const TitleSystems = {
     NEXUS: 'nexus',
     MOVIDA: 'movida',
     VZ: 'vz',
