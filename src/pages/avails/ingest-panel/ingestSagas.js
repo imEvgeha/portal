@@ -26,15 +26,27 @@ function* fetchIngests({payload}) {
         filters.page = '';
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: true,
+        });
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         const {data, total} = response || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: {data: normalizeDataForStore(data), total},
         });
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_INGESTS_ERROR,
+        });
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: false,
         });
     }
 }
