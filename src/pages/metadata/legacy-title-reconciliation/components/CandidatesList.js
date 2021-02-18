@@ -8,7 +8,6 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import classNames from 'classnames';
-import {get} from 'lodash';
 import {compose} from 'redux';
 import './CandidatesList.scss';
 import mappings from '../../../../../profile/titleMatchingMappings.json';
@@ -18,7 +17,6 @@ import MatchedCombinedTitlesTable from '../../../avails/matched-combined-titles-
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB} from '../../../avails/rights-repository/constants';
 import constants from '../../../avails/title-matching/titleMatchingConstants';
 import {getRepositoryName} from '../../../avails/utils';
-import TitleSystems from '../../../legacy/constants/metadata/systems';
 import {titleServiceManager} from '../../../legacy/containers/metadata/service/TitleServiceManager';
 import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 
@@ -46,9 +44,9 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         colId: 'matchButton',
         field: 'matchButton',
         headerName: 'Master',
-        checkboxSelection: params => {
-            return !(getRepositoryName(get(params, 'data.id', '')) === TitleSystems.NEXUS);
-        },
+        cellRendererParams: {isNexusDisabled: true, selectionType: 'radio'},
+        cellRenderer: 'titleSelectionRenderer',
+        editable: true,
     };
     const duplicateButton = {
         ...constants.ADDITIONAL_COLUMN_DEF,
@@ -56,7 +54,7 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         field: 'duplicateButton',
         headerName: 'Duplicate',
         cellRendererParams: {isNexusDisabled: true},
-        cellRenderer: 'checkboxRenderer',
+        cellRenderer: 'titleSelectionRenderer',
         editable: true,
     };
 
@@ -66,19 +64,32 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
             data: {id},
             data = {},
             node,
+            column,
+            api,
         } = params;
-        const newList = {...duplicateList};
         const repo = getRepositoryName(id);
-        if (newValue) {
-            if (matchList[repo] && matchList[repo].id === id) {
-                node.setDataValue('duplicateButton', false);
+        if (column.colId === 'duplicateButton') {
+            const newList = {...duplicateList};
+            if (newValue) {
+                if (matchList[repo] && matchList[repo].id === id) {
+                    node.setDataValue('duplicateButton', false);
+                } else {
+                    newList[id] = data;
+                }
             } else {
-                newList[id] = data;
+                delete newList[id];
             }
-        } else {
-            delete newList[id];
+            setDuplicateList(newList);
+        } else if (column.colId === 'matchButton') {
+            if (newValue) {
+                const newMatchList = {...matchList};
+                if (matchList[repo]) {
+                    api.getRowNode(matchList[repo].id).setDataValue('matchButton', false);
+                }
+                newMatchList[repo] = data;
+                setMatchList(newMatchList);
+            }
         }
-        setDuplicateList(newList);
     };
 
     const updatedColumnDefs = getLinkableColumnDefs(columnDefs);
@@ -97,27 +108,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
         if (gridApi) {
             gridApi.setFilterModel();
         }
-    };
-
-    const onSelectionChanged = (params = {}) => {
-        const {api = {}, node: {id, selected} = {}} = params;
-        const repo = getRepositoryName(id);
-        const newMatchList = {};
-        if (selected) {
-            api.getSelectedNodes().forEach(n => {
-                const nodeRepo = getRepositoryName(n.id);
-                if (n.id !== id && nodeRepo === repo) {
-                    n.setSelected(false);
-                } else {
-                    newMatchList[nodeRepo] = n.data;
-                }
-            });
-        } else {
-            api.getSelectedNodes().forEach(n => {
-                newMatchList[getRepositoryName(n.id)] = n.data;
-            });
-        }
-        setMatchList(newMatchList);
     };
 
     const selectedItems = [...Object.values(matchList), ...Object.values(duplicateList)];
@@ -151,9 +141,6 @@ const CandidatesList = ({columnDefs, titleId, queryParams, onCandidatesChange}) 
                         setTotalCount={setTotalCount}
                         initialFilter={queryParams}
                         mapping={mappings}
-                        rowSelection="multiple"
-                        suppressRowClickSelection
-                        onRowSelected={onSelectionChanged}
                         onCellValueChanged={onCellValueChanged}
                     />
                 )}

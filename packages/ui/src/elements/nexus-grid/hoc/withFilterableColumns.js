@@ -5,13 +5,13 @@ import {isObject} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {SetFilter} from 'ag-grid-enterprise';
 import {cloneDeep, get, isEmpty, omit, pickBy} from 'lodash';
 import {connect} from 'react-redux';
-import CheckboxRenderer from '../elements/checkbox/CheckboxRenderer';
 import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplexFilter';
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
 import {PriceTypeFormSchema, AudioLanguageTypeFormSchema} from '../elements/utils';
 import {fetchAvailMapping} from '../nexusGridActions';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
@@ -432,7 +432,7 @@ const withFilterableColumns = ({
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
                     customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
-                    checkboxRenderer: CheckboxRenderer,
+                    titleSelectionRenderer: TitleSelectionRenderer,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}

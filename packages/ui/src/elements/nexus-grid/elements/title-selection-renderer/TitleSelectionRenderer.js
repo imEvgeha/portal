@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CheckboxRenderer = ({value, column, node, isNexusDisabled}) => {
+const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selectionType}) => {
     const checkedHandler = event => {
         node.setDataValue(column.colId, event.target.checked);
     };
@@ -9,22 +9,24 @@ const CheckboxRenderer = ({value, column, node, isNexusDisabled}) => {
     return isNexusDisabled && node.id && node.id.startsWith('titl_') ? (
         ''
     ) : (
-        <input type="checkbox" onClick={checkedHandler} checked={value} />
+        <input type={selectionType} onClick={checkedHandler} checked={value} />
     );
 };
 
-CheckboxRenderer.propTypes = {
+TitleSelectionRenderer.propTypes = {
     value: PropTypes.bool,
     column: PropTypes.object,
     node: PropTypes.object,
     isNexusDisabled: PropTypes.bool,
+    selectionType: PropTypes.string,
 };
 
-CheckboxRenderer.defaultProps = {
+TitleSelectionRenderer.defaultProps = {
     value: false,
     column: {},
     node: {},
     isNexusDisabled: false,
+    selectionType: 'checkbox',
 };
 
-export default CheckboxRenderer;
+export default TitleSelectionRenderer;
