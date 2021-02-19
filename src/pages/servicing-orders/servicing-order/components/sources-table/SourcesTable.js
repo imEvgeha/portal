@@ -65,28 +65,37 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     );
 
     // eslint-disable-next-line
-    const serviceButtonCell = ({data, rowIndex, selectedItem = {}}) => {
+    const serviceButtonCell = ({data, rowIndex, node, colDef,selectedSource}) => {
         const {barcode} = data || {};
         const servicesName = `${data['fs'].toLowerCase()}Services`;
 
+        console.log('colDef',colDef);
+        // eslint-disable-next-line react/prop-types
+        node.selected = true;
         return (
             <div id={barcode}>
-                <Radio
+                <input type="radio"
                     name={barcode}
-                    isChecked={selectedItem && selectedItem.barcode === barcode}
-                    onChange={() =>
-                        barcode && setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
-                    }
+                    /* eslint-disable-next-line react/prop-types */
+                    checked={selectedSource.barcode ? dataArray[rowIndex].barcode === selectedSource.barcode : false}
+                    onClick={()=>setSelectedRow({data, rowIndex})}
                 />
             </div>
         );
     };
 
+
+  const setSelectedRow = ({data, rowIndex, value, column}) => {
+      console.log(value, column)
+      const servicesName = `${data['fs'].toLowerCase()}Services`;
+      setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
+    }
+
     const radioButtonColumn = defineColumn({
         width: 35,
         colId: 'radio',
         field: 'radio',
-        cellRendererParams: {selectedItem: selectedSource},
+        cellRendererParams: {selectedSource},
         cellRendererFramework: serviceButtonCell,
     });
 
@@ -134,7 +143,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         return {...item, cellRenderer: loadingCell};
     });
 
-    const onSourceTableChange = async ({type, rowIndex, data, api}) => {
+    const onSourceTableChange = async ({type, rowIndex, data, api, gridOptions}) => {
         switch (type) {
             case GRID_EVENTS.READY: {
                 api.sizeColumnsToFit();
@@ -269,6 +278,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
+                onCellClicked={setSelectedRow}
             />
         </div>
     );
