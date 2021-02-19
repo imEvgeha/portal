@@ -10,9 +10,11 @@ describe('TitlesSection', () => {
         closeDrawer: () => null,
         selectionList: {
             matchList: [],
-            handleMatchClick: () => null,
             duplicateList: [],
-            handleDuplicateClick: () => null,
+            selectedItems: [],
+            duplicateButton: {},
+            matchButton: {},
+            onCellValueChanged: () => null,
         },
     };
     beforeAll(() => {
