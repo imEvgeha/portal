@@ -18,7 +18,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             colId: 'matchButton',
             field: 'matchButton',
             headerName: 'Master',
-            cellRendererParams: {isNexusDisabled, selectionType: 'radio', matchList, duplicateList},
+            cellRendererParams: {isNexusDisabled, selectionType: 'radio'},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -27,7 +27,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             colId: 'duplicateButton',
             field: 'duplicateButton',
             headerName: 'Duplicate',
-            cellRendererParams: {isNexusDisabled, matchList, duplicateList},
+            cellRendererParams: {isNexusDisabled},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -73,10 +73,10 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                             }
                         });
                     } else if (matchList[NEXUS]) {
-                            delete newMatchList[NEXUS];
-                            nodeFound = api.getRowNode(matchList[NEXUS].id);
-                            nodeFound && nodeFound.setDataValue('matchButton', false);
-                        }
+                        delete newMatchList[NEXUS];
+                        nodeFound = api.getRowNode(matchList[NEXUS].id);
+                        nodeFound && nodeFound.setDataValue('matchButton', false);
+                    }
                     setMatchList(newMatchList);
                 }
             }

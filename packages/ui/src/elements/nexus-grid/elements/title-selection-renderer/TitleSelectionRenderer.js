@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {isNexusTitle} from '@vubiquity-nexus/portal-utils/lib/utils';
 import './TitleSelectionRenderer.scss';
 
 const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selectionType}) => {
@@ -7,7 +8,7 @@ const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selection
         node.setDataValue(column.colId, event.target.checked);
     };
 
-    return isNexusDisabled && node.id && node.id.startsWith('titl_') ? (
+    return isNexusDisabled && node.id && isNexusTitle(node.id) ? (
         ''
     ) : (
         <input type={selectionType} onClick={checkedHandler} checked={value} />

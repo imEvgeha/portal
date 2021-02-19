@@ -24,3 +24,7 @@ export const getRepositoryName = id => {
     }
     return NEXUS;
 };
+
+export const isNexusTitle = titleId => {
+    return titleId && titleId.startsWith('titl');
+};
