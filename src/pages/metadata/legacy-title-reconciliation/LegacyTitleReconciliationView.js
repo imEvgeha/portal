@@ -4,10 +4,12 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {set} from 'lodash';
 import {connect} from 'react-redux';
 import './LegacyTitleReconciliationView.scss';
+import {compose} from 'redux';
 import {NexusTitle, NexusGrid} from '../../../ui/elements';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
 import {getColumnDefs} from '../../avails/title-matching/titleMatchingSelectors';
@@ -26,6 +28,8 @@ const LegacyTitleReconciliationView = ({
     createColumnDefs,
     isMerging,
 }) => {
+    const NexusGridWithColumnResizing = compose(withColumnsResizing())(NexusGrid);
+
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
     const {params = {}} = match;
@@ -80,7 +84,7 @@ const LegacyTitleReconciliationView = ({
             <NexusTitle>{TITLE}</NexusTitle>
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
-                <NexusGrid
+                <NexusGridWithColumnResizing
                     columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
                     onGridEvent={handleGridEvent}

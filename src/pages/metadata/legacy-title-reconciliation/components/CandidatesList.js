@@ -6,6 +6,7 @@ import {Radio} from '@atlaskit/radio';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {getLinkableColumnDefs} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
@@ -28,6 +29,7 @@ import {CANDIDATES_LIST_TITLE, CLEAR_FILTER} from '../constants';
 const NexusGridWithInfiniteScrolling = compose(
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
     withSorting()
 )(NexusGrid);
