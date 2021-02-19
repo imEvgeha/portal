@@ -7,6 +7,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
     const ComposedComponent = ({onCandidatesChange, ...rest}) => {
         const [matchList, setMatchList] = useState({});
         const [duplicateList, setDuplicateList] = useState({});
+        const [restrictedIds, setRestrictedIds] = useState([]);
 
         // inform parent component about match, duplicate list change
         useEffect(() => {
@@ -18,7 +19,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             colId: 'matchButton',
             field: 'matchButton',
             headerName: 'Master',
-            cellRendererParams: {isNexusDisabled, selectionType: 'radio'},
+            cellRendererParams: {isNexusDisabled, selectionType: 'radio', restrictedIds},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -27,7 +28,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             colId: 'duplicateButton',
             field: 'duplicateButton',
             headerName: 'Duplicate',
-            cellRendererParams: {isNexusDisabled},
+            cellRendererParams: {isNexusDisabled, restrictedIds},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -82,6 +83,10 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             }
         };
 
+        const getRestrictedIds = restrictedIds => {
+            setRestrictedIds(restrictedIds);
+        };
+
         return (
             <WrappedComponent
                 {...rest}
@@ -91,6 +96,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                 selectedItems={[...Object.values(matchList), ...Object.values(duplicateList)]}
                 matchList={matchList}
                 duplicateList={duplicateList}
+                getRestrictedIds={getRestrictedIds}
             />
         );
     };
