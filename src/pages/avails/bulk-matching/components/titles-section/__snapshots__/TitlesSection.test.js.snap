@@ -31,12 +31,10 @@ exports[`TitlesSection should match snapshot 1`] = `
     >
       <RightsMatchingTitlesTable
         contentType=""
-        duplicateList={Array []}
-        handleDuplicateClick={[Function]}
-        handleMatchClick={[Function]}
+        duplicateButton={Object {}}
         isDisabled={false}
-        matchList={Array []}
-        restrictedCoreTitleIds={Array []}
+        matchButton={Object {}}
+        onCellValueChanged={[Function]}
         setTitlesTableIsReady={[Function]}
         setTotalCount={[Function]}
       />
