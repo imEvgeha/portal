@@ -103,3 +103,14 @@ export {
 };
 
 export const EPISODE_CONTENT_TYPE = 'EPISODE';
+export const PINNED_COLUMN_DEF = {
+    width: 100,
+    pinned: 'left',
+    resizable: false,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    lockPosition: true,
+    sortable: false,
+    lockVisible: true,
+    lockPinned: true,
+};

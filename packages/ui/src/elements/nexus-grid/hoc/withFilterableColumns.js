@@ -11,6 +11,7 @@ import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
 import {PriceTypeFormSchema, AudioLanguageTypeFormSchema} from '../elements/utils';
 import {fetchAvailMapping} from '../nexusGridActions';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
@@ -431,6 +432,7 @@ const withFilterableColumns = ({
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
                     customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
+                    titleSelectionRenderer: TitleSelectionRenderer,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}
