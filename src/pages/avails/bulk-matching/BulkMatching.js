@@ -59,6 +59,7 @@ export const BulkMatching = ({
     matchList,
     duplicateList,
     selectedItems,
+    getRestrictedIds,
 }) => {
     const isMounted = useRef(true);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -82,6 +83,8 @@ export const BulkMatching = ({
             isMounted.current = false;
         };
     }, []);
+
+    useEffect(() => getRestrictedIds(restrictedCoreTitleIds), [restrictedCoreTitleIds]);
 
     useEffect(() => {
         if (isMounted.current && data.length) {
@@ -339,6 +342,7 @@ BulkMatching.propTypes = {
     matchButton: PropTypes.object,
     duplicateButton: PropTypes.object,
     selectedItems: PropTypes.array,
+    getRestrictedIds: PropTypes.func,
     matchList: PropTypes.object,
     duplicateList: PropTypes.object,
 };
@@ -355,6 +359,7 @@ BulkMatching.defaultProps = {
     matchButton: {},
     duplicateButton: {},
     selectedItems: [],
+    getRestrictedIds: () => null,
     matchList: {},
     duplicateList: {},
 };
