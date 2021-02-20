@@ -149,6 +149,8 @@ const ServicingOrder = ({match}) => {
         setSelectedOrder({...selectedOrder});
     };
 
+    console.log('selectedOrder: ', selectedOrder);
+
     return (
         <div className="servicing-order">
             <div className="servicing-order__left">
@@ -172,13 +174,15 @@ const ServicingOrder = ({match}) => {
                     lastOrder={lastOrder}
                     deteErrors={selectedOrder.errors || []}
                 >
-                    <SourcesTable
-                        onSelectedSourceChange={handleSelectedSourceChange}
-                        data={prepareRowData(selectedOrder)}
-                        setUpdatedServices={setUpdatedServices}
-                        isDisabled={isFormDisabled(selectedOrder)}
-                    />
-                    {selectedSource && (
+                    {get(selectedOrder,'definition',null) &&
+                        <SourcesTable
+                            onSelectedSourceChange={handleSelectedSourceChange}
+                            data={prepareRowData(selectedOrder)}
+                            setUpdatedServices={setUpdatedServices}
+                            isDisabled={isFormDisabled(selectedOrder)}
+                        />
+                    }
+                    {selectedSource &&
                         <ServicesTable
                             data={selectedSource}
                             recipientsOptions={recipientsOptions}
@@ -187,7 +191,7 @@ const ServicingOrder = ({match}) => {
                             components={components}
                             externalId={selectedOrder.external_id}
                         />
-                    )}
+                    }
                 </FulfillmentOrder>
             </div>
         </div>

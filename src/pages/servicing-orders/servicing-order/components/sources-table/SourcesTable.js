@@ -29,74 +29,85 @@ const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
+// eslint-disable-next-line react/prop-types
+const RadioRenderer = ({data, rowIndex, selectedBarcode}) => {
+    const {barcode} = data || {};
+
+    //console.log('colDef',colDef);
+    console.log('selectedBarcode: ', selectedBarcode);
+    // eslint-disable-next-line react/prop-types
+    //node.selected = true;
+    return (
+        <div >
+            <input type="radio"
+                   name={"radio"}
+                /* eslint-disable-next-line react/prop-types */
+                   checked={barcode === selectedBarcode}
+                  // onClick={()=>setSelectedRow({data, rowIndex})}
+            />
+        </div>
+    );
+};
+
 const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
-    const [selectedSource, setSelectedSource] = useState(null);
+    const [selectedSource, setSelectedSource] = useState(dataArray[0]);
     const previousData = usePrevious(dataArray);
+
+    const [count, setCount] = useState(0);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
 
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
+
+
     useEffect(
         () => {
+            setCount(prev=> prev + 1);
             if (!isEqual(dataArray, previousData)) {
-                setSelectedSource(null);
+               setSelectedSource(dataArray[0] || null);
                 populateRowData();
             } else populateRowData();
         },
-        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [dataArray]
     );
 
-    useEffect(() => {
+   useEffect(() => {
         if (selectedSource === null && dataArray.length > 0) {
             setSelectedSource(dataArray[0]);
+            onSelectedSourceChange(dataArray[0]);
         }
     }, [selectedSource, dataArray]);
-
+/*
     useEffect(
         () => {
             onSelectedSourceChange(selectedSource);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedSource]
-    );
+    ); */
 
     // eslint-disable-next-line
-    const serviceButtonCell = ({data, rowIndex, node, colDef,selectedSource}) => {
-        const {barcode} = data || {};
-        const servicesName = `${data['fs'].toLowerCase()}Services`;
 
-        console.log('colDef',colDef);
-        // eslint-disable-next-line react/prop-types
-        node.selected = true;
-        return (
-            <div id={barcode}>
-                <input type="radio"
-                    name={barcode}
-                    /* eslint-disable-next-line react/prop-types */
-                    checked={selectedSource.barcode ? dataArray[rowIndex].barcode === selectedSource.barcode : false}
-                    onClick={()=>setSelectedRow({data, rowIndex})}
-                />
-            </div>
-        );
-    };
+
+    console.log('count: ', count);
 
 
   const setSelectedRow = ({data, rowIndex, value, column}) => {
       console.log(value, column)
       const servicesName = `${data['fs'].toLowerCase()}Services`;
-      setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
+      const source = {...data, [servicesName]: dataArray[rowIndex].deteServices};
+      setSelectedSource(source);
+      onSelectedSourceChange(source);
     }
 
     const radioButtonColumn = defineColumn({
         width: 35,
         colId: 'radio',
         field: 'radio',
-        cellRendererParams: {selectedSource},
-        cellRendererFramework: serviceButtonCell,
+        cellRendererParams: {selectedBarcode: get(selectedSource,'barcode','')},
+        cellRenderer: 'radioRenderer',
     });
 
     const servicesColumn = defineColumn({
@@ -257,6 +268,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
+        get(dataArray,'length',0) > 0?
+            (
         <div className="nexus-c-sources">
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
@@ -279,8 +292,11 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
                 onCellClicked={setSelectedRow}
+                frameworkComponents= {
+                {"radioRenderer": RadioRenderer}}
             />
-        </div>
+        </div> )
+        :null
     );
 };
 

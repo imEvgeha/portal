@@ -47,6 +47,8 @@ const ServicesTable = ({
         data.barcode,
     ]);
 
+    console.log('deteComponents: ', deteComponents, tableData);
+
     const title =
         get(data, 'title', '') ||
         get(
