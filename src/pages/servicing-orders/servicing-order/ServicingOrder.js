@@ -22,6 +22,7 @@ const ServicingOrder = ({match}) => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
+    //const [lastSource, setLastSource] = useState({});
     const [components, setComponents] = useState([]);
     const [recipientsOptions, setRecipientsOptions] = useState({});
 
@@ -148,8 +149,6 @@ const ServicingOrder = ({match}) => {
         setSelectedSource({...selectedSource});
         setSelectedOrder({...selectedOrder});
     };
-
-    console.log('selectedOrder: ', selectedOrder);
 
     return (
         <div className="servicing-order">

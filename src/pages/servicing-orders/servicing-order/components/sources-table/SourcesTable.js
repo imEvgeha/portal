@@ -1,8 +1,8 @@
+/* eslint react/prop-types: 0 */
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -12,7 +12,6 @@ import {
     defineColumn,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -29,32 +28,10 @@ const {SOURCE_TITLE, SOURCE_SUBTITLE} = constants;
 
 const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
-// eslint-disable-next-line react/prop-types
-const RadioRenderer = ({data, rowIndex, selectedBarcode}) => {
-    const {barcode} = data || {};
-
-    //console.log('colDef',colDef);
-    console.log('selectedBarcode: ', selectedBarcode);
-    // eslint-disable-next-line react/prop-types
-    //node.selected = true;
-    return (
-        <div >
-            <input type="radio"
-                   name={"radio"}
-                /* eslint-disable-next-line react/prop-types */
-                   checked={barcode === selectedBarcode}
-                  // onClick={()=>setSelectedRow({data, rowIndex})}
-            />
-        </div>
-    );
-};
-
 const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
     const [selectedSource, setSelectedSource] = useState(dataArray[0]);
     const previousData = usePrevious(dataArray);
-
-    const [count, setCount] = useState(0);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
 
@@ -64,7 +41,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     useEffect(
         () => {
-            setCount(prev=> prev + 1);
             if (!isEqual(dataArray, previousData)) {
                setSelectedSource(dataArray[0] || null);
                 populateRowData();
@@ -91,22 +67,31 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     // eslint-disable-next-line
 
 
-    console.log('count: ', count);
 
-
-  const setSelectedRow = ({data, rowIndex, value, column}) => {
-      console.log(value, column)
+  const setSelectedRow = ({data, rowIndex}) => {
       const servicesName = `${data['fs'].toLowerCase()}Services`;
       const source = {...data, [servicesName]: dataArray[rowIndex].deteServices};
-      setSelectedSource(source);
+      setSelectedSource(data[rowIndex]);
       onSelectedSourceChange(source);
     }
+
+    const RadioRenderer = ({node, rowIndex, data,selectedBarcode}) => {
+        return (
+            <div >
+                <input type="radio"
+                     name={"radio"}
+                     checked={selectedBarcode === node.data.barcode}
+                     onClick={()=>setSelectedRow({data, rowIndex})}
+                />
+            </div>
+        );
+    };
 
     const radioButtonColumn = defineColumn({
         width: 35,
         colId: 'radio',
         field: 'radio',
-        cellRendererParams: {selectedBarcode: get(selectedSource,'barcode','')},
+        cellRendererParams: {data: dataArray, selectedBarcode: get(selectedSource,'barcode','')},
         cellRenderer: 'radioRenderer',
     });
 

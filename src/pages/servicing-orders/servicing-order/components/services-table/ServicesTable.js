@@ -1,3 +1,4 @@
+/* eslint react/prop-types: 0 */
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
@@ -47,8 +48,6 @@ const ServicesTable = ({
         data.barcode,
     ]);
 
-    console.log('deteComponents: ', deteComponents, tableData);
-
     const title =
         get(data, 'title', '') ||
         get(
@@ -63,6 +62,7 @@ const ServicesTable = ({
             setServices(data);
         }
     }, [data]);
+
 
     useEffect(
         () => {
@@ -90,23 +90,6 @@ const ServicesTable = ({
         [services]
     );
 
-    const handleComponentsEdit = (index, components) => {
-        const newRow = cloneDeep(tableData[index]);
-        console.log('saved components: ',components)
-        newRow.components = [...Object.keys(components)];
-        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
-        const update = cloneDeep(services);
-        const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
-            return {...item, typeAttribute: tableData[index].assetType === 'Audio' ? 'audioDetail' : 'textDetail'};
-        });
-
-        update.deteServices[index].details = serviceWithComponents.map(item => {
-            delete item['isChecked'];
-            return item;
-        });
-        setUpdatedServices(update);
-    };
-
     const handleServiceRemoval = index => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
         updatedService.splice(index, 1);
@@ -115,14 +98,6 @@ const ServicesTable = ({
         setUpdatedServices(newServices);
     };
 
-    const getComponentsForPicker = assetType => {
-        if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
-        else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
-        else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
-        return [];
-    };
-
-    // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
             <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
@@ -135,16 +110,38 @@ const ServicesTable = ({
         );
     };
 
-    // eslint-disable-next-line react/prop-types
-    const componentsCell = ({rowIndex}) => {
+    const componentsCell = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
-            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(tableData[rowIndex], 'assetType', ''))) {
+            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node,'data.assetType'))) {
                 toolTipContent = NO_SELECTION;
             } else {
                 toolTipContent = CLICK_FOR_SELECTION;
             }
         }
+
+        const getComponentsForPicker = assetType => {
+            if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
+            else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
+            else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
+            return [];
+        };
+
+        const handleComponentsEdit = (index,  components) => {
+            const newRow = cloneDeep(tableData[index]);
+            const update = cloneDeep(services);
+            const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
+                return {...item, typeAttribute: get(node,'data.assetType') === 'Audio' ? 'audioDetail' : 'textDetail'};
+            });
+
+            update.deteServices[index].details = serviceWithComponents.map(item => {
+                delete item['isChecked'];
+                return item;
+            });
+            newRow.components = update.deteServices[index].details;
+            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+            setUpdatedServices(update);
+        };
 
         return (
             <Tooltip content={toolTipContent}>
@@ -156,32 +153,30 @@ const ServicesTable = ({
                             : openModal(
                                   <ComponentsPicker
                                       data={{
-                                          assetType: tableData[rowIndex].assetType,
+                                          assetType: get(node,'data.assetType'),
                                           barcode: data.barcode,
                                           title,
-                                          compSummary: tableData[rowIndex].components,
-                                          componentArray: getComponentsForPicker(tableData[rowIndex].assetType),
+                                          compSummary: get(node,'data.components',[]),
+                                          componentArray: getComponentsForPicker(get(node,'data.assetType')),
                                       }}
                                       closeModal={closeModal}
                                       saveComponentData={handleComponentsEdit}
                                       index={rowIndex}
                                   />,
                                   {
-                                      width: tableData[rowIndex].assetType === 'Audio' ? 'x-large' : 'large',
+                                      width: get(node,'data.assetType') === 'Audio' ? 'x-large' : 'large',
                                   }
                               );
                     }}
                 >
-                    {tableData[rowIndex] &&
+                    {
                         Object.keys(
-                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig || v.type])
+                            groupBy(get(node,'data.components',[]), v => [v.language, v.trackConfig || v.type])
                         ).map(item => <Tag key={item} text={item} />)}
                 </div>
             </Tooltip>
         );
     };
-
-    console.log('tableData ',tableData)
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
@@ -190,8 +185,8 @@ const ServicesTable = ({
     });
 
     const componentCol = {
-        cellRendererFramework: componentsCell,
-        cellRendererParams: {data, tableData},
+        cellRenderer: 'componentCellRenderer',
+        cellRendererParams: {tableData, data, services, deteComponents},
     };
 
     const statusCol = {
@@ -350,6 +345,7 @@ const ServicesTable = ({
                 selectValues={{...SELECT_VALUES, spec: specOptions}}
                 onGridEvent={handleTableChange}
                 onCellMouseOver={getSpecOptions}
+                frameworkComponents={{'componentCellRenderer': componentsCell}}
             />
         </div>
     );
