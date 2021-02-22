@@ -21,7 +21,6 @@
 }
 
 .nexus-c-table-toolbar__button-container {
-    display: flex;
-    flex-grow: 4;
-    justify-content: flex-end;
+    display: inline-flex;
+    padding: 10px;
 }
