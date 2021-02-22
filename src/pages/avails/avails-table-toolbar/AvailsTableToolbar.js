@@ -91,6 +91,7 @@ const AvailsTableToolbar = ({
                             setActiveTab={setActiveTab}
                         />
                     )}
+                    <AvailsTableReleaseReport />
                     <NexusTableExportDropdown
                         activeTab={activeTab}
                         selectedRows={selectedRows}
@@ -107,7 +108,6 @@ const AvailsTableToolbar = ({
                         planningRightsCount={planningRightsCount}
                         username={username}
                     />
-                    <AvailsTableReleaseReport />
                 </div>
             )}
         </div>
