@@ -30,15 +30,12 @@ const SourceTableGrid = compose(withColumnsResizing())(NexusGrid);
 
 const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServices, isDisabled}) => {
     const [sources, setSources] = useState([]);
-    const [selectedSource, setSelectedSource] = useState(dataArray[0]);
+    const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
 
     const barcodes = dataArray.map(item => item.barcode.trim());
 
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
-
-
-    useEffect(() => onSelectedSourceChange(dataArray[0]),[])
 
     useEffect(
         () => {

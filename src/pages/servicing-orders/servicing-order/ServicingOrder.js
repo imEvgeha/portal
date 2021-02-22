@@ -22,7 +22,6 @@ const ServicingOrder = ({match}) => {
     const [selectedOrder, setSelectedOrder] = useState({});
     const [selectedSource, setSelectedSource] = useState();
     const [lastOrder, setLastOrder] = useState({});
-    //const [lastSource, setLastSource] = useState({});
     const [components, setComponents] = useState([]);
     const [recipientsOptions, setRecipientsOptions] = useState({});
 
