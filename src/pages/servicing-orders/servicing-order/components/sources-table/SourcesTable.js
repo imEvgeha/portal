@@ -38,13 +38,15 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
 
+    useEffect(() => onSelectedSourceChange(dataArray[0]),[])
 
     useEffect(
         () => {
             if (!isEqual(dataArray, previousData)) {
                setSelectedSource(dataArray[0] || null);
-                populateRowData();
-            } else populateRowData();
+            }
+            populateRowData();
+
         },
         [dataArray]
     );
@@ -55,18 +57,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             onSelectedSourceChange(dataArray[0]);
         }
     }, [selectedSource, dataArray]);
-/*
-    useEffect(
-        () => {
-            onSelectedSourceChange(selectedSource);
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selectedSource]
-    ); */
-
-    // eslint-disable-next-line
-
-
 
   const setSelectedRow = ({data, rowIndex}) => {
       const servicesName = `${data['fs'].toLowerCase()}Services`;
@@ -103,7 +93,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         cellRendererFramework: ({data}) => <Badge>{data.serviceCount}</Badge>,
     });
 
-    // eslint-disable-next-line react/prop-types
     const deleteButtonCell = ({rowIndex, data}) => {
         return isRestrictedTenant && dataArray.length === 1 ? (
             ''

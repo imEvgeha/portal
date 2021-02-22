@@ -63,7 +63,6 @@ const ServicesTable = ({
         }
     }, [data]);
 
-
     useEffect(
         () => {
             if (!isEmpty(services)) {
