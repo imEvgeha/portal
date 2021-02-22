@@ -15,7 +15,8 @@ import Constants from '../constants';
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
-const UPLOAD_DELAY = 6500;
+const UPLOAD_DELAY = 7500;
+const UPLOAD_DELAY_2 = 2000;
 
 function* fetchIngests({payload}) {
     try {
@@ -196,6 +197,11 @@ function* uploadIngest({payload}) {
         yield put({
             type: actionTypes.UPLOAD_INGEST_SUCCESS,
             payload: {},
+        });
+        yield delay(UPLOAD_DELAY_2);
+        yield put({
+            type: actionTypes.FETCH_INGESTS,
+            payload: getFiltersToSend(),
         });
     } catch (e) {
         yield put({
