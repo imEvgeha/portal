@@ -92,6 +92,7 @@ const ServicesTable = ({
 
     const handleComponentsEdit = (index, components) => {
         const newRow = cloneDeep(tableData[index]);
+        console.log('saved components: ',components)
         newRow.components = [...Object.keys(components)];
         setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
         const update = cloneDeep(services);
@@ -179,6 +180,8 @@ const ServicesTable = ({
             </Tooltip>
         );
     };
+
+    console.log('tableData ',tableData)
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
