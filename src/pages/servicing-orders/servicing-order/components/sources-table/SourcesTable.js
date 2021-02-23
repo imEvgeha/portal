@@ -1,4 +1,3 @@
-/* eslint react/prop-types: 0 */
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
@@ -62,20 +61,21 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         [selectedSource]
     );
 
-  const setSelectedRow = ({column, rowIndex}) => {
+  const setSelectedRow = ({column={}, rowIndex}) => {
       if(column && column.colId !== 'delete') {
           setSelectedSource(dataArray[rowIndex]);
           onSelectedSourceChange(dataArray[rowIndex]);
       }
     }
 
-    const RadioRenderer = ({node, rowIndex, data,selectedBarcode}) => {
+    // eslint-disable-next-line react/prop-types
+    const RadioRenderer = ({node, rowIndex, selectedBarcode}) => {
         return (
             <div >
                 <input type="radio"
                      name={"radio"}
-                     checked={selectedBarcode === node.data.barcode}
-                     onClick={()=>setSelectedRow({data, rowIndex})}
+                     checked={selectedBarcode === get(node,'data.barcode')}
+                     onClick={()=>setSelectedRow({rowIndex})}
                 />
             </div>
         );
@@ -97,6 +97,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         cellRendererFramework: ({data}) => <Badge>{data.serviceCount}</Badge>,
     });
 
+    // eslint-disable-next-line react/prop-types
     const deleteButtonCell = ({rowIndex, data}) => {
         return isRestrictedTenant && dataArray.length === 1 ? (
             ''

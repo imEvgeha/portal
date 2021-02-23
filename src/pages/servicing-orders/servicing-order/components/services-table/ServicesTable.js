@@ -1,4 +1,3 @@
-/* eslint react/prop-types: 0 */
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
@@ -98,6 +97,7 @@ const ServicesTable = ({
         setUpdatedServices(newServices);
     };
 
+    // eslint-disable-next-line react/prop-types
     const closeButtonCell = ({rowIndex}) => {
         return (
             <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
@@ -110,6 +110,7 @@ const ServicesTable = ({
         );
     };
 
+    // eslint-disable-next-line react/prop-types
     const componentsCell = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
@@ -309,8 +310,8 @@ const ServicesTable = ({
         },
     });
 
-    const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
-    const barcode = services.barcode || null;
+    const servicesCount = get(services[`${providerServices}`],'length',0);
+    const barcode = get(services,'barcode', null);
 
     const valueGetter = params => {
         return get(params.data, params.colDef.dataSource || params.colDef.field, '');
