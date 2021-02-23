@@ -114,9 +114,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const deleteButtonColumn = defineButtonColumn({
-        width: 35,
+        width: 85,
         cellRendererFramework: deleteButtonCell,
         cellRendererParams: '',
+        checkboxSelection: true,
     });
 
     const loadingCell = params => {
@@ -259,7 +260,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 )}
             </div>
             <SourceTableGrid
-                columnDefs={[radioButtonColumn, deleteButtonColumn, servicesColumn, ...newColDef]}
+                columnDefs={[deleteButtonColumn, servicesColumn, ...newColDef]}
                 defaultColDef={{
                     flex: 1,
                     sortable: true,
@@ -269,6 +270,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
+                rowSelection="single"
             />
         </div>
     );
