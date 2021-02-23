@@ -15,7 +15,7 @@ exports[`TitleMatchingRightsTable should match snapshot 1`] = `
           },
           "colId": "id",
           "field": "id",
-          "headerName": "Bonus Right ID",
+          "headerName": "Right ID",
         },
         Object {
           "cellRenderer": "loadingCellRenderer",

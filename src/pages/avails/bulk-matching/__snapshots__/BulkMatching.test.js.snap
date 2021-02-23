@@ -42,10 +42,11 @@ exports[`BulkMatching should match snapshot 1`] = `
       restrictedCoreTitleIds={Array []}
       selectionList={
         Object {
-          "duplicateList": Object {},
-          "handleDuplicateClick": [Function],
-          "handleMatchClick": [Function],
+          "duplicateButton": Object {},
+          "matchButton": Object {},
           "matchList": Object {},
+          "onCellValueChanged": [Function],
+          "selectedItems": Array [],
         }
       }
     />

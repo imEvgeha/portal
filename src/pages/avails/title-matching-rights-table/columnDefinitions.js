@@ -2,7 +2,7 @@ const columnDefinitions = [
     {
         colId: 'id',
         field: 'id',
-        headerName: 'Bonus Right ID',
+        headerName: 'Right ID',
         cellRendererParams: {
             link: '/avails/rights/',
             newTab: true,
