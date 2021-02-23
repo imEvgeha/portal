@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
@@ -32,26 +32,19 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
 
-    const barcodes = dataArray.map(item => item.barcode.trim());
+    const barcodes = useMemo(() => dataArray.map(item => item.barcode.trim()),[dataArray]);
 
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
     useEffect(
         () => {
-            if (!isEqual(dataArray, previousData) && dataArray) {
-                populateRowData();
+            if ((!isEqual(dataArray, previousData) || !selectedSource) && dataArray && dataArray.length > 0) {
                 setSelectedSource(dataArray[0]);
             }
-            else populateRowData();
+            populateRowData();
         },
         [dataArray]
     );
-
-   useEffect(() => {
-        if (!selectedSource && dataArray && dataArray.length > 0) {
-            setSelectedSource(dataArray[0]);
-        }
-    }, [selectedSource, dataArray]);
 
     useEffect(
         () => {
@@ -64,29 +57,15 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
   const setSelectedRow = ({column={}, rowIndex}) => {
       if(column && column.colId !== 'delete') {
           setSelectedSource(dataArray[rowIndex]);
-          onSelectedSourceChange(dataArray[rowIndex]);
       }
     }
-
-    // eslint-disable-next-line react/prop-types
-    const RadioRenderer = ({node, rowIndex, selectedBarcode}) => {
-        return (
-            <div >
-                <input type="radio"
-                     name={"radio"}
-                     checked={selectedBarcode === get(node,'data.barcode')}
-                     onClick={()=>setSelectedRow({rowIndex})}
-                />
-            </div>
-        );
-    };
 
     const radioButtonColumn = defineColumn({
         width: 35,
         colId: 'radio',
         field: 'radio',
         cellRendererParams: {data: dataArray, selectedBarcode: get(selectedSource,'barcode','')},
-        cellRenderer: 'radioRenderer',
+        checkboxSelection: true
     });
 
     const servicesColumn = defineColumn({
@@ -136,6 +115,13 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         switch (type) {
+            case 'rowDataChanged' : {
+                if(!data && api.getRowNode(0)) {
+                    api.getRowNode(0).setSelected(true);
+                    setSelectedRow({rowIndex:0})
+                }
+                break;
+            }
             case GRID_EVENTS.READY: {
                 api.sizeColumnsToFit();
                 break;
@@ -274,8 +260,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
                 onCellClicked={setSelectedRow}
-                frameworkComponents= {
-                {"radioRenderer": RadioRenderer}}
+                rowSelection="single"
             />
         </div>
     );

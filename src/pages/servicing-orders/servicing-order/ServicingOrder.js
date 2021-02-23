@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
@@ -29,7 +29,7 @@ const ServicingOrder = ({match}) => {
     const [updatedServices, setUpdatedServices] = useState({});
 
     // prepare row data from selected order for source table
-    const sourceRowData = prepareRowData(selectedOrder);
+    const sourceRowData = useMemo(() => prepareRowData(selectedOrder),[selectedOrder]);
 
 
     useEffect(() => {

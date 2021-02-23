@@ -18,11 +18,11 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRenderer": "radioRenderer",
           "cellRendererParams": Object {
             "data": Array [],
             "selectedBarcode": "",
           },
+          "checkboxSelection": true,
           "colId": "radio",
           "field": "radio",
           "headerName": "",
@@ -114,11 +114,6 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
       }
     }
     domLayout="normal"
-    frameworkComponents={
-      Object {
-        "radioRenderer": [Function],
-      }
-    }
     notEditableColumns={
       Array [
         "title",
@@ -130,6 +125,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     onCellClicked={[Function]}
     onGridEvent={[Function]}
     rowData={Array []}
+    rowSelection="single"
     selectValues={
       Object {
         "assetStatus": Array [
