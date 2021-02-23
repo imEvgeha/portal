@@ -85,7 +85,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         },
         Object {
           "autoHeight": true,
-          "cellRendererFramework": [Function],
+          "cellRenderer": "componentCellRenderer",
           "cellRendererParams": Object {
             "data": Object {
               "amsAssetId": "DA16129",
@@ -110,6 +110,8 @@ exports[`ServicesTable should match snapshot 1`] = `
               "startDate": "2020-05-19T15:13:13.731-03:00",
               "title": "test title",
             },
+            "deteComponents": undefined,
+            "services": Object {},
             "tableData": Array [],
           },
           "colId": "components",
@@ -158,6 +160,11 @@ exports[`ServicesTable should match snapshot 1`] = `
       }
     }
     domLayout="autoHeight"
+    frameworkComponents={
+      Object {
+        "componentCellRenderer": [Function],
+      }
+    }
     isMenuHidden={false}
     mapping={
       Array [

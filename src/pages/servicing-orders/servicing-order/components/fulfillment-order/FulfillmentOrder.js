@@ -186,6 +186,7 @@ export const FulfillmentOrder = ({
 
     const onSaveHandler = () => {
         const dataToSave = prepareOrderPutData(fulfillmentOrder);
+        console.log('dataToSave ',dataToSave)
         const payload = {data: dataToSave};
         dispatch(saveFulfillmentOrder(payload));
         setIsSaveDisabled(true);

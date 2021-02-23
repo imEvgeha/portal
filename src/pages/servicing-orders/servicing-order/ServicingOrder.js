@@ -28,9 +28,9 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
-    // WIP : use sagas to get/put data
-    // const dispatch = useDispatch();
-    // const serviceOrder2 = useSelector(state => state.servicingOrders);
+    // prepare row data from selected order for source table
+    const sourceRowData = prepareRowData(selectedOrder);
+
 
     useEffect(() => {
         const order =
@@ -86,18 +86,6 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
-                // WIP: redux sagas
-                /*
-            if (servicingOrder.so_number) {
-                dispatch({
-                    type: 'FETCH_FO',
-                    payload: { id: servicingOrder.so_number },
-                });
-                const { fulfillmentOrders, servicingOrderItems, components } = serviceOrder2;
-                setServiceOrder({...servicingOrder, fulfillmentOrders, servicingOrderItems});
-                setComponents(components);
-                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
-                */
             } else {
                 setServiceOrder({});
             }
@@ -175,7 +163,7 @@ const ServicingOrder = ({match}) => {
                     {get(selectedOrder,'definition',null) &&
                         <SourcesTable
                             onSelectedSourceChange={handleSelectedSourceChange}
-                            data={prepareRowData(selectedOrder)}
+                            data={sourceRowData}
                             setUpdatedServices={setUpdatedServices}
                             isDisabled={isFormDisabled(selectedOrder)}
                         />

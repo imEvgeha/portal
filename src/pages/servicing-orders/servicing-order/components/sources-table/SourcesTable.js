@@ -39,27 +39,34 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     useEffect(
         () => {
-            if (!isEqual(dataArray, previousData)) {
-               setSelectedSource(dataArray[0] || null);
+            if (!isEqual(dataArray, previousData) && dataArray) {
+                populateRowData();
+                setSelectedSource(dataArray[0]);
             }
-            populateRowData();
-
+            else populateRowData();
         },
         [dataArray]
     );
 
    useEffect(() => {
-        if (selectedSource === null && dataArray.length > 0) {
+        if (!selectedSource && dataArray && dataArray.length > 0) {
             setSelectedSource(dataArray[0]);
-            onSelectedSourceChange(dataArray[0]);
         }
     }, [selectedSource, dataArray]);
 
-  const setSelectedRow = ({data, rowIndex}) => {
-      const servicesName = `${data['fs'].toLowerCase()}Services`;
-      const source = {...data, [servicesName]: dataArray[rowIndex].deteServices};
-      setSelectedSource(data[rowIndex]);
-      onSelectedSourceChange(source);
+    useEffect(
+        () => {
+            onSelectedSourceChange(selectedSource);
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selectedSource]
+    );
+
+  const setSelectedRow = ({column, rowIndex}) => {
+      if(column && column.colId !== 'delete') {
+          setSelectedSource(dataArray[rowIndex]);
+          onSelectedSourceChange(dataArray[rowIndex]);
+      }
     }
 
     const RadioRenderer = ({node, rowIndex, data,selectedBarcode}) => {
@@ -105,9 +112,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const deleteButtonColumn = defineButtonColumn({
+        colId: 'delete',
         width: 35,
         cellRendererFramework: deleteButtonCell,
-        cellRendererParams: '',
+        cellRendererParams: {data: dataArray},
     });
 
     const loadingCell = params => {
@@ -125,7 +133,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         return {...item, cellRenderer: loadingCell};
     });
 
-    const onSourceTableChange = async ({type, rowIndex, data, api, gridOptions}) => {
+    const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         switch (type) {
             case GRID_EVENTS.READY: {
                 api.sizeColumnsToFit();
@@ -216,9 +224,13 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const removeSourceRow = barcode => {
         const newSources = cloneDeep(dataArray[0]);
-        newSources.deteServices[0].deteSources = newSources.deteServices[0].deteSources.filter(
+        const newSourceArray = dataArray[0].deteServices[0].deteSources.filter(
             item => item.barcode !== barcode
-        );
+        )
+        // delete source row from each services object
+        // eslint-disable-next-line no-return-assign
+        newSources.deteServices.forEach(item => item.deteSources = newSourceArray);
+        setSources(prev => prev.filter(item => item.barcode !== barcode));
         setUpdatedServices(newSources);
     };
 
@@ -239,8 +251,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     return (
-        get(dataArray,'length',0) > 0?
-            (
         <div className="nexus-c-sources">
             <div className="nexus-c-sources__header">
                 <h2>{`${SOURCE_TITLE} (${sources.length})`}</h2>
@@ -266,8 +276,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 frameworkComponents= {
                 {"radioRenderer": RadioRenderer}}
             />
-        </div> )
-        :null
+        </div>
     );
 };
 

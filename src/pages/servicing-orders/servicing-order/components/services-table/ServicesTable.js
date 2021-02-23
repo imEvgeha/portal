@@ -56,6 +56,7 @@ const ServicesTable = ({
             ''
         );
 
+
     useEffect(() => {
         if (!isEmpty(data)) {
             data.fs && setProviderServices(`${data.fs.toLowerCase()}Services`);
