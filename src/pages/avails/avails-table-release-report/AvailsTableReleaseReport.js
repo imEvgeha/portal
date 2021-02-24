@@ -5,16 +5,28 @@ import DropdownMenu from '@atlaskit/dropdown-menu';
 import Select from '@atlaskit/select';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {CREATE_REPORT, MONTHS, SELECT_MONTH, SELECT_YEAR, YEARS} from './constants';
+import {CREATE_REPORT, MONTHS, START_YEAR, END_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
 const AvailsTableReleaseReport = ({}) => {
-    const [selectedMonth, setSelectedMonth] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
+    const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
+    const [selectedYear, setSelectedYear] = useState(moment().format('YYYY'));
 
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
-        console.log(monthNumber);
+        const yearMonth = `${selectedYear}-${monthNumber}`;
+        const startDate = `${yearMonth}-01T00:00:00`;
+        const endDay = moment(yearMonth, 'YYYY-MM').daysInMonth();
+        const endDate = `${yearMonth}-${endDay}T23:59:59`;
+        // call api
+    };
+
+    const getYears = () => {
+        const list = [];
+        for (let i = START_YEAR; i <= END_YEAR; i++) {
+            list.push({value: i, label: i});
+        }
+        return list;
     };
 
     return (
@@ -22,16 +34,18 @@ const AvailsTableReleaseReport = ({}) => {
             <DropdownMenu className="nexus-c-button" trigger="New Release Report" triggerType="button">
                 <div className="nexus-c-right-repository-release-report-content">
                     <Select
+                        value={{value: selectedYear, label: selectedYear}}
                         className="nexus-c-right-repository-release-report__year-dropdown"
-                        placeholder={SELECT_YEAR}
                         onChange={val => setSelectedYear(val.value)}
-                        options={YEARS.map(m => ({value: m, label: m}))}
+                        options={getYears()}
+                        classNamePrefix="nexus-c-nexus-select"
                     />
                     <Select
+                        value={{value: selectedMonth, label: selectedMonth}}
                         className="nexus-c-right-repository-release-report__month-dropdown"
-                        placeholder={SELECT_MONTH}
                         onChange={val => setSelectedMonth(val.value)}
                         options={MONTHS.map(m => ({value: m, label: m}))}
+                        classNamePrefix="nexus-c-nexus-select"
                     />
                     <Button
                         className="nexus-c-right-repository-release-report-content__btn"
