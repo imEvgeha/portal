@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DropdownMenu from '@atlaskit/dropdown-menu';
 import Select from '@atlaskit/select';
+import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import {exportService} from '../../legacy/containers/avail/service/ExportService';
 import {CREATE_REPORT, MONTHS, START_YEAR, END_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
@@ -18,7 +20,7 @@ const AvailsTableReleaseReport = ({}) => {
         const startDate = `${yearMonth}-01T00:00:00`;
         const endDay = moment(yearMonth, 'YYYY-MM').daysInMonth();
         const endDate = `${yearMonth}-${endDay}T23:59:59`;
-        // call api
+        exportService.getReleaseReport({startDate, endDate}).then(response => downloadFile(response));
     };
 
     const getYears = () => {
