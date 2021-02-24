@@ -18,10 +18,6 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRendererParams": Object {
-            "data": Array [],
-            "selectedBarcode": "",
-          },
           "checkboxSelection": true,
           "colId": "radio",
           "field": "radio",

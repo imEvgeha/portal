@@ -64,7 +64,6 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         width: 35,
         colId: 'radio',
         field: 'radio',
-        cellRendererParams: {data: dataArray, selectedBarcode: get(selectedSource,'barcode','')},
         checkboxSelection: true,
     });
 
