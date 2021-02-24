@@ -43,16 +43,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
             }
             populateRowData();
         },
-        // disabling eslint here as it couldn;t be tested since no scenario was found as of now
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [dataArray]
     );
-
-    useEffect(() => {
-        if (selectedSource === null && dataArray.length > 0) {
-            setSelectedSource(dataArray[0]);
-        }
-    }, [selectedSource, dataArray]);
 
     useEffect(
         () => {
@@ -62,10 +54,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         [selectedSource]
     );
 
-  const setSelectedRow = ({column={}, rowIndex, node}) => {
-      if(column && column.colId !== 'delete' && get(node,'selected',true)) {
-          setSelectedSource(dataArray[rowIndex]);
-      }
+    const setSelectedRow = ({column={}, rowIndex, node}) => {
+        if(column && column.colId !== 'delete' && get(node,'selected',true)) {
+            setSelectedSource(dataArray[rowIndex]);
+        }
     }
 
     const radioButtonColumn = defineColumn({
