@@ -54,8 +54,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         [selectedSource]
     );
 
-  const setSelectedRow = ({column={}, rowIndex}) => {
-      if(column && column.colId !== 'delete') {
+  const setSelectedRow = ({column={}, rowIndex, node}) => {
+      if(column && column.colId !== 'delete' && get(node,'selected',true)) {
           setSelectedSource(dataArray[rowIndex]);
       }
     }
@@ -65,7 +65,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         colId: 'radio',
         field: 'radio',
         cellRendererParams: {data: dataArray, selectedBarcode: get(selectedSource,'barcode','')},
-        checkboxSelection: true
+        checkboxSelection: true,
     });
 
     const servicesColumn = defineColumn({
@@ -260,6 +260,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
                 onCellClicked={setSelectedRow}
+                onRowSelected={setSelectedRow}
                 rowSelection="single"
             />
         </div>

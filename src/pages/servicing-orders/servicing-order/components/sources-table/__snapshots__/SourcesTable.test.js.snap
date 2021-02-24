@@ -124,6 +124,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     }
     onCellClicked={[Function]}
     onGridEvent={[Function]}
+    onRowSelected={[Function]}
     rowData={Array []}
     rowSelection="single"
     selectValues={
