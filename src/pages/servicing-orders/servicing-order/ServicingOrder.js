@@ -5,6 +5,7 @@ import {get, cloneDeep} from 'lodash';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
+import JuiceBoxSection from "./components/juicebox-section/JuiceBoxSection";
 import ServicesTable from './components/services-table/ServicesTable';
 import SourcesTable from './components/sources-table/SourcesTable';
 import {
@@ -30,6 +31,9 @@ const ServicingOrder = ({match}) => {
 
     // prepare row data from selected order for source table
     const sourceRowData = useMemo(() => prepareRowData(selectedOrder),[selectedOrder]);
+
+    // order origin DETE, JuiceBox etc
+    const orderOrigin = get(selectedOrder,'fs');
 
 
     useEffect(() => {
@@ -160,23 +164,27 @@ const ServicingOrder = ({match}) => {
                     lastOrder={lastOrder}
                     deteErrors={selectedOrder.errors || []}
                 >
-                    {get(selectedOrder,'definition',null) &&
-                        <SourcesTable
-                            onSelectedSourceChange={handleSelectedSourceChange}
-                            data={sourceRowData}
-                            setUpdatedServices={setUpdatedServices}
-                            isDisabled={isFormDisabled(selectedOrder)}
-                        />
-                    }
-                    {selectedSource &&
-                        <ServicesTable
-                            data={selectedSource}
-                            recipientsOptions={recipientsOptions}
-                            isDisabled={isFormDisabled(selectedOrder)}
-                            setUpdatedServices={setUpdatedServices}
-                            components={components}
-                            externalId={selectedOrder.external_id}
-                        />
+                    {orderOrigin === 'JUICEBOX' ? <JuiceBoxSection/> :
+                        <div>
+                            {get(selectedOrder,'definition', null) &&
+                                <SourcesTable
+                                onSelectedSourceChange={handleSelectedSourceChange}
+                                data={sourceRowData}
+                                setUpdatedServices={setUpdatedServices}
+                                isDisabled={isFormDisabled(selectedOrder)}
+                                />
+                            }
+                            {selectedSource &&
+                                <ServicesTable
+                                data={selectedSource}
+                                recipientsOptions={recipientsOptions}
+                                isDisabled={isFormDisabled(selectedOrder)}
+                                setUpdatedServices={setUpdatedServices}
+                                components={components}
+                                externalId={selectedOrder.external_id}
+                                />
+                            }
+                        </div>
                     }
                 </FulfillmentOrder>
             </div>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
