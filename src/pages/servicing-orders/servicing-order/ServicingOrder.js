@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
@@ -28,9 +28,9 @@ const ServicingOrder = ({match}) => {
     // this piece of state is used for when a service is updated in the services table
     const [updatedServices, setUpdatedServices] = useState({});
 
-    // WIP : use sagas to get/put data
-    // const dispatch = useDispatch();
-    // const serviceOrder2 = useSelector(state => state.servicingOrders);
+    // prepare row data from selected order for source table
+    const sourceRowData = useMemo(() => prepareRowData(selectedOrder),[selectedOrder]);
+
 
     useEffect(() => {
         const order =
@@ -86,18 +86,6 @@ const ServicingOrder = ({match}) => {
         servicingOrdersService.getServicingOrderById(match.params.id).then(servicingOrder => {
             if (servicingOrder) {
                 fetchFulfillmentOrders(servicingOrder);
-                // WIP: redux sagas
-                /*
-            if (servicingOrder.so_number) {
-                dispatch({
-                    type: 'FETCH_FO',
-                    payload: { id: servicingOrder.so_number },
-                });
-                const { fulfillmentOrders, servicingOrderItems, components } = serviceOrder2;
-                setServiceOrder({...servicingOrder, fulfillmentOrders, servicingOrderItems});
-                setComponents(components);
-                setSelectedFulfillmentOrderID(get(fulfillmentOrders, '[0].id', ''));
-                */
             } else {
                 setServiceOrder({});
             }
@@ -172,13 +160,15 @@ const ServicingOrder = ({match}) => {
                     lastOrder={lastOrder}
                     deteErrors={selectedOrder.errors || []}
                 >
-                    <SourcesTable
-                        onSelectedSourceChange={handleSelectedSourceChange}
-                        data={prepareRowData(selectedOrder)}
-                        setUpdatedServices={setUpdatedServices}
-                        isDisabled={isFormDisabled(selectedOrder)}
-                    />
-                    {selectedSource && (
+                    {get(selectedOrder,'definition',null) &&
+                        <SourcesTable
+                            onSelectedSourceChange={handleSelectedSourceChange}
+                            data={sourceRowData}
+                            setUpdatedServices={setUpdatedServices}
+                            isDisabled={isFormDisabled(selectedOrder)}
+                        />
+                    }
+                    {selectedSource &&
                         <ServicesTable
                             data={selectedSource}
                             recipientsOptions={recipientsOptions}
@@ -187,7 +177,7 @@ const ServicingOrder = ({match}) => {
                             components={components}
                             externalId={selectedOrder.external_id}
                         />
-                    )}
+                    }
                 </FulfillmentOrder>
             </div>
         </div>
