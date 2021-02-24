@@ -1,6 +1,5 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {get} from 'lodash';
 import * as data from '../../../servicingOrderMockData.json';
 import SourcesTable from './SourcesTable';
 import {prepareRowData} from './util';
@@ -37,5 +36,10 @@ describe('SourceTable with rows', () => {
     it('should not find add button', () => {
         const addButton = wrapper.find('.nexus-c-source-table__add-icon');
         expect(addButton).toHaveLength(0);
+    });
+
+    it('should find source table header', () => {
+        const header = wrapper.find('.nexus-c-sources__header');
+        expect(header).toHaveLength(1);
     });
 });

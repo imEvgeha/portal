@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
 import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import {Radio} from '@atlaskit/radio';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import loadingGif from '@vubiquity-nexus/portal-assets/img/loading.gif';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
@@ -12,7 +11,6 @@ import {
     defineColumn,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
 import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
-import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {isEqual, cloneDeep, get} from 'lodash';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -34,16 +32,16 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     const [selectedSource, setSelectedSource] = useState(null);
     const previousData = usePrevious(dataArray);
 
-    const barcodes = dataArray.map(item => item.barcode.trim());
+    const barcodes = useMemo(() => dataArray.map(item => item.barcode.trim()),[dataArray]);
 
     const isRestrictedTenant = RESTRICTED_TENANTS.includes(dataArray[0] && dataArray[0].tenant);
 
     useEffect(
         () => {
-            if (!isEqual(dataArray, previousData)) {
-                setSelectedSource(null);
-                populateRowData();
-            } else populateRowData();
+            if ((!isEqual(dataArray, previousData) || !selectedSource) && dataArray && dataArray.length > 0) {
+                setSelectedSource(dataArray[0]);
+            }
+            populateRowData();
         },
         // disabling eslint here as it couldn;t be tested since no scenario was found as of now
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,30 +62,17 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
         [selectedSource]
     );
 
-    // eslint-disable-next-line
-    const serviceButtonCell = ({data, rowIndex, selectedItem = {}}) => {
-        const {barcode} = data || {};
-        const servicesName = `${data['fs'].toLowerCase()}Services`;
-
-        return (
-            <div id={barcode}>
-                <Radio
-                    name={barcode}
-                    isChecked={selectedItem && selectedItem.barcode === barcode}
-                    onChange={() =>
-                        barcode && setSelectedSource({...data, [servicesName]: dataArray[rowIndex].deteServices})
-                    }
-                />
-            </div>
-        );
-    };
+  const setSelectedRow = ({column={}, rowIndex, node}) => {
+      if(column && column.colId !== 'delete' && get(node,'selected',true)) {
+          setSelectedSource(dataArray[rowIndex]);
+      }
+    }
 
     const radioButtonColumn = defineColumn({
         width: 35,
         colId: 'radio',
         field: 'radio',
-        cellRendererParams: {selectedItem: selectedSource},
-        cellRendererFramework: serviceButtonCell,
+        checkboxSelection: true,
     });
 
     const servicesColumn = defineColumn({
@@ -114,10 +99,10 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
     };
 
     const deleteButtonColumn = defineButtonColumn({
-        width: 85,
+        colId: 'delete',
+        width: 35,
         cellRendererFramework: deleteButtonCell,
-        cellRendererParams: '',
-        checkboxSelection: true,
+        cellRendererParams: {data: dataArray},
     });
 
     const loadingCell = params => {
@@ -137,6 +122,13 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const onSourceTableChange = async ({type, rowIndex, data, api}) => {
         switch (type) {
+            case 'rowDataChanged' : {
+                if(!data && api.getRowNode(0)) {
+                    api.getRowNode(0).setSelected(true);
+                    setSelectedRow({rowIndex:0})
+                }
+                break;
+            }
             case GRID_EVENTS.READY: {
                 api.sizeColumnsToFit();
                 break;
@@ -226,9 +218,13 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
 
     const removeSourceRow = barcode => {
         const newSources = cloneDeep(dataArray[0]);
-        newSources.deteServices[0].deteSources = newSources.deteServices[0].deteSources.filter(
+        const newSourceArray = dataArray[0].deteServices[0].deteSources.filter(
             item => item.barcode !== barcode
-        );
+        )
+        // delete source row from each services object
+        // eslint-disable-next-line no-return-assign
+        newSources.deteServices.forEach(item => item.deteSources = newSourceArray);
+        setSources(prev => prev.filter(item => item.barcode !== barcode));
         setUpdatedServices(newSources);
     };
 
@@ -260,7 +256,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 )}
             </div>
             <SourceTableGrid
-                columnDefs={[deleteButtonColumn, servicesColumn, ...newColDef]}
+                columnDefs={[radioButtonColumn, deleteButtonColumn, servicesColumn, ...newColDef]}
                 defaultColDef={{
                     flex: 1,
                     sortable: true,
@@ -270,6 +266,8 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 notEditableColumns={NON_EDITABLE_COLS}
                 selectValues={SELECT_VALUES}
                 onGridEvent={onSourceTableChange}
+                onCellClicked={setSelectedRow}
+                onRowSelected={setSelectedRow}
                 rowSelection="single"
             />
         </div>
