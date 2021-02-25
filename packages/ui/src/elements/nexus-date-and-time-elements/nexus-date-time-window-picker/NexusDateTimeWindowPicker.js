@@ -37,7 +37,14 @@ const NexusDateTimeWindowPicker = ({
     isWithInlineEdit,
     isReadOnly,
 }) => {
-    const [isSimulcast, setIsSimulcast] = useState(false);
+    const getIsSimulCast = () => {
+        if (startDateTimePickerProps.defaultValue && typeof startDateTimePickerProps.defaultValue === 'string') {
+            return isUtc(startDateTimePickerProps.defaultValue);
+        }
+        return false;
+    };
+
+    const [isSimulcast, setIsSimulcast] = useState(getIsSimulCast());
 
     const [startDate, setStartDate] = useState(startDateTimePickerProps.defaultValue || '');
     const [startDateError, setStartDateError] = useState('');
@@ -50,8 +57,7 @@ const NexusDateTimeWindowPicker = ({
         setEndDate(endDateTimePickerProps.defaultValue);
 
         // Due to requirements, we check if the provided value is UTC and set isSimulcast accordingly
-        typeof startDateTimePickerProps.defaultValue === 'string' &&
-            setIsSimulcast(isUtc(startDateTimePickerProps.defaultValue));
+        setIsSimulcast(getIsSimulCast());
     }, [startDateTimePickerProps.defaultValue, endDateTimePickerProps.defaultValue]);
 
     // When date changes, validate and trigger change
@@ -68,7 +74,6 @@ const NexusDateTimeWindowPicker = ({
         onChangeAny({endDate});
         !isWithInlineEdit && handleChange();
     }, [endDate]);
-
 
     // Get locale provided by intl
     const intl = useIntl();
