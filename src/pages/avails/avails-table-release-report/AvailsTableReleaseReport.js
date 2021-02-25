@@ -74,7 +74,6 @@ const AvailsTableReleaseReport = ({}) => {
         <div className="nexus-c-right-repository-release-report">
             <Popup
                 id="nexus-c-right-repository-release-report__popup"
-                className="nexus-c-right-repository-release-report__popup"
                 boundariesElement="scrollParent"
                 placement="bottom-start"
                 isOpen={isOpen}
