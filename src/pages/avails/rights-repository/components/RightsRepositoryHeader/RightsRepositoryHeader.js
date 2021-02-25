@@ -4,16 +4,18 @@ import Button from '@atlaskit/button';
 import RightsIcon from '@vubiquity-nexus/portal-assets/rights.svg';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {withRouter} from 'react-router';
+import SavedTableDropdown from '../../../saved-table-dropdown/SavedTableDropdown';
 import {CREATE_NEW_RIGHT} from '../../constants';
 import './RightsRepositoryHeader.scss';
 
-export const RightsRepositoryHeader = ({title, history}) => {
+export const RightsRepositoryHeader = ({title, history, gridApi, columnApi, username}) => {
     return (
         <div className="nexus-c-rights-repository-header">
             <div className="nexus-c-rights-repository-header__title">
                 <RightsIcon fill="#42526E" />
                 <h1 className="nexus-c-rights-repository-header__title-text">{title}</h1>
             </div>
+            <SavedTableDropdown gridApi={gridApi} columnApi={columnApi} username={username} />
             <Button appearance="primary" onClick={() => history.push(URL.keepEmbedded('/avails/rights/create'))}>
                 {CREATE_NEW_RIGHT}
             </Button>
@@ -24,11 +26,17 @@ export const RightsRepositoryHeader = ({title, history}) => {
 RightsRepositoryHeader.propTypes = {
     title: PropTypes.string,
     history: PropTypes.object,
+    gridApi: PropTypes.object,
+    columnApi: PropTypes.object,
+    username: PropTypes.string,
 };
 
 RightsRepositoryHeader.defaultProps = {
     title: 'Rights',
     history: {},
+    gridApi: {},
+    columnApi: {},
+    username: '',
 };
 
 export default withRouter(RightsRepositoryHeader);

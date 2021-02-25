@@ -420,7 +420,7 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
-            <RightsRepositoryHeader />
+            <RightsRepositoryHeader gridApi={gridApi} columnApi={columnApi} username={username} />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
                     ingest={selectedIngest}
