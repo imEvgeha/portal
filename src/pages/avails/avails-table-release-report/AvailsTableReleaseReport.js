@@ -18,9 +18,9 @@ const AvailsTableReleaseReport = ({}) => {
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
         const yearMonth = `${selectedYear}-${monthNumber}`;
-        const startFrom = `${yearMonth}-01T00:00:00`;
+        const startFrom = `${yearMonth}-01T00:00:00.000`;
         const endDay = moment(yearMonth, 'YYYY-MM').daysInMonth();
-        const startTo = `${yearMonth}-${endDay}T23:59:59`;
+        const startTo = `${yearMonth}-${endDay}T23:59:59.999`;
         setIsLoading(true);
         exportService
             .getReleaseReport({startFrom, startTo})
