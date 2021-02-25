@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './AvailsTableToolbar.scss';
 import NexusTableExportDropdown from '../avails-table-export-dropdown/AvailsTableExportDropdown';
+import AvailsTableReleaseReport from '../avails-table-release-report/AvailsTableReleaseReport';
 import PrePlanActions from '../pre-plan-actions/PrePlanActions';
 import {RIGHTS_TAB, RIGHTS_SELECTED_TAB, PRE_PLAN_TAB, SELECTED_FOR_PLANNING_TAB} from '../rights-repository/constants';
 import SelectedRightsActions from '../selected-rights-actions/SelectedRightsActions';
@@ -90,6 +91,7 @@ const AvailsTableToolbar = ({
                             setActiveTab={setActiveTab}
                         />
                     )}
+                    <AvailsTableReleaseReport />
                     <NexusTableExportDropdown
                         activeTab={activeTab}
                         selectedRows={selectedRows}

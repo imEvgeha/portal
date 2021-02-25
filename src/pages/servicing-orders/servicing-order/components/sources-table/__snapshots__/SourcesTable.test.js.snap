@@ -18,10 +18,7 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {
-            "selectedItem": null,
-          },
+          "checkboxSelection": true,
           "colId": "radio",
           "field": "radio",
           "headerName": "",
@@ -37,8 +34,10 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
         Object {
           "cellEditorFramework": undefined,
           "cellRendererFramework": [Function],
-          "cellRendererParams": "",
-          "colId": "",
+          "cellRendererParams": Object {
+            "data": Array [],
+          },
+          "colId": "delete",
           "editable": false,
           "field": "buttons",
           "headerName": "",
@@ -120,8 +119,11 @@ exports[`SourceTable with rows Should match snapshot 1`] = `
         "standard",
       ]
     }
+    onCellClicked={[Function]}
     onGridEvent={[Function]}
+    onRowSelected={[Function]}
     rowData={Array []}
+    rowSelection="single"
     selectValues={
       Object {
         "assetStatus": Array [

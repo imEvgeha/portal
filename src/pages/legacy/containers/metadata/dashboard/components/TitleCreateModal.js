@@ -37,9 +37,9 @@ import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {publisherService} from '../../service/PublisherService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
-const onViewTitleClick = response => {
+const onViewTitleClick = (response, redirectToV2) => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
+    const url = `${getDomainName()}/metadata${redirectToV2 ? '/v2' : ''}/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -177,7 +177,9 @@ class TitleCreate extends React.Component {
                     icon: SUCCESS_ICON,
                     isAutoDismiss: true,
                     description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
+                    actions: [
+                        {content: 'View title', onClick: () => onViewTitleClick(response, this.props.redirectToV2)},
+                    ],
                 });
             })
             .catch(e => {
@@ -593,10 +595,12 @@ TitleCreate.propTypes = {
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
     tenantCode: PropTypes.string,
+    redirectToV2: PropTypes.bool,
 };
 
 TitleCreate.defaultProps = {
     tenantCode: undefined,
+    redirectToV2: false,
 };
 
 export default withToasts(TitleCreate);

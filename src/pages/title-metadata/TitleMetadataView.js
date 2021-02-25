@@ -55,6 +55,7 @@ export const TitleMetadataView = ({history, toggleRefreshGridData}) => {
                 display={showModal}
                 toggle={closeModalAndRefreshTable}
                 tenantCode={catalogueOwner.tenantCode}
+                redirectToV2
             />
         </div>
     );
