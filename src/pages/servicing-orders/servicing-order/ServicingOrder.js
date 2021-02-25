@@ -35,7 +35,6 @@ const ServicingOrder = ({match}) => {
     // order origin DETE, JuiceBox etc
     const orderOrigin = get(selectedOrder,'fs');
 
-
     useEffect(() => {
         const order =
             get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
@@ -164,7 +163,7 @@ const ServicingOrder = ({match}) => {
                     lastOrder={lastOrder}
                     deteErrors={selectedOrder.errors || []}
                 >
-                    {orderOrigin === 'JUICEBOX' ? <JuiceBoxSection/> :
+                    {orderOrigin === 'JUICEBOX' ? <JuiceBoxSection selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/> :
                         <div>
                             {get(selectedOrder,'definition', null) &&
                                 <SourcesTable
