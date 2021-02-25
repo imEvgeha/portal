@@ -13,7 +13,7 @@ import {
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
-import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
@@ -76,6 +76,7 @@ const ServicesTable = ({
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
+                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value??false,
                     recipient,
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
@@ -143,6 +144,15 @@ const ServicesTable = ({
             setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
             setUpdatedServices(update);
         };
+
+        const handleFieldEdit = (index,fieldPath, newValue) => {
+            const newRow = cloneDeep(tableData[index]);
+            const update = cloneDeep(services);
+            set(newRow,fieldPath,newValue);
+            set(update,`deteService[${index}].${fieldPath}`,newValue);
+            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+            setUpdatedServices(update);
+        }
 
         return (
             <Tooltip content={toolTipContent}>
@@ -217,6 +227,8 @@ const ServicesTable = ({
         }
     };
 
+    console.log('tableData ',tableData, services)
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
@@ -234,6 +246,15 @@ const ServicesTable = ({
                     },
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
+            case 'watermark':
+                return {
+                    ...item,
+                    // eslint-disable-next-line react/prop-types
+                    cellRenderer: ({rowIndex}) => {
+                        const fieldPath = 'externalServices.parameters';
+                        return <input type='checkbox' onClick={() => console.log('cell clicked: ', tableData[rowIndex])} checked={get(tableData[rowIndex],'watermark')} />;
+                    },
+                }
 
             default:
                 return item;
@@ -269,6 +290,8 @@ const ServicesTable = ({
                 currentService.overrideStartDate = data.doNotStartBefore || '';
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
+                currentService.externalServices.parameters.find(param => param.name === 'Watermark').value =
+                    data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
                     currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
