@@ -85,7 +85,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         const isUserDefined = get(gridState, username, [])
             .map(o => o.id)
             .includes(value);
-        // eslint-disable-next-line react/prop-types
+        // eslint-disable-next-line react/prop-types,no-underscore-dangle
         if (data.__isNew__) {
             return (
                 <components.Option {...props}>
