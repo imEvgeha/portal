@@ -11,16 +11,26 @@ import {CREATE_REPORT, MONTHS, START_YEAR, END_YEAR} from './constants';
 import './AvailsTableReleaseReport.scss';
 
 const AvailsTableReleaseReport = ({}) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
     const [selectedYear, setSelectedYear] = useState(moment().format('YYYY'));
 
     const onCreateReport = () => {
         const monthNumber = moment().month(selectedMonth).format('MM');
         const yearMonth = `${selectedYear}-${monthNumber}`;
-        const startDate = `${yearMonth}-01T00:00:00`;
+        const startFrom = `${yearMonth}-01T00:00:00`;
         const endDay = moment(yearMonth, 'YYYY-MM').daysInMonth();
-        const endDate = `${yearMonth}-${endDay}T23:59:59`;
-        exportService.getReleaseReport({startDate, endDate}).then(response => downloadFile(response));
+        const startTo = `${yearMonth}-${endDay}T23:59:59`;
+        setIsLoading(true);
+        exportService
+            .getReleaseReport({startFrom, startTo})
+            .then(response => {
+                downloadFile(response);
+                setIsLoading(false);
+            })
+            .catch(response => {
+                setIsLoading(false);
+            });
     };
 
     const getYears = () => {
@@ -50,6 +60,7 @@ const AvailsTableReleaseReport = ({}) => {
                         classNamePrefix="nexus-c-nexus-select"
                     />
                     <Button
+                        isLoading={isLoading}
                         className="nexus-c-right-repository-release-report-content__btn"
                         onClick={onCreateReport}
                         appearance="primary"
