@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AvailsTableReleaseReport should match snapshot 1`] = `
+<div
+  className="nexus-c-right-repository-release-report"
+>
+  <Memo()
+    boundariesElement="scrollParent"
+    content={[Function]}
+    id="nexus-c-right-repository-release-report__popup"
+    isOpen={false}
+    onClose={[Function]}
+    placement="bottom-start"
+    trigger={[Function]}
+  />
+</div>
+`;
