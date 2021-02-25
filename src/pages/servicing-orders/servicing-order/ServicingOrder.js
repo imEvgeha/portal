@@ -163,7 +163,9 @@ const ServicingOrder = ({match}) => {
                     lastOrder={lastOrder}
                     deteErrors={selectedOrder.errors || []}
                 >
-                    {orderOrigin === 'JUICEBOX' ? <JuiceBoxSection selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/> :
+                    {orderOrigin === 'JUICEBOX' ?
+                        <JuiceBoxSection selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/>
+                        :
                         <div>
                             {get(selectedOrder,'definition', null) &&
                                 <SourcesTable
