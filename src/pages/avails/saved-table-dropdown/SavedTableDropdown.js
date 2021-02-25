@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import AddIcon from '@atlaskit/icon/glyph/add';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {components, CreatableSelect} from '@atlaskit/select';
 import {isEmpty, get} from 'lodash';
@@ -48,12 +49,12 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         if (SAVED_TABLE_SELECT_OPTIONS.map(o => o.value).includes(item.value)) {
             applyPredefinedTableView(item.value);
         } else if (!isEmpty(gridApi) && !isEmpty(columnApi) && item.value) {
-                const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
-                const {columnState, filterModel, sortModel} = selectedModel[0] || {};
-                gridApi.setFilterModel(filterModel);
-                gridApi.setSortModel(sortModel);
-                columnApi.setColumnState(columnState);
-            }
+            const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
+            const {columnState, filterModel, sortModel} = selectedModel[0] || {};
+            gridApi.setFilterModel(filterModel);
+            gridApi.setSortModel(sortModel);
+            columnApi.setColumnState(columnState);
+        }
     };
 
     const filterRemovalHandler = (e, item) => {
@@ -80,10 +81,22 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
 
     const Option = props => {
         // eslint-disable-next-line react/prop-types
-        const {value, children} = props;
+        const {value, children, data} = props;
         const isUserDefined = get(gridState, username, [])
             .map(o => o.id)
             .includes(value);
+        // eslint-disable-next-line react/prop-types
+        if (data.__isNew__) {
+            return (
+                <components.Option {...props}>
+                    <div className="nexus-c-saved-table-dropdown__option-item item-create">
+                        <AddIcon />
+                        <span className="nexus-c-saved-table-dropdown__option-item--label">Create</span>
+                        <span>{`"${value}"`}</span>
+                    </div>
+                </components.Option>
+            );
+        }
         return (
             <components.Option {...props}>
                 <div className="nexus-c-saved-table-dropdown__option-item">

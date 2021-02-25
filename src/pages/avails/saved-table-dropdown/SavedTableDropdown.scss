@@ -39,5 +39,19 @@
                 visibility: visible;
             }
         }
+        &.item-create {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            svg {
+                color: map-get($blues, B400);
+                height: 15px;
+                width: 15px;
+            }
+        }
+        &--label {
+            margin: 0 5px;
+            color: map-get($blues, B400);
+        }
     }
 }
