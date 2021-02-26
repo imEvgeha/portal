@@ -27,9 +27,11 @@ const AvailsTableReleaseReport = ({}) => {
             .then(response => {
                 downloadFile(response);
                 setIsLoading(false);
+                setIsOpen(false);
             })
             .catch(error => {
                 setIsLoading(false);
+                setIsOpen(false);
             });
     };
 
@@ -50,6 +52,7 @@ const AvailsTableReleaseReport = ({}) => {
                     onChange={val => setSelectedYear(val.value)}
                     options={getYears()}
                     classNamePrefix="nexus-c-nexus-select"
+                    isSearchable
                 />
                 <Select
                     value={{value: selectedMonth, label: selectedMonth}}
@@ -57,6 +60,7 @@ const AvailsTableReleaseReport = ({}) => {
                     onChange={val => setSelectedMonth(val.value)}
                     options={MONTHS.map(m => ({value: m, label: m}))}
                     classNamePrefix="nexus-c-nexus-select"
+                    isSearchable
                 />
                 <Button
                     isLoading={isLoading}
