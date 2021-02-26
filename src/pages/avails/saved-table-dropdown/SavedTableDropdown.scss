@@ -55,3 +55,10 @@
         }
     }
 }
+.nexus-select__group:first-of-type {
+    border-bottom: 1px solid map-get($neutrals, N70);
+    margin-bottom: 10px;
+}
+.nexus-select__group-heading {
+    color: map-get($neutrals, N500);
+}
