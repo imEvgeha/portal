@@ -242,6 +242,10 @@ const RightsRepository = ({
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
 
+        if (columnDef.headerName === 'Withdrawn' || columnDef.headerName === 'Selected') {
+            columnDef.sortable = false;
+        }
+
         return columnDef;
     });
 
