@@ -1,4 +1,3 @@
-import React from 'react';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 

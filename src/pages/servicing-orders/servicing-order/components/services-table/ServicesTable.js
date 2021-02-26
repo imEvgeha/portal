@@ -76,7 +76,7 @@ const ServicesTable = ({
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value??false,
+                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value,
                     recipient,
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
