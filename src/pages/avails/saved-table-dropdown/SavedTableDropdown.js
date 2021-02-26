@@ -8,7 +8,13 @@ import {connect} from 'react-redux';
 import {insertNewGridModel} from '../../dop-tasks/utils';
 import {setUserDefinedGrid} from '../rights-repository/rightsActions';
 import {createUserGridSelector} from '../rights-repository/rightsSelectors';
-import {GROUPED_OPTIONS, SAVED_TABLE_DROPDOWN_LABEL, SAVED_TABLE_SELECT_OPTIONS} from './constants';
+import {
+    GROUPED_OPTIONS,
+    SAVED_TABLE_DROPDOWN_LABEL,
+    SAVED_TABLE_SELECT_OPTIONS,
+    READY_PENDING_VIEW,
+    ERROR_VIEW,
+} from './constants';
 import './SavedTableDropdown.scss';
 
 const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridState, gridState}) => {
@@ -24,13 +30,13 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         gridApi.setFilterModel(null);
         const filterInstance = gridApi.getFilterInstance('status');
         switch (filter) {
-            case 'in-error':
+            case ERROR_VIEW:
                 filterInstance.setModel({
                     filterType: 'set',
                     values: ['Error'],
                 });
                 break;
-            case 'ready-or-pending':
+            case READY_PENDING_VIEW:
                 filterInstance.setModel({
                     filterType: 'set',
                     values: ['Pending', 'ReadyNew', 'Ready'],
