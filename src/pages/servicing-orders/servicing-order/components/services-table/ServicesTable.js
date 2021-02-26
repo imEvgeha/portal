@@ -8,9 +8,11 @@ import {
     defineButtonColumn,
     defineColumn,
 } from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
 import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
+import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
@@ -21,6 +23,8 @@ import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
+
+const ServicesTableGrid = compose(withEditableColumns())(NexusGrid);
 
 const ServicesTable = ({
     data,
@@ -357,7 +361,7 @@ const ServicesTable = ({
                     {!isDisabled && <Add onClick={addEmptyServicesRow} />}
                 </div>
             </div>
-            <NexusGrid
+            <ServicesTableGrid
                 defaultColDef={{...valueGetter, sortable: true, resizable: true}}
                 isMenuHidden={false}
                 columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}

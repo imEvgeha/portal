@@ -26,7 +26,7 @@ exports[`ServicesTable should match snapshot 1`] = `
       />
     </div>
   </div>
-  <NexusGrid
+  <Connect(ComposedComponent)
     columnDefs={
       Array [
         Object {
@@ -177,14 +177,12 @@ exports[`ServicesTable should match snapshot 1`] = `
       }
     }
     domLayout="autoHeight"
-    dragStopped={null}
     frameworkComponents={
       Object {
         "checkBoxRenderer": [Function],
         "componentCellRenderer": [Function],
       }
     }
-    isGridHidden={false}
     isMenuHidden={false}
     mapping={
       Array [
@@ -261,7 +259,6 @@ exports[`ServicesTable should match snapshot 1`] = `
     }
     onCellMouseOver={[Function]}
     onGridEvent={[Function]}
-    onGridReady={null}
     rowData={Array []}
     selectValues={
       Object {
@@ -361,7 +358,6 @@ exports[`ServicesTable should match snapshot 1`] = `
         ],
       }
     }
-    setRowData={null}
   />
 </div>
 `;
