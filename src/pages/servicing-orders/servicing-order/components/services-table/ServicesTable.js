@@ -62,7 +62,7 @@ const ServicesTable = ({
     useEffect(
         () => {
             if (!isEmpty(services)) {
-                const flattenedObject = cloneDeep(services)[providerServices].map((service, index) => ({
+                const flattenedObject = services[providerServices].map((service, index) => ({
                     serviceType:
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
