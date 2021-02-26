@@ -187,7 +187,7 @@ const formatTerritoryBody = (data, titleId) => {
 
 export const updateTerritoryMetadata = async (values, titleId) => {
     const data = values.territorialMetadata || [];
-    const {catalogueOwner: tenantCode} = values;
+    const {catalogOwner: tenantCode} = values;
     try {
         let response;
         await Promise.all(
@@ -309,7 +309,7 @@ export const updateEditorialMetadata = async (values, titleId) => {
         description: UPDATE_EDITORIAL_METADATA_ERROR,
     };
     const data = values.editorialMetadata || [];
-    const {catalogueOwner: tenantCode} = values;
+    const {catalogOwner: tenantCode} = values;
     try {
         await Promise.all(
             data.map(async emet => {
