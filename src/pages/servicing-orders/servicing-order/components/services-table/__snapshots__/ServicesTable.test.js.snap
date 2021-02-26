@@ -26,7 +26,7 @@ exports[`ServicesTable should match snapshot 1`] = `
       />
     </div>
   </div>
-  <Connect(ComposedComponent)
+  <NexusGrid
     columnDefs={
       Array [
         Object {
@@ -46,7 +46,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         Object {
           "cellEditorFramework": undefined,
           "cellRendererFramework": [Function],
-          "cellRendererParams": undefined,
+          "cellRendererParams": [Function],
           "colId": "",
           "editable": false,
           "field": "buttons",
@@ -65,6 +65,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "serviceType",
           "field": "serviceType",
           "headerName": "Service Type",
+          "sortable": false,
           "width": 150,
         },
         Object {
@@ -72,6 +73,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "assetType",
           "field": "assetType",
           "headerName": "Asset Type",
+          "sortable": false,
           "width": 120,
         },
         Object {
@@ -81,6 +83,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "field": "spec",
           "headerName": "Format Sheet",
           "onCellClicked": [Function],
+          "sortable": false,
           "width": 260,
         },
         Object {
@@ -118,26 +121,40 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "components",
           "field": "components",
           "headerName": "Components",
+          "sortable": false,
           "width": 250,
         },
         Object {
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
+          "sortable": false,
           "valueFormatter": [Function],
           "width": 200,
+        },
+        Object {
+          "cellRenderer": "checkBoxRenderer",
+          "cellRendererParams": [Function],
+          "colId": "watermark",
+          "field": "watermark",
+          "headerComponentFramework": [Function],
+          "headerName": "watermark",
+          "sortable": false,
+          "width": 50,
         },
         Object {
           "colId": "priority",
           "dataSource": "priority",
           "field": "priority",
           "headerName": "Priority",
+          "sortable": false,
           "width": 90,
         },
         Object {
           "colId": "recipient",
           "field": "recipient",
           "headerName": "Recipient",
+          "sortable": false,
           "width": 140,
         },
         Object {
@@ -160,11 +177,14 @@ exports[`ServicesTable should match snapshot 1`] = `
       }
     }
     domLayout="autoHeight"
+    dragStopped={null}
     frameworkComponents={
       Object {
+        "checkBoxRenderer": [Function],
         "componentCellRenderer": [Function],
       }
     }
+    isGridHidden={false}
     isMenuHidden={false}
     mapping={
       Array [
@@ -241,6 +261,7 @@ exports[`ServicesTable should match snapshot 1`] = `
     }
     onCellMouseOver={[Function]}
     onGridEvent={[Function]}
+    onGridReady={null}
     rowData={Array []}
     selectValues={
       Object {
@@ -340,6 +361,7 @@ exports[`ServicesTable should match snapshot 1`] = `
         ],
       }
     }
+    setRowData={null}
   />
 </div>
 `;
