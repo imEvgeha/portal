@@ -21,6 +21,7 @@ import {
     RELATIVE_DATE_FORMAT,
     END_DATE_EMPTY_ERROR,
     START_DATE_EMPTY_ERROR,
+    TIMESTAMP_DATE_FORMAT,
 } from '../constants';
 
 const NexusDateTimeWindowPicker = ({
@@ -65,14 +66,14 @@ const NexusDateTimeWindowPicker = ({
         validateStartDate(startDate);
         setEndDateError('');
         onChangeAny({startDate});
-        !isWithInlineEdit && handleChange();
+        !isWithInlineEdit && handleChange(isSimulcast);
     }, [startDate]);
 
     useEffect(() => {
         validateEndDate(endDate);
         setStartDateError('');
         onChangeAny({endDate});
-        !isWithInlineEdit && handleChange();
+        !isWithInlineEdit && handleChange(isSimulcast);
     }, [endDate]);
 
     // Get locale provided by intl
@@ -114,7 +115,7 @@ const NexusDateTimeWindowPicker = ({
     };
 
     // If both dates are filled, send a formatted time-window string
-    const handleChange = () => {
+    const handleChange = simulcast => {
         if ((startDate && endDate) || (isClearable && !startDate && !endDate)) {
             if (isTimestamp) {
                 // YYYY-MM-DD[T]HH:mm:ss.SSS[Z]
@@ -125,17 +126,22 @@ const NexusDateTimeWindowPicker = ({
             } else if (startDate.endsWith('Z')) {
                 // YYYY-MM-DD[T]HH:mm:ss(Z)
                 onChange({
-                    startDate: isSimulcast ? startDate : startDate.slice(0, -1),
-                    endDate: isSimulcast ? endDate : endDate.slice(0, -1),
+                    startDate: simulcast ? startDate : startDate.slice(0, -1),
+                    endDate: simulcast ? endDate : endDate.slice(0, -1),
                 });
             } else {
                 // YYYY-MM-DD[T]HH:mm:ss(Z)
                 onChange({
-                    startDate: isSimulcast ? `${startDate}Z` : startDate,
-                    endDate: isSimulcast ? `${endDate}Z` : endDate,
+                    startDate: simulcast ? `${startDate}Z` : startDate,
+                    endDate: simulcast ? `${endDate}Z` : endDate,
                 });
             }
         }
+    };
+
+    const onFormatChange = value => {
+        setIsSimulcast(value);
+        handleChange(value);
     };
 
     const DatePicker = () => (
@@ -198,7 +204,7 @@ const NexusDateTimeWindowPicker = ({
                             {label: RELATIVE_TIME_LABEL, value: false},
                             {label: SIMULCAST_TIME_LABEL, value: true},
                         ]}
-                        onChange={type => setIsSimulcast(type.value)}
+                        onChange={type => onFormatChange(type.value)}
                     />
                 </div>
             )}
@@ -231,7 +237,7 @@ const NexusDateTimeWindowPicker = ({
                     <ReadView />
                 ) : isWithInlineEdit ? (
                     <InlineEdit
-                        onConfirm={handleChange}
+                        onConfirm={() => handleChange(isSimulcast)}
                         editView={() => <DatePicker />}
                         defaultValue={`${startDate} ${endDate}`}
                         readView={ReadView}
