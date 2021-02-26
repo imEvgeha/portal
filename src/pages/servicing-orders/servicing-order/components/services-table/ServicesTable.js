@@ -190,6 +190,7 @@ const ServicesTable = ({
             ({
                 rowIndex,
                 node,
+                isDisabled,
                 toggleCheck: ()=>handleFieldEdit(rowIndex,'externalServices.parameters','Watermark',!get(tableData[rowIndex], 'watermark')),
             }),
     };
