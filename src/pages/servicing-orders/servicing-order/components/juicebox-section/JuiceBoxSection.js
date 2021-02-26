@@ -26,15 +26,15 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder}) => {
         <div>
             <h2>JuiceBox Fulfillment Order</h2>
             {language === undefined ?
-                <div className="nexus-jb-lang-label">
+                (<div className="nexus-jb-lang-label">
                     <SectionMessage
                         title="Invalid JuiceBox data"
                         appearance="error"
                     >
                         <p>The data for this order does not match specifications.</p>
                     </SectionMessage>
-                </div> :
-                <div>
+                </div>) :
+                (<div>
                     <label htmlFor="jb-lang" className="nexus-jb-lang-label"><h4>Language: </h4></label>
                     <div className="nexus-jb-lang-input">
                         <Textfield
@@ -49,7 +49,7 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder}) => {
                     <HelperMessage>
                         Type to change language
                     </HelperMessage>
-                </div>
+                </div>)
             }
         </div>
 
