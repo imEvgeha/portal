@@ -60,6 +60,12 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             } else if (column.colId === 'matchButton') {
                 const newMatchList = {...matchList};
                 if (newValue) {
+                    if (duplicateList[id]) {
+                        const newList = {...duplicateList};
+                        delete newList[id];
+                        node.setDataValue('duplicateButton', false);
+                        setDuplicateList(newList);
+                    }
                     if (matchList[repo]) {
                         nodeFound = api.getRowNode(matchList[repo].id);
                         nodeFound && nodeFound.setDataValue('matchButton', false);
