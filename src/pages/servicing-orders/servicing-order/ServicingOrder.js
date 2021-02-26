@@ -164,7 +164,11 @@ const ServicingOrder = ({match}) => {
                     deteErrors={selectedOrder.errors || []}
                 >
                     {orderOrigin === 'JUICEBOX' ?
-                        <JuiceBoxSection selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/>
+                        <JuiceBoxSection
+                            selectedOrder={selectedOrder}
+                            setSelectedOrder={setSelectedOrder}
+                            isDisabled={isFormDisabled(selectedOrder)}
+                        />
                         :
                         <div>
                             {get(selectedOrder,'definition', null) &&

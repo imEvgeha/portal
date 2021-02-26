@@ -7,7 +7,7 @@ import {get, set, cloneDeep} from 'lodash';
 import {languagePath} from './constants';
 import './JuiceBoxSection.scss';
 
-const JuiceBoxSection = ({selectedOrder, setSelectedOrder}) => {
+const JuiceBoxSection = ({selectedOrder, setSelectedOrder, isDisabled}) => {
 
     const [language, setLanguage] = useState(get(selectedOrder,languagePath));
     const orderClone = useMemo(()=>cloneDeep(selectedOrder),[selectedOrder]);
@@ -43,12 +43,15 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder}) => {
                             id="jb-lang"
                             value={language || ''}
                             onChange={onLangChange}
+                            isDisabled={isDisabled}
                         />
                     </div>
-
+                    {!isDisabled &&
                     <HelperMessage>
                         Type to change language
                     </HelperMessage>
+                    }
+
                 </div>)
             }
         </div>
@@ -59,6 +62,7 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder}) => {
 JuiceBoxSection.propTypes = {
     selectedOrder: PropTypes.object.isRequired,
     setSelectedOrder: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
 };
 
 
