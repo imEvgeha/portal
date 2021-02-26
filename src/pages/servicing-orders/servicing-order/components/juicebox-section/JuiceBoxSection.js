@@ -28,10 +28,9 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder, isDisabled}) => {
             {language === undefined ?
                 (<div className="nexus-jb-lang-label">
                     <SectionMessage
-                        title="Invalid JuiceBox data"
-                        appearance="error"
+                        title="Data not available"
                     >
-                        <p>The data for this order does not match specifications.</p>
+                        <p>Language not available with this order.</p>
                     </SectionMessage>
                 </div>) :
                 (<div>
