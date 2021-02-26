@@ -1,11 +1,9 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineButtonColumn,
     defineColumn,
@@ -20,6 +18,8 @@ import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
+import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
+import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
@@ -66,7 +66,7 @@ const ServicesTable = ({
     useEffect(
         () => {
             if (!isEmpty(services)) {
-                const flattenedObject = services[providerServices].map((service, index) => ({
+                const flattenedObject = cloneDeep(services)[providerServices].map((service, index) => ({
                     serviceType:
                         service.externalServices.serviceType === 'DETE Recipient'
                             ? SELECT_VALUES.serviceType[0]
@@ -82,6 +82,7 @@ const ServicesTable = ({
                     rowIndex: index,
                     rowHeight: 50,
                 }));
+
                 setTableData(flattenedObject);
             }
         },
@@ -99,20 +100,7 @@ const ServicesTable = ({
     };
 
     // eslint-disable-next-line react/prop-types
-    const closeButtonCell = ({rowIndex}) => {
-        return (
-            <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
-                {!isDisabled && (
-                    <span onClick={() => handleServiceRemoval(rowIndex)}>
-                        <EditorRemoveIcon size="medium" primaryColor="grey" />
-                    </span>
-                )}
-            </CustomActionsCellRenderer>
-        );
-    };
-
-    // eslint-disable-next-line react/prop-types
-    const componentsCell = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
+    const ComponentCellRenderer = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
             if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node,'data.assetType'))) {
@@ -144,15 +132,6 @@ const ServicesTable = ({
             setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
             setUpdatedServices(update);
         };
-
-        const handleFieldEdit = (index,fieldPath, newValue) => {
-            const newRow = cloneDeep(tableData[index]);
-            const update = cloneDeep(services);
-            set(newRow,fieldPath,newValue);
-            set(update,`deteService[${index}].${fieldPath}`,newValue);
-            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
-            setUpdatedServices(update);
-        }
 
         return (
             <Tooltip content={toolTipContent}>
@@ -191,8 +170,8 @@ const ServicesTable = ({
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
-        cellRendererFramework: closeButtonCell,
-        cellRendererParams: services && services[providerServices],
+        cellRendererFramework: CloseButtonCellRenderer,
+        cellRendererParams: ({rowIndex}) => ({rowIndex, isDisabled, handleServiceRemoval}),
     });
 
     const componentCol = {
@@ -205,6 +184,20 @@ const ServicesTable = ({
         // eslint-disable-next-line react/prop-types
         cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
         cellRendererParams: {tableData},
+    };
+
+    // eslint-disable-next-line react/prop-types
+
+    const watermarkCol = {
+        sortable: false,
+        // eslint-disable-next-line react/prop-types
+        cellRenderer: 'checkBoxRenderer',
+        cellRendererParams: ({rowIndex, node}) =>
+            ({
+                rowIndex,
+                node,
+                toggleCheck: ()=>handleFieldEdit(rowIndex,'externalServices.parameters','Watermark',!get(tableData[rowIndex], 'watermark')),
+            }),
     };
 
     // get spec col selection values dynamically when user hovers the row
@@ -227,7 +220,24 @@ const ServicesTable = ({
         }
     };
 
-    console.log('tableData ',tableData, services)
+    const handleFieldEdit = (index,fieldPath, fieldName,newValue) => {
+        const newRow = cloneDeep(tableData[index]);
+        const update = cloneDeep(services);
+        set(newRow,fieldName,newValue);
+        if(fieldPath === 'externalServices.parameters') {
+            const inx = get(update.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
+            if(inx >= 0) {
+                set(update,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
+            }
+            else
+                update.deteServices[index].externalServices.parameters = [...update.deteServices[index].externalServices.parameters, {name: fieldName, value: newValue}]
+        }
+        else
+            set(update,`deteService[${index}].${fieldPath}`,newValue);
+        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+        setServices(update);
+        setUpdatedServices(update);
+    }
 
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
@@ -247,14 +257,7 @@ const ServicesTable = ({
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
             case 'watermark':
-                return {
-                    ...item,
-                    // eslint-disable-next-line react/prop-types
-                    cellRenderer: ({rowIndex}) => {
-                        const fieldPath = 'externalServices.parameters';
-                        return <input type='checkbox' onClick={() => console.log('cell clicked: ', tableData[rowIndex])} checked={get(tableData[rowIndex],'watermark')} />;
-                    },
-                }
+                return {...item, ...watermarkCol}
 
             default:
                 return item;
@@ -369,7 +372,12 @@ const ServicesTable = ({
                 selectValues={{...SELECT_VALUES, spec: specOptions}}
                 onGridEvent={handleTableChange}
                 onCellMouseOver={getSpecOptions}
-                frameworkComponents={{'componentCellRenderer': componentsCell}}
+                frameworkComponents={
+                    {
+                        'componentCellRenderer': ComponentCellRenderer,
+                        'checkBoxRenderer': CheckBoxRenderer,
+                    }
+                }
             />
         </div>
     );

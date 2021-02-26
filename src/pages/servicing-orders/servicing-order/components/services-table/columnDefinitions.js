@@ -50,7 +50,7 @@ const columnDefinitions = [
         headerName: 'Do not start before',
         width: 200,
         sortable: false,
-        valueFormatter: params => ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
+        valueFormatter: params => ISODateToView(params.data?.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
     },
     {
         colId: 'watermark',
