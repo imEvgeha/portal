@@ -7,7 +7,7 @@ export const USER = 'user';
 export const POTENTIAL_OWNERS = 'potentialOwners';
 export const ACTUAL_OWNER = 'actualOwner';
 export const ALL = '*';
-export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&taskId=';
+export const DOP_GUIDED_TASK_URL = '/AmdocsOSS/Portal/index.html?launchApp=Tasks&gtMethod=external&taskId=';
 export const DOP_PROJECT_URL = '/AmdocsOSS/Portal/index.html?launchApp=Projects&projectId=';
 export const PAGE_LIMIT = 100;
 
