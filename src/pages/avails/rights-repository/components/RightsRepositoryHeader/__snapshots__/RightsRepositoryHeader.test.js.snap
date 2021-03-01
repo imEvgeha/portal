@@ -16,11 +16,6 @@ exports[`RightsRepositoryHeader should match snapshot 1`] = `
       Rights
     </h1>
   </div>
-  <Connect(SavedTableDropdown)
-    columnApi={Object {}}
-    gridApi={Object {}}
-    username=""
-  />
   <WithAnalyticsContext(WithAnalyticsEvents(Button))
     appearance="primary"
     onClick={[Function]}
