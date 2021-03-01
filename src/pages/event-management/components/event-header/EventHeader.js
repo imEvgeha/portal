@@ -20,10 +20,7 @@ const EventHeader = ({event}) => {
                             {!['createdTimeStamp', 'postedTimeStamp'].includes(fieldName) ? (
                                 get(event, fieldName)
                             ) : (
-                                <DateTimeRenderer
-                                    value={get(event, fieldName)}
-                                    format={DATETIME_FIELDS.BUSINESS_DATETIME}
-                                >
+                                <DateTimeRenderer value={get(event, fieldName)} format={DATETIME_FIELDS.TIMESTAMP}>
                                     {value => <p>{value}</p>}
                                 </DateTimeRenderer>
                             )}
