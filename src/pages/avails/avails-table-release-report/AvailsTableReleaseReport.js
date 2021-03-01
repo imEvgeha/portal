@@ -25,7 +25,8 @@ const AvailsTableReleaseReport = ({}) => {
         exportService
             .getReleaseReport({startFrom, startTo})
             .then(response => {
-                downloadFile(response);
+                const total = headers.get('filename');
+                downloadFile(response, `${selectedMonth}-${selectedYear}-New_Release_Report_US_`);
                 setIsLoading(false);
                 setIsOpen(false);
             })
