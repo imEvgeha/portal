@@ -2,19 +2,6 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import JuiceBoxSection from './JuiceBoxSection';
 
-describe('JuiceBoxSection', () => {
-    const wrapper = shallow(
-        <JuiceBoxSection
-            selectedOrder={JUICEBOX_TEST_ORDER}
-            setSelectedOrder={() => null}
-        />
-    );
-    it('Should match snapshot', () => {
-        expect(wrapper).toMatchSnapshot();
-    });
-});
-
-
 const JUICEBOX_TEST_ORDER = {
     id: "fo_deiRExTo",
     type: "FulfillmentOrder",
@@ -99,4 +86,28 @@ const JUICEBOX_TEST_ORDER = {
     start_date: "2020-11-20T00:54:00Z",
     due_date: "2021-01-21T07:59:59Z",
     soi_doc_id: "soi_b4ce9zix",
-}
+};
+
+describe('JuiceBoxSection with Language', () => {
+    const wrapper = shallow(
+        <JuiceBoxSection
+            selectedOrder={JUICEBOX_TEST_ORDER}
+            setSelectedOrder={() => null}
+        />
+    );
+    it('Should match snapshot', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+});
+
+describe('JuiceBoxSection without Language', () => {
+    const wrapper = shallow(
+        <JuiceBoxSection
+            selectedOrder={{id: "fo_fail",type: "FulfillmentOrder"}}
+            setSelectedOrder={() => null}
+        />
+    );
+    it('Should match snapshot', () => {
+        expect(wrapper).toMatchSnapshot();
+    });
+});
