@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JuiceBoxSection with Language Should match snapshot 1`] = `
+<div>
+  <h2>
+    JuiceBox Fulfillment Order
+  </h2>
+  <div>
+    <label
+      className="nexus-jb-lang-label"
+      htmlFor="jb-lang"
+    >
+      <h4>
+        Language: 
+      </h4>
+    </label>
+    <div
+      className="nexus-jb-lang-input"
+    >
+      <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+        className="nexus-jb-lang-input_textfield"
+        id="jb-lang"
+        name="juicebox-lang"
+        onChange={[Function]}
+        value="English"
+      />
+    </div>
+    <Component>
+      Type to change language
+    </Component>
+  </div>
+</div>
+`;
+
+exports[`JuiceBoxSection without Language Should match snapshot 1`] = `
+<div>
+  <h2>
+    JuiceBox Fulfillment Order
+  </h2>
+  <div
+    className="nexus-jb-lang-label"
+  >
+    <SectionMessage
+      appearance="info"
+      title="Data not available"
+    >
+      <p>
+        Language not available with this order.
+      </p>
+    </SectionMessage>
+  </div>
+</div>
+`;
