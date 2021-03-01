@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SavedTableDropdown should match snapshot 1`] = `
+<div
+  className="nexus-c-saved-table-dropdown"
+>
+  <div
+    className="nexus-c-saved-table-dropdown__label"
+  >
+    Saved Table Views:
+  </div>
+  <AtlaskitSelect
+    className="nexus-c-saved-table-dropdown__select"
+    classNamePrefix="nexus-select"
+    components={
+      Object {
+        "Option": [Function],
+      }
+    }
+    enableAnimation={true}
+    onChange={[Function]}
+    onClickPreventDefault={true}
+    onCreateOption={[Function]}
+    options={
+      Array [
+        Object {
+          "label": "Predefined Views",
+          "options": Array [
+            Object {
+              "label": "All",
+              "value": "all",
+            },
+            Object {
+              "label": "In Error",
+              "value": "in-error",
+            },
+            Object {
+              "label": "Ready/Pending",
+              "value": "ready-or-pending",
+            },
+          ],
+        },
+        Object {
+          "label": "My Saved Views",
+          "options": Array [],
+        },
+      ]
+    }
+    placeholder="Search Saved Views"
+    spacing="default"
+    tabSelectsValue={false}
+    validationState="default"
+    value={null}
+  />
+</div>
+`;

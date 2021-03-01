@@ -14,7 +14,6 @@ export const createColumnDefs = payload => {
         .filter(column => column.dataType && column.displayName)
         .reduce((columnDefs, column) => {
             const {javaVariableName, displayName, dataType, queryParamName, sortParamName} = column;
-            const isColumnLocked = ['id'].includes(javaVariableName);
             const hasLink = ['id', 'title'].includes(javaVariableName);
             const columnDef = {
                 field: javaVariableName,
@@ -29,10 +28,6 @@ export const createColumnDefs = payload => {
                     : {},
                 valueFormatter: createValueFormatter(column),
                 width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
-                lockPosition: isColumnLocked,
-                lockVisible: isColumnLocked,
-                lockPinned: isColumnLocked,
-                pinned: isColumnLocked && 'left',
                 type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
             };
             return [...columnDefs, columnDef];

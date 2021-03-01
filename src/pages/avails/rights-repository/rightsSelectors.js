@@ -20,3 +20,5 @@ export const createRightsWithDependenciesSelector = () =>
 
 export const createDeletedRightsCountSelector = () =>
     createSelector(getRightsReducer, rights => rights.deletedRightsCount || 0);
+
+export const createUserGridSelector = () => createSelector(getRightsReducer, rights => rights.gridState || {});

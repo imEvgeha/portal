@@ -37,6 +37,9 @@ export const defineCheckboxSelectionColumn = ({headerName = '', ...rest} = {}) =
         headerName,
         width: 40,
         checkboxSelection: true,
+        pinned: 'left',
+        lockPinned: true,
+        lockPosition: true,
         lockVisible: true,
         filter: false,
         ...rest,
@@ -70,6 +73,9 @@ export const defineButtonColumn = ({
         editable,
         width: headerName !== '' ? DEFAULT_WIDTH : NO_HEADER_WIDTH,
         ...rest,
+        lockPosition: false,
+        pinned: 'left',
+        lockPinned: true,
     });
 };
 
