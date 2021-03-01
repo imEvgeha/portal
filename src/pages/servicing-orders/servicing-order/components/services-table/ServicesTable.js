@@ -1,11 +1,9 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineButtonColumn,
     defineColumn,
@@ -13,13 +11,15 @@ import {
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
-import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
+import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
+import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
@@ -76,11 +76,13 @@ const ServicesTable = ({
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
+                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value,
                     recipient,
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
                 }));
+
                 setTableData(flattenedObject);
             }
         },
@@ -98,20 +100,7 @@ const ServicesTable = ({
     };
 
     // eslint-disable-next-line react/prop-types
-    const closeButtonCell = ({rowIndex}) => {
-        return (
-            <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
-                {!isDisabled && (
-                    <span onClick={() => handleServiceRemoval(rowIndex)}>
-                        <EditorRemoveIcon size="medium" primaryColor="grey" />
-                    </span>
-                )}
-            </CustomActionsCellRenderer>
-        );
-    };
-
-    // eslint-disable-next-line react/prop-types
-    const componentsCell = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
+    const ComponentCellRenderer = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
             if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node,'data.assetType'))) {
@@ -181,8 +170,8 @@ const ServicesTable = ({
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
-        cellRendererFramework: closeButtonCell,
-        cellRendererParams: services && services[providerServices],
+        cellRendererFramework: CloseButtonCellRenderer,
+        cellRendererParams: ({rowIndex}) => ({rowIndex, isDisabled, handleServiceRemoval}),
     });
 
     const componentCol = {
@@ -195,6 +184,19 @@ const ServicesTable = ({
         // eslint-disable-next-line react/prop-types
         cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
         cellRendererParams: {tableData},
+    };
+
+    const watermarkCol = {
+        sortable: false,
+        cellRenderer: 'checkBoxRenderer',
+        headerComponentFramework:  () => <span title="watermark"><i className="fas fa-tint"/></span>,
+        cellRendererParams: ({rowIndex, node}) =>
+            ({
+                rowIndex,
+                node,
+                isDisabled,
+                toggleCheck: ()=>handleFieldEdit(rowIndex,'externalServices.parameters','Watermark',!get(tableData[rowIndex], 'watermark')),
+            }),
     };
 
     // get spec col selection values dynamically when user hovers the row
@@ -217,6 +219,25 @@ const ServicesTable = ({
         }
     };
 
+    const handleFieldEdit = (index,fieldPath, fieldName,newValue) => {
+        const newRow = cloneDeep(tableData[index]);
+        const update = cloneDeep(services);
+        set(newRow,fieldName,newValue);
+        if(fieldPath === 'externalServices.parameters') {
+            const inx = get(update.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
+            if(inx >= 0) {
+                set(update,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
+            }
+            else
+                update.deteServices[index].externalServices.parameters = [...update.deteServices[index].externalServices.parameters, {name: fieldName, value: newValue}]
+        }
+        else
+            set(update,`deteService[${index}].${fieldPath}`,newValue);
+        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+        setServices(update);
+        setUpdatedServices(update);
+    }
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
@@ -234,6 +255,8 @@ const ServicesTable = ({
                     },
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
+            case 'watermark':
+                return {...item, ...watermarkCol}
 
             default:
                 return item;
@@ -269,6 +292,8 @@ const ServicesTable = ({
                 currentService.overrideStartDate = data.doNotStartBefore || '';
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
+                currentService.externalServices.parameters.find(param => param.name === 'Watermark').value =
+                    data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
                     currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
@@ -346,7 +371,12 @@ const ServicesTable = ({
                 selectValues={{...SELECT_VALUES, spec: specOptions}}
                 onGridEvent={handleTableChange}
                 onCellMouseOver={getSpecOptions}
-                frameworkComponents={{'componentCellRenderer': componentsCell}}
+                frameworkComponents={
+                    {
+                        'componentCellRenderer': ComponentCellRenderer,
+                        'checkBoxRenderer': CheckBoxRenderer,
+                    }
+                }
             />
         </div>
     );
