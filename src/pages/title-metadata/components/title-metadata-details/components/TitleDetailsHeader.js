@@ -64,7 +64,7 @@ const TitleDetailsHeader = ({
                 <div
                     className={classnames('nexus-c-title-details-header__title-info-container', {
                         'nexus-c-title-details-header__title-info-container--no-border':
-                            title.catalogueOwner === MGM || !isNexusTitle(title.id) || isEditView,
+                            title.catalogOwner === MGM || !isNexusTitle(title.id) || isEditView,
                     })}
                 >
                     <TitleInfo
@@ -72,10 +72,10 @@ const TitleDetailsHeader = ({
                         releaseYear={title.releaseYear}
                         contentType={title.contentType}
                         titleImages={title.images}
-                        catalogueOwner={title.catalogueOwner}
+                        catalogueOwner={title.catalogOwner}
                     />
                 </div>
-                {title.catalogueOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
+                {title.catalogOwner !== MGM && isNexusTitle(title.id) && !isEditView && (
                     <div className="nexus-c-title-details-header__publish-info-container">
                         <SyncPublish
                             externalSystem={VZ}
@@ -101,7 +101,7 @@ const TitleDetailsHeader = ({
                 onSyncPublish={onSyncPublish}
                 titleId={title.id}
                 isEditView={isEditView}
-                catalogueOwner={title.catalogueOwner}
+                catalogueOwner={title.catalogOwner}
                 isVZSyncing={isVZSyncing}
                 isVZPublishing={isVZPublishing}
                 isMOVSyncing={isMOVSyncing}

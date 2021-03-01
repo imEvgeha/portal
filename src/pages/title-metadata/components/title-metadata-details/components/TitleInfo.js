@@ -14,16 +14,16 @@ const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner
             <div className="nexus-c-title-info-container__info">
                 <div>{title}</div>
                 <div>
-                    <span>Year:</span>
+                    <span className="nexus-c-title-info-container__label">Year:</span>
                     <span>{releaseYear}</span>
                 </div>
                 <div>
-                    <span>Type:</span>
+                    <span className="nexus-c-title-info-container__label">Type:</span>
                     <span>{contentType}</span>
                 </div>
                 {catalogueOwner && (
                     <div>
-                        <span>Catalogue Owner:</span>
+                        <span className="nexus-c-title-info-container__label--co">Catalogue Owner:</span>
                         <span>{catalogueOwner}</span>
                     </div>
                 )}
