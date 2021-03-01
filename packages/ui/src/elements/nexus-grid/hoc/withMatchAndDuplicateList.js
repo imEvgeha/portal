@@ -58,8 +58,14 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                 }
                 setDuplicateList(newList);
             } else if (column.colId === 'matchButton') {
+                const newMatchList = {...matchList};
                 if (newValue) {
-                    const newMatchList = {...matchList};
+                    if (duplicateList[id]) {
+                        const newList = {...duplicateList};
+                        delete newList[id];
+                        node.setDataValue('duplicateButton', false);
+                        setDuplicateList(newList);
+                    }
                     if (matchList[repo]) {
                         nodeFound = api.getRowNode(matchList[repo].id);
                         nodeFound && nodeFound.setDataValue('matchButton', false);
@@ -78,8 +84,10 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                         nodeFound = api.getRowNode(matchList[NEXUS].id);
                         nodeFound && nodeFound.setDataValue('matchButton', false);
                     }
-                    setMatchList(newMatchList);
+                } else {
+                    delete newMatchList[repo];
                 }
+                setMatchList(newMatchList);
             }
         };
 
