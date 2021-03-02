@@ -4,9 +4,8 @@ import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
-import {connect} from 'react-redux';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
-import {CREATE_REPORT, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
+import {CREATE_REPORT, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
 const AvailsTableReleaseReport = ({}) => {
@@ -25,7 +24,6 @@ const AvailsTableReleaseReport = ({}) => {
         exportService
             .getReleaseReport({startFrom, startTo})
             .then(response => {
-                const total = headers.get('filename');
                 downloadFile(response, `${selectedMonth}-${selectedYear}-New_Release_Report_US_`);
                 setIsLoading(false);
                 setIsOpen(false);
@@ -41,6 +39,7 @@ const AvailsTableReleaseReport = ({}) => {
         for (let i = START_YEAR; i <= END_YEAR; i++) {
             list.push({value: i, label: i});
         }
+        list.push({value: MOCK_YEAR, label: MOCK_YEAR});
         return list;
     };
 
