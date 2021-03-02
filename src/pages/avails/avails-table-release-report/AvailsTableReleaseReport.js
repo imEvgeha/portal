@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Popup from '@atlaskit/popup';
 import Select from '@atlaskit/select';
+import {ERROR_ICON} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-toast-notification/constants';
+import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
 import moment from 'moment';
 import {exportService} from '../../legacy/containers/avail/service/ExportService';
-import {CREATE_REPORT, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
+import {CREATE_REPORT, ERROR_MESSAGE, MOCK_YEAR, MONTHS, START_YEAR, END_YEAR, NEW_RELEASE_REPORT} from './constants';
 import './AvailsTableReleaseReport.scss';
 
-const AvailsTableReleaseReport = ({}) => {
+const AvailsTableReleaseReport = ({addToast}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState(moment().format('MMMM'));
@@ -31,6 +34,11 @@ const AvailsTableReleaseReport = ({}) => {
             .catch(error => {
                 setIsLoading(false);
                 setIsOpen(false);
+                addToast({
+                    title: ERROR_MESSAGE,
+                    icon: ERROR_ICON,
+                    isWithOverlay: false,
+                });
             });
     };
 
@@ -93,4 +101,12 @@ const AvailsTableReleaseReport = ({}) => {
     );
 };
 
-export default AvailsTableReleaseReport;
+AvailsTableReleaseReport.propTypes = {
+    addToast: PropTypes.func,
+};
+
+AvailsTableReleaseReport.defaultProps = {
+    addToast: () => null,
+};
+
+export default withToasts(AvailsTableReleaseReport);
