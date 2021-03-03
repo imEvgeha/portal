@@ -396,6 +396,8 @@ const RightsRepository = ({
                 } else {
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
+
+                // console.log(selectedRepoRights);
                 break;
             }
             case ROW_DATA_CHANGED:
@@ -437,7 +439,7 @@ const RightsRepository = ({
             )}
             <AvailsTableToolbar
                 totalRows={totalCount}
-                selectedRightsCount={currentUserSelectedRights.length}
+                selectedRightsCount={selectedRepoRights.length}
                 prePlanRightsCount={currentUserPrePlanRights.length}
                 setActiveTab={setActiveTab}
                 activeTab={activeTab}
