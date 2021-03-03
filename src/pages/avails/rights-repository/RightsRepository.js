@@ -397,7 +397,6 @@ const RightsRepository = ({
                     nodesToDeselect.forEach(node => node.setSelected(false));
                 }
 
-                // console.log(selectedRepoRights);
                 break;
             }
             case ROW_DATA_CHANGED:
