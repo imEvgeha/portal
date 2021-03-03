@@ -123,6 +123,8 @@ const NexusDynamicForm = ({
                     if (Array.isArray(src)) {
                         return src;
                     }
+                    // keep original null values if not updated
+                    else if (obj === null) return null;
                 })
             );
         }
