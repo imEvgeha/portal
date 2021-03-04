@@ -123,8 +123,19 @@ const NexusDynamicForm = ({
                     if (Array.isArray(src)) {
                         return src;
                     }
-                    // keep original null values if not updated
-                    else if (obj === null) return null;
+                    // keep original null value if updated value is object and all its properties are falsy
+                    // non object values are null already if not edited
+                    else if (obj === null && typeof src === 'object') {
+                        if(!src) return null;
+                        if (!Object.keys(src).some(k =>
+                        {
+                            if(Array.isArray(src[k])) // if value is array
+                                return src[k].length;
+                            else if(typeof src[k] === 'object' && src[k] !== null) // if value is object
+                                return Object.keys(src[k]).length;
+                            return src[k]; // else return value
+                        })) return null;
+                    }
                 })
             );
         }
