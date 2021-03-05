@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {connect} from 'react-redux';
 import Select from '@atlaskit/select';
-import {sortBy} from 'lodash';
+import {sortBy, get} from 'lodash';
 import EditorialMetadataTab from './EditorialMetadataTab';
 import EditorialMetadataCreateTab from './EditorialMetadataCreateTab';
 import EditorialMetadataEditMode from './EditorialMetadataEditMode';
@@ -65,30 +65,32 @@ const EditorialMetadata = ({
 
     // When editorialMetadata is received/updated, extract its items and categorize them in folders
     useEffect(() => {
-        // Will hold all unique comibnations of locale+language
-        const foldersSet = new Set();
+        if (get(configLanguage, 'value.length', 0)) {
+            // Will hold all unique comibnations of locale+language
+            const foldersSet = new Set();
 
-        // Extract locale+language from each editorialMetadata item and add it to flodersSet set
-        Object.keys(editorialMetadata).forEach(key => {
-            const {locale = '', language = ''} = editorialMetadata[key];
-            const folderName = `${locale} ${getLanguageByCode(language)}`;
+            // Extract locale+language from each editorialMetadata item and add it to flodersSet set
+            Object.keys(editorialMetadata).forEach(key => {
+                const {locale = '', language = ''} = editorialMetadata[key];
+                const folderName = `${locale} ${getLanguageByCode(language)}`;
 
-            foldersSet.add(folderName);
-        });
-
-        const categorizedEditorialMetadata = {};
-
-        // For each folder, extract its children
-        Array.from(foldersSet).forEach(folder => {
-            categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
-                return folder === `${locale} ${getLanguageByCode(language)}`;
+                foldersSet.add(folderName);
             });
-        });
-        setFoldersChildren(categorizedEditorialMetadata);
 
-        // Create options for react-select
-        setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
-    }, [editorialMetadata]);
+            const categorizedEditorialMetadata = {};
+
+            // For each folder, extract its children
+            Array.from(foldersSet).forEach(folder => {
+                categorizedEditorialMetadata[folder] = editorialMetadata.filter(({locale, language}) => {
+                    return folder === `${locale} ${getLanguageByCode(language)}`;
+                });
+            });
+            setFoldersChildren(categorizedEditorialMetadata);
+
+            // Create options for react-select
+            setFoldersOptions(Array.from(foldersSet).map(folder => ({value: folder, label: folder})));
+        }
+    }, [editorialMetadata, configLanguage]);
     useEffect(() => setCurrentFolder(foldersOptions[0]), [foldersOptions]);
 
     const titleHasMaster = editorialMetadata.find(e => e['hasGeneratedChildren']);

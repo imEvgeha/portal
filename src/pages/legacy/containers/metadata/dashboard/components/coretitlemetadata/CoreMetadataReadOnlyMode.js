@@ -297,8 +297,8 @@ class CoreMetadataReadOnlyMode extends Component {
                                     <Col>
                                         <Alert color="light">
                                             <b style={{color: '#000'}}>MSV Association ID:</b>{' '}
-                                            {externalIds.msvAssociationId.map(item => (
-                                                <span title={item}>
+                                            {externalIds.msvAssociationId.map((item, i) => (
+                                                <span title={item} key={`${item}-${i}`}>
                                                     <Tag text={item} />
                                                 </span>
                                             ))}
