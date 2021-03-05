@@ -17,6 +17,7 @@ const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handl
         fulfillmentOrders,
         external_id: externalId,
         status,
+        completedDate,
     } = servicingOrderItem;
     const count = fulfillmentOrders.length;
     const [isOpen, setOpen] = useState(false);
@@ -45,9 +46,10 @@ const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handl
                 <div className="nexus-c-servicing-order-item__row">
                     <div className="nexus-c-servicing-order-item__row-group">
                         <ChevronIcon className={chevronClassNames} />
-                        <p className="nexus-c-servicing-order-item__due-dates">
-                            {renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}
-                        </p>
+                        <div className="nexus-c-servicing-order-item__due-dates">
+                            <div>{renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}</div>
+                            <div>Completed Date: {completedDate}</div>
+                        </div>
                     </div>
                     {!!status && <StatusTag status={`FO_${status}`} />}
                 </div>

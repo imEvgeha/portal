@@ -12,8 +12,15 @@ import './ServiceOrderFilter.scss';
 
 const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirection, setDueDateSortDirection}) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const {tenant, external_id: externalId, description, configured_pr_id: configuredPrId, sr_due_date: srDueDate} =
-        orderDetails || {};
+    const {
+        tenant,
+        external_id: externalId,
+        description,
+        configured_pr_id: configuredPrId,
+        sr_due_date: srDueDate,
+        titleManager,
+        completedDate,
+    } = orderDetails || {};
     const filterList = [{value: 'All', label: 'All'}];
     const mappedFilterList = filterList.concat(
         Object.keys(Constants.STATUS).map(key => ({
@@ -30,17 +37,19 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                 </div>
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Order ID: {externalId}
+                    Servicing Request ID: {externalId}
                 </div>
-            </div>
 
-            {description !== null && (
-                <div className="so-panel-filter-detail__row">
+                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                    Title Manager: {titleManager}
+                </div>
+
+                {description !== null && (
                     <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
                         Description: {description}
                     </div>
-                </div>
-            )}
+                )}
+            </div>
 
             <div className="so-panel-filter-detail__row">
                 <Button onClick={() => setIsDrawerOpen(true)}>Partner Request</Button>
@@ -54,11 +63,19 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                 </NexusDrawer>
             </div>
 
-            <div className="so-panel-filter-detail__row">
+            <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <NexusDatePicker
                     id="dueDate"
                     label="SO Due Date"
                     value={getValidDate(srDueDate)}
+                    isDisabled
+                    isReturningTime={false}
+                    onChange={() => null}
+                />
+                <NexusDatePicker
+                    id="completedDate"
+                    label="Completed Date"
+                    value={getValidDate(completedDate)}
                     isDisabled
                     isReturningTime={false}
                     onChange={() => null}

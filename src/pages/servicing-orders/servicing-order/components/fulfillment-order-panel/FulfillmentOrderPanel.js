@@ -10,6 +10,7 @@ const FulfillmentOrderPanel = ({
     externalId,
     status,
     dueDate,
+    completedDate,
     servicer,
     selected,
     handleFulfillmentOrderChange,
@@ -32,7 +33,10 @@ const FulfillmentOrderPanel = ({
                             {externalId}
                         </span>
                     </div>
-                    <span className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</span>
+                    <div className="nexus-c-fulfillment-order-panel__title-container">
+                        <div className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</div>
+                        <div className="nexus-c-fulfillment-order-panel__date">Completed Date: {completedDate}</div>
+                    </div>
                 </div>
             </div>
             <div className="nexus-c-fulfillment-order-panel__description-and-status">
@@ -48,6 +52,7 @@ FulfillmentOrderPanel.propTypes = {
     handleFulfillmentOrderChange: PropTypes.func,
     status: PropTypes.string,
     dueDate: PropTypes.string,
+    completedDate: PropTypes.string,
     servicer: PropTypes.string,
     // eslint-disable-next-line react/boolean-prop-naming
     selected: PropTypes.bool,
@@ -61,6 +66,7 @@ FulfillmentOrderPanel.defaultProps = {
     handleFulfillmentOrderChange: () => null,
     status: '',
     dueDate: '',
+    completedDate: '',
     servicer: '',
     selected: false,
     productDescription: '',
