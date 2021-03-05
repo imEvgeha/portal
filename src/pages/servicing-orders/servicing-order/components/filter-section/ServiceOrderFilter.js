@@ -18,6 +18,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
         description,
         configured_pr_id: configuredPrId,
         sr_due_date: srDueDate,
+        so_number: soNumber,
         titleManager,
         completedDate,
     } = orderDetails || {};
@@ -38,6 +39,10 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
                     Servicing Request ID: {externalId}
+                </div>
+
+                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
+                    Servicing Order ID: {soNumber}
                 </div>
 
                 <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
