@@ -3,6 +3,7 @@ export const NEW_RELEASE_REPORT = 'New Release Report';
 export const START_YEAR = 1970;
 export const END_YEAR = 2030;
 export const MOCK_YEAR = 2099;
+export const ERROR_MESSAGE = 'No records found';
 export const MONTHS = [
     'January',
     'February',
