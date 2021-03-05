@@ -48,13 +48,20 @@ FulfillmentOrderPanels.defaultProps = {
     handleFulfillmentOrderChange: () => null,
 };
 
-export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrderChange, isChild = false) => {
+export const renderPanel = (
+    info,
+    selectedFulfillmentOrder,
+    handleFulfillmentOrderChange,
+    isChild = false,
+    completedDate = ''
+) => {
     return info.type === 'ServicingOrderItem' ? (
         <ServicingOrderItem
             key={info.id}
             servicingOrderItem={info}
             selectedFulfillmentOrder={selectedFulfillmentOrder}
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
+            completedDate={completedDate}
         />
     ) : (
         <FulfillmentOrderPanel
@@ -68,6 +75,7 @@ export const renderPanel = (info, selectedFulfillmentOrder, handleFulfillmentOrd
             handleFulfillmentOrderChange={handleFulfillmentOrderChange}
             productDescription={info.product_description}
             isChild={isChild}
+            completedDate={ISODateToView(get(info, 'completedDate'), 'regionalMidnight')}
         />
     );
 };
