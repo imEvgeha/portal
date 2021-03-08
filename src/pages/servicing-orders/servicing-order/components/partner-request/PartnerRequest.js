@@ -15,7 +15,8 @@ const PartnerRequest = ({externalId, configuredPrId}) => {
             // eslint-disable-next-line prefer-destructuring
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
-            const materialsList = definition['materials'] ? definition['materials'] : get(JSON.parse(definition),'materials',[])
+            const materialsList = definition['materials'] ? definition['materials'] : 
+            get(typeof definition === "string" ? JSON.parse(definition) : definition,'materials',[])
             setData({
                 list: materialsList,
                 tenant,
