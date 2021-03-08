@@ -11,13 +11,17 @@ import {get} from 'lodash';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
 
-const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handleFulfillmentOrderChange}) => {
+const ServicingOrderItem = ({
+    servicingOrderItem,
+    selectedFulfillmentOrder,
+    handleFulfillmentOrderChange,
+    completedDate,
+}) => {
     const {
         product_description: productDescription,
         fulfillmentOrders,
         external_id: externalId,
         status,
-        completedDate,
     } = servicingOrderItem;
     const count = fulfillmentOrders.length;
     const [isOpen, setOpen] = useState(false);
@@ -69,11 +73,13 @@ ServicingOrderItem.propTypes = {
     servicingOrderItem: PropTypes.any.isRequired,
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
+    completedDate: PropTypes.string,
 };
 
 ServicingOrderItem.defaultProps = {
     selectedFulfillmentOrder: null,
     handleFulfillmentOrderChange: () => null,
+    completedDate: '',
 };
 
 /**
