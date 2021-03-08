@@ -138,7 +138,7 @@
         "dataType": "boolean",
         "headerName": "late",
         "width": 100,
-        "javaVariableName": "Late",
+        "javaVariableName": "late",
         "searchDataType": "boolean",
         "sortable": true,
         "hide": true
