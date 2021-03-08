@@ -19,8 +19,8 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
         configured_pr_id: configuredPrId,
         sr_due_date: srDueDate,
         so_number: soNumber,
-        titleManager,
-        completedDate,
+        title_manager: titleManager,
+        completed_date: completedDate,
     } = orderDetails || {};
     const filterList = [{value: 'All', label: 'All'}];
     const mappedFilterList = filterList.concat(
