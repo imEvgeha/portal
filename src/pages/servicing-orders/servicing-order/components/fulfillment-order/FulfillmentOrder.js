@@ -2,7 +2,9 @@ import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ErrorIcon from "@atlaskit/icon/glyph/error";
+import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
+import {Radio} from '@atlaskit/radio';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
 import Tooltip from "@atlaskit/tooltip";
@@ -13,6 +15,7 @@ import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/load
 import {createSuccessMessageSelector} from '@vubiquity-nexus/portal-ui/lib/success/successSelector';
 import {getValidDate} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {cloneDeep, get, isEmpty, set, isEqual} from 'lodash';
+import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
@@ -191,6 +194,8 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
+    console.log('start date: ',getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, '')))
+
     return (
         <Page>
             <div className="fulfillment-order__section">
@@ -220,27 +225,105 @@ export const FulfillmentOrder = ({
                                 </ButtonGroup>
                             </div>
                         </div>
-                        <Grid>
-                            <GridColumn medium={6}>
-                                <label htmlFor="notes">Notes:</label>
-                                <NexusTextArea
-                                    name="notes"
-                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
-                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
-                                    isDisabled={isFormDisabled}
-                                />
+                        <Grid spacing="compact">
+                            <GridColumn medium={3}>                      
+                                <div className="nexus-fo-date-readonly">
+                                    Servicer:  <Lozenge appearance="new">{get(fulfillmentOrder, fieldKeys.SERVICER, '')}</Lozenge>
+                                </div>
+                                <div className="nexus-fo-date-readonly">
+                                    Start Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
+                                </div>
+                                <div className="nexus-fo-date-readonly">
+                                    Due Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
+                                </div>
+                                <div className="nexus-fo-date-readonly">
+                                    Completed Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
+                                </div>
+                                <div>
+                                    <Radio
+                                        value="premiering"
+                                        label="Premiering"
+                                        name="premiering"
+                                        isChecked={false}
+                                        onChange={() => {}}
+                                    />
+                                </div>
+                                <div>
+                                    <Radio
+                                        value="watermark"
+                                        label="Watermark"
+                                        name="watermark"
+                                        isChecked={false}
+                                        onChange={() => {}}
+                                    />
+                                </div>
+                                <div>
+                                    <Radio
+                                        value="late"
+                                        label="Late"
+                                        name="late"
+                                        isChecked={false}
+                                        onChange={() => {}}
+                                    />
+                                </div>
                             </GridColumn>
-                            <GridColumn medium={2}>
-                                <label htmlFor="servicer">Servicer</label>
-                                <Textfield
-                                    name="servicer"
-                                    value={get(fulfillmentOrder, fieldKeys.SERVICER, '')}
-                                    isDisabled={true}
-                                />
-                            </GridColumn>
-
-                            <GridColumn medium={2}>
+                            <GridColumn medium={3}>
                                 <div className="fulfillment-order__input">
+                                    <label htmlFor="readiness-status">Market Type</label>
+                                    <Select
+                                        id="market-type"
+                                        name="market-type"
+                                        options={Constants.READINESS_STATUS}
+                                        value={{
+                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
+                                            label: readinessOption && readinessOption.label,
+                                        }}
+                                        onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
+                                        isDisabled={isFormDisabled}
+                                    />
+                                </div>
+                                <div className="fulfillment-order__input">
+                                    <label htmlFor="late-fault">Late At Fault</label>
+                                    <Select
+                                        id="late-fault"
+                                        name="late-fault"
+                                        options={Constants.READINESS_STATUS}
+                                        value={{
+                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
+                                            label: readinessOption && readinessOption.label,
+                                        }}
+                                        onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
+                                        isDisabled={isFormDisabled}
+                                    />
+                                </div>
+                            </GridColumn>
+                            <GridColumn medium={3}>
+                                <div className="fulfillment-order__input">
+                                    <label htmlFor="car">CAR</label>
+                                    <Textfield
+                                        name="CAR"
+                                        id="car"
+                                        value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || 'CAR'}
+                                        isDisabled={true}
+                                    />
+                                </div>
+                                <div className="fulfillment-order__input">
+                                    <label htmlFor="late-reason">Late Reason</label>
+                                    <Select
+                                        id="late-reason"
+                                        name="late-reason"
+                                        options={Constants.READINESS_STATUS}
+                                        value={{
+                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
+                                            label: readinessOption && readinessOption.label,
+                                        }}
+                                        onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
+                                        isDisabled={isFormDisabled}
+                                    />
+                                </div>
+                            </GridColumn>
+                            <GridColumn medium={3}>
+                            <div className="fulfillment-order__input">
                                     <Tooltip content={deteErrors.length ?
                                         `View ${deteErrors.length} errors`
                                         : '0 errors'}>
@@ -251,7 +334,8 @@ export const FulfillmentOrder = ({
                                                     : null
                                             }
                                         >
-                                            Fulfillment Status <ErrorIcon size="small" primaryColor={deteErrors.length ?
+                                            <label htmlFor="late-reason">Fulfillment Status</label>
+                                            <ErrorIcon size="small" primaryColor={deteErrors.length ?
                                             'red' :
                                             'grey'}
                                         />
@@ -263,19 +347,6 @@ export const FulfillmentOrder = ({
                                         isDisabled={true}
                                     />
                                 </div>
-                                <div className="fulfillment-order__input">
-                                    <NexusDatePicker
-                                        id="ff_startDate"
-                                        label="Start Date"
-                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))}
-                                        onChange={val => onFieldChange(fieldKeys.START_DATE, val)}
-                                        isReturningTime={false}
-                                        isDisabled={true}
-                                    />
-                                </div>
-                            </GridColumn>
-
-                            <GridColumn medium={2}>
                                 <div className="fulfillment-order__input">
                                     <label htmlFor="readiness-status">Readiness Status</label>
                                     <Select
@@ -291,16 +362,13 @@ export const FulfillmentOrder = ({
                                         isDisabled={isFormDisabled}
                                     />
                                 </div>
-                                <div className="fulfillment-order__input">
-                                    <NexusDatePicker
-                                        id="ff_dueDate"
-                                        label="Due Date"
-                                        value={getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))}
-                                        onChange={val => onFieldChange(fieldKeys.DUE_DATE, val)}
-                                        isReturningTime={false}
-                                        isDisabled={true}
-                                    />
-                                </div>
+                                <label htmlFor="notes">Notes:</label>
+                                <NexusTextArea
+                                    name="notes"
+                                    onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
+                                    notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
+                                    isDisabled={isFormDisabled}
+                                />
                             </GridColumn>
                         </Grid>
                         <hr />
