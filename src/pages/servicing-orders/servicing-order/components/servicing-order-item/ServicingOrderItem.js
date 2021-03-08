@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
+import Tooltip from '@atlaskit/tooltip';
 import ChevronIcon from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import FolderIcon from '@vubiquity-nexus/portal-assets/folder.svg';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
@@ -22,6 +23,10 @@ const ServicingOrderItem = ({
         fulfillmentOrders,
         external_id: externalId,
         status,
+        watermark,
+        premiering,
+        market_type,
+        late,
     } = servicingOrderItem;
     const count = fulfillmentOrders.length;
     const [isOpen, setOpen] = useState(false);
@@ -40,11 +45,60 @@ const ServicingOrderItem = ({
         <>
             <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
                 <div className="nexus-c-servicing-order-item__row">
-                    <div className="nexus-c-servicing-order-item__row-group">
+                    <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__title-row">
                         <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
                         <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
+                        <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__icons">
+                            {!watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <Tooltip content="Late">
+                                        <Badge>
+                                            <i className="fas fa-stopwatch" />
+                                        </Badge>
+                                    </Tooltip>
+                                </span>
+                            )}
+                            {!watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <Tooltip content="Watermark">
+                                        <Badge>
+                                            <i className="fas fa-tint" />
+                                        </Badge>
+                                    </Tooltip>
+                                </span>
+                            )}
+                            {!watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <Tooltip content="Premiering">
+                                        <Badge>
+                                            <i className="far fa-star" />
+                                        </Badge>
+                                    </Tooltip>
+                                </span>
+                            )}
+                            {!watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <Tooltip content="Major">
+                                        <Badge>
+                                            <i className="fas fa-angle-up" />
+                                        </Badge>
+                                    </Tooltip>
+                                </span>
+                            )}
+                            {!watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <Tooltip content="Minor">
+                                        <Badge>
+                                            <i className="fas fa-minus fa-xs" />
+                                        </Badge>
+                                    </Tooltip>
+                                </span>
+                            )}
+                            <span className="nexus-c-servicing-order-item__badge">
+                                <Badge>{count}</Badge>
+                            </span>
+                        </div>
                     </div>
-                    <Badge>{count}</Badge>
                 </div>
                 <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>
                 <div className="nexus-c-servicing-order-item__row">
