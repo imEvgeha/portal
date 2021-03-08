@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {createKeycloakInstance} from '@vubiquity-nexus/portal-auth/keycloak';
 import ErrorBoundary from '@vubiquity-nexus/portal-ui/lib/elements/nexus-error-boundary/ErrorBoundary';
 import NexusLayout from '@vubiquity-nexus/portal-ui/lib/elements/nexus-layout/NexusLayout';
@@ -15,7 +14,7 @@ import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import '@vubiquity-nexus/portal-styles/scss/index.scss';
 import AppProviders from './AppProviders';
 import Router from './Router';
-import {setEnvConfiguration, registerSingleSpaApps} from './config';
+import {setEnvConfiguration} from './config';
 import {routesWithTracking} from './routes';
 import rootSaga from './saga';
 import configureStore from './store';
@@ -48,7 +47,7 @@ const persistor = configurePersistor(store);
 // eslint-disable-next-line
 delete window.__PRELOADED_STATE__;
 
-const App = ({importMap}) => (
+const App = () => (
     <AppContainer>
         <Provider store={store}>
             <AppProviders persistor={persistor}>
@@ -56,7 +55,7 @@ const App = ({importMap}) => (
                     <ErrorBoundary>
                         <Toast />
                         <NexusLayout>
-                            <Router routes={routesWithTracking(importMap)} />
+                            <Router routes={routesWithTracking()} />
                         </NexusLayout>
                     </ErrorBoundary>
                 </ConnectedRouter>
@@ -65,21 +64,11 @@ const App = ({importMap}) => (
     </AppContainer>
 );
 
-App.propTypes = {
-    importMap: PropTypes.object,
-};
-
-App.defaultProps = {
-    importMap: {},
-};
-
 function renderApp() {
     createKeycloakInstance();
     initializeTracker();
     store.runSaga(rootSaga);
-    registerSingleSpaApps().then(importMap => {
-        render(<App importMap={importMap} />, document.getElementById('app'));
-    });
+    render(<App />, document.getElementById('app'));
 }
 
 if (module.hot) {
