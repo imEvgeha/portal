@@ -10,7 +10,6 @@ module.exports = envKeys => ({
     module: {
         strictExportPresence: true,
         rules: [
-            {parser: {system: false}},
             {
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
