@@ -8,7 +8,6 @@ import {Radio} from '@atlaskit/radio';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
 import Tooltip from "@atlaskit/tooltip";
-import NexusDatePicker from '@vubiquity-nexus/portal-ui/lib/elements/nexus-date-and-time-elements/nexus-date-picker/NexusDatePicker';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
@@ -148,6 +147,10 @@ export const FulfillmentOrder = ({
         ? Constants.READINESS_STATUS.find(l => l.value === fulfillmentOrder[fieldKeys.READINESS])
         : {};
 
+    const marketTypeOption = fulfillmentOrder
+        ? Constants.MARKET_TYPES.find(l => l.value === fulfillmentOrder[fieldKeys.MARKET_TYPE])
+        : {};
+
     const onCancel = () => {
         setFulfillmentOrder(savedFulfillmentOrder || selectedFulfillmentOrder);
         cancelEditing();
@@ -194,8 +197,6 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
-    console.log('start date: ',getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, '')))
-
     return (
         <Page>
             <div className="fulfillment-order__section">
@@ -225,27 +226,28 @@ export const FulfillmentOrder = ({
                                 </ButtonGroup>
                             </div>
                         </div>
-                        <Grid spacing="compact">
+                        <Grid layout="fluid">
                             <GridColumn medium={3}>                      
                                 <div className="nexus-fo-date-readonly">
                                     Servicer:  <Lozenge appearance="new">{get(fulfillmentOrder, fieldKeys.SERVICER, '')}</Lozenge>
                                 </div>
                                 <div className="nexus-fo-date-readonly">
-                                    Start Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
+                                    Start Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
                                 </div>
                                 <div className="nexus-fo-date-readonly">
-                                    Due Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
+                                    Due Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
                                 </div>
-                                <div className="nexus-fo-date-readonly">
-                                    Completed Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))).format('MM/DD/YYYY') || 'N/A'}</Lozenge>
-                                </div>
+                                {get(fulfillmentOrder, fieldKeys.STATUS) === Constants.STATUS.COMPLETE && <div className="nexus-fo-date-readonly">
+                                    Completed Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
+                                </div>}
                                 <div>
                                     <Radio
-                                        value="premiering"
+                                        value={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
                                         label="Premiering"
                                         name="premiering"
-                                        isChecked={false}
-                                        onChange={() => {}}
+                                        isChecked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
+                                        onChange={e => onFieldChange(fieldKeys.PREMIERING, e.currentTarget.value === true ? false: true)}
+                                        isDisabled={isFormDisabled}
                                     />
                                 </div>
                                 <div>
@@ -253,8 +255,9 @@ export const FulfillmentOrder = ({
                                         value="watermark"
                                         label="Watermark"
                                         name="watermark"
-                                        isChecked={false}
+                                        isChecked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
                                         onChange={() => {}}
+                                        isDisabled={isFormDisabled}
                                     />
                                 </div>
                                 <div>
@@ -262,8 +265,9 @@ export const FulfillmentOrder = ({
                                         value="late"
                                         label="Late"
                                         name="late"
-                                        isChecked={false}
+                                        isChecked={get(fulfillmentOrder, fieldKeys.LATE, false)}
                                         onChange={() => {}}
+                                        isDisabled={isFormDisabled}
                                     />
                                 </div>
                             </GridColumn>
@@ -273,12 +277,12 @@ export const FulfillmentOrder = ({
                                     <Select
                                         id="market-type"
                                         name="market-type"
-                                        options={Constants.READINESS_STATUS}
+                                        options={Constants.MARKET_TYPES}
                                         value={{
-                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
-                                            label: readinessOption && readinessOption.label,
+                                            value: get(fulfillmentOrder, fieldKeys.MARKET_TYPE, ''),
+                                            label: marketTypeOption && marketTypeOption.label,
                                         }}
-                                        onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
+                                        onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
                                         isDisabled={isFormDisabled}
                                     />
                                 </div>
@@ -289,7 +293,7 @@ export const FulfillmentOrder = ({
                                         name="late-fault"
                                         options={Constants.READINESS_STATUS}
                                         value={{
-                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
+                                            value: get(fulfillmentOrder, fieldKeys.LATE_FAULT, ''),
                                             label: readinessOption && readinessOption.label,
                                         }}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
@@ -303,7 +307,7 @@ export const FulfillmentOrder = ({
                                     <Textfield
                                         name="CAR"
                                         id="car"
-                                        value={Constants.STATUS[get(fulfillmentOrder, fieldKeys.STATUS, '')] || 'CAR'}
+                                        value={get(fulfillmentOrder, fieldKeys.CAR, '')}
                                         isDisabled={true}
                                     />
                                 </div>
@@ -314,7 +318,7 @@ export const FulfillmentOrder = ({
                                         name="late-reason"
                                         options={Constants.READINESS_STATUS}
                                         value={{
-                                            value: get(fulfillmentOrder, fieldKeys.READINESS, ''),
+                                            value: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
                                             label: readinessOption && readinessOption.label,
                                         }}
                                         onChange={val => onFieldChange(fieldKeys.READINESS, val.value)}
@@ -368,6 +372,8 @@ export const FulfillmentOrder = ({
                                     onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
                                     isDisabled={isFormDisabled}
+                                    resize="smart"
+                                    isCompact
                                 />
                             </GridColumn>
                         </Grid>

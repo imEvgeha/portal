@@ -35,11 +35,24 @@ const ServicingOrder = ({match}) => {
     // order origin DETE, JuiceBox etc
     const orderOrigin = get(selectedOrder,'fs');
 
+    // TODO: to be removed before merge - api data simulate
+    const newTestFields = {
+        completed_date: "2020-04-07T00:00:00-07:00",
+        late_reason: "The dog ate my homework",
+        late: true,
+        late_fault: "Everyone is at fault",
+        premiering: false,
+        watermark: true,
+        market_type: "Major",
+        car: "Not sure what is this field"
+    }
+
     useEffect(() => {
         const order =
             get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
-        setSelectedOrder(order);
-        setLastOrder(order);
+        // TODO: newTestFields to be removed before merge - api data simulate
+        setSelectedOrder({...order, ...newTestFields});
+        setLastOrder({...order, ...newTestFields});
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
     const fetchFulfillmentOrders = async servicingOrder => {
