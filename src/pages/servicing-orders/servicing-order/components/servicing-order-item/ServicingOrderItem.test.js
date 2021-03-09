@@ -19,8 +19,13 @@ describe('ServicingOrderItem', () => {
         expect(wrapper.html()).toBeNull();
     });
 
+    it('should include 4 badges', () => {
+        const badges = wrapper.find('Badge').length;
+        expect(badges).toEqual(4);
+    });
+
     it('displays the correct badge count', () => {
-        const badgeText = wrapper.find('Badge').html();
+        const badgeText = wrapper.find('Badge').at(3).html();
         expect(badgeText).toContain('2');
     });
 
