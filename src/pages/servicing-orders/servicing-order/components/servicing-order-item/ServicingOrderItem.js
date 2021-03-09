@@ -25,7 +25,7 @@ const ServicingOrderItem = ({
         status,
         watermark,
         premiering,
-        market_type,
+        market_type: marketType,
         late,
     } = servicingOrderItem;
     const count = fulfillmentOrders.length;
@@ -51,7 +51,7 @@ const ServicingOrderItem = ({
                             <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
                         </NexusTooltip>
                         <span className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__icons">
-                            {!watermark && (
+                            {late && (
                                 <span className="nexus-c-servicing-order-item__badge">
                                     <NexusTooltip content="Late">
                                         <Badge>
@@ -60,7 +60,7 @@ const ServicingOrderItem = ({
                                     </NexusTooltip>
                                 </span>
                             )}
-                            {!watermark && (
+                            {watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
                                     <NexusTooltip content="Watermark">
                                         <Badge>
@@ -69,7 +69,7 @@ const ServicingOrderItem = ({
                                     </NexusTooltip>
                                 </span>
                             )}
-                            {!watermark && (
+                            {premiering && (
                                 <span className="nexus-c-servicing-order-item__badge">
                                     <NexusTooltip content="Premiering">
                                         <Badge>
@@ -78,7 +78,7 @@ const ServicingOrderItem = ({
                                     </NexusTooltip>
                                 </span>
                             )}
-                            {!watermark && (
+                            {marketType === 'Major' && (
                                 <span className="nexus-c-servicing-order-item__badge">
                                     <NexusTooltip content="Major">
                                         <Badge>
@@ -87,7 +87,7 @@ const ServicingOrderItem = ({
                                     </NexusTooltip>
                                 </span>
                             )}
-                            {!watermark && (
+                            {marketType === 'Minor' && (
                                 <span className="nexus-c-servicing-order-item__badge">
                                     <NexusTooltip content="Minor">
                                         <Badge>
