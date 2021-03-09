@@ -12,8 +12,8 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     const {columns, SEPARATION_ROW, HEADER_ROW} = Constants;
 
     useEffect(() => {
-        const {eventHistory = []} = data || {};
-        if (!auditData.length && eventHistory.length) {
+        const {originalEvent} = data || {};
+        if (!auditData.length && originalEvent) {
             const tableRows = formatData(data);
             tableRows.splice(
                 0,

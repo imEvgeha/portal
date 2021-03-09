@@ -7,9 +7,13 @@ import AuditHistoryTable from '../../../components/AuditHistoryTable/AuditHistor
 const AuditHistory = ({selectedRights}) => {
     const [eventsHistory, setEventsHistory] = useState(null);
     useEffect(() => {
-        const ids = selectedRights.map(e => e.id);
-        getRightsHistory(ids).then(rightsEventHistory => {
-            setEventsHistory(rightsEventHistory);
+        //instead of promise.all loop through selectedRights
+        Promise.all(
+            selectedRights.map(right => {
+                return getRightsHistory(right.id);
+            })
+        ).then(responses => {
+            setEventsHistory(responses);
         });
     }, [selectedRights]);
 
@@ -23,7 +27,11 @@ const AuditHistory = ({selectedRights}) => {
                 </div>
             );
         } else {
-            return <NexusSpinner />;
+            return selectedRights.map((right, index) => (
+                <div key={index}>
+                    <NexusSpinner />
+                </div>
+            ));
         }
     };
 
