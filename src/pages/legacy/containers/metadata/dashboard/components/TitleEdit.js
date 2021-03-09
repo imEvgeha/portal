@@ -1082,16 +1082,8 @@ class TitleEdit extends Component {
             return hasGeneratedChildren && editorialMetadata[index];
         });
 
-        // Prepare data for back-end
-        const requestBody = [
-            {
-                itemIndex: null,
-                body: masterEmet,
-            },
-        ];
-
         // Calls the API to update decorated EMets based on the master
-        titleService.updateEditorialMetadata(requestBody).then(response => {
+        titleService.regenerateAutoDecoratedMetadata(masterEmet.id).then(response => {
             this.loadEditorialMetadata();
             const failed = get(response, ['data', '0', 'response', 'failed'], []);
             const {addToast} = this.props;
