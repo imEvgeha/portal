@@ -27,7 +27,6 @@ const AuditHistory = ({selectedRights}) => {
         );
     };
 
-    console.log(eventsHistory);
     return buildModalContent();
 };
 
