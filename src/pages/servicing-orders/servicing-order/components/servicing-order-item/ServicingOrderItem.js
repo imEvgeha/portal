@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Badge from '@atlaskit/badge';
-import Tooltip from '@atlaskit/tooltip';
 import ChevronIcon from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import FolderIcon from '@vubiquity-nexus/portal-assets/folder.svg';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import classnames from 'classnames';
@@ -47,57 +47,59 @@ const ServicingOrderItem = ({
                 <div className="nexus-c-servicing-order-item__row">
                     <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__title-row">
                         <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
-                        <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
-                        <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__icons">
+                        <NexusTooltip content={productDescription}>
+                            <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
+                        </NexusTooltip>
+                        <span className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__icons">
                             {!watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
-                                    <Tooltip content="Late">
+                                    <NexusTooltip content="Late">
                                         <Badge>
                                             <i className="fas fa-stopwatch" />
                                         </Badge>
-                                    </Tooltip>
+                                    </NexusTooltip>
                                 </span>
                             )}
                             {!watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
-                                    <Tooltip content="Watermark">
+                                    <NexusTooltip content="Watermark">
                                         <Badge>
                                             <i className="fas fa-tint" />
                                         </Badge>
-                                    </Tooltip>
+                                    </NexusTooltip>
                                 </span>
                             )}
                             {!watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
-                                    <Tooltip content="Premiering">
+                                    <NexusTooltip content="Premiering">
                                         <Badge>
                                             <i className="far fa-star" />
                                         </Badge>
-                                    </Tooltip>
+                                    </NexusTooltip>
                                 </span>
                             )}
                             {!watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
-                                    <Tooltip content="Major">
+                                    <NexusTooltip content="Major">
                                         <Badge>
                                             <i className="fas fa-angle-up" />
                                         </Badge>
-                                    </Tooltip>
+                                    </NexusTooltip>
                                 </span>
                             )}
                             {!watermark && (
                                 <span className="nexus-c-servicing-order-item__badge">
-                                    <Tooltip content="Minor">
+                                    <NexusTooltip content="Minor">
                                         <Badge>
                                             <i className="fas fa-minus fa-xs" />
                                         </Badge>
-                                    </Tooltip>
+                                    </NexusTooltip>
                                 </span>
                             )}
                             <span className="nexus-c-servicing-order-item__badge">
                                 <Badge>{count}</Badge>
                             </span>
-                        </div>
+                        </span>
                     </div>
                 </div>
                 <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>

@@ -8,6 +8,10 @@
 
     &__title-row {
         width: 100%;
+        > div {
+            overflow: hidden;
+            width: 100%;
+        }
     }
 
     &__icons {
@@ -38,13 +42,9 @@
     }
 
     &__title {
-        @include margin(0);
         white-space: nowrap;
         overflow: hidden;
-        align-items: center;
         text-overflow: ellipsis;
-        display: inline-block;
-        width: 100%;
     }
 
     &__external-id {
