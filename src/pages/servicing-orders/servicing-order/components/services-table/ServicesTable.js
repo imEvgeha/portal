@@ -292,9 +292,8 @@ const ServicesTable = ({
                 currentService.overrideStartDate = data.doNotStartBefore || '';
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
-                const extParamWatermark = currentService.externalServices.parameters.find(param => param.name === 'Watermark');
-                if (extParamWatermark)
-                    extParamWatermark.value = data.watermark;
+                currentService.externalServices.parameters.find(param => param.name === 'Watermark').value =
+                    data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
                     currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
