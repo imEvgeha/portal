@@ -5,7 +5,7 @@ import {rightsService} from '../legacy/containers/avail/service/RightsService';
 export const getRightsHistory = rightId => {
     const url = `${config.get('gateway.eventApiUrl')}${config.get(
         'gateway.service.eventApiV2'
-    )}/search/diff?correlationId=${rightId}&eventSource=avails-api`;
+    )}/search/diff?objectId=${rightId}&eventSource=avails-api`;
 
     return nexusFetch(url, {
         method: 'get',
