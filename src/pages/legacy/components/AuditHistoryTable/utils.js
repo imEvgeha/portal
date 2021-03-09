@@ -88,38 +88,36 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
 };
 
 export const formatData = data => {
-    const {eventHistory, diffs} = data;
-    let tableRows = eventHistory
-        .filter(x => x && !!x.message)
-        .map((dataObj, index) => {
-            const {
-                message: {updatedBy, createdBy, lastUpdateReceivedAt},
-            } = dataObj;
-            const row = {};
-            diffs[index].forEach(diff => {
-                const {path, op} = diff;
-                const field = path.split('/')[2]; //as path is always like '/message/field/sub-field'
-                const valueUpdated = dataObj.message[field];
-                if (op === 'remove') {
-                    row[field] = get(eventHistory[index - 1], ['message', field], '');
-                    row[`${field}Deleted`] = true;
-                } else {
-                    row[field] = Array.isArray(valueUpdated) ? [...new Set(valueUpdated)] : valueUpdated;
-                }
-                if (field === RATING) {
-                    const subField = path.split('/')[4];
-                    if (subField) {
-                        if (op === 'remove') {
-                            row[`${subField}Deleted`] = true;
-                        }
+    const {originalEvent, diffs} = data;
+    const {
+        message: {updatedBy, createdBy, lastUpdateReceivedAt},
+    } = originalEvent;
+    let tableRows = diffs.map(diffArr => {
+        const row = {};
+        diffArr.forEach(diff => {
+            const {path, op, value} = diff;
+            const field = path.split('/')[2];
+            if (op === 'remove') {
+                const originalEventField = path.split('/')[1];
+                row[field] = get(originalEvent, [originalEventField, field]);
+                row[`${field}Deleted`] = true;
+            } else {
+                row[field] = Array.isArray(value) ? [...new Set(value)] : value;
+            }
+            if (field === RATING) {
+                const subField = path.split('/')[4];
+                if (subField) {
+                    if (op === 'remove') {
+                        row[`${subField}Deleted`] = true;
                     }
                 }
-            });
-            row.updatedBy = updatedBy || createdBy;
-            row.lastUpdateReceivedAt = lastUpdateReceivedAt;
-            return row;
+            }
         });
-    tableRows[0] = eventHistory[0].message;
+        row.updatedBy = updatedBy || createdBy;
+        row.lastUpdateReceivedAt = lastUpdateReceivedAt;
+        return row;
+    });
+    tableRows[0] = originalEvent.message;
     tableRows = tableRows.reverse();
     return tableRows;
 };

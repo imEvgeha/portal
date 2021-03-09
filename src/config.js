@@ -17,7 +17,6 @@ export const defaultConfiguration = {
             title: '/titles-api/v1',
             configuration: '/configuration-api/v1',
             assetManagement: '/api/asset-management/v1',
-            eventApi: '/api/event-api/v1',
             eventApiV2: '/api/event-api/v2',
             servicingOrder: '',
         },
