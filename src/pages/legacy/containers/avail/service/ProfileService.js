@@ -21,6 +21,7 @@ export const profileService = {
         if (forceReload || !store.getState().root.availsMapping) {
             getAvailsMapping()
                 .then(response => {
+                    const fields = [];
                     response.mappings.map(rec => {
                         if (rec.searchDataType === 'multiselect') {
                             if (rec.options) {
@@ -34,10 +35,13 @@ export const profileService = {
                                 );
                             } else {
                                 if (rec.configEndpoint) {
-                                    getSelectValues(rec.configEndpoint).then(response => {
-                                        const options = processOptions(response.data, rec.configEndpoint);
-                                        store.dispatch(loadSelectLists(rec.javaVariableName, options));
-                                    });
+                                    if (!fields.includes(rec.configEndpoint)) {
+                                        fields.push(rec.configEndpoint);
+                                        getSelectValues(rec.configEndpoint).then(response => {
+                                            const options = processOptions(response.data, rec.configEndpoint);
+                                            store.dispatch(loadSelectLists(rec.javaVariableName, options));
+                                        });
+                                    }
                                 } else {
                                     console.warn('MISSING options or endpoint: for ', rec.javaVariableName);
                                 }
