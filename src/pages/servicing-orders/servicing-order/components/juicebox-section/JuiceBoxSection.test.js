@@ -98,6 +98,12 @@ describe('JuiceBoxSection with Language', () => {
     it('Should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
     });
+
+    it('Should find language text', () => {
+        expect(wrapper.find('.nexus-jb-lang-input_textfield')).toHaveLength(1);
+    }); 
+
+    // more test here
 });
 
 describe('JuiceBoxSection without Language', () => {
@@ -110,4 +116,24 @@ describe('JuiceBoxSection without Language', () => {
     it('Should match snapshot', () => {
         expect(wrapper).toMatchSnapshot();
     });
+
+    it('Should find not available language text', () => {
+        expect(wrapper.find('p').text()).toEqual("Language not available with this order.");
+    })
+});
+
+describe('JuiceBoxSection Language Only test', () => {
+    const wrapper = shallow(
+        <JuiceBoxSection
+            selectedOrder={{definition: { orders: [{ content: [ { materials: [{components: [{languageId: "SPANISH"}]}]}]}]}}}
+            setSelectedOrder={() => null}
+        />
+    );
+    it('Should match snapshot', () => {
+        expect(wrapper).toMatchSnapshot();
+    }); 
+
+    it('Should find language text', () => {
+        expect(wrapper.find('.nexus-jb-lang-input_textfield')).toHaveLength(1);
+    }); 
 });

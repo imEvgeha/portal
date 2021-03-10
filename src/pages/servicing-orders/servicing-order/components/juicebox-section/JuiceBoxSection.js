@@ -43,6 +43,7 @@ const JuiceBoxSection = ({selectedOrder, setSelectedOrder, isDisabled}) => {
                             value={language || ''}
                             onChange={onLangChange}
                             isDisabled={isDisabled}
+                            maxLength={50}
                         />
                     </div>
                     {!isDisabled &&
