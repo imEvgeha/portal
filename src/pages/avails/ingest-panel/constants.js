@@ -34,7 +34,7 @@ export default {
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
         LICENSOR: 'licensor',
-        INGEST_TYPE: 'ingestType'
+        INGEST_TYPE: 'ingestType',
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
@@ -48,13 +48,14 @@ export default {
         {label: 'UK', value: 'UK'},
     ],
     CATALOG_TYPES: [
-        {label: 'Full Catalog', value: 'Full Catalog'},
-        {label: 'Title Catalog', value: 'Title Catalog'},
+        {label: 'Full', value: 'Full Catalog'},
+        {label: 'Title', value: 'Title Catalog'},
     ],
     TEMPLATES: {
         STUDIO: 'Studio',
         USMASTER: 'US Master',
         INTERNATIONAL: 'International',
+        LICENSEE: 'Licensee',
     },
     LICENSEE_WARNING: 'Any mismatches between the file and the selected licensees will result in a fatal',
     LICENSEE_TOOLTIP_MSG:
