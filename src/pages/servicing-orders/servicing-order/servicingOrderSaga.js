@@ -5,6 +5,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
     saveFulfillmentOrder as saveFulfillmentOrderAPI,
     getFulfilmentOrdersForServiceOrder,
+    getConfig as getConfigApi
 } from '../servicingOrdersService';
 import {fetchAssetInfo, getBarCodes, populateAssetInfo} from './ServiceOrderUtils';
 import * as actionTypes from './servicingOrderActionTypes';
@@ -56,9 +57,23 @@ function* saveFulfillmentOrder(requestMethod, {payload}) {
     }
 }
 
+function* getSOConfig() {
+    try {
+        //const config = yield getConfigApi();
+        /*yield put({
+            type: 'GET_CONFIG',
+            payload: config,
+        });*/
+        yield put({type: 'GET_CONFIG'});
+    } catch (e) {
+        yield put({type: 'GET_CONFIG_FAILED', message: e.message});
+    }
+}
+
 export function* servicingOrderWatcher() {
     yield all([
         takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI),
         takeLatest('FETCH_FO', fetchFulfillmentOrder),
+        takeLatest('FETCH_CONFIG', getSOConfig),
     ]);
 }

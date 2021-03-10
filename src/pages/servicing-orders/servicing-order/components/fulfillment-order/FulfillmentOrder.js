@@ -48,6 +48,10 @@ export const FulfillmentOrder = ({
 
     const {openModal, closeModal} = useContext(NexusModalContext);
 
+    const config =  useSelector(state => state.servicingOrders?.servicingOrder?.config);
+
+    console.log('config: ', config);
+
     const ModalContent = (
         <>
             <p>

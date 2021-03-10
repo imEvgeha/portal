@@ -3,6 +3,7 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {useDispatch, useSelector} from 'react-redux';
 import './ServicingOrdersView.scss';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {exportServicingOrders} from './servicingOrdersService';
@@ -33,6 +34,16 @@ const ServicingOrdersView = () => {
     );
     const modalHeading = 'Warning';
     const {openModal, closeModal} = useContext(NexusModalContext);
+    const dispatch = useDispatch();
+
+    const config =  useSelector(state => state.servicingOrders?.servicingOrder?.config);
+
+    // fetch config if config is null
+    useEffect(() => {
+        if(!config) {
+            dispatch({type: 'FETCH_CONFIG'});
+        }     
+    },[]);
 
     useEffect(() => {
         setFixedFilter({

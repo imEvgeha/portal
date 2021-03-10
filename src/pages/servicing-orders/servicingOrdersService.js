@@ -96,3 +96,10 @@ export const servicingOrdersService = {
     saveFulfillmentOrder,
     exportServicingOrders,
 };
+
+export const getConfig = () => {
+    const url = `${baseServicingOrdersURL(config)}/so/${externalId}/pr`; // Todo: get exact url from mgm
+    return nexusFetch(url, {
+        method: 'get',
+    });
+};
