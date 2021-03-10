@@ -215,6 +215,14 @@ export const titleService = {
         });
     },
 
+    regenerateAutoDecoratedMetadata: masterEmetId => {
+        const url =
+            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
+        return nexusFetch(url, {
+            method: 'put',
+        });
+    },
+
     mergeTitles: query => {
         const url = `${config.get('gateway.titleUrl')}${config.get(
             'gateway.service.title'

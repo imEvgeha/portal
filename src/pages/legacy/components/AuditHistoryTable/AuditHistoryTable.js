@@ -7,24 +7,27 @@ import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
 
 const AuditHistoryTable = ({data, focusedRight}) => {
-    const [auditData, setAuditData] = useState([]);
+    const [auditData, setAuditData] = useState(null);
     const [columnDefs, setColumnDefs] = useState([]);
     const {columns, SEPARATION_ROW, HEADER_ROW} = Constants;
 
     useEffect(() => {
-        const {eventHistory = []} = data || {};
-        if (!auditData.length && eventHistory.length) {
-            const tableRows = formatData(data);
-            tableRows.splice(
-                0,
-                0,
-                {
-                    ...focusedRight,
-                    ...HEADER_ROW,
-                },
-                SEPARATION_ROW
-            );
-            setAuditData(tableRows);
+        if (data && !auditData) {
+            if (data.originalEvent) {
+                const tableRows = formatData(data);
+                tableRows.splice(
+                    0,
+                    0,
+                    {
+                        ...focusedRight,
+                        ...HEADER_ROW,
+                    },
+                    SEPARATION_ROW
+                );
+                setAuditData(tableRows);
+            } else {
+                setAuditData([]);
+            }
         }
     }, [data]);
 
@@ -64,10 +67,7 @@ AuditHistoryTable.propTypes = {
 };
 
 AuditHistoryTable.defaultProps = {
-    data: {
-        eventHistory: [],
-        diff: [],
-    },
+    data: undefined,
     focusedRight: {},
 };
 
