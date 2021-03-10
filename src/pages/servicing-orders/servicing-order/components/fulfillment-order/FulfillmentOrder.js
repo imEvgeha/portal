@@ -50,8 +50,6 @@ export const FulfillmentOrder = ({
 
     const config =  useSelector(state => state.servicingOrders?.servicingOrder?.config);
 
-    console.log('config: ', config);
-
     const ModalContent = (
         <>
             <p>
