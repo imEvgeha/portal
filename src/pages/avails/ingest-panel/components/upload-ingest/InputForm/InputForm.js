@@ -204,89 +204,93 @@ const InputForm = ({
                     Browse
                 </Button>
             </div>
-            <div className="manual-ingest-config__templates">
-                <label className="manual-ingest-config__label">TEMPLATE</label>
-                <RadioGroup
-                    label="Template"
-                    options={templates}
-                    onChange={onTemplateChange}
-                    defaultValue={initialTemplate.value}
-                />
-            </div>
-            <div className="manual-ingest-config__grid">
-                {template === STUDIO && (
-                    <div className="manual-ingest-config--licensor">
-                        <label className="manual-ingest-config__label">LICENSOR</label>
-                        <Select
-                            id="manual-upload-licensor"
-                            onChange={val => setLicensor(val)}
-                            value={licensor}
-                            options={licensors.map(lic => ({value: lic, label: lic.name}))}
-                            placeholder="Select"
-                            {...selectProps}
-                        />
-                    </div>
-                )}
-                {template !== USMASTER && (
-                    <div className="manual-ingest-config--service-region">
-                        <label className="manual-ingest-config__label">REGION</label>
-                        <Select
-                            id="manual-upload-service-region"
-                            onChange={val => setServiceRegion(val)}
-                            value={serviceRegion}
-                            options={serviceRegionOptions}
-                            placeholder="Select"
-                            {...selectProps}
-                        />
-                    </div>
-                )}
-            </div>
-            {[STUDIO, LICENSEE].includes(template) && (
-                <div className="manual-ingest-config__licensee">
-                    <label className="manual-ingest-config__label">Licensee</label>
-                    <Select
-                        id="manual-upload-licensee"
-                        onChange={val => setSelectedLicensees(val || [])}
-                        value={selectedLicensees}
-                        options={licenseesOptions}
-                        isDisabled={!serviceRegion}
-                        placeholder="Select"
-                        isMulti={template === STUDIO}
-                        {...selectProps}
+            <div className="manual-ingest-config__body">
+                <div className="manual-ingest-config__templates">
+                    <label className="manual-ingest-config__label">TEMPLATE</label>
+                    <RadioGroup
+                        label="Template"
+                        options={templates}
+                        onChange={onTemplateChange}
+                        defaultValue={initialTemplate.value}
                     />
-                    <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
                 </div>
-            )}
-            <div className="manual-ingest-config__catalog">
-                <div className="manual-ingest-config__catalog-options">
-                    <div className="manual-ingest-config__catalog-select">
-                        <label className="manual-ingest-config__label">CATALOGUE</label>
-                        <Select
-                            id="manual-upload-catalog-type"
-                            onChange={val => onCatalogueChange(val)}
-                            value={catalogType}
-                            options={CATALOG_TYPES}
-                            isDisabled={false}
-                            placeholder="Select"
-                            {...selectProps}
-                        />
-                    </div>
-                    <div className="manual-ingest-config__catalog-checkbox">
-                        <Checkbox
-                            id="licensed-checkbox"
-                            label="Licensed"
-                            onChange={() => setIsLicensed(!isLicensed)}
-                            isChecked={isLicensed}
-                            isDisabled={template === USMASTER}
-                        />
+                <div className="manual-ingest-config__fields">
+                    {template === STUDIO && (
+                        <div className="manual-ingest-config--licensor">
+                            <label className="manual-ingest-config__label">LICENSOR</label>
+                            <Select
+                                id="manual-upload-licensor"
+                                onChange={val => setLicensor(val)}
+                                value={licensor}
+                                options={licensors.map(lic => ({value: lic, label: lic.name}))}
+                                placeholder="Select"
+                                {...selectProps}
+                            />
+                        </div>
+                    )}
+                    {template !== USMASTER && (
+                        <div className="manual-ingest-config--service-region">
+                            <label className="manual-ingest-config__label">REGION</label>
+                            <Select
+                                id="manual-upload-service-region"
+                                onChange={val => setServiceRegion(val)}
+                                value={serviceRegion}
+                                options={serviceRegionOptions}
+                                placeholder="Select"
+                                {...selectProps}
+                            />
+                        </div>
+                    )}
+
+                    {[STUDIO, LICENSEE].includes(template) && (
+                        <div className="manual-ingest-config__licensee">
+                            <label className="manual-ingest-config__label">LICENSEE</label>
+                            <Select
+                                id="manual-upload-licensee"
+                                onChange={val => setSelectedLicensees(val || [])}
+                                value={selectedLicensees}
+                                options={licenseesOptions}
+                                isDisabled={!serviceRegion}
+                                placeholder="Select"
+                                isMulti={template === STUDIO}
+                                {...selectProps}
+                            />
+                            <div className="manual-ingest-config__sub-text">{LICENSEE_WARNING}</div>
+                        </div>
+                    )}
+                    <div className="manual-ingest-config__catalog">
+                        <div className="manual-ingest-config__catalog-options">
+                            <div className="manual-ingest-config__catalog-select">
+                                <label className="manual-ingest-config__label">CATALOGUE</label>
+                                <Select
+                                    id="manual-upload-catalog-type"
+                                    onChange={val => onCatalogueChange(val)}
+                                    value={catalogType}
+                                    options={CATALOG_TYPES}
+                                    isDisabled={false}
+                                    placeholder="Select"
+                                    {...selectProps}
+                                />
+                            </div>
+                            <div className="manual-ingest-config__catalog-checkbox">
+                                <Checkbox
+                                    id="licensed-checkbox"
+                                    label="Licensed"
+                                    onChange={() => setIsLicensed(!isLicensed)}
+                                    isChecked={isLicensed}
+                                    isDisabled={template === USMASTER}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="manual-ingest-config__grid">
-                <Button isDisabled={isUploading} onClick={closeModal}>
+            <div className="manual-ingest-config__buttons">
+                <Button shouldFitContainer isDisabled={isUploading} onClick={closeModal}>
                     Cancel
                 </Button>
                 <Button
+                    shouldFitContainer
                     onClick={openIngestConfirmationModal}
                     className={!isUploadEnabled() ? '' : 'btn-primary'}
                     isLoading={isUploading}
