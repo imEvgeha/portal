@@ -36,6 +36,7 @@ import {
 import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
+import CellTooltip from './components/cell-tooltip/CellTooltip';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
@@ -257,9 +258,17 @@ const RightsRepository = ({
         cellStyle: {overflow: 'visible'},
     });
 
-    const updatedColumnDefs = columnDefsClone.length
-        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
-        : columnDefsClone;
+    const columnsDefsClone = columnDefsClone.map(col => {
+        return {
+            ...col,
+            tooltipComponent: 'customTooltip',
+            tooltipValueGetter: params => params.valueFormatted,
+        };
+    });
+
+    const updatedColumnDefs = columnsDefsClone.length
+        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsDefsClone]
+        : columnsDefsClone;
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
@@ -479,6 +488,7 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
+                frameworkComponents={{customTooltip: CellTooltip}}
                 rowClassRules={{
                     'nexus-c-rights-repository__row': params =>
                         params &&
