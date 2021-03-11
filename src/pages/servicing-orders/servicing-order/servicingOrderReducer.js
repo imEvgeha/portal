@@ -1,6 +1,6 @@
 // holds state for a single servicing order - barcodes and source / service table data
 const initialState = {
-    config: null,
+    lateFaults: {},
 };
 
 const servicingOrderReducer = (state = initialState, action) => {
@@ -9,8 +9,8 @@ const servicingOrderReducer = (state = initialState, action) => {
             return state;
         case 'SAVE_ORDER':
             return action.payload;
-        case 'GET_CONFIG':
-            return {...state, config: {a: 123, b: 345 } };
+        case 'SAVE_LATE_RESAONS':
+            return {...state, lateFaults: {...state.lateFaults, ...action.payload } };
         case 'RESET':
             return initialState;
         default:

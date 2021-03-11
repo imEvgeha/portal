@@ -97,8 +97,13 @@ export const servicingOrdersService = {
     exportServicingOrders,
 };
 
-export const getConfig = () => {
-    const url = `${baseServicingOrdersURL(config)}/so/${externalId}/pr`; // Todo: get exact url from mgm
+const lateFaultsURL = config => {
+    return `${config.get('gateway.configuration')}${config.get('gateway.service.configuration')}${config.get('gateway.service.lateFaults')}`;
+};
+
+export const getLateReasons = tenant => {
+    // https://configapi.dev.vubiquity.com/configuration-api/v1/late-faults?tenant="MGM"
+    const url = `${lateFaultsURL(config)}?tenant=${tenant}`; 
     return nexusFetch(url, {
         method: 'get',
     });

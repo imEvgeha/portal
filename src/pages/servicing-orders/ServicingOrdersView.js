@@ -34,16 +34,6 @@ const ServicingOrdersView = () => {
     );
     const modalHeading = 'Warning';
     const {openModal, closeModal} = useContext(NexusModalContext);
-    const dispatch = useDispatch();
-
-    const config =  useSelector(state => state.servicingOrders?.servicingOrder?.config);
-
-    // fetch config if config is null
-    useEffect(() => {
-        if(!config) {
-            dispatch({type: 'FETCH_CONFIG'});
-        }     
-    },[]);
 
     useEffect(() => {
         setFixedFilter({

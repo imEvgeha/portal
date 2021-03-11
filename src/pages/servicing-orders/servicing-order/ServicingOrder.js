@@ -2,6 +2,7 @@ import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
+import Loading from '../../static/Loading';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -16,6 +17,7 @@ import {
     populateAssetInfo,
 } from './components/sources-table/util';
 import './ServicingOrder.scss';
+
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -35,24 +37,11 @@ const ServicingOrder = ({match}) => {
     // order origin DETE, JuiceBox etc
     const orderOrigin = get(selectedOrder,'fs');
 
-    // TODO: to be removed before merge - api data simulate
-    const newTestFields = {
-        completed_date: "2020-04-07T00:00:00-07:00",
-        late_reason: "The dog ate my homework",
-        late: true,
-        late_fault: "Everyone is at fault",
-        premiering: false,
-        watermark: true,
-        market_type: "Major",
-        car: "Not sure what is this field"
-    }
-
     useEffect(() => {
         const order =
             get(serviceOrder, 'fulfillmentOrders', []).find(s => s && s.id === selectedFulfillmentOrderID) || {};
-        // TODO: newTestFields to be removed before merge - api data simulate
-        setSelectedOrder({...order, ...newTestFields});
-        setLastOrder({...order, ...newTestFields});
+        setSelectedOrder(order);
+        setLastOrder(order);
     }, [serviceOrder, selectedFulfillmentOrderID]);
 
     const fetchFulfillmentOrders = async servicingOrder => {
@@ -156,15 +145,16 @@ const ServicingOrder = ({match}) => {
     return (
         <div className="servicing-order">
             <div className="servicing-order__left">
-                {serviceOrder && (
+                {Object.keys(serviceOrder).length > 0 ? (
                     <HeaderSection
                         orderDetails={serviceOrder}
                         handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
                     />
-                )}
+                ): <Loading/>}
             </div>
             <div className="servicing-order__right">
+            {Object.keys(serviceOrder).length > 0 ?
                 <FulfillmentOrder
                     selectedFulfillmentOrder={selectedOrder}
                     setSelectedOrder={setSelectedOrder}
@@ -205,6 +195,8 @@ const ServicingOrder = ({match}) => {
                         </div>
                     }
                 </FulfillmentOrder>
+                : <Loading/>
+                }
             </div>
         </div>
     );
