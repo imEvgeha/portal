@@ -89,34 +89,55 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               </Lozenge>
             </div>
             <div>
-              <WithAnalyticsContext(WithAnalyticsEvents(Radio))
-                isChecked={false}
-                isDisabled={false}
-                label="Premiering"
-                name="premiering"
-                onChange={[Function]}
-                value={false}
-              />
+              <div>
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="inp-premiering"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-premiering"
+                >
+                  Premiering
+                </label>
+              </div>
             </div>
             <div>
-              <WithAnalyticsContext(WithAnalyticsEvents(Radio))
-                isChecked={true}
-                isDisabled={false}
-                label="Watermark"
-                name="watermark"
-                onChange={[Function]}
-                value="watermark"
-              />
+              <div>
+                <input
+                  checked={true}
+                  disabled={false}
+                  id="inp-watermark"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-watermark"
+                >
+                  Watermark
+                </label>
+              </div>
             </div>
             <div>
-              <WithAnalyticsContext(WithAnalyticsEvents(Radio))
-                isChecked={true}
-                isDisabled={false}
-                label="Late"
-                name="late"
-                onChange={[Function]}
-                value="late"
-              />
+              <div>
+                <input
+                  checked={true}
+                  disabled={false}
+                  id="inp-late"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-late"
+                >
+                  Late
+                </label>
+              </div>
             </div>
           </WithTheme(AkGridColumn)>
           <WithTheme(AkGridColumn)
@@ -168,25 +189,10 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 isDisabled={false}
                 name="late-fault"
                 onChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": "New",
-                      "value": "NEW",
-                    },
-                    Object {
-                      "label": "On Hold",
-                      "value": "ON_HOLD",
-                    },
-                    Object {
-                      "label": "Ready",
-                      "value": "READY",
-                    },
-                  ]
-                }
+                options={Array []}
                 value={
                   Object {
-                    "label": undefined,
+                    "label": "Everyone is at fault",
                     "value": "Everyone is at fault",
                   }
                 }
@@ -204,12 +210,17 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               >
                 CAR
               </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(undefined))
-                id="car"
-                isDisabled={true}
-                name="CAR"
-                value="Not sure what is this field"
-              />
+              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+                content="Not sure what is this field"
+              >
+                <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+                  id="car"
+                  isDisabled={false}
+                  name="CAR"
+                  onChange={[Function]}
+                  value="Not sure what is this field"
+                />
+              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
             </div>
             <div
               className="fulfillment-order__input"
@@ -219,34 +230,23 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
               >
                 Late Reason
               </label>
-              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
-                id="late-reason"
-                isDisabled={false}
-                name="late-reason"
-                onChange={[Function]}
-                options={
-                  Array [
+              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+                content="The dog ate my homework"
+              >
+                <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+                  id="late-reason"
+                  isDisabled={false}
+                  name="late-reason"
+                  onChange={[Function]}
+                  options={Array []}
+                  value={
                     Object {
-                      "label": "New",
-                      "value": "NEW",
-                    },
-                    Object {
-                      "label": "On Hold",
-                      "value": "ON_HOLD",
-                    },
-                    Object {
-                      "label": "Ready",
-                      "value": "READY",
-                    },
-                  ]
-                }
-                value={
-                  Object {
-                    "label": undefined,
-                    "value": "The dog ate my homework",
+                      "label": "The dog ate my homework",
+                      "value": "The dog ate my homework",
+                    }
                   }
-                }
-              />
+                />
+              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
             </div>
           </WithTheme(AkGridColumn)>
           <WithTheme(AkGridColumn)

@@ -4,7 +4,6 @@ import Button, {ButtonGroup} from '@atlaskit/button';
 import ErrorIcon from "@atlaskit/icon/glyph/error";
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
-import {Radio} from '@atlaskit/radio';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
 import Tooltip from "@atlaskit/tooltip";
@@ -50,22 +49,12 @@ export const FulfillmentOrder = ({
 
     const lateFaults =  useSelector(state => get(state,'servicingOrders.servicingOrder.lateFaults'));
 
-    // fetch late reasons if not available in store for the tenant
+    // fetch (and store) late reasons if not available in store for the tenant
     useEffect(() => {
         if(fulfillmentOrder.tenant && !lateFaults.hasOwnProperty(fulfillmentOrder.tenant)) {
             dispatch({type: 'FETCH_CONFIG', payload: get(fulfillmentOrder,'tenant')});
         }     
     },[get(fulfillmentOrder,'tenant')]);
-
-    const getLateReasons = fault => {
-        const faultObj = lateFaults[fulfillmentOrder.tenant];
-        return fault? faultObj[fault].map(item => ({value: item, label: item})) : [];
-    }
-
-    
-
-    const lateFaultOptions = fulfillmentOrder.tenant && Object.keys(lateFaults[fulfillmentOrder.tenant]).map(lf => ({value: lf, label: lf}));
-    const lateReasonOptions = getLateReasons(fulfillmentOrder?.late_fault);
 
     const ModalContent = (
         <>
@@ -134,6 +123,10 @@ export const FulfillmentOrder = ({
     const onFieldChange = (path, value) => {
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
+
+        if(path === fieldKeys.LATE_FAULT) { // set late reason = null when user select/reselect late fault
+            set(fo, fieldKeys.LATE_REASON, null);
+        }
 
         // Show warning modal when status is set to READY
         get(fo, fieldKeys.READINESS, '') === 'READY' && path === 'readiness'
@@ -216,6 +209,23 @@ export const FulfillmentOrder = ({
         setIsSaveDisabled(true);
     };
 
+    const getLateFaultOptions = () => {
+        let faultOptions = [];
+        if(fulfillmentOrder.tenant) {
+            const faultArray = Object.keys(lateFaults[fulfillmentOrder.tenant] || {});
+            faultOptions = faultArray.length > 0 ? faultArray.map(item => ({value: item, label: item})) : [];
+        }
+        return faultOptions;
+    }
+
+    const getLateReasonOptions = fault => {
+        const faultObj = lateFaults[fulfillmentOrder.tenant] || {};
+        return fault && fault in faultObj ? faultObj[fault].map(item => ({value: item, label: item})) : [];
+    }   
+
+    const lateFaultOptions = getLateFaultOptions();
+    const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
+
     return (
         <Page>
             <div className="fulfillment-order__section">
@@ -261,37 +271,45 @@ export const FulfillmentOrder = ({
                                 </div>}
                                 <div>
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.PREMIERING) &&
-                                        <Radio
-                                            value={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
-                                            label="Premiering"
-                                            name="premiering"
-                                            isChecked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
-                                            onChange={e => onFieldChange(fieldKeys.PREMIERING, e.currentTarget.value === true ? false: true)}
-                                            isDisabled={isFormDisabled}
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id="inp-premiering"
+                                            checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
+                                            onClick={e => onFieldChange(fieldKeys.PREMIERING, !get(fulfillmentOrder, fieldKeys.PREMIERING))}
+                                            disabled={isFormDisabled}
                                         />
+                                        <label htmlFor="inp-premiering" className="fo-gridhdr-radio">Premiering</label>
+                                    </div>
                                     }
                                 </div>
                                 <div>
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.WATERMARK) &&
-                                        <Radio
-                                            value="watermark"
-                                            label="Watermark"
-                                            name="watermark"
-                                            isChecked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
-                                            onChange={() => {}}
-                                            isDisabled={isFormDisabled}
-                                        /> }
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id="inp-watermark"
+                                            checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
+                                            onClick={e => onFieldChange(fieldKeys.WATERMARK, !get(fulfillmentOrder, fieldKeys.WATERMARK))}
+                                            disabled={isFormDisabled}
+                                        />
+                                        <label htmlFor="inp-watermark" className="fo-gridhdr-radio">Watermark</label>
+                                    </div>
+                                    }
                                 </div>
                                 <div>
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE) &&
-                                        <Radio
-                                            value="late"
-                                            label="Late"
-                                            name="late"
-                                            isChecked={get(fulfillmentOrder, fieldKeys.LATE, false)}
-                                            onChange={() => {}}
-                                            isDisabled={isFormDisabled}
-                                        /> }
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            id="inp-late"
+                                            checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
+                                            onClick={e => onFieldChange(fieldKeys.LATE, !get(fulfillmentOrder, fieldKeys.LATE))}
+                                            disabled={isFormDisabled}
+                                        />
+                                        <label htmlFor="inp-late" className="fo-gridhdr-radio">Late</label> 
+                                    </div>
+                                    }
                                 </div>
                             </GridColumn>
                             <GridColumn medium={3}>
@@ -330,28 +348,32 @@ export const FulfillmentOrder = ({
                                 { fulfillmentOrder.hasOwnProperty(fieldKeys.CAR) &&
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="car">CAR</label>
-                                        <Textfield
-                                            name="CAR"
-                                            id="car"
-                                            value={get(fulfillmentOrder, fieldKeys.CAR, '')}
-                                            onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
-                                            isDisabled={isFormDisabled}
-                                        />
+                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.CAR, '')}>
+                                            <Textfield
+                                                name="CAR"
+                                                id="car"
+                                                value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
+                                                onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
+                                                isDisabled={isFormDisabled}
+                                            />
+                                        </Tooltip>
                                     </div> }
                                 { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_REASON) &&
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="late-reason">Late Reason</label>
-                                        <Select
-                                            id="late-reason"
-                                            name="late-reason"
-                                            options={lateReasonOptions}
-                                            value={{
-                                                value: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
-                                                label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
-                                            }}
-                                            onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
-                                            isDisabled={isFormDisabled}
-                                        />
+                                        <Tooltip content={get(fulfillmentOrder, fieldKeys.LATE_REASON, '')}>
+                                            <Select
+                                                id="late-reason"
+                                                name="late-reason"
+                                                options={lateReasonOptions}
+                                                value={{
+                                                    value: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
+                                                    label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
+                                                }}
+                                                onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
+                                                isDisabled={isFormDisabled}
+                                            />
+                                        </Tooltip>
                                     </div> }
                             </GridColumn>
                             <GridColumn medium={3}>
