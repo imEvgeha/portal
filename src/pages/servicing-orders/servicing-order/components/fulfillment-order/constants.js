@@ -4,9 +4,17 @@ export default {
         STATUS: 'status',
         DUE_DATE: 'due_date',
         START_DATE: 'start_date',
+        COMPLETED_DATE: 'completed_date',
         SERVICER: 'fs',
         NOTES: 'notes',
         READINESS: 'readiness',
+        LATE_REASON: 'late_reason',
+        LATE: 'late',
+        LATE_FAULT: 'late_fault',
+        PREMIERING: 'premiering',
+        WATERMARK: 'watermark',
+        MARKET_TYPE: 'market_type',
+        CAR: 'car'
     },
     BILL_TO_LIST: [
         {value: 'MGM', label: 'MGM'},
@@ -28,6 +36,10 @@ export default {
         {value: 'NEW', label: 'New'},
         {value: 'ON_HOLD', label: 'On Hold'},
         {value: 'READY', label: 'Ready'},
+    ],
+    MARKET_TYPES: [
+        {value: 'MAJOR', label: 'Major'},
+        {value: 'MINOR', label: 'Minor'},
     ],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',

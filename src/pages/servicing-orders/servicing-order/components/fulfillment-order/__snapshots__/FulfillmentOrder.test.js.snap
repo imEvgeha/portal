@@ -48,38 +48,209 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
             </ButtonGroup>
           </div>
         </div>
-        <WithTheme(AkGrid)>
+        <WithTheme(AkGrid)
+          layout="fluid"
+        >
           <WithTheme(AkGridColumn)
-            medium={6}
+            medium={3}
           >
-            <label
-              htmlFor="notes"
+            <div
+              className="nexus-fo-date-readonly"
             >
-              Notes:
-            </label>
-            <NexusTextArea
-              isDisabled={false}
-              name="notes"
-              notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              onTextChange={[Function]}
-            />
+              Servicer:  
+              <Lozenge
+                appearance="new"
+                isBold={false}
+                maxWidth={200}
+              />
+            </div>
+            <div
+              className="nexus-fo-date-readonly"
+            >
+              Start Date:  
+              <Lozenge
+                appearance="default"
+                isBold={false}
+                maxWidth={200}
+              >
+                Invalid date
+              </Lozenge>
+            </div>
+            <div
+              className="nexus-fo-date-readonly"
+            >
+              Due Date:  
+              <Lozenge
+                appearance="default"
+                isBold={false}
+                maxWidth={200}
+              >
+                Invalid date
+              </Lozenge>
+            </div>
+            <div>
+              <div>
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="inp-premiering"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-premiering"
+                >
+                  Premiering
+                </label>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input
+                  checked={true}
+                  disabled={false}
+                  id="inp-watermark"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-watermark"
+                >
+                  Watermark
+                </label>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input
+                  checked={true}
+                  disabled={false}
+                  id="inp-late"
+                  onClick={[Function]}
+                  type="radio"
+                />
+                <label
+                  className="fo-gridhdr-radio"
+                  htmlFor="inp-late"
+                >
+                  Late
+                </label>
+              </div>
+            </div>
           </WithTheme(AkGridColumn)>
           <WithTheme(AkGridColumn)
-            medium={2}
+            medium={3}
           >
-            <label
-              htmlFor="servicer"
+            <div
+              className="fulfillment-order__input"
             >
-              Servicer
-            </label>
-            <WithAnalyticsContext(WithAnalyticsEvents(undefined))
-              isDisabled={true}
-              name="servicer"
-              value=""
-            />
+              <label
+                htmlFor="readiness-status"
+              >
+                Market Type
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+                id="market-type"
+                isDisabled={false}
+                name="market-type"
+                onChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": "Major",
+                      "value": "MAJOR",
+                    },
+                    Object {
+                      "label": "Minor",
+                      "value": "MINOR",
+                    },
+                  ]
+                }
+                value={
+                  Object {
+                    "label": undefined,
+                    "value": "Major",
+                  }
+                }
+              />
+            </div>
+            <div
+              className="fulfillment-order__input"
+            >
+              <label
+                htmlFor="late-fault"
+              >
+                Late At Fault
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+                id="late-fault"
+                isDisabled={false}
+                name="late-fault"
+                onChange={[Function]}
+                options={Array []}
+                value={
+                  Object {
+                    "label": "Everyone is at fault",
+                    "value": "Everyone is at fault",
+                  }
+                }
+              />
+            </div>
           </WithTheme(AkGridColumn)>
           <WithTheme(AkGridColumn)
-            medium={2}
+            medium={3}
+          >
+            <div
+              className="fulfillment-order__input"
+            >
+              <label
+                htmlFor="car"
+              >
+                CAR
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+                content="Not sure what is this field"
+              >
+                <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+                  id="car"
+                  isDisabled={false}
+                  name="CAR"
+                  onChange={[Function]}
+                  value="Not sure what is this field"
+                />
+              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+            </div>
+            <div
+              className="fulfillment-order__input"
+            >
+              <label
+                htmlFor="late-reason"
+              >
+                Late Reason
+              </label>
+              <WithAnalyticsContext(WithAnalyticsEvents(Tooltip))
+                content="The dog ate my homework"
+              >
+                <WithAnalyticsContext(WithAnalyticsEvents(AtlaskitSelect))
+                  id="late-reason"
+                  isDisabled={false}
+                  name="late-reason"
+                  onChange={[Function]}
+                  options={Array []}
+                  value={
+                    Object {
+                      "label": "The dog ate my homework",
+                      "value": "The dog ate my homework",
+                    }
+                  }
+                />
+              </WithAnalyticsContext(WithAnalyticsEvents(Tooltip))>
+            </div>
+          </WithTheme(AkGridColumn)>
+          <WithTheme(AkGridColumn)
+            medium={3}
           >
             <div
               className="fulfillment-order__input"
@@ -90,7 +261,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 <div
                   onClick={[Function]}
                 >
-                  Fulfillment Status 
+                  <label
+                    htmlFor="late-reason"
+                  >
+                    Fulfillment Status
+                  </label>
                   <ErrorIcon
                     primaryColor="grey"
                     size="small"
@@ -103,30 +278,6 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 value=""
               />
             </div>
-            <div
-              className="fulfillment-order__input"
-            >
-              <NexusDatePicker
-                error=""
-                id="ff_startDate"
-                isClearable={false}
-                isDisabled={true}
-                isLabelHidden={false}
-                isReadOnly={false}
-                isRequired={false}
-                isReturningTime={false}
-                isTimestamp={false}
-                isWithInlineEdit={false}
-                label="Start Date"
-                onChange={[Function]}
-                onConfirm={[Function]}
-                value=""
-              />
-            </div>
-          </WithTheme(AkGridColumn)>
-          <WithTheme(AkGridColumn)
-            medium={2}
-          >
             <div
               className="fulfillment-order__input"
             >
@@ -165,26 +316,19 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 }
               />
             </div>
-            <div
-              className="fulfillment-order__input"
+            <label
+              htmlFor="notes"
             >
-              <NexusDatePicker
-                error=""
-                id="ff_dueDate"
-                isClearable={false}
-                isDisabled={true}
-                isLabelHidden={false}
-                isReadOnly={false}
-                isRequired={false}
-                isReturningTime={false}
-                isTimestamp={false}
-                isWithInlineEdit={false}
-                label="Due Date"
-                onChange={[Function]}
-                onConfirm={[Function]}
-                value=""
-              />
-            </div>
+              Notes:
+            </label>
+            <NexusTextArea
+              isCompact={true}
+              isDisabled={false}
+              name="notes"
+              notesValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              onTextChange={[Function]}
+              resize="smart"
+            />
           </WithTheme(AkGridColumn)>
         </WithTheme(AkGrid)>
         <hr />

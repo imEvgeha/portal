@@ -2,6 +2,7 @@ import React, {useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
 import {sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {get, cloneDeep} from 'lodash';
+import Loading from '../../static/Loading';
 import {servicingOrdersService, getSpecOptions} from '../servicingOrdersService';
 import FulfillmentOrder from './components/fulfillment-order/FulfillmentOrder';
 import HeaderSection from './components/header-section/HeaderSection';
@@ -16,6 +17,7 @@ import {
     populateAssetInfo,
 } from './components/sources-table/util';
 import './ServicingOrder.scss';
+
 
 const ServicingOrder = ({match}) => {
     const [serviceOrder, setServiceOrder] = useState({});
@@ -143,15 +145,16 @@ const ServicingOrder = ({match}) => {
     return (
         <div className="servicing-order">
             <div className="servicing-order__left">
-                {serviceOrder && (
+                {Object.keys(serviceOrder).length > 0 ? (
                     <HeaderSection
                         orderDetails={serviceOrder}
                         handleFulfillmentOrderChange={handleFulfillmentOrderChange}
                         selectedFulfillmentOrder={selectedFulfillmentOrderID}
                     />
-                )}
+                ): <Loading/>}
             </div>
             <div className="servicing-order__right">
+            {Object.keys(serviceOrder).length > 0 ?
                 <FulfillmentOrder
                     selectedFulfillmentOrder={selectedOrder}
                     setSelectedOrder={setSelectedOrder}
@@ -192,6 +195,8 @@ const ServicingOrder = ({match}) => {
                         </div>
                     }
                 </FulfillmentOrder>
+                : <Loading/>
+                }
             </div>
         </div>
     );

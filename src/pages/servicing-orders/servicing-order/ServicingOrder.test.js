@@ -30,17 +30,23 @@ describe('ServicingOrder', () => {
                             updatedBy: null,
                         },
                     }),
-                100
+                400
             )
         );
         const wrapper = shallow(<ServicingOrder />);
+        it('should render main section', () => {
+            expect(wrapper.find('.servicing-order').length).toEqual(1);
+        });
         it('should render header section', () => {
             expect(wrapper.find('.servicing-order__left').length).toEqual(1);
         });
         it('should render right section', () => {
             expect(wrapper.find('.servicing-order__right').length).toEqual(1);
         });
-        expect(wrapper.find(HeaderSection).length).toEqual(1);
+        it('should match snapshot', () => {
+            expect(wrapper).toMatchSnapshot();
+        });
+        expect(wrapper.find(HeaderSection).length).toEqual(0);
         promise.then(() => {
             expect(wrapper.find(HeaderSection).length).toEqual(1);
         });

@@ -5,6 +5,7 @@ import {all, call, put, takeLatest} from 'redux-saga/effects';
 import {
     saveFulfillmentOrder as saveFulfillmentOrderAPI,
     getFulfilmentOrdersForServiceOrder,
+    getLateReasons
 } from '../servicingOrdersService';
 import {fetchAssetInfo, getBarCodes, populateAssetInfo} from './ServiceOrderUtils';
 import * as actionTypes from './servicingOrderActionTypes';
@@ -56,9 +57,21 @@ function* saveFulfillmentOrder(requestMethod, {payload}) {
     }
 }
 
+function* fetchLateReasons(action) {
+    try {
+        const lateReason = yield getLateReasons(action.payload);
+        let lateFaults= {};
+        lateReason?.data?.forEach(item => lateFaults[item.lateFault] = item.lateReasons);
+        yield put({type: 'SAVE_LATE_RESAONS', payload: { [action.payload]: lateFaults }});
+    } catch (e) {
+        yield put({type: 'GET_CONFIG_FAILED', message: e.message});
+    }
+}
+
 export function* servicingOrderWatcher() {
     yield all([
         takeLatest(actionTypes.SAVE_FULFILLMENT_ORDER, saveFulfillmentOrder, saveFulfillmentOrderAPI),
         takeLatest('FETCH_FO', fetchFulfillmentOrder),
+        takeLatest('FETCH_CONFIG', fetchLateReasons),
     ]);
 }
