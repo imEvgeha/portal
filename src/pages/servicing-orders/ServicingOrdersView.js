@@ -3,7 +3,6 @@ import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {downloadFile} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {useDispatch, useSelector} from 'react-redux';
 import './ServicingOrdersView.scss';
 import ServicingOrdersTable from './components/servicing-orders-table/ServicingOrdersTable';
 import {exportServicingOrders} from './servicingOrdersService';
