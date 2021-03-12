@@ -6,8 +6,12 @@ const NOT_ALL_WITHDRAWN_ERROR = 'ONLY PENDING, TENTATIVE OR CONFIRMED ARE ALLOWE
 export function areAllWithdrawn(value, args, getCurrentValues) {
     const val = value && typeof value === 'object' && !Array.isArray(value) ? value.value : value;
     const currentValues = getCurrentValues();
-    const notWithdrawn = currentValues.territory && currentValues.territory.filter(terr => !terr.dateWithdrawn);
-    const areAllWithdrawn = !notWithdrawn.length;
+    const notWithdrawn =
+        currentValues &&
+        currentValues.territory &&
+        Array.isArray(currentValues.territory) &&
+        currentValues.territory.filter(terr => !terr.dateWithdrawn);
+    const areAllWithdrawn = notWithdrawn && !notWithdrawn.length;
     if (areAllWithdrawn) {
         if (!ALL_WITHDRAWN_ALLOWED_VALUES.includes(val)) return ALL_WITHDRAWN_ERROR;
         return undefined;

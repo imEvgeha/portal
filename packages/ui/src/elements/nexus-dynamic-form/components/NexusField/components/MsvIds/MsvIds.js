@@ -94,19 +94,21 @@ const MsvIds = ({selectValues, data, isEdit, onChange, match, generateMsvIds}) =
                                 )}
                             </Field>
                             <FormFooter>
-                                <Button type="submit" appearance="primary">
-                                    Generate ID
-                                </Button>
-                                <Button
-                                    className="nexus-c-modal__cancel-button"
-                                    appearance="danger"
-                                    onClick={() => {
-                                        reset();
-                                        closeModal();
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
+                                <div className="nexus-c-modal__form-footer">
+                                    <Button type="submit" appearance="primary">
+                                        Generate ID
+                                    </Button>
+                                    <Button
+                                        className="nexus-c-modal__cancel-button"
+                                        appearance="danger"
+                                        onClick={() => {
+                                            reset();
+                                            closeModal();
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </div>
                             </FormFooter>
                         </form>
                     )}

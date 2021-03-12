@@ -10,7 +10,14 @@ import ErrorBoundary from '../../../nexus-error-boundary/ErrorBoundary';
 import NexusSelect from '../../../nexus-select/NexusSelect';
 import {VIEWS, FIELDS_WITHOUT_LABEL} from '../../constants';
 import withOptionalCheckbox from '../../hoc/withOptionalCheckbox';
-import {checkFieldDependencies, getFieldValue, getValidationFunction, renderLabel, renderError} from '../../utils';
+import {
+    checkFieldDependencies,
+    getFieldValue,
+    getValidationFunction,
+    renderLabel,
+    renderError,
+    createUrl,
+} from '../../utils';
 import CastCrew from './components/CastCrew/CastCrew';
 import DateTime from './components/DateTime/DateTime';
 import Licensors from './components/Licensors/Licensors';
@@ -54,10 +61,13 @@ const NexusField = ({
     isVerticalLayout,
     searchPerson,
     generateMsvIds,
+    setDisableSubmit,
+    initialData,
+    linkConfig,
     ...props
 }) => {
     const checkDependencies = type => {
-        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable});
+        return checkFieldDependencies(type, view, dependencies, {formData, config, isEditable, getCurrentValues});
     };
 
     const addedProps = {
@@ -82,12 +92,17 @@ const NexusField = ({
         ...addedProps,
     };
 
+    const disableSaveButton = () => {
+        setDisableSubmit(false);
+    };
+
     const renderFieldEditMode = fieldProps => {
-        const selectFieldProps = {...fieldProps};
+        let selectFieldProps = {...fieldProps};
         const multiselectFieldProps = {...fieldProps};
         switch (type) {
             case 'string':
             case 'stringInArray':
+            case 'link':
                 return <TextFieldWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
             case 'textarea':
                 return <NexusTextAreaWithOptional {...fieldProps} placeholder={`Enter ${label}`} {...addedProps} />;
@@ -113,6 +128,7 @@ const NexusField = ({
                                 isDisabled={getIsReadOnly() || checkDependencies('readOnly')}
                                 {...addedProps}
                                 {...fieldProps}
+                                onFocus={disableSaveButton}
                             />
                         )}
                     </CheckboxField>
@@ -124,6 +140,26 @@ const NexusField = ({
                         value: fieldProps.value,
                     };
                 }
+                // set label to full text string (not code). label is used in select as display text
+                if (/locale/i.test(fieldProps.name)) {
+                    const selectVal = getValueFromSelectValues('country', fieldProps.value);
+                    selectFieldProps.value = typeof selectVal === "string" ?
+                        {
+                            label: selectVal,
+                            value: fieldProps.value,
+                        }: selectVal;
+
+                }
+                else if (/language/i.test(fieldProps.name)) {
+                    const selectVal = getValueFromSelectValues('language', fieldProps.value);
+                    selectFieldProps.value = typeof selectVal === "string" ?
+                    {
+                        label: selectVal,
+                        value: fieldProps.value,
+                    }: selectVal;
+
+                }
+
                 return (
                     <NexusSelect
                         fieldProps={selectFieldProps}
@@ -135,6 +171,8 @@ const NexusField = ({
                         isMultiselect={false}
                         addedProps={addedProps}
                         defaultValue={fieldProps.value ? {value: fieldProps.value, label: fieldProps.value} : undefined}
+                        optionsFilterParameter={checkDependencies('values')}
+                        isCreateMode={view === VIEWS.CREATE}
                     />
                 );
             case 'multiselect':
@@ -202,12 +240,27 @@ const NexusField = ({
         }
     };
 
+    const getValueFromSelectValues = (field, value) => {
+        const values = selectValues?.[field] || [];
+        const option = values.find(o => o[`${field}Code`] === value);
+        return option?.[`${field}Name`] || value;
+    };
+
     const getValue = fieldProps => {
         if (Array.isArray(fieldProps.value)) {
             if (fieldProps.value.length) {
                 return fieldProps.value.map(x => x && getFieldValue(x)).join(', ');
             }
             return <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>;
+        }
+        if (/country/i.test(fieldProps.name) || /locale/i.test(fieldProps.name)) {
+            // the section doesn't get refreshed (rights detail) when save, hence the below check
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('country', val);
+        }
+        if (/language/i.test(fieldProps.name)) {
+            const val = typeof fieldProps.value === "object" ? fieldProps.value.value : fieldProps.value;
+            return getValueFromSelectValues('language', val);
         }
         return getFieldValue(fieldProps.value);
     };
@@ -218,7 +271,7 @@ const NexusField = ({
         }
         switch (type) {
             case 'boolean':
-                return <Checkbox isDisabled defaultChecked={fieldProps.value} />;
+                return <Checkbox isDisabled isChecked={fieldProps.value} />;
             case 'dateRange':
             case 'datetime':
                 if (fieldProps.value) {
@@ -250,6 +303,18 @@ const NexusField = ({
                         isEdit={false}
                     />
                 );
+            case 'link':
+                return (
+                    <>
+                        <a href={createUrl(linkConfig, initialData)}>
+                            {fieldProps.value ? (
+                                getValue(fieldProps)
+                            ) : (
+                                <div className="nexus-c-field__placeholder">{`Enter ${label}...`}</div>
+                            )}
+                        </a>
+                    </>
+                );
             default:
                 return fieldProps.value ? (
                     <div>{getValue(fieldProps)}</div>
@@ -260,6 +325,7 @@ const NexusField = ({
     };
 
     const required = !!(checkDependencies('required') || isRequired);
+
     return (
         <ErrorBoundary>
             <div
@@ -290,7 +356,7 @@ const NexusField = ({
                                         ? renderFieldEditMode(fieldProps)
                                         : renderFieldViewMode(fieldProps)}
                                 </div>
-                                {renderError({...fieldProps}, error)}
+                                {error && renderError({...fieldProps}, error)}
                             </div>
                         </>
                     )}
@@ -331,6 +397,9 @@ NexusField.propTypes = {
     isVerticalLayout: PropTypes.bool,
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
+    setDisableSubmit: PropTypes.func,
+    initialData: PropTypes.object,
+    linkConfig: PropTypes.object,
 };
 
 NexusField.defaultProps = {
@@ -360,6 +429,9 @@ NexusField.defaultProps = {
     isVerticalLayout: false,
     searchPerson: undefined,
     generateMsvIds: undefined,
+    setDisableSubmit: undefined,
+    initialData: {},
+    linkConfig: {},
 };
 
 export default NexusField;

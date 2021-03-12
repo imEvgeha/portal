@@ -48,6 +48,7 @@ const FILTER_TYPE = {
 };
 const FILTERABLE_DATA_TYPES = [
     'string',
+    'stringToArray',
     'integer',
     'double',
     'boolean',
@@ -99,4 +100,17 @@ export {
     EXCLUDED_INITIAL_FILTER_VALUES,
     AG_GRID_COLUMN_FILTER,
     DEFAULT_SORT_ORDER,
+};
+
+export const EPISODE_CONTENT_TYPE = 'EPISODE';
+export const PINNED_COLUMN_DEF = {
+    width: 100,
+    pinned: 'left',
+    resizable: false,
+    suppressSizeToFit: true,
+    suppressMovable: true,
+    lockPosition: true,
+    sortable: false,
+    lockVisible: true,
+    lockPinned: true,
 };

@@ -1,12 +1,9 @@
 import React, {useContext, useEffect, useState, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import EditorRemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import Add from '@vubiquity-nexus/portal-assets/action-add.svg';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineButtonColumn,
     defineColumn,
@@ -14,14 +11,15 @@ import {
 import withEditableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withEditableColumns';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
-import {cloneDeep, flattenDeep, get, isEmpty, groupBy} from 'lodash';
+import {cloneDeep, flattenDeep, get, isEmpty, groupBy, set} from 'lodash';
 import {compose} from 'redux';
 import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
 import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
-import ErrorsList from './ErrorsList';
+import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
+import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
 import ComponentsPicker from './components-picker/ComponentsPicker';
 import './ServicesTable.scss';
@@ -34,7 +32,6 @@ const ServicesTable = ({
     isDisabled,
     setUpdatedServices,
     components: componentsArray,
-    deteErrors,
     externalId,
 }) => {
     const [services, setServices] = useState({});
@@ -58,6 +55,7 @@ const ServicesTable = ({
             ''
         );
 
+
     useEffect(() => {
         if (!isEmpty(data)) {
             data.fs && setProviderServices(`${data.fs.toLowerCase()}Services`);
@@ -78,11 +76,13 @@ const ServicesTable = ({
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
+                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value,
                     recipient,
-                    operationalStatus: service.status,
+                    operationalStatus: service.foiStatus || '',
                     rowIndex: index,
                     rowHeight: 50,
                 }));
+
                 setTableData(flattenedObject);
             }
         },
@@ -90,22 +90,6 @@ const ServicesTable = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [services]
     );
-
-    const handleComponentsEdit = (index, components) => {
-        const newRow = cloneDeep(tableData[index]);
-        newRow.components = [...Object.keys(components)];
-        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
-        const update = cloneDeep(services);
-        const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
-            return {...item, typeAttribute: tableData[index].assetType === 'Audio' ? 'audioDetail' : 'textDetail'};
-        });
-
-        update.deteServices[index].details = serviceWithComponents.map(item => {
-            delete item['isChecked'];
-            return item;
-        });
-        setUpdatedServices(update);
-    };
 
     const handleServiceRemoval = index => {
         const updatedService = cloneDeep(services[`${providerServices}`]);
@@ -115,36 +99,39 @@ const ServicesTable = ({
         setUpdatedServices(newServices);
     };
 
-    const getComponentsForPicker = assetType => {
-        if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
-        else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
-        else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
-        return [];
-    };
-
     // eslint-disable-next-line react/prop-types
-    const closeButtonCell = ({rowIndex}) => {
-        return (
-            <CustomActionsCellRenderer id={rowIndex.toString()} classname="nexus-c-services__close-icon">
-                {!isDisabled && (
-                    <span onClick={() => handleServiceRemoval(rowIndex)}>
-                        <EditorRemoveIcon size="medium" primaryColor="grey" />
-                    </span>
-                )}
-            </CustomActionsCellRenderer>
-        );
-    };
-
-    // eslint-disable-next-line react/prop-types
-    const componentsCell = ({rowIndex}) => {
+    const ComponentCellRenderer = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
-            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(tableData[rowIndex], 'assetType', ''))) {
+            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node,'data.assetType'))) {
                 toolTipContent = NO_SELECTION;
             } else {
                 toolTipContent = CLICK_FOR_SELECTION;
             }
         }
+
+        const getComponentsForPicker = assetType => {
+            if (assetType === 'Audio') return get(deteComponents, 'components.audioComponents', []);
+            else if (assetType === 'Subtitles') return get(deteComponents, 'components.subtitleComponents', []);
+            else if (assetType === 'Closed Captioning') return get(deteComponents, 'components.captionComponents', []);
+            return [];
+        };
+
+        const handleComponentsEdit = (index,  components) => {
+            const newRow = cloneDeep(tableData[index]);
+            const update = cloneDeep(services);
+            const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
+                return {...item, typeAttribute: get(node,'data.assetType') === 'Audio' ? 'audioDetail' : 'textDetail'};
+            });
+
+            update.deteServices[index].details = serviceWithComponents.map(item => {
+                delete item['isChecked'];
+                return item;
+            });
+            newRow.components = update.deteServices[index].details;
+            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+            setUpdatedServices(update);
+        };
 
         return (
             <Tooltip content={toolTipContent}>
@@ -156,25 +143,25 @@ const ServicesTable = ({
                             : openModal(
                                   <ComponentsPicker
                                       data={{
-                                          assetType: tableData[rowIndex].assetType,
+                                          assetType: get(node,'data.assetType'),
                                           barcode: data.barcode,
                                           title,
-                                          compSummary: tableData[rowIndex].components,
-                                          componentArray: getComponentsForPicker(tableData[rowIndex].assetType),
+                                          compSummary: get(node,'data.components',[]),
+                                          componentArray: getComponentsForPicker(get(node,'data.assetType')),
                                       }}
                                       closeModal={closeModal}
                                       saveComponentData={handleComponentsEdit}
                                       index={rowIndex}
                                   />,
                                   {
-                                      width: tableData[rowIndex].assetType === 'Audio' ? 'x-large' : 'large',
+                                      width: get(node,'data.assetType') === 'Audio' ? 'x-large' : 'large',
                                   }
                               );
                     }}
                 >
-                    {tableData[rowIndex] &&
+                    {
                         Object.keys(
-                            groupBy([...tableData[rowIndex].components], v => [v.language, v.trackConfig || v.format])
+                            groupBy(get(node,'data.components',[]), v => [v.language, v.trackConfig || v.type])
                         ).map(item => <Tag key={item} text={item} />)}
                 </div>
             </Tooltip>
@@ -183,31 +170,33 @@ const ServicesTable = ({
 
     const closeButtonColumn = defineButtonColumn({
         width: 30,
-        cellRendererFramework: closeButtonCell,
-        cellRendererParams: services && services[providerServices],
+        cellRendererFramework: CloseButtonCellRenderer,
+        cellRendererParams: ({rowIndex}) => ({rowIndex, isDisabled, handleServiceRemoval}),
     });
 
     const componentCol = {
-        cellRendererFramework: componentsCell,
-        cellRendererParams: {data, tableData},
+        cellRenderer: 'componentCellRenderer',
+        cellRendererParams: {tableData, data, services, deteComponents},
     };
 
     const statusCol = {
-        headerComponentFramework: () => (
-            <Tooltip content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}>
-                <div
-                    onClick={() =>
-                        deteErrors.length ? openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />) : null
-                    }
-                >
-                    Operational Status <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
-                </div>
-            </Tooltip>
-        ),
         sortable: false,
         // eslint-disable-next-line react/prop-types
         cellRendererFramework: ({rowIndex}) => <StatusTag status={get(tableData[rowIndex], 'operationalStatus', '')} />,
         cellRendererParams: {tableData},
+    };
+
+    const watermarkCol = {
+        sortable: false,
+        cellRenderer: 'checkBoxRenderer',
+        headerComponentFramework:  () => <span title="watermark"><i className="fas fa-tint"/></span>,
+        cellRendererParams: ({rowIndex, node}) =>
+            ({
+                rowIndex,
+                node,
+                isDisabled,
+                toggleCheck: ()=>handleFieldEdit(rowIndex,'externalServices.parameters','Watermark',!get(tableData[rowIndex], 'watermark')),
+            }),
     };
 
     // get spec col selection values dynamically when user hovers the row
@@ -230,6 +219,25 @@ const ServicesTable = ({
         }
     };
 
+    const handleFieldEdit = (index,fieldPath, fieldName,newValue) => {
+        const newRow = cloneDeep(tableData[index]);
+        const update = cloneDeep(services);
+        set(newRow,fieldName,newValue);
+        if(fieldPath === 'externalServices.parameters') {
+            const inx = get(update.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
+            if(inx >= 0) {
+                set(update,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
+            }
+            else
+                update.deteServices[index].externalServices.parameters = [...update.deteServices[index].externalServices.parameters, {name: fieldName, value: newValue}]
+        }
+        else
+            set(update,`deteService[${index}].${fieldPath}`,newValue);
+        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+        setServices(update);
+        setUpdatedServices(update);
+    }
+
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
             case 'components':
@@ -247,6 +255,8 @@ const ServicesTable = ({
                     },
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
+            case 'watermark':
+                return {...item, ...watermarkCol}
 
             default:
                 return item;
@@ -282,7 +292,12 @@ const ServicesTable = ({
                 currentService.overrideStartDate = data.doNotStartBefore || '';
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
-                currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
+                // watermark will not arrive for old orders, hence need to check
+                const extParamWatermark = currentService.externalServices.parameters.find(param => param.name === 'Watermark');
+                if (extParamWatermark)
+                    extParamWatermark.value = data.watermark;
+                if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
+                    currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
 
                 const newServices = {...services, [providerServices]: updatedServices};
@@ -322,8 +337,8 @@ const ServicesTable = ({
         },
     });
 
-    const servicesCount = services[`${providerServices}`] ? services[`${providerServices}`].length : 0;
-    const barcode = services.barcode || null;
+    const servicesCount = get(services[`${providerServices}`],'length',0);
+    const barcode = get(services,'barcode', null);
 
     const valueGetter = params => {
         return get(params.data, params.colDef.dataSource || params.colDef.field, '');
@@ -358,6 +373,12 @@ const ServicesTable = ({
                 selectValues={{...SELECT_VALUES, spec: specOptions}}
                 onGridEvent={handleTableChange}
                 onCellMouseOver={getSpecOptions}
+                frameworkComponents={
+                    {
+                        'componentCellRenderer': ComponentCellRenderer,
+                        'checkBoxRenderer': CheckBoxRenderer,
+                    }
+                }
             />
         </div>
     );
@@ -368,7 +389,6 @@ ServicesTable.propTypes = {
     isDisabled: PropTypes.bool,
     setUpdatedServices: PropTypes.func,
     components: PropTypes.array,
-    deteErrors: PropTypes.array,
     recipientsOptions: PropTypes.object,
     externalId: PropTypes.string.isRequired,
 };
@@ -378,7 +398,6 @@ ServicesTable.defaultProps = {
     isDisabled: false,
     setUpdatedServices: () => null,
     components: [],
-    deteErrors: [],
     recipientsOptions: {},
 };
 

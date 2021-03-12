@@ -1,76 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Error list test should match snapshot 1`] = `
-<div
-  className="error-list"
->
-  <div
-    className="error-list__header"
-  >
-    <h1>
-      Operational status errors
-    </h1>
-  </div>
-  <hr
-    className="solid"
-  />
-  <div>
-    <ErrorItem
-      error={
-        Object {
-          "error": "This is test error 1",
-          "severity": "ERROR",
-        }
-      }
-      key="0"
-    />
-    <ErrorItem
-      error={
-        Object {
-          "error": "This is test error 2.. and longer text... 1234567 longer text bla bla bla bla bla bla dhudhuiadwqjwhidwjid wdhuihduiwhduiqwdhuidh duw",
-          "severity": "ERROR",
-        }
-      }
-      key="1"
-    />
-    <ErrorItem
-      error={
-        Object {
-          "error": "This is test error 3",
-          "severity": "ERROR",
-        }
-      }
-      key="2"
-    />
-    <ErrorItem
-      error={
-        Object {
-          "error": "error 4",
-          "severity": "ERROR",
-        }
-      }
-      key="3"
-    />
-  </div>
-  <hr
-    className="solid"
-  />
-  <div
-    className="error-list__footer"
-  >
-    <p>
-      4 errors found
-    </p>
-    <WithAnalyticsContext(WithAnalyticsEvents(Button))
-      appearance="primary"
-      onClick={[Function]}
-    >
-      OK
-    </WithAnalyticsContext(WithAnalyticsEvents(Button))>
-  </div>
-</div>
-`;
-
 exports[`ServicesTable should match snapshot 1`] = `
 <div
   className="nexus-c-services-table"
@@ -117,12 +46,13 @@ exports[`ServicesTable should match snapshot 1`] = `
         Object {
           "cellEditorFramework": undefined,
           "cellRendererFramework": [Function],
-          "cellRendererParams": undefined,
+          "cellRendererParams": [Function],
           "colId": "",
           "editable": false,
           "field": "buttons",
           "headerName": "",
-          "lockPosition": true,
+          "lockPinned": true,
+          "lockPosition": false,
           "menuTabs": Array [],
           "pinned": "left",
           "resizable": false,
@@ -136,6 +66,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "serviceType",
           "field": "serviceType",
           "headerName": "Service Type",
+          "sortable": false,
           "width": 150,
         },
         Object {
@@ -143,6 +74,7 @@ exports[`ServicesTable should match snapshot 1`] = `
           "dataSource": "assetType",
           "field": "assetType",
           "headerName": "Asset Type",
+          "sortable": false,
           "width": 120,
         },
         Object {
@@ -152,11 +84,12 @@ exports[`ServicesTable should match snapshot 1`] = `
           "field": "spec",
           "headerName": "Format Sheet",
           "onCellClicked": [Function],
+          "sortable": false,
           "width": 260,
         },
         Object {
           "autoHeight": true,
-          "cellRendererFramework": [Function],
+          "cellRenderer": "componentCellRenderer",
           "cellRendererParams": Object {
             "data": Object {
               "amsAssetId": "DA16129",
@@ -181,32 +114,48 @@ exports[`ServicesTable should match snapshot 1`] = `
               "startDate": "2020-05-19T15:13:13.731-03:00",
               "title": "test title",
             },
+            "deteComponents": undefined,
+            "services": Object {},
             "tableData": Array [],
           },
           "colId": "components",
           "dataSource": "components",
           "field": "components",
           "headerName": "Components",
+          "sortable": false,
           "width": 250,
         },
         Object {
           "colId": "doNotStartBefore",
           "field": "doNotStartBefore",
           "headerName": "Do not start before",
+          "sortable": false,
           "valueFormatter": [Function],
           "width": 200,
+        },
+        Object {
+          "cellRenderer": "checkBoxRenderer",
+          "cellRendererParams": [Function],
+          "colId": "watermark",
+          "field": "watermark",
+          "headerComponentFramework": [Function],
+          "headerName": "watermark",
+          "sortable": false,
+          "width": 50,
         },
         Object {
           "colId": "priority",
           "dataSource": "priority",
           "field": "priority",
           "headerName": "Priority",
+          "sortable": false,
           "width": 90,
         },
         Object {
           "colId": "recipient",
           "field": "recipient",
           "headerName": "Recipient",
+          "sortable": false,
           "width": 140,
         },
         Object {
@@ -216,7 +165,6 @@ exports[`ServicesTable should match snapshot 1`] = `
           },
           "colId": "operationalStatus",
           "field": "operationalStatus",
-          "headerComponentFramework": [Function],
           "headerName": "Operational Status",
           "sortable": false,
           "width": 170,
@@ -230,6 +178,12 @@ exports[`ServicesTable should match snapshot 1`] = `
       }
     }
     domLayout="autoHeight"
+    frameworkComponents={
+      Object {
+        "checkBoxRenderer": [Function],
+        "componentCellRenderer": [Function],
+      }
+    }
     isMenuHidden={false}
     mapping={
       Array [

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
 import {get} from 'lodash';
 import moment from 'moment';
 import NexusDateTimeWindowPicker from '../../../nexus-date-and-time-elements/nexus-date-time-window-picker/NexusDateTimeWindowPicker';
@@ -17,6 +18,9 @@ export class CustomDateFilter extends React.Component {
         };
     }
 
+    // eslint-disable-next-line react/destructuring-assignment
+    isFilterDisabled = () => !(this.state.dates.startDate || this.state.dates.endDate);
+
     onChange = dateRange => {
         if (!dateRange) {
             return;
@@ -32,7 +36,7 @@ export class CustomDateFilter extends React.Component {
         const keys = Object.keys(dateRange);
 
         if (keys.includes('startDate') && dateRange.startDate !== startDate) {
-            const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : true;
+            const needUpdate = endDate ? moment(dateRange.startDate).isBefore(endDate) : false;
             this.setState(
                 {
                     dates: {
@@ -40,10 +44,10 @@ export class CustomDateFilter extends React.Component {
                         endDate,
                     },
                 },
-                () => (!dateRange.startDate || needUpdate) && filterChangedCallback()
+                () => needUpdate && filterChangedCallback()
             );
         } else if (keys.includes('endDate') && dateRange.endDate !== endDate) {
-            const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : true;
+            const needUpdate = startDate ? moment(dateRange.endDate).isAfter(startDate) : false;
             this.setState(
                 {
                     dates: {
@@ -51,7 +55,7 @@ export class CustomDateFilter extends React.Component {
                         startDate,
                     },
                 },
-                () => (!dateRange.endDate || needUpdate) && filterChangedCallback()
+                () => needUpdate && filterChangedCallback()
             );
         } else if (keys.includes('type') && dateRange.type === 'range' && keys.includes('filter')) {
             this.setState(
@@ -96,24 +100,22 @@ export class CustomDateFilter extends React.Component {
         return !!(startDate || endDate);
     };
 
-    doesFilterPass = params => {
+    doesFilterPass = () => {
         const {dates = {}} = this.state;
-        const {colDef} = this.props;
-
         const {startDate, endDate} = dates;
-        const {field} = colDef;
-        const fieldValue = params.data[field];
 
-        const isAfterStartDate = startDate ? moment(fieldValue).isAfter(startDate) : true;
-        const isBeforeEndDate = endDate ? moment(fieldValue).isBefore(endDate) : true;
-
-        return isAfterStartDate && isBeforeEndDate;
+        if(!startDate || !endDate)
+            return true;
+        else if(moment(endDate).isAfter(startDate))
+            return true;
+        return false;
     };
 
     render() {
         const {
             colDef: {field},
             isUsingTime,
+            filterChangedCallback,
         } = this.props;
         const {dates = {}} = this.state;
         const {startDate, endDate} = dates;
@@ -134,6 +136,13 @@ export class CustomDateFilter extends React.Component {
                     labels={DATEPICKER_LABELS}
                     isClearable={true}
                 />
+                <div className="nexus-c-date-filter-btn">
+                    <Button appearance="primary"
+                            isDisabled={!this.doesFilterPass()}
+                            onClick={() =>filterChangedCallback()}>
+                        Filter
+                    </Button>
+                </div>
             </div>
         );
     }

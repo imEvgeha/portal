@@ -1,6 +1,7 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import MoreIcon from '@vubiquity-nexus/portal-assets/more-icon.svg';
+import NexusDrawer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-drawer/NexusDrawer';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     SUCCESS_ICON,
@@ -12,6 +13,7 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import classNames from 'classnames';
 import {uniq, cloneDeep} from 'lodash';
 import {rightsService} from '../../legacy/containers/avail/service/RightsService';
+import BulkMatching from '../bulk-matching/BulkMatching';
 import {getEligibleRights} from '../menu-actions/actions';
 import './PrePlanActions.scss';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
@@ -33,12 +35,16 @@ export const PrePlanActions = ({
     setPreplanRights,
     prePlanRepoRights = [],
     username,
+    singleRightMatch,
+    setSingleRightMatch,
 }) => {
     const [menuOpened, setMenuOpened] = useState(false);
     const [isFetchDOP, setIsFetchDOP] = useState(false);
     const [territories, setTerritories] = useState([]);
     const [keywords, setKeywords] = useState('');
     const [bulkUpdate, setBulkUpdate] = useState([]);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [headerText, setHeaderText] = useState('');
 
     useEffect(() => {
         bulkSetInTable();
@@ -51,11 +57,14 @@ export const PrePlanActions = ({
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
-            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected);
+            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected && !t.withdrawn);
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
-                    territory: unselectedTerritory,
+                    territorySelected: right.territorySelected.concat(
+                        right.territory.filter(t => t.selected).map(t => t.country)
+                    ),
+                    territory: right.territory.filter(t => !t.selected),
                 });
             return right.id;
         });
@@ -101,17 +110,15 @@ export const PrePlanActions = ({
                         const prevKeywords = Array.isArray(previousRight['keywords'])
                             ? previousRight['keywords']
                             : previousRight['keywords'].split(',');
-                        const prevTerritory = [];
+                        const prevTerritory = previousRight.territory
+                            .filter(obj => obj.isDirty && obj.selected)
+                            .map(t => t.country);
                         const updatedRight = {
                             id: right.id,
-                            keywords: uniq(prevKeywords.concat(right['keywords'])),
-                            territory: right['territory'].map(territory => {
-                                const selected = previousRight['territory'].find(
-                                    obj => obj.country === territory.country && obj.selected
-                                );
-                                selected && prevTerritory.push(selected);
-                                return selected || territory;
-                            }),
+                            properties: {
+                                keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                selected: prevTerritory,
+                            },
                         };
                         DOPRequestRights.push({
                             id: right.id,
@@ -124,16 +131,15 @@ export const PrePlanActions = ({
                         .then(res => {
                             if (res.id) {
                                 const projectId = res.id;
-                                Promise.all(
-                                    mergedWithSelectedRights.map(right => {
-                                        return rightsService.update(right, right.id);
-                                    })
-                                )
-                                    .then(() => {
+                                rightsService
+                                    .bulkUpdate(mergedWithSelectedRights)
+                                    .then(response => {
                                         DOPService.startProject(projectId)
                                             .then(() => {
-                                                dispatchSuccessToast(eligibleRights.length);
+                                                dispatchSuccessToast(response.length);
                                                 removeRightsFromPrePlan(false);
+                                                setSelectedPrePlanRights([]);
+                                                clickHandler();
                                                 setIsFetchDOP(false);
                                             })
                                             .catch(() => {
@@ -154,19 +160,21 @@ export const PrePlanActions = ({
         const rightsList = cloneDeep(prePlanRepoRights);
         let updatedRight = {};
         selectedPrePlanRights.forEach(right => {
-            right.territory.forEach(t => {
-                if (bulkTerritories.includes(t.country)) {
-                    // eslint-disable-next-line prefer-destructuring
-                    updatedRight = rightsList.filter(r => r.id === right.id)[0];
-                    updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
-                    let keywordsStr = '';
-                    keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
-                    updatedRight.keywords =
-                        keywordsStr.length > 1 && keywordsStr.slice(-1) === ','
-                            ? keywordsStr.slice(0, -1)
-                            : keywordsStr;
-                }
-            });
+            updatedRight = rightsList.find(r => r.id === right.id);
+            if (updatedRight) {
+                let keywordsStr = '';
+                keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
+                updatedRight.keywords =
+                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ',' ? keywordsStr.slice(0, -1) : keywordsStr;
+
+                right.territory.forEach(t => {
+                    if (bulkTerritories.includes(t.country)) {
+                        // eslint-disable-next-line prefer-destructuring
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].selected = true;
+                        updatedRight.territory.filter(tr => tr.country === t.country)[0].isDirty = true;
+                    }
+                });
+            }
         });
         setPreplanRights({[username]: rightsList});
         closeModal();
@@ -220,6 +228,23 @@ export const PrePlanActions = ({
         },
     ];
 
+    const openDrawer = () => {
+        setDrawerOpen(true);
+        setHeaderText('Title Matching');
+    };
+
+    const closeDrawer = () => {
+        singleRightMatch.length && setSingleRightMatch([]);
+        setDrawerOpen(false);
+    };
+
+    // single title match flow (from popover)
+    useEffect(() => {
+        if (singleRightMatch.length && !drawerOpen) {
+            openDrawer();
+        }
+    }, [singleRightMatch, openDrawer, drawerOpen]);
+
     return (
         <>
             <div className="nexus-c-selected-rights-actions" ref={node}>
@@ -247,6 +272,20 @@ export const PrePlanActions = ({
                     ))}
                 </div>
             </div>
+            <NexusDrawer
+                onClose={closeDrawer}
+                isOpen={drawerOpen}
+                isClosedOnBlur={false}
+                width="wider"
+                title={headerText}
+            >
+                <BulkMatching
+                    data={singleRightMatch}
+                    closeDrawer={closeDrawer}
+                    setHeaderText={setHeaderText}
+                    headerText={headerText}
+                />
+            </NexusDrawer>
         </>
     );
 };
@@ -258,12 +297,16 @@ PrePlanActions.propTypes = {
     prePlanRepoRights: PropTypes.array,
     setPreplanRights: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
+    singleRightMatch: PropTypes.array,
+    setSingleRightMatch: PropTypes.func,
 };
 
 PrePlanActions.defaultProps = {
     selectedPrePlanRights: [],
     addToast: () => null,
     prePlanRepoRights: [],
+    singleRightMatch: [],
+    setSingleRightMatch: () => null,
 };
 
 export default withToasts(PrePlanActions);

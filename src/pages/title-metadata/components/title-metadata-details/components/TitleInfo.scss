@@ -19,9 +19,14 @@
         color: map-get($neutrals, N900);
         @include margin(0);
     }
-    > div > span {
-        @include margin(0, 6, 0, 0);
-    }
+}
+
+.nexus-c-title-info-container__label {
+    @include margin(0, 24, 0, 0);
+}
+
+.nexus-c-title-info-container__label--co {
+    @include margin(0, 4, 0, 0);
 }
 
 .nexus-c-title-info-container__image {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Dropdown, {DropdownItemCheckbox, DropdownItemGroupCheckbox} from '@atlaskit/dropdown-menu';
+import {cloneDeep, uniqBy} from 'lodash';
 import './DropdownCellEditor.scss';
 
 class DropdownCellEditor extends Component {
@@ -19,6 +20,12 @@ class DropdownCellEditor extends Component {
         const preparedOptions =
             Array.isArray(options) &&
             options.map(option => {
+                if ((!option.hasOwnProperty('isDirty') && option.selected) || option.isDisabled) {
+                    return {
+                        ...option,
+                        isDisabled: true,
+                    };
+                }
                 return {
                     ...option,
                     isDisabled: false,
@@ -33,7 +40,9 @@ class DropdownCellEditor extends Component {
                 country: option,
             }));
 
-        return [...preparedOptions, ...preparedDisabledOptions];
+        const optionsList = [...preparedDisabledOptions, ...preparedOptions];
+
+        return preparedOptions[0].country ? uniqBy(optionsList, 'country') : optionsList;
     };
 
     isPopup = () => {
@@ -44,22 +53,21 @@ class DropdownCellEditor extends Component {
 
     getValue = () => {
         const {value} = this.state;
-        const cleanValues = value
-            .filter(option => !option.isDisabled)
-            .map(option => {
-                delete option.isDisabled;
-                return option;
-            });
+        const cleanValues = value.map(option => {
+            delete option.isDisabled;
+            return option;
+        });
         return cleanValues;
     };
 
     handleChange = index => {
         const {value} = this.state;
-        const prevIsSelected = value[index].selected;
-        value[index].selected = !prevIsSelected;
-
+        const updatedValue = cloneDeep(value);
+        const prevIsSelected = updatedValue[index].selected;
+        updatedValue[index].selected = !prevIsSelected;
+        updatedValue[index].isDirty = true;
         this.setState({
-            value,
+            value: updatedValue,
         });
     };
 

@@ -585,7 +585,7 @@ class TitleEdit extends Component {
     checkSyncResult = titleSystem => {
         this.state.externalIDs.forEach(externalId => {
             if (externalId.externalSystem === titleSystem) {
-                externalId.errors.length === 0 ? this.addToastToFlags(true) : this.addToastToFlags(false);
+                get(externalId, 'errors.length', 0) === 0 ? this.addToastToFlags(true) : this.addToastToFlags(false);
             }
         });
     };
@@ -1082,16 +1082,8 @@ class TitleEdit extends Component {
             return hasGeneratedChildren && editorialMetadata[index];
         });
 
-        // Prepare data for back-end
-        const requestBody = [
-            {
-                itemIndex: null,
-                body: masterEmet,
-            },
-        ];
-
         // Calls the API to update decorated EMets based on the master
-        titleService.updateEditorialMetadata(requestBody).then(response => {
+        titleService.regenerateAutoDecoratedMetadata(masterEmet.id).then(response => {
             this.loadEditorialMetadata();
             const failed = get(response, ['data', '0', 'response', 'failed'], []);
             const {addToast} = this.props;

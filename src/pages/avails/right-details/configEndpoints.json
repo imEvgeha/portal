@@ -122,5 +122,9 @@
     {
         "field": "advisoriesCode",
         "configEndpoint": "/advisories"
+    },
+    {
+        "field": "category",
+        "configEndpoint": "/categories"
     }
 ]

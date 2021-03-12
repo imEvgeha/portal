@@ -28,14 +28,6 @@
     top: 82px;
 }
 
-.nexus-c-dynamic-form__tab-content {
-    @include padding(3, 0, 0, 0);
-}
-
-.nexus-c-dynamic-form__tab-content--title {
-    @include padding(46, 0, 0, 0);
-}
-
 .nexus-c-dynamic-form__tab {
     display: flex;
     justify-content: center;
@@ -61,6 +53,11 @@
     border-bottom: 2px solid map-get($neutrals, N40);
 }
 
+.nexus-c-dynamic-form__show-all {
+    width: 20%;
+    @include margin(4, auto);
+}
+
 .nexus-c-dynamic-form__cancel-button,
 .nexus-c-dynamic-form__submit-button,
 .nexus-c-dynamic-form__edit-button {
@@ -72,6 +69,22 @@
 
 .nexus-c-dynamic-form__submit-button {
     right: 100px;
+}
+
+.nexus-c-dynamic-form__validation-msg {
+    position: absolute;
+    top: 24px;
+    z-index: 1;
+    font-size: 1.3rem;
+    right: 245px;
+}
+
+.nexus-c-dynamic-form__title-validation-msg {
+    position: absolute;
+    top: 7%;
+    z-index: 1;
+    font-size: 1.3rem;
+    right: 35%;
 }
 
 .nexus-c-dynamic-form__cancel-button--title,

@@ -10,7 +10,6 @@ module.exports = envKeys => ({
     module: {
         strictExportPresence: true,
         rules: [
-            {parser: {system: false}},
             {
                 test: /\.svg$/,
                 use: ['@svgr/webpack'],
@@ -55,7 +54,6 @@ module.exports = envKeys => ({
             {from: 'profile/availMapping.json'},
             {from: 'profile/titleMatchingMappings.json'},
             {from: 'profile/titleMatchingRightMappings.json'},
-            {from: 'profile/importMap.json'},
         ]),
     ],
 });

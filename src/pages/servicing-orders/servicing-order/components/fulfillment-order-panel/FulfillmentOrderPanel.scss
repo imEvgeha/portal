@@ -48,11 +48,6 @@
         margin-right: 12px;
     }
 
-    &__title-container {
-        display: flex;
-        align-items: flex-end;
-    }
-
     &__title {
         text-overflow: ellipsis;
         overflow: hidden;
@@ -98,7 +93,6 @@
 
     &__order-info {
         @include addSpacing(margin-left, 3);
-        display: flex;
         justify-content: space-between;
         align-items: center;
         flex: 1 0 auto;

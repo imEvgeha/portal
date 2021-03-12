@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {DatePicker} from '@atlaskit/datetime-picker';
 import {ErrorMessage} from '@atlaskit/form/Messages';
@@ -6,7 +6,6 @@ import InlineEdit from '@atlaskit/inline-edit';
 import {
     getDateFormatBasedOnLocale,
     parseSimulcast,
-    isUtc,
 } from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import classnames from 'classnames';
 import moment from 'moment';
@@ -37,6 +36,7 @@ const NexusDatePicker = ({
     useEffect(() => {
         setDate(value || '');
     }, [value]);
+
     // Due to requirements, we check if the provided value is "zoned" and set isSimulcast accordingly
     useEffect(() => {
         typeof value === 'string' && setIsSimulcast(value.endsWith('Z'));
@@ -59,9 +59,9 @@ const NexusDatePicker = ({
             !isWithInlineEdit &&
                 onChange(
                     isTimestamp
-                        ? moment(date).utc(!isUtc(date)).toISOString()
+                        ? moment(date).utc().toISOString()
                         : `${moment(date)
-                              .utc(!isUtc(date))
+                              .utc()
                               .format(isSimulcast ? SIMULCAST_DATE_FORMAT : RELATIVE_FORMAT)}`
                 );
         } else {
@@ -72,7 +72,7 @@ const NexusDatePicker = ({
 
     const DatePickerComponent = isReadOnly => {
         return (
-            <>
+            <div className="nexus_c_date_picker_filter">
                 {!isLabelHidden && label && (
                     <label htmlFor={id} className={classnames(isRequired && 'required')}>
                         {label}
@@ -96,7 +96,7 @@ const NexusDatePicker = ({
                     </div>
                 )}
                 {error && <ErrorMessage>{error}</ErrorMessage>}
-            </>
+            </div>
         );
     };
 
@@ -136,7 +136,7 @@ NexusDatePicker.propTypes = {
     isReturningTime: PropTypes.bool,
     onConfirm: PropTypes.func,
     id: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     isClearable: PropTypes.bool,
     isRequired: PropTypes.bool,
 };
@@ -151,6 +151,7 @@ NexusDatePicker.defaultProps = {
     isLabelHidden: false,
     isReturningTime: false,
     onConfirm: () => null,
+    onChange: () => null,
     isClearable: false,
     isRequired: false,
 };

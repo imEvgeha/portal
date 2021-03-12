@@ -9,7 +9,7 @@
     "main": "index.js",
     "scripts": {
         "start": "webpack-dev-server",
-        "build:prod": "webpack-dev-server",
+        "build:prod": "webpack --config webpack.config.js --env.env=dev",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:coverage": "jest --coverage --colors",

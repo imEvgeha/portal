@@ -22,6 +22,9 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
 
     useEffect(() => {
         const updatedPersons = [...personsList];
+        updatedPersons.forEach((person, index) => {
+            person.creditsOrder = index;
+        });
         setPersons(updatedPersons);
     }, [personsList]);
 
@@ -62,6 +65,9 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
     const addPerson = person => {
         const updatedPersons = [...[person], ...persons];
         const isCast = uiConfig.type === CAST;
+        updatedPersons.forEach((person, index) => {
+            person.creditsOrder = index;
+        });
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
     };
@@ -71,6 +77,9 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             return entry.id !== person.id;
         });
         const isCast = uiConfig.type === CAST;
+        updatedPersons.forEach((person, index) => {
+            person.creditsOrder = index;
+        });
         setPersons(updatedPersons);
         updateCastCrew(updatedPersons, isCast);
     };
@@ -124,6 +133,9 @@ const NexusPersonsList = ({personsList, uiConfig, hasCharacter, isEdit, updateCa
             return;
         }
         const updatedPersons = reorder(persons, result.source.index, result.destination.index);
+        updatedPersons.forEach((person, index) => {
+            person.creditsOrder = index;
+        });
         setPersons(updatedPersons);
         const isCast = uiConfig.type === CAST;
         updateCastCrew(updatedPersons, isCast);

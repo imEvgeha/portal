@@ -4,7 +4,7 @@ exports[`ArtworkActions should match snapshot 1`] = `
 <div
   className="artwork-actions"
 >
-  <WithAnalyticsContext(WithAnalyticsEvents(Checkbox))
+  <Checkbox
     isChecked={false}
     isIndeterminate={true}
     onChange={[Function]}
@@ -14,10 +14,10 @@ exports[`ArtworkActions should match snapshot 1`] = `
   >
     3 images selected
   </span>
-  <WithAnalyticsContext(WithAnalyticsEvents(Button))
+  <Button
     appearance="danger"
   >
     Reject Selected
-  </WithAnalyticsContext(WithAnalyticsEvents(Button))>
+  </Button>
 </div>
 `;

@@ -30,12 +30,21 @@ exports[`FulfillmentOrderPanel should match snapshot 1`] = `
           COVFEFE
         </span>
       </div>
-      <span
-        className="nexus-c-fulfillment-order-panel__date"
+      <div
+        className="nexus-c-fulfillment-order-panel__title-container"
       >
-        Due Date: 
-        10/05/2021
-      </span>
+        <div
+          className="nexus-c-fulfillment-order-panel__date"
+        >
+          Due Date: 
+          10/05/2021
+        </div>
+        <div
+          className="nexus-c-fulfillment-order-panel__date"
+        >
+          Completed Date: 
+        </div>
+      </div>
     </div>
   </div>
   <div

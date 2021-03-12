@@ -37,9 +37,9 @@ import {getDomainName} from '@vubiquity-nexus/portal-utils/lib/Common';
 import {publisherService} from '../../service/PublisherService';
 import {URL} from '@vubiquity-nexus/portal-utils/lib/Common';
 
-const onViewTitleClick = response => {
+const onViewTitleClick = (response, redirectToV2) => {
     const {id} = response || {};
-    const url = `${getDomainName()}/metadata/detail/${id}`;
+    const url = `${getDomainName()}/metadata${redirectToV2 ? '/v2' : ''}/detail/${id}`;
     window.open(url, '_blank');
 };
 
@@ -145,7 +145,7 @@ class TitleCreate extends React.Component {
         const title = this.getTitleWithoutEmptyField();
         const {isSyncVZ, isSyncMovida} = this.state;
         titleService
-            .createTitle(title)
+            .createTitle(title, this.props.tenantCode)
             .then(response => {
                 if (isSyncVZ || isSyncMovida) {
                     // call registerTitle API
@@ -177,7 +177,9 @@ class TitleCreate extends React.Component {
                     icon: SUCCESS_ICON,
                     isAutoDismiss: true,
                     description: titleConstants.NEW_TITLE_TOAST_SUCCESS_MESSAGE,
-                    actions: [{content: 'View title', onClick: () => onViewTitleClick(response)}],
+                    actions: [
+                        {content: 'View title', onClick: () => onViewTitleClick(response, this.props.redirectToV2)},
+                    ],
                 });
             })
             .catch(e => {
@@ -543,6 +545,27 @@ class TitleCreate extends React.Component {
                                             </Col>
                                         </Row>
                                     ) : null}
+                                    {this.props.tenantCode && (
+                                        <Row>
+                                            <Col>
+                                                {/* eslint-disable-next-line react/no-adjacent-inline-elements */}
+                                                <Label for="catalogueOwner">
+                                                    Catalogue Owner<span style={{color: 'red'}}>*</span>
+                                                </Label>
+                                                <AvField
+                                                    type="select"
+                                                    name="catalogueOwner"
+                                                    required
+                                                    disabled={true}
+                                                    value={this.props.tenantCode}
+                                                >
+                                                    <option value={this.props.tenantCode}>
+                                                        {this.props.tenantCode === 'vu' ? 'Vubiquity' : 'MGM'}
+                                                    </option>
+                                                </AvField>
+                                            </Col>
+                                        </Row>
+                                    )}
                                     {this.renderSyncCheckBoxes()}
                                 </Container>
                             </Col>
@@ -571,6 +594,13 @@ TitleCreate.propTypes = {
     toggle: PropTypes.func.isRequired,
     display: PropTypes.bool.isRequired,
     className: PropTypes.string,
+    tenantCode: PropTypes.string,
+    redirectToV2: PropTypes.bool,
+};
+
+TitleCreate.defaultProps = {
+    tenantCode: undefined,
+    redirectToV2: false,
 };
 
 export default withToasts(TitleCreate);

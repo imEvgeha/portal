@@ -11,6 +11,7 @@ import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
+import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
 import {PriceTypeFormSchema, AudioLanguageTypeFormSchema} from '../elements/utils';
 import {fetchAvailMapping} from '../nexusGridActions';
 import {createAvailSelectValuesSelector} from '../nexusGridSelectors';
@@ -225,6 +226,7 @@ const withFilterableColumns = ({
                             // if current filter is readonly (it just got unlocked) destroy to create the proper one
                             gridApi.destroyFilter(field);
                         }
+                        columnDef.floatingFilter = true;
 
                         switch (searchDataType) {
                             case READONLY:
@@ -246,10 +248,12 @@ const withFilterableColumns = ({
                                     values: [false, true],
                                 };
                                 break;
-                            case INTEGER:
                             case DOUBLE:
                             case YEAR:
                                 columnDef.filter = NUMBER;
+                                columnDef.filterParams = {
+                                    ...DEFAULT_FILTER_PARAMS,
+                                };
                                 break;
                             case MULTISELECT:
                                 columnDef.filter = SET;
@@ -314,8 +318,14 @@ const withFilterableColumns = ({
                             case REGIONAL_MIDNIGHT:
                             case TIMESTAMP:
                             case BUSINESS_DATETIME: {
-                                const from = filters[`${field}From`];
-                                const to = filters[`${field}To`];
+                                const from =
+                                    !filters[`${field}From`] && filters[field] && filters[field][`${field}From`]
+                                        ? filters[field][`${field}From`]
+                                        : filters[`${field}From`];
+                                const to =
+                                    !filters[`${field}To`] && filters[field] && filters[field][`${field}To`]
+                                        ? filters[field][`${field}To`]
+                                        : filters[`${field}To`];
                                 const initialFilters = {
                                     ...(from && {from}),
                                     ...(to && {to}),
@@ -414,7 +424,6 @@ const withFilterableColumns = ({
             <WrappedComponent
                 {...propsWithoutHocProps}
                 columnDefs={filterableColumnDefs}
-                floatingFilter={true}
                 onGridEvent={onGridEvent}
                 frameworkComponents={{
                     customDateFloatingFilter: CustomDateFloatingFilter,
@@ -423,6 +432,7 @@ const withFilterableColumns = ({
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,
                     customReadOnlyFloatingFilter: CustomReadOnlyFloatingFilter,
+                    titleSelectionRenderer: TitleSelectionRenderer,
                 }}
                 isDatasourceEnabled={isDatasourceEnabled}
                 prepareFilterParams={prepareFilterParams}

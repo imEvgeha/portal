@@ -47,3 +47,8 @@ export const TABS_MAPPINGS = [
     {tabName: 'Rights', id: 'Rights'},
     {tabName: 'Sync Log', id: 'Sync Log'},
 ];
+
+export const SEASON = 'SEASON';
+export const SERIES = 'SERIES';
+export const EPISODE = 'EPISODE';
+export const CORE_TITLE_SECTION = 'Core Title';

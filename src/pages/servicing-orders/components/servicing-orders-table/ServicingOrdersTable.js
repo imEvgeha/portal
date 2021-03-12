@@ -4,12 +4,14 @@ import {Checkbox} from '@atlaskit/checkbox';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
 import NexusGrid from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/NexusGrid';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, get, startCase} from 'lodash';
+import moment from 'moment';
 import {compose} from 'redux';
 import columnDefs from '../../columnMappings.json';
 import {servicingOrdersService} from '../../servicingOrdersService';
@@ -20,6 +22,7 @@ import './ServicingOrdersTable.scss';
 const ServicingOrderGrid = compose(
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: servicingOrdersService.getServicingOrders})
 )(NexusGrid);
 
@@ -91,6 +94,23 @@ const ServicingOrdersTable = ({
                             />
                         );
                     },
+                };
+            }
+
+            if (columnDef.field === 'sr_due_date') {
+                return {
+                    ...columnDef,
+                    valueFormatter: valueFormatter(columnDef),
+                    cellStyle: params => {
+                        const dueDate = ISODateToView(params.value, DATETIME_FIELDS.REGIONAL_MIDNIGHT);
+                        const daysDiff = moment().diff(dueDate, 'days');
+                        if (daysDiff >= 0)
+                            return {color: 'red'}; // last day or expired
+                        // eslint-disable-next-line no-magic-numbers
+                        else if(daysDiff >= -3 && daysDiff <= -1)
+                            return {color: 'orange'}; // 3 days or less
+                        return null;
+                    }
                 };
             }
 

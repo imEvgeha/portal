@@ -91,12 +91,13 @@ export const titleService = {
         return nexusFetch(url, {params});
     },
 
-    createTitle: title => {
+    createTitle: (title, tenantCode) => {
         const url = config.get('gateway.titleUrl') + config.get('gateway.service.title') + '/titles';
-
+        const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(title),
+            params: encodedSerialize(params),
             isWithErrorHandling: false,
         });
     },
@@ -211,6 +212,14 @@ export const titleService = {
         return nexusFetch(url, {
             method: 'put',
             body: JSON.stringify(editedEditorialMetadata),
+        });
+    },
+
+    regenerateAutoDecoratedMetadata: masterEmetId => {
+        const url =
+            config.get('gateway.titleUrl') + config.get('gateway.service.titleV2') + '/regenerateEmets/' + masterEmetId;
+        return nexusFetch(url, {
+            method: 'put',
         });
     },
 

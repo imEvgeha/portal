@@ -39,4 +39,17 @@ export const exportService = {
             abortAfter
         );
     },
+
+    getReleaseReport: searchCriteria => {
+        const url = `${config.get('gateway.url')}${config.get('gateway.service.avails')}/rights/report-new-release`;
+        const abortAfter = config.get('avails.export.http.timeout');
+        return nexusFetch(
+            url,
+            {
+                method: 'post',
+                body: JSON.stringify(searchCriteria),
+            },
+            abortAfter
+        );
+    },
 };

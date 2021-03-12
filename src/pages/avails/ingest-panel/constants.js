@@ -15,6 +15,11 @@ export default {
         pending: {label: 'Pending', value: 'Pending'},
         errors: {label: 'Errors', value: 'Error'},
     },
+    INGEST_LIST: [
+        {value: '', label: 'ALL'},
+        {value: 'EMAIL', label: 'EMAIL'},
+        {value: 'UPLOAD', label: 'UPLOAD'},
+    ],
     ingestTypes: {
         EMAIL: 'Email',
         UPLOAD: 'Upload',
@@ -29,10 +34,12 @@ export default {
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
         LICENSOR: 'licensor',
+        INGEST_TYPE: 'ingestType'
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
         receivedTo: 'igReceivedTo',
+        ingestType: 'ingestType',
         status: 'igStatus',
         licensor: 'igLicensor',
     },

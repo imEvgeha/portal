@@ -8,6 +8,16 @@ const getRightDetailsOptionsReducer = state => {
 export const areValidSelector = () =>
     createSelector(getRightDetailsOptionsReducer, rightDetailsOptions => rightDetailsOptions.areValid || true);
 
+export const isSavingSelector = createSelector(
+    getRightDetailsOptionsReducer,
+    rightDetailsOptions => rightDetailsOptions.isSaving || false
+);
+
+export const isEditModeSelector = createSelector(
+    getRightDetailsOptionsReducer,
+    rightDetailsOptions => rightDetailsOptions.isEditMode || false
+);
+
 export const selectValuesSelector = createSelector(
     getRightDetailsOptionsReducer,
     rightDetailsOptions => rightDetailsOptions.selectValues || {}

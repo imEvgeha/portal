@@ -4,6 +4,7 @@ import Badge from '@atlaskit/badge';
 import ChevronIcon from '@vubiquity-nexus/portal-assets/chevron-right.svg';
 import FolderIcon from '@vubiquity-nexus/portal-assets/folder.svg';
 import StatusTag from '@vubiquity-nexus/portal-ui/lib/elements/nexus-status-tag/StatusTag';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView, sortByDateFn} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import classnames from 'classnames';
@@ -11,12 +12,21 @@ import {get} from 'lodash';
 import {renderPanel} from '../fulfillment-order-panels/FulfillmentOrderPanels';
 import './ServicingOrderItem.scss';
 
-const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handleFulfillmentOrderChange}) => {
+const ServicingOrderItem = ({
+    servicingOrderItem,
+    selectedFulfillmentOrder,
+    handleFulfillmentOrderChange,
+    completedDate,
+}) => {
     const {
         product_description: productDescription,
         fulfillmentOrders,
         external_id: externalId,
         status,
+        watermark,
+        premiering,
+        market_type: marketType,
+        late,
     } = servicingOrderItem;
     const count = fulfillmentOrders.length;
     const [isOpen, setOpen] = useState(false);
@@ -35,19 +45,71 @@ const ServicingOrderItem = ({servicingOrderItem, selectedFulfillmentOrder, handl
         <>
             <div className="nexus-c-servicing-order-item" onClick={() => setOpen(!isOpen)}>
                 <div className="nexus-c-servicing-order-item__row">
-                    <div className="nexus-c-servicing-order-item__row-group">
+                    <div className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__title-row">
                         <FolderIcon className="nexus-c-servicing-order-item__folder-icon" />
-                        <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
+                        <NexusTooltip content={productDescription}>
+                            <h5 className="nexus-c-servicing-order-item__title">{productDescription}</h5>
+                        </NexusTooltip>
+                        <span className="nexus-c-servicing-order-item__row-group nexus-c-servicing-order-item__icons">
+                            {late && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <NexusTooltip content="Late">
+                                        <Badge>
+                                            <i className="fas fa-stopwatch" />
+                                        </Badge>
+                                    </NexusTooltip>
+                                </span>
+                            )}
+                            {watermark && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <NexusTooltip content="Watermark">
+                                        <Badge>
+                                            <i className="fas fa-tint" />
+                                        </Badge>
+                                    </NexusTooltip>
+                                </span>
+                            )}
+                            {premiering && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <NexusTooltip content="Premiering">
+                                        <Badge>
+                                            <i className="far fa-star" />
+                                        </Badge>
+                                    </NexusTooltip>
+                                </span>
+                            )}
+                            {marketType === 'Major' && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <NexusTooltip content="Major">
+                                        <Badge>
+                                            <i className="fas fa-angle-up" />
+                                        </Badge>
+                                    </NexusTooltip>
+                                </span>
+                            )}
+                            {marketType === 'Minor' && (
+                                <span className="nexus-c-servicing-order-item__badge">
+                                    <NexusTooltip content="Minor">
+                                        <Badge>
+                                            <i className="fas fa-minus fa-xs" />
+                                        </Badge>
+                                    </NexusTooltip>
+                                </span>
+                            )}
+                            <span className="nexus-c-servicing-order-item__badge">
+                                <Badge>{count}</Badge>
+                            </span>
+                        </span>
                     </div>
-                    <Badge>{count}</Badge>
                 </div>
                 <p className="nexus-c-servicing-order-item__external-id">{externalId}</p>
                 <div className="nexus-c-servicing-order-item__row">
                     <div className="nexus-c-servicing-order-item__row-group">
                         <ChevronIcon className={chevronClassNames} />
-                        <p className="nexus-c-servicing-order-item__due-dates">
-                            {renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}
-                        </p>
+                        <div className="nexus-c-servicing-order-item__due-dates">
+                            <div>{renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}</div>
+                            <div>Completed Date: {completedDate}</div>
+                        </div>
                     </div>
                     {!!status && <StatusTag status={`FO_${status}`} />}
                 </div>
@@ -67,11 +129,13 @@ ServicingOrderItem.propTypes = {
     servicingOrderItem: PropTypes.any.isRequired,
     selectedFulfillmentOrder: PropTypes.string,
     handleFulfillmentOrderChange: PropTypes.func,
+    completedDate: PropTypes.string,
 };
 
 ServicingOrderItem.defaultProps = {
     selectedFulfillmentOrder: null,
     handleFulfillmentOrderChange: () => null,
+    completedDate: '',
 };
 
 /**

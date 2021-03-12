@@ -72,7 +72,7 @@ export const navigationPrimaryItems = (selectedItem, handleClick) => {
             isSelected: selectedItem === DOP_TASKS,
             onClick: () => handleClick(DOP_TASKS),
         },
-        URL.isLocalOrDevOrQA() && {
+        URL.isLocalOrDevOrQAOrStg() && {
             icon: EditorMediaWrapRightIcon,
             id: TITLE_METADATA,
             tooltip: 'Title Metadata',

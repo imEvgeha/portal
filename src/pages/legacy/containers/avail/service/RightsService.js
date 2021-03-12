@@ -147,6 +147,10 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 continue;
             }
             if (value instanceof Object && !Array.isArray(value)) {
+                // is date range
+                for (let keyDate in value) {
+                    params[keyDate] = value[keyDate];
+                }
                 continue;
             }
             const map = mappings.find(
@@ -157,7 +161,7 @@ const parseAdvancedFilterV2 = function (searchCriteria, filtersInBody) {
                 keyValue = `${key}FlattenList`;
                 value = value.split(',').map(v => `${v}true`.trim());
             }
-            if (filtersInBody && map.searchDataType === 'multiselect') {
+            if (filtersInBody && (map.searchDataType === 'multiselect' || map.searchDataType === 'stringToArray')) {
                 // change key - add List
                 keyValue = `${keyValue}List`;
                 //  Convert Comma Separated String into an Array
@@ -238,6 +242,14 @@ export const rightsService = {
         return nexusFetch(url, {
             method: 'PATCH',
             body: JSON.stringify(data),
+        });
+    },
+
+    bulkUpdate: payload => {
+        const url = config.get('gateway.url') + config.get('gateway.service.avails') + `/rights/bulk-partial-update`;
+        return nexusFetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify(payload),
         });
     },
 

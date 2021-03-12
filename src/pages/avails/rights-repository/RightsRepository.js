@@ -12,7 +12,6 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
-import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
 import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -46,17 +45,17 @@ import constants from '../constants';
 import './RightsRepository.scss';
 
 const RightsRepositoryTable = compose(
-    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
+    withColumnsResizing(),
     withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
     withSorting(constants.INITIAL_SORT)
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
-    withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
+    withColumnsResizing(),
     withSorting()
 )(NexusGrid);
 
@@ -81,7 +80,6 @@ const RightsRepository = ({
     isTableDataLoading,
     setIsTableDataLoading,
     username,
-    toggleRefreshGridData,
 }) => {
     const isMounted = useRef(true);
     const [totalCount, setTotalCount] = useState(0);
@@ -199,6 +197,15 @@ const RightsRepository = ({
 
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
+            const updatedPrePlanRights = cloneDeep(currentUserPrePlanRights);
+            selectedRepoRights.forEach(selectedRight => {
+                const index = currentUserPrePlanRights.findIndex(right => right.id === selectedRight.id);
+                if (index >= 0) {
+                    updatedPrePlanRights[index].coreTitleId = selectedRight.coreTitleId;
+                }
+            });
+            setPreplanRights({[username]: updatedPrePlanRights});
+
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -222,9 +229,6 @@ const RightsRepository = ({
         if (isMounted.current && isObject(prePlanRights) && username) {
             setCurrentUserPrePlanRights(prePlanRights[username] || []);
         }
-        if (isMounted.current && activeTab !== RIGHTS_TAB) {
-            toggleRefreshGridData(true);
-        }
     }, [prePlanRights, username]);
 
     // Fetch only selected rights from the current user
@@ -237,6 +241,10 @@ const RightsRepository = ({
 
     const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
         columnDef.menuTabs = ['generalMenuTab'];
+
+        if (columnDef.headerName === 'Withdrawn' || columnDef.headerName === 'Selected') {
+            columnDef.sortable = false;
+        }
 
         return columnDef;
     });
@@ -416,7 +424,7 @@ const RightsRepository = ({
 
     return (
         <div className="nexus-c-rights-repository">
-            <RightsRepositoryHeader />
+            <RightsRepositoryHeader gridApi={gridApi} columnApi={columnApi} username={username} activeTab={activeTab} />
             {!isEmpty(selectedIngest) && attachment && (
                 <Ingest
                     ingest={selectedIngest}
@@ -535,7 +543,6 @@ RightsRepository.propTypes = {
     rightsFilter: PropTypes.object,
     isTableDataLoading: PropTypes.bool,
     setIsTableDataLoading: PropTypes.func,
-    toggleRefreshGridData: PropTypes.func.isRequired,
 };
 
 RightsRepository.defaultProps = {
@@ -578,7 +585,6 @@ const mapDispatchToProps = dispatch => ({
     downloadIngestEmail: payload => dispatch(downloadEmailAttachment(payload)),
     downloadIngestFile: payload => dispatch(downloadFileAttachment(payload)),
     setRightsFilter: payload => dispatch(setRightsFilter(payload)),
-    toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RightsRepository);

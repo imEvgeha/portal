@@ -224,6 +224,7 @@ const InputForm = ({
                         onChange={val => setLicensor(val)}
                         value={licensor}
                         options={licensors.map(lic => ({value: lic, label: lic.name}))}
+                        isDisabled={template !== STUDIO && !isShowingCatalogType}
                         placeholder={template !== STUDIO && !isShowingCatalogType ? 'N/A' : 'Select'}
                         {...selectProps}
                     />
@@ -232,6 +233,7 @@ const InputForm = ({
                     <label className="manual-ingest-config__label">Service Region</label>
                     <Select
                         id="manual-upload-service-region"
+                        isDisabled={template === USMASTER}
                         onChange={val => setServiceRegion(val)}
                         value={serviceRegion}
                         options={serviceRegionOptions}

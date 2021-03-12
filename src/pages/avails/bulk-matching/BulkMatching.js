@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
+import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import {
     WARNING_TITLE,
@@ -14,9 +15,9 @@ import {TITLE_MATCH_AND_CREATE_WARNING_MESSAGE} from '@vubiquity-nexus/portal-ui
 import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {get} from 'lodash';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleService} from '../../legacy/containers/metadata/service/TitleService';
-import useMatchAndDuplicateList from '../../metadata/legacy-title-reconciliation/hooks/useMatchAndDuplicateList';
 import {HEADER_TITLE_BONUS_RIGHT, HEADER_TITLE_TITLE_MATCHING} from '../selected-rights-actions/constants';
 import TitleMatchingRightsTable from '../title-matching-rights-table/TitleMatchingRightsTable';
 import CreateTitleForm from '../title-matching/components/create-title-form/CreateTitleForm';
@@ -52,6 +53,13 @@ export const BulkMatching = ({
     isBonusRight,
     setHeaderText,
     headerText,
+    matchButton,
+    duplicateButton,
+    onCellValueChanged,
+    matchList,
+    duplicateList,
+    selectedItems,
+    getRestrictedIds,
 }) => {
     const isMounted = useRef(true);
     const [selectedTableData, setSelectedTableData] = useState([]);
@@ -63,11 +71,8 @@ export const BulkMatching = ({
     const [isMatchLoading, setMatchIsLoading] = useState(false);
     const [isMatchAndCreateLoading, setMatchAndCreateIsLoading] = useState(false);
     const [combinedTitle, setCombinedTitle] = useState([]);
-    const [matchedTitles, setMatchedTitles] = useState([]);
     const [bonusRights, setBonusRights] = useState([]);
 
-    const selectionList = useMatchAndDuplicateList();
-    const {matchList, duplicateList} = selectionList;
     const {openModal, closeModal} = useContext(NexusModalContext);
     const {NEXUS} = TitleSystems;
 
@@ -78,6 +83,8 @@ export const BulkMatching = ({
             isMounted.current = false;
         };
     }, []);
+
+    useEffect(() => getRestrictedIds(restrictedCoreTitleIds), [restrictedCoreTitleIds]);
 
     useEffect(() => {
         if (isMounted.current && data.length) {
@@ -146,9 +153,6 @@ export const BulkMatching = ({
                             toggleRefreshGridData(true);
                             return !isBonusRight && closeDrawer();
                         }
-                        //  handle matched titles (ignore updated affected rights from response)
-                        const matchedTitlesList = Object.values(matchList);
-                        setMatchedTitles(matchedTitlesList);
                         setHeaderText(TITLE_MATCHING_REVIEW_HEADER);
                     })
                     .catch(() => {
@@ -299,7 +303,7 @@ export const BulkMatching = ({
                         isTitlesTableLoading={!loadTitlesTable}
                         closeDrawer={closeDrawer}
                         onMatch={onMatch}
-                        selectionList={selectionList}
+                        selectionList={{matchList, onCellValueChanged, selectedItems, matchButton, duplicateButton}}
                     />
                 </div>
             )}
@@ -307,7 +311,7 @@ export const BulkMatching = ({
                 <>
                     <BulkMatchingReview
                         combinedTitle={combinedTitle}
-                        matchedTitles={matchedTitles}
+                        matchedTitles={Object.values(matchList)}
                         onDone={onMatchAndCreateDone}
                         bonusRights={isBonusRight ? bonusRights : null}
                         existingBonusRights={existingBonusRights}
@@ -334,6 +338,13 @@ BulkMatching.propTypes = {
     setHeaderText: PropTypes.func,
     isBonusRight: PropTypes.bool,
     headerText: PropTypes.string,
+    onCellValueChanged: PropTypes.func,
+    matchButton: PropTypes.object,
+    duplicateButton: PropTypes.object,
+    selectedItems: PropTypes.array,
+    getRestrictedIds: PropTypes.func,
+    matchList: PropTypes.object,
+    duplicateList: PropTypes.object,
 };
 
 BulkMatching.defaultProps = {
@@ -344,10 +355,17 @@ BulkMatching.defaultProps = {
     setHeaderText: () => null,
     isBonusRight: false,
     headerText: '',
+    onCellValueChanged: () => null,
+    matchButton: {},
+    duplicateButton: {},
+    selectedItems: [],
+    getRestrictedIds: () => null,
+    matchList: {},
+    duplicateList: {},
 };
 
 const mapDispatchToProps = dispatch => ({
     toggleRefreshGridData: payload => dispatch(toggleRefreshGridData(payload)),
 });
 
-export default connect(null, mapDispatchToProps)(withToasts(BulkMatching));
+export default connect(null, mapDispatchToProps)(withToasts(compose(withMatchAndDuplicateList())(BulkMatching)));

@@ -1,0 +1,19 @@
+{
+    "npmClient": "yarn",
+    "command": {
+        "publish": {
+            "ignoreChanges": ["ignored-file", "*.md"],
+            "message": "chore(release): publish",
+            "registry": "http://nexus.vubiquity.com:8081/repository/npm-private/"
+        },
+        "bootstrap": {
+            "npmClientArgs": [
+                "--no-package-lock",
+                "@vubiquity-nexus:registry=http://nexus.vubiquity.com:8081/repository/npm-private/"
+            ]
+        }
+    },
+    "packages": ["packages/*"],
+    "useWorkspaces": true,
+    "version": "independent"
+}

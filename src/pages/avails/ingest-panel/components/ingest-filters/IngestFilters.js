@@ -2,15 +2,19 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
+import {connect} from "react-redux";
 import {NexusDateTimeWindowPicker} from '../../../../../ui/elements';
 import Constants from '../../constants';
+import {getFilterLoadingState} from "../../ingestSelectors";
 import {getFiltersToSend, getInitialFilters} from '../../utils';
 import './IngestFilters.scss';
 
-const IngestFilters = ({onFiltersChange}) => {
+
+const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     const {
-        filterKeys: {LICENSOR, STATUS},
+        filterKeys: {LICENSOR, STATUS, INGEST_TYPE},
         STATUS_LIST,
+        INGEST_LIST,
     } = Constants;
 
     const [filters, setFilters] = useState(getInitialFilters());
@@ -30,6 +34,7 @@ const IngestFilters = ({onFiltersChange}) => {
         setFilters({
             status: STATUS_LIST[0],
             licensor: '',
+            ingestType:INGEST_LIST[0],
             startDate: '',
             endDate: '',
         });
@@ -79,13 +84,22 @@ const IngestFilters = ({onFiltersChange}) => {
                     labels={Constants.DATEPICKER_LABELS}
                 />
             </div>
+            <div className="ingest-filters__section">
+                Ingest Method
+                <Select
+                    options={Constants.INGEST_LIST}
+                    value={filters.ingestType}
+                    onChange={value => onFilterChange(INGEST_TYPE, value)}
+                />
+            </div>
             <div className="ingest-filters__actions">
                 <Button onClick={clearFilters}>Clear All</Button>
                 <Button
-                    className={`ingest-filters__actions--apply ${
-                        isApplyActive ? 'ingest-filters__actions--active' : ''
-                    }`}
+
                     onClick={applyFilters}
+                    appearance="primary"
+                    isDisabled={!isApplyActive}
+                    isLoading={isFilterLoading}
                 >
                     Apply Filter
                 </Button>
@@ -96,6 +110,18 @@ const IngestFilters = ({onFiltersChange}) => {
 
 IngestFilters.propTypes = {
     onFiltersChange: PropTypes.func.isRequired,
+    isFilterLoading: PropTypes.bool,
 };
 
-export default IngestFilters;
+IngestFilters.defaultProps = {
+    isFilterLoading: false,
+};
+
+const mapStateToProps = () => {
+    return state => ({
+        isFilterLoading: getFilterLoadingState(state),
+    });
+};
+
+export default connect(mapStateToProps)(IngestFilters);
+

@@ -15,7 +15,8 @@ import Constants from '../constants';
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = Constants;
 const {URLFilterKeys} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
-const UPLOAD_DELAY = 6500;
+const UPLOAD_DELAY = 7500;
+const UPLOAD_DELAY_2 = 2000;
 
 function* fetchIngests({payload}) {
     try {
@@ -26,15 +27,27 @@ function* fetchIngests({payload}) {
         filters.page = '';
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: true,
+        });
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         const {data, total} = response || {};
         yield put({
             type: actionTypes.FETCH_INGESTS_SUCCESS,
             payload: {data: normalizeDataForStore(data), total},
         });
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: false,
+        });
     } catch (error) {
         yield put({
             type: actionTypes.FETCH_INGESTS_ERROR,
+        });
+        yield put({
+            type: actionTypes.FILTER_LOADING,
+            payload: false,
         });
     }
 }
@@ -184,6 +197,11 @@ function* uploadIngest({payload}) {
         yield put({
             type: actionTypes.UPLOAD_INGEST_SUCCESS,
             payload: {},
+        });
+        yield delay(UPLOAD_DELAY_2);
+        yield put({
+            type: actionTypes.FETCH_INGESTS,
+            payload: getFiltersToSend(),
         });
     } catch (e) {
         yield put({

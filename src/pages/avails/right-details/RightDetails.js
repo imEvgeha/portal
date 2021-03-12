@@ -2,16 +2,21 @@ import React, {memo, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import NexusDynamicForm from '@vubiquity-nexus/portal-ui/lib/elements/nexus-dynamic-form/NexusDynamicForm';
 import {connect} from 'react-redux';
-import {getRight, updateRight} from '../rights-repository/rightsActions';
+import {getRight, updateRight, editRight} from '../rights-repository/rightsActions';
 import * as selectors from '../rights-repository/rightsSelectors';
 import RightDetailsHeader from './components/RightDetailsHeader';
 import * as detailsSelectors from './rightDetailsSelector';
 import {searchPerson} from './rightDetailsServices';
 import schema from './schema.json';
-
 import './RightDetails.scss';
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, history}) => {
+/*
+ The new right details page implementation:
+ - uses NexusDynamicForm, which uses a schema to display
+ and configure edit/view form fields
+*/
+
+const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, isEditMode, setEditRight, history}) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -31,11 +36,13 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, histor
             <NexusDynamicForm
                 schema={schema}
                 initialData={right}
-                isEdit
+                isEdit={isEditMode}
                 onSubmit={values => onSubmit(values)}
                 selectValues={selectValues}
+                isSaving={isSaving}
                 containerRef={containerRef}
                 searchPerson={searchPerson}
+                setEditMode={setEditRight}
             />
         </div>
     );
@@ -47,7 +54,10 @@ RightDetails.propTypes = {
     right: PropTypes.object,
     match: PropTypes.object,
     selectValues: PropTypes.object,
+    isSaving: PropTypes.bool,
     history: PropTypes.object,
+    isEditMode: PropTypes.bool,
+    setEditRight: PropTypes.func,
 };
 
 RightDetails.defaultProps = {
@@ -56,7 +66,10 @@ RightDetails.defaultProps = {
     right: {},
     match: {},
     selectValues: {},
+    isSaving: false,
     history: {},
+    isEditMode: false,
+    setEditRight: ()=>null,
 };
 
 const mapStateToProps = () => {
@@ -65,12 +78,15 @@ const mapStateToProps = () => {
     return (state, props) => ({
         right: rightSelector(state, props),
         selectValues: detailsSelectors.selectValuesSelector(state, props),
+        isSaving: detailsSelectors.isSavingSelector(state),
+        isEditMode: detailsSelectors.isEditModeSelector(state),
     });
 };
 
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
     updateRight: payload => dispatch(updateRight(payload)),
+    setEditRight:  payload => dispatch(editRight(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));

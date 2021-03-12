@@ -6,6 +6,18 @@
     @include padding(3);
     border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
 
+    &__title-row {
+        width: 100%;
+        > div {
+            overflow: hidden;
+            width: 100%;
+        }
+    }
+
+    &__icons {
+        justify-content: flex-end;
+    }
+
     &__row {
         display: flex;
         justify-content: space-between;
@@ -15,6 +27,9 @@
     &__row-group {
         display: flex;
         align-items: center;
+        .nexus-c-servicing-order-item__badge {
+            margin-left: 4px;
+        }
     }
 
     &__folder-icon {
@@ -28,6 +43,9 @@
 
     &__title {
         @include margin(0);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__external-id {

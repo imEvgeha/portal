@@ -10,6 +10,9 @@ const withOptionalCheckbox = () => WrappedComponent => {
         const {value, isDisabled, ...restFieldProps} = fieldProps;
         const [visible, setVisible] = useState(!!(view !== VIEWS.CREATE && value && value !== ''));
 
+        // remove dispatch when isOptional = false and check for value - fix react warnings
+        const {dispatch, value: val, ...propsWithoutDispatch} = fieldProps;
+
         const changeCheckboxValue = () => {
             const newVisible = !visible;
             setVisible(newVisible);
@@ -19,8 +22,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
         };
 
         const getDateValue = value => {
-            const val = useCurrentDate ? new Date() : value;
-            return val;
+            return useCurrentDate ? new Date() : value || '';
         };
 
         return isOptional ? (
@@ -29,7 +31,7 @@ const withOptionalCheckbox = () => WrappedComponent => {
                 {visible && <WrappedComponent {...restFieldProps} value={getDateValue(value)} />}
             </div>
         ) : (
-            <WrappedComponent {...fieldProps} />
+            <WrappedComponent {...propsWithoutDispatch} value={val || ''} />
         );
     };
 

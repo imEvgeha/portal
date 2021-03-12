@@ -7,6 +7,9 @@ exports[`TitleMetadataView should match snapshot 1`] = `
   <TitleMetadataHeader
     label="Title Metadata"
   >
+    <CatalogueOwner
+      setCatalogueOwner={[Function]}
+    />
     <WithAnalyticsContext(WithAnalyticsEvents(Button))
       appearance="primary"
       className="nexus-c-title-metadata__create-btn"
@@ -23,10 +26,17 @@ exports[`TitleMetadataView should match snapshot 1`] = `
     </WithAnalyticsContext(WithAnalyticsEvents(Button))>
   </TitleMetadataHeader>
   <TitleMetadataTable
+    catalogueOwner={
+      Object {
+        "tenantCode": "vu",
+      }
+    }
     history={Object {}}
   />
   <Connect(ComposedComponent)
     display={false}
+    redirectToV2={true}
+    tenantCode="vu"
     toggle={[Function]}
   />
 </div>

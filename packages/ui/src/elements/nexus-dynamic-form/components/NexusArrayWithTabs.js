@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import {Field as AKField, FormFooter} from '@atlaskit/form';
@@ -8,7 +8,7 @@ import {get} from 'lodash';
 import {NexusModalContext} from '../../nexus-modal/NexusModal';
 import {renderNexusField} from '../utils';
 import SideTabs from './SideTabs/SideTabs';
-import {VIEWS, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, MASTER_EMET_MESSAGE} from '../constants';
+import {MASTER_EMET_MESSAGE, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS, VIEWS} from '../constants';
 import './NexusArrayWithTabs.scss';
 
 const NexusArrayWithTabs = ({
@@ -25,6 +25,8 @@ const NexusArrayWithTabs = ({
     path,
     name,
     generateMsvIds,
+    searchPerson,
+    regenerateAutoDecoratedMetadata,
 }) => {
     const {openModal, closeModal} = useContext(NexusModalContext);
     const [groupedData, setGroupedData] = useState({});
@@ -66,10 +68,25 @@ const NexusArrayWithTabs = ({
         return formData[NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]];
     };
 
+    const checkIsUpdated = (values, currentData) => {
+        if (path !== 'ratings') {
+            const isUpdated = Object.keys(values).some(key => {
+                return !!(
+                    (get(values, key) && get(values, key) !== get(currentData, key)) ||
+                    (get(currentData, key) && get(values, key) !== get(currentData, key))
+                );
+            });
+            if (isUpdated) {
+                values.isUpdated = true;
+            }
+        }
+    };
+
     const changeTabData = (oldSubTab, key, index) => {
         if (view === VIEWS.EDIT) {
             const currentFormData = getCurrentFormData();
             const current = currentData || currentFormData;
+            checkIsUpdated(currentFormData, current);
             replaceRecordInGroupedData(currentFormData, current, oldSubTab, index, key);
             const newData = replaceRecordInData(currentFormData, current);
             setFieldValue(path, newData);
@@ -202,7 +219,14 @@ const NexusArrayWithTabs = ({
             });
             return isEqual;
         });
-        newData.splice(index, 1);
+        if (path === 'ratings') {
+            newData.splice(index, 1);
+        } else {
+            newData[index] = {
+                ...newData[index],
+                isDeleted: true,
+            };
+        }
         setFieldValue(path, newData);
     };
 
@@ -211,6 +235,12 @@ const NexusArrayWithTabs = ({
             title: <div className="nexus-c-array__modal-title">{`Add ${name} Data`}</div>,
             width: 'medium',
         });
+        const currentValues = getCurrentFormData();
+        const updatedCurrentData = {
+            ...currentData,
+            ...currentValues,
+        };
+        setCurrentData(updatedCurrentData);
     };
 
     const handleValuesFormat = values => {
@@ -252,7 +282,16 @@ const NexusArrayWithTabs = ({
         }
 
         const newData = [...getValues()[path]];
-        newData.push(properValues);
+        const newObject =
+            path === 'ratings'
+                ? {
+                      ...properValues,
+                  }
+                : {
+                      ...properValues,
+                      isCreated: true,
+                  };
+        newData.push(newObject);
         setFieldValue(path, newData);
         closeModal();
     };
@@ -271,6 +310,7 @@ const NexusArrayWithTabs = ({
                                                 field: fields[key],
                                                 selectValues,
                                                 setFieldValue,
+                                                searchPerson,
                                             })}
                                         </div>
                                     );
@@ -317,39 +357,31 @@ const NexusArrayWithTabs = ({
         return false;
     };
 
-    const regenerateAutoDecoratedMetadata = () => {
-        // todo: write this function
-    };
-
-    const setValueForEachField = () => {
-        const current = currentData || data[0];
-        Object.keys(fields).forEach(key => {
-            const fieldPath = fields[key].path;
-            let value = get(current, fieldPath);
-            if (value === null) value = '';
-            if (path === 'ratings') setFieldValue(fieldPath, value);
-            else setFieldValue(`${NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS[path]}.${fieldPath}`, value);
-        });
+    const handleRegenerateAutoDecoratedMetadata = () => {
+        const usEnData = get(groupedData, 'US en');
+        if (usEnData) {
+            const masterEmet = usEnData.find(data => data.hasGeneratedChildren);
+            if (masterEmet) regenerateAutoDecoratedMetadata({...masterEmet});
+        }
     };
 
     const renderFields = () => {
-        const renderedFields = Object.keys(fields).map((key, index) => {
+        return Object.keys(fields).map((key, index) => {
             return (
-                <div key={index} className="nexus-c-nexus-array-with-tabs__field">
+                <div key={`nexus-c-array__field ${index}`} className="nexus-c-nexus-array-with-tabs__field">
                     {renderNexusField(key, view, getValues, generateMsvIds, {
                         initialData: currentData || data[0],
                         field: fields[key],
                         selectValues,
                         setFieldValue,
                         config,
+                        searchPerson,
                         inTabs: true,
                         path,
                     })}
                 </div>
             );
         });
-        view === VIEWS.EDIT && setValueForEachField();
-        return renderedFields;
     };
 
     return (
@@ -378,7 +410,7 @@ const NexusArrayWithTabs = ({
                     </div>
                     {view === VIEWS.EDIT && <Button onClick={openEditModal}>{`+ Add ${name} Data`}</Button>}
                     {showRegenerateAutoDecoratedMetadata() && (
-                        <Button appearance="primary" onClick={regenerateAutoDecoratedMetadata}>
+                        <Button appearance="primary" onClick={handleRegenerateAutoDecoratedMetadata}>
                             Regenerate Auto-Decorated Metadata
                         </Button>
                     )}
@@ -413,6 +445,8 @@ NexusArrayWithTabs.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     generateMsvIds: PropTypes.func,
+    searchPerson: PropTypes.func,
+    regenerateAutoDecoratedMetadata: PropTypes.func,
 };
 
 NexusArrayWithTabs.defaultProps = {
@@ -427,6 +461,8 @@ NexusArrayWithTabs.defaultProps = {
     tabs: [],
     subTabs: [],
     generateMsvIds: undefined,
+    searchPerson: undefined,
+    regenerateAutoDecoratedMetadata: undefined,
 };
 
 export default NexusArrayWithTabs;

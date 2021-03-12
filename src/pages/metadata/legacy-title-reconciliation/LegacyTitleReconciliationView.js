@@ -4,9 +4,12 @@ import Button from '@atlaskit/button';
 import SectionMessage from '@atlaskit/section-message';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {defineEpisodeAndSeasonNumberColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/columnDefinitions';
+import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withColumnsResizing';
+import withMatchAndDuplicateList from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withMatchAndDuplicateList';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
 import {set} from 'lodash';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import './LegacyTitleReconciliationView.scss';
 import {NexusTitle, NexusGrid} from '../../../ui/elements';
 import {createColumnDefs} from '../../avails/title-matching/titleMatchingActions';
@@ -17,6 +20,8 @@ import * as selectors from '../metadataSelectors';
 import CandidatesList from './components/CandidatesList';
 import {TITLE, SECTION_MESSAGE, FOCUSED_TITLE, SAVE_BTN} from './constants';
 
+const Candidates = compose(withMatchAndDuplicateList(true))(CandidatesList);
+
 const LegacyTitleReconciliationView = ({
     titleMetadata,
     match,
@@ -26,6 +31,8 @@ const LegacyTitleReconciliationView = ({
     createColumnDefs,
     isMerging,
 }) => {
+    const NexusGridWithColumnResizing = compose(withColumnsResizing())(NexusGrid);
+
     const [isDoneDisabled, setIsDoneButtonDisabled] = useState(true);
     const [selectedList, setSelectedList] = useState({});
     const {params = {}} = match;
@@ -64,7 +71,7 @@ const LegacyTitleReconciliationView = ({
 
     const colDefsWithTitleLink = () => {
         const [title] = columnDefs.filter(col => col.cellRendererParams.link);
-        set(title, 'cellRendererParams.link', '/metadata/detail/');
+        set(title, 'cellRendererParams.link', '/metadata/v2/detail/');
         return columnDefs;
     };
 
@@ -80,7 +87,7 @@ const LegacyTitleReconciliationView = ({
             <NexusTitle>{TITLE}</NexusTitle>
             <div className="nexus-c-legacy-title-reconciliation-view__title-metadata">
                 <NexusTitle isSubTitle>{FOCUSED_TITLE}</NexusTitle>
-                <NexusGrid
+                <NexusGridWithColumnResizing
                     columnDefs={updatedColumnDefs}
                     rowData={[titleMetadata]}
                     onGridEvent={handleGridEvent}
@@ -90,7 +97,7 @@ const LegacyTitleReconciliationView = ({
             <SectionMessage appearance="info">
                 <p className="nexus-c-legacy-title-reconciliation-view__section-message">{SECTION_MESSAGE}</p>
             </SectionMessage>
-            <CandidatesList
+            <Candidates
                 titleId={params.id}
                 columnDefs={updatedColumnDefs}
                 queryParams={{

@@ -59,10 +59,250 @@
                                 }
                             ]
                         },
+                        "metadataStatus": {
+                            "name": "Metadata Status",
+                            "type": "select",
+                            "path": "metadataStatus",
+                            "isRequired": true,
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Pending",
+                                        "value": "Pending"
+                                    },
+                                    {
+                                        "label": "Complete",
+                                        "value": "Complete"
+                                    }
+                                ]
+                            }
+                        },
                         "animated": {
                             "name": "Animated",
                             "type": "boolean",
                             "path": "animated"
+                        },
+                        "contentSubType": {
+                            "name": "Content Sub Type",
+                            "type": "select",
+                            "path": "contentSubType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Select...",
+                                        "value": null
+                                    },
+                                    {
+                                        "label": "KIDS",
+                                        "value": "KIDS"
+                                    },
+                                    {
+                                        "label": "ADULT",
+                                        "value": "ADULT"
+                                    }
+                                ]
+                            }
+                        },
+                        "eventType": {
+                            "name": "Event Type",
+                            "type": "select",
+                            "path": "eventType",
+                            "optionsConfig": {
+                                "options": [
+                                    {
+                                        "label": "Live",
+                                        "value": "Live"
+                                    },
+                                    {
+                                        "label": "Tape Delayed",
+                                        "value": "Tape Delayed"
+                                    },
+                                    {
+                                        "label": "Taped",
+                                        "value": "Taped"
+                                    }
+                                ]
+                            }
+                        },
+                        "usBoxOffice": {
+                            "name": "US Box Office",
+                            "path": "usBoxOffice",
+                            "type": "number"
+                        },
+                        "category": {
+                            "name": "Category",
+                            "path": "category",
+                            "type": "multiselect"
+                        },
+                        "imdbLink": {
+                            "name": "IMDB Link",
+                            "path": "imdbLink",
+                            "type": "string"
+                        },
+                        "seriesTitleName": {
+                            "name": "Series",
+                            "path": "episodic.seriesTitleName",
+                            "isReadOnlyInEdit": true,
+                            "type": "link",
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SERIES"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
+                            ]
+                        },
+                        "seasonTitleName": {
+                            "name": "Season",
+                            "path": "episodic.seasonTitleName",
+                            "type": "string",
+                            "isReadOnlyInEdit": true,
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                }
+                            ]
+                        },
+                        "seasonNumber": {
+                            "name": "Season Number",
+                            "path": "episodic.seasonNumber",
+                            "type": "link",
+                            "isRequired": true,
+                            "linkConfig": {
+                                "baseUrl": "/metadata/v2/detail/",
+                                "contentType": "SEASON"
+                            },
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                },
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
+                            ]
+                        },
+                        "seasonId": {
+                            "name": "Season ID",
+                            "path": "episodic.seasonId",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "SEASON"
+                                }
+                            ]
+                        },
+                        "episodeNumber": {
+                            "name": "Episode Number",
+                            "path": "episodic.episodeNumber",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
+                            ]
+                        },
+                        "episodeId": {
+                            "name": "Episode ID",
+                            "path": "episodic.episodeId",
+                            "type": "string",
+                            "showWhen": [
+                                {
+                                    "field": "contentType",
+                                    "hasValue": "EPISODE"
+                                },
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "EVENT"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "field": "contentType",
+                                        "hasValue": "SPORTS"
+                                    },
+                                    {
+                                        "field": "episodic.seriesTitleName",
+                                        "hasValue": "any"
+                                    }
+                                ]
+                            ]
                         }
                     }
                 }
@@ -105,7 +345,27 @@
                                     "name": "Rating",
                                     "path": "rating",
                                     "type": "select",
-                                    "isRequired": true
+                                    "isRequired": true,
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "values",
+                                            "fields": [
+                                                {
+                                                    "name": "ratingSystem"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "advisoriesCode": {
                                     "name": "Advisory Codes",
@@ -150,9 +410,9 @@
                             "path": "externalIds.isan"
                         },
                         "isrc": {
-                            "name": "ISCR",
+                            "name": "ISRC",
                             "type": "string",
-                            "path": "externalIds.iscr"
+                            "path": "externalIds.isrc"
                         },
                         "tmsId": {
                             "name": "TMS ID",
@@ -185,6 +445,12 @@
                             "path": "vzExternalIds.externalTitleId",
                             "isReadOnly": true
                         },
+                        "vzId": {
+                            "name": "VZ Vendor ID",
+                            "type": "string",
+                            "path": "vzExternalIds.externalId",
+                            "isReadOnly": true
+                        },
                         "movidaTitleId": {
                             "name": "Movida Title ID",
                             "type": "string",
@@ -194,7 +460,7 @@
                         "movidaId": {
                             "name": "Movida ID",
                             "type": "string",
-                            "path": "movidaExternalIds.titleId",
+                            "path": "movidaExternalIds.externalId",
                             "isReadOnly": true
                         },
                         "assetName": {
@@ -234,6 +500,7 @@
                     "fields": {
                         "editorialMetadata": {
                             "name": "Editorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "editorialMetadata",
                             "tabs": ["locale", "language"],
@@ -266,12 +533,36 @@
                                     "path": "format",
                                     "type": "select",
                                     "isReadOnlyInEdit": true,
+                                    "optionsConfig": {
+                                        "options": [
+                                            {
+                                                "label": "HD",
+                                                "value": "HD"
+                                            },
+                                            {
+                                                "label": "SD",
+                                                "value": "SD"
+                                            },
+                                            {
+                                                "label": "4K",
+                                                "value": "4K"
+                                            },
+                                            {
+                                                "label": "3D",
+                                                "value": "3D"
+                                            }
+                                        ]
+                                    },
                                     "dependencies": [
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -302,8 +593,12 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ],
                                     "optionsConfig": {
@@ -371,26 +666,42 @@
                                         {
                                             "view": "CREATE",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "readOnly",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": false
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": false
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -403,6 +714,11 @@
                                         "defaultLabelPath": "name"
                                     }
                                 },
+                                "editorial.category": {
+                                    "name": "Category",
+                                    "path": "category",
+                                    "type": "multiselect"
+                                },
                                 "editorial.title.title": {
                                     "name": "Display Title",
                                     "path": "title.title",
@@ -411,14 +727,22 @@
                                         {
                                             "view": "CREATE",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         },
                                         {
                                             "view": "EDIT",
                                             "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
                                         }
                                     ]
                                 },
@@ -442,48 +766,64 @@
                                     "path": "title.shortTitle",
                                     "type": "string"
                                 },
-                                "editorial.synopsis.shortDescription": {
-                                    "name": "Short Synopsis",
-                                    "path": "synopsis.shortDescription",
-                                    "type": "string",
-                                    "dependencies": [
-                                        {
-                                            "view": "CREATE",
-                                            "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
-                                        },
-                                        {
-                                            "view": "EDIT",
-                                            "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
-                                        }
-                                    ]
-                                },
-                                "editorial.synopsis.mediumDescription": {
-                                    "name": "Medium Synopsis",
-                                    "path": "synopsis.mediumDescription",
-                                    "type": "string",
-                                    "dependencies": [
-                                        {
-                                            "view": "CREATE",
-                                            "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
-                                        },
-                                        {
-                                            "view": "EDIT",
-                                            "type": "required",
-                                            "field": "editorial.hasGeneratedChildren",
-                                            "value": true
-                                        }
-                                    ]
-                                },
                                 "editorial.synopsis.description": {
-                                    "name": "Long Synopsis",
+                                    "name": "Short Synopsis",
                                     "path": "synopsis.description",
-                                    "type": "string"
+                                    "type": "textarea",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "editorial.synopsis.shortDescription": {
+                                    "name": "Medium Synopsis",
+                                    "path": "synopsis.shortDescription",
+                                    "type": "textarea",
+                                    "dependencies": [
+                                        {
+                                            "view": "CREATE",
+                                            "type": "required",
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "EDIT",
+                                            "type": "required",
+                                            "fields": [
+                                                {
+                                                    "name": "editorial.hasGeneratedChildren",
+                                                    "value": true
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "editorial.synopsis.longDescription": {
+                                    "name": "Long Synopsis",
+                                    "path": "synopsis.longDescription",
+                                    "type": "textarea"
                                 },
                                 "editorial.copyright": {
                                     "name": "Copyright",
@@ -520,10 +860,11 @@
             "title": "Territorial",
             "sections": [
                 {
-                    "title": "Territorial",
+                    "title": "Territory Metadata",
                     "fields": {
                         "territorialMetadata": {
                             "name": "Territorial Metadata",
+                            "removeFromPayload": "true",
                             "type": "arrayWithTabs",
                             "path": "territorialMetadata",
                             "tabs": ["locale"],

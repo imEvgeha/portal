@@ -11,6 +11,7 @@ const initialState = {
         column: {},
         external: {},
     },
+    gridState: {},
 };
 
 const filteringObject = (object, criteria) => {
@@ -91,6 +92,11 @@ const rightsReducer = (state = initialState, action = {}) => {
             return {
                 ...state,
                 filter: payload,
+            };
+        case actionTypes.SET_USER_DEFINED_GRID:
+            return {
+                ...state,
+                gridState: {...state.gridState, ...payload},
             };
         default:
             return state;

@@ -17,10 +17,8 @@ import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/
 import classNames from 'classnames';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
-import TitleSystems from '../../legacy/constants/metadata/systems';
 import {titleServiceManager} from '../../legacy/containers/metadata/service/TitleServiceManager';
-import Constants from '../title-matching/titleMatchingConstants';
-import {getRepositoryName, getRepositoryCell} from '../utils';
+import {getRepositoryCell} from '../utils';
 import mappings from './RightsMatchingTitlesTableMappings.json';
 import './RightsMatchingTitlesTable.scss';
 
@@ -33,15 +31,13 @@ const TitlesTable = compose(
 )(NexusGrid);
 
 const RightsMatchingTitlesTable = ({
-    restrictedCoreTitleIds,
     setTotalCount,
     contentType,
-    matchList,
-    handleMatchClick,
-    handleDuplicateClick,
-    duplicateList,
     setTitlesTableIsReady,
     isDisabled,
+    matchButton,
+    duplicateButton,
+    onCellValueChanged,
 }) => {
     const updateColumnDefs = columnDefs => {
         return columnDefs.map(columnDef => ({
@@ -52,45 +48,6 @@ const RightsMatchingTitlesTable = ({
     };
     const updatedColumns = updateColumnDefs(mappings);
 
-    const matchButtonCell = ({data}) => {
-        const {id} = data || {};
-        const repoName = getRepositoryName(id);
-        let isRestricted = false;
-        restrictedCoreTitleIds.forEach(title => {
-            if (title.includes(id)) {
-                isRestricted = true;
-            }
-        });
-        return (
-            <CustomActionsCellRenderer id={id}>
-                {!isRestricted ? (
-                    <Radio
-                        name={repoName}
-                        isChecked={matchList[repoName] && matchList[repoName].id === id}
-                        onChange={event => handleMatchClick(data, repoName, event.target.checked)}
-                    />
-                ) : null}
-            </CustomActionsCellRenderer>
-        );
-    };
-    matchButtonCell.propTypes = {data: PropTypes.object.isRequired};
-
-    const duplicateButtonCell = ({data}) => {
-        const {id} = data || {};
-        const repo = getRepositoryName(id);
-        return (
-            repo !== TitleSystems.NEXUS && (
-                <CustomActionsCellRenderer id={id}>
-                    <Checkbox
-                        isChecked={duplicateList[id]}
-                        onChange={event => handleDuplicateClick(data, repo, event.currentTarget.checked)}
-                    />
-                </CustomActionsCellRenderer>
-            )
-        );
-    };
-    duplicateButtonCell.propTypes = {data: PropTypes.object.isRequired};
-
     const onGridReady = ({type, columnApi}) => {
         if (type === GRID_EVENTS.READY) {
             setTitlesTableIsReady(true);
@@ -98,23 +55,6 @@ const RightsMatchingTitlesTable = ({
             const PINNED_COLUMNS_NUMBER = 3;
             columnApi.moveColumn('episodeAndSeasonNumber', contentTypeIndex + PINNED_COLUMNS_NUMBER);
         }
-    };
-
-    const matchButton = {
-        ...Constants.ADDITIONAL_COLUMN_DEF,
-        colId: 'matchButton',
-        field: 'matchButton',
-        headerName: 'Match',
-        cellRendererParams: matchList,
-        cellRendererFramework: matchButtonCell,
-    };
-    const duplicateButton = {
-        ...Constants.ADDITIONAL_COLUMN_DEF,
-        colId: 'duplicateButton',
-        field: 'duplicateButton',
-        headerName: 'Duplicate',
-        cellRendererParams: duplicateList,
-        cellRendererFramework: duplicateButtonCell,
     };
 
     const numOfEpisodeAndSeasonField = defineEpisodeAndSeasonNumberColumn();
@@ -135,33 +75,30 @@ const RightsMatchingTitlesTable = ({
                 onGridEvent={onGridReady}
                 initialFilter={{contentType}}
                 setTotalCount={setTotalCount}
+                onCellValueChanged={onCellValueChanged}
             />
         </div>
     );
 };
 
 RightsMatchingTitlesTable.propTypes = {
-    restrictedCoreTitleIds: PropTypes.array,
-    handleMatchClick: PropTypes.func,
-    handleDuplicateClick: PropTypes.func,
-    matchList: PropTypes.object,
-    duplicateList: PropTypes.object,
     setTotalCount: PropTypes.func,
     contentType: PropTypes.string,
     setTitlesTableIsReady: PropTypes.func,
+    onCellValueChanged: PropTypes.func,
     isDisabled: PropTypes.bool,
+    matchButton: PropTypes.object,
+    duplicateButton: PropTypes.object,
 };
 
 RightsMatchingTitlesTable.defaultProps = {
-    restrictedCoreTitleIds: [],
-    handleMatchClick: () => null,
-    handleDuplicateClick: () => null,
-    duplicateList: {},
-    matchList: {},
     setTotalCount: () => null,
     contentType: null,
     setTitlesTableIsReady: () => null,
+    onCellValueChanged: () => null,
     isDisabled: false,
+    matchButton: {},
+    duplicateButton: {},
 };
 
 export default RightsMatchingTitlesTable;

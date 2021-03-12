@@ -1,12 +1,12 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
-import {default as AKForm} from '@atlaskit/form';
+import {default as AKForm, ErrorMessage} from '@atlaskit/form';
 import classnames from 'classnames';
-import {merge, set} from 'lodash';
+import {merge, mergeWith, set, get} from 'lodash';
 import moment from 'moment';
 import {buildSection, getProperValues, getAllFields} from './utils';
-import {VIEWS} from './constants';
+import {VIEWS, SEASON, SERIES, EPISODE, CORE_TITLE_SECTION} from './constants';
 import './NexusDynamicForm.scss';
 
 const NexusDynamicForm = ({
@@ -15,29 +15,64 @@ const NexusDynamicForm = ({
     onSubmit,
     isEdit,
     selectValues,
+    isSaving,
     containerRef,
     isTitlePage,
     searchPerson,
     generateMsvIds,
+    regenerateAutoDecoratedMetadata,
+    hasButtons,
+    setEditMode,
 }) => {
-    const [view, setView] = useState(isEdit ? VIEWS.VIEW : VIEWS.CREATE);
+    const [disableSubmit, setDisableSubmit] = useState(true);
     const [update, setUpdate] = useState(false);
+    const [validationErrorCount, setValidationErrorCount] = useState(0);
+
+    const view = isEdit ? VIEWS.EDIT : VIEWS.VIEW;
 
     const {fields} = schema;
     useEffect(() => {
         update && setUpdate(false);
     }, [update]);
 
-    const buildButtons = (dirty, submitting, reset) => {
+
+    useEffect(() => {
+        // eslint-disable-next-line prefer-destructuring
+        const firstErrorElement = document.getElementsByClassName('nexus-c-field__error')[0];
+        if (firstErrorElement) firstErrorElement.scrollIntoView(false);
+    }, [validationErrorCount]);
+
+    const showValidationError = () => {
+        const errorsCount = document.getElementsByClassName('nexus-c-field__error').length;
+        errorsCount && setValidationErrorCount(errorsCount);
+    };
+
+    const onCancel = reset => {
+        reset();
+        setUpdate(true);
+        setEditMode(false);
+        setValidationErrorCount(0);
+    };
+
+    const buildButtons = (dirty, reset, errors) => {
         return view !== VIEWS.VIEW ? (
             <>
+                {errors > 0 && (
+                    <div className={isTitlePage? "nexus-c-dynamic-form__title-validation-msg":
+                        "nexus-c-dynamic-form__validation-msg"}>
+                        <ErrorMessage>{errors} errors on page</ErrorMessage>
+                    </div>
+                )}
                 <Button
                     type="submit"
                     className={classnames('nexus-c-dynamic-form__submit-button', {
                         'nexus-c-dynamic-form__submit-button--title': isTitlePage,
                     })}
                     appearance="primary"
-                    isDisabled={!dirty || submitting}
+                    isDisabled={!dirty && disableSubmit}
+                    // this is a form submit button and hence validation check will not work on submit function
+                    onClick={showValidationError}
+                    isLoading={isSaving}
                 >
                     Save changes
                 </Button>
@@ -45,11 +80,7 @@ const NexusDynamicForm = ({
                     className={classnames('nexus-c-dynamic-form__cancel-button', {
                         'nexus-c-dynamic-form__cancel-button--title': isTitlePage,
                     })}
-                    onClick={() => {
-                        reset();
-                        setUpdate(true);
-                        setView(VIEWS.VIEW);
-                    }}
+                    onClick={() => onCancel(reset)}
                 >
                     Cancel
                 </Button>
@@ -60,7 +91,7 @@ const NexusDynamicForm = ({
                     'nexus-c-dynamic-form__edit-button--title': isTitlePage,
                 })}
                 appearance="primary"
-                onClick={() => setView(VIEWS.EDIT)}
+                onClick={() => setEditMode(true)}
             >
                 Edit
             </Button>
@@ -82,21 +113,61 @@ const NexusDynamicForm = ({
     };
 
     const handleOnSubmit = (values, initialData) => {
+        setValidationErrorCount(0);
         if (validDateRange(values)) {
-            setView(VIEWS.VIEW);
             const properValues = getProperValues(fields, values);
             const correctValues = {};
             Object.keys(properValues).forEach(key => set(correctValues, key, properValues[key]));
-            onSubmit(merge({}, initialData, correctValues));
+            onSubmit(
+                mergeWith({}, initialData, correctValues, (obj, src) => {
+                    if (Array.isArray(src)) {
+                        return src;
+                    }
+                    // keep original null value if updated value is object and all its properties are falsy
+                    // non object values are null already if not edited
+                    else if (obj === null && typeof src === 'object') {
+                        if(!src) return null;
+                        if (!Object.keys(src).some(k =>
+                        {
+                            if(Array.isArray(src[k])) // if value is array
+                                return src[k].length;
+                            else if(typeof src[k] === 'object' && src[k] !== null) // if value is object
+                                return Object.keys(src[k]).length;
+                            return src[k]; // else return value
+                        })) return null;
+                    }
+                })
+            );
         }
+    };
+
+    const createLink = contentType => {
+        const baseUrl = '/metadata/v2?parentId=';
+        const id = get(initialData, 'id', '');
+        return `${baseUrl}${id}&contentType=${contentType === SERIES ? SEASON : EPISODE}`;
+    };
+
+    const showAll = () => {
+        if (isTitlePage) {
+            const allowedContents = [SEASON, SERIES];
+            const contentType = get(initialData, 'contentType', '');
+            if (allowedContents.includes(contentType)) {
+                return (
+                    <div className="nexus-c-dynamic-form__show-all">
+                        <a href={createLink(contentType)}>Show all {contentType === SERIES ? 'seasons' : 'episodes'}</a>
+                    </div>
+                );
+            }
+        }
+        return null;
     };
 
     return (
         <div className="nexus-c-dynamic-form">
             <AKForm onSubmit={values => handleOnSubmit(values, initialData)}>
-                {({formProps, dirty, submitting, reset, getValues, setFieldValue}) => (
+                {({formProps, dirty, reset, getValues, setFieldValue}) => (
                     <form {...formProps}>
-                        {buildButtons(dirty, submitting, reset)}
+                        {hasButtons && buildButtons(dirty, reset, validationErrorCount)}
                         <div
                             ref={containerRef}
                             className={classnames('nexus-c-dynamic-form__tab-container', {
@@ -124,17 +195,26 @@ const NexusDynamicForm = ({
                                         }) => (
                                             <Fragment key={`section-${sectionTitle}`}>
                                                 <h3 className="nexus-c-dynamic-form__section-title">{sectionTitle}</h3>
-                                                {buildSection(fields, getValues, view, generateMsvIds, {
-                                                    selectValues,
-                                                    initialData,
-                                                    setFieldValue,
-                                                    update,
-                                                    config: schema.config || [],
-                                                    isGridLayout,
-                                                    searchPerson,
-                                                    tabs,
-                                                    subTabs,
-                                                })}
+                                                {sectionTitle === CORE_TITLE_SECTION && showAll()}
+                                                {buildSection(
+                                                    fields,
+                                                    getValues,
+                                                    view,
+                                                    generateMsvIds,
+                                                    regenerateAutoDecoratedMetadata,
+                                                    {
+                                                        selectValues,
+                                                        initialData,
+                                                        setFieldValue,
+                                                        update,
+                                                        config: schema.config || [],
+                                                        isGridLayout,
+                                                        searchPerson,
+                                                        tabs,
+                                                        subTabs,
+                                                        setDisableSubmit,
+                                                    }
+                                                )}
                                             </Fragment>
                                         )
                                     )}
@@ -158,6 +238,11 @@ NexusDynamicForm.propTypes = {
     isTitlePage: PropTypes.bool,
     searchPerson: PropTypes.func,
     generateMsvIds: PropTypes.func,
+    isSaving: PropTypes.bool,
+    regenerateAutoDecoratedMetadata: PropTypes.func,
+    hasButtons: PropTypes.bool,
+    setIsEditView: PropTypes.func,
+    setEditMode: PropTypes.func,
 };
 
 NexusDynamicForm.defaultProps = {
@@ -169,6 +254,11 @@ NexusDynamicForm.defaultProps = {
     isTitlePage: false,
     searchPerson: undefined,
     generateMsvIds: undefined,
+    isSaving: false,
+    regenerateAutoDecoratedMetadata: undefined,
+    hasButtons: true,
+    setIsEditView: () => null,
+    setEditMode: () => null,
 };
 
 export default NexusDynamicForm;

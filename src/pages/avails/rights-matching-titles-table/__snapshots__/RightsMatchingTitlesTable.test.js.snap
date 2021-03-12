@@ -8,38 +8,8 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
     className="nexus-c-rights-matching-titles-table"
     columnDefs={
       Array [
-        Object {
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {},
-          "colId": "matchButton",
-          "field": "matchButton",
-          "headerName": "Match",
-          "lockPinned": true,
-          "lockPosition": true,
-          "lockVisible": true,
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 100,
-        },
-        Object {
-          "cellRendererFramework": [Function],
-          "cellRendererParams": Object {},
-          "colId": "duplicateButton",
-          "field": "duplicateButton",
-          "headerName": "Duplicate",
-          "lockPinned": true,
-          "lockPosition": true,
-          "lockVisible": true,
-          "pinned": "left",
-          "resizable": false,
-          "sortable": false,
-          "suppressMovable": true,
-          "suppressSizeToFit": true,
-          "width": 100,
-        },
+        Object {},
+        Object {},
         Object {
           "cellRendererFramework": [Function],
           "colId": "repository",
@@ -121,7 +91,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "readOnly": false,
           "required": true,
           "searchDataType": "string",
-          "valueFormatter": undefined,
+          "valueFormatter": [Function],
         },
         Object {
           "cellRenderer": "loadingCellRenderer",
@@ -446,6 +416,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
         },
       ]
     }
+    onCellValueChanged={[Function]}
     onGridEvent={[Function]}
     setTotalCount={[Function]}
   />

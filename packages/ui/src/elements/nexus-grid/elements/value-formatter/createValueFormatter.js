@@ -1,6 +1,7 @@
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {camelCase, startCase} from 'lodash';
+import {camelCase, startCase, get} from 'lodash';
+import {EPISODE_CONTENT_TYPE} from '../../constants';
 
 const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
     switch (dataType) {
@@ -82,6 +83,9 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
         case 'territory.selected':
             return params => {
                 const {data = {}} = params || {};
+                if (data && data['territorySelected']) {
+                    return data['territorySelected'];
+                }
                 if (data && Array.isArray(data[javaVariableName])) {
                     const items = data[javaVariableName]
                         .filter(item => item.selected)
@@ -121,7 +125,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
             } else if (javaVariableName === 'system') {
                 return params => {
                     const {data = {}} = params || {};
-                    const {id, legacyIds = {}} = data || {};
+                    const {id = '', legacyIds = {}} = data || {};
                     const {movida, vz} = legacyIds || {};
                     const {movidaTitleId} = movida || {};
                     const {vzTitleId} = vz || {};
@@ -131,14 +135,30 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         return `Movida Title ID: ${movidaTitleId}`;
                     } else if (vzTitleId) {
                         return `VZ Title ID: ${vzTitleId}`;
+                    } else if (id.startsWith('titl_')) {
+                        return `Nexus Title ID: ${id}`;
                     }
-                    return `Nexus Title ID: ${id}`;
+                    return '';
                 };
             } else if (javaVariableName === 'editorialGenres') {
                 return params => {
                     const {data = {}} = params || {};
                     if (data && data[javaVariableName]) {
                         return data[javaVariableName].map(({genre}) => genre).join(', ');
+                    }
+                };
+            } else if (javaVariableName === 'title') {
+                return params => {
+                    const {data = {}} = params || {};
+                    if (data && data[javaVariableName]) {
+                        const {contentType} = data || '';
+                        if (contentType && contentType === EPISODE_CONTENT_TYPE) {
+                            const {seriesTitleName = '', seasonNumber = '', episodeNumber = ''} =
+                                data.episodic || data || {};
+                            if (seriesTitleName && seasonNumber && episodeNumber)
+                                return `${seriesTitleName}: S${seasonNumber},E${episodeNumber}: ${data[javaVariableName]}`;
+                        }
+                        return data[javaVariableName];
                     }
                 };
             }

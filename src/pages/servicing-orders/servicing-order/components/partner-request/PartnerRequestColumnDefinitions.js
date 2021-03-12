@@ -27,7 +27,6 @@ const partnerRequestColumnDefs = [
         colId: 'materialNotes',
         headerName: 'Notes',
         minWidth: 80,
-
         maxWidth: 500,
     },
     {
@@ -55,6 +54,13 @@ const partnerRequestColumnDefs = [
         field: 'subtitlesForced',
         colId: 'subtitlesForced',
         headerName: 'Subtitles Forced',
+        suppressSizeToFit: true,
+        minWidth: 150,
+    },
+    {
+        field: 'closedCaptions',
+        colId: 'closedCaptions',
+        headerName: 'Closed Captions',
         suppressSizeToFit: true,
         minWidth: 150,
     },
@@ -101,7 +107,15 @@ export const columnDefs = partnerRequestColumnDefs.map(def => ({
  * @param {string} key the key to check
  */
 const isLanguageColumn = key => {
-    return ['secondaryAudio', 'subtitlesFull', 'subtitlesForced', 'trailer', 'metaData', 'artWork'].includes(key);
+    return [
+        'secondaryAudio',
+        'subtitlesFull',
+        'subtitlesForced',
+        'closedCaptions',
+        'trailer',
+        'metaData',
+        'artWork',
+    ].includes(key);
 };
 
 /**

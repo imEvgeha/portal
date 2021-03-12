@@ -2,10 +2,18 @@ import React from 'react';
 import {ErrorMessage} from '@atlaskit/form';
 import {equalOrIncluded, getSortedData} from '@vubiquity-nexus/portal-utils/lib/Common';
 import classnames from 'classnames';
-import {get} from 'lodash';
+import {get, isObjectLike} from 'lodash';
 import NexusArray from './components/NexusArray';
 import NexusArrayWithTabs from './components/NexusArrayWithTabs';
 import NexusField from './components/NexusField/NexusField';
+import {areAllWithdrawn} from './valdationUtils/areAllWithdrawn';
+import {fieldRequired} from './valdationUtils/fieldRequired';
+import {incorrectValue} from './valdationUtils/incorrectValue';
+import {isDuration} from './valdationUtils/isDuration';
+import {isInteger} from './valdationUtils/isInteger';
+import {isTime} from './valdationUtils/isTime';
+import {isYear} from './valdationUtils/isYear';
+import {lengthEqual} from './valdationUtils/lengthEqual';
 import {VIEWS, FIELD_REQUIRED, NEXUS_ARRAY_WITH_TABS_FORM_MAPPINGS} from './constants';
 
 export const getFieldConfig = (field, config, view) => {
@@ -24,6 +32,7 @@ export const getDefaultValue = (field = {}, view, data) => {
         };
     }
     const value = get(data, field.path) !== null ? get(data, field.path) : '';
+
     if ((view === VIEWS.CREATE || get(field, 'isOptional')) && !value) {
         return getFieldConfig(field, 'defaultValue', view);
     }
@@ -58,7 +67,7 @@ const checkArrayFieldDependencies = (formData, {field, value, subfield}) => {
     return retValue;
 };
 
-export const checkFoundDependencies = (dependencies, formData) => {
+const checkGlobalDependencies = (dependencies, formData) => {
     return !!(
         dependencies &&
         dependencies.some(({field, value, subfield}) => {
@@ -71,15 +80,61 @@ export const checkFoundDependencies = (dependencies, formData) => {
         })
     );
 };
+const evaluateDependency = (dep, formData) => {
+    // checks 'OR' condition between every entry in sub array (fields)
+    return dep.fields.some(({name, value, subfield}, index) => {
+        let dependencyValue = get(formData, name);
+        if (Array.isArray(dependencyValue)) {
+            const field = name;
+            dependencyValue = checkArrayFieldDependencies(formData, {field, value, subfield});
+        }
+        // check for operator: value (ne, gt, lt etc)
+        if (dep.fields[index].hasOwnProperty('operator')) {
+            if (dep.fields[index]['operator'] === 'ne') return dependencyValue !== value;
+            else if (dep.fields[index]['operator'] === 'lt') return dependencyValue < value;
+            else if (dep.fields[index]['operator'] === 'gt') return dependencyValue > value;
+        }
+        // if has value || its value equal to the provided value
+        return dependencyValue === value || (!!dependencyValue && value === 'any');
+    });
+};
+const checkLocalDependencies = (dependencies, formData) => {
+    // checks 'AND' condition between every entry in dependencies array
+    return !!(dependencies.length && dependencies.every(dep => evaluateDependency(dep, formData)));
+};
 
-export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable}) => {
+const checkDependencyValues = (dependencies, getCurrentValues) => {
+    let allValues = [];
+    dependencies.length &&
+        dependencies.forEach(dep => {
+            const fields = get(dep, 'fields', []);
+            const values = [];
+            fields.forEach(({name}) => {
+                const formData = getCurrentValues();
+                let value = get(formData, name);
+                if (isObjectLike(value) && get(value, 'value')) {
+                    value = get(value, 'value');
+                }
+                values.push({value, name});
+            });
+            allValues = allValues.concat(values);
+        });
+    return allValues;
+};
+
+// eslint-disable-next-line max-params
+export const checkFieldDependencies = (type, view, dependencies, {formData, config, isEditable, getCurrentValues}) => {
     // View mode has the same dependencies as Edit mode
     const currentView = view === VIEWS.CREATE ? VIEWS.CREATE : VIEWS.EDIT;
     const globalConfig = config && config.filter(d => d.type === type && d.view === currentView);
     const foundDependencies = dependencies && dependencies.filter(d => d.type === type && d.view === currentView);
 
-    const globalConfigResult = checkFoundDependencies(globalConfig, formData);
-    const localConfigResult = checkFoundDependencies(foundDependencies, formData);
+    if (type === 'values') return checkDependencyValues(foundDependencies, getCurrentValues);
+
+    const globalConfigResult = checkGlobalDependencies(globalConfig, formData);
+
+    const localConfigResult = checkLocalDependencies(foundDependencies, formData);
+
     return isEditable ? localConfigResult : globalConfigResult || localConfigResult;
 };
 
@@ -95,11 +150,34 @@ export const getValidationFunction = (value, validations, {type, isRequired, get
     const updatedValidations = isRequired ? [...validations, isRequiredFunction] : validations;
     // load dynamic file
     if (updatedValidations && updatedValidations.length > 0) {
-        const promises = updatedValidations.map(v =>
-            import(`./valdationUtils/${v.name}.js`).then(f => {
-                return f[`${v.name}`](value, v.args, getCurrentValues);
-            })
-        );
+        const promises = updatedValidations.map(v => {
+            switch (v.name) {
+                case 'fieldRequired':
+                    return fieldRequired(value, v.args, getCurrentValues);
+                    break;
+                case 'areAllWithdrawn':
+                    return areAllWithdrawn(value, v.args, getCurrentValues);
+                    break;
+                case 'incorrectValue':
+                    return incorrectValue(value, v.args, getCurrentValues);
+                    break;
+                case 'isDuration':
+                    return isDuration(value, v.args, getCurrentValues);
+                    break;
+                case 'isInteger':
+                    return isInteger(value, v.args, getCurrentValues);
+                    break;
+                case 'isTime':
+                    return isTime(value, v.args, getCurrentValues);
+                    break;
+                case 'isYear':
+                    return isYear(value, v.args, getCurrentValues);
+                    break;
+                case 'lengthEqual':
+                    return lengthEqual(value, v.args, getCurrentValues);
+                    break;
+            }
+        });
         return Promise.all(promises).then(responses => {
             return responses.find(e => e !== undefined);
         });
@@ -126,18 +204,18 @@ export const sortOptions = options => {
     return getSortedData(options, SORT_TYPE, true);
 };
 
-export const getAllFields = schema => {
+export const getAllFields = (schema, onlyInnerFields) => {
     let sectionsFields = {};
     const fields = schema.map(s => s.sections.map(e => e.fields)).flat();
     fields.forEach(section => {
         sectionsFields = {...sectionsFields, ...section};
     });
-    let allFields = sectionsFields;
+    let innerFields = {};
     Object.keys(sectionsFields).forEach(key => {
         const arrayFields = get(sectionsFields[key], 'fields');
-        allFields = {...allFields, ...arrayFields};
+        innerFields = {...innerFields, ...arrayFields};
     });
-    return allFields;
+    return onlyInnerFields ? innerFields : {...sectionsFields, ...innerFields};
 };
 
 export const getFieldValue = fieldProps => {
@@ -146,6 +224,8 @@ export const getFieldValue = fieldProps => {
         fieldProps.forEach(obj => {
             if (get(obj, 'value') && get(obj, 'label')) {
                 newValues.push(get(obj, 'value'));
+            } else {
+                newValues.push(obj);
             }
         });
         return newValues;
@@ -170,7 +250,7 @@ export const getProperValue = (type, value, path, schema) => {
             if (!value) {
                 val = [];
             } else {
-                val = Array.isArray(value) ? value : [value];
+                val = Array.isArray(value) ? value : value.split(',').map(strValue => strValue.trim());
             }
             break;
         case 'array':
@@ -187,18 +267,59 @@ export const getProperValue = (type, value, path, schema) => {
     return Array.isArray(path) ? val : {[path]: val};
 };
 
+const toShow = (field, initialData) => {
+    const showWhen = get(field, 'showWhen', []);
+    if (showWhen.length) {
+        let retValue = false;
+        field.showWhen.forEach(conditionObj => {
+            // OR condition
+            if (Array.isArray(conditionObj)) {
+                // AND condition
+                let areAllTrue = true;
+                conditionObj.forEach(obj => {
+                    const value = get(initialData, obj.field, '');
+                    if (obj.hasValue === 'any') {
+                        areAllTrue = !value ? false : areAllTrue;
+                    } else if (value !== obj.hasValue) {
+                        areAllTrue = false;
+                    }
+                });
+                retValue = areAllTrue ? true : retValue;
+            } else {
+                const value = get(initialData, conditionObj.field, '');
+                if (value === conditionObj.hasValue) retValue = true;
+            }
+        });
+        return retValue;
+    }
+    return true;
+};
+
 export const buildSection = (
     fields = {},
     getValues,
     view,
     generateMsvIds,
-    {selectValues, initialData, setFieldValue, update, config, isGridLayout, searchPerson, tabs, subTabs}
+    regenerateAutoDecoratedMetadata,
+    {
+        selectValues,
+        initialData,
+        setFieldValue,
+        update,
+        config,
+        isGridLayout,
+        searchPerson,
+        tabs,
+        subTabs,
+        setDisableSubmit,
+    }
 ) => {
     return (
         <div className={isGridLayout ? 'nexus-c-dynamic-form__section--grid' : ''}>
             {Object.keys(fields).map(key => {
                 return (
                     !getFieldConfig(fields[key], 'hidden', view) &&
+                    toShow(fields[key], initialData) &&
                     (get(fields[key], 'type') === 'array' ? (
                         <NexusArray
                             key={key}
@@ -226,6 +347,8 @@ export const buildSection = (
                             tabs={tabs}
                             subTabs={subTabs}
                             generateMsvIds={generateMsvIds}
+                            regenerateAutoDecoratedMetadata={regenerateAutoDecoratedMetadata}
+                            searchPerson={searchPerson}
                             {...fields[key]}
                         />
                     ) : (
@@ -238,6 +361,7 @@ export const buildSection = (
                                 config,
                                 isGridLayout,
                                 searchPerson,
+                                setDisableSubmit,
                             })}
                         </div>
                     ))
@@ -252,7 +376,18 @@ export const renderNexusField = (
     view,
     getValues,
     generateMsvIds,
-    {initialData = {}, field, selectValues, setFieldValue, config, isGridLayout, searchPerson, inTabs, path}
+    {
+        initialData = {},
+        field,
+        selectValues,
+        setFieldValue,
+        config,
+        isGridLayout,
+        searchPerson,
+        inTabs,
+        path,
+        setDisableSubmit,
+    }
 ) => {
     return (
         <NexusField
@@ -272,6 +407,8 @@ export const renderNexusField = (
             isGridLayout={isGridLayout}
             searchPerson={searchPerson}
             generateMsvIds={generateMsvIds}
+            setDisableSubmit={setDisableSubmit}
+            initialData={initialData}
         />
     );
 };
@@ -316,5 +453,19 @@ export const renderLabel = (label, isRequired, tooltip, isGridLayout) => {
 };
 
 export const renderError = (fieldProps, error) => {
-    return <div className="nexus-c-field__error">{error && <ErrorMessage>{error}</ErrorMessage>}</div>;
+    return (
+        <div className="nexus-c-field__error">
+            <ErrorMessage>{error}</ErrorMessage>
+        </div>
+    );
+};
+
+export const createUrl = (linkConfig, initialData) => {
+    const {baseUrl, contentType} = linkConfig;
+    const parentIds = get(initialData, 'parentIds', []);
+    const id = parentIds.filter(parent => parent.contentType === contentType);
+    if (id.length) {
+        return baseUrl + id[0].id;
+    }
+    return '';
 };

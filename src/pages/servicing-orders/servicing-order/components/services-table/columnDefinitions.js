@@ -8,6 +8,7 @@ const columnDefinitions = [
         dataSource: 'serviceType',
         headerName: 'Service Type',
         width: 150,
+        sortable: false,
     },
     {
         colId: 'assetType',
@@ -15,6 +16,7 @@ const columnDefinitions = [
         dataSource: 'assetType',
         headerName: 'Asset Type',
         width: 120,
+        sortable: false,
     },
     {
         colId: 'spec',
@@ -22,6 +24,7 @@ const columnDefinitions = [
         dataSource: 'spec',
         headerName: 'Format Sheet',
         width: 260,
+        sortable: false,
     },
     {
         colId: 'components',
@@ -30,13 +33,22 @@ const columnDefinitions = [
         headerName: 'Components',
         autoHeight: true,
         width: 250,
+        sortable: false,
     },
     {
         colId: 'doNotStartBefore',
         field: 'doNotStartBefore',
         headerName: 'Do not start before',
         width: 200,
-        valueFormatter: params => ISODateToView(params.data.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
+        sortable: false,
+        valueFormatter: params => ISODateToView(params.data?.doNotStartBefore, DATETIME_FIELDS.BUSINESS_DATETIME),
+    },
+    {
+        colId: 'watermark',
+        field: 'watermark',
+        headerName: 'watermark',
+        width: 50,
+        sortable: false,
     },
     {
         colId: 'priority',
@@ -44,18 +56,21 @@ const columnDefinitions = [
         dataSource: 'priority',
         headerName: 'Priority',
         width: 90,
+        sortable: false,
     },
     {
         colId: 'recipient',
         field: 'recipient',
         headerName: 'Recipient',
         width: 140,
+        sortable: false,
     },
     {
         colId: 'operationalStatus',
         field: 'operationalStatus',
         headerName: 'Operational Status',
         width: 170,
+        sortable: false,
     },
 ];
 

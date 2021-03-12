@@ -1,0 +1,19 @@
+.nexus-c-right-repository-release-report {
+    margin-left: 10px;
+}
+#nexus-c-right-repository-release-report__popup {
+    overflow: unset;
+    .nexus-c-right-repository-release-report-content {
+        width: 175px;
+        padding: 20px;
+        .nexus-c-right-repository-release-report__month-dropdown {
+            margin: 15px 0;
+        }
+        .nexus-c-right-repository-release-report__month-dropdown
+            > .nexus-c-nexus-select__menu
+            > .nexus-c-nexus-select__menu-list {
+            max-height: 300px;
+            height: 300px;
+        }
+    }
+}

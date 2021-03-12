@@ -49,7 +49,11 @@ const EventManagementTable = ({toggleRefreshGridData, clearFilters, ...props}) =
                     ...defaultColDef,
                     cellRenderer: null,
                     cellRendererFramework: params => {
-                        return <DateTimeRenderer value={params.value}>{value => <p>{value}</p>}</DateTimeRenderer>;
+                        return (
+                            <DateTimeRenderer format={DATETIME_FIELDS.TIMESTAMP} value={params.value}>
+                                {value => <p>{value}</p>}
+                            </DateTimeRenderer>
+                        );
                     },
                 };
             }

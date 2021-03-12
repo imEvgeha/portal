@@ -1,12 +1,17 @@
 import {prepareSortMatrixParamTitles, encodedSerialize} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {get} from 'lodash';
 import config from 'react-global-configuration';
 import {nexusFetch} from '../../util/http-client/index';
 import {getSyncQueryParams} from './utils';
 import {CONTENT_TYPE} from './constants';
 
-export const getTitleById = id => {
+export const getTitleById = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const getExternalIds = id => {
@@ -14,22 +19,31 @@ export const getExternalIds = id => {
     return nexusFetch(url);
 };
 
-export const getTerritoryMetadataById = id => {
+export const getTerritoryMetadataById = payload => {
+    const {id, isMgm} = payload;
     const api = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
     const url = `${api}?includeDeleted=false&titleId=${id}`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
-export const getEditorialMetadataByTitleId = id => {
+export const getEditorialMetadataByTitleId = payload => {
+    const {id, isMgm} = payload;
     const url = `${config.get('gateway.titleUrl')}${config.get(
         'gateway.service.title'
     )}/editorialmetadata?titleId=${id}&includeDeleted=false`;
-    return nexusFetch(url);
+    const params = isMgm ? {tenantCode: 'mgm'} : {};
+    return nexusFetch(url, {
+        params: encodedSerialize(params),
+    });
 };
 
 export const updateTitle = (title, syncToVZ, syncToMovida) => {
     const legacySystemNames = getSyncQueryParams(syncToVZ, syncToMovida);
-    const params = legacySystemNames ? {legacySystemNames} : {};
+    const {catalogOwner: tenantCode} = title;
+    const params = legacySystemNames ? {legacySystemNames, tenantCode} : {tenantCode};
     const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${title.id}`;
 
     return nexusFetch(url, {
@@ -48,10 +62,52 @@ export const generateMsvIds = (id, licensor, licensee) => {
         });
 };
 
+export const regenerateAutoDecoratedMetadata = masterEmet => {
+    const body = [
+        {
+            itemIndex: null,
+            body: masterEmet,
+        },
+    ];
+
+    return titleService
+        .updateEditorialMetadata(body)
+        .then(response => {
+            // add toast
+        })
+        .catch(err => {
+            // add toast
+        });
+};
+
+export const syncTitle = payload => {
+    const {id: titleId, externalSystem} = payload;
+    const params = {externalSystem, titleId};
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/syncTitle`;
+
+    return nexusFetch(url, {
+        method: 'post',
+        params: encodedSerialize(params),
+    });
+};
+
+export const registerTitle = payload => {
+    const {id: titleId, externalSystem: externalSystems} = payload;
+    const params = {externalSystems, titleId};
+    const url = `${config.get('gateway.publisher')}${config.get('gateway.service.publisher')}/registerTitle`;
+
+    return nexusFetch(url, {
+        method: 'post',
+        params: encodedSerialize(params),
+    });
+};
+
 export const titleService = {
     advancedSearch: (searchCriteria, page, size, sortedParams) => {
         const queryParams = {};
-        const filterIsActive = !!Object.keys(searchCriteria).length;
+        const filterIsActive =
+            !!Object.keys(searchCriteria).length &&
+            !(Object.keys(searchCriteria).length === 1 && get(searchCriteria, 'tenantCode'));
         const partialContentTypeSearch = searchCriteria.contentType
             ? CONTENT_TYPE.find(el => el.toLowerCase().includes(searchCriteria.contentType.toLowerCase()))
             : '';
@@ -60,9 +116,22 @@ export const titleService = {
         if (!partialContentTypeSearch) {
             delete searchCriteria.contentType;
         }
+
         for (const key in searchCriteria) {
             if (searchCriteria.hasOwnProperty(key) && searchCriteria[key]) {
-                queryParams[key] = key === 'contentType' ? partialContentTypeSearch : searchCriteria[key];
+                if (key === 'contentType') {
+                    queryParams[key] = partialContentTypeSearch;
+                } else if (key === 'title') {
+                    const title = searchCriteria[key];
+                    if (title.startsWith('"') && title.endsWith('"')) {
+                        queryParams[key] = title.slice(1, title.length - 1);
+                        queryParams['exactMatch'] = true;
+                    } else {
+                        queryParams[key] = title;
+                    }
+                } else {
+                    queryParams[key] = searchCriteria[key];
+                }
             }
         }
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/titles/${
@@ -80,11 +149,40 @@ export const titleService = {
             method: 'post',
         });
     },
-    addEditorialMetadata: editorialMetadata => {
+    addEditorialMetadata: (editorialMetadata, tenantCode) => {
         const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const params = tenantCode ? {tenantCode} : {};
         return nexusFetch(url, {
             method: 'post',
             body: JSON.stringify(editorialMetadata),
+            params: encodedSerialize(params),
+        });
+    },
+    updateEditorialMetadata: (editedEditorialMetadata, tenantCode) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.titleV2')}/editorialmetadata`;
+        const params = tenantCode ? {tenantCode} : {};
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedEditorialMetadata),
+            params: encodedSerialize(params),
+        });
+    },
+    addTerritoryMetadata: (territoryMetadata, tenantCode) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const params = tenantCode ? {tenantCode} : {};
+        return nexusFetch(url, {
+            method: 'post',
+            body: JSON.stringify(territoryMetadata),
+            params: encodedSerialize(params),
+        });
+    },
+    updateTerritoryMetadata: (editedTerritoryMetadata, tenantCode) => {
+        const url = `${config.get('gateway.titleUrl')}${config.get('gateway.service.title')}/territorymetadata`;
+        const params = tenantCode ? {tenantCode} : {};
+        return nexusFetch(url, {
+            method: 'put',
+            body: JSON.stringify(editedTerritoryMetadata),
+            params: encodedSerialize(params),
         });
     },
 };

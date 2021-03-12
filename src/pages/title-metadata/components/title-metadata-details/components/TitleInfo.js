@@ -4,7 +4,7 @@ import './TitleInfo.scss';
 
 const IMAGE_PLACEHOLDER = 'https://www.bbsocal.com/wp-content/uploads/2018/05/image-placeholder.png';
 
-const TitleInfo = ({title, releaseYear, contentType, titleImages}) => {
+const TitleInfo = ({title, releaseYear, contentType, titleImages, catalogueOwner}) => {
     const image = titleImages && titleImages.length ? titleImages[0] : IMAGE_PLACEHOLDER;
     return (
         <div className="nexus-c-title-info-container">
@@ -14,13 +14,19 @@ const TitleInfo = ({title, releaseYear, contentType, titleImages}) => {
             <div className="nexus-c-title-info-container__info">
                 <div>{title}</div>
                 <div>
-                    <span>Year:</span>
+                    <span className="nexus-c-title-info-container__label">Year:</span>
                     <span>{releaseYear}</span>
                 </div>
                 <div>
-                    <span>Type:</span>
+                    <span className="nexus-c-title-info-container__label">Type:</span>
                     <span>{contentType}</span>
                 </div>
+                {catalogueOwner && (
+                    <div>
+                        <span className="nexus-c-title-info-container__label--co">Catalogue Owner:</span>
+                        <span>{catalogueOwner}</span>
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -31,6 +37,7 @@ TitleInfo.propTypes = {
     releaseYear: PropTypes.string,
     contentType: PropTypes.string,
     titleImages: PropTypes.array,
+    catalogueOwner: PropTypes.string,
 };
 
 TitleInfo.defaultProps = {
@@ -38,6 +45,7 @@ TitleInfo.defaultProps = {
     releaseYear: null,
     contentType: null,
     titleImages: [],
+    catalogueOwner: null,
 };
 
 export default TitleInfo;
