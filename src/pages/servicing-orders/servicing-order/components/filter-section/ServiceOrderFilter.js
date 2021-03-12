@@ -65,6 +65,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     isReturningTime={false}
                     onChange={() => null}
                 />
+                {completedDate && 
                 <NexusDatePicker
                     id="completedDate"
                     label="Completed Date"
@@ -72,7 +73,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
                     isDisabled
                     isReturningTime={false}
                     onChange={() => null}
-                />
+                />}
             </div>
             <div className="so-panel-filter-detail__row so-panel-filter-detail__row--inline">
                 <div className="so-panel-filter-detail__dropdown">
