@@ -527,6 +527,10 @@ const soiWithFo = {
     product_description: 'SOI_1',
     partner_notes: null,
     format_type: 'E-TEST-HD',
+    premiering: false,
+    watermark: true,
+    market_type: 'Major',
+    late: true,
     fulfillmentOrders: [
         {
             id: 'fo_E7cyGeiy',
