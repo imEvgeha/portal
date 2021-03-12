@@ -107,7 +107,11 @@ const InputForm = ({
             <IngestConfirmation
                 licensor={licensor.label}
                 serviceRegion={serviceRegion.value}
-                licensee={selectedLicensees.map(licensee => licensee.value).join(', ')}
+                licensee={
+                    template === STUDIO
+                        ? selectedLicensees.map(licensee => licensee.value).join(', ')
+                        : get(selectedLicensees, 'value')
+                }
                 isCatalog={!!catalogType.value}
                 catalogType={catalogType.value}
                 isLicenced={isLicensed}
@@ -138,17 +142,23 @@ const InputForm = ({
             params.externalId = ingestData.externalId;
         }
 
-        if (template === STUDIO || isShowingCatalogType) {
+        if (template === LICENSEE) {
+            params.isLicenseeTemplate = true;
+            params.licensee = get(selectedLicensees, 'value', '');
+        }
+
+        if (template === STUDIO) {
             params.licensor = get(licensor, 'value.value', '');
             params.licensee = selectedLicensees.map(licensee => licensee.value).join(',');
         }
 
-        if (template !== STUDIO) {
+        if ([INTERNATIONAL, USMASTER].includes(template)) {
             params.internal = true;
             params.internalTemplateType = template;
         } else {
             params.internal = false;
         }
+
         uploadIngest(params);
     };
 
@@ -186,6 +196,9 @@ const InputForm = ({
     const isUploadEnabled = () => {
         if (template === INTERNATIONAL || template === USMASTER) {
             return !isEmpty(serviceRegion);
+        }
+        if (template === LICENSEE) {
+            return !isEmpty(serviceRegion) && !isEmpty(selectedLicensees);
         }
         return !isEmpty(serviceRegion) && licensor && selectedLicensees.length;
     };
