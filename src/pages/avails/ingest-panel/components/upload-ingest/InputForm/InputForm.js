@@ -127,7 +127,7 @@ const InputForm = ({
             closeModal: closeModalCallback,
         };
 
-        const isShowingCatalogType = catalogType.value;
+        const isShowingCatalogType = !!catalogType.value;
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
@@ -184,10 +184,6 @@ const InputForm = ({
     };
 
     const isUploadEnabled = () => {
-        const isShowingCatalogType = catalogType.value;
-        if (isShowingCatalogType) {
-            return serviceRegion && licensor && catalogType && selectedLicensees.length;
-        }
         if (template === INTERNATIONAL || template === USMASTER) {
             return !isEmpty(serviceRegion);
         }
