@@ -19,8 +19,8 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
         configured_pr_id: configuredPrId,
         sr_due_date: srDueDate,
         so_number: soNumber,
-        titleManager,
-        completedDate,
+        title_manager: titleManager,
+        completed_date: completedDate,
     } = orderDetails || {};
     const filterList = [{value: 'All', label: 'All'}];
     const mappedFilterList = filterList.concat(
@@ -33,27 +33,15 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
     return (
         <div className="so-panel-filter-detail">
             <div className="so-panel-filter-detail__row">
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Customer: {tenant}
-                </div>
+                <div>Customer: {tenant}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Servicing Request ID: {externalId}
-                </div>
+                <div>Servicing Request ID: {externalId}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Servicing Order ID: {soNumber}
-                </div>
+                <div>Servicing Order ID: {soNumber}</div>
 
-                <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                    Title Manager: {titleManager}
-                </div>
+                <div>Title Manager: {titleManager}</div>
 
-                {description !== null && (
-                    <div className="so-panel-filter-detail__info nexus-c-table-toolbar__title--is-active">
-                        Description: {description}
-                    </div>
-                )}
+                {description !== null && <div>Description: {description}</div>}
             </div>
 
             <div className="so-panel-filter-detail__row">

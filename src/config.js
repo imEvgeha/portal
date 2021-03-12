@@ -1,7 +1,5 @@
 import {isObject, mergeDeep} from '@vubiquity-nexus/portal-utils/lib/Common';
-import {can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import config from 'react-global-configuration';
-import {registerApplication} from 'single-spa';
 import {nexusFetch} from './util/http-client';
 
 export const defaultConfiguration = {
@@ -19,7 +17,6 @@ export const defaultConfiguration = {
             title: '/titles-api/v1',
             configuration: '/configuration-api/v1',
             assetManagement: '/api/asset-management/v1',
-            eventApi: '/api/event-api/v1',
             eventApiV2: '/api/event-api/v2',
             servicingOrder: '',
         },
@@ -100,24 +97,4 @@ export const appConfig = {
     ROOT: '/',
     BASE_URL: process.env.BASE_URI,
     LOCALE: process.env.LOCALE || 'en',
-};
-
-// Single Spa Apps registration
-// child-app names needs to be of the format: "@portal-mf/event-management"
-export const registerSingleSpaApps = async () => {
-    let importMap = {};
-    await nexusFetch('/importMap.json').then(map => {
-        importMap = map;
-        Object.keys(map.imports).map(name => {
-            if (name.includes('portal-mf')) {
-                registerApplication({
-                    name,
-                    app: () => System.import(name),
-                    activeWhen: name.split('portal-mf')[1],
-                    customProps: {nexusFetch, can},
-                });
-            }
-        });
-    });
-    return importMap;
 };

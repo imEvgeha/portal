@@ -79,14 +79,18 @@ export function* fetchAndStoreSelectItems(payload, type) {
         }, {});
     const mappingsWithConfigEndpoint = multiSelectMappings.filter(el => el.configEndpoint);
     // TODO - make this in background via FORK effect
+    const fields = [];
     const fetchedSelectedItems = yield all(
         mappingsWithConfigEndpoint.map(({javaVariableName, configEndpoint}) => {
-            return call(
-                fetchAvailSelectValuesRequest,
-                profileService.getSelectValues,
-                configEndpoint,
-                javaVariableName
-            );
+            if (!fields.includes(configEndpoint)) {
+                fields.push(configEndpoint);
+                return call(
+                    fetchAvailSelectValuesRequest,
+                    profileService.getSelectValues,
+                    configEndpoint,
+                    javaVariableName
+                );
+            }
         })
     );
 

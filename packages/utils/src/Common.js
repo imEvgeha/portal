@@ -211,6 +211,11 @@ const URL = {
         return params.toString();
     },
 
+    isLocalOrDevOrQAOrStg() {
+        const host = window.location.hostname;
+        return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.') || host.includes('.stg.');
+    },
+
     isLocalOrDevOrQA() {
         const host = window.location.hostname;
         return host.includes('localhost') || host.includes('.qa.') || host.includes('.dev.');

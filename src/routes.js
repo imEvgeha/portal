@@ -1,7 +1,5 @@
 import React from 'react';
 import {canRender} from '@vubiquity-nexus/portal-utils/lib/ability';
-import {get} from 'lodash';
-import {start} from 'single-spa';
 import availsRoutes from './pages/avails/availsRoutes';
 import dopTasksRoutes from './pages/dop-tasks/dopTasksRoutes';
 import eventManagementRoutes from './pages/event-management/eventManagementRoutes';
@@ -70,25 +68,9 @@ export const routes = [
     ...staticPagesRoutes,
 ];
 
-export function routesWithTracking(importMap) {
-    const imports = get(importMap, 'imports', {});
-    const singleSpaRoutes = [];
-    Object.keys(imports).map(name => {
-        if (name.includes('portal-mf')) {
-            singleSpaRoutes.push({
-                path: name.split('portal-mf')[1],
-                component: () => {
-                    start();
-                    return <div key={name} id={`single-spa-application:${name}`} />;
-                },
-            });
-        }
-        return {};
+export function routesWithTracking() {
+    return routes.map(route => {
+        route.component = withTracker(route.component);
+        return route;
     });
-    return singleSpaRoutes.concat(
-        routes.map(route => {
-            route.component = withTracker(route.component);
-            return route;
-        })
-    );
 }

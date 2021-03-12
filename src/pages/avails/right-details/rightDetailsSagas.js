@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash';
+import {cloneDeep, uniqBy} from 'lodash';
 import config from 'react-global-configuration';
 import {put, all, call, takeEvery, select} from 'redux-saga/effects';
 import {nexusFetch} from '../../../util/http-client/index';
@@ -20,14 +20,18 @@ const formatSelectValues = values => {
 };
 
 export function* getSelectValuesSaga() {
-    const fetchedOptions = yield all(
-        configEndpoints.map(({field, configEndpoint}) => {
+    let fetchedOptions = yield all(
+        uniqBy(configEndpoints, 'configEndpoint').map(({field, configEndpoint}) => {
             return call(fetchSelectValuesSaga, configEndpoint, field);
         })
     );
+    fetchedOptions = fetchedOptions.reduce((a, c) => ({...a, ...c}));
     const areValid = yield select(selectors.areValidSelector());
     if (areValid) {
-        const selectValues = formatSelectValues(fetchedOptions);
+        const options = configEndpoints.map(({field, configEndpoint}) => ({
+            [field]: fetchedOptions[configEndpoint],
+        }));
+        const selectValues = formatSelectValues(options);
         yield put({
             type: actionTypes.STORE_SELECT_VALUES,
             payload: selectValues,
@@ -56,7 +60,7 @@ export function* fetchSelectValuesSaga(endpoint, field) {
             },
         });
         return {
-            [field]: response.data,
+            [endpoint]: response.data,
         };
     } catch (error) {
         yield put({

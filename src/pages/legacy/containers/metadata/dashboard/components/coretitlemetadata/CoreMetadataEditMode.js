@@ -32,6 +32,7 @@ import NexusTagsContainer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-ta
 import Button from '@atlaskit/button';
 import Tooltip from '@material-ui/core/Tooltip';
 import {loadOptionsPerson} from '../utils/utils';
+import "./CoreMetadata.scss";
 
 const {MOVIDA, VZ} = TitleSystems;
 
@@ -585,6 +586,7 @@ class CoreMetadataEditMode extends Component {
                                         );
                                     })}
                             </AvField>
+                            <sub className="nexus-subselect">licensor name | movida name</sub>
                         </Col>
                         <Col md={3}>
                             <AvField
@@ -596,14 +598,25 @@ class CoreMetadataEditMode extends Component {
                             >
                                 <option value="">Select Licensee</option>
                                 {this.props.configLicensees &&
-                                    this.props.configLicensees.value.map((e, index) => {
+                                    this.props.configLicensees.value.map(e => {
                                         return (
-                                            <option key={e.value} value={e.value}>
-                                                {e.value}
+                                            <option key={e.licenseeName} value={e.movidaName || e.licenseeName}>
+                                                {(() => {
+                                                    if (e.movidaName) {
+                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
+                                                            return e.licenseeName + ' | ' + e.movidaName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        return e.licenseeName + ' | ' + e.movidaName;
+                                                    } else {
+                                                        if (e.additionalMSVContentProviders && e.additionalMSVContentProviders.length > 0)
+                                                            return e.licenseeName + ' | ' + e.additionalMSVContentProviders.join(', ');
+                                                        return e.licenseeName;
+                                                    }
+                                                })()}
                                             </option>
                                         );
                                     })}
                             </AvField>
+                            <sub className="nexus-subselect">licensee name | movida name | MSV content providers</sub>
                         </Col>
                         <Col md={2}>
                             <Tooltip
