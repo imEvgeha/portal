@@ -125,7 +125,7 @@ export const FulfillmentOrder = ({
         set(fo, path, value);
 
         if(path === fieldKeys.LATE_FAULT) { // set late reason = null when user select/reselect late fault
-            set(fo, fieldKeys.LATE_REASON, null);
+            set(fo, fieldKeys.LATE_REASON, '');
         }
 
         // Show warning modal when status is set to READY
@@ -276,7 +276,7 @@ export const FulfillmentOrder = ({
                                             type="radio"
                                             id="inp-premiering"
                                             checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
-                                            onClick={e => onFieldChange(fieldKeys.PREMIERING, !get(fulfillmentOrder, fieldKeys.PREMIERING))}
+                                            onClick={()=>onFieldChange(fieldKeys.PREMIERING, !get(fulfillmentOrder, fieldKeys.PREMIERING))}
                                             disabled={isFormDisabled}
                                         />
                                         <label htmlFor="inp-premiering" className="fo-gridhdr-radio">Premiering</label>
@@ -290,7 +290,7 @@ export const FulfillmentOrder = ({
                                             type="radio"
                                             id="inp-watermark"
                                             checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
-                                            onClick={e => onFieldChange(fieldKeys.WATERMARK, !get(fulfillmentOrder, fieldKeys.WATERMARK))}
+                                            onClick={() => onFieldChange(fieldKeys.WATERMARK, !get(fulfillmentOrder, fieldKeys.WATERMARK))}
                                             disabled={isFormDisabled}
                                         />
                                         <label htmlFor="inp-watermark" className="fo-gridhdr-radio">Watermark</label>
@@ -304,7 +304,7 @@ export const FulfillmentOrder = ({
                                             type="radio"
                                             id="inp-late"
                                             checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
-                                            onClick={e => onFieldChange(fieldKeys.LATE, !get(fulfillmentOrder, fieldKeys.LATE))}
+                                            onClick={() => onFieldChange(fieldKeys.LATE, !get(fulfillmentOrder, fieldKeys.LATE))}
                                             disabled={isFormDisabled}
                                         />
                                         <label htmlFor="inp-late" className="fo-gridhdr-radio">Late</label> 
