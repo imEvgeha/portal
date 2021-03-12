@@ -65,6 +65,7 @@ class RightCreate extends React.Component {
             isRightPriceFormOpen: false,
             isRightTerritoryFormOpen: false,
             isRightAudioLanguageFormOpen: false,
+            isSubmitting: false,
         };
     }
 
@@ -296,6 +297,9 @@ class RightCreate extends React.Component {
         const options = {
             isWithErrorHandling: false,
         };
+        this.setState({
+            isSubmitting: true,
+        });
         rightsService
             .create(this.right, options)
             .then(response => {
@@ -310,6 +314,9 @@ class RightCreate extends React.Component {
                 });
                 if (response && response.id) {
                     if (this.props.match.params.availHistoryId) {
+                        this.setState({
+                            isSubmitting: false,
+                        });
                         this.context.router.history.push(
                             URL.keepEmbedded(
                                 '/avails/history/' + this.props.match.params.availHistoryId + '/manual-rights-entry'
@@ -329,6 +336,9 @@ class RightCreate extends React.Component {
                     isEdit: false,
                     push: this.context.router.history.push,
                     removeToast: this.props.removeToast,
+                });
+                this.setState({
+                    isSubmitting: false,
                 });
             });
     }
@@ -1181,6 +1191,7 @@ class RightCreate extends React.Component {
                                     id="right-create-submit-btn"
                                     color="primary"
                                     onClick={this.confirm}
+                                    disabled={this.state.isSubmitting}
                                 >
                                     Submit
                                 </Button>
