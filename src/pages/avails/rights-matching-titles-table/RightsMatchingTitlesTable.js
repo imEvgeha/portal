@@ -61,6 +61,17 @@ const RightsMatchingTitlesTable = ({
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
     const repository = getRepositoryCell();
 
+    const handleDuplicateColumnDef = colDef => {
+        const updatedCellRendererParams = {
+            ...colDef.cellRendererParams,
+            isNexusDisabled: true,
+        };
+        return {
+            ...colDef,
+            cellRendererParams: updatedCellRendererParams,
+        };
+    };
+
     return (
         <div
             className={classNames(
@@ -70,7 +81,7 @@ const RightsMatchingTitlesTable = ({
         >
             <TitlesTable
                 className="nexus-c-rights-matching-titles-table"
-                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
+                columnDefs={[matchButton, handleDuplicateColumnDef(duplicateButton), repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 onGridEvent={onGridReady}
                 initialFilter={{contentType}}
