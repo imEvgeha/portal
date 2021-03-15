@@ -9,7 +9,11 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
     columnDefs={
       Array [
         Object {},
-        Object {},
+        Object {
+          "cellRendererParams": Object {
+            "isNexusDisabled": true,
+          },
+        },
         Object {
           "cellRendererFramework": [Function],
           "colId": "repository",
