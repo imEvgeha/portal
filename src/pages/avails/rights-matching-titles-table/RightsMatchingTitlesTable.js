@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
-import {Radio} from '@atlaskit/radio';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
