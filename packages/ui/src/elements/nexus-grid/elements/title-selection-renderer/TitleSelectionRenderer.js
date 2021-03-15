@@ -8,7 +8,7 @@ const TitleSelectionRenderer = ({value, column, node, isNexusDisabled, selection
         node.setDataValue(column.colId, event.target.checked);
     };
 
-    return (isNexusDisabled && !isNexusTitle(node.id)) || restrictedIds.includes(node.id) ? (
+    return (isNexusDisabled && isNexusTitle(node.id)) || restrictedIds.includes(node.id) ? (
         ''
     ) : (
         <input type={selectionType} onClick={checkedHandler} checked={value} />
