@@ -225,7 +225,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 content="Not sure what is this field"
               >
                 <WithAnalyticsContext(WithAnalyticsEvents(undefined))
-                  className="fo-textfield"
+                  css={
+                    Object {
+                      "height": "auto",
+                    }
+                  }
                   id="car"
                   isDisabled={false}
                   name="CAR"

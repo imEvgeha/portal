@@ -351,7 +351,6 @@ export const FulfillmentOrder = ({
                                         <label htmlFor="car">CAR</label>
                                         <Tooltip content={get(fulfillmentOrder, fieldKeys.CAR, '')}>
                                             <Textfield
-                                                className="fo-textfield"
                                                 name="CAR"
                                                 id="car"
                                                 value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
