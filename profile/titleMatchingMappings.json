@@ -25,7 +25,7 @@
         "javaVariableName": "releaseYear",
         "displayName": "Release Year",
         "dataType": "year",
-        "searchDataType": "year",
+        "searchDataType": "string",
         "queryParamName": "releaseYear",
         "readOnly": false,
         "enableSearch": true,
