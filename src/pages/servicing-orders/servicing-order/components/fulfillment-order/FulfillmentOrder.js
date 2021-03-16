@@ -357,6 +357,7 @@ export const FulfillmentOrder = ({
                                                 value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
                                                 onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
                                                 isDisabled={false}
+                                                css={{height: 'auto'}}
                                             />
                                         </Tooltip>
                                     </div> }
