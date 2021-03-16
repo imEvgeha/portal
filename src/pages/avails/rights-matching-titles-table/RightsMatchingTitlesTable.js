@@ -10,7 +10,6 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
-import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import classNames from 'classnames';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -23,8 +22,7 @@ const TitlesTable = compose(
     withColumnsResizing(),
     withSideBar(),
     withFilterableColumns(),
-    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch}),
-    withSorting()
+    withInfiniteScrolling({fetchData: titleServiceManager.smartSearch})
 )(NexusGrid);
 
 const RightsMatchingTitlesTable = ({
@@ -40,7 +38,6 @@ const RightsMatchingTitlesTable = ({
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: createValueFormatter(columnDef),
-            cellRenderer: 'loadingCellRenderer',
         }));
     };
     const updatedColumns = updateColumnDefs(mappings);
