@@ -91,7 +91,7 @@
         "colId": "castCrew.director",
         "javaVariableName": "castCrew.director",
         "field": "castCrew.director",
-        "headerName": "Director",
+        "headerName": "Crew",
         "dataType": "string",
         "searchDataType": "string",
         "queryParamName": "displayName",
