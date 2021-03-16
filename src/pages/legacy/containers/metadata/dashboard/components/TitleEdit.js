@@ -107,6 +107,8 @@ class TitleEdit extends Component {
             isSyncingMovida: false,
             flags: [],
             titleError: false,
+            isPublishingVZ: false,
+            isPublishingMovida: false,
         };
     }
 
@@ -133,7 +135,7 @@ class TitleEdit extends Component {
             });
     }
 
-    loadExternalIds(titleId, titleSystem = null) {
+    loadExternalIds(titleId, titleSystem = null, isSync = false) {
         isNexusTitle(titleId) &&
             publisherService
                 .getExternalIds(titleId)
@@ -143,7 +145,9 @@ class TitleEdit extends Component {
                             externalIDs: response,
                         },
                         () => {
-                            if (titleSystem) this.checkSyncResult(titleSystem);
+                            if (titleSystem) {
+                                isSync ? this.checkSyncResult(titleSystem) : this.checkPublishResult(titleSystem);
+                            }
                         }
                     );
                 })
@@ -590,13 +594,31 @@ class TitleEdit extends Component {
         });
     };
 
+    checkPublishResult = titleSystem => {
+        this.state.externalIDs.forEach(externalId => {
+            if (externalId.externalSystem === titleSystem) {
+                get(externalId, 'errors.length', 0) === 0
+                    ? this.props.addToast({
+                          title: 'Publish Title Success',
+                          icon: SUCCESS_ICON,
+                          isWithOverlay: false,
+                      })
+                    : this.props.addToast({
+                          title: 'Publish Title Failed',
+                          icon: ERROR_ICON,
+                          isWithOverlay: false,
+                      });
+            }
+        });
+    };
+
     titleSync = (titleId, syncToVZ, syncToMovida) => {
         const syncProp = syncToVZ ? 'isSyncingVZ' : 'isSyncingMovida';
         return publisherService
             .syncTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
                 const titleSystem = syncToVZ ? 'vz' : 'movida';
-                this.loadExternalIds(titleId, titleSystem);
+                this.loadExternalIds(titleId, titleSystem, true);
                 this.setState({
                     [syncProp]: false,
                 });
@@ -611,11 +633,16 @@ class TitleEdit extends Component {
             });
     };
 
-    titlePublish = (titleId, syncToVZ, syncToMovida) => {
+    titlePublish = (titleId, syncToVZ, syncToMovida, publishProp) => {
         return publisherService
             .registerTitle(titleId, syncToVZ, syncToMovida)
             .then(response => {
-                this.loadExternalIds(titleId);
+                const titleSystem = publishProp.includes('VZ') ? 'vz' : 'movida';
+                this.loadExternalIds(titleId, titleSystem, false);
+                publishProp &&
+                    this.setState({
+                        [publishProp]: false,
+                    });
                 return true;
             })
             .catch(() => {
@@ -624,6 +651,10 @@ class TitleEdit extends Component {
                     icon: ERROR_ICON,
                     isWithOverlay: false,
                 });
+                publishProp &&
+                    this.setState({
+                        [publishProp]: false,
+                    });
                 return false;
             });
     };
@@ -1393,13 +1424,19 @@ class TitleEdit extends Component {
         const syncToVz = name === VZ;
         const syncToMovida = name === MOVIDA;
         const syncProp = syncToVz ? 'isSyncingVZ' : 'isSyncingMovida';
+        const publishToVZ = name === VZ;
+        const publishToMovida = name === MOVIDA;
+        const publishProp = publishToVZ ? 'isPublishingVZ' : 'isPublishingMovida';
         if (buttonName === SYNC) {
             this.setState({
                 [syncProp]: true,
             });
             this.titleSync(this.state.titleForm.id, syncToVz, syncToMovida);
         } else {
-            this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida);
+            this.setState({
+                [publishProp]: true,
+            });
+            this.titlePublish(this.state.titleForm.id, syncToVz, syncToMovida, publishProp);
         }
     };
 
@@ -1448,6 +1485,8 @@ class TitleEdit extends Component {
                                                             externalIDs={this.state.externalIDs}
                                                             isSyncingVZ={this.state.isSyncingVZ}
                                                             isSyncingMovida={this.state.isSyncingMovida}
+                                                            isPublishingVZ={this.state.isPublishingVZ}
+                                                            isPublishingMovida={this.state.isPublishingMovida}
                                                         />
                                                         <Can I="update" a="Metadata">
                                                             <Button
