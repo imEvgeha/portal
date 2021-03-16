@@ -38,9 +38,9 @@ export default {
         {value: 'READY', label: 'Ready'},
     ],
     MARKET_TYPES: [
+        {value: null, label: 'NONE'},
         {value: 'MAJOR', label: 'Major'},
         {value: 'MINOR', label: 'Minor'},
-        {value: null, label: 'NONE'},
     ],
     LATE_FAULT: [{value: null, label: 'NONE'}],
     SOURCE_TITLE: 'Sources',

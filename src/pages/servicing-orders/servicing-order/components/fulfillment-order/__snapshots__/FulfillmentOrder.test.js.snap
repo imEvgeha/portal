@@ -159,16 +159,16 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 options={
                   Array [
                     Object {
+                      "label": "NONE",
+                      "value": null,
+                    },
+                    Object {
                       "label": "Major",
                       "value": "MAJOR",
                     },
                     Object {
                       "label": "Minor",
                       "value": "MINOR",
-                    },
-                    Object {
-                      "label": "NONE",
-                      "value": null,
                     },
                   ]
                 }
