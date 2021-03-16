@@ -60,6 +60,7 @@ const TitlesList = ({
     const columnDefsClone = updatedColumnDefs.map(columnDef => {
         if (!['releaseYear', 'contentType', 'title'].includes(columnDef.colId)) {
             columnDef.sortable = false;
+            columnDef.isFilterable = false;
         }
         return columnDef;
     });
