@@ -39,7 +39,7 @@ const ServiceOrderFilter = ({orderDetails, filter, setFilter, dueDateSortDirecti
 
                 <div>Servicing Order ID: {soNumber}</div>
 
-                <div>Title Manager: {titleManager}</div>
+                {titleManager && <div>Title Manager: {titleManager}</div>}
 
                 {description !== null && <div>Description: {description}</div>}
             </div>

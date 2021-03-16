@@ -108,7 +108,7 @@ const ServicingOrderItem = ({
                         <ChevronIcon className={chevronClassNames} />
                         <div className="nexus-c-servicing-order-item__due-dates">
                             <div>{renderDueDateRangeOfServicingOrderItem(servicingOrderItem)}</div>
-                            <div>Completed Date: {completedDate}</div>
+                            { completedDate && <div>Completed Date: {completedDate}</div> }
                         </div>
                     </div>
                     {!!status && <StatusTag status={`FO_${status}`} />}

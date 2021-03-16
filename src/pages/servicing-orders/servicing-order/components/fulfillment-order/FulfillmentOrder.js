@@ -125,7 +125,7 @@ export const FulfillmentOrder = ({
         set(fo, path, value);
 
         if(path === fieldKeys.LATE_FAULT) { // set late reason = null when user select/reselect late fault
-            set(fo, fieldKeys.LATE_REASON, '');
+            set(fo, fieldKeys.LATE_REASON, null);
         }
 
         // Show warning modal when status is set to READY
@@ -215,6 +215,7 @@ export const FulfillmentOrder = ({
             const faultArray = Object.keys(lateFaults[fulfillmentOrder.tenant] || {});
             faultOptions = faultArray.length > 0 ? faultArray.map(item => ({value: item, label: item})) : [];
         }
+
         return faultOptions;
     }
 
@@ -223,7 +224,7 @@ export const FulfillmentOrder = ({
         return fault && fault in faultObj ? faultObj[fault].map(item => ({value: item, label: item})) : [];
     }   
 
-    const lateFaultOptions = getLateFaultOptions();
+    const lateFaultOptions = [...Constants.LATE_FAULT, ...getLateFaultOptions()];
     const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
 
     return (
@@ -240,14 +241,14 @@ export const FulfillmentOrder = ({
                                 <ButtonGroup>
                                     <Button
                                         onClick={onCancel}
-                                        isDisabled={isSaveDisabled || isSaving || isFormDisabled}
+                                        isDisabled={isSaveDisabled || isSaving}
                                     >
                                         Cancel
                                     </Button>
                                     <Button
                                         onClick={onSaveHandler}
                                         appearance="primary"
-                                        isDisabled={isSaveDisabled || isFormDisabled}
+                                        isDisabled={isSaveDisabled}
                                         isLoading={isSaving}
                                     >
                                         Save
@@ -273,11 +274,11 @@ export const FulfillmentOrder = ({
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.PREMIERING) &&
                                     <div>
                                         <input
-                                            type="radio"
+                                            type="checkbox"
                                             id="inp-premiering"
                                             checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
                                             onClick={()=>onFieldChange(fieldKeys.PREMIERING, !get(fulfillmentOrder, fieldKeys.PREMIERING))}
-                                            disabled={isFormDisabled}
+                                            disabled={false}
                                         />
                                         <label htmlFor="inp-premiering" className="fo-gridhdr-radio">Premiering</label>
                                     </div>
@@ -287,11 +288,11 @@ export const FulfillmentOrder = ({
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.WATERMARK) &&
                                     <div>
                                         <input
-                                            type="radio"
+                                            type="checkbox"
                                             id="inp-watermark"
                                             checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
                                             onClick={() => onFieldChange(fieldKeys.WATERMARK, !get(fulfillmentOrder, fieldKeys.WATERMARK))}
-                                            disabled={isFormDisabled}
+                                            disabled={false}
                                         />
                                         <label htmlFor="inp-watermark" className="fo-gridhdr-radio">Watermark</label>
                                     </div>
@@ -301,11 +302,11 @@ export const FulfillmentOrder = ({
                                     { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE) &&
                                     <div>
                                         <input
-                                            type="radio"
+                                            type="checkbox"
                                             id="inp-late"
                                             checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
                                             onClick={() => onFieldChange(fieldKeys.LATE, !get(fulfillmentOrder, fieldKeys.LATE))}
-                                            disabled={isFormDisabled}
+                                            disabled={false}
                                         />
                                         <label htmlFor="inp-late" className="fo-gridhdr-radio">Late</label> 
                                     </div>
@@ -325,7 +326,7 @@ export const FulfillmentOrder = ({
                                                 label: marketTypeOption && marketTypeOption.label,
                                             }}
                                             onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
-                                            isDisabled={isFormDisabled}
+                                            isDisabled={false}
                                         /> 
                                     </div> }
                                 { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_FAULT) &&
@@ -336,11 +337,11 @@ export const FulfillmentOrder = ({
                                             name="late-fault"
                                             options={lateFaultOptions}
                                             value={{
-                                                value: get(fulfillmentOrder, fieldKeys.LATE_FAULT, ''),
-                                                label: get(fulfillmentOrder, fieldKeys.LATE_FAULT, ''),
+                                                value: get(fulfillmentOrder, fieldKeys.LATE_FAULT),
+                                                label: get(fulfillmentOrder, fieldKeys.LATE_FAULT) || 'NONE',
                                             }}
                                             onChange={val => onFieldChange(fieldKeys.LATE_FAULT, val.value)}
-                                            isDisabled={isFormDisabled}
+                                            isDisabled={false}
                                         />
                                     </div> }
                             </GridColumn>
@@ -354,7 +355,8 @@ export const FulfillmentOrder = ({
                                                 id="car"
                                                 value={get(fulfillmentOrder, fieldKeys.CAR, '') || ''}
                                                 onChange={e => onFieldChange(fieldKeys.CAR, e.target.value)}
-                                                isDisabled={isFormDisabled}
+                                                isDisabled={false}
+                                                css={{height: 'auto'}}
                                             />
                                         </Tooltip>
                                     </div> }
@@ -371,7 +373,7 @@ export const FulfillmentOrder = ({
                                                     label: get(fulfillmentOrder, fieldKeys.LATE_REASON, ''),
                                                 }}
                                                 onChange={val => onFieldChange(fieldKeys.LATE_REASON, val.value)}
-                                                isDisabled={isFormDisabled}
+                                                isDisabled={false}
                                             />
                                         </Tooltip>
                                     </div> }

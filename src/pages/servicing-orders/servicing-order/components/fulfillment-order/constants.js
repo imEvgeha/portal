@@ -38,9 +38,11 @@ export default {
         {value: 'READY', label: 'Ready'},
     ],
     MARKET_TYPES: [
+        {value: null, label: 'NONE'},
         {value: 'MAJOR', label: 'Major'},
         {value: 'MINOR', label: 'Minor'},
     ],
+    LATE_FAULT: [{value: null, label: 'NONE'}],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',
     SERVICES_TITLE: 'Services',
