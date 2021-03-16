@@ -40,10 +40,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "width": 100,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "system",
           "dataType": "string",
           "enableEdit": false,
@@ -54,7 +50,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
         Object {
@@ -76,10 +71,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "title",
           "dataType": "string",
           "enableEdit": true,
@@ -94,10 +85,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "releaseYear",
           "dataType": "year",
           "enableEdit": true,
@@ -112,10 +99,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "contentType",
           "configEndpoint": "/content-types",
           "dataType": "string",
@@ -131,10 +114,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "episodic.seriesTitleName",
           "dataType": "string",
           "enableEdit": false,
@@ -147,10 +126,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "episodic.seasonTitleName",
           "dataType": "string",
           "enableEdit": false,
@@ -163,10 +138,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "castCrew.director",
           "dataType": "string",
           "enableEdit": false,
@@ -177,14 +148,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "ratings",
           "dataType": "string",
           "enableEdit": false,
@@ -195,14 +161,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "ratings",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "externalIds.eidrLevel1",
           "dataType": "string",
           "enableEdit": false,
@@ -213,14 +174,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "externalIds.eidrLevel2",
           "dataType": "string",
           "enableEdit": false,
@@ -231,14 +187,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
         Object {
-          "cellRenderer": "loadingCellRenderer",
-          "cellRendererParams": Object {
-            "link": undefined,
-          },
           "colId": "castCrew.cast",
           "dataType": "string",
           "enableEdit": false,
@@ -249,7 +200,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
           "valueFormatter": [Function],
         },
       ]
@@ -272,9 +222,9 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
         Object {
+          "cellRenderer": "loadingCellRenderer",
           "colId": "id",
           "dataType": "string",
           "enableEdit": true,
@@ -360,7 +310,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
         Object {
           "colId": "ratings",
@@ -373,7 +322,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "ratings",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
         Object {
           "colId": "externalIds.eidrLevel1",
@@ -386,7 +334,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
         Object {
           "colId": "externalIds.eidrLevel2",
@@ -399,7 +346,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
         Object {
           "colId": "castCrew.cast",
@@ -412,7 +358,6 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "queryParamName": "displayName",
           "readOnly": false,
           "required": false,
-          "searchDataType": "string",
         },
       ]
     }
