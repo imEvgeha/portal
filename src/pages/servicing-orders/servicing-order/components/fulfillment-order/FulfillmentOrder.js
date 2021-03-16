@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useMemo} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
 import ErrorIcon from "@atlaskit/icon/glyph/error";
@@ -224,7 +224,7 @@ export const FulfillmentOrder = ({
         return fault && fault in faultObj ? faultObj[fault].map(item => ({value: item, label: item})) : [];
     }   
 
-    const lateFaultOptions = useMemo(() =>[...Constants.LATE_FAULT, ...getLateFaultOptions()],[get(fulfillmentOrder,'tenant')]);
+    const lateFaultOptions = [...Constants.LATE_FAULT, ...getLateFaultOptions()];
     const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
 
     return (
