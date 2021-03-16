@@ -1425,7 +1425,6 @@ class TitleEdit extends Component {
         const syncToMovida = name === MOVIDA;
         const syncProp = syncToVz ? 'isSyncingVZ' : 'isSyncingMovida';
         const publishToVZ = name === VZ;
-        const publishToMovida = name === MOVIDA;
         const publishProp = publishToVZ ? 'isPublishingVZ' : 'isPublishingMovida';
         if (buttonName === SYNC) {
             this.setState({
