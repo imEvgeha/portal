@@ -35,7 +35,7 @@ const FulfillmentOrderPanel = ({
                     </div>
                     <div className="nexus-c-fulfillment-order-panel__title-container">
                         <div className="nexus-c-fulfillment-order-panel__date">Due Date: {dueDate}</div>
-                        <div className="nexus-c-fulfillment-order-panel__date">Completed Date: {completedDate}</div>
+                        { completedDate && <div className="nexus-c-fulfillment-order-panel__date">Completed Date: {completedDate}</div> }
                     </div>
                 </div>
             </div>

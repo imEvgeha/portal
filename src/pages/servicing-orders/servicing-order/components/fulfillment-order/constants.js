@@ -40,7 +40,9 @@ export default {
     MARKET_TYPES: [
         {value: 'MAJOR', label: 'Major'},
         {value: 'MINOR', label: 'Minor'},
+        {value: null, label: 'NONE'},
     ],
+    LATE_FAULT: [{value: null, label: 'NONE'}],
     SOURCE_TITLE: 'Sources',
     SOURCE_SUBTITLE: 'Select source to view associated children services indicated by the badge',
     SERVICES_TITLE: 'Services',
