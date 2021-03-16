@@ -136,7 +136,7 @@
         "colId": "late",
         "field": "late",
         "dataType": "boolean",
-        "headerName": "late",
+        "headerName": "Late",
         "width": 100,
         "javaVariableName": "late",
         "searchDataType": "boolean",

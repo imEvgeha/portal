@@ -261,6 +261,7 @@ const SourcesTable = ({data: dataArray, onSelectedSourceChange, setUpdatedServic
                 onCellClicked={setSelectedRow}
                 onRowSelected={setSelectedRow}
                 rowSelection="single"
+                rowStyle={{ zIndex: '0' }}
             />
         </div>
     );
