@@ -47,7 +47,7 @@ export const createRightMatchingColumnDefsSelector = () => createSelector(getCol
 
 export const createAvailsMappingSelector = () =>
     createSelector(getAvailsMapping, availsMapping => {
-        return availsMapping && availsMapping.mappings;
+        return (availsMapping && availsMapping.mappings) || [];
     });
 
 export const createFocusedRightSelector = () => createSelector(getFocusedRight, focusedRight => focusedRight);
