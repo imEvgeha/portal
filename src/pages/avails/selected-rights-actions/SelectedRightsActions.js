@@ -10,7 +10,6 @@ import withToasts from '@vubiquity-nexus/portal-ui/lib/toast/hoc/withToasts';
 import {Can} from '@vubiquity-nexus/portal-utils/lib/ability';
 import classNames from 'classnames';
 import {get, uniqBy, isEmpty} from 'lodash';
-import moment from 'moment';
 import {connect} from 'react-redux';
 import AuditHistory from '../../legacy/containers/avail/dashboard/AuditHistory';
 import NexusBulkDelete from '../bulk-delete/NexusBulkDelete';
@@ -23,6 +22,7 @@ import {
     getEligibleRights,
     hasAtLeastOneUnselectedTerritory,
     filterOutUnselectedTerritories,
+    isEndDateExpired,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB, RIGHTS_TAB} from '../rights-repository/constants';
@@ -135,22 +135,14 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory, temporaryPriceReduction}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end}) =>
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&
                 hasAtLeastOneUnselectedTerritory(territory) &&
-                !temporaryPriceReduction
+                !temporaryPriceReduction &&
+                !isEndDateExpired(end)
         );
-    };
-
-    const isEndDateExpired = () => {
-        const index = selectedRights.findIndex(right => {
-            const endDate = right.end || '';
-            const currentDate = moment();
-            return moment(endDate).isBefore(currentDate);
-        });
-        return index >= 0;
     };
 
     // All the rights have Empty CoreTitleIds and SameContentType
@@ -450,7 +442,7 @@ export const SelectedRightsActions = ({
                             <div
                                 className={classNames('nexus-c-selected-rights-actions__menu-item', {
                                     'nexus-c-selected-rights-actions__menu-item--is-active':
-                                        !!selectedRights.length && !statusDeleteMerged && !isEndDateExpired(),
+                                        !!selectedRights.length && !statusDeleteMerged,
                                 })}
                                 data-test-id="add-to-preplan"
                                 onClick={() => (selectedRights.length ? prepareRightsForPrePlan() : null)}
