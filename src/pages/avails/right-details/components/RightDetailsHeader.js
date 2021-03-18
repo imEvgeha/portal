@@ -22,7 +22,7 @@ import {
 } from '../constants';
 import './RightDetailsHeader.scss';
 
-const RightDetailsHeader = ({title, right, history, containerRef}) => {
+const RightDetailsHeader = ({title, right, containerRef}) => {
     const tabs = useMemo(
         () =>
             schema.fields.map(({title = ''}, index) => {
@@ -169,14 +169,12 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 };
 
 RightDetailsHeader.propTypes = {
-    history: PropTypes.object,
     title: PropTypes.string,
     right: PropTypes.object,
     containerRef: PropTypes.any,
 };
 
 RightDetailsHeader.defaultProps = {
-    history: {},
     title: null,
     right: {},
     containerRef: null,
