@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import Tooltip from '@atlaskit/tooltip';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -36,7 +37,6 @@ import {
 import DOPService from '../selected-for-planning/DOP-services';
 import SelectedForPlanning from '../selected-for-planning/SelectedForPlanning';
 import RightsRepositoryHeader from './components/RightsRepositoryHeader/RightsRepositoryHeader';
-import CellTooltip from './components/cell-tooltip/CellTooltip';
 import Ingest from './components/ingest/Ingest';
 import TooltipCellRenderer from './components/tooltip/TooltipCellRenderer';
 import {setRightsFilter, setSelectedRights, setPreplanRights} from './rightsActions';
@@ -261,10 +261,47 @@ const RightsRepository = ({
     const columnsDefsClone = columnDefsClone.map(col => {
         return {
             ...col,
-            tooltipComponent: 'customTooltip',
-            tooltipValueGetter: params => params.valueFormatted,
+            cellStyle: params => cellStyling(params, col),
         };
+        /*
+        let data = col.data;
+        return {
+            ...col,
+            cellRendererFramework: params => {
+                const { value } = params || {};
+
+                return (
+                    <Tooltip content="test">
+                        {value}
+                    </Tooltip>
+                );
+            },
+            cellStyle: params => cellStyling(params, col),
+        };
+        */
     });
+
+    const cellStyling = ({data = {}, value}, column) => {
+        const styling = {};
+
+        if (Object.keys(data).length > 0 && data.validationErrors.length > 0) {
+            let severityType = '';
+            data.validationErrors.forEach(function (validation) {
+                const fieldName = validation.fieldName.includes('[')
+                    ? validation.fieldName.split('[')[0]
+                    : validation.fieldName;
+                if (column.field === fieldName && severityType !== 'Error') {
+                    severityType = validation.severityType;
+                }
+            });
+
+            if (severityType !== '') {
+                styling.background = severityType === 'Error' ? 'Red' : 'Yellow';
+            }
+        }
+
+        return styling;
+    };
 
     const updatedColumnDefs = columnsDefsClone.length
         ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsDefsClone]
@@ -488,7 +525,6 @@ const RightsRepository = ({
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
                 setDataLoading={setIsTableDataLoading}
-                frameworkComponents={{customTooltip: CellTooltip}}
                 rowClassRules={{
                     'nexus-c-rights-repository__row': params =>
                         params &&
