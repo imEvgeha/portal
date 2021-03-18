@@ -86,10 +86,6 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
         }
     }, [isShrinked]);
 
-    const onBackArrowClicked = () => {
-        history.goBack();
-    };
-
     const onScroll = event => {
         let toShrink = false;
         const SHRINK_BOUNDARY = 20;
@@ -141,7 +137,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} goBack={onBackArrowClicked} />
+                <RightDetailsTitle title={title} />
                 <RightDetailsTags right={right} />
             </div>
             <div

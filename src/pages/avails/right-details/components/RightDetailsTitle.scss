@@ -5,10 +5,16 @@
     @include margin(0, 3, 0, 0);
     font-size: 24px;
     color: map-get($neutrals, N500);
-    > span {
+    > a {
         position: absolute;
         top: 24px;
         left: 24px;
         cursor: pointer;
+
+        &:active,
+        :focus,
+        :hover {
+            outline: none;
+        }
     }
 }
