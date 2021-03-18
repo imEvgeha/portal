@@ -1,10 +1,8 @@
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const zlib = require('zlib');
 const paths = require('./paths');
 
 const isCssModule = module => module.type === 'css/mini-extract';
@@ -108,23 +106,10 @@ module.exports = envFile => ({
             chunkFilename: 'css/[id].[contenthash].chunk.css',
             // ignoreOrder: true,
         }),
-        new CompressionPlugin({
-            filename: '[path][base].br',
-            algorithm: 'brotliCompress',
-            test: /\.(js|css|html|svg|png|gif|json)$/,
-            compressionOptions: {
-                params: {
-                    [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-                },
-            },
-            threshold: 10240,
-            minRatio: 0.8,
-            deleteOriginalAssets: false,
-        }),
     ],
     output: {
         path: paths.appBuild,
-        filename: 'js/[name].[contenthash].bundle.js',
+        filename: 'js/[name].bundle.js',
         chunkFilename: 'js/[name].[chunkhash].chunk.js',
         publicPath: '/',
     },
