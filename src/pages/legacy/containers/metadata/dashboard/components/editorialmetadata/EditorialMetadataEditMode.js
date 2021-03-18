@@ -69,8 +69,6 @@ class EditorialMetadataEditMode extends Component {
         };
     }
 
-    componentDidUpdate
-
     delayedHandleChange = debounce(eventData => this.props.handleChange(eventData, this.props.data), 500);
 
     handleChange = e => {
@@ -79,7 +77,7 @@ class EditorialMetadataEditMode extends Component {
     };
 
     handleGenre = e => {
-        if (e && get(e,'length',0) > 10) {
+        if (e?.length > 10) {
             this.setState({
                 showGenreError: true,
             });
@@ -125,11 +123,12 @@ class EditorialMetadataEditMode extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        if (props.data.language !== state.language) {
+        const {language, category, genres} = props.data || {};
+        if (language !== state.language) {
           return {
-            category: (props.data.category || []).map(e => ({value: e.name, label: e.name})),
-            language: props.data.language,
-            genres: props.data.genres,
+            category: (category || []).map(e => ({value: e.name, label: e.name})),
+            language,
+            genres,
           };
         }
         return null;
@@ -224,9 +223,9 @@ class EditorialMetadataEditMode extends Component {
             sasktelLineupId,
             castCrew,
             shortTitleTemplate,
-        } = updateData && updateData.length?  updateData : this.props.data;
+        } = updateData?.length ? updateData : this.props.data;
 
-        const metadataStatus = updateData && updateData.length ? updateData.metadataStatus : this.props.data.metadataStatus;
+        const metadataStatus = updateData?.length ? updateData.metadataStatus : this.props.data.metadataStatus;
         this.raiseValidationError(isMaster, [
             shortTitleTemplate,
             title.title,
