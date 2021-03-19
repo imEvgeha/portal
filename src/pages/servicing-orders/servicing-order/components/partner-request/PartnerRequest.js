@@ -8,17 +8,17 @@ import {STUDIO,} from '../filter-section/constants';
 import './PartnerRequest.scss';
 
 const PartnerRequest = ({externalId, configuredPrId}) => {
-    const [data, setData] = useState({list: []});
+    const [data, setData] = useState({definition: []});
 
     useEffect(() => {
         getServiceRequest(externalId).then(res => {
             // eslint-disable-next-line prefer-destructuring
             const partnerRequest = res.filter(req => req.id === configuredPrId)[0];
             const {tenant, createdBy, createdAt, definition} = partnerRequest;
-            const materialsList = definition['materials'] ? definition['materials'] : 
-            get(typeof definition === "string" ? JSON.parse(definition) : definition,'materials',[])
+            const def = typeof definition === "string" ? JSON.parse(definition) : definition;
+            
             setData({
-                list: materialsList,
+                definition:def,
                 tenant,
                 createdBy,
                 createdAt,

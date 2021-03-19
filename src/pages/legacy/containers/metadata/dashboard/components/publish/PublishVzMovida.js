@@ -11,8 +11,15 @@ import {ERROR, SUCCESS, SYNC, PUBLISH} from './PublishConstants';
 
 const {MOVIDA, VZ} = TitleSystems;
 
-const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncingVZ, isSyncingMovida}) => {
-    const renderSyncField = (name, externalID, isSyncing) => {
+const PublishVzMovida = ({
+    onSyncPublishClick,
+    externalIDs,
+    isSyncingVZ,
+    isSyncingMovida,
+    isPublishingVZ,
+    isPublishingMovida,
+}) => {
+    const renderSyncField = (name, externalID, isSyncing, isPublishing) => {
         const buttonName = !!externalID ? SYNC : PUBLISH;
         const indicator = externalID && externalID.status === SUCCESS ? SUCCESS : ERROR;
 
@@ -35,7 +42,7 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncingVZ, isSyncin
                     <AtlaskitButton
                         appearance="primary"
                         onClick={() => onSyncPublishClick(name, buttonName)}
-                        isLoading={buttonName === SYNC ? isSyncing : undefined}
+                        isLoading={buttonName === SYNC ? isSyncing : isPublishing}
                     >
                         {buttonName}
                     </AtlaskitButton>
@@ -48,8 +55,8 @@ const PublishVzMovida = ({onSyncPublishClick, externalIDs, isSyncingVZ, isSyncin
     const movidaExternalID = externalIDs && externalIDs.find(e => e.externalSystem === MOVIDA);
     return (
         <>
-            {renderSyncField(VZ, vzExternalID, isSyncingVZ)}
-            {renderSyncField(MOVIDA, movidaExternalID, isSyncingMovida)}
+            {renderSyncField(VZ, vzExternalID, isSyncingVZ, isPublishingVZ)}
+            {renderSyncField(MOVIDA, movidaExternalID, isSyncingMovida, isPublishingMovida)}
         </>
     );
 };
@@ -59,12 +66,16 @@ PublishVzMovida.propTypes = {
     externalIDs: PropTypes.array,
     isSyncingVZ: PropTypes.bool,
     isSyncingMovida: PropTypes.bool,
+    isPublishingVZ: PropTypes.bool,
+    isPublishingMovida: PropTypes.bool,
 };
 
 PublishVzMovida.defaultProps = {
     externalIDs: null,
     isSyncingVZ: false,
     isSyncingMovida: false,
+    isPublishingVZ: false,
+    isPublishingMovida: false,
 };
 
 export default PublishVzMovida;

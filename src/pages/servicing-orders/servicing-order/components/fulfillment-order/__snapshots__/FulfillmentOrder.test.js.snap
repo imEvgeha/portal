@@ -95,7 +95,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                   disabled={false}
                   id="inp-premiering"
                   onClick={[Function]}
-                  type="radio"
+                  type="checkbox"
                 />
                 <label
                   className="fo-gridhdr-radio"
@@ -112,7 +112,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                   disabled={false}
                   id="inp-watermark"
                   onClick={[Function]}
-                  type="radio"
+                  type="checkbox"
                 />
                 <label
                   className="fo-gridhdr-radio"
@@ -129,7 +129,7 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                   disabled={false}
                   id="inp-late"
                   onClick={[Function]}
-                  type="radio"
+                  type="checkbox"
                 />
                 <label
                   className="fo-gridhdr-radio"
@@ -158,6 +158,10 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 onChange={[Function]}
                 options={
                   Array [
+                    Object {
+                      "label": "NONE",
+                      "value": null,
+                    },
                     Object {
                       "label": "Major",
                       "value": "MAJOR",
@@ -189,7 +193,14 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 isDisabled={false}
                 name="late-fault"
                 onChange={[Function]}
-                options={Array []}
+                options={
+                  Array [
+                    Object {
+                      "label": "NONE",
+                      "value": null,
+                    },
+                  ]
+                }
                 value={
                   Object {
                     "label": "Everyone is at fault",
@@ -214,6 +225,11 @@ exports[`FulfillmentOrder HTML content should match snapshot 1`] = `
                 content="Not sure what is this field"
               >
                 <WithAnalyticsContext(WithAnalyticsEvents(undefined))
+                  css={
+                    Object {
+                      "height": "auto",
+                    }
+                  }
                   id="car"
                   isDisabled={false}
                   name="CAR"
