@@ -76,7 +76,7 @@ const ISODateToView = (date, type, isLocal = false, shouldDisplayTime = true) =>
         }
 
         if (isLocal) {
-            return momentDate.utc(isUtcTime).local().format(appendDateTimeFormats(dateFormat, RELATIVE_TIME_FORMAT));
+            return momentDate.utc(isUtcTime).local().format(appendDateTimeFormats(dateFormat, TIMESTAMP_TIME_FORMAT));
         }
         return momentDate.utc(isUtcTime).format(dateTimeFormat);
     }
