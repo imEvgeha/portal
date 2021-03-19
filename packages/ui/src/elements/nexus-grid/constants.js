@@ -104,7 +104,7 @@ export {
 
 export const EPISODE_CONTENT_TYPE = 'EPISODE';
 export const PINNED_COLUMN_DEF = {
-    width: 100,
+    width: 80,
     pinned: 'left',
     resizable: false,
     suppressSizeToFit: true,

@@ -23,7 +23,8 @@
         "readOnly": false,
         "enableSearch": false,
         "enableEdit": true,
-        "required": true
+        "required": true,
+        "cellRenderer": "loadingCellRenderer"
     },
     {
         "colId": "title",

@@ -28,7 +28,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
             colId: 'duplicateButton',
             field: 'duplicateButton',
             headerName: 'Duplicate',
-            cellRendererParams: {isNexusDisabled, restrictedIds},
+            cellRendererParams: {isNexusDisabled: true, restrictedIds},
             cellRenderer: 'titleSelectionRenderer',
             editable: true,
         };
@@ -84,7 +84,7 @@ const withMatchAndDuplicateList = (isNexusDisabled = false) => WrappedComponent 
                         nodeFound = api.getRowNode(matchList[NEXUS].id);
                         nodeFound && nodeFound.setDataValue('matchButton', false);
                     }
-                } else {
+                } else if (id === newMatchList[repo]?.id) {
                     delete newMatchList[repo];
                 }
                 setMatchList(newMatchList);

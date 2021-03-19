@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox} from '@atlaskit/checkbox';
-import {Radio} from '@atlaskit/radio';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import CustomActionsCellRenderer from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/CustomActionsCellRenderer';
 import {
     defineEpisodeAndSeasonNumberColumn,
     getLinkableColumnDefs,
@@ -43,7 +40,6 @@ const RightsMatchingTitlesTable = ({
         return columnDefs.map(columnDef => ({
             ...columnDef,
             valueFormatter: createValueFormatter(columnDef),
-            cellRenderer: 'loadingCellRenderer',
         }));
     };
     const updatedColumns = updateColumnDefs(mappings);
@@ -61,17 +57,6 @@ const RightsMatchingTitlesTable = ({
     const updatedColumnDefs = getLinkableColumnDefs([numOfEpisodeAndSeasonField, ...updatedColumns]);
     const repository = getRepositoryCell();
 
-    const handleDuplicateColumnDef = colDef => {
-        const updatedCellRendererParams = {
-            ...colDef.cellRendererParams,
-            isNexusDisabled: true,
-        };
-        return {
-            ...colDef,
-            cellRendererParams: updatedCellRendererParams,
-        };
-    };
-
     return (
         <div
             className={classNames(
@@ -81,7 +66,7 @@ const RightsMatchingTitlesTable = ({
         >
             <TitlesTable
                 className="nexus-c-rights-matching-titles-table"
-                columnDefs={[matchButton, handleDuplicateColumnDef(duplicateButton), repository, ...updatedColumnDefs]}
+                columnDefs={[matchButton, duplicateButton, repository, ...updatedColumnDefs]}
                 mapping={mappings}
                 onGridEvent={onGridReady}
                 initialFilter={{contentType}}
