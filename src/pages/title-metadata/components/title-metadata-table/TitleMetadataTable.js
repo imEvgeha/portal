@@ -160,6 +160,7 @@ const TitleMetadataTable = ({history, catalogueOwner}) => {
                 setTotalCount={setTotalCount}
                 setDisplayedRows={setDisplayedRows}
                 externalFilter={externalFilter}
+                link="/metadata/v2/detail"
             />
             <TitleMetadataTableStatusBar paginationData={paginationData} />
         </div>
