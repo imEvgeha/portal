@@ -12,7 +12,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
-import {cloneDeep, isEmpty, isEqual, get, isObject} from 'lodash';
+import {isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -163,10 +163,10 @@ const RightsRepository = ({
     }, [rightsFilter, mapping, previousExternalStatusFilter, gridApi]);
 
     useEffect(() => {
-        let newSelectedRepoRights = cloneDeep(currentUserSelectedRights);
+        let newSelectedRepoRights = currentUserSelectedRights;
 
         if (isMounted.current && gridApi) {
-            const selectedIds = newSelectedRepoRights.map(({id}) => id);
+            const selectedIds = currentUserSelectedRights.map(({id}) => id);
             const loadedSelectedRights = [];
 
             // Filter selected rights only when ingest is selected
@@ -197,15 +197,17 @@ const RightsRepository = ({
 
     useEffect(() => {
         if (isMounted.current && selectedGridApi && selectedRepoRights.length > 0) {
-            const updatedPrePlanRights = cloneDeep(currentUserPrePlanRights);
+            const updatedPrePlanRights = [...currentUserPrePlanRights];
             selectedRepoRights.forEach(selectedRight => {
                 const index = currentUserPrePlanRights.findIndex(right => right.id === selectedRight.id);
                 if (index >= 0) {
-                    updatedPrePlanRights[index].coreTitleId = selectedRight.coreTitleId;
+                    updatedPrePlanRights[index] = {
+                        ...currentUserPrePlanRights[index],
+                        coreTitleId: selectedRight.coreTitleId,
+                    };
                 }
             });
             setPreplanRights({[username]: updatedPrePlanRights});
-
             selectedGridApi.selectAll();
         }
     }, [selectedRepoRights, selectedGridApi]);
@@ -239,14 +241,12 @@ const RightsRepository = ({
         }
     }, [selectedRights, username]);
 
-    const columnDefsClone = cloneDeep(columnDefs).map(columnDef => {
-        columnDef.menuTabs = ['generalMenuTab'];
-
-        if (columnDef.headerName === 'Withdrawn' || columnDef.headerName === 'Selected') {
-            columnDef.sortable = false;
-        }
-
-        return columnDef;
+    const columnDefsClone = columnDefs.map(columnDef => {
+        return {
+            ...columnDef,
+            menuTabs: ['generalMenuTab'],
+            sortable: ['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable,
+        };
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
@@ -278,7 +278,7 @@ const RightsRepository = ({
                 setColumnApi(columnApi);
                 break;
             case SELECTION_CHANGED: {
-                const clonedSelectedRights = cloneDeep(currentUserSelectedRights);
+                let clonedSelectedRights = currentUserSelectedRights;
 
                 // Get selected rows from both tables
                 const rightsTableSelectedRows = api.getSelectedRows() || [];
@@ -330,7 +330,7 @@ const RightsRepository = ({
                     if (wasSelected && !node.isSelected()) {
                         idsToRemove.push(data.id);
                     } else if (!wasSelected && node.isSelected()) {
-                        clonedSelectedRights.push(data);
+                        clonedSelectedRights = [...currentUserSelectedRights, data];
                     }
                 });
 
