@@ -135,7 +135,6 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
-            params.licensed = isLicensed;
         }
 
         if (get(ingestData, 'externalId', '')) {
@@ -279,15 +278,6 @@ const InputForm = ({
                                     isDisabled={false}
                                     placeholder="Select"
                                     {...selectProps}
-                                />
-                            </div>
-                            <div className="manual-ingest-config__catalog-checkbox">
-                                <Checkbox
-                                    id="licensed-checkbox"
-                                    label="Licensed"
-                                    onChange={() => setIsLicensed(!isLicensed)}
-                                    isChecked={isLicensed}
-                                    isDisabled={template === USMASTER}
                                 />
                             </div>
                         </div>

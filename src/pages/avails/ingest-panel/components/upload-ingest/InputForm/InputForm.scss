@@ -53,22 +53,6 @@
     @include margin(1, 0, 0, 0);
 }
 
-.manual-ingest-config__catalog-options {
-    display: flex;
-    flex-direction: row;
-}
-
-.manual-ingest-config__catalog-select {
-    width: 50%;
-}
-
-.manual-ingest-config__catalog-checkbox {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-}
-
 .manual-ingest-config__label {
     @include heading(h200);
     @include margin(2, 0, 1, 0);
