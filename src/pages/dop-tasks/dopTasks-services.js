@@ -139,7 +139,7 @@ const prepareFilterPayload = (initialParams, externalFilter) => {
                 });
             }
         }
-        if (key === 'user') {
+        if (key === 'user' && !activeFilters.includes(POTENTIAL_OWNERS)) {
             const userIndex = payload.filterCriterion.findIndex(
                 item => item.fieldName === POTENTIAL_OWNERS || item.fieldName === ACTUAL_OWNER
             );
