@@ -186,7 +186,8 @@ const withFilterableColumns = ({
                 const isFilterable =
                     FILTERABLE_DATA_TYPES.includes(searchDataType) &&
                     (columns ? columns.includes(columnDef.field) : true) &&
-                    !excludedFilterColumns.includes(columnDef.field);
+                    !excludedFilterColumns.includes(columnDef.field) &&
+                    get(columnDef, 'isFilterable', true);
 
                 if (isFilterable) {
                     let locked = false;
