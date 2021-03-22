@@ -22,7 +22,7 @@ import {
 } from '../constants';
 import './RightDetailsHeader.scss';
 
-const RightDetailsHeader = ({title, right, history, containerRef}) => {
+const RightDetailsHeader = ({title, right, containerRef}) => {
     const tabs = useMemo(
         () =>
             schema.fields.map(({title = ''}, index) => {
@@ -86,10 +86,6 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
         }
     }, [isShrinked]);
 
-    const onBackArrowClicked = () => {
-        history.goBack();
-    };
-
     const onScroll = event => {
         let toShrink = false;
         const SHRINK_BOUNDARY = 20;
@@ -141,7 +137,7 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
             })}
         >
             <div className="nexus-c-right-details-header__top">
-                <RightDetailsTitle title={title} goBack={onBackArrowClicked} />
+                <RightDetailsTitle title={title} />
                 <RightDetailsTags right={right} />
             </div>
             <div
@@ -173,14 +169,12 @@ const RightDetailsHeader = ({title, right, history, containerRef}) => {
 };
 
 RightDetailsHeader.propTypes = {
-    history: PropTypes.object,
     title: PropTypes.string,
     right: PropTypes.object,
     containerRef: PropTypes.any,
 };
 
 RightDetailsHeader.defaultProps = {
-    history: {},
     title: null,
     right: {},
     containerRef: null,

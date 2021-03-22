@@ -16,7 +16,7 @@ import './RightDetails.scss';
  and configure edit/view form fields
 */
 
-const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, isEditMode, setEditRight, history}) => {
+const RightDetails = ({getRight, updateRight, right, match, selectValues, isSaving, isEditMode, setEditRight}) => {
     const containerRef = useRef();
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const RightDetails = ({getRight, updateRight, right, match, selectValues, isSavi
 
     return (
         <div className="nexus-c-right-details">
-            <RightDetailsHeader title="Right Details" right={right} history={history} containerRef={containerRef} />
+            <RightDetailsHeader title="Right Details" right={right} containerRef={containerRef} />
             <NexusDynamicForm
                 schema={schema}
                 initialData={right}
@@ -55,7 +55,6 @@ RightDetails.propTypes = {
     match: PropTypes.object,
     selectValues: PropTypes.object,
     isSaving: PropTypes.bool,
-    history: PropTypes.object,
     isEditMode: PropTypes.bool,
     setEditRight: PropTypes.func,
 };
@@ -67,9 +66,8 @@ RightDetails.defaultProps = {
     match: {},
     selectValues: {},
     isSaving: false,
-    history: {},
     isEditMode: false,
-    setEditRight: ()=>null,
+    setEditRight: () => null,
 };
 
 const mapStateToProps = () => {
@@ -86,7 +84,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
     getRight: payload => dispatch(getRight(payload)),
     updateRight: payload => dispatch(updateRight(payload)),
-    setEditRight:  payload => dispatch(editRight(payload)),
+    setEditRight: payload => dispatch(editRight(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(RightDetails));
