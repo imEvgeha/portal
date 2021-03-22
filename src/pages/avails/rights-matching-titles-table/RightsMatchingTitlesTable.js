@@ -46,7 +46,7 @@ const RightsMatchingTitlesTable = ({
                     const {valueFormatted} = params || {};
                     const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
                     return (
-                        <div>
+                        <div className="nexus-c-rights-matching-titles-table__cast-crew">
                             <NexusTooltip content={value}>
                                 <div>{valueFormatted || ''}</div>
                             </NexusTooltip>

@@ -8,3 +8,9 @@
         min-height: 200px;
     }
 }
+
+.nexus-c-rights-matching-titles-table__cast-crew > div > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
