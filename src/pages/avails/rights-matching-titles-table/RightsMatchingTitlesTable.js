@@ -10,6 +10,7 @@ import withColumnsResizing from '@vubiquity-nexus/portal-ui/lib/elements/nexus-g
 import withFilterableColumns from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withFilterableColumns';
 import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withInfiniteScrolling';
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import classNames from 'classnames';
 import {compose} from 'redux';
 import {NexusGrid} from '../../../ui/elements';
@@ -35,10 +36,26 @@ const RightsMatchingTitlesTable = ({
     onCellValueChanged,
 }) => {
     const updateColumnDefs = columnDefs => {
-        return columnDefs.map(columnDef => ({
-            ...columnDef,
-            valueFormatter: createValueFormatter(columnDef),
-        }));
+        return columnDefs.map(columnDef => {
+            const updatedColumnDef = {
+                ...columnDef,
+                valueFormatter: createValueFormatter(columnDef),
+            };
+            if (columnDef.colId.startsWith('castCrew')) {
+                updatedColumnDef.cellRendererFramework = params => {
+                    const {valueFormatted} = params || {};
+                    const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
+                    return (
+                        <div>
+                            <NexusTooltip content={value}>
+                                <div>{valueFormatted || ''}</div>
+                            </NexusTooltip>
+                        </div>
+                    );
+                };
+            }
+            return updatedColumnDef;
+        });
     };
     const updatedColumns = updateColumnDefs(mappings);
 
