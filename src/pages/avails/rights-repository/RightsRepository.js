@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from '@atlaskit/tooltip';
+import Error from '@atlaskit/icon/glyph/error';
+import Warning from '@atlaskit/icon/glyph/warning';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -259,26 +260,66 @@ const RightsRepository = ({
     });
 
     const columnsDefsClone = columnDefsClone.map(col => {
-        return {
-            ...col,
-            cellStyle: params => cellStyling(params, col),
-        };
-        /*
-        let data = col.data;
-        return {
-            ...col,
-            cellRendererFramework: params => {
-                const { value } = params || {};
+        if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
+            return {
+                ...col,
+                cellStyle: params => cellStyling(params, col),
+                cellRendererFramework: params => {
+                    const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
 
-                return (
-                    <Tooltip content="test">
-                        {value}
-                    </Tooltip>
-                );
-            },
-            cellStyle: params => cellStyling(params, col),
+                    if (
+                        params.data != null &&
+                        Object.keys(params.data).length > 0 &&
+                        params.data.validationErrors.length > 0
+                    ) {
+                        const msg = [];
+                        let severityType = '';
+                        params.data.validationErrors.forEach(function (validation) {
+                            const fieldName = validation.fieldName.includes('[')
+                                ? validation.fieldName.split('[')[0]
+                                : validation.fieldName;
+
+                            if (col.field === fieldName) {
+                                msg.push(validation.message);
+
+                                if (
+                                    severityType === '' ||
+                                    (validation.severityType === 'Error' && severityType === 'Warning')
+                                ) {
+                                    severityType = validation.severityType;
+                                }
+                            }
+                        });
+
+                        if (severityType === 'Error') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Error />
+                                    </span>
+                                </div>
+                            );
+                        } else if (severityType === 'Warning') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Warning />
+                                    </span>
+                                </div>
+                            );
+                        }
+                    }
+
+                    return <span>{cellValue}</span>;
+                },
+            };
+        }
+
+        return {
+            ...col,
         };
-        */
     });
 
     const cellStyling = ({data = {}, value}, column) => {
