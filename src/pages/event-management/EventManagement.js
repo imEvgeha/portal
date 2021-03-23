@@ -10,6 +10,7 @@ import './EventManagement.scss';
 const EventManagement = props => {
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
+    const [columnApi, setColumnApi] = useState(null);
 
     const closeEventDrawer = () => {
         setSelectedEventId(null);
@@ -46,8 +47,10 @@ const EventManagement = props => {
         }
     };
 
-    const onSortChanged = ({api}) => {
-        const sortModel = api.getSortModel();
+    const onSortChanged = ({api, columnApi}) => {
+        const sortColumn = columnApi.getColumnState().find(c => !!c.sort);
+        const {colId, sort} = sortColumn || {};
+        const sortModel = [{colId, sort}];
         setSearchParams('sort', sortModel);
     };
 
@@ -74,12 +77,21 @@ const EventManagement = props => {
         }
     }, []);
 
-    const onGridEvent = ({type, api}) => {
+    const setSorting = (sortApply, columnApi) => {
+        const columnState = columnApi.getColumnState();
+        const initialSortColumnState = columnState.map(c =>
+            c.colId === sortApply.colId ? {...c, sort: sortApply.sort} : c
+        );
+        columnApi.applyColumnState({state: initialSortColumnState});
+    };
+
+    const onGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
         switch (type) {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
+                setColumnApi(columnApi);
 
                 const params = new URLSearchParams(props.location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
@@ -94,11 +106,14 @@ const EventManagement = props => {
                 // check is there is a sort param in the URL
                 if (sortModelParam) {
                     const sortModel = JSON.parse(sortModelParam);
-                    api.setSortModel(sortModel);
+                    setSorting(sortModel[0], columnApi);
                 } else {
                     // otherwise set the initial sort
-                    const sortModel = api.getSortModel() || [];
-                    api.setSortModel([...sortModel, INITIAL_SORT]);
+                    const columnState = columnApi.getColumnState();
+                    const sortColumn = columnState.find(c => !!c.sort);
+                    if (!sortColumn) {
+                        setSorting(INITIAL_SORT, columnApi);
+                    }
                 }
 
                 break;
