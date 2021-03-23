@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, isEmpty} from 'lodash';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
@@ -10,7 +11,6 @@ import './EventManagement.scss';
 const EventManagement = props => {
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [gridApi, setGridApi] = useState(null);
-    const [columnApi, setColumnApi] = useState(null);
 
     const closeEventDrawer = () => {
         setSelectedEventId(null);
@@ -47,10 +47,8 @@ const EventManagement = props => {
         }
     };
 
-    const onSortChanged = ({api, columnApi}) => {
-        const sortColumn = columnApi.getColumnState().find(c => !!c.sort);
-        const {colId, sort} = sortColumn || {};
-        const sortModel = [{colId, sort}];
+    const onSortChanged = ({columnApi}) => {
+        const sortModel = getSortModel(columnApi);
         setSearchParams('sort', sortModel);
     };
 
@@ -91,8 +89,6 @@ const EventManagement = props => {
             case READY: {
                 api.sizeColumnsToFit();
                 setGridApi(api);
-                setColumnApi(columnApi);
-
                 const params = new URLSearchParams(props.location.search.substring(1));
                 const filterModel = JSON.parse(params.get('filter'));
 
@@ -109,8 +105,7 @@ const EventManagement = props => {
                     setSorting(sortModel[0], columnApi);
                 } else {
                     // otherwise set the initial sort
-                    const columnState = columnApi.getColumnState();
-                    const sortColumn = columnState.find(c => !!c.sort);
+                    const sortColumn = getSortModel(columnApi);
                     if (!sortColumn) {
                         setSorting(INITIAL_SORT, columnApi);
                     }

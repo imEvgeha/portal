@@ -28,3 +28,12 @@ export const getRepositoryName = id => {
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
 };
+
+export const getSortModel = columnApi => {
+    const sortColumn = columnApi.getColumnState().find(c => !!c.sort);
+    if (sortColumn) {
+        const {colId, sort} = sortColumn || {};
+        return [{colId, sort}];
+    }
+    return null;
+};
