@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {components, CreatableSelect} from '@atlaskit/select';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import {insertNewGridModel} from '../../dop-tasks/utils';
@@ -77,7 +78,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
         setSelectedItem({label: value, value});
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && value) {
             const filterModel = gridApi.getFilterModel();
-            const sortModel = gridApi.getSortModel();
+            const sortModel = getSortModel(columnApi);
             const columnState = columnApi.getColumnState();
             const model = {id: value, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(value, get(gridState, username, []), model);

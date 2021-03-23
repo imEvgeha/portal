@@ -1,5 +1,6 @@
 import React from 'react';
 import {nextFrame} from '@vubiquity-nexus/portal-utils/lib/Common';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 
 export default function withServerSorting(WrappedComponent) {
     return class extends React.Component {
@@ -34,7 +35,7 @@ export default function withServerSorting(WrappedComponent) {
                 });
             });
 
-            const currentSortModel = this.state.table.api.getSortModel();
+            const currentSortModel = getSortModel(this.state.table.columnApi);
             let toChangeSortModel = false;
 
             if (currentSortModel.length !== sortModel.length) toChangeSortModel = true;
@@ -50,7 +51,7 @@ export default function withServerSorting(WrappedComponent) {
         }
 
         onSortChanged(e) {
-            const sortParams = e.api.getSortModel();
+            const sortParams = getSortModel(e.columnApi);
             const newSort = [];
             if (sortParams.length > 0) {
                 sortParams.map(criteria => {

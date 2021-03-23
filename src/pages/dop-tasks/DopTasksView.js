@@ -4,6 +4,7 @@ import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
@@ -43,7 +44,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
     const saveUserDefinedGridState = viewId => {
         if (!isEmpty(gridApi) && !isEmpty(columnApi) && username && viewId) {
             const filterModel = gridApi.getFilterModel();
-            const sortModel = gridApi.getSortModel();
+            const sortModel = getSortModel(columnApi);
             const columnState = columnApi.getColumnState();
             const model = {id: viewId, filterModel, sortModel, columnState};
             const newUserData = insertNewGridModel(viewId, userDefinedGridStates, model);
