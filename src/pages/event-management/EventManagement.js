@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
-import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {get, isEmpty} from 'lodash';
 import EventDrawer from './components/event-drawer/EventDrawer';
 import EventManagementTable from './components/event-management-table/EventManagementTable';
@@ -74,14 +74,6 @@ const EventManagement = props => {
             setSelectedEventId(selectedEventId);
         }
     }, []);
-
-    const setSorting = (sortApply, columnApi) => {
-        const columnState = columnApi.getColumnState();
-        const initialSortColumnState = columnState.map(c =>
-            c.colId === sortApply.colId ? {...c, sort: sortApply.sort} : c
-        );
-        columnApi.applyColumnState({state: initialSortColumnState});
-    };
 
     const onGridEvent = ({type, api, columnApi}) => {
         const {READY, SELECTION_CHANGED, FILTER_CHANGED} = GRID_EVENTS;
