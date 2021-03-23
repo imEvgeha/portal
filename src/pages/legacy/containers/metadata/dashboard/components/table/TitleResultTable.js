@@ -453,6 +453,7 @@ class TitleResultTable extends React.Component {
     //     }
 
     // }
+
     render() {
         return (
             <div
@@ -464,6 +465,7 @@ class TitleResultTable extends React.Component {
             >
                 <AgGridReact
                     id="titleTable"
+                    getContextMenuItems={params => getContextMenuItems(params, '/metadata/v2/detail')}
                     ref={this.setTable}
                     getRowNodeId={data => data.id}
                     defaultColDef={this.state.defaultColDef}
@@ -488,7 +490,6 @@ class TitleResultTable extends React.Component {
                     suppressRowClickSelection={true}
                     headerHeight="52"
                     rowHeight="48"
-                    getContextMenuItems={getContextMenuItems}
                 />
             </div>
         );
