@@ -14,6 +14,8 @@ import {
     planTerritoriesMapping,
     territoriesColumn,
     territoriesMapping,
+    planKeywordsColumn,
+    planKeywordsMapping,
     COLUMNS_TO_REORDER,
     INSERT_FROM,
 } from './constants';
@@ -59,8 +61,8 @@ const PreplanRightsTable = ({
                     });
                     const updatedResult = {
                         ...result,
-                        keywords: oldRecord.keywords,
-                        territory: updatedTerritories.filter(t => ((!t.selected && !t.isDirty) || t.isDirty)),
+                        planKeywords: oldRecord.planKeywords,
+                        territory: updatedTerritories.filter(t => (!t.selected && !t.isDirty) || t.isDirty),
                         territorySelected: result.territory.filter(item => item.selected).map(t => t.country),
                         territoryAll: result.territory.map(item => item.country).join(', '),
                     };
@@ -80,7 +82,7 @@ const PreplanRightsTable = ({
     const editedMappings = mapping
         .filter(mapping => mapping.javaVariableName !== 'territory')
         .map(mapping => {
-            if (mapping.javaVariableName === 'keywords') {
+            if (mapping.javaVariableName === 'planKeywords') {
                 return {
                     ...mapping,
                     enableEdit: true,
@@ -102,8 +104,12 @@ const PreplanRightsTable = ({
             }
             case GRID_EVENTS.CELL_VALUE_CHANGED:
                 api.forEachNode(({data = {}}) => {
-                    const {territory} = data || {};
-                    territory ? result.push({...data, territory}) : result.push(data);
+                    const {territory, planKeywords} = data || {};
+                    let value = data;
+                    if (territory || planKeywords) {
+                        value = {...data, territory, planKeywords};
+                    }
+                    result.push(value);
                 });
                 setPreplanRights({[username]: result});
                 break;
@@ -132,11 +138,16 @@ const PreplanRightsTable = ({
     ) : (
         <PrePlanGrid
             id="prePlanRightsRepo"
-            columnDefs={reorderColumns([...filteredColumnDefs, planTerritoriesColumn, territoriesColumn])}
+            columnDefs={reorderColumns([
+                ...filteredColumnDefs,
+                planTerritoriesColumn,
+                territoriesColumn,
+                planKeywordsColumn,
+            ])}
             singleClickEdit
             rowSelection="multiple"
             suppressRowClickSelection={true}
-            mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping]}
+            mapping={[...editedMappings, planTerritoriesMapping, territoriesMapping, planKeywordsMapping]}
             rowData={prePlanRepoRights}
             isGridHidden={activeTab !== PRE_PLAN_TAB}
             onGridEvent={onGridReady}

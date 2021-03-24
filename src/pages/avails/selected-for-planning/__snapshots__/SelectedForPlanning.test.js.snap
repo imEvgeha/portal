@@ -5,6 +5,11 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   columnDefs={
     Array [
       Object {
+        "cellRenderer": "loadingCellRenderer",
+        "cellRendererParams": Object {
+          "link": "/avails/rights/",
+          "newTab": true,
+        },
         "colId": "rightID",
         "enableSearch": true,
         "field": "rightID",
@@ -100,6 +105,11 @@ exports[`SelectedForPlanning should match snapshot 1`] = `
   mapping={
     Array [
       Object {
+        "cellRenderer": "loadingCellRenderer",
+        "cellRendererParams": Object {
+          "link": "/avails/rights/",
+          "newTab": true,
+        },
         "colId": "rightID",
         "enableSearch": true,
         "field": "rightID",
