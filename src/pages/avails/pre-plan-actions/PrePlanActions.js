@@ -57,7 +57,11 @@ export const PrePlanActions = ({
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
-            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected && !t.withdrawn);
+            const unselectedTerritory = keepUnselected
+                ? []
+                : right.territory.filter(
+                      t => !t.selected && !t.withdrawn && !right.territoryExcluded.includes(t.country)
+                  );
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
