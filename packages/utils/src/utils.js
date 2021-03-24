@@ -40,8 +40,11 @@ export const getSortModel = columnApi => {
 
 export const setSorting = (sortApply, columnApi) => {
     const columnState = columnApi.getColumnState();
-    const initialSortColumnState = columnState.map(c =>
-        c.colId === sortApply.colId ? {...c, sort: sortApply.sort} : c
-    );
+    let initialSortColumnState;
+    if (sortApply && sortApply.colId) {
+        initialSortColumnState = columnState.map(c => (c.colId === sortApply.colId ? {...c, sort: sortApply.sort} : c));
+    } else {
+        initialSortColumnState = columnState.map(c => (c.colId === sortApply.colId ? {...c, sort: null} : c));
+    }
     columnApi.applyColumnState({state: initialSortColumnState});
 };

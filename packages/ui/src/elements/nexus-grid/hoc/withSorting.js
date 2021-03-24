@@ -13,19 +13,22 @@ const withSorting = (initialSort = null) => WrappedComponent => {
 
             // If removed column was sorted, remove it from the sortModel and update it
             if (index !== -1) {
-                sortModel.splice(index, 1);
-                setSorting(sortModel, columnApi);
+                setSorting(null, columnApi);
             }
         };
 
         const onGridEvent = (params = {}) => {
-            const {api, type} = params || {};
+            const {columnApi, type} = params || {};
             const {onGridEvent} = props;
 
             // When table is loaded, set default sortModel
             if (type === GRID_EVENTS.READY && initialSort) {
-                const sortModel = api.getSortModel ? api.getSortModel() : [];
-                api.setSortModel && api.setSortModel([...sortModel, initialSort]);
+                const sortModel = columnApi && getSortModel(columnApi) ? getSortModel(columnApi) : [];
+                if (!sortModel) {
+                    setSorting(initialSort, columnApi);
+                } else {
+                    setSorting(sortModel[0], columnApi);
+                }
             }
 
             onGridEvent && onGridEvent(params);
