@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {DEFAULT_SORT_ORDER, GRID_EVENTS} from '../constants';
 
 const withSorting = (initialSort = null) => WrappedComponent => {
     const ComposedComponent = props => {
         const onColumnVisible = ({column = {}}) => {
-            const {gridApi, colId} = column || {};
-            const sortModel = gridApi && gridApi.getSortModel ? gridApi.getSortModel() : [];
+            const {colId, columnApi} = column || {};
+            const sortModel = columnApi && getSortModel(columnApi) ? getSortModel(columnApi) : [];
             // Index of removed column in sortModel array. If it's not found it will be -1
             const index = sortModel.findIndex(({colId: sortColId}) => sortColId === colId);
 
             // If removed column was sorted, remove it from the sortModel and update it
             if (index !== -1) {
                 sortModel.splice(index, 1);
-                gridApi.setSortModel && gridApi.setSortModel(sortModel);
+                setSorting(sortModel, columnApi);
             }
         };
 
