@@ -2,6 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Error from '@atlaskit/icon/glyph/error';
 import Warning from '@atlaskit/icon/glyph/warning';
+import * as colors from '@atlaskit/theme/colors';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -259,7 +260,7 @@ const RightsRepository = ({
         cellStyle: {overflow: 'visible'},
     });
 
-    const columnsDefsClone = columnDefsClone.map(col => {
+    const columnsValidationDefsClone = columnDefsClone.map(col => {
         if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
             return {
                 ...col,
@@ -337,16 +338,16 @@ const RightsRepository = ({
             });
 
             if (severityType !== '') {
-                styling.background = severityType === 'Error' ? 'Red' : 'Yellow';
+                styling.background = severityType === 'Error' ? colors.R100 : colors.Y100;
             }
         }
 
         return styling;
     };
 
-    const updatedColumnDefs = columnsDefsClone.length
-        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsDefsClone]
-        : columnsDefsClone;
+    const updatedColumnDefs = columnsValidationDefsClone.length
+        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsValidationDefsClone]
+        : columnsValidationDefsClone;
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
