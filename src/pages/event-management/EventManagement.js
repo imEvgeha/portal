@@ -94,7 +94,7 @@ const EventManagement = props => {
                 // check is there is a sort param in the URL
                 if (sortModelParam) {
                     const sortModel = JSON.parse(sortModelParam);
-                    setSorting(sortModel[0], columnApi);
+                    setSorting(sortModel, columnApi);
                 } else {
                     // otherwise set the initial sort
                     const sortColumn = getSortModel(columnApi);

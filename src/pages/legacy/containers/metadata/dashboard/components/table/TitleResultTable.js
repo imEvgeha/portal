@@ -134,7 +134,7 @@ class TitleResultTable extends React.Component {
             }
 
             if (toChangeSortModel) {
-                this.table.api.setSortModel(sortModel);
+                setSorting(sortModel, this.table.columnApi);
             }
         }
 

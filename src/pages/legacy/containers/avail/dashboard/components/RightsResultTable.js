@@ -27,7 +27,7 @@ import {getDeepValue, equalOrIncluded} from '@vubiquity-nexus/portal-utils/lib/C
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -313,7 +313,7 @@ class RightsResultTable extends React.Component {
         }
 
         if (toChangeSortModel) {
-            this.table.api.setSortModel(sortModel);
+            setSorting(sortModel, this.table.columnApi);
         }
     }
 

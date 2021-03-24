@@ -1,3 +1,4 @@
+import {get} from 'lodash';
 import moment from 'moment';
 
 export const TitleSystems = {
@@ -41,10 +42,20 @@ export const getSortModel = columnApi => {
 export const setSorting = (sortApply, columnApi) => {
     const columnState = columnApi.getColumnState();
     let initialSortColumnState;
-    if (sortApply && sortApply.colId) {
-        initialSortColumnState = columnState.map(c => (c.colId === sortApply.colId ? {...c, sort: sortApply.sort} : c));
+
+    get(sortApply, 'colId');
+
+    if (sortApply) {
+        if (Array.isArray(sortApply) && sortApply.length > 0) {
+            sortApply = sortApply[0];
+        }
+        initialSortColumnState = columnState.map(c =>
+            c.colId === get(sortApply, 'colId') ? {...c, sort: get(sortApply, 'sort')} : c
+        );
     } else {
-        initialSortColumnState = columnState.map(c => (c.colId === sortApply.colId ? {...c, sort: null} : c));
+        initialSortColumnState = columnState.map(c => {
+            return {...c, sort: null};
+        });
     }
     columnApi.applyColumnState({state: initialSortColumnState});
 };

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import {components, CreatableSelect} from '@atlaskit/select';
-import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import {insertNewGridModel} from '../../dop-tasks/utils';
@@ -47,7 +47,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
                 break;
         }
         gridApi.onFilterChanged();
-        gridApi.setSortModel([{colId: 'updatedAt', sort: 'desc'}]);
+        setSorting({colId: 'updatedAt', sort: 'desc'}, columnApi);
         columnApi.resetColumnState();
     };
 
@@ -59,7 +59,7 @@ const SavedTableDropdown = ({gridApi, columnApi, username, setUserDefinedGridSta
             const selectedModel = get(gridState, username, []).filter(i => i.id === item.value);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
-            gridApi.setSortModel(sortModel);
+            setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
         }
     };

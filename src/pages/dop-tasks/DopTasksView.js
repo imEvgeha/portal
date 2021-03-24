@@ -4,7 +4,7 @@ import RefreshIcon from '@atlaskit/icon/glyph/refresh';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import IconButton from '@vubiquity-nexus/portal-ui/lib/atlaskit/icon-button/IconButton';
 import {toggleRefreshGridData} from '@vubiquity-nexus/portal-ui/lib/grid/gridActions';
-import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
+import {getSortModel, setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import {isEmpty, get} from 'lodash';
 import {connect} from 'react-redux';
 import DopTasksHeader from './components/dop-tasks-header/DopTasksHeader';
@@ -58,7 +58,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
     };
 
     const selectPredefinedTableView = filter => {
-        applyPredefinedTableView(gridApi, filter);
+        applyPredefinedTableView(gridApi, filter, columnApi);
     };
 
     const selectUserDefinedTableView = id => {
@@ -66,7 +66,7 @@ export const DopTasksView = ({toggleRefreshGridData, username, gridState, setDop
             const selectedModel = userDefinedGridStates.filter(item => item.id === id);
             const {columnState, filterModel, sortModel} = selectedModel[0] || {};
             gridApi.setFilterModel(filterModel);
-            gridApi.setSortModel(sortModel);
+            setSorting(sortModel, columnApi);
             columnApi.setColumnState(columnState);
         }
     };
