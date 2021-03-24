@@ -161,11 +161,9 @@ export const PrePlanActions = ({
         selectedPrePlanRights.forEach(right => {
             updatedRight = rightsList.find(r => r.id === right.id);
             if (updatedRight) {
-                let keywordsStr = '';
-                keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
-                updatedRight.keywords =
-                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ',' ? keywordsStr.slice(0, -1) : keywordsStr;
-
+                updatedRight.planKeywords = updatedRight.planKeywords
+                    ? uniq(keywords.split(',').concat(updatedRight.planKeywords?.split(','))).join(',')
+                    : keywords;
                 right.territory.forEach(t => {
                     if (bulkTerritories.includes(t.country)) {
                         // eslint-disable-next-line prefer-destructuring
