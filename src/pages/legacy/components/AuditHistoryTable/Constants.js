@@ -55,6 +55,22 @@ export default {
             dataType: dataTypes.YES_OR_NO,
         },
         {
+            field: 'rightStatus',
+            headerName: 'Right Status',
+        },
+        {
+            field: 'status',
+            headerName: 'Status',
+        },
+        {
+            field: 'keywords',
+            headerName: 'Keywords',
+        },
+        {
+            field: 'licensee',
+            headerName: 'Licensee',
+        },
+        {
             field: 'languageAudioTypes',
             headerName: 'Audio Language',
             dataType: dataTypes.AUDIO,
