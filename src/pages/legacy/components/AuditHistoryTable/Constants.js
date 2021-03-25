@@ -159,6 +159,46 @@ export default {
             headerName: 'Affiliate Exclude',
         },
         {
+            field: 'assetLanguage',
+            headerName: 'Asset Language',
+        },
+        {
+            field: 'language',
+            headerName: 'Language',
+        },
+        {
+            field: 'localizationType',
+            headerName: 'Localization Type',
+        },
+        {
+            field: 'holdbackLanguage',
+            headerName: 'Holdback Language',
+        },
+        {
+            field: 'allowedLanguages',
+            headerName: 'Allowed Languages',
+        },
+        {
+            field: 'requiredFulfillmentLanguages',
+            headerName: 'Required Fulfillment Languages',
+        },
+        {
+            field: 'entryType',
+            headerName: 'Entry Type',
+        },
+        {
+            field: 'displayTitle',
+            headerName: 'Display Title',
+        },
+        {
+            field: 'groupIdentity',
+            headerName: 'Group Identity',
+        },
+        {
+            field: 'companyDisplayCredit',
+            headerName: 'Company Display Credit',
+        },
+        {
             colId: 'ratingSystem',
             field: 'rating',
             headerName: 'RatingSystem',
