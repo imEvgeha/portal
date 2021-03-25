@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
+import {compose} from 'redux';
 import {NexusGrid} from '../../../../ui/elements/';
 import Constants from './Constants';
 import {cellStyling, formatData, valueFormatter} from './utils';
 import RulesEngineInfo from './components/RulesEngineInfo';
 import './AuditHistoryTable.scss';
+
+const AuditHistoryTableWithSideBar = compose(withSideBar({toolPanels: Constants.COLUMN_TOOL_PANEL}))(NexusGrid);
 
 const AuditHistoryTable = ({data, focusedRight}) => {
     const [auditData, setAuditData] = useState(null);
@@ -52,7 +56,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
 
     return (
         <div className="nexus-c-audit-history-table">
-            <NexusGrid
+            <AuditHistoryTableWithSideBar
                 columnDefs={columnDefs}
                 rowData={auditData}
                 frameworkComponents={{customTooltip: RulesEngineInfo}}

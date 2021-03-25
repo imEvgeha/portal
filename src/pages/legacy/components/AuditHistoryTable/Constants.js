@@ -131,4 +131,19 @@ export default {
         MANUAL: 'Manual',
     },
     INGEST_ACCOUNTS: ['service-account-avails-client'],
+    COLUMN_TOOL_PANEL: [
+        {
+            id: 'columns',
+            labelDefault: 'Columns',
+            labelKey: 'columns',
+            iconKey: 'columns',
+            toolPanel: 'agColumnsToolPanel',
+            toolPanelParams: {
+                suppressRowGroups: true,
+                suppressValues: true,
+                suppressPivots: true,
+                suppressPivotMode: true,
+            },
+        },
+    ],
 };
