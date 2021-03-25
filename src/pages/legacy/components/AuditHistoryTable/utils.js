@@ -35,8 +35,9 @@ export const valueFormatter = ({colId, field, dataType}) => {
                     const {data: {headerRow, updatedBy} = {}} = params || {};
                     return headerRow ? data[field] : INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL;
                 case YES_OR_NO:
-                    const value = data[field] || false;
-                    return value ? 'Yes' : '';
+                    const value = typeof data[field] === 'boolean' ? data[field] : null;
+                    if (value === null) return '';
+                    return value ? 'Yes' : 'No';
                 default:
                     return data[field];
             }

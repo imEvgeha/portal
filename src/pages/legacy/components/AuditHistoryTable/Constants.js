@@ -84,6 +84,81 @@ export default {
             headerName: 'Content Type',
         },
         {
+            field: 'availStart',
+            headerName: 'Avail Start',
+            dataType: dataTypes.DATE,
+        },
+        {
+            field: 'availEnd',
+            headerName: 'Avail End',
+            dataType: dataTypes.DATE,
+        },
+        {
+            field: 'startLag',
+            headerName: 'Start Lag',
+        },
+        {
+            field: 'productionStudio',
+            headerName: 'Production Studio',
+        },
+        {
+            field: 'platformCategory',
+            headerName: 'Platform Category',
+        },
+        {
+            field: 'contractId',
+            headerName: 'Contract Id',
+        },
+        {
+            field: 'titleStatus',
+            headerName: 'Title Status',
+        },
+        {
+            field: 'coreTitleId',
+            headerName: 'Core Title Id',
+        },
+        {
+            field: 'storeLanguage',
+            headerName: 'Store Language',
+        },
+        {
+            field: 'ALID',
+            headerName: 'ALID',
+        },
+        {
+            field: 'CID',
+            headerName: 'CID',
+        },
+        {
+            field: 'licenseRightsDescription',
+            headerName: 'License Rights Description',
+        },
+        {
+            field: 'territoryExcluded',
+            headerName: 'Territory Excluded',
+        },
+        {
+            field: 'region',
+            headerName: 'Region',
+        },
+        {
+            field: 'regionExcluded',
+            headerName: 'Region Excluded',
+        },
+        {
+            field: 'genres',
+            headerName: 'Genres',
+        },
+        {
+            field: 'bonusRight',
+            headerName: 'Bonus Right',
+            dataType: dataTypes.YES_OR_NO,
+        },
+        {
+            field: 'affiliateExclude',
+            headerName: 'Affiliate Exclude',
+        },
+        {
             colId: 'ratingSystem',
             field: 'rating',
             headerName: 'RatingSystem',
