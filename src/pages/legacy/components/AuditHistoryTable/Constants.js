@@ -3,6 +3,7 @@ const dataTypes = {
     AUDIO: 'audio',
     RATING: 'rating',
     METHOD: 'method',
+    YES_OR_NO: 'yesOrNo',
 };
 
 export default {
@@ -47,6 +48,11 @@ export default {
         {
             field: 'licensor',
             headerName: 'Licensor',
+        },
+        {
+            field: 'licensed',
+            headerName: 'Licensed',
+            dataType: dataTypes.YES_OR_NO,
         },
         {
             field: 'languageAudioTypes',

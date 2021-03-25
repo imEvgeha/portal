@@ -4,7 +4,7 @@ import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTim
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {
-    dataTypes: {DATE, AUDIO, RATING, METHOD},
+    dataTypes: {DATE, AUDIO, RATING, METHOD, YES_OR_NO},
     colors: {CURRENT_VALUE, STALE_VALUE},
     RATING_SUBFIELD,
     method: {MANUAL, INGEST},
@@ -34,6 +34,9 @@ export const valueFormatter = ({colId, field, dataType}) => {
                 case METHOD:
                     const {data: {headerRow, updatedBy} = {}} = params || {};
                     return headerRow ? data[field] : INGEST_ACCOUNTS.includes(updatedBy) ? INGEST : MANUAL;
+                case YES_OR_NO:
+                    const value = data[field] || false;
+                    return value ? 'Yes' : '';
                 default:
                     return data[field];
             }
@@ -67,6 +70,14 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
     const styling = {};
     const {field, noStyles, colId} = column;
     if (value && Object.keys(value).length && !data.headerRow && !noStyles) {
+        const equalityCheck = valueCompare(value, focusedRight[field], column);
+        if (equalityCheck) {
+            styling.background = CURRENT_VALUE;
+        } else if (equalityCheck === false) {
+            //for null valued rating field we dont need to color the cell
+            styling.background = STALE_VALUE;
+        }
+    } else if (typeof value === 'boolean' && !data.headerRow && !noStyles) {
         const equalityCheck = valueCompare(value, focusedRight[field], column);
         if (equalityCheck) {
             styling.background = CURRENT_VALUE;
