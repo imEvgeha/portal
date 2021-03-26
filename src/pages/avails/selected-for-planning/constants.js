@@ -51,6 +51,11 @@ export const COLUMN_MAPPINGS = [
         enableSearch: true,
         searchDataType: 'string',
         width: 150,
+        cellRenderer: 'loadingCellRenderer',
+        cellRendererParams: {
+            link: '/avails/rights/',
+            newTab: true,
+        },
     },
     {
         colId: 'title',
