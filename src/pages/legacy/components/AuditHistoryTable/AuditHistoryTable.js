@@ -38,7 +38,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
     useEffect(() => {
         if (columns.length !== columnDefs.length) {
             const cols = columns.map(col => {
-                const {field, colId, headerName} = col;
+                const {field, colId, headerName, hide = false} = col;
                 return {
                     field,
                     headerName,
@@ -48,6 +48,7 @@ const AuditHistoryTable = ({data, focusedRight}) => {
                     cellStyle: params => cellStyling(params, focusedRight, col),
                     tooltipComponent: 'customTooltip',
                     tooltipValueGetter: params => params.valueFormatted,
+                    hide: hide,
                 };
             });
             setColumnDefs(cols);
