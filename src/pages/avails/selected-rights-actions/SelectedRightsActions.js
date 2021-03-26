@@ -22,6 +22,7 @@ import {
     getEligibleRights,
     hasAtLeastOneUnselectedTerritory,
     filterOutUnselectedTerritories,
+    isEndDateExpired,
 } from '../menu-actions/actions';
 import StatusCheck from '../rights-repository/components/status-check/StatusCheck';
 import {PRE_PLAN_TAB, RIGHTS_TAB} from '../rights-repository/constants';
@@ -134,12 +135,13 @@ export const SelectedRightsActions = ({
 
     const checkPrePlanEligibilityCriteria = () => {
         return selectedRights.every(
-            ({rightStatus, licensed, status, territory, temporaryPriceReduction}) =>
+            ({rightStatus, licensed, status, territory, temporaryPriceReduction, end}) =>
                 licensed &&
                 ['Pending', 'Confirmed', 'Tentative'].includes(rightStatus) &&
                 ['ReadyNew', 'Ready'].includes(status) &&
                 hasAtLeastOneUnselectedTerritory(territory) &&
-                !temporaryPriceReduction
+                !temporaryPriceReduction &&
+                !isEndDateExpired(end)
         );
     };
 

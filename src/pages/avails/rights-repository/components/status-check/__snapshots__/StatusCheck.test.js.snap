@@ -52,6 +52,11 @@ exports[`StatusCheck should match snapshot 1`] = `
               "key": 7,
               "width": 25,
             },
+            Object {
+              "content": "License End Date",
+              "key": 8,
+              "width": 35,
+            },
           ],
         }
       }
@@ -97,6 +102,10 @@ exports[`StatusCheck should match snapshot 1`] = `
                 "content": "NO",
                 "key": "1-temporaryPriceReduction",
               },
+              Object {
+                "content": undefined,
+                "key": "1-end",
+              },
             ],
             "key": 1,
           },
@@ -131,6 +140,10 @@ exports[`StatusCheck should match snapshot 1`] = `
               Object {
                 "content": "NO",
                 "key": "2-temporaryPriceReduction",
+              },
+              Object {
+                "content": undefined,
+                "key": "2-end",
               },
             ],
             "key": 2,
