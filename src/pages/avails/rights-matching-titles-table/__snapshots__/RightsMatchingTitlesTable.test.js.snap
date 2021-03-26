@@ -138,6 +138,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": undefined,
         },
         Object {
+          "cellRendererFramework": [Function],
           "colId": "castCrew.director",
           "dataType": "string",
           "enableEdit": false,
@@ -190,6 +191,7 @@ exports[`RightsMatchingTitlesTable should match snapshot 1`] = `
           "valueFormatter": [Function],
         },
         Object {
+          "cellRendererFramework": [Function],
           "colId": "castCrew.cast",
           "dataType": "string",
           "enableEdit": false,

@@ -99,6 +99,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                 return params => {
                     const {data = {}} = params || {};
                     if (data && data['castCrew']) {
+                        if (javaVariableName.endsWith('cast')) {
+                            return data['castCrew']
+                                .filter(({personType}) => personType === 'Actor')
+                                .map(({personType, displayName}) => `${personType}: ${displayName}`)
+                                .join('; ');
+                        } else if (javaVariableName.endsWith('director')) {
+                            return data['castCrew']
+                                .filter(({personType}) => personType !== 'Actor')
+                                .map(({personType, displayName}) => `${personType}: ${displayName}`)
+                                .join('; ');
+                        }
                         return data['castCrew']
                             .map(({personType, displayName}) => `${personType}: ${displayName}`)
                             .join('; ');
