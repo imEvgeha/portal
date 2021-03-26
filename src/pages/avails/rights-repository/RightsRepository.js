@@ -12,6 +12,7 @@ import withInfiniteScrolling from '@vubiquity-nexus/portal-ui/lib/elements/nexus
 import withSideBar from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSideBar';
 import withSorting from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/hoc/withSorting';
 import {filterBy} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/utils';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {isEmpty, isEqual, get, isObject} from 'lodash';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
@@ -242,11 +243,25 @@ const RightsRepository = ({
     }, [selectedRights, username]);
 
     const columnDefsClone = columnDefs.map(columnDef => {
-        return {
+        const updatedColumnDef = {
             ...columnDef,
             menuTabs: ['generalMenuTab'],
             sortable: ['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable,
         };
+        if (columnDef.colId === 'displayName') {
+            updatedColumnDef.cellRendererFramework = params => {
+                const {valueFormatted} = params || {};
+                const value = valueFormatted ? ' '.concat(valueFormatted.split(';').join('\n')) : '';
+                return (
+                    <div className="nexus-c-rights-repo-table__cast-crew">
+                        <NexusTooltip content={value}>
+                            <div>{valueFormatted || ''}</div>
+                        </NexusTooltip>
+                    </div>
+                );
+            };
+        }
+        return updatedColumnDef;
     });
 
     const checkboxSelectionColumnDef = defineCheckboxSelectionColumn();
