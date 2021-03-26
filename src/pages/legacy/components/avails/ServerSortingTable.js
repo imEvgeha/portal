@@ -38,11 +38,13 @@ export default function withServerSorting(WrappedComponent) {
             const currentSortModel = getSortModel(this.state.table.columnApi);
             let toChangeSortModel = false;
 
-            if (currentSortModel.length !== sortModel.length) toChangeSortModel = true;
+            if (currentSortModel && currentSortModel.length !== sortModel.length) toChangeSortModel = true;
 
-            for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
-                if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
-                if (sortModel[i].sortCriteria !== currentSortModel[i].sortCriteria) toChangeSortModel = true;
+            if (currentSortModel) {
+                for (let i = 0; i < sortModel.length && !toChangeSortModel; i++) {
+                    if (sortModel[i].colId !== currentSortModel[i].colId) toChangeSortModel = true;
+                    if (sortModel[i].sortCriteria !== currentSortModel[i].sortCriteria) toChangeSortModel = true;
+                }
             }
 
             if (toChangeSortModel) {
