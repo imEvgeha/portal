@@ -50,15 +50,18 @@ describe('EventManagement', () => {
 
         const deselectAllMock = jest.fn();
         const setFilterModelMock = jest.fn();
-        const setSortModelMock = jest.fn();
+        const applyColumnStateMock = jest.fn();
         const gridApiMock = {
             deselectAll: deselectAllMock,
             getSelectedRows: () => [event],
             sizeColumnsToFit: () => null,
             getFilterModel: () => filter,
-            getSortModel: () => sort,
             setFilterModel: setFilterModelMock,
-            setSortModel: setSortModelMock,
+        };
+
+        const columnApiMock = {
+            getColumnState: () => sort,
+            applyColumnState: applyColumnStateMock,
         };
 
         const afterUseEffectWrapper = () => {
@@ -73,15 +76,17 @@ describe('EventManagement', () => {
         };
 
         beforeEach(() => {
-            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
-            eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
+            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock, columnApi: columnApiMock});
+            eventManagementTableWrapper
+                .props()
+                .onGridEvent({type: SELECTION_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
         });
 
         afterEach(() => {
             deselectAllMock.mockReset();
             setFilterModelMock.mockReset();
-            setSortModelMock.mockReset();
+            applyColumnStateMock.mockReset();
         });
 
         it('should render EventDrawer', async () => {
@@ -102,7 +107,9 @@ describe('EventManagement', () => {
         });
 
         it('should update the URL with the applied filter', () => {
-            eventManagementTableWrapper.props().onGridEvent({type: FILTER_CHANGED, api: gridApiMock});
+            eventManagementTableWrapper
+                .props()
+                .onGridEvent({type: FILTER_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
             expect(historyPushMockFn).toHaveBeenCalledWith({
                 search:
@@ -111,7 +118,7 @@ describe('EventManagement', () => {
         });
 
         it('should update the URL with the applied sort option', () => {
-            eventManagementTableWrapper.props().onSortChanged({api: gridApiMock});
+            eventManagementTableWrapper.props().onSortChanged({api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
             expect(historyPushMockFn).toHaveBeenCalledWith({
                 search: '?sort=%5B%7B%22colId%22%3A%22tenantId%22%2C%22sort%22%3A%22asc%22%7D%5D',
@@ -124,14 +131,16 @@ describe('EventManagement', () => {
                     'filter=%7B%22tenantId%22%3A%7B%22filter%22%3A%22WB%22%2C%22filterType%22%3A%22text%22%2C%22type%22%3A%22equals%22%7D%7D&sort=%5B%7B%22colId%22%3A%22tenantId%22%2C%22sort%22%3A%22asc%22%7D%5D'
             );
             wrapper.setProps({location: {search: {substring: substringMockFn}}});
-            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock});
+            eventManagementTableWrapper.props().onGridEvent({type: READY, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
             expect(setFilterModelMock).toHaveBeenCalledWith(filter);
-            expect(setSortModelMock).toHaveBeenCalledWith(sort);
+            expect(applyColumnStateMock).toHaveBeenCalledWith({state: sort});
         });
 
         it('should correctly set the selectedEventId as a URL param', async () => {
-            eventManagementTableWrapper.props().onGridEvent({type: SELECTION_CHANGED, api: gridApiMock});
+            eventManagementTableWrapper
+                .props()
+                .onGridEvent({type: SELECTION_CHANGED, api: gridApiMock, columnApi: columnApiMock});
             wrapper.update();
             expect(historyPushMockFn).toHaveBeenCalledWith({
                 search: '?selectedEventId=%22abc%22',
