@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useMemo} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Tag from '@atlaskit/tag';
 import Tooltip from '@atlaskit/tooltip';
@@ -43,9 +43,7 @@ const ServicesTable = ({
     // recipient is fixed for a fullfillment order. should be same for all service rows, take from first row
     const recipient = get(data, 'deteServices[0].deteTasks.deteDeliveries[0].externalDelivery.deliverToId', '');
 
-    const deteComponents = useMemo(() => componentsArray.find(item => item && item.barcode === data.barcode), [
-        data.barcode,
-    ]);
+    const deteComponents = componentsArray?.find(item => item && item.barcode === data?.barcode);
 
     const title =
         get(data, 'title', '') ||
@@ -192,6 +190,7 @@ const ServicesTable = ({
         headerComponentFramework:  () => <span title="watermark"><i className="fas fa-tint"/></span>,
         cellRendererParams: ({rowIndex, node}) =>
             ({
+                tableData,
                 rowIndex,
                 node,
                 isDisabled,
@@ -220,22 +219,35 @@ const ServicesTable = ({
     };
 
     const handleFieldEdit = (index,fieldPath, fieldName,newValue) => {
-        const newRow = cloneDeep(tableData[index]);
-        const update = cloneDeep(services);
-        set(newRow,fieldName,newValue);
+        const updatedRow = cloneDeep(tableData[index]);
+        const updatedServices = cloneDeep(services);
+        set(updatedRow,fieldName,newValue);
+
         if(fieldPath === 'externalServices.parameters') {
-            const inx = get(update.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
+            const inx = get(updatedServices.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
             if(inx >= 0) {
-                set(update,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
+                if(newValue === false) // remove parameter if value is false
+                {
+                    const reducedParams = updatedServices?.deteServices[index]?.externalServices?.parameters?.filter(item => item.name !== fieldName);
+                    set(updatedServices,`deteServices[${index}].externalServices.parameters`,reducedParams) ;
+                }
+                else 
+                    set(updatedServices,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
             }
-            else
-                update.deteServices[index].externalServices.parameters = [...update.deteServices[index].externalServices.parameters, {name: fieldName, value: newValue}]
+            else if(newValue !== false) 
+            {
+                const addedParams = [...updatedServices?.deteServices[index]?.externalServices?.parameters, {name: fieldName, value: newValue}];
+                set(updatedServices,`deteServices[${index}].externalServices.parameters`,addedParams) ;
+            }
+            
         }
-        else
-            set(update,`deteService[${index}].${fieldPath}`,newValue);
-        setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
-        setServices(update);
-        setUpdatedServices(update);
+        else {
+            set(updatedServices,`deteService[${index}].${fieldPath}`,newValue);
+        }
+            
+        setTableData(prev => prev.map((row, idx) => (idx === index ? updatedRow: row)));
+        setServices(updatedServices);
+        setUpdatedServices(updatedServices);
     }
 
     const colDef = columnDefinitions.map(item => {
