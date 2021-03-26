@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@atlaskit/button';
 import DynamicTable from '@atlaskit/dynamic-table';
+import {isEndDateExpired} from '../../../menu-actions/actions';
 import {ELIGIBLE_RIGHT_STATUS, ELIGIBLE_STATUS} from '../../../pre-plan-actions/constants';
 import {STATUS_CHECK_MSG} from '../../../selected-rights-actions/constants';
 import {header} from './constants';
@@ -22,6 +23,7 @@ const StatusCheck = ({nonEligibleTitles, onClose}) => {
                 territory,
                 updatedCatalogReceived,
                 temporaryPriceReduction,
+                end,
             } = content;
             const hasUnplannedTerritory = territory.filter(ter => !ter.selected).length;
             return {
@@ -58,6 +60,10 @@ const StatusCheck = ({nonEligibleTitles, onClose}) => {
                     {
                         key: `${id}-temporaryPriceReduction`,
                         content: temporaryPriceReduction ? <InValidData data="YES" /> : 'NO',
+                    },
+                    {
+                        key: `${id}-end`,
+                        content: isEndDateExpired(end) ? <InValidData data={end} /> : end,
                     },
                 ],
             };

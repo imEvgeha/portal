@@ -62,19 +62,10 @@ const withFilterableColumns = ({
             };
         }, []);
 
-        // TODO: temporary solution to get select values
-        useEffect(() => {
-            if (isMounted.current && isEmpty(selectValues)) {
-                fetchAvailMapping();
-            }
-        }, [selectValues]);
-
         useEffect(() => {
             if (
                 isMounted.current &&
-                !!columnDefs.length &&
-                isObject(selectValues) &&
-                !!Object.keys(selectValues).length
+                !!columnDefs.length
             ) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }

@@ -29,3 +29,9 @@
 .nexus-c-rights-repository__row {
     background-color: map-get($neutrals, N30) !important;
 }
+
+.nexus-c-rights-repo-table__cast-crew > div > div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -57,7 +57,11 @@ export const PrePlanActions = ({
     const removeRightsFromPrePlan = keepUnselected => {
         const selectedRights = [];
         const selectedPrePlanRightsId = selectedPrePlanRights.map(right => {
-            const unselectedTerritory = keepUnselected ? [] : right.territory.filter(t => !t.selected && !t.withdrawn);
+            const unselectedTerritory = keepUnselected
+                ? []
+                : right.territory.filter(
+                      t => !t.selected && !t.withdrawn && !right.territoryExcluded.includes(t.country)
+                  );
             unselectedTerritory.length &&
                 selectedRights.push({
                     ...right,
@@ -65,6 +69,8 @@ export const PrePlanActions = ({
                         right.territory.filter(t => t.selected).map(t => t.country)
                     ),
                     territory: right.territory.filter(t => !t.selected),
+                    planKeywords: '',
+                    keywords: uniq(right.keywords.concat(right.planKeywords?.split(','))),
                 });
             return right.id;
         });
@@ -107,16 +113,13 @@ export const PrePlanActions = ({
                 if (eligibleRights && eligibleRights.length) {
                     const mergedWithSelectedRights = eligibleRights.map(right => {
                         const previousRight = selectedPrePlanRights.find(obj => obj.id === right.id);
-                        const prevKeywords = Array.isArray(previousRight['keywords'])
-                            ? previousRight['keywords']
-                            : previousRight['keywords'].split(',');
                         const prevTerritory = previousRight.territory
                             .filter(obj => obj.isDirty && obj.selected)
                             .map(t => t.country);
                         const updatedRight = {
                             id: right.id,
                             properties: {
-                                keywords: uniq(prevKeywords.concat(right['keywords'])),
+                                keywords: uniq(previousRight.keywords.concat(previousRight.planKeywords?.split(','))),
                                 selected: prevTerritory,
                             },
                         };
@@ -162,11 +165,9 @@ export const PrePlanActions = ({
         selectedPrePlanRights.forEach(right => {
             updatedRight = rightsList.find(r => r.id === right.id);
             if (updatedRight) {
-                let keywordsStr = '';
-                keywordsStr = Array.from(new Set(`${keywords},${updatedRight.keywords}`.split(','))).join(',');
-                updatedRight.keywords =
-                    keywordsStr.length > 1 && keywordsStr.slice(-1) === ',' ? keywordsStr.slice(0, -1) : keywordsStr;
-
+                updatedRight.planKeywords = updatedRight.planKeywords
+                    ? uniq(keywords.split(',').concat(updatedRight.planKeywords?.split(','))).join(',')
+                    : keywords;
                 right.territory.forEach(t => {
                     if (bulkTerritories.includes(t.country)) {
                         // eslint-disable-next-line prefer-destructuring
