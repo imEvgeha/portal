@@ -289,30 +289,34 @@ const InputForm = ({
                             </div>
                         </div>
                     </div>
-                    <div className="manual-ingest-config__license-types">
-                        <label className="manual-ingest-config__label">LICENSE TYPES</label>
-                        <Select
-                            id="manual-upload-license-types"
-                            onChange={val => setSelectedLicenseTypes(val || [])}
-                            value={selectedLicenseTypes}
-                            options={licenseTypes.map(lic => ({value: lic.value, label: lic.label}))}
-                            placeholder="Select"
-                            isMulti
-                            {...selectProps}
-                        />
-                    </div>
-                    <div className="manual-ingest-config__territory">
-                        <label className="manual-ingest-config__label">TERRITORY</label>
-                        <Select
-                            id="manual-upload-territory"
-                            onChange={val => setSelectedTerritories(val || [])}
-                            value={selectedTerritories}
-                            options={countries.map(lic => ({value: lic.value, label: lic.label}))}
-                            placeholder="Select"
-                            isMulti
-                            {...selectProps}
-                        />
-                    </div>
+                    {get(catalogType, 'value', '') === 'Title Catalog' && (
+                        <>
+                            <div className="manual-ingest-config__license-types">
+                                <label className="manual-ingest-config__label">LICENSE TYPES</label>
+                                <Select
+                                    id="manual-upload-license-types"
+                                    onChange={val => setSelectedLicenseTypes(val || [])}
+                                    value={selectedLicenseTypes}
+                                    options={licenseTypes.map(lic => ({value: lic.value, label: lic.label}))}
+                                    placeholder="Select"
+                                    isMulti
+                                    {...selectProps}
+                                />
+                            </div>
+                            <div className="manual-ingest-config__territory">
+                                <label className="manual-ingest-config__label">TERRITORY</label>
+                                <Select
+                                    id="manual-upload-territory"
+                                    onChange={val => setSelectedTerritories(val || [])}
+                                    value={selectedTerritories}
+                                    options={countries.map(lic => ({value: lic.value, label: lic.label}))}
+                                    placeholder="Select"
+                                    isMulti
+                                    {...selectProps}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
             <div className="manual-ingest-config__buttons">
