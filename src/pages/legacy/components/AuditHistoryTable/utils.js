@@ -4,7 +4,7 @@ import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTim
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
 const {
-    dataTypes: {DATE, AUDIO, RATING, METHOD, YES_OR_NO},
+    dataTypes: {DATE, AUDIO, RATING, METHOD, YES_OR_NO, TERRITORY, TERRITORY_SELECTED, TERRITORY_WITHDRAWN},
     colors: {CURRENT_VALUE, STALE_VALUE},
     RATING_SUBFIELD,
     method: {MANUAL, INGEST},
@@ -38,6 +38,30 @@ export const valueFormatter = ({colId, field, dataType}) => {
                     const value = typeof data[field] === 'boolean' ? data[field] : null;
                     if (value === null) return '';
                     return value ? 'Yes' : 'No';
+                case TERRITORY:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(Boolean)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
+                case TERRITORY_SELECTED:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(item => item.selected)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
+                case TERRITORY_WITHDRAWN:
+                    if (Array.isArray(data[field])) {
+                        return data[field]
+                            .filter(item => item.withdrawn)
+                            .map(item => item.country)
+                            .join(', ');
+                    }
+                    return '';
                 default:
                     return data[field];
             }

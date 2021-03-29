@@ -4,6 +4,9 @@ const dataTypes = {
     RATING: 'rating',
     METHOD: 'method',
     YES_OR_NO: 'yesOrNo',
+    TERRITORY: 'territoryType',
+    TERRITORY_SELECTED: 'territory.selected',
+    TERRITORY_WITHDRAWN: 'territory.withdrawn',
 };
 
 export default {
@@ -73,6 +76,24 @@ export default {
         {
             field: 'licensee',
             headerName: 'Licensee',
+            hide: true,
+        },
+        {
+            field: 'territory',
+            headerName: 'Territory',
+            dataType: dataTypes.TERRITORY,
+            hide: true,
+        },
+        {
+            field: 'territory',
+            headerName: 'Selected',
+            dataType: dataTypes.TERRITORY_SELECTED,
+            hide: true,
+        },
+        {
+            field: 'territory',
+            headerName: 'Withdrawn',
+            dataType: dataTypes.TERRITORY_WITHDRAWN,
             hide: true,
         },
         {
