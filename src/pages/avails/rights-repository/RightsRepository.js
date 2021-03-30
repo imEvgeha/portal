@@ -1,5 +1,8 @@
 import React, {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
+import Error from '@atlaskit/icon/glyph/error';
+import Warning from '@atlaskit/icon/glyph/warning';
+import * as colors from '@atlaskit/theme/colors';
 import {getUsername} from '@vubiquity-nexus/portal-auth/authSelectors';
 import {GRID_EVENTS} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/constants';
 import {
@@ -272,9 +275,94 @@ const RightsRepository = ({
         cellStyle: {overflow: 'visible'},
     });
 
-    const updatedColumnDefs = columnDefsClone.length
-        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnDefsClone]
-        : columnDefsClone;
+    const columnsValidationDefsClone = columnDefsClone.map(col => {
+        if (!['buttons', 'title', 'id', 'action'].includes(col.field)) {
+            return {
+                ...col,
+                cellStyle: params => cellStyling(params, col),
+                cellRendererFramework: params => {
+                    const cellValue = params.valueFormatted ? params.valueFormatted : params.value;
+
+                    if (
+                        params.data != null &&
+                        Object.keys(params.data).length > 0 &&
+                        params.data.validationErrors.length > 0
+                    ) {
+                        const msg = [];
+                        let severityType = '';
+                        params.data.validationErrors.forEach(function (validation) {
+                            const fieldName = validation.fieldName.includes('[')
+                                ? validation.fieldName.split('[')[0]
+                                : validation.fieldName;
+
+                            if (col.field === fieldName) {
+                                msg.push(validation.message);
+
+                                if (
+                                    severityType === '' ||
+                                    (validation.severityType === 'Error' && severityType === 'Warning')
+                                ) {
+                                    severityType = validation.severityType;
+                                }
+                            }
+                        });
+
+                        if (severityType === 'Error') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Error />
+                                    </span>
+                                </div>
+                            );
+                        } else if (severityType === 'Warning') {
+                            return (
+                                <div>
+                                    {cellValue}{' '}
+                                    <span style={{float: 'right'}} title={msg.join(', ')}>
+                                        <Warning />
+                                    </span>
+                                </div>
+                            );
+                        }
+                    }
+
+                    return <span>{cellValue}</span>;
+                },
+            };
+        }
+
+        return {
+            ...col,
+        };
+    });
+
+    const cellStyling = ({data = {}, value}, column) => {
+        const styling = {};
+
+        if (Object.keys(data).length > 0 && data.validationErrors.length > 0) {
+            let severityType = '';
+            data.validationErrors.forEach(function (validation) {
+                const fieldName = validation.fieldName.includes('[')
+                    ? validation.fieldName.split('[')[0]
+                    : validation.fieldName;
+                if (column.field === fieldName && severityType !== 'Error') {
+                    severityType = validation.severityType;
+                }
+            });
+
+            if (severityType !== '') {
+                styling.background = severityType === 'Error' ? colors.R100 : colors.Y100;
+            }
+        }
+
+        return styling;
+    };
+
+    const updatedColumnDefs = columnsValidationDefsClone.length
+        ? [checkboxSelectionColumnDef, actionMatchingButtonColumnDef, ...columnsValidationDefsClone]
+        : columnsValidationDefsClone;
 
     const checkboxSelectionWithHeaderColumnDef = defineCheckboxSelectionColumn({
         headerCheckboxSelection: true,
