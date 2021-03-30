@@ -8,7 +8,6 @@
     border-bottom: 1px solid map-get($light-neutral-colors, light-neutral-2);
     background: map-get($primary-colors, white);
     display: block;
-    position: relative;
 
     &--is-selected {
         background: map-get($blues, B50);
