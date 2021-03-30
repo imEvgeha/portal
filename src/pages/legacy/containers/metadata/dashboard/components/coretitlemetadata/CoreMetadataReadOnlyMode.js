@@ -142,6 +142,16 @@ class CoreMetadataReadOnlyMode extends Component {
                                             </Col>
                                         </Row>
                                     )}
+                                    {externalIds.contentProviderId && (
+                                        <Row style={{marginTop: '10px'}}>
+                                            <Col>
+                                                <Alert color="light">
+                                                    <b style={{color: '#000'}}>Content Provider Id: </b>
+                                                    {externalIds.contentProviderId}
+                                                </Alert>
+                                            </Col>
+                                        </Row>
+                                    )}
                                     {(externalIds.eidrTitleId || externalIds.tmsId) && (
                                         <Row style={{marginTop: '10px'}}>
                                             {externalIds.eidrTitleId ? (
