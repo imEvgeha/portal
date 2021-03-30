@@ -246,7 +246,7 @@ const RightsRepository = ({
         const updatedColumnDef = {
             ...columnDef,
             menuTabs: ['generalMenuTab'],
-            sortable: ['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable,
+            sortable: !['Withdrawn', 'Selected'].includes(columnDef.headerName),
         };
         if (columnDef.colId === 'displayName') {
             updatedColumnDef.cellRendererFramework = params => {
