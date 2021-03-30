@@ -133,7 +133,8 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
         }
         const path = field === RATING ? [field, colId] : [field];
         if (field === RATING || !Array.isArray(focusedRight[path])) {
-            if (get(focusedRight, path, '').length) {
+            const fldVal = get(focusedRight, path) || '';
+            if (fldVal.length) {
                 styling.background = STALE_VALUE;
             } else {
                 styling.background = CURRENT_VALUE;
@@ -159,7 +160,8 @@ export const formatData = data => {
 
             const patch = [{...diff}];
             temporaryValues = jsonpatch.applyPatch(temporaryValues, patch).newDocument;
-            row[field] = get(temporaryValues, [originalEventField, field]);
+            const newValue = get(temporaryValues, [originalEventField, field]);
+            row[field] = cloneDeep(newValue);
             if (op === 'remove') {
                 row[`${field}Deleted`] = true;
             }
