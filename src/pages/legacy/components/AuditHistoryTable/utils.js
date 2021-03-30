@@ -1,5 +1,6 @@
 import Constants from './Constants';
-import {get, isEqual} from 'lodash';
+import * as jsonpatch from 'fast-json-patch';
+import {get, isEqual, cloneDeep} from 'lodash';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 
@@ -12,6 +13,13 @@ const {
 } = Constants;
 
 const languageMapper = audioObj => [...new Set(audioObj.map(audio => audio.language))];
+const countryMapper = territoryObj => [...new Set(territoryObj.map(territory => territory.country))];
+const selectedCountryMapper = territoryObj => [
+    ...new Set(territoryObj.filter(territory => territory.selected).map(territory => territory.country)),
+];
+const withdrawnCountryMapper = territoryObj => [
+    ...new Set(territoryObj.filter(territory => territory.withdrawn).map(territory => territory.country)),
+];
 
 export const valueFormatter = ({colId, field, dataType}) => {
     return params => {
@@ -84,6 +92,12 @@ const valueCompare = (diffValue, currentValue, column) => {
                 );
             case AUDIO:
                 return isEqual(languageMapper(diffValue), languageMapper(currentValue));
+            case TERRITORY:
+                return isEqual(countryMapper(diffValue), countryMapper(currentValue));
+            case TERRITORY_SELECTED:
+                return isEqual(selectedCountryMapper(diffValue), selectedCountryMapper(currentValue));
+            case TERRITORY_WITHDRAWN:
+                return isEqual(withdrawnCountryMapper(diffValue), withdrawnCountryMapper(currentValue));
             default:
                 return isEqual(diffValue, currentValue);
         }
@@ -112,12 +126,18 @@ export const cellStyling = ({data = {}, value}, focusedRight, column) => {
         }
     }
     if (!!data && data[`${colId || field}Deleted`]) {
-        styling.textDecoration = 'line-through';
-        const path = field === RATING ? [field, colId] : [field];
-        if (get(focusedRight, path, '').length) {
-            styling.background = STALE_VALUE;
+        if (Array.isArray(data[field]) && get(focusedRight, field, []).length) {
+            styling.textDecoration = 'none';
         } else {
-            styling.background = CURRENT_VALUE;
+            styling.textDecoration = 'line-through';
+        }
+        const path = field === RATING ? [field, colId] : [field];
+        if (field === RATING || !Array.isArray(focusedRight[path])) {
+            if (get(focusedRight, path, '').length) {
+                styling.background = STALE_VALUE;
+            } else {
+                styling.background = CURRENT_VALUE;
+            }
         }
     }
     return styling;
@@ -128,20 +148,24 @@ export const formatData = data => {
     const {
         message: {updatedBy, createdBy, lastUpdateReceivedAt},
     } = originalEvent;
+    let temporaryValues = cloneDeep(originalEvent);
     let tableRows = diffs.map(diffArr => {
         const row = {};
         diffArr.forEach(diff => {
-            const {path, op, value} = diff;
-            const field = path.split('/')[2];
+            const {path, op} = diff;
+            const splittedPath = path.split('/');
+            const originalEventField = splittedPath[1];
+            const field = splittedPath[2];
+
+            const patch = [{...diff}];
+            temporaryValues = jsonpatch.applyPatch(temporaryValues, patch).newDocument;
+            row[field] = get(temporaryValues, [originalEventField, field]);
             if (op === 'remove') {
-                const originalEventField = path.split('/')[1];
-                row[field] = get(originalEvent, [originalEventField, field]);
                 row[`${field}Deleted`] = true;
-            } else {
-                row[field] = Array.isArray(value) ? [...new Set(value)] : value;
             }
+
             if (field === RATING) {
-                const subField = path.split('/')[4];
+                const subField = splittedPath[4];
                 if (subField) {
                     if (op === 'remove') {
                         row[`${subField}Deleted`] = true;
