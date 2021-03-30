@@ -296,7 +296,7 @@ class CoreMetadataEditMode extends Component {
                                 onChange={e => this.props.handleOnExternalIds(e)}
                                 name="contentProviderId"
                                 id="contentProviderId"
-                                value={this.props.data.externalIds ? this.props.data.externalIds.contentProviderId : ''}
+                                value={this.props.data?.externalIds?.contentProviderId}
                                 placeholder="Content Provider Id "
                                 validate={{
                                     maxLength: {value: 200},

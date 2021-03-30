@@ -142,12 +142,12 @@ class CoreMetadataReadOnlyMode extends Component {
                                             </Col>
                                         </Row>
                                     )}
-                                    {externalIds.contentProviderId && (
+                                    {externalIds?.contentProviderId && (
                                         <Row style={{marginTop: '10px'}}>
                                             <Col>
                                                 <Alert color="light">
                                                     <b style={{color: '#000'}}>Content Provider Id: </b>
-                                                    {externalIds.contentProviderId}
+                                                    {externalIds?.contentProviderId}
                                                 </Alert>
                                             </Col>
                                         </Row>
