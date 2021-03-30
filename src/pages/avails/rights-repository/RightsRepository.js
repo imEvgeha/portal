@@ -48,15 +48,15 @@ const RightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns({prepareFilterParams: parseAdvancedFilterV2}),
     withColumnsResizing(),
-    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true}),
-    withSorting(constants.INITIAL_SORT)
+    withSorting(constants.INITIAL_SORT),
+    withInfiniteScrolling({fetchData: rightsService.advancedSearchV2, filtersInBody: true})
 )(NexusGrid);
 
 const SelectedRightsRepositoryTable = compose(
     withSideBar(),
     withFilterableColumns(),
-    withColumnsResizing(),
-    withSorting()
+    withSorting(),
+    withColumnsResizing()
 )(NexusGrid);
 
 const RightsRepository = ({
@@ -244,6 +244,8 @@ const RightsRepository = ({
 
         if (columnDef.headerName === 'Withdrawn' || columnDef.headerName === 'Selected') {
             columnDef.sortable = false;
+        } else {
+            columnDef.sortable = true;
         }
 
         return columnDef;
