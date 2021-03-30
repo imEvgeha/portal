@@ -265,6 +265,7 @@ const ServicesTable = ({
                         // show tooltip as the value is too long to fit in column width
                         return <span title={value}>{value}</span>;
                     },
+                    cellRendererParams: tableData,
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
             case 'watermark':
@@ -375,6 +376,9 @@ const ServicesTable = ({
                     {!isDisabled && <Add onClick={addEmptyServicesRow} />}
                 </div>
             </div>
+            
+            { // eslint-disable-next-line react/prop-types
+            tableData?.length && 
             <ServicesTableGrid
                 defaultColDef={{...valueGetter, sortable: true, resizable: true}}
                 isMenuHidden={false}
@@ -391,7 +395,7 @@ const ServicesTable = ({
                         'checkBoxRenderer': CheckBoxRenderer,
                     }
                 }
-            />
+            /> }
         </div>
     );
 };
