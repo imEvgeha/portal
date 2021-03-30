@@ -183,6 +183,28 @@ export const COLUMN_MAPPINGS = [
         options: Object.values(PROJECT_STATUS_ENUM),
         hide: true,
     },
+    {
+        colId: 'language',
+        field: 'language',
+        javaVariableName: 'language',
+        headerName: 'Language',
+        width: 100,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        configEndpoint: '/languages',
+        hide: true,
+    },
+    {
+        colId: 'locale',
+        field: 'locale',
+        javaVariableName: 'locale',
+        headerName: 'Locale',
+        width: 100,
+        enableSearch: true,
+        searchDataType: 'multiselect',
+        configEndpoint: '/countries',
+        hide: true,
+    },
 ];
 
 export const INITIAL_SEARCH_PARAMS = {
@@ -219,3 +241,4 @@ export const DATE_FIELDS = [
     'projectStartDate',
     'projectPlannedCompletionDate',
 ];
+export const FIELDS_OPERATOR_IN = ['language', 'locale'];

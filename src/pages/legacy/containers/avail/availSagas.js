@@ -112,9 +112,16 @@ export function* fetchAndStoreSelectItems(payload, type) {
             processOptions(value, configEndpoint),
             key === 'rating.ratingValue' ? 'label' : 'value'
         );
-
+        let dopOptions = {};
+        if (configEndpoint === '/languages') {
+            dopOptions.language = options;
+        }
+        if (configEndpoint === '/countries') {
+            dopOptions.locale = options;
+        }
         acc = {
             ...acc,
+            ...dopOptions,
             [key]: options,
         };
         return acc;
