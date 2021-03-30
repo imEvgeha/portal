@@ -16,7 +16,6 @@ const TooltipCellRenderer = props => {
             trigger={triggerProps => (
                 <div {...triggerProps} onClick={() => setIsOpen(!isOpen)} role="button">
                     <StatusTag status={`FO_${value}`} />
-                    aaaaaaaaaaaaaaaaaaaaaaa
                 </div>
             )}
         />
