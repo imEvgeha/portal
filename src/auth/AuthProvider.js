@@ -33,7 +33,7 @@ const AuthProvider = ({
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!isEmpty(appOptions) && isAuthenticatedUser) {
+        if (isAuthenticatedUser) {
             setIsLoading(false);
         }
     }, [appOptions, isAuthenticatedUser]);
