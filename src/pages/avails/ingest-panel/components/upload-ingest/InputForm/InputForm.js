@@ -140,8 +140,10 @@ const InputForm = ({
         if (isShowingCatalogType) {
             params.catalogUpdate = isShowingCatalogType;
             params.catalogType = catalogType.value;
-            params.licenseTypes = selectedLicenseTypes.map(licenseType => licenseType.value).join(',');
-            params.territory = selectedTerritories.map(territory => territory.value).join(',');
+            if (catalogType === 'Title Catalog') {
+                params.licenseTypes = selectedLicenseTypes.map(licenseType => licenseType.value).join(',');
+                params.territory = selectedTerritories.map(territory => territory.value).join(',');
+            }
         }
 
         if (get(ingestData, 'externalId', '')) {
