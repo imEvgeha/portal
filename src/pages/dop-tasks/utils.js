@@ -25,6 +25,8 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                 projectStartDate = '',
                 projectPlannedCompletionDate = '',
                 projectStatus = '',
+                language = '',
+                locale = '',
             } = customData || {};
             const potentialOwners = potentialOwner.map(item => item.userId).join(', ');
             const {userId: actualOwner} = owner || {};
@@ -49,6 +51,8 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
                     projectStartDate,
                     projectPlannedCompletionDate,
                     projectStatus,
+                    language,
+                    locale,
                 },
             ];
         }, []);
