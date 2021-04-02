@@ -120,7 +120,7 @@ const withFilterableColumns = ({
                     });
                 }
             } else if (filterInstance instanceof SetFilter) {
-                filterInstance.selectEverything();
+                filterInstance.setModel({values: filterInstance.getValues()});
                 filterInstance.applyModel();
             } else {
                 filterInstance.setModel(null);

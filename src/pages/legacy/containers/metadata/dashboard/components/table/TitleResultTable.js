@@ -25,6 +25,7 @@ import {defineColumn} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/e
 import ActionCellRender from './cell/ActionCellRenderer';
 import {getRepositoryCell} from '../../../../../../avails/utils';
 import getContextMenuItems from '@vubiquity-nexus/portal-ui/lib/elements/nexus-grid/elements/cell-renderer/getContextMenuItems';
+import {getSortModel} from '@vubiquity-nexus/portal-utils/lib/utils';
 
 const colDef = [];
 let registeredOnSelect = false;
@@ -122,7 +123,7 @@ class TitleResultTable extends React.Component {
                 sortModel.push({colId: sortCriteria.id, sort: sortCriteria.desc ? 'desc' : 'asc'});
             });
 
-            const currentSortModel = this.table.api.getSortModel();
+            const currentSortModel = getSortModel(this.table.columnApi);
             let toChangeSortModel = false;
 
             if (currentSortModel.length != sortModel.length) toChangeSortModel = true;
@@ -133,7 +134,7 @@ class TitleResultTable extends React.Component {
             }
 
             if (toChangeSortModel) {
-                this.table.api.setSortModel(sortModel);
+                setSorting(sortModel, this.table.columnApi);
             }
         }
 
@@ -165,7 +166,7 @@ class TitleResultTable extends React.Component {
     }
 
     onSortChanged(e) {
-        const sortParams = e.api.getSortModel();
+        const sortParams = getSortModel(e.columnApi);
         const newSort = [];
         if (sortParams.length > 0) {
             sortParams.map(criteria => {

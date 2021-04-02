@@ -1,3 +1,4 @@
+import {setSorting} from '@vubiquity-nexus/portal-utils/lib/utils';
 import DopTasksService from './dopTasks-services';
 
 export const fetchDopTasksData = async (externalFilter, offset, limit) => {
@@ -79,39 +80,39 @@ export const fetchDopTasksData = async (externalFilter, offset, limit) => {
     }
 };
 
-export const applyPredefinedTableView = (gridApi, filter) => {
+export const applyPredefinedTableView = (gridApi, filter, columnApi) => {
     switch (filter) {
         case 'open': {
             clearAllDopTasksFilters(gridApi);
             setTaskStatusFilter(gridApi, ['READY', 'IN PROGRESS']);
-            sortTaskStatus(gridApi);
+            sortTaskStatus(columnApi);
             gridApi.onFilterChanged();
             break;
         }
         case 'all': {
             clearAllDopTasksFilters(gridApi);
-            sortTaskStatus(gridApi);
+            sortTaskStatus(columnApi);
             gridApi.onFilterChanged();
             break;
         }
         case 'notStarted': {
             clearAllDopTasksFilters(gridApi);
             setTaskStatusFilter(gridApi, ['READY']);
-            sortTaskStatus(gridApi);
+            sortTaskStatus(columnApi);
             gridApi.onFilterChanged();
             break;
         }
         case 'inProgress': {
             clearAllDopTasksFilters(gridApi);
             setTaskStatusFilter(gridApi, ['IN PROGRESS']);
-            sortTaskStatus(gridApi);
+            sortTaskStatus(columnApi);
             gridApi.onFilterChanged();
             break;
         }
         case 'closed': {
             clearAllDopTasksFilters(gridApi);
             setTaskStatusFilter(gridApi, ['COMPLETED', 'EXITED', 'OBSOLETE']);
-            sortTaskStatus(gridApi);
+            sortTaskStatus(columnApi);
             gridApi.onFilterChanged();
             break;
         }
@@ -151,12 +152,13 @@ export const clearAllDopTasksFilters = api => {
 
 const sortTaskStatus = api => {
     if (api) {
-        api.setSortModel([
+        setSorting(
             {
                 colId: 'taskStatus',
                 sort: 'asc',
             },
-        ]);
+            api
+        );
     }
 };
 

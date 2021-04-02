@@ -1,3 +1,4 @@
+import {get} from 'lodash';
 import moment from 'moment';
 
 export const TitleSystems = {
@@ -27,4 +28,34 @@ export const getRepositoryName = id => {
 
 export const isNexusTitle = titleId => {
     return titleId && titleId.startsWith('titl');
+};
+
+export const getSortModel = columnApi => {
+    const sortColumn = columnApi.getColumnState().find(c => !!c.sort);
+    if (sortColumn) {
+        const {colId, sort} = sortColumn || {};
+        return [{colId, sort}];
+    }
+    return null;
+};
+
+export const setSorting = (sortApply, columnApi) => {
+    const columnState = columnApi.getColumnState();
+    let initialSortColumnState;
+
+    get(sortApply, 'colId');
+
+    if (sortApply) {
+        if (Array.isArray(sortApply) && sortApply.length > 0) {
+            sortApply = sortApply[0];
+        }
+        initialSortColumnState = columnState.map(c =>
+            c.colId === get(sortApply, 'colId') ? {...c, sort: get(sortApply, 'sort')} : c
+        );
+    } else {
+        initialSortColumnState = columnState.map(c => {
+            return {...c, sort: null};
+        });
+    }
+    columnApi.applyColumnState({state: initialSortColumnState});
 };
