@@ -16,6 +16,7 @@ const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = 
 const {
     URLFilterKeys,
     ingestTypes: {EMAIL},
+    filterKeys: {FILE_NAME},
 } = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 const UPLOAD_DELAY = 7500;
@@ -37,6 +38,7 @@ function* fetchIngests({payload}) {
             type: actionTypes.FILTER_LOADING,
             payload: true,
         });
+        payload[FILE_NAME] = payload[FILE_NAME].replaceAll(' ', '_');
         const response = yield call(historyService.advancedSearch, payload, 0, PAGE_SIZE, sortParams);
         const {data, total} = response || {};
         yield put({

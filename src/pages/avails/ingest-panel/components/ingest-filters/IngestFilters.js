@@ -11,7 +11,7 @@ import './IngestFilters.scss';
 
 const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
     const {
-        filterKeys: {LICENSOR, STATUS, INGEST_TYPE, EMAIL_SUBJECT},
+        filterKeys: {LICENSOR, STATUS, INGEST_TYPE, EMAIL_SUBJECT, FILE_NAME},
         STATUS_LIST,
         INGEST_LIST,
     } = Constants;
@@ -93,14 +93,24 @@ const IngestFilters = ({onFiltersChange, isFilterLoading}) => {
                     />
                 </div>
                 {filters.ingestType?.value === Constants.ingestTypes.EMAIL.toUpperCase() && (
-                    <div className="ingest-filters__section">
-                        Email Subject
-                        <input
-                            placeholder="Enter subject"
-                            value={filters.emailSubject}
-                            onChange={e => onFilterChange(EMAIL_SUBJECT, e.target.value)}
-                        />
-                    </div>
+                    <>
+                        <div className="ingest-filters__section">
+                            Email Subject
+                            <input
+                                placeholder="Enter subject"
+                                value={filters.emailSubject}
+                                onChange={e => onFilterChange(EMAIL_SUBJECT, e.target.value)}
+                            />
+                        </div>
+                        <div className="ingest-filters__section ingest-filters__section--filename">
+                            Attachment File Name
+                            <input
+                                placeholder="Enter file name"
+                                value={filters[FILE_NAME]}
+                                onChange={e => onFilterChange(FILE_NAME, e.target.value)}
+                            />
+                        </div>
+                    </>
                 )}
             </div>
             <div className="ingest-filters__actions">
