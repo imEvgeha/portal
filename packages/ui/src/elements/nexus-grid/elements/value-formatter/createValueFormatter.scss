@@ -1,0 +1,5 @@
+@import '~@vubiquity-nexus/portal-styles/scss/atlaskit/mixins';
+
+.nexus-c-withdrawn-icon {
+    fill: map-get($mid-neutral-colors, mid-neutral-7);
+}

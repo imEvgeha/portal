@@ -1,18 +1,19 @@
 import React from 'react';
-import EditorBlockIcon from '@atlaskit/icon/glyph/editor/addon';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import WithdrawnIcon from '@vubiquity-nexus/portal-assets/withdrawn.svg';
 import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
 import {camelCase, startCase} from 'lodash';
 import {EPISODE_CONTENT_TYPE} from '../../constants';
+import './createValueFormatter.scss';
 
 const getIcon = value => {
     switch (value) {
         case 'warning':
-            return <WarningIcon primaryColor="#737e91" />;
+            return <WarningIcon primaryColor="#a5adba" />;
         case 'block':
-            return <EditorBlockIcon primaryColor="#737e91" />;
+            return <WithdrawnIcon className="nexus-c-withdrawn-icon" width="20px" />;
         default:
             return value;
     }
