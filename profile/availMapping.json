@@ -11,6 +11,30 @@
             "required": false
         },
         {
+            "javaVariableName": "updatedCatalogReceived",
+            "displayName": " ",
+            "dataType": "icon",
+            "readOnly": true,
+            "enableSearch": false,
+            "queryParamName": "updatedCatalogReceived",
+            "enableEdit": false,
+            "required": false,
+            "icon": "warning",
+            "tooltip": "Removed from Catalog"
+        },
+        {
+            "javaVariableName": "withdrawnFlatten",
+            "displayName": " ",
+            "dataType": "icon",
+            "readOnly": true,
+            "enableSearch": false,
+            "queryParamName": "withdrawnFlatten",
+            "enableEdit": false,
+            "required": false,
+            "icon": "block",
+            "tooltip": "Withdrawn"
+        },
+        {
             "javaVariableName": "title",
             "displayName": "Title",
             "dataType": "string",

@@ -1,9 +1,24 @@
+import React from 'react';
+import EditorBlockIcon from '@atlaskit/icon/glyph/editor/addon';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
+import NexusTooltip from '@vubiquity-nexus/portal-ui/lib/elements/nexus-tooltip/NexusTooltip';
 import {ISODateToView} from '@vubiquity-nexus/portal-utils/lib/date-time/DateTimeUtils';
 import {DATETIME_FIELDS} from '@vubiquity-nexus/portal-utils/lib/date-time/constants';
-import {camelCase, startCase, get} from 'lodash';
+import {camelCase, startCase} from 'lodash';
 import {EPISODE_CONTENT_TYPE} from '../../constants';
 
-const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
+const getIcon = value => {
+    switch (value) {
+        case 'warning':
+            return <WarningIcon primaryColor="#737e91" />;
+        case 'block':
+            return <EditorBlockIcon primaryColor="#737e91" />;
+        default:
+            return value;
+    }
+};
+
+const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip, icon}) => {
     switch (dataType) {
         case DATETIME_FIELDS.TIMESTAMP:
         case DATETIME_FIELDS.BUSINESS_DATETIME:
@@ -206,6 +221,17 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized}) => {
                         .join(', ');
                     return [items];
                 }
+            };
+        case 'icon':
+            // eslint-disable-next-line react/prop-types
+            return ({value}) => {
+                return value ? (
+                    <NexusTooltip content={tooltip}>
+                        <div className="nexus-c-title-matching-rights-table__repository-icon">{getIcon(icon)}</div>
+                    </NexusTooltip>
+                ) : (
+                    ''
+                );
             };
         default:
             return ({value}) => value;
