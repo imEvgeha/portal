@@ -33,6 +33,7 @@
     }
 
     &__chevron {
+        align-self: flex-start;
         svg {
             @include addSpacing(width, 3);
             @include addSpacing(height, 3);
@@ -52,6 +53,11 @@
 
         &--is-not-expandable {
             @include addSpacing(margin-left, 4);
+        }
+        &--subject {
+            @include heading(h100);
+            @include addSpacing(padding-left, 4.5);
+            @include addSpacing(margin-top, 0);
         }
     }
 }
