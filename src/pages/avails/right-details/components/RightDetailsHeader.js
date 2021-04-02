@@ -18,6 +18,7 @@ import {
     NoteError,
     NoteMerged,
     NotePending,
+    NoteDeleted,
     STATUS,
 } from '../constants';
 import './RightDetailsHeader.scss';
@@ -101,16 +102,18 @@ const RightDetailsHeader = ({title, right, containerRef}) => {
         if (right) {
             let note = {};
             const {status} = right;
-            const [ERROR, MERGED, PENDING] = STATUS;
+            const [ERROR, MERGED, PENDING, DELETED] = STATUS;
             if (status === ERROR) {
                 note = NoteError;
             } else if (status === MERGED) {
                 note = NoteMerged;
             } else if (status === PENDING) {
                 note = NotePending;
+            } else if (status === DELETED) {
+                note = NoteDeleted;
             }
 
-            return status === ERROR || status === MERGED || status === PENDING ? (
+            return status === ERROR || status === MERGED || status === PENDING || status === DELETED ? (
                 <div className="nexus-c-right-details-match">
                     <SectionMessage appearance={note.noteStyle}>
                         {status === 'Pending' ? (
