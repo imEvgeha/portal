@@ -10,6 +10,8 @@
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
+            "availsInjest": "/avails-injest/v1",
+            "clearCache": "/cache/clear",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
             "configuration": "/configuration-api/v1",
@@ -27,7 +29,8 @@
         },
         "servicingOrdersUrl": "https://servicing-order-manager.dev.vubiquity.com",
         "titleUrl": "https://titlesapi.dev.vubiquity.com",
-        "url": "https://availsapi.dev.vubiquity.com"
+        "url": "https://availsapi.dev.vubiquity.com",
+        "injestUrl": "https://avails-ingest.dev.vubiquity.com"
     },
     "keycloak": {
         "clientId": "portalapp-public",

@@ -1,6 +1,7 @@
 {
     "gateway": {
         "url": "https://availsapi.qa.vubiquity.com",
+        "injestUrl": "https://avails-ingest.qa.vubiquity.com",
         "availsParserUrl": "https://avails-parser.qa.vubiquity.com",
         "titleUrl": "https://titlesapi.qa.vubiquity.com",
         "configuration": "https://configapi.qa.vubiquity.com",
@@ -12,6 +13,8 @@
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
+            "availsInjest": "/avails-injest",
+            "clearCache": "/cache/clear",
             "availsParser": "/avails-parser/v1",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
