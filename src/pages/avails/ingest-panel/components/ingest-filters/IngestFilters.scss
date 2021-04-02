@@ -43,6 +43,9 @@
         margin-bottom: 16px;
         flex-wrap: wrap;
     }
+    &__row2 {
+        margin-bottom: 16px;
+    }
 
     .nexus-c-date-time-window-picker {
         display: flex;
@@ -51,6 +54,7 @@
         &__start-date,
         &__end-date {
             width: 135px;
+            margin-bottom: 0;
 
             div {
                 background: white;
