@@ -34,7 +34,8 @@ export default {
         RECEIVED_TO: 'receivedTo',
         STATUS: 'status',
         LICENSOR: 'licensor',
-        INGEST_TYPE: 'ingestType'
+        INGEST_TYPE: 'ingestType',
+        EMAIL_SUBJECT: 'emailSubject',
     },
     URLFilterKeys: {
         receivedFrom: 'igReceivedFrom',
@@ -42,6 +43,7 @@ export default {
         ingestType: 'ingestType',
         status: 'igStatus',
         licensor: 'igLicensor',
+        emailSubject: 'emailSubject',
     },
     SERVICE_REGIONS: [
         {label: 'US', value: 'US'},

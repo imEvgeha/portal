@@ -13,7 +13,10 @@ import FilterConstants from './constants';
 import Constants from '../constants';
 
 const {PAGE_SIZE, sortParams, AVAIL_HISTORY_ID, INGEST_HISTORY_ATTACHMENT_ID} = Constants;
-const {URLFilterKeys} = FilterConstants;
+const {
+    URLFilterKeys,
+    ingestTypes: {EMAIL},
+} = FilterConstants;
 const UPLOAD_SUCCESS_MESSAGE = 'You have successfully uploaded an Avail.';
 const UPLOAD_DELAY = 7500;
 const UPLOAD_DELAY_2 = 2000;
@@ -25,6 +28,9 @@ function* fetchIngests({payload}) {
             filters[URLFilterKeys[key]] = payload[key];
         });
         filters.page = '';
+        if (filters[URLFilterKeys.ingestType] !== EMAIL.toUpperCase()) {
+            delete filters[URLFilterKeys.emailSubject];
+        }
         const url = `${window.location.pathname}?${URL.updateQueryParam(filters)}`;
         yield put(push(URL.keepEmbedded(url)));
         yield put({
