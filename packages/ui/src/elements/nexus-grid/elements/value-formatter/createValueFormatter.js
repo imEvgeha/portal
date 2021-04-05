@@ -19,7 +19,7 @@ const getIcon = value => {
     }
 };
 
-const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip, icon}) => {
+const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip, icon, valueToDisplay}) => {
     switch (dataType) {
         case DATETIME_FIELDS.TIMESTAMP:
         case DATETIME_FIELDS.BUSINESS_DATETIME:
@@ -226,12 +226,12 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
         case 'icon':
             // eslint-disable-next-line react/prop-types
             return ({value}) => {
-                return value ? (
+                return (!valueToDisplay && value) || (valueToDisplay && value === valueToDisplay) ? (
                     <NexusTooltip content={tooltip}>
                         <div className="nexus-c-title-matching-rights-table__repository-icon">{getIcon(icon)}</div>
                     </NexusTooltip>
                 ) : (
-                    ''
+                    ' '
                 );
             };
         default:

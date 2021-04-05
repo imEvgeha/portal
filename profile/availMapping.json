@@ -23,16 +23,17 @@
             "tooltip": "Removed from Catalog"
         },
         {
-            "javaVariableName": "withdrawnFlatten",
+            "javaVariableName": "rightStatus",
             "displayName": " ",
             "dataType": "icon",
             "readOnly": true,
             "enableSearch": false,
-            "queryParamName": "withdrawnFlatten",
+            "queryParamName": "rightStatus===Withdrawn",
             "enableEdit": false,
             "required": false,
             "icon": "block",
-            "tooltip": "Withdrawn"
+            "tooltip": "Withdrawn",
+            "valueToDisplay": "Withdrawn"
         },
         {
             "javaVariableName": "title",

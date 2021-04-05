@@ -286,7 +286,8 @@ const RightsRepository = ({
                     if (
                         params.data != null &&
                         Object.keys(params.data).length > 0 &&
-                        params.data.validationErrors.length > 0
+                        params.data.validationErrors.length > 0 &&
+                        !params.colDef.colId.includes('===')
                     ) {
                         const msg = [];
                         let severityType = '';
@@ -338,10 +339,10 @@ const RightsRepository = ({
         };
     });
 
-    const cellStyling = ({data = {}, value}, column) => {
+    const cellStyling = ({data = {}, value, colDef}, column) => {
         const styling = {};
 
-        if (Object.keys(data).length > 0 && data.validationErrors.length > 0) {
+        if (Object.keys(data).length > 0 && data.validationErrors.length > 0 && !colDef.colId.includes('===')) {
             let severityType = '';
             data.validationErrors.forEach(function (validation) {
                 const fieldName = validation.fieldName.includes('[')
