@@ -246,8 +246,11 @@ const RightsRepository = ({
         const updatedColumnDef = {
             ...columnDef,
             menuTabs: ['generalMenuTab'],
-            sortable: ['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable,
+            sortable: !['Withdrawn', 'Selected'].includes(columnDef.headerName),
         };
+
+        // console.log(['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable);
+
         if (columnDef.colId === 'displayName') {
             updatedColumnDef.cellRendererFramework = params => {
                 const {valueFormatted} = params || {};
@@ -494,6 +497,7 @@ const RightsRepository = ({
                 isGridHidden={activeTab !== RIGHTS_TAB}
                 initialFilter={rightsFilter.column}
                 params={rightsFilter.external}
+                multiSortKey="ctrl"
                 setDataLoading={setIsTableDataLoading}
                 rowClassRules={{
                     'nexus-c-rights-repository__row': params =>
