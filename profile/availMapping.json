@@ -20,7 +20,8 @@
             "enableEdit": false,
             "required": false,
             "icon": "warning",
-            "tooltip": "Removed from Catalog"
+            "tooltip": "Removed from Catalog",
+            "width": 20
         },
         {
             "javaVariableName": "rightStatus",

@@ -6,6 +6,7 @@ import {get, isEqual, cloneDeep} from 'lodash';
 import TitleSystems from '../legacy/constants/metadata/systems';
 import Constants from './title-matching/titleMatchingConstants';
 
+const COLUMN_WIDTH_ICON = 40;
 const COLUMN_WIDTH_WIDE = 235;
 const COLUMN_WIDTH_DEFAULT = 150;
 
@@ -27,7 +28,11 @@ export const createColumnDefs = payload => {
                       }
                     : {},
                 valueFormatter: createValueFormatter(column),
-                width: ['businessDateTime', 'timestamp'].includes(dataType) ? COLUMN_WIDTH_WIDE : COLUMN_WIDTH_DEFAULT,
+                width: ['businessDateTime', 'timestamp'].includes(dataType)
+                    ? COLUMN_WIDTH_WIDE
+                    : ['icon'].includes(dataType)
+                    ? COLUMN_WIDTH_ICON
+                    : COLUMN_WIDTH_DEFAULT,
                 type: Object.values(DATETIME_FIELDS).includes(dataType) ? 'dateColumn' : '',
             };
             return [...columnDefs, columnDef];
