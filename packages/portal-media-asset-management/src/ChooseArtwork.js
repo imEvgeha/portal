@@ -12,7 +12,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
     const [selectedItems, setSelectedItems] = useState([]);
 
     useEffect(() => {
-        fetchResourcePosters(decodeURIComponent(URL.getParamIfExists('itemId', '')));
+        fetchResourcePosters(URL.getParamIfExists('itemId', ''));
     }, []);
 
     const itemClick = id => {
@@ -41,7 +41,7 @@ const ChooseArtwork = ({fetchResourcePosters, posterList}) => {
         <div className="choose-artwork">
             <div className="choose-artwork__header">
                 <span>Title: </span>
-                <span>{decodeURIComponent(URL.getParamIfExists('title', ''))}</span>
+                <span>{URL.getParamIfExists('title', '')}</span>
             </div>
             <ArtworkActions selectedItems={selectedItems.length} totalItems={posterList.length} setItems={setItems} />
             <div className="choose-artwork__list">
