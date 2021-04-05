@@ -17,8 +17,8 @@ export const getInitialFilters = () => {
         licensor: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[LICENSOR])) || '',
         startDate: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[RECEIVED_FROM])) || '',
         endDate: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[RECEIVED_TO])) || '',
-        [EMAIL_SUBJECT]: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[EMAIL_SUBJECT])) || '',
-        [FILE_NAME]: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[FILE_NAME])) || '',
+        [EMAIL_SUBJECT]: URL.getParamIfExists(URLFilterKeys[EMAIL_SUBJECT]) || '',
+        [FILE_NAME]: URL.getParamIfExists(URLFilterKeys[FILE_NAME]) || '',
     };
 };
 
