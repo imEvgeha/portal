@@ -13,7 +13,7 @@
         "deteBaseUrl": "https://vuapi.qa.vubiquity.com/vubiquity/dete/rest",
         "service": {
             "avails": "/avails-api/v1",
-            "availsInjest": "/avails-injest",
+            "availsInjest": "/avails-ingest",
             "clearCache": "/cache/clear",
             "availsParser": "/avails-parser/v1",
             "title": "/titles-api/v1",
