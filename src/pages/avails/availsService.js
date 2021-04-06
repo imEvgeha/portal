@@ -23,3 +23,10 @@ export const bulkDeleteRights = (selectedRightIds, impactedRightIds = []) => {
 export const getLinkedToOriginalRightsV2 = selectedRightIds => {
     return rightsService.findBonusAndTPRsToBeDeleted(selectedRightIds);
 };
+
+export const reloadConfigurationService = () => {
+    const availsClearCache = `${config.get('gateway.url')}${config.get('gateway.service.avails')}${config.get('gateway.service.clearCache')}`;
+    const injestClearCache = `${config.get('gateway.injestUrl')}${config.get('gateway.service.availsInjest')}${config.get('gateway.service.clearCache')}`;
+    
+    return Promise.allSettled([nexusFetch(availsClearCache, {method: 'get'}), nexusFetch(injestClearCache, {method: 'get'})]);
+}

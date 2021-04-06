@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Bundle from './components/bundle/Bundle';
 import Ingest from './components/ingest/Ingest';
 import PanelHeader from './components/panel-header/PanelHeader';
+import RefreshConfigBtn from './components/reload-config/ReloadConfigBtn';
 import UploadIngestButton from './components/upload-ingest/upload-ingest-button/UploadIngestButton';
 import {fetchIngests, fetchNextPage, selectIngest} from './ingestActions';
 import {getIngests, getSelectedIngest, getSelectedAttachmentId, getTotalIngests} from './ingestSelectors';
@@ -97,7 +98,11 @@ const IngestPanel = ({
                     );
                 })}
             </div>
-            <UploadIngestButton />
+            <div className="ingest-panel__btns">
+                <UploadIngestButton />
+                <RefreshConfigBtn />
+            </div>
+            
         </div>
     );
 };
