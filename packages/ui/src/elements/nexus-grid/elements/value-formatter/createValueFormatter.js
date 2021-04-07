@@ -11,7 +11,7 @@ import './createValueFormatter.scss';
 const getIcon = value => {
     switch (value) {
         case 'warning':
-            return <WarningIcon primaryColor="#a5adba" />;
+            return <WarningIcon primaryColor="#a5adba" width="20px" />;
         case 'block':
             return <WithdrawnIcon className="nexus-c-withdrawn-icon" width="20px" />;
         default:
