@@ -10,7 +10,7 @@
         "service": {
             "avails": "/avails-api/v1",
             "availsParser": "/avails-parser/v1",
-            "availsInjest": "/avails-injest/v1",
+            "availsInjest": "/avails-ingest/v1",
             "clearCache": "/cache/clear",
             "title": "/titles-api/v1",
             "titleV2": "/titles-api/v2",
