@@ -16,7 +16,7 @@ export const SELECT_VALUES = {
     spec: ['M-DBS-2396 SCC', 'TBD'],
     addRecipient: ['MGM', 'Vubiquity'],
     sourceStandard: ['_1080_23_976'],
-    serviceType: ['Process & Deliver', 'DETE Ingest'],
+    serviceType: 'Process & Deliver',
     assetType: ['', 'Audio', 'Video', 'Subtitles', 'Closed Captioning'],
 };
 
@@ -68,7 +68,7 @@ export const SERVICE_SCHEMA = {
             },
         ],
         requiresPropagation: '',
-        serviceType: SELECT_VALUES.serviceType[0],
+        serviceType: SELECT_VALUES.serviceType,
         subordinateFlag: false,
     },
     mediaFormat: 'HD EDUB',
@@ -93,3 +93,4 @@ export const ErrorTestRows = [
     {error: 'This is test error 3', severity: 'ERROR'},
     {error: 'error 4', severity: 'ERROR'},
 ];
+export const DETE_SERVICE_TYPE = 'DETE Recipient';
