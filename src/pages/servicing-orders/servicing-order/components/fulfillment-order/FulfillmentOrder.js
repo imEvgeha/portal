@@ -463,7 +463,7 @@ export const FulfillmentOrder = ({
                                     name="notes"
                                     onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
-                                    isDisabled={isFormDisabled}
+                                    disabled={false}
                                     resize="smart"
                                     isCompact
                                 />
