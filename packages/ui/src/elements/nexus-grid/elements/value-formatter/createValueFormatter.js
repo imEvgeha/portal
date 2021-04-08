@@ -13,7 +13,7 @@ const getIcon = value => {
         case 'warning':
             return <WarningIcon primaryColor="#a5adba" width="20px" />;
         case 'block':
-            return <WithdrawnIcon className="nexus-c-withdrawn-icon" width="20px" />;
+            return <WithdrawnIcon className="nexus-c-withdrawn-icon" />;
         default:
             return value;
     }
@@ -228,7 +228,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
             return ({value}) => {
                 return (!valueToDisplay && value) || (valueToDisplay && value === valueToDisplay) ? (
                     <NexusTooltip content={tooltip}>
-                        <div className="nexus-c-title-matching-rights-table__repository-icon">{getIcon(icon)}</div>
+                        <span className="nexus-c-repository-icon">{getIcon(icon)}</span>
                     </NexusTooltip>
                 ) : (
                     ' '

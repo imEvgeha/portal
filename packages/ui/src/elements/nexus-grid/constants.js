@@ -75,6 +75,7 @@ const AG_GRID_COLUMN_FILTER = {
     CUSTOM_DATE: 'customDateFilter',
     CUSTOM_COMPLEX: 'customComplexFilter',
     CUSTOM_READONLY: 'customReadOnlyFilter',
+    CUSTOM_ICON: 'customIconFilter',
     CUSTOM_FLOAT_READONLY: 'customReadOnlyFloatingFilter',
 };
 

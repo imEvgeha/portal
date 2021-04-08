@@ -9,6 +9,7 @@ import CustomComplexFilter from '../elements/custom-complex-filter/CustomComplex
 import CustomComplexFloatingFilter from '../elements/custom-complex-floating-filter/CustomComplexFloatingFilter';
 import CustomDateFilter from '../elements/custom-date-filter/CustomDateFilter';
 import CustomDateFloatingFilter from '../elements/custom-date-floating-filter/CustomDateFloatingFilter';
+import CustomIconFilter from '../elements/custom-icon-filter/CustomIconFilter';
 import CustomReadOnlyFilter from '../elements/custom-readonly-filter/CustomReadOnlyFilter';
 import CustomReadOnlyFloatingFilter from '../elements/custom-readonly-filter/CustomReadOnlyFloatingFilter';
 import TitleSelectionRenderer from '../elements/title-selection-renderer/TitleSelectionRenderer';
@@ -63,10 +64,7 @@ const withFilterableColumns = ({
         }, []);
 
         useEffect(() => {
-            if (
-                isMounted.current &&
-                !!columnDefs.length
-            ) {
+            if (isMounted.current && !!columnDefs.length) {
                 setFilterableColumnDefs(updateColumnDefs(columnDefs));
             }
         }, [columnDefs, selectValues]);
@@ -193,11 +191,13 @@ const withFilterableColumns = ({
                         CUSTOM_DATE,
                         CUSTOM_COMPLEX,
                         CUSTOM_READONLY,
+                        CUSTOM_ICON,
                         CUSTOM_FLOAT_READONLY,
                     } = AG_GRID_COLUMN_FILTER;
                     const {
                         BOOLEAN,
                         INTEGER,
+                        ICON,
                         DOUBLE,
                         YEAR,
                         MULTISELECT,
@@ -336,6 +336,14 @@ const withFilterableColumns = ({
                                 };
                                 break;
                             }
+                            case ICON:
+                                columnDef.floatingFilterComponent = 'customComplexFloatingFilter';
+                                columnDef.filter = CUSTOM_ICON;
+                                columnDef.filterParams = {
+                                    // TODO; check is this necessary
+                                    ...DEFAULT_FILTER_PARAMS,
+                                };
+                                break;
                             default:
                                 columnDef.filter = TEXT;
                                 columnDef.filterParams = DEFAULT_FILTER_PARAMS;
@@ -420,6 +428,7 @@ const withFilterableColumns = ({
                 frameworkComponents={{
                     customDateFloatingFilter: CustomDateFloatingFilter,
                     customDateFilter: CustomDateFilter,
+                    customIconFilter: CustomIconFilter,
                     customComplexFloatingFilter: CustomComplexFloatingFilter,
                     customComplexFilter: CustomComplexFilter,
                     customReadOnlyFilter: CustomReadOnlyFilter,

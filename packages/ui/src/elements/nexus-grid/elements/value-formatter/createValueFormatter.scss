@@ -2,4 +2,9 @@
 
 .nexus-c-withdrawn-icon {
     fill: map-get($mid-neutral-colors, mid-neutral-7);
+    width: 20px;
+}
+
+.nexus-c-repository-icon span {
+    width: 25px;
 }
