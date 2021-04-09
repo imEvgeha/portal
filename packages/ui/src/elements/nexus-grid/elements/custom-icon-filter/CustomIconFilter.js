@@ -1,68 +1,54 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 import Button from '@atlaskit/button';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import {isEmpty} from 'lodash';
 import './CustomIconFilter.scss';
+/* eslint-disable react/prop-types */
 
-export class CustomIconFilter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: props.initialFilters,
-        };
-    }
+export default forwardRef((props, ref) => {
+    const [value, setValue] = useState(props.initialFilters);
 
-    onChange = value => {
-        if (!value) {
-            return;
-        } // Filter doesn't persist when switching ingest without this check
-        const {filterChangedCallback} = this.props;
+    useEffect(() => {
+        props.filterChangedCallback();
+    }, [value]);
 
-        this.setState({value}, filterChangedCallback);
+    const onChange = v => {
+        // if (!v) {
+        //     return;
+        // }
+        // Filter doesn't persist when switching ingest without this check
+        setValue(v);
     };
 
-    setModel = val => {
-        this.onChange(val);
-    };
-
-    getModel = () => {
-        const {value} = this.state;
+    // expose AG Grid Filter Lifecycle callbacks
+    useImperativeHandle(ref, () => {
         return {
-            type: 'equals',
-            filter: {updatedCatalogReceived: true},
+            doesFilterPass() {
+                return true;
+            },
+
+            isFilterActive() {
+                return value && !isEmpty(value);
+            },
+
+            getModel() {
+                return {
+                    type: 'equals',
+                    filter: {updatedCatalogReceived: true},
+                };
+            },
+
+            setModel(val) {
+                onChange(val);
+            },
         };
-    };
+    });
 
-    isFilterActive = () => {
-        const {value} = this.state;
-        return value && !isEmpty(value);
-    };
-
-    doesFilterPass = () => {
-        return true;
-    };
-
-    render() {
-        const {value} = this.state;
-
-        return (
-            <div className="nexus-c-custom-complex-filter">
-                <Button onClick={this.onChange}>
-                    <WarningIcon primaryColor="#a5adba" width="30px" />
-                </Button>
-            </div>
-        );
-    }
-}
-
-CustomIconFilter.propTypes = {
-    initialFilters: PropTypes.object,
-    filterChangedCallback: PropTypes.func.isRequired,
-};
-
-CustomIconFilter.defaultProps = {
-    initialFilters: {},
-};
-
-export default CustomIconFilter;
+    return (
+        <div className="nexus-c-custom-complex-filter">
+            <Button onClick={onChange}>
+                <WarningIcon primaryColor="#a5adba" width="30px" />
+            </Button>
+        </div>
+    );
+});
