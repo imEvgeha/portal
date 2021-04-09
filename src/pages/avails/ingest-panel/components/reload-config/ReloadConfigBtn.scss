@@ -6,7 +6,7 @@
 }
 
 .status-success {
-  color: map-get($greens, G400);
+    color: map-get($greens, G400);
 }
 
 .status-failed {
@@ -15,13 +15,13 @@
 
 .rotate {
     animation: rotation 2s infinite linear;
-  }
+}
 
 @keyframes rotation {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-      transform: rotate(359deg);
+        transform: rotate(359deg);
     }
-  }
+}

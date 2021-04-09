@@ -14,9 +14,9 @@ export const getInitialFilters = () => {
     return {
         status: status ? {value: status, label: status} : STATUS_LIST[0],
         ingestType: ingestType ? {value: ingestType, label: ingestType} : INGEST_LIST[0],
-        licensor: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[LICENSOR])) || '',
-        startDate: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[RECEIVED_FROM])) || '',
-        endDate: decodeURIComponent(URL.getParamIfExists(URLFilterKeys[RECEIVED_TO])) || '',
+        licensor: URL.getParamIfExists(URLFilterKeys[LICENSOR]) || '',
+        startDate: URL.getParamIfExists(URLFilterKeys[RECEIVED_FROM]) || '',
+        endDate: URL.getParamIfExists(URLFilterKeys[RECEIVED_TO]) || '',
         [EMAIL_SUBJECT]: URL.getParamIfExists(URLFilterKeys[EMAIL_SUBJECT]) || '',
         [FILE_NAME]: URL.getParamIfExists(URLFilterKeys[FILE_NAME]) || '',
     };

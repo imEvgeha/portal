@@ -104,7 +104,6 @@ const IngestPanel = ({
                 <UploadIngestButton />
                 <RefreshConfigBtn />
             </div>
-            
         </div>
     );
 };

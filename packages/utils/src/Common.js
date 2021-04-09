@@ -151,16 +151,9 @@ function nextFrame(f) {
 
 const URL = {
     getParamIfExists(name, defaultValue = '') {
-        let toReturn = defaultValue;
-        if (this.search()) {
-            const query = this.search().substring(1);
-            const params = query.split('&');
-            const param = params.find(param => param.split('=').length === 2 && param.split('=')[0] === name);
-            if (param) {
-                toReturn = param.split('=')[1];
-            }
-        }
-        return toReturn;
+        const search = window.location.search.substring(1);
+        const params = new URLSearchParams(search);
+        return params.get(name) || defaultValue;
     },
 
     getBooleanParam(name, defaultValue = false) {

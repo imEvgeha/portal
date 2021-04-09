@@ -66,9 +66,9 @@ const ServicingOrdersView = () => {
             const response = await exportServicingOrders(selectedServicingOrders.map(so => so.so_number));
             downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
             setIsExporting(false);
+        } catch (err) {
+            setIsExporting(false);
         }
-        catch (err) { setIsExporting(false); }
-
     };
 
     /**
