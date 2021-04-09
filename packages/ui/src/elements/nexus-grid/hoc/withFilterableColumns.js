@@ -167,7 +167,7 @@ const withFilterableColumns = ({
         function updateColumnDefs(columnDefs) {
             const copiedColumnDefs = cloneDeep(columnDefs);
             const filterableColumnDefs = copiedColumnDefs.map(columnDef => {
-                const {searchDataType, queryParamName = columnDef.field, queryParamValue = ''} =
+                const {searchDataType, queryParamName = columnDef.field, queryParamValue = '', icon} =
                     (Array.isArray(mapping) &&
                         mapping.find(({javaVariableName}) => javaVariableName === columnDef.field)) ||
                     {};
@@ -345,6 +345,7 @@ const withFilterableColumns = ({
                                     // TODO; check is this necessary
                                     ...DEFAULT_FILTER_PARAMS,
                                     searchQuery,
+                                    icon,
                                 };
                                 break;
                             default:

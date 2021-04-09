@@ -8,12 +8,16 @@ import {camelCase, startCase} from 'lodash';
 import {EPISODE_CONTENT_TYPE} from '../../constants';
 import './createValueFormatter.scss';
 
-const getIcon = value => {
+export const getIcon = (value, isFocus) => {
     switch (value) {
         case 'warning':
-            return <WarningIcon primaryColor="#a5adba" width="20px" />;
+            return <WarningIcon primaryColor={isFocus ? '#ff8b00' : '#a5adba'} width="20px" />;
         case 'block':
-            return <WithdrawnIcon className="nexus-c-withdrawn-icon" />;
+            return (
+                <WithdrawnIcon
+                    className={`nexus-c-withdrawn-icon ${isFocus ? 'nexus-c-withdrawn-icon--is-active' : ''}`}
+                />
+            );
         default:
             return value;
     }
@@ -228,7 +232,7 @@ const createValueFormatter = ({dataType, javaVariableName, isEmphasized, tooltip
             return ({value}) => {
                 return (!valueToDisplay && value) || (valueToDisplay && value === valueToDisplay) ? (
                     <NexusTooltip content={tooltip}>
-                        <span className="nexus-c-repository-icon">{getIcon(icon)}</span>
+                        <span className="nexus-c-repository-icon">{getIcon(icon, false)}</span>
                     </NexusTooltip>
                 ) : (
                     ' '

@@ -1,12 +1,11 @@
 import React, {useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 import Button from '@atlaskit/button';
-import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
-import {isEmpty} from 'lodash';
+import {getIcon} from '../value-formatter/createValueFormatter';
 import './CustomIconFilter.scss';
 /* eslint-disable react/prop-types */
 
 export default forwardRef((props, ref) => {
-    const [value, setValue] = useState(props.initialFilters);
+    const [value, setValue] = useState(false);
 
     useEffect(() => {
         props.filterChangedCallback();
@@ -17,7 +16,7 @@ export default forwardRef((props, ref) => {
             return;
         }
         // Filter doesn't persist when switching ingest without this check
-        setValue(v);
+        setValue(!value);
     };
 
     // expose AG Grid Filter Lifecycle callbacks
@@ -28,14 +27,16 @@ export default forwardRef((props, ref) => {
             },
 
             isFilterActive() {
-                return value && !isEmpty(value);
+                return !!value;
             },
 
             getModel() {
-                return {
-                    type: 'equals',
-                    filter: props.searchQuery,
-                };
+                if (value) {
+                    return {
+                        type: 'equals',
+                        filter: props.searchQuery,
+                    };
+                }
             },
 
             setModel(val) {
@@ -46,9 +47,7 @@ export default forwardRef((props, ref) => {
 
     return (
         <div className="nexus-c-custom-complex-filter">
-            <Button onClick={onChange}>
-                <WarningIcon primaryColor="#a5adba" width="30px" />
-            </Button>
+            <Button onClick={onChange}>{getIcon(props.icon, value)}</Button>
         </div>
     );
 });
