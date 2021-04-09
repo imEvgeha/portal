@@ -55,7 +55,7 @@ const IngestPanel = ({
         <div className="ingest-panel">
             <PanelHeader isShowingFilters={showFilters} toggleFilters={toggleFilters} onFiltersChange={filtersChange} />
             <div className="ingest-panel__list" onScroll={onScroll} ref={panelRef}>
-                {ingests.map(({id, attachments, received, licensor, ingestType}) => {
+                {ingests.map(({id, attachments, received, licensor, ingestType, emailSubject}) => {
                     const excelPdfAttachments = attachments.filter(
                         ({attachmentType}) => attachmentType && (attachmentType === EXCEL || attachmentType === PDF)
                     );
@@ -77,6 +77,7 @@ const IngestPanel = ({
                             ingestType={ingestType}
                             ingestClick={ingestClick}
                             selectedAttachmentId={selectedAttachmentId}
+                            emailSubject={emailSubject}
                         />
                     ) : (
                         excelPdfAttachments.length === 1 && (
@@ -93,6 +94,7 @@ const IngestPanel = ({
                                 }
                                 isSelected={selectedIngest && selectedIngest.id === id}
                                 ingestId={id}
+                                emailSubject={emailSubject}
                             />
                         )
                     );
