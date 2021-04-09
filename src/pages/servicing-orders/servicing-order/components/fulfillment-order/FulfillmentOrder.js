@@ -1,12 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import Button, {ButtonGroup} from '@atlaskit/button';
-import ErrorIcon from "@atlaskit/icon/glyph/error";
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 import Lozenge from '@atlaskit/lozenge';
 import Page, {Grid, GridColumn} from '@atlaskit/page';
 import Select from '@atlaskit/select/dist/cjs/Select';
 import Textfield from '@atlaskit/textfield';
-import Tooltip from "@atlaskit/tooltip";
+import Tooltip from '@atlaskit/tooltip';
 import {NexusModalContext} from '@vubiquity-nexus/portal-ui/lib/elements/nexus-modal/NexusModal';
 import NexusTextArea from '@vubiquity-nexus/portal-ui/lib/elements/nexus-textarea/NexusTextArea';
 import {createLoadingSelector} from '@vubiquity-nexus/portal-ui/lib/loading/loadingSelectors';
@@ -17,10 +17,10 @@ import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {SAVE_FULFILLMENT_ORDER, SAVE_FULFILLMENT_ORDER_SUCCESS} from '../../servicingOrderActionTypes';
 import {saveFulfillmentOrder} from '../../servicingOrderActions';
+import {SELECT_VALUES, DETE_SERVICE_TYPE} from '../services-table/Constants';
 import ErrorsList from './ErrorsList';
 import Constants from './constants';
 import './FulfillmentOrder.scss';
-
 
 export const FulfillmentOrder = ({
     selectedFulfillmentOrder = {},
@@ -47,14 +47,14 @@ export const FulfillmentOrder = ({
 
     const {openModal, closeModal} = useContext(NexusModalContext);
 
-    const lateFaults =  useSelector(state => get(state,'servicingOrders.servicingOrder.lateFaults'));
+    const lateFaults = useSelector(state => get(state, 'servicingOrders.servicingOrder.lateFaults'));
 
     // fetch (and store) late reasons if not available in store for the tenant
     useEffect(() => {
-        if(fulfillmentOrder.tenant && !lateFaults.hasOwnProperty(fulfillmentOrder.tenant)) {
-            dispatch({type: 'FETCH_CONFIG', payload: get(fulfillmentOrder,'tenant')});
-        }     
-    },[get(fulfillmentOrder,'tenant')]);
+        if (fulfillmentOrder.tenant && !lateFaults.hasOwnProperty(fulfillmentOrder.tenant)) {
+            dispatch({type: 'FETCH_CONFIG', payload: get(fulfillmentOrder, 'tenant')});
+        }
+    }, [get(fulfillmentOrder, 'tenant')]);
 
     const ModalContent = (
         <>
@@ -124,7 +124,8 @@ export const FulfillmentOrder = ({
         const fo = cloneDeep(fulfillmentOrder);
         set(fo, path, value);
 
-        if(path === fieldKeys.LATE_FAULT) { // set late reason = null when user select/reselect late fault
+        if (path === fieldKeys.LATE_FAULT) {
+            // set late reason = null when user select/reselect late fault
             set(fo, fieldKeys.LATE_REASON, null);
         }
 
@@ -211,18 +212,18 @@ export const FulfillmentOrder = ({
 
     const getLateFaultOptions = () => {
         let faultOptions = [];
-        if(fulfillmentOrder.tenant) {
+        if (fulfillmentOrder.tenant) {
             const faultArray = Object.keys(lateFaults[fulfillmentOrder.tenant] || {});
             faultOptions = faultArray.length > 0 ? faultArray.map(item => ({value: item, label: item})) : [];
         }
 
         return faultOptions;
-    }
+    };
 
     const getLateReasonOptions = fault => {
         const faultObj = lateFaults[fulfillmentOrder.tenant] || {};
         return fault && fault in faultObj ? faultObj[fault].map(item => ({value: item, label: item})) : [];
-    }   
+    };
 
     const lateFaultOptions = [...Constants.LATE_FAULT, ...getLateFaultOptions()];
     const lateReasonOptions = getLateReasonOptions(fulfillmentOrder?.late_fault);
@@ -239,10 +240,7 @@ export const FulfillmentOrder = ({
                             </div>
                             <div className="fulfillment-order__save-buttons">
                                 <ButtonGroup>
-                                    <Button
-                                        onClick={onCancel}
-                                        isDisabled={isSaveDisabled || isSaving}
-                                    >
+                                    <Button onClick={onCancel} isDisabled={isSaveDisabled || isSaving}>
                                         Cancel
                                     </Button>
                                     <Button
@@ -257,64 +255,103 @@ export const FulfillmentOrder = ({
                             </div>
                         </div>
                         <Grid layout="fluid">
-                            <GridColumn medium={3}>                      
+                            <GridColumn medium={3}>
                                 <div className="nexus-fo-date-readonly">
-                                    Servicer:  <Lozenge appearance="new">{get(fulfillmentOrder, fieldKeys.SERVICER, '')}</Lozenge>
-                                </div>
-                                <div className="nexus-fo-date-readonly">
-                                    Start Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
+                                    Servicer:{' '}
+                                    <Lozenge appearance="new">{get(fulfillmentOrder, fieldKeys.SERVICER, '')}</Lozenge>
                                 </div>
                                 <div className="nexus-fo-date-readonly">
-                                    Due Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
+                                    Start Date:{' '}
+                                    <Lozenge>
+                                        {moment(getValidDate(get(fulfillmentOrder, fieldKeys.START_DATE, ''))).format(
+                                            'MM/DD/YYYY'
+                                        )}
+                                    </Lozenge>
                                 </div>
-                                {get(fulfillmentOrder, fieldKeys.STATUS) === Constants.STATUS.COMPLETE && <div className="nexus-fo-date-readonly">
-                                    Completed Date:  <Lozenge>{moment(getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))).format('MM/DD/YYYY')}</Lozenge>
-                                </div>}
-                                <div>
-                                    { fulfillmentOrder.hasOwnProperty(fieldKeys.PREMIERING) &&
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            id="inp-premiering"
-                                            checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
-                                            onClick={()=>onFieldChange(fieldKeys.PREMIERING, !get(fulfillmentOrder, fieldKeys.PREMIERING))}
-                                            disabled={false}
-                                        />
-                                        <label htmlFor="inp-premiering" className="fo-gridhdr-radio">Premiering</label>
+                                <div className="nexus-fo-date-readonly">
+                                    Due Date:{' '}
+                                    <Lozenge>
+                                        {moment(getValidDate(get(fulfillmentOrder, fieldKeys.DUE_DATE, ''))).format(
+                                            'MM/DD/YYYY'
+                                        )}
+                                    </Lozenge>
+                                </div>
+                                {get(fulfillmentOrder, fieldKeys.STATUS) === Constants.STATUS.COMPLETE && (
+                                    <div className="nexus-fo-date-readonly">
+                                        Completed Date:{' '}
+                                        <Lozenge>
+                                            {moment(
+                                                getValidDate(get(fulfillmentOrder, fieldKeys.COMPLETED_DATE, ''))
+                                            ).format('MM/DD/YYYY')}
+                                        </Lozenge>
                                     </div>
-                                    }
+                                )}
+                                <div>
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.PREMIERING) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-premiering"
+                                                checked={get(fulfillmentOrder, fieldKeys.PREMIERING, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.PREMIERING,
+                                                        !get(fulfillmentOrder, fieldKeys.PREMIERING)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-premiering" className="fo-gridhdr-radio">
+                                                Premiering
+                                            </label>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
-                                    { fulfillmentOrder.hasOwnProperty(fieldKeys.WATERMARK) &&
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            id="inp-watermark"
-                                            checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
-                                            onClick={() => onFieldChange(fieldKeys.WATERMARK, !get(fulfillmentOrder, fieldKeys.WATERMARK))}
-                                            disabled={false}
-                                        />
-                                        <label htmlFor="inp-watermark" className="fo-gridhdr-radio">Watermark</label>
-                                    </div>
-                                    }
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.WATERMARK) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-watermark"
+                                                checked={get(fulfillmentOrder, fieldKeys.WATERMARK, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.WATERMARK,
+                                                        !get(fulfillmentOrder, fieldKeys.WATERMARK)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-watermark" className="fo-gridhdr-radio">
+                                                Watermark
+                                            </label>
+                                        </div>
+                                    )}
                                 </div>
                                 <div>
-                                    { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE) &&
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            id="inp-late"
-                                            checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
-                                            onClick={() => onFieldChange(fieldKeys.LATE, !get(fulfillmentOrder, fieldKeys.LATE))}
-                                            disabled={false}
-                                        />
-                                        <label htmlFor="inp-late" className="fo-gridhdr-radio">Late</label> 
-                                    </div>
-                                    }
+                                    {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE) && (
+                                        <div>
+                                            <input
+                                                type="checkbox"
+                                                id="inp-late"
+                                                checked={get(fulfillmentOrder, fieldKeys.LATE, false)}
+                                                onClick={() =>
+                                                    onFieldChange(
+                                                        fieldKeys.LATE,
+                                                        !get(fulfillmentOrder, fieldKeys.LATE)
+                                                    )
+                                                }
+                                                disabled={false}
+                                            />
+                                            <label htmlFor="inp-late" className="fo-gridhdr-radio">
+                                                Late
+                                            </label>
+                                        </div>
+                                    )}
                                 </div>
                             </GridColumn>
                             <GridColumn medium={3}>
-                                { fulfillmentOrder.hasOwnProperty(fieldKeys.MARKET_TYPE) &&
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.MARKET_TYPE) && (
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="readiness-status">Market Type</label>
                                         <Select
@@ -327,9 +364,10 @@ export const FulfillmentOrder = ({
                                             }}
                                             onChange={val => onFieldChange(fieldKeys.MARKET_TYPE, val.value)}
                                             isDisabled={false}
-                                        /> 
-                                    </div> }
-                                { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_FAULT) &&
+                                        />
+                                    </div>
+                                )}
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_FAULT) && (
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="late-fault">Late At Fault</label>
                                         <Select
@@ -343,10 +381,11 @@ export const FulfillmentOrder = ({
                                             onChange={val => onFieldChange(fieldKeys.LATE_FAULT, val.value)}
                                             isDisabled={false}
                                         />
-                                    </div> }
+                                    </div>
+                                )}
                             </GridColumn>
                             <GridColumn medium={3}>
-                                { fulfillmentOrder.hasOwnProperty(fieldKeys.CAR) &&
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.CAR) && (
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="car">CAR</label>
                                         <Tooltip content={get(fulfillmentOrder, fieldKeys.CAR, '')}>
@@ -359,8 +398,9 @@ export const FulfillmentOrder = ({
                                                 css={{height: 'auto'}}
                                             />
                                         </Tooltip>
-                                    </div> }
-                                { fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_REASON) &&
+                                    </div>
+                                )}
+                                {fulfillmentOrder.hasOwnProperty(fieldKeys.LATE_REASON) && (
                                     <div className="fulfillment-order__input">
                                         <label htmlFor="late-reason">Late Reason</label>
                                         <Tooltip content={get(fulfillmentOrder, fieldKeys.LATE_REASON, '')}>
@@ -376,25 +416,25 @@ export const FulfillmentOrder = ({
                                                 isDisabled={false}
                                             />
                                         </Tooltip>
-                                    </div> }
+                                    </div>
+                                )}
                             </GridColumn>
                             <GridColumn medium={3}>
-                            <div className="fulfillment-order__input">
-                                    <Tooltip content={deteErrors.length ?
-                                        `View ${deteErrors.length} errors`
-                                        : '0 errors'}>
+                                <div className="fulfillment-order__input">
+                                    <Tooltip
+                                        content={deteErrors.length ? `View ${deteErrors.length} errors` : '0 errors'}
+                                    >
                                         <div
                                             onClick={() =>
-                                                deteErrors.length ?
-                                                    openModal(<ErrorsList errors={deteErrors} closeModal={closeModal} />)
+                                                deteErrors.length
+                                                    ? openModal(
+                                                          <ErrorsList errors={deteErrors} closeModal={closeModal} />
+                                                      )
                                                     : null
                                             }
                                         >
                                             <label htmlFor="late-reason">Fulfillment Status</label>
-                                            <ErrorIcon size="small" primaryColor={deteErrors.length ?
-                                            'red' :
-                                            'grey'}
-                                        />
+                                            <ErrorIcon size="small" primaryColor={deteErrors.length ? 'red' : 'grey'} />
                                         </div>
                                     </Tooltip>
                                     <Textfield
@@ -423,7 +463,7 @@ export const FulfillmentOrder = ({
                                     name="notes"
                                     onTextChange={value => onFieldChange(fieldKeys.NOTES, value)}
                                     notesValue={get(fulfillmentOrder, fieldKeys.NOTES, '') || ''}
-                                    isDisabled={isFormDisabled}
+                                    disabled={false}
                                     resize="smart"
                                     isCompact
                                 />

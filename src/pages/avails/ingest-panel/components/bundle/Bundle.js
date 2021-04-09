@@ -6,7 +6,7 @@ import IngestStatus from '../ingest-status/IngestStatus';
 import Ingest from '../ingest/Ingest';
 import './Bundle.scss';
 
-const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick}) => {
+const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttachmentId, ingestClick, emailSubject}) => {
     const [showIngests, setShowIngests] = useState(false);
     const onBundleClick = () => setShowIngests(!showIngests);
 
@@ -45,6 +45,7 @@ const Bundle = ({id, ingestType, received, licensor, attachments, selectedAttach
                             isSelected={selectedAttachmentId === attachment.id}
                             ingestId={id}
                             isInBundle
+                            emailSubject={emailSubject}
                         />
                     ))}
                 </div>
@@ -61,6 +62,7 @@ Bundle.propTypes = {
     attachments: PropTypes.array,
     selectedAttachmentId: PropTypes.string,
     ingestClick: PropTypes.func,
+    emailSubject: PropTypes.string,
 };
 
 Bundle.defaultProps = {
@@ -71,6 +73,7 @@ Bundle.defaultProps = {
     attachments: [],
     selectedAttachmentId: '',
     ingestClick: () => null,
+    emailSubject: '',
 };
 
 export default Bundle;

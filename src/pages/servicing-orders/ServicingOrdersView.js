@@ -60,17 +60,15 @@ const ServicingOrdersView = () => {
     /**
      * Download selected servicing orders as .csv file
      */
-    const exportSelectedServicingOrders = () => {
+    const exportSelectedServicingOrders = async () => {
         setIsExporting(true);
-        exportServicingOrders(selectedServicingOrders.map(so => so.so_number))
-            .then(response => {
-                downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
-                setIsExporting(false);
-                setIsRefreshData(true);
-            })
-            .catch(() => {
-                setIsExporting(false);
-            });
+        try {
+            const response = await exportServicingOrders(selectedServicingOrders.map(so => so.so_number));
+            downloadFile(response, 'SOM_FulfillmentOrders_', '.csv', false);
+            setIsExporting(false);
+        } catch (err) {
+            setIsExporting(false);
+        }
     };
 
     /**

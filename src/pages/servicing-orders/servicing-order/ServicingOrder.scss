@@ -4,6 +4,12 @@
     display: flex;
     min-height: 100%;
 
+    .nexus-status-tag {
+        &--fo-accepted {
+            background: map-get($secondary-colors, teal);
+        }
+    }
+
     &__left {
         display: flex;
         flex-direction: column;

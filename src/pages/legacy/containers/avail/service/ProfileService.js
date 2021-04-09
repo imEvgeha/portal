@@ -10,7 +10,9 @@ const getAvailsMapping = () => {
 };
 
 const getSelectValues = field => {
-    const url = config.get('gateway.configuration') + '/configuration-api/v1' + field + '?page=0&size=10000';
+    const url = `${config.get('gateway.configuration')}${config.get(
+        'gateway.service.configuration'
+    )}${field}?page=0&size=10000`;
     return nexusFetch(url, {isWithErrorHandling: false});
 };
 

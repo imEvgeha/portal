@@ -17,7 +17,7 @@ import mappings from '../../../../../../profile/servicesTableMappings.json';
 import {NexusGrid} from '../../../../../ui/elements';
 import {showToastForErrors} from '../../../../../util/http-client/handleError';
 import constants from '../fulfillment-order/constants';
-import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION} from './Constants';
+import {SELECT_VALUES, SERVICE_SCHEMA, CLICK_FOR_SELECTION, NO_SELECTION, DETE_SERVICE_TYPE} from './Constants';
 import CheckBoxRenderer from './cell-renderers/CheckBoxRenderer';
 import CloseButtonCellRenderer from './cell-renderers/CloseButtonCellRenderer';
 import columnDefinitions from './columnDefinitions';
@@ -53,7 +53,6 @@ const ServicesTable = ({
             ''
         );
 
-
     useEffect(() => {
         if (!isEmpty(data)) {
             data.fs && setProviderServices(`${data.fs.toLowerCase()}Services`);
@@ -66,15 +65,16 @@ const ServicesTable = ({
             if (!isEmpty(services)) {
                 const flattenedObject = services[providerServices].map((service, index) => ({
                     serviceType:
-                        service.externalServices.serviceType === 'DETE Recipient'
-                            ? SELECT_VALUES.serviceType[0]
+                        service.externalServices.serviceType === DETE_SERVICE_TYPE
+                            ? SELECT_VALUES.serviceType
                             : service.externalServices.serviceType,
                     assetType: service.externalServices.assetType || '',
                     components: service.details || [],
                     spec: service.externalServices.formatType,
                     doNotStartBefore: service.overrideStartDate || '',
                     priority: service.externalServices.parameters.find(param => param.name === 'Priority').value,
-                    watermark: get(service,'externalServices.parameters',{}).find(param => param.name === 'Watermark')?.value,
+                    watermark: get(service, 'externalServices.parameters', {}).find(param => param.name === 'Watermark')
+                        ?.value,
                     recipient,
                     operationalStatus: service.foiStatus || '',
                     rowIndex: index,
@@ -98,10 +98,10 @@ const ServicesTable = ({
     };
 
     // eslint-disable-next-line react/prop-types
-    const ComponentCellRenderer = ({node, rowIndex, tableData ,data, deteComponents,services}) => {
+    const ComponentCellRenderer = ({node, rowIndex, tableData, data, deteComponents, services}) => {
         let toolTipContent = '';
         if (!isDisabled) {
-            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node,'data.assetType'))) {
+            if (!['Audio', 'Subtitles', 'Closed Captioning'].includes(get(node, 'data.assetType'))) {
                 toolTipContent = NO_SELECTION;
             } else {
                 toolTipContent = CLICK_FOR_SELECTION;
@@ -115,11 +115,11 @@ const ServicesTable = ({
             return [];
         };
 
-        const handleComponentsEdit = (index,  components) => {
+        const handleComponentsEdit = (index, components) => {
             const newRow = cloneDeep(tableData[index]);
             const update = cloneDeep(services);
             const serviceWithComponents = flattenDeep(Object.values(components)).map(item => {
-                return {...item, typeAttribute: get(node,'data.assetType') === 'Audio' ? 'audioDetail' : 'textDetail'};
+                return {...item, typeAttribute: get(node, 'data.assetType') === 'Audio' ? 'audioDetail' : 'textDetail'};
             });
 
             update.deteServices[index].details = serviceWithComponents.map(item => {
@@ -127,7 +127,7 @@ const ServicesTable = ({
                 return item;
             });
             newRow.components = update.deteServices[index].details;
-            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow: row)));
+            setTableData(prev => prev.map((row, idx) => (idx === index ? newRow : row)));
             setUpdatedServices(update);
         };
 
@@ -141,26 +141,27 @@ const ServicesTable = ({
                             : openModal(
                                   <ComponentsPicker
                                       data={{
-                                          assetType: get(node,'data.assetType'),
+                                          assetType: get(node, 'data.assetType'),
                                           barcode: data.barcode,
                                           title,
-                                          compSummary: get(node,'data.components',[]),
-                                          componentArray: getComponentsForPicker(get(node,'data.assetType')),
+                                          compSummary: get(node, 'data.components', []),
+                                          componentArray: getComponentsForPicker(get(node, 'data.assetType')),
                                       }}
                                       closeModal={closeModal}
                                       saveComponentData={handleComponentsEdit}
                                       index={rowIndex}
                                   />,
                                   {
-                                      width: get(node,'data.assetType') === 'Audio' ? 'x-large' : 'large',
+                                      width: get(node, 'data.assetType') === 'Audio' ? 'x-large' : 'large',
                                   }
                               );
                     }}
                 >
-                    {
-                        Object.keys(
-                            groupBy(get(node,'data.components',[]), v => [v.language, v.trackConfig || v.type])
-                        ).map(item => <Tag key={item} text={item} />)}
+                    {Object.keys(
+                        groupBy(get(node, 'data.components', []), v => [v.language, v.trackConfig || v.type])
+                    ).map(item => (
+                        <Tag key={item} text={item} />
+                    ))}
                 </div>
             </Tooltip>
         );
@@ -187,15 +188,24 @@ const ServicesTable = ({
     const watermarkCol = {
         sortable: false,
         cellRenderer: 'checkBoxRenderer',
-        headerComponentFramework:  () => <span title="watermark"><i className="fas fa-tint"/></span>,
-        cellRendererParams: ({rowIndex, node}) =>
-            ({
-                tableData,
-                rowIndex,
-                node,
-                isDisabled,
-                toggleCheck: ()=>handleFieldEdit(rowIndex,'externalServices.parameters','Watermark',!get(tableData[rowIndex], 'watermark')),
-            }),
+        headerComponentFramework: () => (
+            <span title="watermark">
+                <i className="fas fa-tint" />
+            </span>
+        ),
+        cellRendererParams: ({rowIndex, node}) => ({
+            tableData,
+            rowIndex,
+            node,
+            isDisabled,
+            toggleCheck: () =>
+                handleFieldEdit(
+                    rowIndex,
+                    'externalServices.parameters',
+                    'Watermark',
+                    !get(tableData[rowIndex], 'watermark')
+                ),
+        }),
     };
 
     // get spec col selection values dynamically when user hovers the row
@@ -218,37 +228,42 @@ const ServicesTable = ({
         }
     };
 
-    const handleFieldEdit = (index,fieldPath, fieldName,newValue) => {
+    const handleFieldEdit = (index, fieldPath, fieldName, newValue) => {
         const updatedRow = cloneDeep(tableData[index]);
         const updatedServices = cloneDeep(services);
-        set(updatedRow,fieldName,newValue);
+        set(updatedRow, fieldName, newValue);
 
-        if(fieldPath === 'externalServices.parameters') {
-            const inx = get(updatedServices.deteServices[index],'externalServices.parameters',{}).findIndex(param => param.name === fieldName);
-            if(inx >= 0) {
-                if(newValue === false) // remove parameter if value is false
-                {
-                    const reducedParams = updatedServices?.deteServices[index]?.externalServices?.parameters?.filter(item => item.name !== fieldName);
-                    set(updatedServices,`deteServices[${index}].externalServices.parameters`,reducedParams) ;
-                }
-                else 
-                    set(updatedServices,`deteServices[${index}].externalServices.parameters[${inx}]`,{name: fieldName, value: newValue}) ;
+        if (fieldPath === 'externalServices.parameters') {
+            const inx = get(updatedServices.deteServices[index], 'externalServices.parameters', {}).findIndex(
+                param => param.name === fieldName
+            );
+            if (inx >= 0) {
+                if (newValue === false) {
+                    // remove parameter if value is false
+                    const reducedParams = updatedServices?.deteServices[index]?.externalServices?.parameters?.filter(
+                        item => item.name !== fieldName
+                    );
+                    set(updatedServices, `deteServices[${index}].externalServices.parameters`, reducedParams);
+                } else
+                    set(updatedServices, `deteServices[${index}].externalServices.parameters[${inx}]`, {
+                        name: fieldName,
+                        value: newValue,
+                    });
+            } else if (newValue !== false) {
+                const addedParams = [
+                    ...updatedServices?.deteServices[index]?.externalServices?.parameters,
+                    {name: fieldName, value: newValue},
+                ];
+                set(updatedServices, `deteServices[${index}].externalServices.parameters`, addedParams);
             }
-            else if(newValue !== false) 
-            {
-                const addedParams = [...updatedServices?.deteServices[index]?.externalServices?.parameters, {name: fieldName, value: newValue}];
-                set(updatedServices,`deteServices[${index}].externalServices.parameters`,addedParams) ;
-            }
-            
+        } else {
+            set(updatedServices, `deteService[${index}].${fieldPath}`, newValue);
         }
-        else {
-            set(updatedServices,`deteService[${index}].${fieldPath}`,newValue);
-        }
-            
-        setTableData(prev => prev.map((row, idx) => (idx === index ? updatedRow: row)));
+
+        setTableData(prev => prev.map((row, idx) => (idx === index ? updatedRow : row)));
         setServices(updatedServices);
         setUpdatedServices(updatedServices);
-    }
+    };
 
     const colDef = columnDefinitions.map(item => {
         switch (item.colId) {
@@ -269,23 +284,16 @@ const ServicesTable = ({
                     onCellClicked: e => !isDisabled && checkSpecOptions(e),
                 };
             case 'watermark':
-                return {...item, ...watermarkCol}
+                return {...item, ...watermarkCol};
 
             default:
                 return item;
         }
     });
 
-    // set service type value to save to api based on service type and asset type drop down selected
-    const setOrderServiceType = (serviceType, assetType) => {
-        const service = '';
-        if (serviceType === 'Process & Deliver') return 'DETE Recipient';
-        else if (serviceType === 'DETE Ingest') {
-            if (assetType === 'Video') return 'Master';
-            else if (assetType === 'Subtitles' || assetType === 'Closed Captioning' || assetType === 'Audio')
-                return assetType;
-        }
-        return service;
+    // set service type value to save to api based on service type
+    const setOrderServiceType = serviceType => {
+        return serviceType === SELECT_VALUES.serviceType ? DETE_SERVICE_TYPE : serviceType;
     };
     const handleTableChange = ({rowIndex, type, api, data}) => {
         switch (type) {
@@ -306,9 +314,10 @@ const ServicesTable = ({
                 currentService.externalServices.parameters.find(param => param.name === 'Priority').value =
                     data.priority;
                 // watermark will not arrive for old orders, hence need to check
-                const extParamWatermark = currentService.externalServices.parameters.find(param => param.name === 'Watermark');
-                if (extParamWatermark)
-                    extParamWatermark.value = data.watermark;
+                const extParamWatermark = currentService.externalServices.parameters.find(
+                    param => param.name === 'Watermark'
+                );
+                if (extParamWatermark) extParamWatermark.value = data.watermark;
                 if (get(currentService, 'deteTasks.deteDeliveries.length', 0) !== 0)
                     currentService.deteTasks.deteDeliveries[0].externalDelivery.deliverToId = data.recipient;
                 currentService.status = data.operationalStatus;
@@ -350,8 +359,8 @@ const ServicesTable = ({
         },
     });
 
-    const servicesCount = get(services[`${providerServices}`],'length',0);
-    const barcode = get(services,'barcode', null);
+    const servicesCount = get(services[`${providerServices}`], 'length', 0);
+    const barcode = get(services, 'barcode', null);
 
     const valueGetter = params => {
         return get(params.data, params.colDef.dataSource || params.colDef.field, '');
@@ -376,26 +385,27 @@ const ServicesTable = ({
                     {!isDisabled && <Add onClick={addEmptyServicesRow} />}
                 </div>
             </div>
-            
-            { // eslint-disable-next-line react/prop-types
-            tableData?.length && 
-            <ServicesTableGrid
-                defaultColDef={{...valueGetter, sortable: true, resizable: true}}
-                isMenuHidden={false}
-                columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
-                rowData={tableData}
-                domLayout="autoHeight"
-                mapping={isDisabled ? disableMappings(mappings) : mappings}
-                selectValues={{...SELECT_VALUES, spec: specOptions}}
-                onGridEvent={handleTableChange}
-                onCellMouseOver={getSpecOptions}
-                frameworkComponents={
-                    {
-                        'componentCellRenderer': ComponentCellRenderer,
-                        'checkBoxRenderer': CheckBoxRenderer,
-                    }
-                }
-            /> }
+
+            {
+                // eslint-disable-next-line react/prop-types
+                tableData?.length && (
+                    <ServicesTableGrid
+                        defaultColDef={{...valueGetter, sortable: true, resizable: true}}
+                        isMenuHidden={false}
+                        columnDefs={[orderingColumn, closeButtonColumn, ...colDef]}
+                        rowData={tableData}
+                        domLayout="autoHeight"
+                        mapping={isDisabled ? disableMappings(mappings) : mappings}
+                        selectValues={{...SELECT_VALUES, spec: specOptions}}
+                        onGridEvent={handleTableChange}
+                        onCellMouseOver={getSpecOptions}
+                        frameworkComponents={{
+                            componentCellRenderer: ComponentCellRenderer,
+                            checkBoxRenderer: CheckBoxRenderer,
+                        }}
+                    />
+                )
+            }
         </div>
     );
 };
