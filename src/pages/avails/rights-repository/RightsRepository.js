@@ -249,8 +249,6 @@ const RightsRepository = ({
             sortable: !['Withdrawn', 'Selected'].includes(columnDef.headerName),
         };
 
-        // console.log(['Withdrawn', 'Selected'].includes(columnDef.headerName) ? false : columnDef.sortable);
-
         if (columnDef.colId === 'displayName') {
             updatedColumnDef.cellRendererFramework = params => {
                 const {valueFormatted} = params || {};
